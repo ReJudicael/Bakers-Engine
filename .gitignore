@@ -10,3 +10,5 @@ Engine/Engine/x64/
 Engine/Engine/Engine.vcxproj.user
 
 Engine/x64/
+
+Engine/Engine/DoxyGen/Doc/

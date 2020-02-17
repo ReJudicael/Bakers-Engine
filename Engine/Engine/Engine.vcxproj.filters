@@ -13,10 +13,48 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Core">
+      <UniqueIdentifier>{6228e520-080d-489f-9ad1-c9cc181c146d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Core\Maths">
+      <UniqueIdentifier>{76a4e7f0-374b-4b09-9655-1903b199e116}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Core\Maths\Mat.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Mat4.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Maths.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Quaternion.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Ref.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Ref3D.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Vec.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Vec2.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Vec3.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Vec4.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
