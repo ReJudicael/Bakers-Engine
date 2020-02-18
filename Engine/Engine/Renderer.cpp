@@ -1,5 +1,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stb_image.h>
+#include <string>
+#include <iostream>
 
 #include "Renderer.h"
 #include "Vec4.hpp"
@@ -11,7 +14,7 @@ layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec2 aUV;
 
 // Uniforms
-uniform mat4 uModelViewProj;
+uniform mat4 uModel;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
 out vec2 vUV;
@@ -19,7 +22,7 @@ out vec2 vUV;
 void main()
 {
     vUV = aUV;
-    gl_Position = vec4(aPosition, 1.0);
+    gl_Position = uModel * vec4(aPosition, 1.0);
 })GLSL";
 
 static const char* gFragmentShaderStr = R"GLSL(
@@ -91,6 +94,57 @@ GLuint	Renderer::CreateProgram(const char* vertex, const char* fragment)
 	return Program;
 }
 
+GLuint Renderer::CreateTextureFromColor(const Core::Maths::Vec4& color)
+{
+	GLuint texture;
+
+	std::vector<Core::Maths::Vec4> Texels(5 * 5);
+	for (int i = 0, j = 0; i < 5; i++)
+		for (j = 0; j < 5; j++)
+			Texels[j + i * 5] = color + Core::Maths::Vec4{ 0.1f * i, 0.1f * j, 0.f, 0.f };
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 5, 5, 0, GL_RGBA, GL_FLOAT, &Texels[0]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	return texture;
+}
+
+GLuint Renderer::CreateTextureFromImage(const char* filename)
+{
+	std::string s = filename;
+	GLuint		texture;
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	// set the texture wrapping/filtering options (on the currently bound texture object)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// load and generate the texture
+	int width, height, nrChannels;
+	unsigned char* data = stbi_load(s.c_str(), &width, &height, &nrChannels, 4);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load " << filename << std::endl;
+	}
+
+	stbi_image_free(data);
+
+	return texture;
+}
+
 void	Renderer::Render()
 {
 	{
@@ -119,42 +173,75 @@ Mesh*	Renderer::CreatePlane()
 	m->m_vertexCount = 6;
 
 	float Plane[] = {
-		-1.f, -1.f, 0.f, -1.f, -1.f,
-		1.f, -1.f, 0.f, 1.f, -1.f,
-		-1.f, 1.f, 0.f, -1.f, 1.f,
-		1.f, -1.f, 0.f, 1.f, -1.f,
-		-1.f, 1.f, 0.f, -1.f, 1.f,
-		1.f, 1.f, 0.f, 1.f, 1.f
+		-1.f, -1.f, 0.f,
+		1.f, -1.f, 0.f,
+		-1.f, 1.f, 0.f,
+		1.f, 1.f, 0.f
 	};
+
+	unsigned int Indices[] = {
+		0, 1, 2,
+		1, 2, 3
+	};
+	glGenVertexArrays(1, &m->m_VAO);
+	glBindVertexArray(m->m_VAO);
 
 	glGenBuffers(1, &m->m_vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, m->m_vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Plane), Plane, GL_STATIC_DRAW);
 
-	std::vector<Core::Maths::Vec4> Texels(5 * 5);
-	std::vector<Core::Maths::Vec4> Texels2(5 * 5);
-	for (int i = 0; i < 5; i++)
-	{
-		for (int j = 0; j < 5; j++)
-		{
-			Texels[j + i * 5] = Core::Maths::Vec4{ 1.f, 0.1f * i, 0.1f * j, 1.f };
-			Texels2[j + i * 5] = Core::Maths::Vec4{ 0.1f * j, 0.1f * i, 1.f, 1.f };
-		}
-	}
+	glGenBuffers(1, &m->m_indicesBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->m_indicesBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
 
-	glGenTextures(1, &m->m_texture);
-	glBindTexture(GL_TEXTURE_2D, m->m_texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 5, 5, 0, GL_RGBA, GL_FLOAT, &Texels[0]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	glBindVertexArray(m->m_VAO);
+	m->m_texture = CreateTextureFromColor(Core::Maths::Vec4{ 1.f, 0.f, 0.f, 1.f });
+	//m->m_texture = CreateTextureFromImage("Resources/Textures/block.png");
+	
+	//glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, Position));
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, UV));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, UV));
+	glBindVertexArray(0);
+
+	return m;
+}
+
+Mesh* Renderer::CreateCube()
+{
+	Mesh* m = Mesh::CreateCube(0, 1);
+	m->m_program = CreateProgram(gVertexShaderStr, gFragmentShaderStr);
+	m->m_vertexCount = 6;
+
+	/*float Plane[] = {
+		-1.f, -1.f, 0.f,
+		1.f, -1.f, 0.f,
+		-1.f, 1.f, 0.f,
+		1.f, 1.f, 0.f
+	};
+
+	unsigned int Indices[] = {
+		0, 1, 2,
+		1, 2, 3
+	};*/
+
+	glGenVertexArrays(1, &m->m_VAO);
+	glBindVertexArray(m->m_VAO);
+
+	glGenBuffers(1, &m->m_vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, m->m_vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m->m_vertices), &m->m_vertices[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &m->m_indicesBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->m_indicesBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m->m_indices), &m->m_indices[0], GL_STATIC_DRAW);
+
+	m->m_texture = CreateTextureFromColor(Core::Maths::Vec4{ 1.f, 0.f, 0.f, 1.f });
+	//m->m_texture = CreateTextureFromImage("Resources/Textures/block.png");
+
+	//glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, UV));
 	glBindVertexArray(0);
 
 	return m;

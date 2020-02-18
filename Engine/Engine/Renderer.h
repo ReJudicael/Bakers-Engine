@@ -18,6 +18,8 @@ public:
 	~Renderer();
 
 	GLuint CreateProgram(const char* vertex, const char* fragment);
+	GLuint CreateTextureFromColor(const Core::Maths::Vec4& color);
+	GLuint CreateTextureFromImage(const char* filename);
 
 	void	Render();
 	void	AddMesh(Mesh* newMesh);

@@ -51,7 +51,6 @@ void	Window::Update()
 {
 	Renderer r;
 	r.AddMesh(r.CreatePlane());
-	//r.CreatePlane();
 	while (!glfwWindowShouldClose(m_window))
 	{
 		glfwSwapBuffers(m_window);
