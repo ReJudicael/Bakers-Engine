@@ -20,6 +20,15 @@
       <UniqueIdentifier>{76a4e7f0-374b-4b09-9655-1903b199e116}</UniqueIdentifier>
     </Filter>
     <Filter Include="Fichiers sources\Core">
+      <UniqueIdentifier>{02f78a7e-5c77-47ac-8708-5c9e86da919d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Core\Datastructure">
+      <UniqueIdentifier>{af5458e1-47c0-44e7-952f-cb11717c4387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Core\Datastructure">
+      <UniqueIdentifier>{38f36a14-1d29-4080-9451-f79d06acf66a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Core">
       <UniqueIdentifier>{a5097437-e8ee-48ca-931b-5ca52251b20b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -38,6 +47,12 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\Transform.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\Object.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +94,12 @@
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\Transform.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\Object.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

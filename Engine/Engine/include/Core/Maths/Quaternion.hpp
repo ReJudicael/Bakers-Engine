@@ -147,6 +147,15 @@ namespace Core::Maths
 		}
 
 		/**
+		 * Returns vec component of the quaternion
+		 * @return Vector components of the quaternion
+		 */
+		inline constexpr Vec3		GetVec() const noexcept
+		{
+			return Vec3(x, y, z);
+		}
+
+		/**
 		 * Computes squared length of the quaternion
 		 * @return Squared length of the quaternion
 		 */
@@ -423,18 +432,36 @@ namespace Core::Maths
 		{
 			Mat4	mat{};
 			
-			mat.Set(0, 0, 1 - 2 * y * y - 2 * z * z);
-			mat.Set(0, 1, 2 * x * y - 2 * z * w);
-			mat.Set(0, 2, 2 * x * z + 2 * w * y);
-			mat.Set(1, 0, 2 * x * y + 2 * w * z);
-			mat.Set(1, 1, 1 - 2 * x * x - 2 * z * z);
-			mat.Set(1, 2, 2 * y * z - 2 * w * x);
-			mat.Set(2, 0, 2 * x * z - 2 * w * y);
-			mat.Set(2, 1, 2 * x * z + 2 * w * x);
-			mat.Set(2, 2, 1 - 2 * x * x - 2 * y * y);
-			mat.Set(3, 3, 1);
+			mat.Set(0, 0, 1.f - 2.f * (y * y + z * z));
+			mat.Set(0, 1, 2.f * (x * y - z * w));
+			mat.Set(0, 2, 2.f * (x * z + w * y));
+			mat.Set(1, 0, 2.f * (x * y + w * z));
+			mat.Set(1, 1, 1.f - 2.f * (x * x + z * z));
+			mat.Set(1, 2, 2.f * (y * z - w * x));
+			mat.Set(2, 0, 2.f * (x * z - w * y));
+			mat.Set(2, 1, 2.f * (y * z + w * x));
+			mat.Set(2, 2, 1.f - 2.f * (x * x + y * y));
+			mat.Set(3, 3, 1.f);
 
 			return mat;
+		}
+
+		inline std::string			ToString() const noexcept
+		{
+			std::string result{ "w: " };
+			result += std::to_string(w);
+			result += std::string(", x: ");
+			result += std::to_string(x);
+			result += std::string(", y: ");
+			result += std::to_string(y);
+			result += std::string(", z: ");
+			result += std::to_string(z);
+			return result;
+		}
+
+		inline void					Print() const noexcept
+		{
+			std::cout << ToString() << std::endl;
 		}
 	};
 
@@ -475,6 +502,8 @@ namespace Core::Maths
 
 		return q;
 	}
+
+	using Quat = Quaternion;
 }
 
 #endif
