@@ -36,6 +36,9 @@
     <ClCompile Include="src\Core\Datastructure\Transform.cpp">
       <Filter>Fichiers sources\Core\Datastructure</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\Object.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat.hpp">
@@ -69,6 +72,9 @@
       <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\Transform.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\Object.hpp">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
   </ItemGroup>

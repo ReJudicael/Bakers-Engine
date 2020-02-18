@@ -118,9 +118,9 @@ namespace Core::Datastructure
 		 */
 		const Maths::Quat&			Rotate(const Maths::Quat& q) noexcept;
 		/**
-		 * Adds scale to local transform.
+		 * Scales local transform by given vector.
 		 * Global variables and local trs needs updating after operation
-		 * @param v: Scale to add
+		 * @param v: Vector to scale by
 		 * @return Local rotation after operation
 		 */
 		const Maths::Vec3&			Scale(const Maths::Vec3& v) noexcept;

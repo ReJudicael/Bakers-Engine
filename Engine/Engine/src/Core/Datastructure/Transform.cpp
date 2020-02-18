@@ -37,7 +37,7 @@ namespace Core::Datastructure
 		m_isGTrsUpdated = false;
 		m_isGUpdated = false;
 
-		m_scale += v;
+		m_scale *= v;
 		return m_scale;
 	}
 	const Maths::Mat4& Transform::GetLocalTrs() noexcept
