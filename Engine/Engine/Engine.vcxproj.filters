@@ -19,9 +19,24 @@
     <Filter Include="Fichiers d%27en-tête\Core\Maths">
       <UniqueIdentifier>{76a4e7f0-374b-4b09-9655-1903b199e116}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\Core">
+      <UniqueIdentifier>{a5097437-e8ee-48ca-931b-5ca52251b20b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Fichiers sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -55,6 +70,15 @@
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Vec4.hpp">
       <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,10 +3,12 @@
 
 #include <iostream>
 #include "Maths.hpp"
+#include "Window.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	Window win(1200, 700);
+	win.Update();
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
