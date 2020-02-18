@@ -3,6 +3,7 @@
 #include <list>
 
 #include "Transform.hpp"
+#include "ComponentBase.h"
 
 namespace Core::Datastructure
 {
@@ -13,9 +14,10 @@ namespace Core::Datastructure
 	class Object
 	{
 	protected:
-		Transform			m_transform;
-		Object*				m_parent;
-		std::list<Object*>	m_childs;
+		Transform					m_transform;
+		Object*						m_parent;
+		std::list<Object*>			m_childs;
+		std::list<ComponentBase*>	m_components;
 
 		/**
 		 * Returns the transform, updates it if needed.
@@ -153,6 +155,25 @@ namespace Core::Datastructure
 				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
 			return m_transform.GetGlobalTrs();
 		}
+
+		/**
+		 * Adds given component to the object
+		 * @param c: Component to add
+		 */
+		void	AddComponent(ComponentBase* c) noexcept;
+		/**
+		 * Removes given component from the object, if it
+		 * is part of it. It will not do anything if the component
+		 * is not part of it.
+		 */
+		void	RemoveComponent(ComponentBase* c) noexcept;
+		/**
+		 * Deletes given component from the object, if it
+		 * is part of it. It will not do anything if the component
+		 * is not part of it.
+		 */
+		void	EraseComponent(ComponentBase* c) noexcept;
+
 	};
 
 	inline Object* Datastructure::Object::GetParent() const noexcept

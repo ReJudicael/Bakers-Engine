@@ -182,10 +182,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="src\Core\Datastructure\ComponentBase.cpp" />
     <ClCompile Include="src\Core\Datastructure\Object.cpp" />
     <ClCompile Include="src\Core\Datastructure\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Core\Datastructure\ComponentBase.h" />
     <ClInclude Include="include\Core\Datastructure\Object.hpp" />
     <ClInclude Include="include\Core\Datastructure\Transform.hpp" />
     <ClInclude Include="include\Core\Maths\Mat.hpp" />
