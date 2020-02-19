@@ -7,6 +7,8 @@
 
 namespace Core::Datastructure
 {
+	class RootObject;
+
 	/**
 	 * Container for all components of the game. It updates its transform and holds
 	 * the components.
@@ -15,12 +17,12 @@ namespace Core::Datastructure
 	{
 	private:
 		bool						m_isDestroyed = false;
+		RootObject*					m_root{ nullptr };
 	protected:
 		Transform					m_transform;
 		Object* m_parent;
 		std::list<Object*>			m_childs;
 		std::list<ComponentBase*>	m_components;
-	public:
 		/**
 		 * Returns the transform, updates it if needed.
 		 * @return Updated transform
@@ -43,28 +45,13 @@ namespace Core::Datastructure
 		 * @param localPos: Local position of the transform
 		 * @param parent: Parent of the object
 		 */
-		Object(const Transform& localPos, Object* parent) noexcept;
+		Object(const Transform& localPos, Object* parent, RootObject* scene) noexcept;
 	public:
 		/**
 		 * Destructor of the object. Destroys all of its children and components.
 		 */
 		~Object() noexcept
 		{
-
-			for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
-			{
-				if (!(*it)->IsDestroyed())
-					(*it)->Destroy();
-
-				delete* it;
-			}
-			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
-			{
-				if (!(*it)->IsDestroyed())
-					(*it)->Destroy();
-
-				delete *it;
-			}
 		}
 
 		/**
@@ -101,12 +88,6 @@ namespace Core::Datastructure
 		 * @return Pointer to the parent
 		 */
 		inline Object*		GetParent() const noexcept;
-
-		/**
-		 * Creates a root node with default transform and no parent,
-		 * effectively making it the root node.
-		 */
-		static Object*		CreateRootNode() noexcept;
 
 		/**
 		 * Translates the object in local space by given vector
@@ -261,6 +242,13 @@ namespace Core::Datastructure
 		 */
 		void	EraseComponent(ComponentBase* c) noexcept;
 
+		/**
+		 * Returns root object of the scene
+		 */
+		RootObject* GetScene() const noexcept
+		{
+			return m_root;
+		}
 	};
 
 	inline Object* Datastructure::Object::GetParent() const noexcept

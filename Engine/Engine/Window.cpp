@@ -3,7 +3,8 @@
 
 #include "Window.h"
 #include "Renderer.h"
-#include "Object.hpp"
+#include "RootObject.hpp"
+#include "ComponentUpdatable.h"
 
 Window::Window()
 {
@@ -51,7 +52,7 @@ Window::~Window()
 void	Window::Update()
 {
 	Renderer r;
-	Core::Datastructure::Object* o{ Core::Datastructure::Object::CreateRootNode() };
+	Core::Datastructure::RootObject* o{ Core::Datastructure::RootObject::CreateRootNode() };
 	Mesh* m{ r.CreatePlane() };
 	o->AddComponent(m);
 	r.AddMesh(m);
@@ -59,10 +60,12 @@ void	Window::Update()
 	{
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
-
+		o->StartFrame();
+		o->Update(0.2f);
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		r.Render();
+		o->Render();
 	}
+	o->Destroy();
+	o->RemoveDestroyed();
 }

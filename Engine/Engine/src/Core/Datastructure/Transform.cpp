@@ -6,7 +6,7 @@ namespace Core::Datastructure
 	{
 		if (m_isGUpdated)
 			return;
-		m_gpos = t.GetGlobalPos() + (t.GetGlobalRot() * Maths::Quat(0, m_pos) * t.GetGlobalRot().InversedUnit()).xyz;
+		m_gpos = t.GetGlobalPos() + (t.GetGlobalRot() * Maths::Quat(0, m_pos * t.GetGlobalScale()) * t.GetGlobalRot().InversedUnit()).xyz;
 		m_grot = (t.GetGlobalRot() * m_rot).Normalized();
 		m_gscale = m_scale * t.GetGlobalScale();
 		m_isGUpdated = true;
