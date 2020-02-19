@@ -17,7 +17,7 @@ namespace Core::Datastructure
 		bool						m_isDestroyed = false;
 	protected:
 		Transform					m_transform;
-		Object*						m_parent;
+		Object* m_parent;
 		std::list<Object*>			m_childs;
 		std::list<ComponentBase*>	m_components;
 
@@ -26,6 +26,16 @@ namespace Core::Datastructure
 		 * @return Updated transform
 		 */
 		const Transform&	GetUpdatedTransform() noexcept;
+
+		/**
+		 * Set own transform plus childs to require an update to position
+		 */
+		void				RequireUpdate() noexcept
+		{
+			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+				(*it)->RequireUpdate();
+			m_transform.RequireUpdate();
+		}
 
 		/**
 		 * Constructor of the object. Takes as argument the local position
@@ -124,6 +134,37 @@ namespace Core::Datastructure
 		const Maths::Vec3&	Scale(const Maths::Vec3& v) noexcept
 		{
 			return m_transform.Scale(v);
+		}
+
+		/**
+		 * Set local position of object to given value
+		 * @param pos: New local position
+		 */
+		void				SetPos(const Maths::Vec3& pos) noexcept
+		{
+			m_transform.SetLocalPos(pos);
+			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+				(*it)->RequireUpdate();
+		}
+		/**
+		 * Set local rotation of object to given value
+		 * @param pos: New local rotation
+		 */
+		void				SetRot(const Maths::Quat& rot) noexcept
+		{
+			m_transform.SetLocalRot(rot);
+			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+				(*it)->RequireUpdate();
+		}
+		/**
+		 * Set local scale of object to given value
+		 * @param pos: New local scale
+		 */
+		void				SetScale(const Maths::Vec3& scale) noexcept
+		{
+			m_transform.SetLocalPos(scale);
+			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+				(*it)->RequireUpdate();
 		}
 
 		/**
