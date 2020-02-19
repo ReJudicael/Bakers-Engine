@@ -10,7 +10,7 @@ namespace Core::Datastructure
 		bool		m_isDestroyed = false;
 		bool		m_isInit = false;
 	protected:
-		bool		m_isActive = false;
+		bool		m_isActive = true;
 		Object* m_parent{ nullptr };
 	public:
 		void			SetParent(Object* parent)

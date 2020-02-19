@@ -4,8 +4,13 @@ namespace Core::Datastructure
 {
 	const Transform& Object::GetUpdatedTransform() noexcept
 	{
-		if (m_transform.IsGPosUpdated())
-			m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+		if (!m_transform.IsGPosUpdated())
+		{
+			if (m_parent == nullptr)
+				m_transform.UpdatePos();
+			else
+				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+		}
 		return m_transform;
 	}
 
@@ -13,6 +18,8 @@ namespace Core::Datastructure
 	{
 		if (parent != nullptr)
 			m_transform.UpdatePos(parent->GetUpdatedTransform());
+		else
+			m_transform.UpdatePos();
 	}
 
 	Object* Datastructure::Object::CreateChild(const Transform& localPos) noexcept
@@ -23,7 +30,9 @@ namespace Core::Datastructure
 
 	Object* Datastructure::Object::CreateRootNode() noexcept
 	{
-		return new Object({}, nullptr);
+		Transform t;
+		t.UpdatePos();
+		return new Object(t, nullptr);
 	}
 
 	void Object::AddComponent(ComponentBase* c) noexcept

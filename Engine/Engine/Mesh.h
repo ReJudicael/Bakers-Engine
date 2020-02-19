@@ -5,13 +5,12 @@
 
 #include "Vec3.hpp"
 #include "Transform.hpp"
+#include "ComponentBase.h"
+#include "IRenderable.hpp"
 
-class Mesh
+class Mesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
 {
 public:
-	GLuint m_program = 0;
-	GLuint m_texture = 0;
-	GLuint m_VAO = 0;
 	GLuint m_vertexBuffer = 0;
 	GLuint m_indicesBuffer = 0;
 	int		m_vertexCount = 0;
@@ -28,8 +27,12 @@ public:
 	Mesh();
 	~Mesh();
 
+	virtual void OnStart() override {};
+	virtual void OnDestroy() override {};
+
 	void Initialize();
 
+	virtual void OnDraw() override;
 	void DrawMesh();
 
 	static Mesh* CreateCube(const float offset, const float scale);

@@ -20,7 +20,7 @@ namespace Core::Datastructure
 		Object* m_parent;
 		std::list<Object*>			m_childs;
 		std::list<ComponentBase*>	m_components;
-
+	public:
 		/**
 		 * Returns the transform, updates it if needed.
 		 * @return Updated transform

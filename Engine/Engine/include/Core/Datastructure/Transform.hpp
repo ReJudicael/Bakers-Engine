@@ -72,6 +72,12 @@ namespace Core::Datastructure
 		 * @param t: Parent transform
 		 */
 		void						UpdatePos(const Transform& t) noexcept;
+
+		/**
+		 * Updates global transform variables as a RootNode
+		 */
+		void						UpdatePos() noexcept;
+
 		/**
 		 * Set the global transform variables to be updated
 		 */

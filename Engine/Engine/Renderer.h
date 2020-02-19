@@ -3,16 +3,12 @@
 #include <vector>
 
 #include "Mesh.h"
+#include "IRenderable.hpp"
 
 class Renderer
 {
 private:
-	std::vector<Mesh*> m_meshes;
-	GLuint m_program = 0;
-	GLuint m_texture = 0;
-	GLuint m_VAO = 0;
-	GLuint m_vertexBuffer = 0;
-	int		m_vertexCount = 0;
+	std::vector<Core::Datastructure::IRenderable*> m_meshes;
 public:
 	Renderer();
 	~Renderer();

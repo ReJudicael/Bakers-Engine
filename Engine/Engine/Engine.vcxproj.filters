@@ -122,5 +122,8 @@
     <ClInclude Include="include\Core\Datastructure\ComponentUpdatable.h">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\IRenderable.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

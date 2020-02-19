@@ -3,6 +3,7 @@
 
 #include "Window.h"
 #include "Renderer.h"
+#include "Object.hpp"
 
 Window::Window()
 {
@@ -50,7 +51,10 @@ Window::~Window()
 void	Window::Update()
 {
 	Renderer r;
-	r.AddMesh(r.CreatePlane());
+	Core::Datastructure::Object* o{ Core::Datastructure::Object::CreateRootNode() };
+	Mesh* m{ r.CreatePlane() };
+	o->AddComponent(m);
+	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
 		glfwSwapBuffers(m_window);

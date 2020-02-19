@@ -12,6 +12,16 @@ namespace Core::Datastructure
 		m_isGUpdated = true;
 	}
 
+	void Transform::UpdatePos() noexcept
+	{
+		if (m_isGUpdated)
+			return;
+		m_gpos = m_pos;
+		m_grot = m_rot;
+		m_gscale = m_scale;
+		m_isGUpdated = true;
+	}
+
 	inline const Maths::Vec3& Transform::Translate(const Maths::Vec3& v) noexcept
 	{
 		m_isTrsUpdated = false;

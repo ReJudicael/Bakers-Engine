@@ -196,6 +196,7 @@
     <ClInclude Include="include\Core\Datastructure\ComponentBase.h" />
     <ClInclude Include="include\Core\Datastructure\ComponentUpdatable.h" />
     <ClInclude Include="include\Core\Datastructure\IComponent.hpp" />
+    <ClInclude Include="include\Core\Datastructure\IRenderable.hpp" />
     <ClInclude Include="include\Core\Datastructure\IUpdatable.hpp" />
     <ClInclude Include="include\Core\Datastructure\Object.hpp" />
     <ClInclude Include="include\Core\Datastructure\Transform.hpp" />

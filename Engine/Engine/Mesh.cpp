@@ -3,6 +3,7 @@
 
 #include "Mesh.h"
 #include "Mat4.hpp"
+#include "Object.hpp"
 
 Mesh::Mesh()
 {
@@ -52,6 +53,23 @@ void Mesh::Initialize()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, UV));
+	glBindVertexArray(0);
+}
+
+void Mesh::OnDraw()
+{
+	glUseProgram(m_program);
+
+	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
+	trs.mat.Print();
+	std::cout << std::endl;
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_FALSE, trs.m_array);
+
+	glBindTexture(GL_TEXTURE_2D, m_texture);
+	glBindVertexArray(m_VAO);
+
+	glDrawElements(GL_TRIANGLES, m_vertexCount, GL_UNSIGNED_INT, 0);
+
 	glBindVertexArray(0);
 }
 

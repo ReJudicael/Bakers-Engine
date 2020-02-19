@@ -147,11 +147,9 @@ GLuint Renderer::CreateTextureFromImage(const char* filename)
 
 void	Renderer::Render()
 {
+	for (int i = 0; i < m_meshes.size(); i++)
 	{
-		for (int i = 0; i < m_meshes.size(); i++)
-		{
-			m_meshes[i]->DrawMesh();
-		}
+		m_meshes[i]->Draw();
 	}
 }
 
@@ -169,6 +167,7 @@ struct vertex
 Mesh*	Renderer::CreatePlane()
 {
 	Mesh* m = new Mesh();
+	m->Start();
 	m->m_program = CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 	m->m_vertexCount = 6;
 
