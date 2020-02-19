@@ -25,4 +25,24 @@ namespace Core::Datastructure
 	{
 		return new Object({}, nullptr);
 	}
+
+	void Object::AddComponent(ComponentBase* c) noexcept
+	{
+		c->SetParent(this);
+		m_components.push_back(c);
+	}
+	void Object::RemoveComponent(ComponentBase* c) noexcept
+	{
+		m_components.remove(c);
+	}
+
+	void Object::EraseComponent(ComponentBase* c) noexcept
+	{
+		for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
+			if (*it == c)
+			{
+				(*it)->Destroy();
+				return;
+			}
+	}
 }

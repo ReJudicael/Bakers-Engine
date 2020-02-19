@@ -57,6 +57,12 @@
     <ClCompile Include="stb_image.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\ComponentBase.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\ComponentUpdatable.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat.hpp">
@@ -102,6 +108,18 @@
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\Object.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\ComponentBase.h">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\IComponent.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\IUpdatable.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\ComponentUpdatable.h">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
   </ItemGroup>

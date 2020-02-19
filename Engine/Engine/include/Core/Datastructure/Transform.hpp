@@ -12,20 +12,26 @@ namespace Core::Datastructure
 	class Transform
 	{
 	protected:
+		//Local pos
 		Maths::Vec3 m_pos;
 		Maths::Quat m_rot;
 		Maths::Vec3 m_scale;
 
-		bool		m_isTrsUpdated{ false };
+		//Local TRS
 		Maths::Mat4	m_TRS;
 
-		bool		m_isGUpdated{ false };
+		//Global pos
 		Maths::Vec3 m_gpos;
 		Maths::Quat m_grot;
 		Maths::Vec3 m_gscale;
 
-		bool		m_isGTrsUpdated{ false };
+		//Global TRS
 		Maths::Mat4	m_gTRS;
+
+		//Boolean controlling updates of values
+		bool		m_isTrsUpdated{ false };
+		bool		m_isGUpdated{ false };
+		bool		m_isGTrsUpdated{ false };
 	public:
 		/**
 		 * Transform constructor that takes as argument the local component of
@@ -125,6 +131,44 @@ namespace Core::Datastructure
 		 */
 		const Maths::Vec3&			Scale(const Maths::Vec3& v) noexcept;
 		
+		/**
+		 * Set local position to given position
+		 * @param pos: New local position
+		 */
+		void						SetLocalPos(const Maths::Vec3& pos) noexcept
+		{
+			m_isTrsUpdated = false;
+			m_isGUpdated = false;
+			m_isGTrsUpdated = false;
+
+			m_pos = pos;
+		}
+		/**
+		 * Set local rotation to given rotation
+		 * @param pos: New local rotation
+		 */
+		void						SetLocalRot(const Maths::Quat& rot) noexcept
+		{
+			m_isTrsUpdated = false;
+			m_isGUpdated = false;
+			m_isGTrsUpdated = false;
+
+			m_rot = rot;
+		}
+
+		/**
+		 * Set local scale to given scale
+		 * @param pos: New local scale
+		 */
+		void						SetLocalScale(const Maths::Vec3& scale) noexcept
+		{
+			m_isTrsUpdated = false;
+			m_isGUpdated = false;
+			m_isGTrsUpdated = false;
+
+			m_scale = scale;
+		}
+
 		/**
 		 * Returns reference to local trs. Can be updated, make a copy if current trs
 		 * is the required value. Will update current trs if required
