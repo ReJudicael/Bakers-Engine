@@ -31,6 +31,18 @@
     <Filter Include="Fichiers sources\Core">
       <UniqueIdentifier>{a5097437-e8ee-48ca-931b-5ca52251b20b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Resources">
+      <UniqueIdentifier>{8659ac7f-e452-41a4-9415-889fe22ff392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Resources\Loader">
+      <UniqueIdentifier>{a762b0f5-bc7f-4b40-bacb-e8f21ad2bf0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Resources">
+      <UniqueIdentifier>{546aa436-de03-44d7-9c65-83132a275d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Resources\Loader">
+      <UniqueIdentifier>{70e1fdf5-c1da-4588-ac9a-bb3677a024a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -43,9 +55,6 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\Transform.cpp">
@@ -63,11 +72,14 @@
     <ClCompile Include="src\Core\Datastructure\ComponentUpdatable.cpp">
       <Filter>Fichiers sources\Core\Datastructure</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\Loader\LoadResources.cpp">
+      <Filter>Fichiers sources\Resources\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Core\Maths\Mat.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
       <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
     </ClInclude>
@@ -101,9 +113,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Datastructure\Transform.hpp">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
@@ -124,6 +133,15 @@
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Mat.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Mesh.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Loader\LoadResources.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

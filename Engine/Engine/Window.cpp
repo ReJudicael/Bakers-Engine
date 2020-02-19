@@ -4,6 +4,40 @@
 #include "Window.h"
 #include "Renderer.h"
 #include "Object.hpp"
+#include "Loadresources.h"
+
+static const char* gVertexShaderStr = R"GLSL(
+// Attributes
+layout(location = 0) in vec3 aPosition;
+layout(location = 1) in vec2 aUV;
+
+// Uniforms
+uniform mat4 uModel;
+
+// Varyings (variables that are passed to fragment shader with perspective interpolation)
+out vec2 vUV;
+
+void main()
+{
+    vUV = aUV;
+    gl_Position = uModel * vec4(aPosition, 1.0);
+})GLSL";
+
+static const char* gFragmentShaderStr = R"GLSL(
+// Varyings
+in vec2 vUV;
+
+// Uniforms
+uniform sampler2D uColorTexture;
+
+// Shader outputs
+out vec4 oColor;
+
+void main()
+{
+    //oColor = texture(uColorTexture, vUV);
+	oColor = vec4(1.0f,0.0f,0.0f,0.0f);
+})GLSL";
 
 Window::Window()
 {
@@ -52,8 +86,12 @@ void	Window::Update()
 {
 	Renderer r;
 	Core::Datastructure::Object* o{ Core::Datastructure::Object::CreateRootNode() };
-	Mesh* m{ r.CreatePlane() };
+	Mesh* m{ new Mesh() };
+	m->Start();
+	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
+	Resources::Loader::loadResourcesIRenderable(m, "Resources/fantasy_game_inn.obj");
 	o->AddComponent(m);
+	std::cout << m->m_VAO << std::endl;
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
