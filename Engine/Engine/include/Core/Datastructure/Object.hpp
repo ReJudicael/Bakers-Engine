@@ -13,6 +13,8 @@ namespace Core::Datastructure
 	 */
 	class Object
 	{
+	private:
+		bool						m_isDestroyed = false;
 	protected:
 		Transform					m_transform;
 		Object*						m_parent;
@@ -33,6 +35,50 @@ namespace Core::Datastructure
 		 */
 		Object(const Transform& localPos, Object* parent) noexcept;
 	public:
+		/**
+		 * Destructor of the object. Destroys all of its children and components.
+		 */
+		~Object() noexcept
+		{
+
+			for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
+			{
+				if (!(*it)->IsDestroyed())
+					(*it)->Destroy();
+
+				delete* it;
+			}
+			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+			{
+				if (!(*it)->IsDestroyed())
+					(*it)->Destroy();
+
+				delete *it;
+			}
+		}
+
+		/**
+		 * Sets the object for destruction. Calls OnDestroy on every components
+		 * and Destroy on all of its childs
+		 */
+		void				Destroy() noexcept
+		{
+			m_isDestroyed = true;
+
+			for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
+				(*it)->Destroy();
+			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+				(*it)->Destroy();
+		}
+
+		/**
+		 * Returns if the object was marked for destruction
+		 */
+		bool				IsDestroyed() const noexcept
+		{
+			return m_isDestroyed;
+		}
+
 		/**
 		 * Creates a child with given transform
 		 * @param localPos: Local position of the object

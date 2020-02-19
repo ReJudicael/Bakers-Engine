@@ -12,20 +12,26 @@ namespace Core::Datastructure
 	class Transform
 	{
 	protected:
+		//Local pos
 		Maths::Vec3 m_pos;
 		Maths::Quat m_rot;
 		Maths::Vec3 m_scale;
 
-		bool		m_isTrsUpdated{ false };
+		//Local TRS
 		Maths::Mat4	m_TRS;
 
-		bool		m_isGUpdated{ false };
+		//Global pos
 		Maths::Vec3 m_gpos;
 		Maths::Quat m_grot;
 		Maths::Vec3 m_gscale;
 
-		bool		m_isGTrsUpdated{ false };
+		//Global TRS
 		Maths::Mat4	m_gTRS;
+
+		//Boolean controlling updates of values
+		bool		m_isTrsUpdated{ false };
+		bool		m_isGUpdated{ false };
+		bool		m_isGTrsUpdated{ false };
 	public:
 		/**
 		 * Transform constructor that takes as argument the local component of
