@@ -3,25 +3,38 @@
 #include <unordered_map>
 #include <functional>
 
+
+
 namespace SystemManagement
 {
+    typedef unsigned int ID;
+
     /**
      * Handle callback hierarchy and event system
      * @tparam Args: Params of method sent
-     * @param ID: Listener's ID to identify its callback
-     * @param Event: Function associated to Event
      */
-    using ID = unsigned int;
     template<class... Args>
     class EventSystem final
     {
     private:
         using Event = std::function<void(Args...)>;
 
-        std::unordered_map<ID, Event> m_eventIDs;
-        int m_availableID{ 0 };
+        /**
+         * Each Listener has its Event
+         * @T1 ID: Listener's ID to identify its callback
+         * @T2 Event: Function associated to Event
+         */
+        std::unordered_map<ID, Event> m_listenerEventMap;
+        ID m_availableListenerID{ 0 };
 
     public:
+        /**
+         * Add a listener to the event
+         * @param call: Callback function
+         * @return The ID of created listener
+         */
+        ID operator+=(const Event& call) noexcept;
+
         /**
          * Add a listener to the event
          * @param call: Callback function
@@ -34,7 +47,7 @@ namespace SystemManagement
          * @param id: ID of listener to remove
          * @return Whether the deletion work or not
          */
-        bool RemoveListener(ID id) noexcept;
+        bool RemoveListener(ID listenerID) noexcept;
 
         /**
          * Remove all listeners
@@ -48,43 +61,49 @@ namespace SystemManagement
         void Invoke(Args... args) noexcept;
 
         /**
-         * Get the number of listeners
-         * @return Number of listeners
+         * Get the number of event registered
+         * @return Number of event registered
          */
-        int GetEventCount() const noexcept;
+        size_t GetEventCount() const noexcept;
     };
+
+    template<class... Args>
+    inline ID EventSystem<Args...>::operator+=(const Event& call) noexcept
+    {
+        return AddListener(call);
+    }
 
     template<class... Args>
     inline ID EventSystem<Args...>::AddListener(const Event& call) noexcept
     {
-        // Increment m_availableID after use
-        ID id = m_availableID++;
-        m_eventIDs.emplace(id, call);
-        return id;
+        ID listenerID = m_availableListenerID;
+        m_listenerEventMap.emplace(listenerID, call);
+        m_availableListenerID++;
+        return listenerID;
     }
 
     template<class... Args>
     inline bool EventSystem<Args...>::RemoveListener(ID listenerID) noexcept
     {
-        return m_eventIDs.erase(listenerID) != 0;
+        return m_listenerEventMap.erase(listenerID) != 0;
     }
 
     template<class... Args>
     inline void EventSystem<Args...>::RemoveAllListeners() noexcept
     {
-        m_eventIDs.clear();
+        m_listenerEventMap.clear();
     }
 
     template<class... Args>
     inline void EventSystem<Args...>::Invoke(Args... args) noexcept
     {
-        for (auto [Key, T] : m_eventIDs)
+        for (const auto& [Key, T] : m_listenerEventMap)
             T(args...);
     }
 
     template<class ...Args>
-    inline int EventSystem<Args...>::GetEventCount() const noexcept
+    inline size_t EventSystem<Args...>::GetEventCount() const noexcept
     {
-        return m_eventIDs.size();
+        return m_listenerEventMap.size();
     }
 }
