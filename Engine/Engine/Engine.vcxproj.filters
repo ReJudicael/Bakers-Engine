@@ -31,6 +31,9 @@
     <Filter Include="Fichiers sources\Core">
       <UniqueIdentifier>{a5097437-e8ee-48ca-931b-5ca52251b20b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Core\SystemManagement">
+      <UniqueIdentifier>{96319ca6-3aa4-4023-8985-f1560184870a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -139,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\RootObject.hpp">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\SystemManagement\EventSystem.hpp">
+      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

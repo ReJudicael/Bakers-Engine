@@ -215,6 +215,7 @@
     <ClInclude Include="include\Core\Maths\Vec2.hpp" />
     <ClInclude Include="include\Core\Maths\Vec3.hpp" />
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
+    <ClInclude Include="include\Core\SystemManagement\EventSystem.hpp" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Window.h" />
