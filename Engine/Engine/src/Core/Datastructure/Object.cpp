@@ -7,7 +7,7 @@ namespace Core::Datastructure
 	{
 		if (!m_transform.IsGPosUpdated())
 		{
-			if (m_parent == nullptr)
+			if (m_parent == this || m_parent == nullptr)
 				m_transform.UpdatePos();
 			else
 				m_transform.UpdatePos(m_parent->GetUpdatedTransform());

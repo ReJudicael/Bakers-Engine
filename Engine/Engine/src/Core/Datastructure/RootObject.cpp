@@ -4,7 +4,8 @@ namespace Core::Datastructure
 {
 	RootObject::RootObject() noexcept : Object({}, nullptr, this)
 	{
-
+		m_transform.RequireUpdate();
+		m_transform.UpdatePos();
 	}
 
 	void RootObject::StartFrame() noexcept

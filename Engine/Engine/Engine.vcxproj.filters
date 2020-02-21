@@ -37,21 +37,33 @@
     <Filter Include="Fichiers sources\Core\SystemManagement">
       <UniqueIdentifier>{181c0e82-ee12-49fa-8c7a-c055dc2780e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Core\Renderer">
+      <UniqueIdentifier>{1703a702-ffce-46ab-b877-7f37b08871ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Core\Renderer">
+      <UniqueIdentifier>{09f4609f-bc90-42a9-b9bc-fd2fd44b422a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Resources">
+      <UniqueIdentifier>{8659ac7f-e452-41a4-9415-889fe22ff392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Resources\Loader">
+      <UniqueIdentifier>{a762b0f5-bc7f-4b40-bacb-e8f21ad2bf0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Resources">
+      <UniqueIdentifier>{546aa436-de03-44d7-9c65-83132a275d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Resources\Loader">
+      <UniqueIdentifier>{70e1fdf5-c1da-4588-ac9a-bb3677a024a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Fichiers sources\Core</Filter>
-    </ClCompile>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\Transform.cpp">
@@ -69,6 +81,9 @@
     <ClCompile Include="src\Core\Datastructure\ComponentUpdatable.cpp">
       <Filter>Fichiers sources\Core\Datastructure</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\Loader\LoadResources.cpp">
+      <Filter>Fichiers sources\Resources\Loader</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\Datastructure\IUpdatable.cpp">
       <Filter>Fichiers sources\Core\Datastructure</Filter>
     </ClCompile>
@@ -84,11 +99,17 @@
     <ClCompile Include="src\Core\SystemManagement\TaskSystem.cpp">
       <Filter>Fichiers sources\Core\SystemManagement</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Camera.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Mesh.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window.cpp">
+      <Filter>Fichiers sources\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Core\Maths\Mat.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
       <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
     </ClInclude>
@@ -116,13 +137,7 @@
     <ClInclude Include="include\Core\Maths\Vec4.hpp">
       <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Fichiers d%27en-tête\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\Transform.hpp">
@@ -146,6 +161,12 @@
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\ICamera.h">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Camera.h">
+      <Filter>Fichiers d%27en-tête\Core\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="include\Core\Datastructure\RootObject.hpp">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
@@ -154,6 +175,18 @@
     </ClInclude>
     <ClInclude Include="include\Core\SystemManagement\TaskSystem.hpp">
       <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\Mat.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Loader\LoadResources.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Mesh.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Window.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

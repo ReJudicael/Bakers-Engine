@@ -144,7 +144,7 @@ namespace Core::Datastructure
 		 */
 		void				SetScale(const Maths::Vec3& scale) noexcept
 		{
-			m_transform.SetLocalPos(scale);
+			m_transform.SetLocalScale(scale);
 			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 				(*it)->RequireUpdate();
 		}
@@ -221,7 +221,12 @@ namespace Core::Datastructure
 		const Maths::Mat4& GetGlobalTRS() noexcept
 		{
 			if (!m_transform.IsGPosUpdated())
-				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+			{
+				if (m_parent != nullptr)
+					m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+				else
+					m_transform.UpdatePos();
+			}
 			return m_transform.GetGlobalTrs();
 		}
 
