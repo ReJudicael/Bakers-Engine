@@ -3,12 +3,14 @@
 namespace Core::Datastructure
 {
 	class Object;
+	class RootObject;
 
 	class IComponent
 	{
 	private:
 		bool		m_isDestroyed = false;
 		bool		m_isInit = false;
+		RootObject* m_root{ nullptr };
 	protected:
 		bool		m_isActive = true;
 		Object* m_parent{ nullptr };
@@ -16,6 +18,13 @@ namespace Core::Datastructure
 		void			SetParent(Object* parent)
 		{
 			m_parent = parent;
+		}
+
+		void			SetScene(RootObject* scene);
+
+		RootObject*		GetScene() const noexcept
+		{
+			return m_root;
 		}
 
 		/**

@@ -1,4 +1,5 @@
 #include "Object.hpp"
+#include "RootObject.hpp"
 
 namespace Core::Datastructure
 {
@@ -14,7 +15,7 @@ namespace Core::Datastructure
 		return m_transform;
 	}
 
-	Object::Object(const Transform& localPos, Object* parent) noexcept : m_transform {localPos}, m_parent {parent}
+	Object::Object(const Transform& localPos, Object* parent, RootObject* scene) noexcept : m_root{ scene }, m_transform { localPos }, m_parent{ parent }
 	{
 		if (parent != nullptr)
 			m_transform.UpdatePos(parent->GetUpdatedTransform());
@@ -24,20 +25,14 @@ namespace Core::Datastructure
 
 	Object* Datastructure::Object::CreateChild(const Transform& localPos) noexcept
 	{
-		m_childs.push_back(new Object(localPos, this));
+		m_childs.push_back(new Object(localPos, this, m_root));
 		return m_childs.back();
-	}
-
-	Object* Datastructure::Object::CreateRootNode() noexcept
-	{
-		Transform t;
-		t.UpdatePos();
-		return new Object(t, nullptr);
 	}
 
 	void Object::AddComponent(ComponentBase* c) noexcept
 	{
 		c->SetParent(this);
+		c->SetScene(m_root);
 		m_components.push_back(c);
 	}
 	void Object::RemoveComponent(ComponentBase* c) noexcept

@@ -78,6 +78,18 @@
     <ClCompile Include="src\Mesh.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\IUpdatable.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\RootObject.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\IComponent.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\IRenderable.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -132,6 +144,9 @@
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\RootObject.hpp">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Mat.hpp">

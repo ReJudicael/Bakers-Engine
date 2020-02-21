@@ -9,6 +9,8 @@ namespace Core::Datastructure
 	class IRenderable : public virtual IComponent
 	{
 	public:
+		virtual void	OnStart() override;
+
 		GLuint m_program = 0;
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;
