@@ -132,7 +132,7 @@ namespace Resources::Loader
 				std::string fullPath = "Resources/Dog/";
 				fullPath += path.data;
 				std::cout << "Texture file path " << fullPath << std::endl;
-				return Renderer::CreateTextureFromImage(fullPath.c_str());
+				return Renderer::CreateTextureFromImage(fullPath.c_str(), true);
 				/*std::string FullPath = Dir + "/" + Path.data;
 				m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());*/
 			}

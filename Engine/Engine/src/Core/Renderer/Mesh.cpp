@@ -56,18 +56,21 @@ void Mesh::Initialize()
 	glBindVertexArray(0);
 }
 
+void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
+{
+	m_projection = data.m_array;
+}
+
 void Mesh::OnDraw()
 {
 	glEnable(GL_DEPTH_TEST);
 
-	glUseProgram(m_program);
-
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
-	Core::Maths::Mat4 proj{ projectionMatrix(60.f * 3.14159265359f / 180.f , 1200 / 700, 0.1f, 100.f) };
-
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_TRUE, trs.m_array);
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "uProjection"), 1, GL_FALSE, proj.m_array);
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "uProj"), 1, GL_FALSE, m_projection);
+
+	glUseProgram(m_program);
 
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 	glBindVertexArray(m_VAO);

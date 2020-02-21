@@ -6,6 +6,7 @@
 #include "RootObject.hpp"
 #include "ComponentUpdatable.h"
 #include "Loadresources.h"
+#include "Camera.h"
 
 static const char* gVertexShaderStr = R"GLSL(
 // Attributes
@@ -15,7 +16,7 @@ layout(location = 2) in vec3 aNormal;
 
 // Uniforms
 uniform mat4 uModel;
-uniform mat4 uProjection;
+uniform mat4 uProj;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
 out vec2 vUV;
@@ -24,7 +25,7 @@ out vec3 Normal;
 void main()
 {
 	vUV = aUV;
-    gl_Position = uProjection * uModel * vec4(aPosition, 1.0);
+    gl_Position = uProj * uModel * vec4(aPosition, 1.0);
 })GLSL";
 
 static const char* gFragmentShaderStr = R"GLSL(
@@ -97,8 +98,12 @@ Window::~Window()
 
 void	Window::Update()
 {
-	Renderer r;
 	Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
+	Camera* c = new Camera(1200.f / 700.f, 60, 0.1, 100);
+	root->AddComponent(c);
+	c->UpdateCamera();
+	Renderer r;
+	//Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
 	Core::Datastructure::Object* o{ root->CreateChild({}) };
 	Mesh* m{ new Mesh() };
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
@@ -107,6 +112,7 @@ void	Window::Update()
 	o->SetScale(Core::Maths::Vec3(.1f, .1f, .1f));
 	o->SetPos({ 0, -2.f, -5.f });
 	o->SetRot({ -90, 0.f, 0.f });
+	m->SendProjectionMatrix(c->GetPerspectiveMatrix());
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{

@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Resources/Loader;include/;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Resources/Loader;include/;.;include/Core/Renderer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -185,6 +185,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="src\Core\Renderer\Camera.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Resources\Loader\LoadResources.cpp" />
     <ClCompile Include="src\Core\Datastructure\IComponent.cpp" />
@@ -201,6 +202,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
   <ItemGroup>
     <ClInclude Include="include\Core\Datastructure\ComponentBase.h" />
     <ClInclude Include="include\Core\Datastructure\ComponentUpdatable.h" />
+    <ClInclude Include="include\Core\Datastructure\ICamera.h" />
     <ClInclude Include="include\Core\Datastructure\IComponent.hpp" />
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp" />
     <ClInclude Include="include\Core\Datastructure\IUpdatable.hpp" />
@@ -219,6 +221,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
     <ClInclude Include="include\Mesh.h" />
     <ClInclude Include="include\Resources\Loader\LoadResources.h" />
+    <ClInclude Include="include\Core\Renderer\Camera.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
