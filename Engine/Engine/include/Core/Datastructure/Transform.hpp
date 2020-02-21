@@ -151,7 +151,7 @@ namespace Core::Datastructure
 		}
 		/**
 		 * Set local rotation to given rotation
-		 * @param pos: New local rotation
+		 * @param rot: New local rotation
 		 */
 		void						SetLocalRot(const Maths::Quat& rot) noexcept
 		{
@@ -164,7 +164,7 @@ namespace Core::Datastructure
 
 		/**
 		 * Set local scale to given scale
-		 * @param pos: New local scale
+		 * @param scale: New local scale
 		 */
 		void						SetLocalScale(const Maths::Vec3& scale) noexcept
 		{

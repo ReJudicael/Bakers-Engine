@@ -5,6 +5,10 @@ namespace Core::Datastructure
 	class Object;
 	class RootObject;
 
+	/**
+	 * Default component interface. Gives access to OnStart, OnDestroy and
+	 * the parent and root node of the component
+	 */
 	class IComponent
 	{
 	private:
@@ -15,13 +19,25 @@ namespace Core::Datastructure
 		bool		m_isActive = true;
 		Object* m_parent{ nullptr };
 	public:
+		/**
+		 * Sets the parent of the component
+		 * @param parent: New parent of the component
+		 */
 		void			SetParent(Object* parent)
 		{
 			m_parent = parent;
 		}
 
+		/**
+		 * Sets the root object of the component
+		 * @param scene: Root object of the component
+		 */
 		void			SetScene(RootObject* scene);
 
+		/**
+		 * Returns root object of the parent
+		 * @return Root object
+		 */
 		RootObject*		GetScene() const noexcept
 		{
 			return m_root;
@@ -58,12 +74,12 @@ namespace Core::Datastructure
 		 * Called on start of the component, on the first frame it
 		 * is active
 		 */
-		virtual void	OnStart() = 0;
+		virtual void	OnStart() {};
 		/**
 		 * Called when destruction is asked. Destructor will be called
 		 * at the end of the frame
 		 */
-		virtual void	OnDestroy() = 0;
+		virtual void	OnDestroy() {};
 	};
 
 

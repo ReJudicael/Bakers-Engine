@@ -6,6 +6,10 @@ namespace Core::Datastructure
 {
 	class Object;
 
+	/**
+	 * Default implementation of a base component. Every component should inherit it.
+	 * Does absolutly nothing
+	 */
 	class ComponentBase : public virtual IComponent
 	{
 	public:
