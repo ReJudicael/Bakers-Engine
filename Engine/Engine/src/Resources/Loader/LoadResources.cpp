@@ -9,6 +9,7 @@
 #include "Assimp/scene.h"
 #include "Assimp/postprocess.h"
 #include "Assimp/material.h"
+#include "Renderer.h"
 
 
 namespace Resources::Loader
@@ -24,6 +25,8 @@ namespace Resources::Loader
 			std::cout << "could not load file" << std::endl;
 			return;
 		}
+
+		file.find_last_of("/");
 
 		if (file.find(".obj"))
 		{
@@ -48,6 +51,8 @@ namespace Resources::Loader
 		std::vector<unsigned int> indices;
 		std::vector<unsigned int> textures;
 		vertex v;
+
+		std::cout << scene->mNumMeshes << std::endl;
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
 			aiMesh* mesh = scene->mMeshes[0];
@@ -80,8 +85,8 @@ namespace Resources::Loader
 				}
 			}
 
-			LoadMaterialResourcesIRenderable(scene, mesh);
-		std::cout << mesh->mNumVertices << std::endl;
+			renderObject->m_texture = LoadMaterialResourcesIRenderable(scene, mesh);
+			std::cout << mesh->mNumVertices << std::endl;
 
 		}
 
@@ -103,30 +108,31 @@ namespace Resources::Loader
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
 		renderObject->m_VAO = VAO;
-		renderObject->m_vertexBuffer = VBO;
-		renderObject->m_indicesBuffer = EBO;
+
 		renderObject->m_vertexCount = indices.size();
 		std::cout << indices.size() << std::endl;
 		glBindVertexArray(0);
 		aiReleaseImport(scene);
 	}
 
-	std::vector<unsigned int> LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh)
+	unsigned int LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh)
 	{
 		if (!scene->HasMaterials())
 		{
 			return {};
 		}
-		std::cout << scene->mNumMaterials << std::endl;
-		aiMaterial* mat = scene->mMaterials[0];
+		std::vector<unsigned int> vec;
+		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 
-		if (mat->GetTextureCount(aiTextureType_AMBIENT) > 0)
+		if (mat->GetTextureCount(aiTextureType_DIFFUSE) > 0)
 		{
 			aiString path;
-			std::cout << "I have one diffuse" << std::endl;
 			if (mat->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS)
 			{
-				std::cout << path.data << "texutre" << std::endl;
+				std::string fullPath = "Resources/Dog/";
+				fullPath += path.data;
+				std::cout << "Texture file path " << fullPath << std::endl;
+				return Renderer::CreateTextureFromImage(fullPath.c_str());
 				/*std::string FullPath = Dir + "/" + Path.data;
 				m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());*/
 			}

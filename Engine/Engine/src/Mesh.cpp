@@ -13,7 +13,7 @@ Mesh::Mesh() : ComponentBase()
 Mesh::~Mesh()
 {
 	glDeleteTextures(1, &m_texture);
-	glDeleteBuffers(1, &m_vertexBuffer);
+	//glDeleteBuffers(1, &m_vertexBuffer);
 	glDeleteVertexArrays(1, &m_VAO);
 	glDeleteProgram(m_program);
 }
@@ -41,13 +41,13 @@ void Mesh::Initialize()
 	glGenVertexArrays(1, &m_VAO);
 	glBindVertexArray(m_VAO);
 
-	glGenBuffers(1, &m_vertexBuffer);
+	/*glGenBuffers(1, &m_vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), &m_vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), &m_vertices[0], GL_STATIC_DRAW);*/
 
-	glGenBuffers(1, &m_indicesBuffer);
+	/*glGenBuffers(1, &m_indicesBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indicesBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), &m_indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), &m_indices[0], GL_STATIC_DRAW);*/
 
 	//glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(0);
@@ -58,11 +58,16 @@ void Mesh::Initialize()
 
 void Mesh::OnDraw()
 {
+	glEnable(GL_DEPTH_TEST);
+
 	glUseProgram(m_program);
 
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
-	trs.mat.Print();
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_FALSE, trs.m_array);
+
+	Core::Maths::Mat4 proj{ projectionMatrix(60.f * 3.14159265359f / 180.f , 1200 / 700, 0.1f, 100.f) };
+
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_TRUE, trs.m_array);
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "uProjection"), 1, GL_FALSE, proj.m_array);
 
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 	glBindVertexArray(m_VAO);
@@ -72,7 +77,7 @@ void Mesh::OnDraw()
 	glBindVertexArray(0);
 }
 
-void Mesh::DrawMesh()
+/*void Mesh::DrawMesh()
 {
 	glUseProgram(m_program);
 	
@@ -83,7 +88,7 @@ void Mesh::DrawMesh()
 		std::cout << trs.m_array[i] << " ; ";
 	std::cout << std::endl;*/
 
-	trs.mat.Print();
+	/*trs.mat.Print();
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_FALSE, trs.m_array);
 
 	glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -92,9 +97,9 @@ void Mesh::DrawMesh()
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
-}
+}*/
 
-Mesh* Mesh::CreateCube(const float offset, const float scale)
+/*Mesh* Mesh::CreateCube(const float offset, const float scale)
 {
 	Mesh* result = new Mesh();
 	result->AddVertex(offset - scale, offset - scale, offset - scale - 1);
@@ -123,4 +128,18 @@ Mesh* Mesh::CreateCube(const float offset, const float scale)
 
 	result->Initialize();
 	return result;
+}*/
+
+Core::Maths::Mat4 Mesh::projectionMatrix(float FovY, float Aspect, float Near, float Far)
+{
+	float Top = Near * tanf(FovY / 2.f);
+	float Right = Top * Aspect;
+
+	float f[16] {
+		(Near * 2.f) / (Right - (-Right)), 0.f, 0.f, 0.f,
+		0.f, (Near * 2.f) / (Top - (-Top)), 0.f, 0.f,
+		(Right + (-Right)) / (Right - (-Right)), (Top + (-Top)) / (Top - (-Top)), -(Far + Near) / (Far - Near), -1.f,
+		0.f, 0.f, -(Far * Near * 2.f) / (Far - Near), 0.f
+		};
+	return Core::Maths::Mat4(f);
 }

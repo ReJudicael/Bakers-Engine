@@ -15,19 +15,22 @@ layout(location = 2) in vec3 aNormal;
 
 // Uniforms
 uniform mat4 uModel;
+uniform mat4 uProjection;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
 out vec2 vUV;
+out vec3 Normal;
 
 void main()
 {
-    vUV = aUV;
-    gl_Position = uModel * vec4(aPosition, 1.0f);
+	vUV = aUV;
+    gl_Position = uProjection * uModel * vec4(aPosition, 1.0);
 })GLSL";
 
 static const char* gFragmentShaderStr = R"GLSL(
 // Varyings
 in vec2 vUV;
+
 
 // Uniforms
 uniform sampler2D uColorTexture;
@@ -37,8 +40,8 @@ out vec4 oColor;
 
 void main()
 {
-    //oColor = texture(uColorTexture, vUV);
-	oColor = vec4(vUV,0.0f,0.0f);
+    oColor = texture(uColorTexture, vUV);
+	//oColor = vec4(vUV,0.0f,0.0f);
 })GLSL";
 
 Window::Window()
@@ -47,7 +50,11 @@ Window::Window()
 		return;
 
 	glfwDefaultWindowHints();
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+	//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	m_window = glfwCreateWindow(1280, 720, "Default window", NULL, NULL);
 	glfwMakeContextCurrent(m_window);
@@ -66,6 +73,10 @@ Window::Window(const int height, const int width)
 		return;
 	glfwDefaultWindowHints();
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	m_window = glfwCreateWindow(1280, 720, "Default window", NULL, NULL);
 	glfwMakeContextCurrent(m_window);
@@ -93,20 +104,20 @@ void	Window::Update()
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 	Resources::Loader::LoadResourcesIRenderable(m, "Resources/Dog/12228_Dog_v1_L2.obj");
 	o->AddComponent(m);
-	o->SetScale(Core::Maths::Vec3(.5f, .5f, .5f));
-	o->SetPos({ 0, 0.f, 15.f });
-	//o->SetRot({ 0, 90.f, 0.f });
+	o->SetScale(Core::Maths::Vec3(.1f, .1f, .1f));
+	o->SetPos({ 0, -2.f, -5.f });
+	o->SetRot({ -90, 0.f, 0.f });
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
 		//o->Translate({ 0, 0, 0.1f });
-		o->Rotate({ 0, 0.1f, 0 });
+		//o->Rotate({ 0, 0.1f, 0 });
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 		root->StartFrame();
 		root->Update(0.2f);
 		glClearColor(0, 0, 0, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		root->Render();
 	}
 	root->Destroy();
