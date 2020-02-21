@@ -2,12 +2,12 @@
 
 #include <GLFW/glfw3.h>
 
-#include "EventSystem.hpp"
+#include "InputSystem.hpp"
 
 class Window
 {
 private:
-	GLFWwindow* m_window = nullptr;
+	GLFWwindow* m_window{ nullptr };
 
 public:
 	Core::SystemManagement::EventSystem<EKey> OnPressKey;
@@ -19,5 +19,8 @@ public:
 	Window(const int height, const int width);
 	~Window();
 
+	void	Init(const int height, const int width);
+
 	void	Update();
+	void	SetKeyCallbackToGLFW();
 };

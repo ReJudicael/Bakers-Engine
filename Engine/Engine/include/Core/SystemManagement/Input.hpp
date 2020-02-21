@@ -5,8 +5,9 @@
 
 enum class EStateInput : bool
 {
+	ERROR = -1,
 	UP = 0,
-	DOWN,
+	DOWN = 1,
 };
 
 enum class EMouseButton : int
@@ -147,7 +148,7 @@ enum class EKey : int
 	RIGHT_CONTROL = GLFW_KEY_RIGHT_CONTROL,  //
 	RIGHT_ALT = GLFW_KEY_RIGHT_ALT,          //
 	RIGHT_SUPER = GLFW_KEY_RIGHT_SUPER,      //
-	MENU = GLFW_KEY_MENU
+	MENU = GLFW_KEY_MENU                     //
 };
 
 inline std::string ToString(const EMouseButton b) noexcept
