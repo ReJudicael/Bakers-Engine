@@ -37,7 +37,7 @@ namespace Core
 		public:
 			/**
 			 * Call each stored functions attached to its event
-			 * @params args: Arguments for the call (Variadic arguments)
+			 * @param args: Arguments for the call (Variadic arguments)
 			 */
 			void operator()(Args... args) noexcept;
 
@@ -76,7 +76,7 @@ namespace Core
 
 			/**
 			 * Call each stored functions attached to its event
-			 * @params args: Arguments for the call (Variadic arguments)
+			 * @param args: Arguments for the call (Variadic arguments)
 			 */
 			void Invoke(Args... args) noexcept;
 
