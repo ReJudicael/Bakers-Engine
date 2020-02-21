@@ -91,6 +91,7 @@ GLuint	Renderer::CreateProgram(const char* vertex, const char* fragment)
 	glDeleteShader(VertexShader);
 	glDeleteShader(FragmentShader);
 
+	std::cout << "program load" << std::endl;
 	return Program;
 }
 

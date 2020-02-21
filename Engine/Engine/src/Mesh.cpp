@@ -61,8 +61,6 @@ void Mesh::OnDraw()
 	glUseProgram(m_program);
 
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
-	//trs.mat.Print();
-	std::cout << m_VAO << std::endl;
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_FALSE, trs.m_array);
 
 	glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -70,7 +68,7 @@ void Mesh::OnDraw()
 
 	glDrawElements(GL_TRIANGLES, m_vertexCount, GL_UNSIGNED_INT, 0);
 
-	//glBindVertexArray(0);
+	glBindVertexArray(0);
 }
 
 void Mesh::DrawMesh()

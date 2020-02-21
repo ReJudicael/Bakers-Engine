@@ -10,6 +10,7 @@ static const char* gVertexShaderStr = R"GLSL(
 // Attributes
 layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec2 aUV;
+layout(location = 2) in vec3 aNormal;
 
 // Uniforms
 uniform mat4 uModel;
@@ -89,9 +90,9 @@ void	Window::Update()
 	Mesh* m{ new Mesh() };
 	m->Start();
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
-	Resources::Loader::loadResourcesIRenderable(m, "Resources/fantasy_game_inn.obj");
+	Resources::Loader::LoadResourcesIRenderable(m, "Resources/Dog/12228_Dog_v1_L2.obj");
 	o->AddComponent(m);
-	std::cout << m->m_VAO << std::endl;
+	o->SetScale(Core::Maths::Vec3(10.f, 10.f, 10.f));
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{

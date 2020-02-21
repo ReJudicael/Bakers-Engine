@@ -14,7 +14,7 @@
 namespace Resources::Loader
 {
 	
-	void loadResourcesIRenderable(Mesh* renderObject, const char* fileName)
+	void LoadResourcesIRenderable(Mesh* renderObject, const char* fileName)
 	{
 		std::string file = fileName;
 		const aiScene* scene = aiImportFile(fileName, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
@@ -27,7 +27,7 @@ namespace Resources::Loader
 
 		if (file.find(".obj"))
 		{
-			loadSingleMeshResourcesIRenderable(renderObject, scene);
+			LoadSingleMeshResourcesIRenderable(renderObject, scene);
 		}
 		else
 			std::cout << "c pas " << std::endl;
@@ -35,10 +35,18 @@ namespace Resources::Loader
 
 	}
 
-	void loadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene)
+	struct vertex
+	{
+		Core::Maths::Vec3 Position;
+		Core::Maths::Vec2 UV;
+		Core::Maths::Vec3 Normal;
+	};
+
+	void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene)
 	{
 		std::vector<vertex> vertices;
 		std::vector<unsigned int> indices;
+		std::vector<unsigned int> textures;
 		vertex v;
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
@@ -67,9 +75,13 @@ namespace Resources::Loader
 				aiFace& face = mesh->mFaces[fid];
 				for (int iid = 0; iid < 3; iid++)
 				{
+					// get the indices of the face who is cut in triangle
 					indices.push_back(face.mIndices[iid]);
 				}
 			}
+
+			LoadMaterialResourcesIRenderable(scene, mesh);
+
 		}
 
 		GLuint VAO, VBO, EBO;
@@ -80,22 +92,46 @@ namespace Resources::Loader
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(0);
-		//glEnableVertexAttribArray(1);
-		//glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, Position));
-		std::cout << vertices.size() << std::endl;
-		//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)OFFSETOF(vertex, UV));
-		//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)OFFSETOF(vertex, Normal));
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, UV));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, Normal));
 
 		glGenBuffers(1, &EBO);
-		glBindBuffer(GL_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
 		renderObject->m_VAO = VAO;
 		renderObject->m_indicesBuffer = EBO;
 		renderObject->m_vertexBuffer = VBO;
 		renderObject->m_vertexCount = indices.size();
+		std::cout << indices.size() << std::endl;
 
 		aiReleaseImport(scene);
+	}
+
+	std::vector<unsigned int> LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh)
+	{
+		if (!scene->HasMaterials())
+		{
+			return {};
+		}
+		std::cout << scene->mNumMaterials << std::endl;
+		aiMaterial* mat = scene->mMaterials[0];
+
+		if (mat->GetTextureCount(aiTextureType_AMBIENT) > 0)
+		{
+			aiString path;
+			std::cout << "I have one diffuse" << std::endl;
+			if (mat->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS)
+			{
+				std::cout << path.data << "texutre" << std::endl;
+				/*std::string FullPath = Dir + "/" + Path.data;
+				m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());*/
+			}
+		}
+
+		return {};
 	}
 }
