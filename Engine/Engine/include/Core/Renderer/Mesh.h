@@ -7,11 +7,16 @@
 #include "Transform.hpp"
 #include "ComponentBase.h"
 #include "IRenderable.hpp"
+#include "Material.h"
 
 
 class Mesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
 {
+protected:
+	std::vector<Resources::Material> m_material;
+
 public:
+
 	int		m_vertexCount = 0;
 
 	std::vector<float> m_vertices;
@@ -37,6 +42,15 @@ public:
 
 	Core::Maths::Mat4 projectionMatrix(float FovY, float Aspect, float Near, float Far);
 
+	inline void SetMaterial(const int index, const Resources::Material& material) 
+	{ 
+		m_material[index] = material; 
+	}
+
+	inline void AddMaterial(const Resources::Material& material)
+	{
+		m_material.push_back(material);
+	}
 
 };
 

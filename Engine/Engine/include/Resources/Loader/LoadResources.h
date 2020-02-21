@@ -15,5 +15,5 @@ namespace Resources::Loader
 
 	void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene, std::string directory);
 
-	unsigned int LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::string directory);
+	Material LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::string directory);
 }

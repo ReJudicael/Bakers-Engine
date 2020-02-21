@@ -72,7 +72,7 @@ void Mesh::OnDraw()
 
 	glUseProgram(m_program);
 
-	glBindTexture(GL_TEXTURE_2D, m_texture);
+	glBindTexture(GL_TEXTURE_2D, m_material[0].textures[0]);
 	glBindVertexArray(m_VAO);
 
 	glDrawElements(GL_TRIANGLES, m_vertexCount, GL_UNSIGNED_INT, 0);

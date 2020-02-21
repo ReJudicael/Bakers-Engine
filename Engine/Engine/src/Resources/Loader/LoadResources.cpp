@@ -27,11 +27,14 @@ namespace Resources::Loader
 			return;
 		}
 
-		file.find_last_of("/");
+		auto index = file.find_last_of("/");
+
+		std::string str;
+		str = file.substr(0, index + 1);
 
 		if (file.find(".obj"))
 		{
-			LoadSingleMeshResourcesIRenderable(renderObject, scene, file);
+			LoadSingleMeshResourcesIRenderable(renderObject, scene, str);
 		}
 		else
 			std::cout << "c pas " << std::endl;
@@ -86,7 +89,7 @@ namespace Resources::Loader
 				}
 			}
 
-			renderObject->m_texture = LoadMaterialResourcesIRenderable(scene, mesh, directory);
+			renderObject->AddMaterial(LoadMaterialResourcesIRenderable(scene, mesh, directory));
 			std::cout << mesh->mNumVertices << std::endl;
 
 		}
@@ -116,7 +119,7 @@ namespace Resources::Loader
 		aiReleaseImport(scene);
 	}
 
-	unsigned int LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::string directory)
+	Material LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::string directory)
 	{
 		if (!scene->HasMaterials())
 		{
@@ -124,22 +127,27 @@ namespace Resources::Loader
 		}
 		std::vector<unsigned int> vec;
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+		Material material;
 
 		if (mat->GetTextureCount(aiTextureType_DIFFUSE) > 0)
 		{
 			aiString path;
 			if (mat->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS)
 			{
-				std::string fullPath = "Resources/Dog/";
-				fullPath += path.data;
+				std::string fullPath = directory + path.data;
 				std::cout << "Texture file path " << fullPath << std::endl;
-				return Renderer::CreateTextureFromImage(fullPath.c_str(), true);
-
-				/*std::string FullPath = Dir + "/" + Path.data;
-				m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());*/
+				material.textures.push_back(Renderer::CreateTextureFromImage(fullPath.c_str(), true));
 			}
 		}
+		aiColor3D color;
+		mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+		material.diffuseColor = { color.r, color.g, color.b };
+		mat->Get(AI_MATKEY_COLOR_AMBIENT, color);
+		material.ambientColor = { color.r, color.g, color.b };
+		mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
+		material.specularColor = { color.r, color.g, color.b };
+		material.materialColor = { 1.0f, 1.0f, 1.0f };
 
-		return {};
+		return material;
 	}
 }
