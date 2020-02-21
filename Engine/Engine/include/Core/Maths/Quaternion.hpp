@@ -446,6 +446,10 @@ namespace Core::Maths
 			return mat;
 		}
 
+		/**
+		 * Returns string version of the quaternion
+		 * @return String version of the quaternion
+		 */
 		inline std::string			ToString() const noexcept
 		{
 			std::string result{ "w: " };
@@ -458,7 +462,9 @@ namespace Core::Maths
 			result += std::to_string(z);
 			return result;
 		}
-
+		/**
+		 * Prints the quaternion
+		 */
 		inline void					Print() const noexcept
 		{
 			std::cout << ToString() << std::endl;
@@ -503,6 +509,9 @@ namespace Core::Maths
 		return q;
 	}
 
+	/**
+	 * Typedef of Quaternion to reduce number of characters
+	 */
 	using Quat = Quaternion;
 }
 

@@ -44,6 +44,7 @@ namespace Core::Datastructure
 		 * and its parent. Will update the transform if the parent is not null
 		 * @param localPos: Local position of the transform
 		 * @param parent: Parent of the object
+		 * @param Scene: Root node of the object
 		 */
 		Object(const Transform& localPos, Object* parent, RootObject* scene) noexcept;
 	public:
@@ -129,7 +130,7 @@ namespace Core::Datastructure
 		}
 		/**
 		 * Set local rotation of object to given value
-		 * @param pos: New local rotation
+		 * @param rot: New local rotation
 		 */
 		void				SetRot(const Maths::Quat& rot) noexcept
 		{
@@ -139,7 +140,7 @@ namespace Core::Datastructure
 		}
 		/**
 		 * Set local scale of object to given value
-		 * @param pos: New local scale
+		 * @param scale: New local scale
 		 */
 		void				SetScale(const Maths::Vec3& scale) noexcept
 		{
