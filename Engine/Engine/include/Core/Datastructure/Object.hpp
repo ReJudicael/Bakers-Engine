@@ -143,7 +143,7 @@ namespace Core::Datastructure
 		 */
 		void				SetScale(const Maths::Vec3& scale) noexcept
 		{
-			m_transform.SetLocalPos(scale);
+			m_transform.SetLocalScale(scale);
 			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 				(*it)->RequireUpdate();
 		}

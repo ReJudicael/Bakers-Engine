@@ -22,7 +22,7 @@ namespace Core::Datastructure
 		m_isGUpdated = true;
 	}
 
-	inline const Maths::Vec3& Transform::Translate(const Maths::Vec3& v) noexcept
+	const Maths::Vec3& Transform::Translate(const Maths::Vec3& v) noexcept
 	{
 		m_isTrsUpdated = false;
 		m_isGTrsUpdated = false;

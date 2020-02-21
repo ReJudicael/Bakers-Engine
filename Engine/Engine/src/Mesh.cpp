@@ -5,7 +5,7 @@
 #include "Mat4.hpp"
 #include "Object.hpp"
 
-Mesh::Mesh()
+Mesh::Mesh() : ComponentBase()
 {
 
 }
@@ -61,6 +61,7 @@ void Mesh::OnDraw()
 	glUseProgram(m_program);
 
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
+	trs.mat.Print();
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_FALSE, trs.m_array);
 
 	glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -81,6 +82,8 @@ void Mesh::DrawMesh()
 	/*for (int i = 0; i < 16; ++i)
 		std::cout << trs.m_array[i] << " ; ";
 	std::cout << std::endl;*/
+
+	trs.mat.Print();
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_FALSE, trs.m_array);
 
 	glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -116,5 +119,8 @@ Mesh* Mesh::CreateCube(const float offset, const float scale)
 	result->AddTriangle(1, 5, 7);
 	result->AddTriangle(1, 7, 3);
 
+	result->m_vertexCount = 36;
+
+	result->Initialize();
 	return result;
 }

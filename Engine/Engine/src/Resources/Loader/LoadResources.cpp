@@ -81,6 +81,7 @@ namespace Resources::Loader
 			}
 
 			LoadMaterialResourcesIRenderable(scene, mesh);
+		std::cout << mesh->mNumVertices << std::endl;
 
 		}
 
@@ -97,17 +98,16 @@ namespace Resources::Loader
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, Position));
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, UV));
 		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, Normal));
-
 		glGenBuffers(1, &EBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
 		renderObject->m_VAO = VAO;
-		renderObject->m_indicesBuffer = EBO;
 		renderObject->m_vertexBuffer = VBO;
+		renderObject->m_indicesBuffer = EBO;
 		renderObject->m_vertexCount = indices.size();
 		std::cout << indices.size() << std::endl;
-
+		glBindVertexArray(0);
 		aiReleaseImport(scene);
 	}
 

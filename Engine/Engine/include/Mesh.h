@@ -27,7 +27,7 @@ public:
 	Mesh();
 	~Mesh();
 
-	virtual void OnStart() override {};
+	//virtual void OnStart() override {};
 	virtual void OnDestroy() override {};
 
 	void Initialize();

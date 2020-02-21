@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Resources/Loader;include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Resources/Loader;include/;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>

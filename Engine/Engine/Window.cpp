@@ -22,7 +22,7 @@ out vec2 vUV;
 void main()
 {
     vUV = aUV;
-    gl_Position = uModel * vec4(aPosition, 1.0);
+    gl_Position = uModel * vec4(aPosition, 1.0f);
 })GLSL";
 
 static const char* gFragmentShaderStr = R"GLSL(
@@ -38,7 +38,7 @@ out vec4 oColor;
 void main()
 {
     //oColor = texture(uColorTexture, vUV);
-	oColor = vec4(1.0f,0.0f,0.0f,0.0f);
+	oColor = vec4(vUV,0.0f,0.0f);
 })GLSL";
 
 Window::Window()
@@ -87,24 +87,28 @@ Window::~Window()
 void	Window::Update()
 {
 	Renderer r;
-	Core::Datastructure::RootObject* o{ Core::Datastructure::RootObject::CreateRootNode() };
+	Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
+	Core::Datastructure::Object* o{ root->CreateChild({}) };
 	Mesh* m{ new Mesh() };
-	m->Start();
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 	Resources::Loader::LoadResourcesIRenderable(m, "Resources/Dog/12228_Dog_v1_L2.obj");
 	o->AddComponent(m);
-	o->SetScale(Core::Maths::Vec3(10.f, 10.f, 10.f));
+	o->SetScale(Core::Maths::Vec3(.5f, .5f, .5f));
+	o->SetPos({ 0, 0.f, 15.f });
+	//o->SetRot({ 0, 90.f, 0.f });
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
+		//o->Translate({ 0, 0, 0.1f });
+		o->Rotate({ 0, 0.1f, 0 });
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
-		o->StartFrame();
-		o->Update(0.2f);
+		root->StartFrame();
+		root->Update(0.2f);
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
-		o->Render();
+		root->Render();
 	}
-	o->Destroy();
-	o->RemoveDestroyed();
+	root->Destroy();
+	root->RemoveDestroyed();
 }
