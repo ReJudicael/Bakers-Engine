@@ -54,9 +54,6 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Fichiers sources\Core</Filter>
-    </ClCompile>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -81,9 +78,6 @@
     <ClCompile Include="src\Resources\Loader\LoadResources.cpp">
       <Filter>Fichiers sources\Resources\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mesh.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Datastructure\IUpdatable.cpp">
       <Filter>Fichiers sources\Core\Datastructure</Filter>
     </ClCompile>
@@ -98,6 +92,12 @@
     </ClCompile>
     <ClCompile Include="src\Core\Renderer\Camera.cpp">
       <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Mesh.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window.cpp">
+      <Filter>Fichiers sources\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -127,9 +127,6 @@
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Vec4.hpp">
       <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Fichiers d%27en-tête\Core</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Fichiers d%27en-tête</Filter>
@@ -167,11 +164,14 @@
     <ClInclude Include="include\Core\Maths\Mat.hpp">
       <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="include\Mesh.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Resources\Loader\LoadResources.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Mesh.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Window.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

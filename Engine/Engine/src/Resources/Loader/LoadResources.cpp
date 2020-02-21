@@ -10,6 +10,7 @@
 #include "Assimp/postprocess.h"
 #include "Assimp/material.h"
 #include "Renderer.h"
+#include "Assimp/texture.h"
 
 
 namespace Resources::Loader
@@ -30,7 +31,7 @@ namespace Resources::Loader
 
 		if (file.find(".obj"))
 		{
-			LoadSingleMeshResourcesIRenderable(renderObject, scene);
+			LoadSingleMeshResourcesIRenderable(renderObject, scene, file);
 		}
 		else
 			std::cout << "c pas " << std::endl;
@@ -45,7 +46,7 @@ namespace Resources::Loader
 		Core::Maths::Vec3 Normal;
 	};
 
-	void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene)
+	void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene, std::string directory)
 	{
 		std::vector<vertex> vertices;
 		std::vector<unsigned int> indices;
@@ -85,7 +86,7 @@ namespace Resources::Loader
 				}
 			}
 
-			renderObject->m_texture = LoadMaterialResourcesIRenderable(scene, mesh);
+			renderObject->m_texture = LoadMaterialResourcesIRenderable(scene, mesh, directory);
 			std::cout << mesh->mNumVertices << std::endl;
 
 		}
@@ -115,7 +116,7 @@ namespace Resources::Loader
 		aiReleaseImport(scene);
 	}
 
-	unsigned int LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh)
+	unsigned int LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::string directory)
 	{
 		if (!scene->HasMaterials())
 		{
@@ -133,6 +134,7 @@ namespace Resources::Loader
 				fullPath += path.data;
 				std::cout << "Texture file path " << fullPath << std::endl;
 				return Renderer::CreateTextureFromImage(fullPath.c_str(), true);
+
 				/*std::string FullPath = Dir + "/" + Path.data;
 				m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());*/
 			}
