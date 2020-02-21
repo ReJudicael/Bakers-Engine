@@ -84,6 +84,9 @@
     <ClCompile Include="src\Core\SystemManagement\TaskSystem.cpp">
       <Filter>Fichiers sources\Core\SystemManagement</Filter>
     </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Fichiers sources\Core\SystemManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat.hpp">
@@ -153,6 +156,12 @@
       <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\SystemManagement\TaskSystem.hpp">
+      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\SystemManagement\InputSystem.hpp">
+      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\SystemManagement\Input.hpp">
       <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
     </ClInclude>
   </ItemGroup>
