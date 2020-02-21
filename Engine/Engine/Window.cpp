@@ -52,7 +52,7 @@ void	Window::Update()
 {
 	Renderer r;
 	Core::Datastructure::Object* o{ Core::Datastructure::Object::CreateRootNode() };
-	Mesh* m{ r.CreatePlane() };
+	Mesh* m{ r.CreateCube() };
 	o->AddComponent(m);
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))

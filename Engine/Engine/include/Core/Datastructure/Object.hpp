@@ -239,7 +239,12 @@ namespace Core::Datastructure
 		const Maths::Mat4& GetGlobalTRS() noexcept
 		{
 			if (!m_transform.IsGPosUpdated())
-				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+			{
+				if (m_parent != nullptr)
+					m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+				else
+					m_transform.UpdatePos();
+			}
 			return m_transform.GetGlobalTrs();
 		}
 
