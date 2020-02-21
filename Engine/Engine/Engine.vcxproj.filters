@@ -34,6 +34,9 @@
     <Filter Include="Fichiers d%27en-tête\Core\SystemManagement">
       <UniqueIdentifier>{96319ca6-3aa4-4023-8985-f1560184870a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\Core\SystemManagement">
+      <UniqueIdentifier>{181c0e82-ee12-49fa-8c7a-c055dc2780e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -77,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\IRenderable.cpp">
       <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\SystemManagement\TaskSystem.cpp">
+      <Filter>Fichiers sources\Core\SystemManagement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +150,9 @@
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\SystemManagement\EventSystem.hpp">
+      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\SystemManagement\TaskSystem.hpp">
       <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
     </ClInclude>
   </ItemGroup>

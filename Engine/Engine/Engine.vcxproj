@@ -189,6 +189,7 @@
     <ClCompile Include="src\Core\Datastructure\IRenderable.cpp" />
     <ClCompile Include="src\Core\Datastructure\IUpdatable.cpp" />
     <ClCompile Include="src\Core\Datastructure\RootObject.cpp" />
+    <ClCompile Include="src\Core\SystemManagement\TaskSystem.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="src\Core\Datastructure\ComponentBase.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="include\Core\Maths\Vec3.hpp" />
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
     <ClInclude Include="include\Core\SystemManagement\EventSystem.hpp" />
+    <ClInclude Include="include\Core\SystemManagement\TaskSystem.hpp" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Window.h" />
