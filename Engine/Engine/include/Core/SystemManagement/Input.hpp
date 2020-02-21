@@ -3,13 +3,13 @@
 #include <GLFW/glfw3.h>
 #include <string>
 
-enum class EStateInput : unsigned char
+enum class EStateInput : bool
 {
 	UP = 0,
-	DOWN = 1,
+	DOWN,
 };
 
-enum class EMouseButton : unsigned char
+enum class EMouseButton : int
 {
 	B1 = GLFW_MOUSE_BUTTON_1,                //
 	B2 = GLFW_MOUSE_BUTTON_2,                //

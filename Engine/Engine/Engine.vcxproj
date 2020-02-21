@@ -183,6 +183,7 @@
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="src\Core\Datastructure\IComponent.cpp" />
