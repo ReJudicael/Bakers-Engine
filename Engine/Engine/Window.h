@@ -22,5 +22,5 @@ public:
 	void	Init(const int height, const int width);
 
 	void	Update();
-	void	SetKeyCallbackToGLFW();
+	void	SetInputCallbackToGLFW();
 };

@@ -40,7 +40,7 @@ void Window::Init(const int height, const int width)
 	}
 
 	glfwSetWindowUserPointer(m_window, this);
-	SetKeyCallbackToGLFW();
+	SetInputCallbackToGLFW();
 }
 
 void	Window::Update()
@@ -63,18 +63,17 @@ void	Window::Update()
 		o->Render();
 
 		if (is.IsKeyDown(EKey::S))
-		{
 			std::cout << "Pressed" << std::endl;
-		}
 		else if (is.IsKeyUp(EKey::S))
 			std::cout << "Released" << std::endl;
+
 		is.ClearRegisteredInputs();
 	}
 	o->Destroy();
 	o->RemoveDestroyed();
 }
 
-void Window::SetKeyCallbackToGLFW()
+void Window::SetInputCallbackToGLFW()
 {
 	GLFWkeyfun key_callback = [](GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
@@ -89,6 +88,20 @@ void Window::SetKeyCallbackToGLFW()
 			// std::cout << ToString((EKey)(key)) << std::endl;
 		}
 	};
-
 	glfwSetKeyCallback(m_window, key_callback);
+
+	GLFWmousebuttonfun mouse_button_callback = [](GLFWwindow* window, int button, int action, int mods)
+	{
+		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (this_window)
+		{
+			if (action == GLFW_PRESS)
+				this_window->OnPressMouseButton(static_cast<EMouseButton>(button));
+			else if (action == GLFW_RELEASE)
+				this_window->OnReleaseMouseButton(static_cast<EMouseButton>(button));
+
+			// std::cout << ToString((EMouseButton)(button)) << std::endl;
+		}
+	};
+	glfwSetMouseButtonCallback(m_window, mouse_button_callback);
 }
