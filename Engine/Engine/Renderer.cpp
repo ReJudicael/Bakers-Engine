@@ -14,6 +14,8 @@ layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec2 aUV;
 
 // Uniforms
+uniform mat4 uView;
+uniform mat4 uProj;
 uniform mat4 uModel;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
@@ -22,7 +24,7 @@ out vec2 vUV;
 void main()
 {
     vUV = aUV;
-    gl_Position = uModel * vec4(aPosition, 1.0);
+    gl_Position = uProj * uModel * vec4(aPosition, 1.0);
 })GLSL";
 
 static const char* gFragmentShaderStr = R"GLSL(
@@ -114,7 +116,7 @@ GLuint Renderer::CreateTextureFromColor(const Core::Maths::Vec4& color)
 	return texture;
 }
 
-GLuint Renderer::CreateTextureFromImage(const char* filename)
+GLuint Renderer::CreateTextureFromImage(const char* filename, bool shouldFlip)
 {
 	std::string s = filename;
 	GLuint		texture;
@@ -129,6 +131,7 @@ GLuint Renderer::CreateTextureFromImage(const char* filename)
 
 	// load and generate the texture
 	int width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(shouldFlip);
 	unsigned char* data = stbi_load(s.c_str(), &width, &height, &nrChannels, 4);
 	if (data)
 	{
@@ -212,16 +215,17 @@ Mesh* Renderer::CreateCube()
 	m->Start();
 	m->m_program = CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 	m->m_vertexCount = 36;
+	
 
 	float Cube[] = {
-		-0.5f, -0.5f, 0.f,
-		0.5f, -0.5f, 0.f,
-		-0.5f, 0.5f, 0.f,
-		0.5f, 0.5f, 0.f,
-		-0.5f, -0.5f, 1.f,
-		0.5f, -0.5f, 1.f,
-		-0.5f, 0.5f, 1.f,
-		0.5f, 0.5f, 1.f
+		-0.5f, -0.5f, 0.5f,
+		0.5f, -0.5f, 0.5f,
+		-0.5f, 0.5f, 0.5f,
+		0.5f, 0.5f, 0.5f,
+		-0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		-0.5f, 0.5f, -0.5f,
+		0.5f, 0.5f, -0.5f
 	};
 
 	unsigned int Indices[] = {

@@ -16,6 +16,8 @@ public:
 	std::vector<float> m_vertices;
 	std::vector<int> m_indices;
 
+	float*	m_projection;
+
 	int		AddTriangle(int v1, int v2, int v3);
 	int		AddVertex(float x, float y, float z);
 
@@ -27,6 +29,8 @@ public:
 	virtual void OnDestroy() override {};
 
 	void Initialize();
+
+	void SendProjectionMatrix(Core::Maths::Mat4 data);
 
 	virtual void OnDraw() override;
 };

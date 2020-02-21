@@ -31,6 +31,12 @@
     <Filter Include="Fichiers sources\Core">
       <UniqueIdentifier>{a5097437-e8ee-48ca-931b-5ca52251b20b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Core\Renderer">
+      <UniqueIdentifier>{1703a702-ffce-46ab-b877-7f37b08871ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Core\Renderer">
+      <UniqueIdentifier>{09f4609f-bc90-42a9-b9bc-fd2fd44b422a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -62,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\ComponentUpdatable.cpp">
       <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Camera.cpp">
+      <Filter>Fichiers sources\Core\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +133,12 @@
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp">
       <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\ICamera.h">
+      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Camera.h">
+      <Filter>Fichiers d%27en-tête\Core\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

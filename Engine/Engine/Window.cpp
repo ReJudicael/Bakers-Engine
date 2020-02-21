@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Renderer.h"
 #include "Object.hpp"
+#include "Camera.h"
 
 Window::Window()
 {
@@ -50,10 +51,15 @@ Window::~Window()
 
 void	Window::Update()
 {
+	Core::Datastructure::Object* t{ Core::Datastructure::Object::CreateRootNode() };
+	Camera* c = new Camera(1280.f / 720.f, 60, 0.1, 100);
+	t->AddComponent(c);
+	c->UpdateCamera();
 	Renderer r;
 	Core::Datastructure::Object* o{ Core::Datastructure::Object::CreateRootNode() };
 	Mesh* m{ r.CreateCube() };
 	o->AddComponent(m);
+	m->SendProjectionMatrix(c->GetPerspectiveMatrix());
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
