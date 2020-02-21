@@ -36,7 +36,7 @@ namespace Core::SystemManagement
 		 * Method allowing each thread to do its task
 		 * @param indexThread: Index of the thread calling this method
 		 */
-		void WaitTaskLoop(unsigned int indexThread) noexcept;
+		void WaitTaskLoop() noexcept;
 
 	public:
 		/**

@@ -8,7 +8,7 @@ namespace Core::SystemManagement
 
 		// Give task-receiving method to threads
 		for (unsigned int i = 0; i < m_maxThreads; ++i)
-			m_threads.push_back(std::thread(&TaskSystem::WaitTaskLoop, this, i));
+			m_threads.push_back(std::thread(&TaskSystem::WaitTaskLoop, this));
 	}
 
 	TaskSystem::~TaskSystem()
@@ -21,7 +21,7 @@ namespace Core::SystemManagement
 		m_threads.clear();
 	}
 
-	void TaskSystem::WaitTaskLoop(unsigned int indexThread) noexcept
+	void TaskSystem::WaitTaskLoop() noexcept
 	{
 		Task task;
 		while (true)
