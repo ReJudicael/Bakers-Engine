@@ -8,6 +8,7 @@ class Window
 {
 private:
 	GLFWwindow* m_window{ nullptr };
+	Core::SystemManagement::InputSystem* m_inputSystem{ nullptr };
 
 public:
 	Core::SystemManagement::EventSystem<EKey> OnPressKey;
@@ -20,7 +21,9 @@ public:
 	~Window();
 
 	void	Init(const int height, const int width);
-
 	void	Update();
-	void	SetInputCallbackToGLFW();
+
+	void				SetInputCallbackToGLFW();
+	GLFWkeyfun			SetKeyCallBackToGLFW();
+	GLFWmousebuttonfun	SetMouseButtonCallBackToGLFW();
 };

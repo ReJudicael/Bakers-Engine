@@ -3,9 +3,9 @@
 #include <GLFW/glfw3.h>
 #include <string>
 
-enum class EStateInput : bool
+enum class EStateInput : int
 {
-	ERROR = -1,
+	UNPRESSED = -1,
 	UP = 0,
 	DOWN = 1,
 };
@@ -150,6 +150,24 @@ enum class EKey : int
 	RIGHT_SUPER = GLFW_KEY_RIGHT_SUPER,      //
 	MENU = GLFW_KEY_MENU                     //
 };
+
+inline std::string ToString(const EStateInput s) noexcept
+{
+	switch (s)
+	{
+	case EStateInput::UNPRESSED:
+		return "EStateInput::ERROR";
+
+	case EStateInput::DOWN:
+		return "EStateInput::DOWN";
+
+	case EStateInput::UP:
+		return "EStateInput::UP";
+
+	default:
+		return "Unknow mouse button";
+	}
+}
 
 inline std::string ToString(const EMouseButton b) noexcept
 {

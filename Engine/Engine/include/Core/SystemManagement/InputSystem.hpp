@@ -51,6 +51,7 @@ namespace Core::SystemManagement
 		 */
 		EStateInput GetMouseButtonState(EMouseButton button) const noexcept;
 
+	private:
 		/**
 		 * Set the value stored for the given key to the value Pressed
 		 * @param key: Key that will be indicated as pressed
@@ -76,11 +77,23 @@ namespace Core::SystemManagement
 		void SetMouseButtonUp(EMouseButton button) noexcept;
 
 		/**
+		 * Clear the recorded keys
+		 */
+		void ClearRegisteredKeys() noexcept;
+
+		/**
+		 * Clear the recorded mouse buttons
+		 */
+		void ClearRegisteredMouseButtons() noexcept;
+
+	public:
+		/**
 		 *  Must be called at the end of each frame
-		 *  Clear the recorded inputs of the previous frame
+		 *  Clear the recorded inputs
 		 */
 		void ClearRegisteredInputs() noexcept;
 
+	private:
 		/**
 		 * Check whether the given key exists in the map or not
 		 * @param key: Key to be checked
@@ -95,6 +108,7 @@ namespace Core::SystemManagement
 		 */
 		bool IsMouseButtonRegistered(EMouseButton button) const noexcept;
 
+	public:
 		/**
 		 * Indicate whether the given key is pressed or not
 		 * @param key: Key of which the state will be checked
@@ -126,20 +140,18 @@ namespace Core::SystemManagement
 
 	inline EStateInput InputSystem::GetKeyState(EKey key) const noexcept
 	{
-		for (const auto& [Key, State] : m_registeredKeys)
-			if (Key == key)
-				return State;
+		if (IsKeyRegistered(key))
+			return m_registeredKeys.at(key);
 
-		return EStateInput::ERROR;
+		return EStateInput::UNPRESSED;
 	}
 
 	inline EStateInput InputSystem::GetMouseButtonState(EMouseButton button) const noexcept
 	{
-		for (const auto& [MouseButton, State] : m_registeredMouseButtons)
-			if (MouseButton == button)
-				return State;
+		if (IsMouseButtonRegistered(button))
+			return m_registeredMouseButtons.at(button);
 
-		return EStateInput::ERROR;
+		return EStateInput::UNPRESSED;
 	}
 
 	inline void InputSystem::SetKeyDown(EKey key) noexcept
@@ -162,10 +174,32 @@ namespace Core::SystemManagement
 		m_registeredMouseButtons[button] = EStateInput::UP;
 	}
 
+	inline void InputSystem::ClearRegisteredKeys() noexcept
+	{
+		for (auto itr = m_registeredKeys.begin(); itr != m_registeredKeys.end();)
+		{
+			if (itr->second == EStateInput::UP)
+				itr = m_registeredKeys.erase(itr);
+			else
+				++itr;
+		}
+	}
+
+	inline void InputSystem::ClearRegisteredMouseButtons() noexcept
+	{
+		for (auto itr = m_registeredMouseButtons.begin(); itr != m_registeredMouseButtons.end();)
+		{
+			if (itr->second == EStateInput::UP)
+				itr = m_registeredMouseButtons.erase(itr);
+			else
+				++itr;
+		}
+	}
+
 	inline void InputSystem::ClearRegisteredInputs() noexcept
 	{
-		m_registeredKeys.clear();
-		m_registeredMouseButtons.clear();
+		ClearRegisteredKeys();
+		ClearRegisteredMouseButtons();
 	}
 
 	inline bool InputSystem::IsKeyRegistered(EKey key) const noexcept

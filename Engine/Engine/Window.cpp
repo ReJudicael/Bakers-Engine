@@ -51,7 +51,8 @@ void	Window::Update()
 	o->AddComponent(m);
 	r.AddMesh(m);
 
-	Core::SystemManagement::InputSystem is(this);
+	m_inputSystem = new Core::SystemManagement::InputSystem(this);
+
 	while (!glfwWindowShouldClose(m_window))
 	{
 		glfwSwapBuffers(m_window);
@@ -62,18 +63,37 @@ void	Window::Update()
 		glClear(GL_COLOR_BUFFER_BIT);
 		o->Render();
 
-		if (is.IsKeyDown(EKey::S))
-			std::cout << "Pressed" << std::endl;
-		else if (is.IsKeyUp(EKey::S))
-			std::cout << "Released" << std::endl;
+		//for (auto [Key, State] : m_inputSystem->m_registeredKeys)
+		//{
+		//	std::cout << ToString(Key) << std::endl;
+		//}
 
-		is.ClearRegisteredInputs();
+		//if (m_inputSystem->IsKeyDown(EKey::S))
+		//{
+		//	std::cout << ToString(m_inputSystem->GetKeyState(EKey::S)) << std::endl;
+		//}
+
+		//if (m_inputSystem->IsKeyUp(EKey::S))
+		//{
+		//	std::cout << ToString(m_inputSystem->GetKeyState(EKey::S)) << std::endl;
+		//}
+
+		m_inputSystem->ClearRegisteredInputs();
 	}
+
+	delete m_inputSystem;
+
 	o->Destroy();
 	o->RemoveDestroyed();
 }
 
 void Window::SetInputCallbackToGLFW()
+{
+	SetKeyCallBackToGLFW();
+	SetMouseButtonCallBackToGLFW();
+}
+
+GLFWkeyfun Window::SetKeyCallBackToGLFW()
 {
 	GLFWkeyfun key_callback = [](GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
@@ -82,14 +102,15 @@ void Window::SetInputCallbackToGLFW()
 		{
 			if (action == GLFW_PRESS)
 				this_window->OnPressKey(static_cast<EKey>(key));
-			else if (action == GLFW_RELEASE)
+			if (action == GLFW_RELEASE)
 				this_window->OnReleaseKey(static_cast<EKey>(key));
-
-			// std::cout << ToString((EKey)(key)) << std::endl;
 		}
 	};
-	glfwSetKeyCallback(m_window, key_callback);
+	return glfwSetKeyCallback(m_window, key_callback);
+}
 
+GLFWmousebuttonfun Window::SetMouseButtonCallBackToGLFW()
+{
 	GLFWmousebuttonfun mouse_button_callback = [](GLFWwindow* window, int button, int action, int mods)
 	{
 		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
@@ -99,9 +120,7 @@ void Window::SetInputCallbackToGLFW()
 				this_window->OnPressMouseButton(static_cast<EMouseButton>(button));
 			else if (action == GLFW_RELEASE)
 				this_window->OnReleaseMouseButton(static_cast<EMouseButton>(button));
-
-			// std::cout << ToString((EMouseButton)(button)) << std::endl;
 		}
 	};
-	glfwSetMouseButtonCallback(m_window, mouse_button_callback);
+	return glfwSetMouseButtonCallback(m_window, mouse_button_callback);
 }
