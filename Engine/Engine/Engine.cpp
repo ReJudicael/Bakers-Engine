@@ -7,7 +7,8 @@
 
 int main()
 {
-	Window win(1200, 700);
+	//Window win(1200, 700);
+	Window win(2010, 1062);
 	win.Update();
 }
 

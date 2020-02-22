@@ -37,7 +37,7 @@ namespace Resources::Loader
 			LoadSingleMeshResourcesIRenderable(renderObject, scene, str);
 		}
 		else
-			std::cout << "c pas " << std::endl;
+			std::cout << "c pas un obj " << std::endl;
 
 
 	}
@@ -55,6 +55,11 @@ namespace Resources::Loader
 		std::vector<unsigned int> indices;
 		std::vector<unsigned int> textures;
 		vertex v;
+
+		unsigned int indexLastMesh = 0;
+
+		bool* materialPush = new bool[scene->mNumMaterials];
+		unsigned int lastNumIndices = 0;
 
 		std::cout << scene->mNumMeshes << std::endl;
 		for (int i = 0; i < scene->mNumMeshes; i++)
@@ -85,13 +90,20 @@ namespace Resources::Loader
 				for (int iid = 0; iid < 3; iid++)
 				{
 					// get the indices of the face who is cut in triangle
-					indices.push_back(face.mIndices[iid]);
+					indices.push_back(face.mIndices[iid] + indexLastMesh);
 				}
 			}
 
-			renderObject->AddMaterial(LoadMaterialResourcesIRenderable(scene, mesh, directory));
-			std::cout << mesh->mNumVertices << std::endl;
 
+			renderObject->AddMaterial(LoadMaterialResourcesIRenderable(scene, mesh, directory));
+			OffsetMesh offset;
+			offset.count = indices.size() - lastNumIndices;
+			offset.beginIndices = lastNumIndices;
+			renderObject->AddOffsetMesh(offset);
+
+			std::cout << mesh->mNumVertices << std::endl;
+			indexLastMesh = mesh->mNumVertices - 1;
+			lastNumIndices = indices.size();
 		}
 
 		GLuint VAO, VBO, EBO;
@@ -117,6 +129,7 @@ namespace Resources::Loader
 		std::cout << indices.size() << std::endl;
 		glBindVertexArray(0);
 		aiReleaseImport(scene);
+		delete[] materialPush;
 	}
 
 	Material LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::string directory)
