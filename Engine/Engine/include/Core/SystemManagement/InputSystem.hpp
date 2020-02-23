@@ -112,16 +112,30 @@ namespace Core::SystemManagement
 		/**
 		 * Indicate whether the given key is pressed or not
 		 * @param key: Key of which the state will be checked
+		 * @return True if the key is pressed during one frame, false otherwise
+		 */
+		bool IsKeyPressed(EKey key) const noexcept;
+
+		/**
+		 * Indicate whether the given key is pressed or not
+		 * @param key: Key of which the state will be checked
 		 * @return True if the key is currently pressed, false otherwise
 		 */
 		bool IsKeyDown(EKey key) const noexcept;
 
 		/**
-		 * Indicate whether the given key is pressed or not
+		 * Indicate whether the given key is released or not
 		 * @param key: Key of which the state will be checked
 		 * @return True if the key is currently released, false otherwise
 		 */
 		bool IsKeyUp(EKey key) const noexcept;
+
+		/**
+		 * Indicate whether the given mouse button is pressed or not
+		 * @param button: Button of which the state will be checked
+		 * @return True if the button is currently pressed during one frame, false otherwise
+		 */
+		bool IsMouseButtonPressed(EMouseButton button) const noexcept;
 
 		/**
 		 * Indicate whether the given mouse button is pressed or not
@@ -131,7 +145,7 @@ namespace Core::SystemManagement
 		bool IsMouseButtonDown(EMouseButton button) const noexcept;
 
 		/**
-		 * Indicate whether the given mouse button is pressed or not
+		 * Indicate whether the given mouse button is released or not
 		 * @param button: Button of which the state will be checked
 		 * @return True if the button is currently released, false otherwise
 		 */
@@ -156,7 +170,7 @@ namespace Core::SystemManagement
 
 	inline void InputSystem::SetKeyDown(EKey key) noexcept
 	{
-		m_registeredKeys[key] = EStateInput::DOWN;
+		m_registeredKeys[key] = EStateInput::PRESS;
 	}
 
 	inline void InputSystem::SetKeyUp(EKey key) noexcept
@@ -166,7 +180,7 @@ namespace Core::SystemManagement
 
 	inline void InputSystem::SetMouseButtonDown(EMouseButton button) noexcept
 	{
-		m_registeredMouseButtons[button] = EStateInput::DOWN;
+		m_registeredMouseButtons[button] = EStateInput::PRESS;
 	}
 
 	inline void InputSystem::SetMouseButtonUp(EMouseButton button) noexcept
@@ -178,7 +192,9 @@ namespace Core::SystemManagement
 	{
 		for (auto itr = m_registeredKeys.begin(); itr != m_registeredKeys.end();)
 		{
-			if (itr->second == EStateInput::UP)
+			if (itr->second == EStateInput::PRESS)
+				itr->second = EStateInput::DOWN;
+			else if (itr->second == EStateInput::UP)
 				itr = m_registeredKeys.erase(itr);
 			else
 				++itr;
@@ -189,7 +205,9 @@ namespace Core::SystemManagement
 	{
 		for (auto itr = m_registeredMouseButtons.begin(); itr != m_registeredMouseButtons.end();)
 		{
-			if (itr->second == EStateInput::UP)
+			if (itr->second == EStateInput::PRESS)
+				itr->second = EStateInput::DOWN;
+			else if (itr->second == EStateInput::UP)
 				itr = m_registeredMouseButtons.erase(itr);
 			else
 				++itr;
@@ -212,9 +230,14 @@ namespace Core::SystemManagement
 		return m_registeredMouseButtons.find(button) != m_registeredMouseButtons.end();
 	}
 
+	inline bool InputSystem::IsKeyPressed(EKey key) const noexcept
+	{
+		return IsKeyRegistered(key) && GetKeyState(key) == EStateInput::PRESS;
+	}
+
 	inline bool InputSystem::IsKeyDown(EKey key) const noexcept
 	{
-		return IsKeyRegistered(key) && GetKeyState(key) == EStateInput::DOWN;
+		return IsKeyRegistered(key) && GetKeyState(key) == EStateInput::DOWN || GetKeyState(key) == EStateInput::PRESS;
 	}
 
 	inline bool InputSystem::IsKeyUp(EKey key) const noexcept
@@ -222,9 +245,14 @@ namespace Core::SystemManagement
 		return IsKeyRegistered(key) && GetKeyState(key) == EStateInput::UP;
 	}
 
+	inline bool InputSystem::IsMouseButtonPressed(EMouseButton button) const noexcept
+	{
+		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateInput::PRESS;
+	}
+
 	inline bool InputSystem::IsMouseButtonDown(EMouseButton button) const noexcept
 	{
-		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateInput::DOWN;
+		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateInput::DOWN || GetMouseButtonState(button) == EStateInput::PRESS;
 	}
 
 	inline bool InputSystem::IsMouseButtonUp(EMouseButton button) const noexcept

@@ -18,7 +18,5 @@ namespace Core::SystemManagement
 		m_window->OnReleaseKey -= m_keyReleasedListenerID;
 		m_window->OnPressMouseButton -= m_mouseButtonPressedListenerID;
 		m_window->OnReleaseMouseButton -= m_mouseButtonReleasedListenerID;
-
-		ClearRegisteredInputs();
 	}
 }

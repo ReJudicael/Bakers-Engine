@@ -23,7 +23,8 @@ public:
 	void	Init(const int height, const int width);
 	void	Update();
 
-	void				SetInputCallbackToGLFW();
+	void				SetCallbackToGLFW();
 	GLFWkeyfun			SetKeyCallBackToGLFW();
 	GLFWmousebuttonfun	SetMouseButtonCallBackToGLFW();
+	GLFWscrollfun		SetScrollCallBackToGLFW();
 };

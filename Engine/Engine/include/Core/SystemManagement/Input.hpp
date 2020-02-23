@@ -6,8 +6,9 @@
 enum class EStateInput : int
 {
 	UNPRESSED = -1,
-	UP = 0,
+	PRESS = 0,
 	DOWN = 1,
+	UP = 2,
 };
 
 enum class EMouseButton : int
@@ -156,7 +157,10 @@ inline std::string ToString(const EStateInput s) noexcept
 	switch (s)
 	{
 	case EStateInput::UNPRESSED:
-		return "EStateInput::ERROR";
+		return "EStateInput::UNPRESSED";
+
+	case EStateInput::PRESS:
+		return "EStateInput::PRESS";
 
 	case EStateInput::DOWN:
 		return "EStateInput::DOWN";
@@ -165,7 +169,7 @@ inline std::string ToString(const EStateInput s) noexcept
 		return "EStateInput::UP";
 
 	default:
-		return "Unknow mouse button";
+		return "Unknow state input";
 	}
 }
 

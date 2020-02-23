@@ -40,10 +40,10 @@ void Window::Init(const int height, const int width)
 	}
 
 	glfwSetWindowUserPointer(m_window, this);
-	SetInputCallbackToGLFW();
+	SetCallbackToGLFW();
 }
 
-void	Window::Update()
+void Window::Update()
 {
 	Renderer r;
 	Core::Datastructure::RootObject* o{ Core::Datastructure::RootObject::CreateRootNode() };
@@ -63,20 +63,48 @@ void	Window::Update()
 		glClear(GL_COLOR_BUFFER_BIT);
 		o->Render();
 
-		//for (auto [Key, State] : m_inputSystem->m_registeredKeys)
-		//{
-		//	std::cout << ToString(Key) << std::endl;
-		//}
+		// TODO: Delete Ln 66-107
+		if (m_inputSystem->IsKeyPressed(EKey::W))
+			std::cout << ToString(EKey::W) << " - " << ToString(m_inputSystem->GetKeyState(EKey::W)) << std::endl;
+		//if (m_inputSystem->IsKeyDown(EKey::W))
+		//	std::cout << ToString(EKey::W) << " - " << ToString(m_inputSystem->GetKeyState(EKey::W)) << std::endl;
+		if (m_inputSystem->IsKeyUp(EKey::W))
+			std::cout << ToString(EKey::W) << " - " << ToString(m_inputSystem->GetKeyState(EKey::W)) << std::endl;
 
+		if (m_inputSystem->IsKeyPressed(EKey::S))
+			std::cout << ToString(EKey::S) << " - " << ToString(m_inputSystem->GetKeyState(EKey::S)) << std::endl;
 		//if (m_inputSystem->IsKeyDown(EKey::S))
-		//{
-		//	std::cout << ToString(m_inputSystem->GetKeyState(EKey::S)) << std::endl;
-		//}
+		//	std::cout << ToString(EKey::S) << " - " << ToString(m_inputSystem->GetKeyState(EKey::S)) << std::endl;
+		if (m_inputSystem->IsKeyUp(EKey::S))
+			std::cout << ToString(EKey::S) << " - " << ToString(m_inputSystem->GetKeyState(EKey::S)) << std::endl;
 
-		//if (m_inputSystem->IsKeyUp(EKey::S))
-		//{
-		//	std::cout << ToString(m_inputSystem->GetKeyState(EKey::S)) << std::endl;
-		//}
+		if (m_inputSystem->IsKeyPressed(EKey::A))
+			std::cout << ToString(EKey::A) << " - " << ToString(m_inputSystem->GetKeyState(EKey::A)) << std::endl;
+		//if (m_inputSystem->IsKeyDown(EKey::A))
+		//	std::cout << ToString(EKey::A) << " - " << ToString(m_inputSystem->GetKeyState(EKey::A)) << std::endl;
+		if (m_inputSystem->IsKeyUp(EKey::A))
+			std::cout << ToString(EKey::A) << " - " << ToString(m_inputSystem->GetKeyState(EKey::A)) << std::endl;
+
+		if (m_inputSystem->IsKeyPressed(EKey::D))
+			std::cout << ToString(EKey::D) << " - " << ToString(m_inputSystem->GetKeyState(EKey::D)) << std::endl;
+		//if (m_inputSystem->IsKeyDown(EKey::D))
+		//	std::cout << ToString(EKey::D) << " - " << ToString(m_inputSystem->GetKeyState(EKey::D)) << std::endl;
+		if (m_inputSystem->IsKeyUp(EKey::D))
+			std::cout << ToString(EKey::D) << " - " << ToString(m_inputSystem->GetKeyState(EKey::D)) << std::endl;
+
+		if (m_inputSystem->IsKeyPressed(EKey::SPACE))
+			std::cout << ToString(EKey::SPACE) << " - " << ToString(m_inputSystem->GetKeyState(EKey::SPACE)) << std::endl;
+		if (m_inputSystem->IsKeyDown(EKey::SPACE))
+			std::cout << ToString(EKey::SPACE) << " - " << ToString(m_inputSystem->GetKeyState(EKey::SPACE)) << std::endl;
+		if (m_inputSystem->IsKeyUp(EKey::SPACE))
+			std::cout << ToString(EKey::SPACE) << " - " << ToString(m_inputSystem->GetKeyState(EKey::SPACE)) << std::endl;
+
+		if (m_inputSystem->IsMouseButtonPressed(EMouseButton::LEFT))
+			std::cout << ToString(EMouseButton::LEFT) << " - " << ToString(m_inputSystem->GetMouseButtonState(EMouseButton::LEFT)) << std::endl;
+		if (m_inputSystem->IsMouseButtonDown(EMouseButton::LEFT))
+			std::cout << ToString(EMouseButton::LEFT) << " - " << ToString(m_inputSystem->GetMouseButtonState(EMouseButton::LEFT)) << std::endl;
+		if (m_inputSystem->IsMouseButtonUp(EMouseButton::LEFT))
+			std::cout << ToString(EMouseButton::LEFT) << " - " << ToString(m_inputSystem->GetMouseButtonState(EMouseButton::LEFT)) << std::endl;
 
 		m_inputSystem->ClearRegisteredInputs();
 	}
@@ -87,10 +115,11 @@ void	Window::Update()
 	o->RemoveDestroyed();
 }
 
-void Window::SetInputCallbackToGLFW()
+void Window::SetCallbackToGLFW()
 {
 	SetKeyCallBackToGLFW();
 	SetMouseButtonCallBackToGLFW();
+	SetScrollCallBackToGLFW();
 }
 
 GLFWkeyfun Window::SetKeyCallBackToGLFW()
@@ -123,4 +152,17 @@ GLFWmousebuttonfun Window::SetMouseButtonCallBackToGLFW()
 		}
 	};
 	return glfwSetMouseButtonCallback(m_window, mouse_button_callback);
+}
+
+GLFWscrollfun Window::SetScrollCallBackToGLFW()
+{
+	GLFWscrollfun scroll_callback = [](GLFWwindow* window, double xoffset, double yoffset)
+	{
+		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (this_window)
+		{
+
+		}
+	};
+	return glfwSetScrollCallback(m_window, scroll_callback);
 }
