@@ -8,10 +8,14 @@
 
 struct aiScene;
 struct aiMesh;
+class Core::Datastructure::Object;
+
 namespace Resources::Loader
 {
 
-	void LoadResourcesIRenderable(Mesh* renderObject, const char* fileName);
+	void LoadResourcesIRenderable(Mesh* renderObject, const char* fileName, Core::Datastructure::Object* rootComponent = nullptr);
+
+	void LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject, const bool newObjectChild = false);
 
 	void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene, std::string directory);
 

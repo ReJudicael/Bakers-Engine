@@ -11,12 +11,18 @@
 #include "Assimp/material.h"
 #include "Renderer.h"
 #include "Assimp/texture.h"
-
+#include "Object.hpp"
 
 namespace Resources::Loader
 {
+	struct vertex
+	{
+		Core::Maths::Vec3 Position;
+		Core::Maths::Vec2 UV;
+		Core::Maths::Vec3 Normal;
+	};
 	
-	void LoadResourcesIRenderable(Mesh* renderObject, const char* fileName)
+	void LoadResourcesIRenderable(Mesh* renderObject, const char* fileName, Core::Datastructure::Object* rootObject)
 	{
 		std::string file = fileName;
 		const aiScene* scene = aiImportFile(fileName, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
@@ -35,19 +41,55 @@ namespace Resources::Loader
 		if (file.find(".obj"))
 		{
 			LoadSingleMeshResourcesIRenderable(renderObject, scene, str);
+			if (rootObject != nullptr)
+			{
+				std::cout << "coucou" << std::endl;
+				rootObject->AddComponent(renderObject);
+				return;
+			}
+			else
+				return;
 		}
 		else
-			std::cout << "c pas un obj " << std::endl;
-
+			std::cout << "c pas un obj trouve autre chose. pour le moment" << std::endl;
 
 	}
 
-	struct vertex
+	void LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject, const bool newObjectChild)
 	{
-		Core::Maths::Vec3 Position;
-		Core::Maths::Vec2 UV;
-		Core::Maths::Vec3 Normal;
-	};
+		Mesh* mesh { new Mesh() };
+
+		std::string file = fileName;
+		const aiScene* scene = aiImportFile(fileName, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
+
+		if (!scene)
+		{
+			std::cout << "could not load file" << std::endl;
+			return;
+		}
+
+		auto index = file.find_last_of("/");
+
+		std::string str;
+		str = file.substr(0, index + 1);
+
+		if (file.find(".obj"))
+		{
+			LoadSingleMeshResourcesIRenderable(mesh, scene, str);
+			if (newObjectChild)
+			{
+				Core::Datastructure::Object* object{ rootObject->CreateChild({}) };
+				object->AddComponent(mesh);
+				return;
+			}
+			else
+				return;
+		}
+		else
+			std::cout << "c pas un obj trouve autre chose. pour le moment" << std::endl;
+
+	}
+
 
 	void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene, std::string directory)
 	{

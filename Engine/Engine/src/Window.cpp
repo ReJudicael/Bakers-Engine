@@ -107,8 +107,8 @@ void	Window::Update()
 	Core::Datastructure::Object* o{ root->CreateChild({}) };
 	Mesh* m{ new Mesh() };
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
-	Resources::Loader::LoadResourcesIRenderable(m, "Resources/Dog/12228_Dog_v1_L2.obj");
-	o->AddComponent(m);
+	Resources::Loader::LoadResourcesIRenderable(m, "Resources/Dog/12228_Dog_v1_L2.obj", o);
+	//o->AddComponent(m);
 	o->SetScale(Core::Maths::Vec3(.1f, .1f, .1f));
 	o->SetPos({ 0, -2.f, -5.f });
 	o->SetRot({ -90, 0.f, 0.f });
@@ -116,8 +116,6 @@ void	Window::Update()
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
-		//o->Translate({ 0, 0, 0.1f });
-		//o->Rotate({ 0, 0.1f, 0 });
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 		root->StartFrame();
