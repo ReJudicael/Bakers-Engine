@@ -106,6 +106,21 @@ void Window::Update()
 		if (m_inputSystem->IsMouseButtonUp(EMouseButton::LEFT))
 			std::cout << ToString(EMouseButton::LEFT) << " - " << ToString(m_inputSystem->GetMouseButtonState(EMouseButton::LEFT)) << std::endl;
 
+		static int zoom = 100;
+		if (m_inputSystem->IsKeyDown(EKey::LEFT_CONTROL))
+		{
+			if (m_inputSystem->IsScrollUp())
+			{
+				zoom += 10;
+				std::cout << zoom << std::endl;
+			}
+			else if (m_inputSystem->IsScrollDown())
+			{
+				zoom -= 10;
+				std::cout << zoom << std::endl;
+			}
+		}
+
 		m_inputSystem->ClearRegisteredInputs();
 	}
 
@@ -161,7 +176,7 @@ GLFWscrollfun Window::SetScrollCallBackToGLFW()
 		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (this_window)
 		{
-
+			this_window->OnScrollYAxis(yoffset);
 		}
 	};
 	return glfwSetScrollCallback(m_window, scroll_callback);

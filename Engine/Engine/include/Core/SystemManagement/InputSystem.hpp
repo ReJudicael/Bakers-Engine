@@ -13,15 +13,17 @@ namespace Core::SystemManagement
 	class InputSystem final
 	{
 	private:
-		/* Stockage mouse buttons and keys */
+		/* Stockage mouse buttons, keys and scroll */
 		std::unordered_map<EKey, EStateInput> m_registeredKeys;
 		std::unordered_map<EMouseButton, EStateInput> m_registeredMouseButtons;
+		EStateScroll m_registeredScrollYAxis{ EStateScroll::UNUSED };
 
 		/* Events */
 		ID m_keyPressedListenerID{ 0 };
 		ID m_keyReleasedListenerID{ 0 };
 		ID m_mouseButtonPressedListenerID{ 0 };
 		ID m_mouseButtonReleasedListenerID{ 0 };
+		ID m_scrollListenerID{ 0 };
 
 		Window* m_window;
 
@@ -51,6 +53,12 @@ namespace Core::SystemManagement
 		 */
 		EStateInput GetMouseButtonState(EMouseButton button) const noexcept;
 
+		/**
+		 * Get the state (down or up) of the scroll
+		 * @return State of the scroll
+		 */
+		EStateScroll GetScrollState() const noexcept;
+
 	private:
 		/**
 		 * Set the value stored for the given key to the value Pressed
@@ -77,6 +85,12 @@ namespace Core::SystemManagement
 		void SetMouseButtonUp(EMouseButton button) noexcept;
 
 		/**
+		 * Set the scroll of y-axis state
+		 * @param yoffset: The scroll offset along the y-axis.
+		 */
+		void SetScrollYAxis(double yoffset) noexcept;
+
+		/**
 		 * Clear the recorded keys
 		 */
 		void ClearRegisteredKeys() noexcept;
@@ -85,6 +99,11 @@ namespace Core::SystemManagement
 		 * Clear the recorded mouse buttons
 		 */
 		void ClearRegisteredMouseButtons() noexcept;
+
+		/**
+		 * Clear the recorded scroll state
+		 */
+		void ClearRegisteredScroll() noexcept;
 
 	public:
 		/**
@@ -150,6 +169,18 @@ namespace Core::SystemManagement
 		 * @return True if the button is currently released, false otherwise
 		 */
 		bool IsMouseButtonUp(EMouseButton button) const noexcept;
+
+		/**
+		 * Indicate whether the scroll is down or not
+		 * @return True if the scroll is down, false otherwise
+		 */
+		bool IsScrollDown() const noexcept;
+
+		/**
+		 * Indicate whether the scroll is up or not
+		 * @return True if the scroll is up, false otherwise
+		 */
+		bool IsScrollUp() const noexcept;
 	};
 
 	inline EStateInput InputSystem::GetKeyState(EKey key) const noexcept
@@ -157,7 +188,7 @@ namespace Core::SystemManagement
 		if (IsKeyRegistered(key))
 			return m_registeredKeys.at(key);
 
-		return EStateInput::UNPRESSED;
+		return EStateInput::UNUSED;
 	}
 
 	inline EStateInput InputSystem::GetMouseButtonState(EMouseButton button) const noexcept
@@ -165,7 +196,12 @@ namespace Core::SystemManagement
 		if (IsMouseButtonRegistered(button))
 			return m_registeredMouseButtons.at(button);
 
-		return EStateInput::UNPRESSED;
+		return EStateInput::UNUSED;
+	}
+
+	inline EStateScroll InputSystem::GetScrollState() const noexcept
+	{
+		return m_registeredScrollYAxis;
 	}
 
 	inline void InputSystem::SetKeyDown(EKey key) noexcept
@@ -188,12 +224,23 @@ namespace Core::SystemManagement
 		m_registeredMouseButtons[button] = EStateInput::UP;
 	}
 
+	inline void InputSystem::SetScrollYAxis(double yoffset) noexcept
+	{
+		if (yoffset < 0)
+			m_registeredScrollYAxis = EStateScroll::DOWN;
+		else if (yoffset > 0)
+			m_registeredScrollYAxis = EStateScroll::UP;
+	}
+
 	inline void InputSystem::ClearRegisteredKeys() noexcept
 	{
 		for (auto itr = m_registeredKeys.begin(); itr != m_registeredKeys.end();)
 		{
 			if (itr->second == EStateInput::PRESS)
+			{
 				itr->second = EStateInput::DOWN;
+				itr++;
+			}
 			else if (itr->second == EStateInput::UP)
 				itr = m_registeredKeys.erase(itr);
 			else
@@ -206,7 +253,10 @@ namespace Core::SystemManagement
 		for (auto itr = m_registeredMouseButtons.begin(); itr != m_registeredMouseButtons.end();)
 		{
 			if (itr->second == EStateInput::PRESS)
+			{
 				itr->second = EStateInput::DOWN;
+				itr++;
+			}
 			else if (itr->second == EStateInput::UP)
 				itr = m_registeredMouseButtons.erase(itr);
 			else
@@ -214,10 +264,17 @@ namespace Core::SystemManagement
 		}
 	}
 
+	inline void InputSystem::ClearRegisteredScroll() noexcept
+	{
+		if (m_registeredScrollYAxis != EStateScroll::UNUSED)
+			m_registeredScrollYAxis = EStateScroll::UNUSED;
+	}
+
 	inline void InputSystem::ClearRegisteredInputs() noexcept
 	{
 		ClearRegisteredKeys();
 		ClearRegisteredMouseButtons();
+		ClearRegisteredScroll();
 	}
 
 	inline bool InputSystem::IsKeyRegistered(EKey key) const noexcept
@@ -258,5 +315,15 @@ namespace Core::SystemManagement
 	inline bool InputSystem::IsMouseButtonUp(EMouseButton button) const noexcept
 	{
 		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateInput::UP;
+	}
+
+	inline bool InputSystem::IsScrollDown() const noexcept
+	{
+		return  GetScrollState() == EStateScroll::DOWN;
+	}
+
+	inline bool InputSystem::IsScrollUp() const noexcept
+	{
+		return  GetScrollState() == EStateScroll::UP;
 	}
 }

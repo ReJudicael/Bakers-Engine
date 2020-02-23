@@ -15,6 +15,7 @@ public:
 	Core::SystemManagement::EventSystem<EKey> OnReleaseKey;
 	Core::SystemManagement::EventSystem<EMouseButton> OnPressMouseButton;
 	Core::SystemManagement::EventSystem<EMouseButton> OnReleaseMouseButton;
+	Core::SystemManagement::EventSystem<double> OnScrollYAxis;
 
 	Window();
 	Window(const int height, const int width);

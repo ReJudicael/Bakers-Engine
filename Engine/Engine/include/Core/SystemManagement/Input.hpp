@@ -5,10 +5,17 @@
 
 enum class EStateInput : int
 {
-	UNPRESSED = -1,
-	PRESS = 0,
-	DOWN = 1,
-	UP = 2,
+	UNUSED = -1,
+	UP = GLFW_RELEASE,
+	PRESS = GLFW_PRESS,
+	DOWN,
+};
+
+enum class EStateScroll : int
+{
+	UNUSED = -1,
+	UP = 0,
+	DOWN,
 };
 
 enum class EMouseButton : int
@@ -156,8 +163,11 @@ inline std::string ToString(const EStateInput s) noexcept
 {
 	switch (s)
 	{
-	case EStateInput::UNPRESSED:
-		return "EStateInput::UNPRESSED";
+	case EStateInput::UNUSED:
+		return "EStateInput::UNUSED";
+
+	case EStateInput::UP:
+		return "EStateInput::UP";
 
 	case EStateInput::PRESS:
 		return "EStateInput::PRESS";
@@ -165,8 +175,23 @@ inline std::string ToString(const EStateInput s) noexcept
 	case EStateInput::DOWN:
 		return "EStateInput::DOWN";
 
-	case EStateInput::UP:
-		return "EStateInput::UP";
+	default:
+		return "Unknow state input";
+	}
+}
+
+inline std::string ToString(const EStateScroll s) noexcept
+{
+	switch (s)
+	{
+	case EStateScroll::UNUSED:
+		return "EStateScroll::UNUSED";
+
+	case EStateScroll::UP:
+		return "EStateScroll::UP";
+
+	case EStateScroll::DOWN:
+		return "EStateScroll::DOWN";
 
 	default:
 		return "Unknow state input";
