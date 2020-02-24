@@ -49,7 +49,13 @@ namespace Core::Datastructure
 		 * @param rot: Local rotation of the transform
 		 * @param scale: Local scale of the transform
 		 */
-		Transform(const Transform& parent, const Maths::Vec3& pos = { 0, 0, 0 }, const Maths::Quat& rot = {}, const Maths::Vec3& scale = {1, 1, 1}) noexcept;
+		Transform(const Transform& parent, const Maths::Vec3& pos, const Maths::Quat& rot = {}, const Maths::Vec3& scale = {1, 1, 1}) noexcept;
+
+		/**
+		 * Copy constructor of the transform
+		 * @param t: Transform to copy
+		 */
+		Transform(const Transform& t) noexcept;
 
 		/**
 		 * Returns local position of the transform

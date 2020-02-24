@@ -4,7 +4,8 @@ namespace Core::Datastructure
 {
 	RootObject::RootObject() noexcept : Object({}, nullptr, this)
 	{
-
+		m_transform.RequireUpdate();
+		m_transform.UpdatePos();
 	}
 
 	void RootObject::StartFrame() noexcept
@@ -28,7 +29,7 @@ namespace Core::Datastructure
 	void RootObject::Render() const noexcept
 	{
 		for (auto it{ m_renderables.begin() }; it != m_renderables.end(); ++it)
-			(*it)->Draw();
+			(*it)->Draw(m_cameras);
 	}
 	void RootObject::AddUpdatable(IUpdatable* i) noexcept
 	{
@@ -42,6 +43,10 @@ namespace Core::Datastructure
 	{
 		m_componentsToStart.emplace_back(i);
 	}
+	void RootObject::AddCamera(ICamera* i) noexcept
+	{
+		m_cameras.emplace_back(i);
+	}
 	void RootObject::RemoveUpdatable(IUpdatable* i) noexcept
 	{
 		m_updatables.remove(i);
@@ -49,6 +54,11 @@ namespace Core::Datastructure
 	void RootObject::RemoveRenderable(IRenderable* i) noexcept
 	{
 		m_renderables.remove(i);
+	}
+
+	void RootObject::RemoveCamera(ICamera* i) noexcept
+	{
+		m_cameras.remove(i);
 	}
 
 	void RootObject::DestroyComponent(IComponent* i) noexcept
