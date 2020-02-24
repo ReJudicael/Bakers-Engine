@@ -46,6 +46,12 @@ Camera::~Camera()
 {
 }
 
+void Camera::SetRatio(const float newRatio)
+{
+	m_ratio = newRatio;
+	m_isPerspectiveUpdated = false;
+}
+
 Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float ratio, const float near, const float far, const float fov)
 {
 	Core::Maths::Mat4 persp;

@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #include "InputSystem.hpp"
+#include "RootObject.hpp"
 
 class Window
 {
@@ -18,6 +19,8 @@ public:
 	Core::SystemManagement::EventSystem<EMouseButton> OnPressMouseButton;
 	Core::SystemManagement::EventSystem<EMouseButton> OnReleaseMouseButton;
 	Core::SystemManagement::EventSystem<double> OnScrollYAxis;
+
+	Core::Datastructure::RootObject* m_root;
 
 	Window();
 	Window(const int height, const int width);

@@ -3,7 +3,6 @@
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 {
-	
 	if (!m_isPerspectiveUpdated)
 	{
 		m_perspective = OnGeneratePerspective();

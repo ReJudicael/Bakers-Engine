@@ -36,6 +36,8 @@ namespace Core::Datastructure
 		const Core::Maths::Mat4&	GetCameraMatrix();
 
 		virtual void				OnStart() override;
+
+		virtual void				SetRatio(float ratio) = 0;
 	};
 }
 

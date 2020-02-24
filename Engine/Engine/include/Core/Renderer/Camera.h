@@ -29,6 +29,8 @@ public:
 	virtual void OnUpdate(float deltaTime) override;
 	virtual void OnStart() override;
 
+	void SetRatio(const float newRatio) override;
+
 	/**
 	 * Destructor
 	 */

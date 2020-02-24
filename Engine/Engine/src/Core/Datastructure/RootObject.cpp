@@ -61,6 +61,14 @@ namespace Core::Datastructure
 		m_cameras.remove(i);
 	}
 
+	void RootObject::SetCamerasRatio(float ratio) noexcept
+	{
+		for (auto value : m_cameras)
+		{
+			value->SetRatio(ratio);
+		}
+	}
+
 	void RootObject::DestroyComponent(IComponent* i) noexcept
 	{
 		m_destroyedComponents.emplace_back(i);

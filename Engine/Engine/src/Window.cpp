@@ -95,14 +95,14 @@ Window::~Window()
 
 void	Window::Update()
 {
-	Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
-	Core::Datastructure::Object* camNode{ root->CreateChild({}) };
+	m_root = Core::Datastructure::RootObject::CreateRootNode();
+	Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
 
 	Camera* c = new Camera(1200.f / 700.f, 60, 0.1, 100);
 	camNode->AddComponent(c);
 	Renderer r;
 	//Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
-	Core::Datastructure::Object* o{ root->CreateChild({}) };
+	Core::Datastructure::Object* o{ m_root->CreateChild({}) };
 	Mesh* m{ new Mesh() };
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 	Resources::Loader::LoadResourcesIRenderable(m, "Resources/Dog/12228_Dog_v1_L2.obj");
@@ -118,16 +118,14 @@ void	Window::Update()
 		//o->Rotate({ 0, 0.1f, 0 });
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
-		root->StartFrame();
-		root->Update(0.2f);
+		m_root->StartFrame();
+		m_root->Update(0.2f);
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		root->Render();
-
-		std::cout << m_width << " / " << m_height << std::endl;
+		m_root->Render();
 	}
-	root->Destroy();
-	root->RemoveDestroyed();
+	m_root->Destroy();
+	m_root->RemoveDestroyed();
 }
 
 void Window::SetCallbackToGLFW()
@@ -192,6 +190,7 @@ GLFWwindowsizefun Window::SetWindowSizeToGLFW()
 		{
 			this_window->m_width = width;
 			this_window->m_height = height;
+			this_window->m_root->SetCamerasRatio((float)width / (float)height);
 		}
 	};
 	return glfwSetWindowSizeCallback(m_window, window_size_callback);

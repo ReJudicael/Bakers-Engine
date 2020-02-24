@@ -88,6 +88,12 @@ namespace Core::Datastructure
 		void		RemoveCamera(ICamera* i) noexcept;
 
 		/**
+		 * set window ratio for each camera
+		 * @param ratio: Ratio to set to each camera for perspective matrix
+		 */
+		void		SetCamerasRatio(float ratio) noexcept;
+
+		/**
 		 * Queues a component to be destroyed
 		 */
 		void		DestroyComponent(IComponent* i) noexcept;
