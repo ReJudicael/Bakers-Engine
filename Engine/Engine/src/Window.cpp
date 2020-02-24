@@ -47,14 +47,18 @@ void main()
 })GLSL";
 
 
-Window::Window()
+Window::Window() :
+	m_width{ 1280 },
+	m_height{ 800 }
 {
-	Init(1280, 720);
+	Init(m_width, m_height);
 }
 
-Window::Window(const int height, const int width)
+Window::Window(const int width, const int height) :
+	m_width{ width },
+	m_height{ height }
 {
-	Init(height, width);
+	Init(m_width, m_height);
 }
 
 void Window::Init(const int width, const int height)
@@ -119,6 +123,8 @@ void	Window::Update()
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		root->Render();
+
+		std::cout << m_width << " / " << m_height << std::endl;
 	}
 	root->Destroy();
 	root->RemoveDestroyed();
@@ -129,6 +135,7 @@ void Window::SetCallbackToGLFW()
 	SetKeyCallBackToGLFW();
 	SetMouseButtonCallBackToGLFW();
 	SetScrollCallBackToGLFW();
+	SetWindowSizeToGLFW();
 }
 
 GLFWkeyfun Window::SetKeyCallBackToGLFW()
@@ -174,4 +181,18 @@ GLFWscrollfun Window::SetScrollCallBackToGLFW()
 		}
 	};
 	return glfwSetScrollCallback(m_window, scroll_callback);
+}
+
+GLFWwindowsizefun Window::SetWindowSizeToGLFW()
+{
+	GLFWwindowsizefun window_size_callback = [](GLFWwindow* window, int width, int height)
+	{
+		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (this_window)
+		{
+			this_window->m_width = width;
+			this_window->m_height = height;
+		}
+	};
+	return glfwSetWindowSizeCallback(m_window, window_size_callback);
 }

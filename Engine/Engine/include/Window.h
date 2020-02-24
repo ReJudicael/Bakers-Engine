@@ -9,6 +9,8 @@ class Window
 private:
 	GLFWwindow* m_window{ nullptr };
 	Core::SystemManagement::InputSystem* m_inputSystem{ nullptr };
+	int m_width{ 0 };
+	int m_height{ 0 };
 
 public:
 	Core::SystemManagement::EventSystem<EKey> OnPressKey;
@@ -28,4 +30,5 @@ public:
 	GLFWkeyfun			SetKeyCallBackToGLFW();
 	GLFWmousebuttonfun	SetMouseButtonCallBackToGLFW();
 	GLFWscrollfun		SetScrollCallBackToGLFW();
+	GLFWwindowsizefun	SetWindowSizeToGLFW();
 };
