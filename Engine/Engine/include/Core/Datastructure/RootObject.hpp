@@ -6,6 +6,7 @@
 
 #include "IUpdatable.hpp"
 #include "IRenderable.hpp"
+#include "ICamera.h"
 
 namespace Core::Datastructure
 {
@@ -19,6 +20,7 @@ namespace Core::Datastructure
 		std::list<IUpdatable*>	m_updatables;
 		std::list<IRenderable*>	m_renderables;
 		std::list<IComponent*>	m_componentsToStart;
+		std::list<ICamera*>		m_cameras;
 		std::list<IComponent*>	m_destroyedComponents;
 		std::list<Object*>		m_destroyedObjects;
 
@@ -63,6 +65,11 @@ namespace Core::Datastructure
 		 * @param i: Component to be started
 		 */
 		void		AddStart(IComponent* i) noexcept;
+		/**
+		 * Adds a camera
+		 * @param i: Camera to be added
+		 */
+		void		AddCamera(ICamera* i) noexcept;
 
 		/**
 		 * removes a component from the updated ones
@@ -74,6 +81,11 @@ namespace Core::Datastructure
 		 * @param i: Component to be removed
 		 */
 		void		RemoveRenderable(IRenderable* i) noexcept;
+		/**
+		 * removes a camera
+		 * @param i: Camera to be removed
+		 */
+		void		RemoveCamera(ICamera* i) noexcept;
 
 		/**
 		 * Queues a component to be destroyed

@@ -184,6 +184,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="include\Core\Datastructure\ICamera.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
     <ClCompile Include="src\Core\Renderer\Mesh.cpp" />

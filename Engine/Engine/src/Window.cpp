@@ -17,6 +17,7 @@ layout(location = 2) in vec3 aNormal;
 // Uniforms
 uniform mat4 uModel;
 uniform mat4 uProj;
+uniform mat4 uCam;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
 out vec2 vUV;
@@ -25,7 +26,7 @@ out vec3 Normal;
 void main()
 {
 	vUV = aUV;
-    gl_Position = uProj * uModel * vec4(aPosition, 1.0);
+    gl_Position = uProj * uCam * uModel * vec4(aPosition, 1.0);
 })GLSL";
 
 static const char* gFragmentShaderStr = R"GLSL(
@@ -99,9 +100,10 @@ Window::~Window()
 void	Window::Update()
 {
 	Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
+	Core::Datastructure::Object* camNode{ root->CreateChild({}) };
+
 	Camera* c = new Camera(1200.f / 700.f, 60, 0.1, 100);
-	root->AddComponent(c);
-	c->UpdateCamera();
+	camNode->AddComponent(c);
 	Renderer r;
 	//Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
 	Core::Datastructure::Object* o{ root->CreateChild({}) };

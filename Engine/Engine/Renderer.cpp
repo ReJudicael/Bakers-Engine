@@ -149,15 +149,6 @@ GLuint Renderer::CreateTextureFromImage(const char* filename, bool shouldFlip)
 	return texture;
 }
 
-void	Renderer::Render()
-{
-	for (int i = 0; i < m_meshes.size(); i++)
-	{
-		std::cout << "coucou" << std::endl;
-		m_meshes[i]->Draw();
-	}
-}
-
 void	Renderer::AddMesh(Mesh* newMesh)
 {
 	m_meshes.push_back(newMesh);

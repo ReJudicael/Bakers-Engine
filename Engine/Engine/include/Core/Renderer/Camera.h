@@ -2,14 +2,18 @@
 
 #include "ComponentBase.h"
 #include "ICamera.h"
+#include "IUpdatable.hpp"
 
-class Camera : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera
+class Camera : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
 {
 private:
 	float m_ratio;
 	float m_fov;
 	float m_near;
 	float m_far;
+protected:
+	Core::Maths::Mat4	OnGenerateCamera() override;
+	Core::Maths::Mat4	OnGeneratePerspective() override;
 
 public:
 	/**
@@ -17,32 +21,18 @@ public:
 	 */
 	Camera();
 
+	/**
+	 * Constructor initializing camera variables
+	 */
 	Camera(const float ratio, const float fov, const float near, const float far);
+
+	virtual void OnUpdate(float deltaTime) override;
+	virtual void OnStart() override;
 
 	/**
 	 * Destructor
 	 */
 	~Camera();
-
-	virtual void OnStart() override {};
-	virtual void OnDestroy() override {};
-
-	/**
-	 * Update Camera matrices based on its current values
-	 */
-	void UpdateCamera();
-
-	/**
-	 * Get reverse TRS matrix of the camera
-	 * @return Reverse TRS camera matrix
-	 */
-	Core::Maths::Mat4	GetCameraMatrix() noexcept;
-
-	/**
-	 * Get perspective matrix of the camera
-	 * @return Stored perspective matrix
-	 */
-	Core::Maths::Mat4	GetPerspectiveMatrix() noexcept;
 
 	/**
 	 * Create Perspective Matrix
@@ -54,13 +44,3 @@ public:
 	 */
 	static Core::Maths::Mat4 CreatePerspectiveMatrix(const float ratio, const float near, const float far, const float fov);
 };
-
-inline Core::Maths::Mat4	Camera::GetCameraMatrix() noexcept
-{
-	return m_cameraMatrix;
-}
-
-inline Core::Maths::Mat4	Camera::GetPerspectiveMatrix() noexcept
-{
-	return m_perspective;
-}

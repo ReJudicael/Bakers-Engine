@@ -33,7 +33,7 @@ public:
 
 	void SendProjectionMatrix(Core::Maths::Mat4 data);
 
-	virtual void OnDraw() override;
+	virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
 
 	Core::Maths::Mat4 projectionMatrix(float FovY, float Aspect, float Near, float Far);
 

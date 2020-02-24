@@ -61,14 +61,15 @@ void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
 	m_projection = data.m_array;
 }
 
-void Mesh::OnDraw()
+void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 {
 	glEnable(GL_DEPTH_TEST);
 
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_TRUE, trs.m_array);
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "uProj"), 1, GL_FALSE, m_projection);
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
 
 	glUseProgram(m_program);
 

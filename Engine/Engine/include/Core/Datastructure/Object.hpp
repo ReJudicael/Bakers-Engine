@@ -257,7 +257,7 @@ namespace Core::Datastructure
 		}
 	};
 
-	inline Object* Datastructure::Object::GetParent() const noexcept
+	inline Object*	Datastructure::Object::GetParent() const noexcept
 	{
 		return m_parent;
 	}

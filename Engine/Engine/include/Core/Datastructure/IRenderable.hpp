@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 
 #include "IComponent.hpp"
+#include "ICamera.h"
+#include <list>
 
 namespace Core::Datastructure
 {
@@ -20,16 +22,21 @@ namespace Core::Datastructure
 
 		/**
 		 * Called for rendering. Must be overriden if the component is inherited
+		 * @param cam: Camera to render to
 		 */
-		virtual void OnDraw() = 0;
+		virtual void OnDraw(ICamera* cam) = 0;
 
 		/**
 		 * Function called by the engine to draw the object
+		 * @param cameras: Cameras of the scene
 		 */
-		void	Draw()
+		void	Draw(const std::list<ICamera*>& cameras)
 		{
 			if (IsInit() && m_isActive)
-				OnDraw();
+			{
+				for (auto it {cameras.begin()}; it != cameras.end(); ++it)
+					OnDraw(*it);
+			}
 		}
 	};
 }

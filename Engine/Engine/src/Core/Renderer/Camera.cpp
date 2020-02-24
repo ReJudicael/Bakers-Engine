@@ -4,7 +4,17 @@
 #include "Camera.h"
 #include "Object.hpp"
 
-Camera::Camera() :
+Core::Maths::Mat4 Camera::OnGenerateCamera()
+{
+	return m_parent->GetGlobalTRS().Inversed();
+}
+
+Core::Maths::Mat4 Camera::OnGeneratePerspective()
+{
+	return CreatePerspectiveMatrix(m_ratio, m_near, m_far, m_fov);
+}
+
+Camera::Camera() : 
 	m_ratio{ 0 },
 	m_fov{ 0 },
 	m_near{ 0 },
@@ -20,14 +30,20 @@ Camera::Camera(const float ratio, const float fov, const float near, const float
 {
 }
 
-Camera::~Camera()
+void Camera::OnUpdate(float deltaTime)
 {
+	//Move camera with inputs here
+	m_isCamUpdated = false;
 }
 
-void	Camera::UpdateCamera()
+void Camera::OnStart()
 {
-	m_perspective = CreatePerspectiveMatrix(m_ratio, m_near, m_far, m_fov);
-	m_cameraMatrix = m_parent->GetGlobalTRS().Inversed();
+	ICamera::OnStart();
+	IUpdatable::OnStart();
+}
+
+Camera::~Camera()
+{
 }
 
 Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float ratio, const float near, const float far, const float fov)

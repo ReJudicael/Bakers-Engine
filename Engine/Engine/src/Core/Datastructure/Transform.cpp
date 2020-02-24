@@ -105,4 +105,10 @@ namespace Core::Datastructure
 	{
 		UpdatePos(parent);
 	}
+	Transform::Transform(const Transform& t) noexcept : 
+		m_pos {t.m_pos}, m_rot {t.m_rot}, m_scale {t.m_scale}, m_TRS {t.m_TRS},
+		m_gpos {t.m_gpos}, m_grot {t.m_grot}, m_gscale {t.m_gscale}, m_gTRS {t.m_gTRS}, 
+		m_isGTrsUpdated {t.m_isGTrsUpdated}, m_isGUpdated {t.m_isGUpdated}, m_isTrsUpdated {t.m_isTrsUpdated}
+	{
+	}
 }
