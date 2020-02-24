@@ -189,6 +189,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
     <ClCompile Include="src\Core\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\Core\Renderer\PlayerCamera.cpp" />
     <ClCompile Include="src\Resources\Loader\LoadResources.cpp" />
     <ClCompile Include="src\Core\Datastructure\IComponent.cpp" />
     <ClCompile Include="src\Core\Datastructure\IRenderable.cpp" />
@@ -223,6 +224,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\Core\Maths\Vec3.hpp" />
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
     <ClInclude Include="include\Core\Renderer\Mesh.h" />
+    <ClInclude Include="include\Core\Renderer\PlayerCamera.h" />
     <ClInclude Include="include\Resources\Loader\LoadResources.h" />
     <ClInclude Include="include\Core\Renderer\Camera.h" />
     <ClInclude Include="include\Core\SystemManagement\EventSystem.hpp" />

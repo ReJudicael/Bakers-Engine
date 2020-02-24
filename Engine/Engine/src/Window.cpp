@@ -6,7 +6,7 @@
 #include "RootObject.hpp"
 #include "ComponentUpdatable.h"
 #include "Loadresources.h"
-#include "Camera.h"
+#include "PlayerCamera.h"
 
 static const char* gVertexShaderStr = R"GLSL(
 // Attributes
@@ -98,10 +98,10 @@ void	Window::Update()
 	m_root = Core::Datastructure::RootObject::CreateRootNode();
 	Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
 
-	Camera* c = new Camera(1200.f / 700.f, 60, 0.1, 100);
+	PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
 	camNode->AddComponent(c);
 	Renderer r;
-	//Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
+
 	Core::Datastructure::Object* o{ m_root->CreateChild({}) };
 	Mesh* m{ new Mesh() };
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
@@ -114,8 +114,6 @@ void	Window::Update()
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
-		//o->Translate({ 0, 0, 0.1f });
-		//o->Rotate({ 0, 0.1f, 0 });
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 		m_root->StartFrame();

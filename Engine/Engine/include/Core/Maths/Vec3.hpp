@@ -264,6 +264,17 @@ namespace Core::Maths
 		}
 
 		/**
+		 * Computes the scalar multiplication
+		 * of the current vector by the given scalar
+		 * @param f: Scalar to multiply by
+		 * @return The result of the multiplication
+		 */
+		inline constexpr Vec3		operator* (const float f) const noexcept
+		{
+			return { x * f, y * f, z * f };
+		}
+
+		/**
 		 * Computes the division of the components
 		 * of the current vector by the respective components
 		 * of the given vector
@@ -331,6 +342,19 @@ namespace Core::Maths
 			x *= v.x;
 			y *= v.y;
 			z *= v.z;
+			return *this;
+		}
+
+		/**
+		 * Multiply current vector by scalar
+		 * @param f: Scalar to multiply by
+		 * @return Copy of the result
+		 */
+		inline constexpr Vec3		operator*= (const float f) noexcept
+		{
+			x *= f;
+			y *= f;
+			z *= f;
 			return *this;
 		}
 
@@ -433,7 +457,7 @@ namespace Core::Maths
 		 */
 		inline std::string			ToString() const noexcept
 		{
-			return std::to_string(x) + std::to_string(y) + std::to_string(z);
+			return std::to_string(x) + " ; " + std::to_string(y) + " ; " + std::to_string(z);
 		}
 	};
 }

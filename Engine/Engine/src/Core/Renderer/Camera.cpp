@@ -32,7 +32,6 @@ Camera::Camera(const float ratio, const float fov, const float near, const float
 
 void Camera::OnUpdate(float deltaTime)
 {
-	//Move camera with inputs here
 	m_isCamUpdated = false;
 }
 
