@@ -7,6 +7,7 @@
 #include "ComponentUpdatable.h"
 #include "Loadresources.h"
 #include "Camera.h"
+#include "Debug.h"
 
 static const char* gVertexShaderStr = R"GLSL(
 // Attributes
@@ -112,13 +113,15 @@ void	Window::Update()
 	{
 		//o->Translate({ 0, 0, 0.1f });
 		//o->Rotate({ 0, 0.1f, 0 });
-		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 		root->StartFrame();
 		root->Update(0.2f);
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		root->Render();
+		glfwSwapBuffers(m_window);
+		FrameMark;
+		root->RemoveDestroyed();
 	}
 	root->Destroy();
 	root->RemoveDestroyed();
