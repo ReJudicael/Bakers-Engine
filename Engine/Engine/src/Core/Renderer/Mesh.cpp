@@ -70,13 +70,15 @@ void Mesh::OnDraw()
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_TRUE, trs.m_array);
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uProj"), 1, GL_FALSE, m_projection);
 
+	glBindVertexArray(m_VAO);
 	glUseProgram(m_program);
 	for (int i = 0; i < m_offsetMesh.size(); i++)
 	{
-		glBindTexture(GL_TEXTURE_2D, m_material[m_offsetMesh[i].materialIndices].textures[0]);
-		glBindVertexArray(m_VAO);
+		if (m_material[m_offsetMesh[i].materialIndices].textures.size() > 0)
+			glBindTexture(GL_TEXTURE_2D, m_material[m_offsetMesh[i].materialIndices].textures[0]);
 
-		glDrawElements(GL_TRIANGLES, m_offsetMesh[i].count, GL_UNSIGNED_INT, (void*)m_offsetMesh[i].beginIndices);
+		glDrawElements(GL_TRIANGLES, m_offsetMesh[i].count, GL_UNSIGNED_INT, 
+			(GLvoid*)(m_offsetMesh[i].beginIndices * sizeof(GLuint)));
 	}
 
 	glBindVertexArray(0);

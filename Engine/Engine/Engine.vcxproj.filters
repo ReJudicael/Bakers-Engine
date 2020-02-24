@@ -176,11 +176,20 @@
     <ClInclude Include="include\Window.h">
       <Filter>Fichiers d%27en-tête\Core</Filter>
     </ClInclude>
+    <ClInclude Include="include\Resources\OffsetMesh.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
     <ClInclude Include="include\Resources\Material.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneData.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\OffsetMesh.h">
+    <ClInclude Include="include\Resources\ModelData.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\TextureData.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

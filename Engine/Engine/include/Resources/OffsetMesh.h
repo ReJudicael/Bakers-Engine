@@ -1,5 +1,5 @@
 #pragma once
-
+#include <GLFW/glfw3.h>
 
 namespace Resources
 {
@@ -7,6 +7,6 @@ namespace Resources
 	{
 		unsigned int materialIndices;
 		unsigned int count;
-		unsigned int beginIndices;
+		GLuint beginIndices;
 	};
 }
