@@ -121,6 +121,13 @@ void Window::Update()
 			}
 		}
 
+		if (m_inputSystem->IsMouseButtonUp(EMouseButton::LEFT))
+			std::cout << ToString(m_inputSystem->GetMouseButtonState(EMouseButton::LEFT)) << std::endl;
+		if (m_inputSystem->IsMouseDoubleClicked(EMouseButton::MIDDLE))
+			std::cout << "Middle\n";
+
+		//std::cout << ToString(m_inputSystem->GetMouseButtonState(EMouseButton::LEFT)) << std::endl;
+
 		m_inputSystem->ClearRegisteredInputs();
 	}
 

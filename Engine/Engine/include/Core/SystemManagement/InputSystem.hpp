@@ -17,14 +17,15 @@ namespace Core::SystemManagement
 	{
 	private:
 		/* Stockage mouse buttons, keys and scroll */
-		std::unordered_map<EKey, EStateInput> m_registeredKeys;
-		std::unordered_map<EMouseButton, EStateInput> m_registeredMouseButtons;
+		std::unordered_map<EKey, EStateKey> m_registeredKeys;
+		std::unordered_map<EMouseButton, EStateMouseButton> m_registeredMouseButtons;
 		EStateScroll m_registeredScrollYAxis{ EStateScroll::UNUSED };
 
-		std::chrono::time_point<std::chrono::system_clock> m_now;
-		std::chrono::time_point<std::chrono::system_clock> m_before;
+		/* Double click handling */
+		std::chrono::time_point<std::chrono::system_clock> m_nowClock;
+		std::chrono::time_point<std::chrono::system_clock> m_beforeClock;
+		EMouseButton m_lastClickedButton{ EMouseButton::LEFT };
 		bool m_isTimeSet = false;
-		bool m_isClickingLeft = false;
 
 		/* Events */
 		ID m_keyPressedListenerID{ 0 };
@@ -52,14 +53,14 @@ namespace Core::SystemManagement
 		 * @param key: Key of which the state will be checked
 		 * @return State of the given key
 		 */
-		EStateInput GetKeyState(EKey key) const noexcept;
+		EStateKey GetKeyState(EKey key) const noexcept;
 
 		/**
 		 * Get the state (pressed or released) of the mouse button
 		 * @param button: Button of which the state will be checked
 		 * @return State of the given button
 		 */
-		EStateInput GetMouseButtonState(EMouseButton button) const noexcept;
+		EStateMouseButton GetMouseButtonState(EMouseButton button) const noexcept;
 
 		/**
 		 * Get the state (down or up) of the scroll
@@ -91,6 +92,12 @@ namespace Core::SystemManagement
 		 * @param button: Mouse button that will be indicated as released
 		 */
 		void SetMouseButtonUp(EMouseButton button) noexcept;
+
+		/**
+		 * Check whether the given button has been clicked on twice or not
+		 * @param mouseButton: Button to be checked
+		 */
+		void CheckDoubleClick(EMouseButton button) noexcept;
 
 		/**
 		 * Set the scroll of y-axis state
@@ -179,6 +186,12 @@ namespace Core::SystemManagement
 		bool IsMouseButtonUp(EMouseButton button) const noexcept;
 
 		/**
+		 * Indicate whether the given mouse button has been clicked on twice or not
+		 * @param button: Button of which the state will be checked
+		 */
+		bool IsMouseDoubleClicked(EMouseButton button) const noexcept;
+
+		/**
 		 * Indicate whether the scroll is down or not
 		 * @return True if the scroll is down, false otherwise
 		 */
@@ -191,20 +204,20 @@ namespace Core::SystemManagement
 		bool IsScrollUp() const noexcept;
 	};
 
-	inline EStateInput InputSystem::GetKeyState(EKey key) const noexcept
+	inline EStateKey InputSystem::GetKeyState(EKey key) const noexcept
 	{
 		if (IsKeyRegistered(key))
 			return m_registeredKeys.at(key);
 
-		return EStateInput::UNUSED;
+		return EStateKey::UNUSED;
 	}
 
-	inline EStateInput InputSystem::GetMouseButtonState(EMouseButton button) const noexcept
+	inline EStateMouseButton InputSystem::GetMouseButtonState(EMouseButton button) const noexcept
 	{
 		if (IsMouseButtonRegistered(button))
 			return m_registeredMouseButtons.at(button);
 
-		return EStateInput::UNUSED;
+		return EStateMouseButton::UNUSED;
 	}
 
 	inline EStateScroll InputSystem::GetScrollState() const noexcept
@@ -214,48 +227,47 @@ namespace Core::SystemManagement
 
 	inline void InputSystem::SetKeyDown(EKey key) noexcept
 	{
-		m_registeredKeys[key] = EStateInput::PRESS;
+		m_registeredKeys[key] = EStateKey::PRESS;
 	}
 
 	inline void InputSystem::SetKeyUp(EKey key) noexcept
 	{
-		m_registeredKeys[key] = EStateInput::UP;
+		m_registeredKeys[key] = EStateKey::UP;
 	}
 
 	inline void InputSystem::SetMouseButtonDown(EMouseButton button) noexcept
 	{
-		m_registeredMouseButtons[button] = EStateInput::PRESS;
+		m_registeredMouseButtons[button] = EStateMouseButton::PRESS;
 	}
 
 	inline void InputSystem::SetMouseButtonUp(EMouseButton button) noexcept
 	{
-		m_registeredMouseButtons[button] = EStateInput::UP;
+		m_registeredMouseButtons[button] = EStateMouseButton::UP;
+		CheckDoubleClick(button);
+	}
 
-		if (button == EMouseButton::LEFT || button == EMouseButton::RIGHT)
+	inline void InputSystem::CheckDoubleClick(EMouseButton button) noexcept
+	{
+		if (m_isTimeSet)
 		{
-			if (m_isTimeSet)
+			m_beforeClock = m_nowClock;
+			m_nowClock = std::chrono::system_clock::now();
+			double diff_ms = std::chrono::duration<double, std::milli>(m_nowClock - m_beforeClock).count();
+			if (diff_ms > 10 && diff_ms < 500)
 			{
-				m_before = m_now;
-				m_now = std::chrono::system_clock::now();
-
-				double diff_ms = std::chrono::duration<double, std::milli> (m_now - m_before).count();
-				if (diff_ms > 10 && diff_ms < 500)
+				if (button == m_lastClickedButton)
 				{
-					if ((button == EMouseButton::LEFT && m_isClickingLeft) || (button == EMouseButton::RIGHT && !m_isClickingLeft))
-					// Do something
-					std::cout << "test" << std::endl;
+					m_registeredMouseButtons[button] = EStateMouseButton::DOUBLECLICK;
+					m_isTimeSet = false;
 				}
-
-				m_isTimeSet = false;
-			}
-			else
-			{
-				m_now = std::chrono::system_clock::now();
-				m_isTimeSet = true;
 			}
 		}
-
-		m_isClickingLeft = (button == EMouseButton::LEFT);
+		else
+		{
+			m_nowClock = std::chrono::system_clock::now();
+			m_isTimeSet = true;
+		}
+		m_lastClickedButton = button;
 	}
 
 	inline void InputSystem::SetScrollYAxis(double yoffset) noexcept
@@ -270,12 +282,12 @@ namespace Core::SystemManagement
 	{
 		for (auto itr = m_registeredKeys.begin(); itr != m_registeredKeys.end();)
 		{
-			if (itr->second == EStateInput::PRESS)
+			if (itr->second == EStateKey::PRESS)
 			{
-				itr->second = EStateInput::DOWN;
+				itr->second = EStateKey::DOWN;
 				itr++;
 			}
-			else if (itr->second == EStateInput::UP)
+			else if (itr->second == EStateKey::UP)
 				itr = m_registeredKeys.erase(itr);
 			else
 				++itr;
@@ -286,12 +298,12 @@ namespace Core::SystemManagement
 	{
 		for (auto itr = m_registeredMouseButtons.begin(); itr != m_registeredMouseButtons.end();)
 		{
-			if (itr->second == EStateInput::PRESS)
+			if (itr->second == EStateMouseButton::PRESS)
 			{
-				itr->second = EStateInput::DOWN;
+				itr->second = EStateMouseButton::DOWN;
 				itr++;
 			}
-			else if (itr->second == EStateInput::UP)
+			else if (itr->second == EStateMouseButton::UP || itr->second == EStateMouseButton::DOUBLECLICK)
 				itr = m_registeredMouseButtons.erase(itr);
 			else
 				++itr;
@@ -323,32 +335,40 @@ namespace Core::SystemManagement
 
 	inline bool InputSystem::IsKeyPressed(EKey key) const noexcept
 	{
-		return IsKeyRegistered(key) && GetKeyState(key) == EStateInput::PRESS;
+		return IsKeyRegistered(key) && GetKeyState(key) == EStateKey::PRESS;
 	}
 
 	inline bool InputSystem::IsKeyDown(EKey key) const noexcept
 	{
-		return IsKeyRegistered(key) && GetKeyState(key) == EStateInput::DOWN || GetKeyState(key) == EStateInput::PRESS;
+		return IsKeyRegistered(key) && (GetKeyState(key) == EStateKey::DOWN ||
+			GetKeyState(key) == EStateKey::PRESS);
 	}
 
 	inline bool InputSystem::IsKeyUp(EKey key) const noexcept
 	{
-		return IsKeyRegistered(key) && GetKeyState(key) == EStateInput::UP;
+		return IsKeyRegistered(key) && GetKeyState(key) == EStateKey::UP;
 	}
 
 	inline bool InputSystem::IsMouseButtonPressed(EMouseButton button) const noexcept
 	{
-		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateInput::PRESS;
+		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateMouseButton::PRESS;
 	}
 
 	inline bool InputSystem::IsMouseButtonDown(EMouseButton button) const noexcept
 	{
-		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateInput::DOWN || GetMouseButtonState(button) == EStateInput::PRESS;
+		return IsMouseButtonRegistered(button) && (GetMouseButtonState(button) == EStateMouseButton::DOWN || 
+			GetMouseButtonState(button) == EStateMouseButton::PRESS);
 	}
 
 	inline bool InputSystem::IsMouseButtonUp(EMouseButton button) const noexcept
 	{
-		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateInput::UP;
+		return IsMouseButtonRegistered(button) && (GetMouseButtonState(button) == EStateMouseButton::UP ||
+			GetMouseButtonState(button) == EStateMouseButton::DOUBLECLICK);
+	}
+
+	inline bool InputSystem::IsMouseDoubleClicked(EMouseButton button) const noexcept
+	{
+		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateMouseButton::DOUBLECLICK;
 	}
 
 	inline bool InputSystem::IsScrollDown() const noexcept
