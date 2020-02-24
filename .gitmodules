@@ -1,0 +1,3 @@
+[submodule "Engine/Dependencies/Tracy"]
+	path = Engine/Dependencies/Tracy
+	url = https://bitbucket.org/wolfpld/tracy.git
