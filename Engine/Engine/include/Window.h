@@ -19,6 +19,7 @@ public:
 	Core::SystemManagement::EventSystem<EMouseButton> OnPressMouseButton;
 	Core::SystemManagement::EventSystem<EMouseButton> OnReleaseMouseButton;
 	Core::SystemManagement::EventSystem<double> OnScrollYAxis;
+	Core::SystemManagement::EventSystem<double, double> OnResizeWindow;
 
 	Core::Datastructure::RootObject* m_root;
 
@@ -26,7 +27,8 @@ public:
 	Window(const int height, const int width);
 	~Window();
 
-	void	Init(const int height, const int width);
+	void	Init(const int width, const int height);
+	void	SetSizeWindow(const double width, const double height);
 	void	Update();
 
 	void				SetCallbackToGLFW();

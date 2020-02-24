@@ -83,6 +83,8 @@ void Window::Init(const int width, const int height)
 		return;
 	}
 
+	OnResizeWindow += std::bind(&Window::SetSizeWindow, this, std::placeholders::_1, std::placeholders::_2);
+
 	glfwSetWindowUserPointer(m_window, this);
 	SetCallbackToGLFW();
 }
@@ -124,6 +126,13 @@ void	Window::Update()
 	}
 	m_root->Destroy();
 	m_root->RemoveDestroyed();
+}
+
+void Window::SetSizeWindow(const double width, const double height)
+{
+	m_width = width;
+	m_height = height;
+	m_root->SetCamerasRatio(static_cast<float>(m_width / m_height));
 }
 
 void Window::SetCallbackToGLFW()
@@ -186,9 +195,7 @@ GLFWwindowsizefun Window::SetWindowSizeToGLFW()
 		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (this_window)
 		{
-			this_window->m_width = width;
-			this_window->m_height = height;
-			this_window->m_root->SetCamerasRatio((float)width / (float)height);
+			this_window->OnResizeWindow(width, height);
 		}
 	};
 	return glfwSetWindowSizeCallback(m_window, window_size_callback);
