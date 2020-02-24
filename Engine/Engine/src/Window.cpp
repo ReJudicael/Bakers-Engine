@@ -46,41 +46,30 @@ void main()
 	//oColor = vec4(vUV,0.0f,0.0f);
 })GLSL";
 
+
 Window::Window()
+{
+	Init(1280, 720);
+}
+
+Window::Window(const int height, const int width)
+{
+	Init(height, width);
+}
+
+void Window::Init(const int width, const int height)
 {
 	if (!glfwInit())
 		return;
 
 	glfwDefaultWindowHints();
 	//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	m_window = glfwCreateWindow(1280, 720, "Default window", NULL, NULL);
-	glfwMakeContextCurrent(m_window);
-	glfwSwapInterval(1);
-
-	if (!gladLoadGL())
-	{
-		fprintf(stderr, "gladLoadGL failed. \n");
-		return;
-	}
-}
-
-Window::Window(const int height, const int width)
-{
-	if (!glfwInit())
-		return;
-	glfwDefaultWindowHints();
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	m_window = glfwCreateWindow(1280, 720, "Default window", NULL, NULL);
+	m_window = glfwCreateWindow(width, height, "Default window", NULL, NULL);
 	glfwMakeContextCurrent(m_window);
 	glfwSwapInterval(1);
 
@@ -89,6 +78,9 @@ Window::Window(const int height, const int width)
 		fprintf(stderr, "gladLoadGL failed. \n");
 		return;
 	}
+
+	glfwSetWindowUserPointer(m_window, this);
+	SetCallbackToGLFW();
 }
 
 Window::~Window()
@@ -130,4 +122,56 @@ void	Window::Update()
 	}
 	root->Destroy();
 	root->RemoveDestroyed();
+}
+
+void Window::SetCallbackToGLFW()
+{
+	SetKeyCallBackToGLFW();
+	SetMouseButtonCallBackToGLFW();
+	SetScrollCallBackToGLFW();
+}
+
+GLFWkeyfun Window::SetKeyCallBackToGLFW()
+{
+	GLFWkeyfun key_callback = [](GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (this_window)
+		{
+			if (action == GLFW_PRESS)
+				this_window->OnPressKey(static_cast<EKey>(key));
+			if (action == GLFW_RELEASE)
+				this_window->OnReleaseKey(static_cast<EKey>(key));
+		}
+	};
+	return glfwSetKeyCallback(m_window, key_callback);
+}
+
+GLFWmousebuttonfun Window::SetMouseButtonCallBackToGLFW()
+{
+	GLFWmousebuttonfun mouse_button_callback = [](GLFWwindow* window, int button, int action, int mods)
+	{
+		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (this_window)
+		{
+			if (action == GLFW_PRESS)
+				this_window->OnPressMouseButton(static_cast<EMouseButton>(button));
+			else if (action == GLFW_RELEASE)
+				this_window->OnReleaseMouseButton(static_cast<EMouseButton>(button));
+		}
+	};
+	return glfwSetMouseButtonCallback(m_window, mouse_button_callback);
+}
+
+GLFWscrollfun Window::SetScrollCallBackToGLFW()
+{
+	GLFWscrollfun scroll_callback = [](GLFWwindow* window, double xoffset, double yoffset)
+	{
+		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (this_window)
+		{
+			this_window->OnScrollYAxis(yoffset);
+		}
+	};
+	return glfwSetScrollCallback(m_window, scroll_callback);
 }

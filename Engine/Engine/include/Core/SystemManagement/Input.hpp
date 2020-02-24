@@ -3,8 +3,26 @@
 #include <GLFW/glfw3.h>
 #include <string>
 
-enum class EStateInput : bool
+enum class EStateKey : int
 {
+	UNUSED = -1,
+	UP = GLFW_RELEASE,
+	PRESS = GLFW_PRESS,
+	DOWN,
+};
+
+enum class EStateMouseButton : int
+{
+	UNUSED = -1,
+	UP = GLFW_RELEASE,
+	PRESS = GLFW_PRESS,
+	DOWN,
+	DOUBLECLICK
+};
+
+enum class EStateScroll : int
+{
+	UNUSED = -1,
 	UP = 0,
 	DOWN,
 };
@@ -147,8 +165,71 @@ enum class EKey : int
 	RIGHT_CONTROL = GLFW_KEY_RIGHT_CONTROL,  //
 	RIGHT_ALT = GLFW_KEY_RIGHT_ALT,          //
 	RIGHT_SUPER = GLFW_KEY_RIGHT_SUPER,      //
-	MENU = GLFW_KEY_MENU
+	MENU = GLFW_KEY_MENU                     //
 };
+
+inline std::string ToString(const EStateKey s) noexcept
+{
+	switch (s)
+	{
+	case EStateKey::UNUSED:
+		return "EStateInput::UNUSED";
+
+	case EStateKey::UP:
+		return "EStateInput::UP";
+
+	case EStateKey::PRESS:
+		return "EStateInput::PRESS";
+
+	case EStateKey::DOWN:
+		return "EStateInput::DOWN";
+
+	default:
+		return "Unknow state input";
+	}
+}
+
+inline std::string ToString(const EStateMouseButton s) noexcept
+{
+	switch (s)
+	{
+	case EStateMouseButton::UNUSED:
+		return "EStateMouseButton::UNUSED";
+
+	case EStateMouseButton::UP:
+		return "EStateMouseButton::UP";
+
+	case EStateMouseButton::PRESS:
+		return "EStateMouseButton::PRESS";
+
+	case EStateMouseButton::DOWN:
+		return "EStateMouseButton::DOWN";
+
+	case EStateMouseButton::DOUBLECLICK:
+		return "EStateMouseButton::DOUBLECLICK";
+
+	default:
+		return "Unknow state input";
+	}
+}
+
+inline std::string ToString(const EStateScroll s) noexcept
+{
+	switch (s)
+	{
+	case EStateScroll::UNUSED:
+		return "EStateScroll::UNUSED";
+
+	case EStateScroll::UP:
+		return "EStateScroll::UP";
+
+	case EStateScroll::DOWN:
+		return "EStateScroll::DOWN";
+
+	default:
+		return "Unknow state input";
+	}
+}
 
 inline std::string ToString(const EMouseButton b) noexcept
 {
