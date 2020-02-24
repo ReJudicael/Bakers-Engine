@@ -24,6 +24,9 @@ public:
 	void	Init(const int height, const int width);
 	void	Update();
 
+	GLFWwindow* GetGLFWwindow() { return m_window; }
+
+private:
 	void				SetCallbackToGLFW();
 	GLFWkeyfun			SetKeyCallBackToGLFW();
 	GLFWmousebuttonfun	SetMouseButtonCallBackToGLFW();

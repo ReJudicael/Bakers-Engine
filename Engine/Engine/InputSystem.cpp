@@ -21,4 +21,11 @@ namespace Core::SystemManagement
 		m_window->OnReleaseMouseButton -= m_mouseButtonReleasedListenerID;
 		m_window->OnScrollYAxis -= m_scrollListenerID;
 	}
+
+	Core::Maths::Vec2 SystemManagement::InputSystem::GetMousePos() const noexcept
+	{
+		double pos[2];
+		glfwGetCursorPos(m_window->GetGLFWwindow(), &pos[0], &pos[1]);
+		return Core::Maths::Vec2(pos[0], pos[1]);
+	}
 }
