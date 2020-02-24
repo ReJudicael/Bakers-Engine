@@ -1,5 +1,8 @@
 #pragma once
 
+#include <chrono>
+#include <iostream>
+
 #include "EventSystem.hpp"
 #include "Input.hpp"
 
@@ -17,6 +20,11 @@ namespace Core::SystemManagement
 		std::unordered_map<EKey, EStateInput> m_registeredKeys;
 		std::unordered_map<EMouseButton, EStateInput> m_registeredMouseButtons;
 		EStateScroll m_registeredScrollYAxis{ EStateScroll::UNUSED };
+
+		std::chrono::time_point<std::chrono::system_clock> m_now;
+		std::chrono::time_point<std::chrono::system_clock> m_before;
+		bool m_isTimeSet = false;
+		bool m_isClickingLeft = false;
 
 		/* Events */
 		ID m_keyPressedListenerID{ 0 };
@@ -222,6 +230,32 @@ namespace Core::SystemManagement
 	inline void InputSystem::SetMouseButtonUp(EMouseButton button) noexcept
 	{
 		m_registeredMouseButtons[button] = EStateInput::UP;
+
+		if (button == EMouseButton::LEFT || button == EMouseButton::RIGHT)
+		{
+			if (m_isTimeSet)
+			{
+				m_before = m_now;
+				m_now = std::chrono::system_clock::now();
+
+				double diff_ms = std::chrono::duration<double, std::milli> (m_now - m_before).count();
+				if (diff_ms > 10 && diff_ms < 500)
+				{
+					if ((button == EMouseButton::LEFT && m_isClickingLeft) || (button == EMouseButton::RIGHT && !m_isClickingLeft))
+					// Do something
+					std::cout << "test" << std::endl;
+				}
+
+				m_isTimeSet = false;
+			}
+			else
+			{
+				m_now = std::chrono::system_clock::now();
+				m_isTimeSet = true;
+			}
+		}
+
+		m_isClickingLeft = (button == EMouseButton::LEFT);
 	}
 
 	inline void InputSystem::SetScrollYAxis(double yoffset) noexcept
