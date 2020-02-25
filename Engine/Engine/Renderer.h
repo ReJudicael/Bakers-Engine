@@ -15,7 +15,6 @@ public:
 
 	GLuint CreateProgram(const char* vertex, const char* fragment);
 	GLuint CreateTextureFromColor(const Core::Maths::Vec4& color);
-	static GLuint CreateTextureFromImage(const char* filename, bool shouldFlip = true);
 
 	void	Render();
 	void	AddMesh(Mesh* newMesh);

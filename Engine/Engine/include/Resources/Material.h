@@ -1,7 +1,10 @@
 #pragma once
 #include <GLFW/glfw3.h>
 #include <vector>
+#include <memory>
+
 #include "Vec3.hpp"
+#include "TextureData.h"
 
 
 namespace Resources
@@ -14,8 +17,7 @@ namespace Resources
 
 		Core::Maths::Vec3 materialColor;
 
-		std::vector<GLuint> textures;
-
+		std::vector<std::shared_ptr<TextureData>> textures;
 	};
 }
 

@@ -1,13 +1,16 @@
 #pragma once
 #include <vector>
+#include <list>
 #include <unordered_map>
+#include <memory>
 
 #include "Mesh.h"
 #include "Vec3.hpp"
 #include "Vec2.hpp"
-#include "TextureData.h"
+//#include "TextureData.h"
 #include "ModelData.h"
 #include "SceneData.h"
+#include "Vertex.h" 
 
 //#define OFFSETOF(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
 
@@ -22,23 +25,42 @@ namespace Resources::Loader
 	class ResourcesManager
 	{
 	private :
-		std::unordered_map<std::string, GLuint*>			m_shaders;
-		std::unordered_map<std::string, TextureData*>		m_textures;
-		std::unordered_map<std::string, ModelData*>			m_models;
-		std::unordered_map<std::string, SceneData>			m_scenes;
+		std::unordered_map<std::string, std::shared_ptr<GLuint>>			m_shaders;
+		std::unordered_map<std::string, std::shared_ptr<TextureData>>			m_textures;
+		std::unordered_map<std::string, std::shared_ptr<Material>>			m_materials;
+		std::unordered_map<std::string, std::shared_ptr<ModelData>>			m_models;
+		std::unordered_map<std::string, std::shared_ptr<SceneData>>			m_scenes;
 
+		std::list<std::shared_ptr<TextureData>>								m_texturesToLink;
+		std::list<std::shared_ptr<ModelData>>								m_modelsToLink;
 	public :
-		void LoadResourcesIRenderable(Mesh* renderObject, const char* fileName, Core::Datastructure::Object* rootComponent = nullptr);
+		void LoadResourcesIRenderable(Mesh* renderObject, const char* fileName, 
+										Core::Datastructure::Object* rootComponent = nullptr);
 
-		void LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject, const bool newObjectChild = false);
+		bool LoadAssimpScene(Mesh* renderObject, const char* fileName,
+				Core::Datastructure::Object* rootComponent = nullptr);
 
-		void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene, const std::string& directory);
+		void CreateScene(std::shared_ptr<SceneData> scene, Core::Datastructure::Object* rootObject);
 
-		Material LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, const std::string& directory);
+		void RecurciveCreateScene(const Node& scene, Core::Datastructure::Object* rootObject);
 
-		void LoadSceneResources(const aiScene* scene, const std::string& directory);
+		void LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject, 
+										const bool newObjectChild = false);
+
+		void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene, const std::string& fileName, 
+												const std::string& directory);
+
+		void LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material> material,
+												const std::string& directory);
+
+		void LoadSceneResources(const aiScene* scene, const std::string& fileNameconst,const std::string& directory);
 
 		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, Node& currentNode, const std::string& directory);
+
+		void CreateTextureFromImage(const char* filename, std::shared_ptr<TextureData> textureData, bool shouldFlip = true);
+
+		void linkAllTextureToOpenGl();
+		void linkAllModelToOpenGl();
 		//void DestroyResourcesManager();
 	};
 

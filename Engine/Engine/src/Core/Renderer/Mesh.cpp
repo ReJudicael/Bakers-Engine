@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "Mat4.hpp"
 #include "Object.hpp"
+#include "OpenGLLinkState.h"
 
 Mesh::Mesh() : ComponentBase()
 {
@@ -67,18 +68,29 @@ void Mesh::OnDraw()
 
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
+	if (m_modelMesh->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+		return
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_TRUE, trs.m_array);
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "uProj"), 1, GL_FALSE, m_projection);
 
-	glBindVertexArray(m_VAO);
+	glBindVertexArray(m_modelMesh->VAOModel);
 	glUseProgram(m_program);
-	for (int i = 0; i < m_offsetMesh.size(); i++)
+	for (int i = 0; i < m_modelMesh->offsetsMesh.size(); i++)
 	{
-		if (m_material[m_offsetMesh[i].materialIndices].textures.size() > 0)
-			glBindTexture(GL_TEXTURE_2D, m_material[m_offsetMesh[i].materialIndices].textures[0]);
+		/*if (m_material[m_offsetMesh[i].materialIndices].textures.size() > 0)
+			glBindTexture(GL_TEXTURE_2D, *m_material[m_offsetMesh[i].materialIndices]->textures[0]);
 
 		glDrawElements(GL_TRIANGLES, m_offsetMesh[i].count, GL_UNSIGNED_INT, 
-			(GLvoid*)(m_offsetMesh[i].beginIndices * sizeof(GLuint)));
+			(GLvoid*)(m_offsetMesh[i].beginIndices * sizeof(GLuint)));*/
+		Resources::OffsetMesh currOffsetMesh = m_modelMesh->offsetsMesh[i];
+
+		if (m_modelMesh->materialsModel[currOffsetMesh.materialIndices]->textures.size() > 0)
+			if(m_material[currOffsetMesh.materialIndices]->textures[0]->stateTexture ==
+				Resources::EOpenGLLinkState::ISLINK)
+				glBindTexture(GL_TEXTURE_2D, *m_material[currOffsetMesh.materialIndices]->textures[0]->texture);
+
+		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,
+			(GLvoid*)(currOffsetMesh.beginIndices * sizeof(GLuint)));
 	}
 
 	glBindVertexArray(0);

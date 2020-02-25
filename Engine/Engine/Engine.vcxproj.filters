@@ -191,5 +191,11 @@
     <ClInclude Include="include\Resources\TextureData.h">
       <Filter>Fichiers d%27en-tête\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="include\Resources\Vertex.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\OpenGLLinkState.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -103,15 +103,18 @@ void	Window::Update()
 	root->AddComponent(c);
 	c->UpdateCamera();
 	Renderer r;
+	Resources::Loader::ResourcesManager manager;
+	
 	//Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
 	Core::Datastructure::Object* o{ root->CreateChild({}) };
 	Mesh* m{ new Mesh() };
-	Mesh* testMesh{ new Mesh() };
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
-	testMesh->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
-	Resources::Loader::ResourcesManager manager;
 	manager.LoadResourcesIRenderable(m, "Resources/Umbreon/UmbreonHighPoly.obj", o);
-	manager.LoadResourcesIRenderable(testMesh, "Resources/level.fbx", o);
+
+	Mesh* testMesh{ new Mesh() };
+	testMesh->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
+	//manager.LoadResourcesIRenderable(testMesh, "Resources/level.fbx", o);
+
 	//o->AddComponent(m);
 	o->SetScale(Core::Maths::Vec3(.1f, .1f, .1f));
 	o->SetPos({ 0, -0.f, -1.f });
@@ -122,6 +125,8 @@ void	Window::Update()
 	{
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
+		manager.linkAllTextureToOpenGl();
+		manager.linkAllModelToOpenGl();
 		root->StartFrame();
 		root->Update(0.2f);
 		glClearColor(0, 0, 0, 1);
