@@ -31,6 +31,9 @@ public:
 	void	SetSizeWindow(const double width, const double height);
 	void	Update();
 
+	GLFWwindow* GetGLFWwindow() { return m_window; }
+
+private:
 	void				SetCallbackToGLFW();
 	GLFWkeyfun			SetKeyCallBackToGLFW();
 	GLFWmousebuttonfun	SetMouseButtonCallBackToGLFW();
