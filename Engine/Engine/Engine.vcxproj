@@ -189,7 +189,6 @@
     <ClCompile Include="src\Core\Datastructure\IRenderable.cpp" />
     <ClCompile Include="src\Core\Datastructure\IUpdatable.cpp" />
     <ClCompile Include="src\Core\Datastructure\RootObject.cpp" />
-    <ClCompile Include="src\Core\SystemManagement\TaskSystem.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="src\Core\Datastructure\ComponentBase.cpp" />
