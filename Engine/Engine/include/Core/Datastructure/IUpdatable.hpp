@@ -25,19 +25,13 @@ namespace Core::Datastructure
 		 * Called by the engine to update the component
 		 * @param deltaTime: Time since previous frame
 		 */
-		inline void			Update(float deltaTime);
+		void				Update(float deltaTime);
 
 		/**
 		 * Returns if the component is updated.
 		 */
 		inline bool			IsUpdating();
 	};
-
-	inline void	IUpdatable::Update(float deltaTime)
-	{
-		if (m_isUpdating && m_isActive)
-			OnUpdate(deltaTime);
-	}
 	inline bool IUpdatable::IsUpdating()
 	{
 		return m_isUpdating;

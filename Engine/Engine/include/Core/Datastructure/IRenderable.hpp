@@ -30,13 +30,6 @@ namespace Core::Datastructure
 		 * Function called by the engine to draw the object
 		 * @param cameras: Cameras of the scene
 		 */
-		void	Draw(const std::list<ICamera*>& cameras)
-		{
-			if (IsInit() && m_isActive)
-			{
-				for (auto it {cameras.begin()}; it != cameras.end(); ++it)
-					OnDraw(*it);
-			}
-		}
+		void	Draw(const std::list<ICamera*>& cameras);
 	};
 }

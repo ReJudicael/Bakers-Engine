@@ -1,4 +1,5 @@
 #include "Transform.hpp"
+#include "Debug.h "
 
 namespace Core::Datastructure
 {
@@ -6,6 +7,8 @@ namespace Core::Datastructure
 	{
 		if (m_isGUpdated)
 			return;
+		ZoneScoped
+			ZoneText("Updating transform", 19)
 		m_gpos = t.GetGlobalPos() + (t.GetGlobalRot() * Maths::Quat(0, m_pos * t.GetGlobalScale()) * t.GetGlobalRot().InversedUnit()).xyz;
 		m_grot = (t.GetGlobalRot() * m_rot).Normalized();
 		m_gscale = m_scale * t.GetGlobalScale();
@@ -55,6 +58,8 @@ namespace Core::Datastructure
 		if (m_isTrsUpdated)
 			return m_TRS;
 
+		ZoneScoped
+			ZoneText("Updating local TRS", 19)
 		constexpr Maths::Mat<4, 4> identity{ identity.Identity() };
 		Maths::Mat4 rot{ m_rot.GetMatUnit() };
 		
@@ -78,6 +83,8 @@ namespace Core::Datastructure
 		if (m_isGTrsUpdated)
 			return m_gTRS;
 
+		ZoneScoped
+			ZoneText("Updating global TRS", 20)
 		constexpr Maths::Mat<4, 4> identity{ identity.Identity() };
 		Maths::Mat4 rot{ m_grot.GetMatUnit() };
 
