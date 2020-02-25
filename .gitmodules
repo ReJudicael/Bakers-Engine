@@ -1,3 +1,0 @@
-[submodule "Engine/Dependencies/Tracy"]
-	path = Engine/Dependencies/Tracy
-	url = https://github.com/TheoHagry/Tracy.git
