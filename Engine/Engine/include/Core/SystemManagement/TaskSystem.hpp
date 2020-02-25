@@ -22,16 +22,18 @@ namespace Core::SystemManagement
 
 		unsigned int m_maxThreads;
 
+	public:
 		/**
 		 * Give task-receiving method to threads
 		 */
-		TaskSystem();
+		TaskSystem() noexcept;
 
 		/**
 		 * Stop all threads and clear data
 		 */
 		~TaskSystem();
 
+	private:
 		/**
 		 * Method allowing each thread to do its task
 		 * @param indexThread: Index of the thread calling this method
@@ -74,6 +76,45 @@ namespace Core::SystemManagement
 		 */
 		unsigned int GetMaxThreads() const noexcept;
 	};
+
+	inline TaskSystem::TaskSystem() noexcept :
+		m_maxThreads{ std::thread::hardware_concurrency() }
+	{
+		m_isAllowed.store(true);
+
+		// Give task-receiving method to threads
+		for (unsigned int i = 0; i < m_maxThreads; ++i)
+			m_threads.push_back(std::thread(&TaskSystem::WaitTaskLoop, this));
+	}
+
+	inline TaskSystem::~TaskSystem()
+	{
+		// If EndTaskSystem has not been used, call EndTaskSystem in destructor
+		if (m_isAllowed.load())
+			EndTaskSystem();
+
+		// Clear threads vector
+		m_threads.clear();
+	}
+
+	inline void TaskSystem::WaitTaskLoop() noexcept
+	{
+		Task task;
+		while (true)
+		{
+			{
+				std::unique_lock<std::mutex> queueTaskLock(m_lock);
+				m_conditionVariable.wait(queueTaskLock, [this] { return !m_isAllowed.load() || !m_queueTask.empty(); });
+
+				if (!m_isAllowed.load() && m_queueTask.empty())
+					return;
+
+				task = m_queueTask.front(); // Take first task in queueTask
+				m_queueTask.pop();
+			}
+			task(); // Thread does its task
+		}
+	}
 
 	template<class Function, class ...Args>
 	inline void TaskSystem::AddTask(Function&& f, Args&& ...args) noexcept
@@ -118,6 +159,18 @@ namespace Core::SystemManagement
 		m_conditionVariable.notify_one();
 
 		return res;
+	}
+
+	inline void TaskSystem::EndTaskSystem() noexcept
+	{
+		{
+			std::unique_lock<std::mutex> lock(m_lock);
+			m_isAllowed.store(false);
+		}
+		m_conditionVariable.notify_all();
+
+		for (unsigned int i = 0; i < m_maxThreads; ++i)
+			m_threads.at(i).join(); // Join each thread
 	}
 
 	inline unsigned int TaskSystem::GetMaxThreads() const noexcept

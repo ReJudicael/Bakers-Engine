@@ -99,9 +99,6 @@
     <ClCompile Include="src\Core\Datastructure\IRenderable.cpp">
       <Filter>Fichiers sources\Core\Datastructure</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\SystemManagement\TaskSystem.cpp">
-      <Filter>Fichiers sources\Core\SystemManagement</Filter>
-    </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>Fichiers sources\Core\SystemManagement</Filter>
     </ClCompile>
