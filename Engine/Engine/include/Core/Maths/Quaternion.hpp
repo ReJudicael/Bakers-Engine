@@ -112,9 +112,9 @@ namespace Core::Maths
 		{
 			float cx{ cos(eulerX / 2.f) }, cy{ cos(eulerY / 2.f) }, cz{ cos(eulerZ / 2.f) };
 			float sx{ sin(eulerX / 2.f) }, sy{ sin(eulerY / 2.f) }, sz{ sin(eulerZ / 2.f) };
-			w = cx * cy * cz - sx * sy * sz;
+			w = cx * cy * cz + sx * sy * sz;
 			x = sx * cy * cz - cx * sy * sz;
-			y = cx * sy * cz - sx * cy * sz;
+			y = cx * sy * cz + sx * cy * sz;
 			z = cx * cy * sz - sx * sy * cz;
 		}
 
@@ -468,6 +468,19 @@ namespace Core::Maths
 		inline void					Print() const noexcept
 		{
 			std::cout << ToString() << std::endl;
+		}
+
+		static Quaternion	AngleAxis(float angle, Core::Maths::Vec3 axis)
+		{
+			Quaternion q;
+			float s = sin(angle * 0.5);
+
+			q.w = cos(angle * 0.5);
+			q.x = axis.x * s;
+			q.y = axis.y * s;
+			q.z = axis.z * s;
+
+			return q.Normalized();
 		}
 	};
 

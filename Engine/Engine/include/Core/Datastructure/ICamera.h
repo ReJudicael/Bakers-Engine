@@ -16,7 +16,7 @@ namespace Core::Datastructure
 		//float m_phi = 0;
 
 		Core::Maths::Vec3	m_front;
-		Core::Maths::Vec3	m_left;
+		Core::Maths::Vec3	m_right;
 
 		bool				m_isPerspectiveUpdated{ false };
 		bool				m_isCamUpdated{ false };

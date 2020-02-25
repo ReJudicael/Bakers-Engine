@@ -129,6 +129,7 @@ void	Window::Update()
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		m_root->Render();
+		m_inputSystem->ClearRegisteredInputs();
 	}
 	m_root->Destroy();
 	m_root->RemoveDestroyed();

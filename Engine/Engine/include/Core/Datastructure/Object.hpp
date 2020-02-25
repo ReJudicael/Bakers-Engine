@@ -102,7 +102,7 @@ namespace Core::Datastructure
 		/**
 		 * Rotates the object in local space by given vector
 		 * @param q: Quaternion to rotate by
-		 * @return Const reference to rotaion of the object
+		 * @return Const reference to rotation of the object
 		 */
 		const Maths::Quat&	Rotate(const Maths::Quat& q) noexcept
 		{
