@@ -87,17 +87,22 @@ void Window::Init(const int width, const int height)
 
 	glfwSetWindowUserPointer(m_window, this);
 	SetCallbackToGLFW();
+
+	m_inputSystem = new Core::SystemManagement::InputSystem(this);
 }
 
 Window::~Window()
 {
 	glfwDestroyWindow(m_window);
 	glfwTerminate();
+
+	if (m_inputSystem)
+		delete m_inputSystem;
 }
 
 void	Window::Update()
 {
-	m_root = Core::Datastructure::RootObject::CreateRootNode();
+	m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem);
 	Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
 
 	PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
@@ -114,6 +119,7 @@ void	Window::Update()
 	o->SetRot({ -90, 0.f, 0.f });
 	m->SendProjectionMatrix(c->GetPerspectiveMatrix());
 	r.AddMesh(m);
+
 	while (!glfwWindowShouldClose(m_window))
 	{
 		glfwSwapBuffers(m_window);

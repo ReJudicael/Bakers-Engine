@@ -1,5 +1,7 @@
 #pragma once
 
+#include "InputSystem.hpp"
+
 namespace Core::Datastructure
 {
 	class Object;
@@ -44,6 +46,12 @@ namespace Core::Datastructure
 		}
 
 		/**
+		 * Returns input system stored in root node
+		 * @return Input System pointer from root
+		 */
+		SystemManagement::InputSystem* Input() noexcept;
+
+		/**
 		 * Function called by the engine to start a component.
 		 */
 		inline void		Start();
@@ -81,7 +89,6 @@ namespace Core::Datastructure
 		 */
 		virtual void	OnDestroy() {};
 	};
-
 
 	void IComponent::Start()
 	{
