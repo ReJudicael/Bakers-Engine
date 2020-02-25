@@ -165,6 +165,13 @@ namespace Core::SystemManagement
 		bool IsKeyUp(EKey key) const noexcept;
 
 		/**
+		 * Indicate whether the given key is unused or not
+		 * @param key: Key of which the state will be checked
+		 * @return True if the key is currently unused, false otherwise
+		 */
+		bool IsKeyUnused(EKey key) const noexcept;
+
+		/**
 		 * Indicate whether the given mouse button is pressed or not
 		 * @param button: Button of which the state will be checked
 		 * @return True if the button is currently pressed during one frame, false otherwise
@@ -184,6 +191,13 @@ namespace Core::SystemManagement
 		 * @return True if the button is currently released, false otherwise
 		 */
 		bool IsMouseButtonUp(EMouseButton button) const noexcept;
+
+		/**
+		 * Indicate whether the given mouse button is unused or not
+		 * @param button: Button of which the state will be checked
+		 * @return True if the button is currently unused, false otherwise
+		 */
+		bool IsMouseButtonUnused(EMouseButton button) const noexcept;
 
 		/**
 		 * Indicate whether the given mouse button has been clicked on twice or not
@@ -349,6 +363,11 @@ namespace Core::SystemManagement
 		return IsKeyRegistered(key) && GetKeyState(key) == EStateKey::UP;
 	}
 
+	inline bool InputSystem::IsKeyUnused(EKey key) const noexcept
+	{
+		return !IsKeyRegistered(key);
+	}
+
 	inline bool InputSystem::IsMouseButtonPressed(EMouseButton button) const noexcept
 	{
 		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateMouseButton::PRESS;
@@ -364,6 +383,11 @@ namespace Core::SystemManagement
 	{
 		return IsMouseButtonRegistered(button) && (GetMouseButtonState(button) == EStateMouseButton::UP ||
 			GetMouseButtonState(button) == EStateMouseButton::DOUBLECLICK);
+	}
+
+	inline bool InputSystem::IsMouseButtonUnused(EMouseButton button) const noexcept
+	{
+		return !IsMouseButtonRegistered(button);
 	}
 
 	inline bool InputSystem::IsMouseDoubleClicked(EMouseButton button) const noexcept
