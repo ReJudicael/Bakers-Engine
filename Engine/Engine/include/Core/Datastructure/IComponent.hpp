@@ -46,13 +46,13 @@ namespace Core::Datastructure
 		/**
 		 * Function called by the engine to start a component.
 		 */
-		inline void		Start();
+		void			Start();
 
 		/**
 		 * Marks the component for destruction, calling OnDestroy immediatly
 		 * and the destructor afterward
 		 */
-		inline void		Destroy();
+		void			Destroy();
 
 		/**
 		 * Returns if the component has been destroyed
@@ -81,21 +81,4 @@ namespace Core::Datastructure
 		 */
 		virtual void	OnDestroy() {};
 	};
-
-
-	void IComponent::Start()
-	{
-		if (m_isInit || !m_isActive)
-			return;
-		OnStart();
-		m_isInit = true;
-	}
-
-	void IComponent::Destroy()
-	{
-		if (m_isDestroyed)
-			return;
-		OnDestroy();
-		m_isDestroyed = true;
-	}
 }

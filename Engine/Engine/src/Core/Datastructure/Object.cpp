@@ -1,10 +1,13 @@
 #include "Object.hpp"
 #include "RootObject.hpp"
+#include "Debug.h"
 
 namespace Core::Datastructure
 {
 	const Transform& Object::GetUpdatedTransform() noexcept
 	{
+		ZoneScoped
+			ZoneText("Updating and returning updated transform", 41)
 		if (!m_transform.IsGPosUpdated())
 		{
 			if (m_parent == this || m_parent == nullptr)

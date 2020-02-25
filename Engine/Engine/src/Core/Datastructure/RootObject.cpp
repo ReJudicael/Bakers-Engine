@@ -12,7 +12,7 @@ namespace Core::Datastructure
 	void RootObject::StartFrame() noexcept
 	{
 		ZoneScoped
-			ZoneText("Start of components done here ", 12)
+			ZoneText("Start of components done here", 30)
 		for (auto it{ m_componentsToStart.begin() }; it != m_componentsToStart.end();)
 		{
 			(*it)->Start();
@@ -26,7 +26,7 @@ namespace Core::Datastructure
 	void RootObject::Update(float deltaTime) const noexcept
 	{
 		ZoneScoped
-			ZoneText("Updating of components done here ", 12)
+			ZoneText("Updating of components done here", 33)
 		for (auto it{ m_updatables.begin() }; it != m_updatables.end(); ++it)
 			(*it)->Update(deltaTime);
 	}
@@ -34,7 +34,7 @@ namespace Core::Datastructure
 	void RootObject::Render() const noexcept
 	{
 		ZoneScoped
-			ZoneText("Render of components done here ", 12)
+			ZoneText("Render of components done here", 31)
 		for (auto it{ m_renderables.begin() }; it != m_renderables.end(); ++it)
 			(*it)->Draw(m_cameras);
 	}
@@ -79,7 +79,7 @@ namespace Core::Datastructure
 	void RootObject::RemoveDestroyed() noexcept
 	{
 		ZoneScoped
-			ZoneText("Removing of destroyed components done here ", 12)
+			ZoneText("Removing of destroyed components done here", 43)
 		for (auto it{ m_destroyedComponents.begin() }; it != m_destroyedComponents.end(); ++it)
 			delete* it;
 		m_destroyedComponents.clear();

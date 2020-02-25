@@ -1,11 +1,14 @@
 #include "ICamera.h"
 #include "RootObject.hpp"
+#include "Debug.h"
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 {
 	
 	if (!m_isPerspectiveUpdated)
 	{
+		ZoneScoped
+			ZoneText("Generating perspective matrix", 30)
 		m_perspective = OnGeneratePerspective();
 		m_isPerspectiveUpdated = true;
 	}
@@ -16,6 +19,8 @@ const Core::Maths::Mat4& Core::Datastructure::ICamera::GetCameraMatrix()
 {
 	if (!m_isCamUpdated)
 	{
+		ZoneScoped
+			ZoneText("Generating camera matrix", 25)
 		m_cameraMatrix = OnGenerateCamera();
 		m_isCamUpdated = true;
 	}
