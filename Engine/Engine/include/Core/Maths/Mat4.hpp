@@ -290,6 +290,17 @@ namespace Core::Maths
 		 * @return Determinant of current matrix
 		 */
 		inline constexpr float				Det() const noexcept;
+
+		/**
+		 * Returns the matrix in a string format, with a tabulation
+		 * between each number and end line at the end of each line
+		 * @return The string representation of the current matrix
+		 */
+		inline std::string					ToString() const noexcept;
+		/**
+		 * Print current matrix to the console
+		 */
+		inline void							Print() const noexcept;
 	};
 
 	constexpr Core::Maths::Mat4::Mat4(const Mat4& m) noexcept : m_array()
@@ -876,6 +887,29 @@ namespace Core::Maths
 	constexpr void	Mat4::Inverse()
 	{
 		*this = Inversed();
+	}
+
+	inline std::string					Mat4::ToString() const noexcept
+	{
+		std::string	s;
+		for (unsigned i{ 0 }, j{ 0 }; i < 4; ++i)
+		{
+			for (j = 0; j < 4; ++j)
+				s += std::to_string(Get(i, j)) + '\t';
+			s.push_back('\n');
+		}
+
+		return s;
+	}
+
+	inline void							Mat4::Print() const noexcept
+	{
+		for (unsigned i{ 0 }, j{ 0 }; i < 4; ++i)
+		{
+			for (j = 0; j < 4; ++j)
+				std::cout << Get(i, j) << '\t';
+			std::cout << std::endl;
+		}
 	}
 }
 

@@ -156,6 +156,27 @@ namespace Core::Maths
 		 * @return Copy of the result
 		 */
 		inline constexpr Vec2		operator/= (const float f) noexcept;
+
+		/**
+		 * Converts vector to string format
+		 * @return String version of the current vector
+		 */
+		inline std::string			ToString() const noexcept
+		{
+			std::string s;
+			s += std::to_string(x) + " ";
+			s += std::to_string(y);
+			
+			return s;
+		}
+
+		/**
+		 * Print current vector to the console
+		 */
+		inline void					Print() const noexcept
+		{
+			std::cout << ToString() << std::endl;
+		}
 	};
 
 	inline constexpr Core::Maths::Vec2::Vec2() noexcept : x {0}, y {0}

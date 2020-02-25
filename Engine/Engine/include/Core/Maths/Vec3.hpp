@@ -433,7 +433,15 @@ namespace Core::Maths
 		 */
 		inline std::string			ToString() const noexcept
 		{
-			return std::to_string(x) + std::to_string(y) + std::to_string(z);
+			return std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z);
+		}
+
+		/**
+		 * Print current vector to the console
+		 */
+		inline void					Print() const noexcept
+		{
+			std::cout << ToString() << std::endl;
 		}
 	};
 }

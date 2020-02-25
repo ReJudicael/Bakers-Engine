@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "Mat.hpp"
+#include <iostream>
 
 namespace Core::Maths
 {
@@ -409,9 +410,17 @@ namespace Core::Maths
 			std::string s;
 			for (unsigned i{ 0 }; i < Size; ++i)
 			{
-				s += std::to_string(m_vec[i]);
+				s += std::to_string(m_vec[i]) + " ";
 			}
 			return s;
+		}
+
+		/**
+		 * Print current vector to the console
+		 */
+		inline void					Print() const noexcept
+		{
+			std::cout << ToString() << std::endl;
 		}
 	};
 }
