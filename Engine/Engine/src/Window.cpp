@@ -8,6 +8,7 @@
 #include "Loadresources.h"
 #include "Camera.h"
 #include "Debug.h"
+#include "TaskSystem.hpp"
 
 static const char* gVertexShaderStr = R"GLSL(
 // Attributes
@@ -98,7 +99,6 @@ void	Window::Update()
 	Camera* c = new Camera(1200.f / 700.f, 60, 0.1, 100);
 	camNode->AddComponent(c);
 	Renderer r;
-	//Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
 	Core::Datastructure::Object* o{ root->CreateChild({}) };
 	Mesh* m{ new Mesh() };
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
@@ -111,6 +111,7 @@ void	Window::Update()
 	r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
+		ZoneNamedN(updateLoop, "Main update loop", true)
 		//o->Translate({ 0, 0, 0.1f });
 		//o->Rotate({ 0, 0.1f, 0 });
 		glfwPollEvents();
@@ -119,7 +120,10 @@ void	Window::Update()
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		root->Render();
-		glfwSwapBuffers(m_window);
+		{
+			ZoneNamedN(swapBuffers, "glfwSwapBuffers", true)
+			glfwSwapBuffers(m_window);
+		}
 		FrameMark;
 		root->RemoveDestroyed();
 	}
@@ -138,6 +142,8 @@ GLFWkeyfun Window::SetKeyCallBackToGLFW()
 {
 	GLFWkeyfun key_callback = [](GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
+		ZoneScopedN("InputSystemKeyUpdate")
+			ZoneText("Updating key presses", 21)
 		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (this_window)
 		{
@@ -154,6 +160,8 @@ GLFWmousebuttonfun Window::SetMouseButtonCallBackToGLFW()
 {
 	GLFWmousebuttonfun mouse_button_callback = [](GLFWwindow* window, int button, int action, int mods)
 	{
+		ZoneScopedN("InputSystemMouseButtonUpdate")
+			ZoneText("Updating MouseButton presses", 29)
 		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (this_window)
 		{
@@ -170,6 +178,8 @@ GLFWscrollfun Window::SetScrollCallBackToGLFW()
 {
 	GLFWscrollfun scroll_callback = [](GLFWwindow* window, double xoffset, double yoffset)
 	{
+		ZoneScopedN("InputSystemScrollUpdate")
+			ZoneText("Updating Scrolling", 19)
 		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
 		if (this_window)
 		{

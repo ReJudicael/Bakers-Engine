@@ -3,6 +3,7 @@
 #include <queue>
 #include <future>
 #include <chrono>
+#include "Debug.h"
 
 namespace Core::SystemManagement
 {
@@ -13,14 +14,13 @@ namespace Core::SystemManagement
 	{
 	private:
 		using Task = std::function<void()>;
-
 		std::queue<Task>			m_queueTask;
 		std::vector<std::thread>	m_threads;
-		std::mutex					m_lock;
-		std::condition_variable		m_conditionVariable;
+		TracyLockableN(std::mutex, m_lock, "TaskSystem mutex")
+		std::condition_variable_any	m_conditionVariable;
 		std::atomic<bool>			m_isAllowed;	// Accept function or not
 
-		unsigned int m_maxThreads;
+		unsigned int				m_maxThreads;
 
 	public:
 		/**
@@ -103,7 +103,8 @@ namespace Core::SystemManagement
 		while (true)
 		{
 			{
-				std::unique_lock<std::mutex> queueTaskLock(m_lock);
+				std::unique_lock<LockableBase(std::mutex)> queueTaskLock(m_lock);
+				LockMark(m_lock)
 				m_conditionVariable.wait(queueTaskLock, [this] { return !m_isAllowed.load() || !m_queueTask.empty(); });
 
 				if (!m_isAllowed.load() && m_queueTask.empty())
@@ -112,7 +113,11 @@ namespace Core::SystemManagement
 				task = m_queueTask.front(); // Take first task in queueTask
 				m_queueTask.pop();
 			}
-			task(); // Thread does its task
+			{
+				ZoneScopedN("Executing task")
+					ZoneText("Thread is executing a task", 27)
+				task(); // Thread does its task
+			}
 		}
 	}
 
@@ -120,7 +125,8 @@ namespace Core::SystemManagement
 	inline void TaskSystem::AddTask(Function&& f, Args&& ...args) noexcept
 	{
 		{
-			std::unique_lock<std::mutex> lock(m_lock);
+			std::unique_lock<LockableBase(std::mutex)> lock(m_lock);
+			LockMark(m_lock)
 
 			// Add function in queueTask
 			m_queueTask.emplace(std::_Binder<std::_Unforced, Function, Args...>
@@ -133,7 +139,8 @@ namespace Core::SystemManagement
 	inline void TaskSystem::AddTask(Function&& f) noexcept
 	{
 		{
-			std::unique_lock<std::mutex> lock(m_lock);
+			std::unique_lock<LockableBase(std::mutex)> lock(m_lock);
+			LockMark(m_lock)
 
 			// Add function in queueTask
 			m_queueTask.emplace(std::forward<Function>(f));
@@ -152,7 +159,8 @@ namespace Core::SystemManagement
 		std::future<return_type> res{ task->get_future() };
 
 		{
-			std::unique_lock<std::mutex> lock(m_lock);
+			std::unique_lock<LockableBase(std::mutex)> lock(m_lock);
+			LockMark(m_lock)
 			// Add function in queueTask
 			m_queueTask.emplace([task] { (*task)(); });
 		}
@@ -163,8 +171,11 @@ namespace Core::SystemManagement
 
 	inline void TaskSystem::EndTaskSystem() noexcept
 	{
+		ZoneScoped
+			ZoneText("Closing task system", 20)
 		{
-			std::unique_lock<std::mutex> lock(m_lock);
+			std::unique_lock<LockableBase(std::mutex)> lock(m_lock);
+			LockMark(m_lock)
 			m_isAllowed.store(false);
 		}
 		m_conditionVariable.notify_all();

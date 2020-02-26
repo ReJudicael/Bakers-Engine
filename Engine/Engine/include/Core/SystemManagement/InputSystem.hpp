@@ -5,6 +5,7 @@
 
 #include "EventSystem.hpp"
 #include "Input.hpp"
+#include "Debug.h"
 
 class Window;
 
@@ -332,6 +333,8 @@ namespace Core::SystemManagement
 
 	inline void InputSystem::ClearRegisteredInputs() noexcept
 	{
+		ZoneScoped
+			ZoneText("Clearing inputs from InputSystem", 33)
 		ClearRegisteredKeys();
 		ClearRegisteredMouseButtons();
 		ClearRegisteredScroll();
