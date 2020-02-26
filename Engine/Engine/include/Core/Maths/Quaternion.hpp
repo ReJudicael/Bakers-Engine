@@ -110,11 +110,16 @@ namespace Core::Maths
 		 */
 		inline					Quaternion(float eulerX, float eulerY, float eulerZ) noexcept : Quaternion(0, 0, 0, 0)
 		{
+			float twoPi = M_PI * 2.f;
+			eulerX = fmod(eulerX, twoPi);
+			eulerY = fmod(eulerY, twoPi);
+			eulerZ = fmod(eulerZ, twoPi);
+			
 			float cx{ cos(eulerX / 2.f) }, cy{ cos(eulerY / 2.f) }, cz{ cos(eulerZ / 2.f) };
 			float sx{ sin(eulerX / 2.f) }, sy{ sin(eulerY / 2.f) }, sz{ sin(eulerZ / 2.f) };
-			w = cx * cy * cz - sx * sy * sz;
+			w = cx * cy * cz + sx * sy * sz;
 			x = sx * cy * cz - cx * sy * sz;
-			y = cx * sy * cz - sx * cy * sz;
+			y = cx * sy * cz + sx * cy * sz;
 			z = cx * cy * sz - sx * sy * cz;
 		}
 
@@ -447,6 +452,34 @@ namespace Core::Maths
 		}
 
 		/**
+		 * Convert Quaternion to euler angles
+		 * @return Euler Angles in (x, y, z) / (roll, pitch, yaw) format
+		 */
+		inline Vec3					ToEulerAngles() const noexcept
+		{
+			Vec3 eulerAngles;
+
+			// x-axis rotation
+			float sinRoll = 2 * (w * x + y * z);
+			float cosRoll = 1 - 2 * (x * x + y * y);
+			eulerAngles.x = atan2(sinRoll, cosRoll);
+
+			// y-axis rotation
+			float sinPitch = 2 * (w * y - z * x);
+			if (abs(sinPitch) >= 1)
+				eulerAngles.y = copysign(M_PI_2, sinPitch);
+			else
+				eulerAngles.y = asin(sinPitch);
+
+			// z-axis rotation
+			float sinYaw = 2 * (w * z + x * y);
+			float cosYaw = 1 - 2 * (y * y + z * z);
+			eulerAngles.z = atan2(sinYaw, cosYaw);
+
+			return eulerAngles;
+		}
+
+		/**
 		 * Returns string version of the quaternion
 		 * @return String version of the quaternion
 		 */
@@ -468,6 +501,27 @@ namespace Core::Maths
 		inline void					Print() const noexcept
 		{
 			std::cout << ToString() << std::endl;
+		}
+
+		/**
+		 * Create quaternion for the rotation of angle radians around given axis
+		 * @param angle: The angle in radian of the rotation
+		 * @param axis: Axis around which the rotation is made (must be normalized)
+		 * @return Normalized quaternion for the given rotation
+		 */
+		static Quaternion			AngleAxis(float angle, Core::Maths::Vec3 axis)
+		{
+			Quaternion q;
+			float halfAngle = angle * 0.5f;
+			float s = sin(halfAngle);
+			
+
+			q.w = cos(halfAngle);
+			q.x = axis.x * s;
+			q.y = axis.y * s;
+			q.z = axis.z * s;
+
+			return q.Normalized();
 		}
 	};
 

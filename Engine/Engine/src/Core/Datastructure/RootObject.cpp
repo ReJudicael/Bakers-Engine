@@ -3,10 +3,11 @@
 
 namespace Core::Datastructure
 {
-	RootObject::RootObject() noexcept : Object({}, nullptr, this)
+	RootObject::RootObject(SystemManagement::InputSystem* inputSystem) noexcept : Object({}, nullptr, this)
 	{
 		m_transform.RequireUpdate();
 		m_transform.UpdatePos();
+		m_inputSystem = inputSystem;
 	}
 
 	void RootObject::StartFrame() noexcept
@@ -54,6 +55,12 @@ namespace Core::Datastructure
 	{
 		m_cameras.emplace_back(i);
 	}
+
+	SystemManagement::InputSystem* RootObject::GetInput()
+	{
+		return m_inputSystem;
+	}
+
 	void RootObject::RemoveUpdatable(IUpdatable* i) noexcept
 	{
 		m_updatables.remove(i);
@@ -66,6 +73,14 @@ namespace Core::Datastructure
 	void RootObject::RemoveCamera(ICamera* i) noexcept
 	{
 		m_cameras.remove(i);
+	}
+
+	void RootObject::SetCamerasRatio(float ratio) noexcept
+	{
+		for (auto value : m_cameras)
+		{
+			value->SetRatio(ratio);
+		}
 	}
 
 	void RootObject::DestroyComponent(IComponent* i) noexcept
@@ -88,8 +103,8 @@ namespace Core::Datastructure
 		m_destroyedObjects.clear();
 	}
 
-	RootObject* RootObject::CreateRootNode() noexcept
+	RootObject* RootObject::CreateRootNode(SystemManagement::InputSystem* inputSystem) noexcept
 	{
-		return new RootObject();
+		return new RootObject(inputSystem);
 	}
 }
