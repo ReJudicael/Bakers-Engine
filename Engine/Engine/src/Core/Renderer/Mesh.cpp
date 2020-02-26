@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "Mat4.hpp"
 #include "Object.hpp"
+#include "OpenGLLinkState.h"
 
 Mesh::Mesh() : ComponentBase()
 {
@@ -15,7 +16,7 @@ Mesh::~Mesh()
 	glDeleteTextures(1, &m_texture);
 	//glDeleteBuffers(1, &m_vertexBuffer);
 	glDeleteVertexArrays(1, &m_VAO);
-	glDeleteProgram(m_program);
+	//glDeleteProgram(m_program);
 }
 
 int Mesh::AddTriangle(int v1, int v2, int v3)
@@ -63,20 +64,44 @@ void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
 
 void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 {
-	glEnable(GL_DEPTH_TEST);
 
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_TRUE, trs.m_array);
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
 
-	glUseProgram(m_program);
+	if (m_modelMesh == nullptr)
+		return;
+	if (m_modelMesh->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+		return;
 
-	glBindTexture(GL_TEXTURE_2D, m_texture);
-	glBindVertexArray(m_VAO);
 
-	glDrawElements(GL_TRIANGLES, m_vertexCount, GL_UNSIGNED_INT, 0);
+	glEnable(GL_DEPTH_TEST);
+
+	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uModel"), 1, GL_TRUE, trs.m_array);
+	/*glUniformMatrix4fv(glGetUniformLocation(*m_program, "uProj"), 1, GL_FALSE, m_projection);
+	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uModel"), 1, GL_TRUE, trs.m_array);*/
+	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
+	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
+
+	//std::cout << *m_program << std::endl;
+
+	glBindVertexArray(m_modelMesh->VAOModel);
+
+	glUseProgram(*m_program);
+	
+	for (int i = 0; i < m_modelMesh->offsetsMesh.size(); i++)
+	{
+		Resources::OffsetMesh currOffsetMesh = m_modelMesh->offsetsMesh[i];
+		
+		Resources::Material material = *m_modelMesh->materialsModel[currOffsetMesh.materialIndices];
+
+		if (material.textures.size() > 0)
+			if(material.textures[0]->stateTexture ==
+				Resources::EOpenGLLinkState::ISLINK)
+				glBindTexture(GL_TEXTURE_2D, material.textures[0]->texture);
+
+		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,
+			(GLvoid*)(currOffsetMesh.beginIndices * sizeof(GLuint)));
+	}
 
 	glBindVertexArray(0);
 }

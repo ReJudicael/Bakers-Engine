@@ -63,9 +63,6 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -119,6 +116,12 @@
     </ClCompile>
     <ClCompile Include="src\Core\Renderer\Camera.cpp">
       <Filter>Fichiers sources\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\Material.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +217,27 @@
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\PlayerCamera.h">
       <Filter>Fichiers d%27en-tête\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\OffsetMesh.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Material.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneData.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\ModelData.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\TextureData.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Vertex.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\OpenGLLinkState.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

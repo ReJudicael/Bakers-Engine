@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+//#include <glad/glad.h>
 #include <stdio.h>
 
 #include "Window.h"
@@ -10,46 +10,7 @@
 #include "TaskSystem.hpp"
 #include "PlayerCamera.h"
 
-static const char* gVertexShaderStr = R"GLSL(
-// Attributes
-layout(location = 0) in vec3 aPosition;
-layout(location = 1) in vec2 aUV;
-layout(location = 2) in vec3 aNormal;
-
-// Uniforms
-uniform mat4 uModel;
-uniform mat4 uProj;
-uniform mat4 uCam;
-
-// Varyings (variables that are passed to fragment shader with perspective interpolation)
-out vec2 vUV;
-out vec3 Normal;
-
-void main()
-{
-	vUV = aUV;
-    gl_Position = uProj * uCam * uModel * vec4(aPosition, 1.0);
-})GLSL";
-
-static const char* gFragmentShaderStr = R"GLSL(
-// Varyings
-in vec2 vUV;
-
-
-// Uniforms
-uniform sampler2D uColorTexture;
-
-// Shader outputs
-out vec4 oColor;
-
-void main()
-{
-    oColor = texture(uColorTexture, vUV);
-	//oColor = vec4(vUV,0.0f,0.0f);
-})GLSL";
-
-
-Window::Window() :
+Window::Window():
 	m_width{ 1280 },
 	m_height{ 800 }
 {
@@ -70,10 +31,10 @@ void Window::Init(const int width, const int height)
 
 	glfwDefaultWindowHints();
 	//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_ANY_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	m_window = glfwCreateWindow(width, height, "Default window", NULL, NULL);
 	glfwMakeContextCurrent(m_window);
@@ -110,16 +71,14 @@ void	Window::Update()
 	PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
 	camNode->AddComponent(c);
 	Renderer r;
+	Resources::Loader::ResourcesManager manager{};
+	
 	Core::Datastructure::Object* o{ m_root->CreateChild({}) };
-	Mesh* m{ new Mesh() };
-	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
-	Resources::Loader::LoadResourcesIRenderable(m, "Resources/Dog/12228_Dog_v1_L2.obj");
-	o->AddComponent(m);
-	o->SetScale(Core::Maths::Vec3(.1f, .1f, .1f));
-	o->SetPos({ 0, -2.f, -5.f });
-	o->SetRot({ -90, 0.f, 0.f });
-	m->SendProjectionMatrix(c->GetPerspectiveMatrix());
-	r.AddMesh(m);
+
+	Mesh* testMesh{ new Mesh() };
+	testMesh->SendProjectionMatrix(c->GetPerspectiveMatrix());
+	manager.LoadResourcesIRenderable(testMesh, "Resources/Umbreon/UmbreonHighPoly.obj", o);
+	//manager.LoadResourcesIRenderable(testMesh, "Resources/level.fbx", o);
 
 	INIT_TRACY_GL_IMAGE(320, 180)
 
@@ -127,6 +86,8 @@ void	Window::Update()
 	{
 		ZoneNamedN(updateLoop, "Main update loop", true)
 		glfwPollEvents();
+		manager.LinkAllTextureToOpenGl();
+		manager.LinkAllModelToOpenGl();
 		m_root->StartFrame();
 		m_root->Update(0.2f);
 		glClearColor(0, 0, 0, 1);

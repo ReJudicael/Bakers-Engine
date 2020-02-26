@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <memory>
 
 #include "IComponent.hpp"
 #include "ICamera.h"
@@ -17,7 +18,7 @@ namespace Core::Datastructure
 	public:
 		virtual void	OnStart() override;
 
-		GLuint m_program = 0;
+		std::shared_ptr<GLuint> m_program = 0;
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;
 
