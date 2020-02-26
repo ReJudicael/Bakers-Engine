@@ -200,9 +200,6 @@
     <ClInclude Include="include\Core\Maths\Mat.hpp">
       <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\Loader\LoadResources.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Renderer\Mesh.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -221,20 +218,23 @@
     <ClInclude Include="include\Resources\Material.h">
       <Filter>Fichiers d%27en-tête\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="include\SceneData.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Resources\ModelData.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Resources\TextureData.h">
       <Filter>Fichiers d%27en-tête\Resources</Filter>
     </ClInclude>
     <ClInclude Include="include\Resources\Vertex.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="include\Resources\ModelData.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneData.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
     <ClInclude Include="include\Resources\OpenGLLinkState.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Loader\LoadResources.h">
+      <Filter>Fichiers d%27en-tête\Resources\Loader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

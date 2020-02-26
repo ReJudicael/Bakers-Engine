@@ -39,23 +39,34 @@ namespace Resources::Loader
 	public :
 
 		ResourcesManager();
-		void LoadResourcesIRenderable(Mesh* renderObject, const char* fileName, 
-										Core::Datastructure::Object* rootComponent = nullptr);
+		~ResourcesManager();
 
-		bool LoadAssimpScene(Mesh* renderObject, const char* fileName,
-				Core::Datastructure::Object* rootComponent = nullptr);
+
+		void LoadResourcesIRenderable(const char* fileName, 
+										Core::Datastructure::Object* rootComponent);
+
+		bool LoadAssimpScene(const char* fileName,
+				Core::Datastructure::Object* rootComponent);
 
 		void CreateScene(std::shared_ptr<SceneData> scene, Core::Datastructure::Object* rootObject);
 		void RecurciveCreateScene(const Node& scene, Core::Datastructure::Object* rootObject);
 
 		void LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject, 
-										const bool newObjectChild = false);
+										const bool newObjectChild);
 
-		void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene, const std::string& fileName, 
+		void LoadMeshResourcesIRenderable(const aiScene* scene,
+			const std::string& fileName, const std::string& directory);
+
+		void LoadSingleMeshResourcesIRenderable(const aiScene* scene, const std::string& fileName, 
 												const std::string& directory);
+
+		void LoadMeshVertices(const aiMesh* mesh, std::vector<Vertex>& vertices);
+		void LoadMeshIndices(const aiMesh* mesh, std::vector<GLuint>& indices, const GLuint& indexLastMesh);
+
+
 		void LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material> material,
 												const std::string& directory);
-		void LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<TextureData> textureData, const aiTextureType& textureType, const std::string& directory);
+		bool LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<TextureData> textureData, const aiTextureType& textureType, const std::string& directory);
 
 		void LoadSceneResources(const aiScene* scene, const std::string& fileNameconst,const std::string& directory);
 		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, Node& currentNode, const std::string& directory);
