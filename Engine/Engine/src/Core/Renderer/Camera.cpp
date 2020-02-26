@@ -32,7 +32,6 @@ Camera::Camera(const float ratio, const float fov, const float near, const float
 
 void Camera::OnUpdate(float deltaTime)
 {
-	//Move camera with inputs here
 	m_isCamUpdated = false;
 }
 
@@ -44,6 +43,12 @@ void Camera::OnStart()
 
 Camera::~Camera()
 {
+}
+
+void Camera::SetRatio(const float newRatio)
+{
+	m_ratio = newRatio;
+	m_isPerspectiveUpdated = false;
 }
 
 Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float ratio, const float near, const float far, const float fov)

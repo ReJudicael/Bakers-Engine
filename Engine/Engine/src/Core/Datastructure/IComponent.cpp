@@ -30,4 +30,9 @@ namespace Core::Datastructure
 		OnDestroy();
 		m_isDestroyed = true;
 	}
+
+	SystemManagement::InputSystem* IComponent::Input() noexcept
+	{
+		return m_root->GetInput();
+	}
 }

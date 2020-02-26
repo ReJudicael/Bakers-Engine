@@ -4,7 +4,6 @@
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 {
-	
 	if (!m_isPerspectiveUpdated)
 	{
 		ZoneScoped
@@ -22,6 +21,8 @@ const Core::Maths::Mat4& Core::Datastructure::ICamera::GetCameraMatrix()
 		ZoneScoped
 			ZoneText("Generating camera matrix", 25)
 		m_cameraMatrix = OnGenerateCamera();
+		m_front = Core::Maths::Vec3(m_parent->GetGlobalTRS() * Core::Maths::Vec4{ 0, 0, 1, 0 });
+		m_right = Core::Maths::Vec3(m_parent->GetGlobalTRS() * Core::Maths::Vec4{ 1, 0, 0, 0 });
 		m_isCamUpdated = true;
 	}
 	return m_cameraMatrix;

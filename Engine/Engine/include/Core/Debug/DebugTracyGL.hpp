@@ -10,13 +10,11 @@
 #ifndef TRACY_ENABLE
 
 #define INIT_TRACY_GL_IMAGE(width, height) 
-#define INIT_TRACY_GL_IMAGE() 
 #define TRACY_GL_IMAGE_SEND(width, height) 
 
 #else
 
 #define INIT_TRACY_GL_IMAGE(width, height) Core::Debug::TracyGL	__TracyGLImageSender(width, height);
-#define INIT_TRACY_GL_IMAGE() Core::Debug::TracyGL	__TracyGLImageSender();
 #define TRACY_GL_IMAGE_SEND(width, height) __TracyGLImageSender.SendCapture(width, height);
 
 namespace Core::Debug

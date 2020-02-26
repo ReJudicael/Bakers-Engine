@@ -102,9 +102,6 @@
     <ClCompile Include="InputSystem.cpp">
       <Filter>Fichiers sources\Core\SystemManagement</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Renderer\Camera.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Renderer\Mesh.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -116,6 +113,12 @@
     </ClCompile>
     <ClCompile Include="include\Core\Datastructure\ICamera.cpp">
       <Filter>Fichiers sources\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Renderer\PlayerCamera.cpp">
+      <Filter>Fichiers sources\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Camera.cpp">
+      <Filter>Fichiers sources\Core\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Debug\DebugTracyGL.hpp">
       <Filter>Fichiers d%27en-tête\Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\PlayerCamera.h">
+      <Filter>Fichiers d%27en-tête\Core\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

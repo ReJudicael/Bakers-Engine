@@ -7,6 +7,7 @@
 #include "IUpdatable.hpp"
 #include "IRenderable.hpp"
 #include "ICamera.h"
+#include "InputSystem.hpp"
 
 namespace Core::Datastructure
 {
@@ -24,10 +25,13 @@ namespace Core::Datastructure
 		std::list<IComponent*>	m_destroyedComponents;
 		std::list<Object*>		m_destroyedObjects;
 
+		SystemManagement::InputSystem* m_inputSystem{ nullptr };
+
 		/**
-		 * Default constructor
+		 * Default constructor (requires input system)
+		 * @param inputSystem: Pointer to Input handling system to link inputs with each objects of hierarchy
 		 */
-		RootObject() noexcept;
+		RootObject(SystemManagement::InputSystem* inputSystem) noexcept;
 	public:
 		/**
 		 * Calls OnStart on every component that requires to be started.
@@ -72,6 +76,12 @@ namespace Core::Datastructure
 		void		AddCamera(ICamera* i) noexcept;
 
 		/**
+		 * Get the input system stored in the root object
+		 * @return Input System
+		 */
+		SystemManagement::InputSystem* GetInput();
+
+		/**
 		 * removes a component from the updated ones
 		 * @param i: Component to be removed
 		 */
@@ -88,6 +98,12 @@ namespace Core::Datastructure
 		void		RemoveCamera(ICamera* i) noexcept;
 
 		/**
+		 * set window ratio for each camera
+		 * @param ratio: Ratio to set to each camera for perspective matrix
+		 */
+		void		SetCamerasRatio(float ratio) noexcept;
+
+		/**
 		 * Queues a component to be destroyed
 		 */
 		void		DestroyComponent(IComponent* i) noexcept;
@@ -101,6 +117,6 @@ namespace Core::Datastructure
 		 * Creates a root node with default transform and no parent,
 		 * effectively making it the root node.
 		 */
-		static RootObject* CreateRootNode() noexcept;
+		static RootObject* CreateRootNode(SystemManagement::InputSystem* inputSystem) noexcept;
 	};
 }

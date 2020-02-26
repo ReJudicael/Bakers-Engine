@@ -6,12 +6,12 @@
 
 class Camera : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
 {
-private:
+protected:
 	float m_ratio;
 	float m_fov;
 	float m_near;
 	float m_far;
-protected:
+
 	Core::Maths::Mat4	OnGenerateCamera() override;
 	Core::Maths::Mat4	OnGeneratePerspective() override;
 
@@ -28,6 +28,8 @@ public:
 
 	virtual void OnUpdate(float deltaTime) override;
 	virtual void OnStart() override;
+
+	void SetRatio(const float newRatio) override;
 
 	/**
 	 * Destructor

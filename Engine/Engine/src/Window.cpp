@@ -6,9 +6,9 @@
 #include "RootObject.hpp"
 #include "ComponentUpdatable.h"
 #include "Loadresources.h"
-#include "Camera.h"
 #include "Debug.h"
 #include "TaskSystem.hpp"
+#include "PlayerCamera.h"
 
 static const char* gVertexShaderStr = R"GLSL(
 // Attributes
@@ -49,14 +49,18 @@ void main()
 })GLSL";
 
 
-Window::Window()
+Window::Window() :
+	m_width{ 1280 },
+	m_height{ 800 }
 {
-	Init(1280, 720);
+	Init(m_width, m_height);
 }
 
-Window::Window(const int height, const int width)
+Window::Window(const int width, const int height) :
+	m_width{ width },
+	m_height{ height }
 {
-	Init(height, width);
+	Init(m_width, m_height);
 }
 
 void Window::Init(const int width, const int height)
@@ -81,25 +85,32 @@ void Window::Init(const int width, const int height)
 		return;
 	}
 
+	OnResizeWindow += BIND_EVENT_2(Window::SetSizeWindow);
+
 	glfwSetWindowUserPointer(m_window, this);
 	SetCallbackToGLFW();
+
+	m_inputSystem = new Core::SystemManagement::InputSystem(this);
 }
 
 Window::~Window()
 {
 	glfwDestroyWindow(m_window);
 	glfwTerminate();
+
+	if (m_inputSystem)
+		delete m_inputSystem;
 }
 
 void	Window::Update()
 {
-	Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
-	Core::Datastructure::Object* camNode{ root->CreateChild({}) };
+	m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem);
+	Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
 
-	Camera* c = new Camera(1200.f / 700.f, 60, 0.1, 100);
+	PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
 	camNode->AddComponent(c);
 	Renderer r;
-	Core::Datastructure::Object* o{ root->CreateChild({}) };
+	Core::Datastructure::Object* o{ m_root->CreateChild({}) };
 	Mesh* m{ new Mesh() };
 	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 	Resources::Loader::LoadResourcesIRenderable(m, "Resources/Dog/12228_Dog_v1_L2.obj");
@@ -115,24 +126,30 @@ void	Window::Update()
 	while (!glfwWindowShouldClose(m_window))
 	{
 		ZoneNamedN(updateLoop, "Main update loop", true)
-		//o->Translate({ 0, 0, 0.1f });
-		//o->Rotate({ 0, 0.1f, 0 });
 		glfwPollEvents();
-		root->StartFrame();
-		root->Update(0.2f);
+		m_root->StartFrame();
+		m_root->Update(0.2f);
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		root->Render();
+		m_root->Render();
 		{
 			ZoneNamedN(swapBuffers, "glfwSwapBuffers", true)
-			TRACY_GL_IMAGE_SEND(m_window->)
+			TRACY_GL_IMAGE_SEND(m_width, m_height)
 			glfwSwapBuffers(m_window);
 		}
 		FrameMark;
-		root->RemoveDestroyed();
+		m_root->RemoveDestroyed();
+		m_inputSystem->ClearRegisteredInputs();
 	}
-	root->Destroy();
-	root->RemoveDestroyed();
+	m_root->Destroy();
+	m_root->RemoveDestroyed();
+}
+
+void Window::SetSizeWindow(const double width, const double height)
+{
+	m_width = width;
+	m_height = height;
+	m_root->SetCamerasRatio(static_cast<float>(m_width / m_height));
 }
 
 void Window::SetCallbackToGLFW()
@@ -140,6 +157,7 @@ void Window::SetCallbackToGLFW()
 	SetKeyCallBackToGLFW();
 	SetMouseButtonCallBackToGLFW();
 	SetScrollCallBackToGLFW();
+	SetWindowSizeToGLFW();
 }
 
 GLFWkeyfun Window::SetKeyCallBackToGLFW()
@@ -191,4 +209,17 @@ GLFWscrollfun Window::SetScrollCallBackToGLFW()
 		}
 	};
 	return glfwSetScrollCallback(m_window, scroll_callback);
+}
+
+GLFWwindowsizefun Window::SetWindowSizeToGLFW()
+{
+	GLFWwindowsizefun window_size_callback = [](GLFWwindow* window, int width, int height)
+	{
+		Window* this_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (this_window)
+		{
+			this_window->OnResizeWindow(width, height);
+		}
+	};
+	return glfwSetWindowSizeCallback(m_window, window_size_callback);
 }

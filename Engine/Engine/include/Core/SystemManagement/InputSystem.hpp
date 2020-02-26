@@ -6,6 +6,7 @@
 #include "EventSystem.hpp"
 #include "Input.hpp"
 #include "Debug.h"
+#include "Vec2.hpp"
 
 class Window;
 
@@ -223,6 +224,12 @@ namespace Core::SystemManagement
 		 * @return True if the scroll is unused, false otherwise
 		 */
 		bool IsScrollUnused() const noexcept;
+
+		/**
+		 * Get cursor position
+		 * @return The position of the cursor, in screen coordinates, relative to the upper-left corner of the content area of the window
+		 */
+		Core::Maths::Vec2 GetMousePos() const noexcept;
 	};
 
 	inline EStateKey InputSystem::GetKeyState(EKey key) const noexcept
