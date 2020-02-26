@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <vector>
 
@@ -7,11 +8,21 @@
 #include "Transform.hpp"
 #include "ComponentBase.h"
 #include "IRenderable.hpp"
+#include "Material.h"
+#include "OffsetMesh.h"
+#include "Vertex.h"
+#include "ModelData.h"
 
 
 class Mesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
 {
+protected:
+	std::vector<std::shared_ptr<Resources::Material>> m_material;
+	std::vector<std::shared_ptr<Resources::OffsetMesh>> m_offsetMesh;
+
+	/*std::vector<*/std::shared_ptr<Resources::ModelData>/*>*/ m_modelMesh;
 public:
+
 	int		m_vertexCount = 0;
 
 	std::vector<float> m_vertices;
@@ -37,6 +48,25 @@ public:
 
 	Core::Maths::Mat4 projectionMatrix(float FovY, float Aspect, float Near, float Far);
 
+	void SetMaterial(const int index, std::shared_ptr<Resources::Material> material)
+	{ 
+		m_material[index] = material; 
+	}
 
+	inline void AddMaterial(std::shared_ptr<Resources::Material> material)
+	{
+		m_material.push_back(material);
+	}
+
+	void AddOffsetMesh(const std::shared_ptr<Resources::OffsetMesh> OffsetMesh)
+	{
+		m_offsetMesh.push_back(OffsetMesh);
+		m_offsetMesh[m_offsetMesh.size() - 1]->materialIndices = m_material.size() - 1;
+	}
+
+	inline void AddModel(std::shared_ptr<Resources::ModelData> model)
+	{
+		m_modelMesh = model;
+	}
 };
 

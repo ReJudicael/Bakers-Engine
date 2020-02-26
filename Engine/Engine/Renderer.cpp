@@ -53,50 +53,6 @@ Renderer::~Renderer()
 
 }
 
-GLuint	Renderer::CreateProgram(const char* vertex, const char* fragment)
-{
-	std::cout << "Tried to create program" << std::endl;
-	GLuint Program = glCreateProgram();
-
-	GLuint VertexShader = glCreateShader(GL_VERTEX_SHADER);
-	std::vector<const char*> Sources;
-	Sources.push_back("#version 330 core");
-	Sources.push_back(vertex);
-	glShaderSource(VertexShader, (GLsizei)Sources.size(), &Sources[0], nullptr);
-	glCompileShader(VertexShader);
-	GLint Compile;
-	glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &Compile);
-	if (Compile == GL_FALSE)
-	{
-		std::cout << "Vertex shader didn't load." << std::endl;
-		return 0;
-	}
-
-	GLuint FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	std::vector<const char*> FragSources;
-	FragSources.push_back("#version 330 core");
-	FragSources.push_back(fragment);
-	glShaderSource(FragmentShader, (GLsizei)FragSources.size(), &FragSources[0], nullptr);
-	glCompileShader(FragmentShader);
-	glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &Compile);
-	if (Compile == GL_FALSE)
-	{
-		std::cout << "Fragment shader didn't load." << std::endl;
-		return 0;
-	}
-
-	glAttachShader(Program, VertexShader);
-	glAttachShader(Program, FragmentShader);
-
-	glLinkProgram(Program);
-
-	glDeleteShader(VertexShader);
-	glDeleteShader(FragmentShader);
-
-	std::cout << "program load" << std::endl;
-	return Program;
-}
-
 GLuint Renderer::CreateTextureFromColor(const Core::Maths::Vec4& color)
 {
 	GLuint texture;
@@ -117,37 +73,14 @@ GLuint Renderer::CreateTextureFromColor(const Core::Maths::Vec4& color)
 	return texture;
 }
 
-GLuint Renderer::CreateTextureFromImage(const char* filename, bool shouldFlip)
+/*void	Renderer::Render()
 {
-	std::string s = filename;
-	GLuint		texture;
-
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	// set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	// load and generate the texture
-	int width, height, nrChannels;
-	stbi_set_flip_vertically_on_load(shouldFlip);
-	unsigned char* data = stbi_load(s.c_str(), &width, &height, &nrChannels, 4);
-	if (data)
+	for (int i = 0; i < m_meshes.size(); i++)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "coucou" << std::endl;
+		m_meshes[i]->Draw();
 	}
-	else
-	{
-		std::cout << "Failed to load " << filename << std::endl;
-	}
-
-	stbi_image_free(data);
-
-	return texture;
-}
+}*/
 
 void	Renderer::AddMesh(Mesh* newMesh)
 {
@@ -164,7 +97,7 @@ Mesh*	Renderer::CreatePlane()
 {
 	Mesh* m = new Mesh();
 	m->Start();
-	m->m_program = CreateProgram(gVertexShaderStr, gFragmentShaderStr);
+	//m->m_program = ;
 	m->m_vertexCount = 6;
 
 	float Plane[] = {
@@ -206,7 +139,7 @@ Mesh* Renderer::CreateCube()
 {
 	Mesh* m = new Mesh();
 	//m->Start();
-	m->m_program = CreateProgram(gVertexShaderStr, gFragmentShaderStr);
+	//m->m_program = CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 	m->m_vertexCount = 36;
 	
 
