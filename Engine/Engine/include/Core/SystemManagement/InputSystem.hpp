@@ -194,17 +194,17 @@ namespace Core::SystemManagement
 		bool IsMouseButtonUp(EMouseButton button) const noexcept;
 
 		/**
+		 * Indicate whether the given mouse button has been clicked on twice or not
+		 * @param button: Button of which the state will be checked
+		 */
+		bool IsMouseDoubleClicked(EMouseButton button) const noexcept;
+
+		/**
 		 * Indicate whether the given mouse button is unused or not
 		 * @param button: Button of which the state will be checked
 		 * @return True if the button is currently unused, false otherwise
 		 */
 		bool IsMouseButtonUnused(EMouseButton button) const noexcept;
-
-		/**
-		 * Indicate whether the given mouse button has been clicked on twice or not
-		 * @param button: Button of which the state will be checked
-		 */
-		bool IsMouseDoubleClicked(EMouseButton button) const noexcept;
 
 		/**
 		 * Indicate whether the scroll is down or not
@@ -217,6 +217,12 @@ namespace Core::SystemManagement
 		 * @return True if the scroll is up, false otherwise
 		 */
 		bool IsScrollUp() const noexcept;
+
+		/**
+		 * Indicate whether the scroll is unused or not
+		 * @return True if the scroll is unused, false otherwise
+		 */
+		bool IsScrollUnused() const noexcept;
 	};
 
 	inline EStateKey InputSystem::GetKeyState(EKey key) const noexcept
@@ -388,14 +394,14 @@ namespace Core::SystemManagement
 			GetMouseButtonState(button) == EStateMouseButton::DOUBLECLICK);
 	}
 
-	inline bool InputSystem::IsMouseButtonUnused(EMouseButton button) const noexcept
-	{
-		return !IsMouseButtonRegistered(button);
-	}
-
 	inline bool InputSystem::IsMouseDoubleClicked(EMouseButton button) const noexcept
 	{
 		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateMouseButton::DOUBLECLICK;
+	}
+
+	inline bool InputSystem::IsMouseButtonUnused(EMouseButton button) const noexcept
+	{
+		return !IsMouseButtonRegistered(button);
 	}
 
 	inline bool InputSystem::IsScrollDown() const noexcept
@@ -406,5 +412,10 @@ namespace Core::SystemManagement
 	inline bool InputSystem::IsScrollUp() const noexcept
 	{
 		return  GetScrollState() == EStateScroll::UP;
+	}
+
+	inline bool InputSystem::IsScrollUnused() const noexcept
+	{
+		return GetScrollState() == EStateScroll::UNUSED;
 	}
 }
