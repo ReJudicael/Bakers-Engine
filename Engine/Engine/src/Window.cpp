@@ -10,7 +10,9 @@
 #include "TaskSystem.hpp"
 #include "PlayerCamera.h"
 
-Window::Window()
+Window::Window():
+	m_width{ 1280 },
+	m_height{ 800 }
 {
 	Init(m_width, m_height);
 }
@@ -29,10 +31,10 @@ void Window::Init(const int width, const int height)
 
 	glfwDefaultWindowHints();
 	//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_ANY_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	m_window = glfwCreateWindow(width, height, "Default window", NULL, NULL);
 	glfwMakeContextCurrent(m_window);
@@ -71,7 +73,6 @@ void	Window::Update()
 	Renderer r;
 	Resources::Loader::ResourcesManager manager{};
 	
-	//Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
 	Core::Datastructure::Object* o{ m_root->CreateChild({}) };
 
 	Mesh* testMesh{ new Mesh() };
@@ -79,14 +80,12 @@ void	Window::Update()
 	manager.LoadResourcesIRenderable(testMesh, "Resources/Umbreon/UmbreonHighPoly.obj", o);
 	//manager.LoadResourcesIRenderable(testMesh, "Resources/level.fbx", o);
 
-	//m->SendProjectionMatrix(c->GetPerspectiveMatrix());
-	//r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
 		ZoneNamedN(updateLoop, "Main update loop", true)
 		glfwPollEvents();
-		manager.linkAllTextureToOpenGl();
-		manager.linkAllModelToOpenGl();
+		manager.LinkAllTextureToOpenGl();
+		manager.LinkAllModelToOpenGl();
 		m_root->StartFrame();
 		m_root->Update(0.2f);
 		glClearColor(0, 0, 0, 1);

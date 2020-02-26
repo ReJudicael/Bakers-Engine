@@ -120,9 +120,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::CreateScene(std::shared_ptr<SceneData> scene, Core::Datastructure::Object* rootObject)
 	{
-		std::cout << "I am in create Scene" << std::endl;
 		RecurciveCreateScene(scene->rootNodeScene, rootObject);
-
 	}
 
 	void ResourcesManager::RecurciveCreateScene(const Node& node, Core::Datastructure::Object* Object)
@@ -253,7 +251,7 @@ namespace Resources::Loader
 			LoadMaterialResourcesIRenderable(scene, mesh, modelData->materialsModel[i], directory);
 
 			OffsetMesh offset;
-			offset.count = modelData->indices.size() - lastNumIndices - 1;
+			offset.count = modelData->indices.size() - lastNumIndices;
 			offset.beginIndices = lastNumIndices;
 			offset.materialIndices = i;
 
@@ -392,7 +390,7 @@ namespace Resources::Loader
 		m_texturesToLink.push_back(textureData);
 	}
 
-	void ResourcesManager::linkAllTextureToOpenGl()
+	void ResourcesManager::LinkAllTextureToOpenGl()
 	{
 
 		for (std::list<std::shared_ptr<TextureData>>::iterator it = m_texturesToLink.begin(); 
@@ -426,7 +424,7 @@ namespace Resources::Loader
 		}
 	}
 
-	void ResourcesManager::linkAllModelToOpenGl()
+	void ResourcesManager::LinkAllModelToOpenGl()
 	{
 		//std::cout << "Link " << m_modelsToLink.size() << std::endl;
 		for (std::list<std::shared_ptr<ModelData>>::iterator it = m_modelsToLink.begin();

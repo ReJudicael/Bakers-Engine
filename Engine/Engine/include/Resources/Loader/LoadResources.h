@@ -51,7 +51,6 @@ namespace Resources::Loader
 		void LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject, 
 										const bool newObjectChild = false);
 
-
 		void LoadSingleMeshResourcesIRenderable(Mesh* renderObject, const aiScene* scene, const std::string& fileName, 
 												const std::string& directory);
 		void LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material> material,
@@ -63,8 +62,8 @@ namespace Resources::Loader
 
 		void CreateTextureFromImage(const char* filename, std::shared_ptr<TextureData> textureData, bool shouldFlip = true);
 
-		void linkAllTextureToOpenGl();
-		void linkAllModelToOpenGl();
+		void LinkAllTextureToOpenGl();
+		void LinkAllModelToOpenGl();
 
 		void CreateProgram(const char* vertex, const char* fragment, const std::string& nameShader);
 	};
