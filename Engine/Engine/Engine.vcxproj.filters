@@ -58,6 +58,9 @@
     <Filter Include="Fichiers sources\Core\Debug">
       <UniqueIdentifier>{2f7782cc-d434-4c8c-8133-3112e597b33b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Types">
+      <UniqueIdentifier>{97b376be-4406-43d0-99b4-4669211c3232}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -205,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="include\Core\Debug\Debug.h">
       <Filter>Fichiers sources\Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.hpp">
+      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="StringExtension.hpp">
+      <Filter>Fichiers d%27en-tête\Types</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

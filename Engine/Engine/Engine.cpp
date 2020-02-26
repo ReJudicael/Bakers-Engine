@@ -4,11 +4,23 @@
 #include <iostream>
 #include "Maths.hpp"
 #include "Window.h"
+#include "FileSystem.hpp"
+
+using namespace Core::SystemManagement;
 
 int main()
 {
-	Window win;
-	win.Update();
+	//Window win;
+	//win.Update();
+
+	FileSystem fs;
+	std::vector<std::filesystem::path> vec;
+	fs.GetContentsInCurrentyPath(vec);
+	
+	for (auto a : vec)
+	{
+		std::cout << a.string() << std::endl;
+	}
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
