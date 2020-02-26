@@ -55,8 +55,8 @@
     <Filter Include="Fichiers sources\Resources\Loader">
       <UniqueIdentifier>{70e1fdf5-c1da-4588-ac9a-bb3677a024a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers sources\Core\Debug">
-      <UniqueIdentifier>{2f7782cc-d434-4c8c-8133-3112e597b33b}</UniqueIdentifier>
+    <Filter Include="Fichiers d%27en-tête\Core\Debug">
+      <UniqueIdentifier>{d1a12c79-ce72-41f4-9861-84ee4af81d39}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,11 +111,11 @@
     <ClCompile Include="src\Window.cpp">
       <Filter>Fichiers sources\Core</Filter>
     </ClCompile>
-    <ClCompile Include="include\Core\Datastructure\ICamera.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="..\Dependencies\Tracy\TracyClient.cpp">
       <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Core\Datastructure\ICamera.cpp">
+      <Filter>Fichiers sources\Core\Datastructure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,7 +204,10 @@
       <Filter>Fichiers d%27en-tête\Core</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Debug\Debug.h">
-      <Filter>Fichiers sources\Core\Debug</Filter>
+      <Filter>Fichiers d%27en-tête\Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Debug\DebugTracyGL.hpp">
+      <Filter>Fichiers d%27en-tête\Core\Debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

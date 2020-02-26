@@ -109,6 +109,9 @@ void	Window::Update()
 	o->SetRot({ -90, 0.f, 0.f });
 	m->SendProjectionMatrix(c->GetPerspectiveMatrix());
 	r.AddMesh(m);
+
+	INIT_TRACY_GL_IMAGE(320, 180)
+
 	while (!glfwWindowShouldClose(m_window))
 	{
 		ZoneNamedN(updateLoop, "Main update loop", true)
@@ -122,6 +125,7 @@ void	Window::Update()
 		root->Render();
 		{
 			ZoneNamedN(swapBuffers, "glfwSwapBuffers", true)
+			TRACY_GL_IMAGE_SEND(m_window->)
 			glfwSwapBuffers(m_window);
 		}
 		FrameMark;

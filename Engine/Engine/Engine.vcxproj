@@ -320,6 +320,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\Core\Datastructure\RootObject.hpp" />
     <ClInclude Include="include\Core\Datastructure\Transform.hpp" />
     <ClInclude Include="include\Core\Debug\Debug.h" />
+    <ClInclude Include="include\Core\Debug\DebugTracyGL.hpp" />
     <ClInclude Include="include\Core\Maths\Mat.hpp" />
     <ClInclude Include="include\Core\Maths\Mat4.hpp" />
     <ClInclude Include="include\Core\Maths\Maths.hpp" />
