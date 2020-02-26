@@ -89,7 +89,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Resources/Loader;include/;.;include/Core/Renderer;include/Core/SystemManagement;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -108,7 +108,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Resources/Loader;include/;.;include/Core/Renderer;include/Core/SystemManagement;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -139,7 +139,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Resources/Loader;include/;.;include/Core/Renderer;include/Core/SystemManagement;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -161,7 +161,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Resources/Loader;include/;.;include/Core/Renderer;include/Core/SystemManagement;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>

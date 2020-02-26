@@ -20,6 +20,12 @@ void PlayerCamera::MoveWithInput()
 		return;
 	}
 	
+	ComputeTranslation();
+	ComputeRotation();
+}
+
+void PlayerCamera::ComputeTranslation()
+{
 	Core::Maths::Vec3 move = { 0, 0, 0 };
 
 	if (Input()->IsKeyDown(EKey::W))
@@ -33,10 +39,13 @@ void PlayerCamera::MoveWithInput()
 
 	if (move.SquaredLength() > 0)
 		Move(move);
+}
 
+void PlayerCamera::ComputeRotation()
+{
 	Core::Maths::Vec2 newPos = Input()->GetMousePos();
 	Core::Maths::Vec2 mouseMove = m_mousePos - newPos;
-	
+
 	if (mouseMove.SquaredLength() > 0)
 	{
 		if (Input()->GetMouseButtonState(EMouseButton::RIGHT) != EStateMouseButton::PRESS)
@@ -52,23 +61,50 @@ void PlayerCamera::OnUpdate(float deltaTime)
 
 	Camera::OnUpdate(deltaTime);
 
+	UpdatePosition(deltaTime);
+	UpdateRotation(deltaTime);	
+}
+
+void PlayerCamera::UpdatePosition(float deltaTime)
+{
+	float length = m_movement.SquaredLength();
+
+	if (length == 0) // Do not update transform if no movement has been made
+		return;
+
 	m_parent->Translate(m_movement * m_speed * deltaTime);
-	m_movement *= 0.1;
 
-	Core::Maths::Vec3 v1 = (Core::Maths::Vec3)(m_parent->GetGlobalTRS() * Core::Maths::Vec4(1, 0, 0, 0));
-	Core::Maths::Vec3 v2 = (Core::Maths::Vec3)(m_parent->GetGlobalTRS() * Core::Maths::Vec4(0, 1, 0, 0));
-	
-	Core::Maths::Quat q1 = Core::Maths::Quaternion::AngleAxis(m_angularMovement.x * m_angularSpeed * deltaTime, v1);
-	Core::Maths::Quat q2 = Core::Maths::Quaternion::AngleAxis(m_angularMovement.y * m_angularSpeed * deltaTime, v2);
-	Core::Maths::Quat q = q2 * q1;
-	m_parent->Rotate(q);
-	
-	m_angularMovement *= 0.1;
+	// Decrease movement
+	m_movement *= m_moveLerpSpeed;
 
-	if (m_movement.SquaredLength() > 0.001)
+	// Stop movement if it is too small
+	if (length < m_minMoveLength)
 		m_movement = { 0, 0, 0 };
-	if (m_angularMovement.SquaredLength() > 0.001)
+}
+
+void PlayerCamera::UpdateRotation(float deltaTime)
+{
+	if (m_isRotating)
+	{
+		// Increase current rotation with new one
+		m_pitch += m_angularSpeed * m_angularMovement.x * deltaTime;
+		m_yaw += m_angularSpeed * m_angularMovement.y * deltaTime;
+
+		// Create euler angles vector3 with pitch and yaw rotation
+		Core::Maths::Vec3 newRotation(m_pitch, m_yaw, 0);
+		Core::Maths::Quat q(newRotation);
+		m_parent->SetRot(q);
+	}
+
+	// Decrease rotation
+	m_angularMovement *= m_angularLerpSpeed;
+
+	// Stop rotation if too small
+	if (m_angularMovement.SquaredLength() < m_minAngularLength)
+	{
 		m_angularMovement = { 0, 0, 0 };
+		m_isRotating = false;
+	}
 }
 
 void PlayerCamera::Move(Core::Maths::Vec3 move)
@@ -79,4 +115,5 @@ void PlayerCamera::Move(Core::Maths::Vec3 move)
 void PlayerCamera::Rotate(Core::Maths::Vec3 move)
 {
 	m_angularMovement = move.Normalized();
+	m_isRotating = true;
 }
