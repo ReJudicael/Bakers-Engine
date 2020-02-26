@@ -16,7 +16,7 @@ Mesh::~Mesh()
 	glDeleteTextures(1, &m_texture);
 	//glDeleteBuffers(1, &m_vertexBuffer);
 	glDeleteVertexArrays(1, &m_VAO);
-	glDeleteProgram(m_program);
+	//glDeleteProgram(m_program);
 }
 
 int Mesh::AddTriangle(int v1, int v2, int v3)
@@ -64,30 +64,36 @@ void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
 
 void Mesh::OnDraw()
 {
-	glEnable(GL_DEPTH_TEST);
 
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
+
+	if (m_modelMesh == nullptr)
+		return;
 	if (m_modelMesh->stateVAO != Resources::EOpenGLLinkState::ISLINK)
-		return
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_TRUE, trs.m_array);
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "uProj"), 1, GL_FALSE, m_projection);
+		return;
+
+
+	glEnable(GL_DEPTH_TEST);
+
+	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uModel"), 1, GL_TRUE, trs.m_array);
+	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uProj"), 1, GL_FALSE, m_projection);
+
+	//std::cout << *m_program << std::endl;
 
 	glBindVertexArray(m_modelMesh->VAOModel);
-	glUseProgram(m_program);
+	glUseProgram(*m_program);
+
 	for (int i = 0; i < m_modelMesh->offsetsMesh.size(); i++)
 	{
-		/*if (m_material[m_offsetMesh[i].materialIndices].textures.size() > 0)
-			glBindTexture(GL_TEXTURE_2D, *m_material[m_offsetMesh[i].materialIndices]->textures[0]);
-
-		glDrawElements(GL_TRIANGLES, m_offsetMesh[i].count, GL_UNSIGNED_INT, 
-			(GLvoid*)(m_offsetMesh[i].beginIndices * sizeof(GLuint)));*/
 		Resources::OffsetMesh currOffsetMesh = m_modelMesh->offsetsMesh[i];
+		
+		Resources::Material material = *m_modelMesh->materialsModel[currOffsetMesh.materialIndices];
 
-		if (m_modelMesh->materialsModel[currOffsetMesh.materialIndices]->textures.size() > 0)
-			if(m_material[currOffsetMesh.materialIndices]->textures[0]->stateTexture ==
+		if (material.textures.size() > 0)
+			if(material.textures[0]->stateTexture ==
 				Resources::EOpenGLLinkState::ISLINK)
-				glBindTexture(GL_TEXTURE_2D, *m_material[currOffsetMesh.materialIndices]->textures[0]->texture);
+				glBindTexture(GL_TEXTURE_2D, material.textures[0]->texture);
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,
 			(GLvoid*)(currOffsetMesh.beginIndices * sizeof(GLuint)));

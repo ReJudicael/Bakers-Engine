@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <memory>
 
 #include "IComponent.hpp"
 
@@ -11,7 +12,7 @@ namespace Core::Datastructure
 	public:
 		virtual void	OnStart() override;
 
-		GLuint m_program = 0;
+		std::shared_ptr<GLuint> m_program = 0;
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;
 

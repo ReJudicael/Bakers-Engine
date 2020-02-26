@@ -22,15 +22,8 @@ namespace Resources::Loader
 	{
 		std::string Name = fileName;
 
-		/*const aiScene* scene = aiImportFile(fileName, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
-		if (!scene)
-		{
-			std::cout << "could not load file" << std::endl;
-			return;
-		}*/
-
 		std::shared_ptr<SceneData> scene;
-
+		persperct = renderObject->m_projection;
 		if (m_scenes.count(fileName) == 0)
 			if (!LoadAssimpScene(renderObject, fileName, rootObject))
 				return;
@@ -43,31 +36,7 @@ namespace Resources::Loader
 		std::string directoryFile;
 		directoryFile = Name.substr(0, index + 1);
 
-		std::cout << "coucou" << std::endl;
 		CreateScene(scene, rootObject);
-		/*if (Name.find(".obj") != std::string::npos)
-		{
-			LoadSingleMeshResourcesIRenderable(renderObject, scene, Name, directoryFile);
-			LoadSceneResources(scene, Name, directoryFile);
-			if (rootObject != nullptr)
-			{
-				rootObject->AddComponent(renderObject);
-				std::cout << "Component Add " << std::endl;
-				return;
-			}
-			else
-				return;
-		}
-		else if (Name.find(".fbx") != std::string::npos)
-		{
-			std::cout << scene->mNumMeshes << std::endl;
-			LoadSceneResources(scene, Name, directoryFile);
-			std::cout << "it's an Fbx" << std::endl;
-		}
-
-		aiReleaseImport(scene);*/
-
-
 	}
 
 
@@ -108,7 +77,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::CreateScene(std::shared_ptr<SceneData> scene, Core::Datastructure::Object* rootObject)
 	{
-		std::cout << "I am in" << std::endl;
+		std::cout << "I am in create Scene" << std::endl;
 		RecurciveCreateScene(scene->rootNodeScene, rootObject);
 
 	}
@@ -120,13 +89,22 @@ namespace Resources::Loader
 			std::cout << "coucou" << node.nameMesh << std::endl;
 			Mesh* mesh = { new Mesh() };
 
-			mesh->AddModel(m_models[node.nameMesh]);
-			mesh->m_program = 1;
-			Object->AddComponent(mesh);
+			if (m_models.count(node.nameMesh) > 0)
+			{
+				mesh->AddModel(m_models[node.nameMesh]);
+				mesh->m_program = m_shaders["Default"];
+				mesh->m_projection = persperct;
+				Object->AddComponent(mesh);
+			}
 		}
+
+		Object->SetScale(node.scale);
+		Object->SetPos(node.position);
+		Object->SetRot(node.rotation);
 
 		for (auto i{ 0 }; i < node.children.size(); i++)
 		{
+			std::cout << "child" << std::endl;
 			Core::Datastructure::Object* childObject{ Object->CreateChild({}) };
 			RecurciveCreateScene(node.children[i], childObject);
 		}
@@ -190,12 +168,11 @@ namespace Resources::Loader
 		unsigned int indexLastMesh = 0;
 		unsigned int lastNumIndices = 0;
 
-
-		std::cout << "number of mesh" << scene->mNumMeshes << std::endl;
-
-		m_models.emplace(fileName, modelData);
-
 		modelData->materialsModel.resize(scene->mNumMeshes);
+
+		m_models.emplace(directory + scene->mMeshes[0]->mName.data, modelData);
+
+		m_modelsToLink.push_back(modelData);
 
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
@@ -217,7 +194,7 @@ namespace Resources::Loader
 				v.UV = { UV->x, UV->y };
 				v.Normal = { Normal->x, Normal->y, Normal->z };
 
-				vertices.push_back(v);
+				modelData->vertices.push_back(v);
 
 			}
 
@@ -227,67 +204,37 @@ namespace Resources::Loader
 				for (int iid = 0; iid < 3; iid++)
 				{
 					// get the indices of the face who is cut in triangle
-					indices.push_back(face.mIndices[iid] + indexLastMesh);
+					modelData->indices.push_back(face.mIndices[iid] + indexLastMesh);
 				}
 			}
 
-
+			modelData->materialsModel[i] = std::make_shared<Material>();
 			LoadMaterialResourcesIRenderable(scene, mesh, modelData->materialsModel[i], directory);
 
 			OffsetMesh offset;
-			offset.count = indices.size() - lastNumIndices - 1;
+			offset.count = modelData->indices.size() - lastNumIndices - 1;
 			offset.beginIndices = lastNumIndices;
+			offset.materialIndices = i;
 
-			//renderObject->AddOffsetMesh(offset);
-
-			indexLastMesh = vertices.size();
-			lastNumIndices = indices.size();
+			indexLastMesh = modelData->vertices.size();
+			lastNumIndices = modelData->indices.size();
 
 			modelData->offsetsMesh.push_back(offset);
 		}
-
-		std::cout << "end load" << scene->mNumMeshes << std::endl;
-
-		// To Do prepare the multithreading
-		GLuint VAO, VBO, EBO;
-		glGenVertexArrays(1, &VAO);
-		glBindVertexArray(VAO);
-
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, UV));
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
-		glGenBuffers(1, &EBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
-
-		renderObject->m_VAO = VAO;
-		modelData->VAOModel = VAO;
-
-		renderObject->m_vertexCount = indices.size();
-		std::cout << indices.size() << std::endl;
-
-
-		glBindVertexArray(0);
+		modelData->stateVAO = EOpenGLLinkState::CANLINK;
 	}
 
-	void ResourcesManager::LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material> materialOut,
-		const std::string& directory)
+	void ResourcesManager::LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, 
+								std::shared_ptr<Material> materialOut, const std::string& directory)
 	{
 		if (!scene->HasMaterials())
 		{
 			std::cout << "no Material " << std::endl;
 			return;
 		}
-
 		std::vector<unsigned int> vec;
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
-		std::shared_ptr<Material> material = std::make_shared<Material>();
+		Material material;
 
 		std::string keyMaterial = directory + mat->GetName().data;
 
@@ -296,58 +243,47 @@ namespace Resources::Loader
 			materialOut = m_materials[keyMaterial];
 			return;
 		}
+		m_materials.emplace(directory + mat->GetName().data, materialOut);
 
-		m_materials.emplace(directory + mat->GetName().data, material);
-		materialOut = material;
+		materialOut->textures.resize(1);
 
-		if (mat->GetTextureCount(aiTextureType_DIFFUSE) > 0)
-		{
-			std::cout << "texture find " << std::endl;
-			aiString path;
-			if (mat->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS)
-			{
-				std::string fullPath = directory + path.data;
-				std::cout << "Texture file path " << fullPath << std::endl;
-				std::shared_ptr<TextureData> texture = std::make_shared<TextureData>();
-				material->textures.push_back(texture);
+		materialOut->textures[0] = std::make_shared<TextureData>();
+		LoadTextureMaterial(mat, materialOut->textures[0], aiTextureType_DIFFUSE, directory);
 
-				if (m_textures.count(fullPath) != 0)
-					texture = m_textures[fullPath];
-				else
-				{
-					CreateTextureFromImage(fullPath.c_str(), texture,true);
-					m_textures.emplace(fullPath, texture);
-				}
 
-				if (texture > 0)
-					material->textures.push_back(texture);
-			}
-		}
-		/*else if (mat->GetTextureCount(aiTextureType_EMISSION_COLOR) > 0)
-		{
-			std::cout << "texture find in Emission" << std::endl;
-			aiString path;
-			if (mat->GetTexture(aiTextureType_AMBIENT, 0, &path) == AI_SUCCESS)
-			{
-				std::string fullPath = directory + path.data;
-				std::cout << "Texture file path " << fullPath << std::endl;
-				unsigned int texture = Renderer::CreateTextureFromImage(fullPath.c_str(), true);
-				if (texture > 0)
-					material.textures.push_back(texture);
-			}
-		}*/
+		// maybe load a normalMap
 
 		aiColor3D color;
 		mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-		material->diffuseColor = { color.r, color.g, color.b };
+		materialOut->diffuseColor = { color.r, color.g, color.b };
 		mat->Get(AI_MATKEY_COLOR_AMBIENT, color);
-		material->ambientColor = { color.r, color.g, color.b };
+		materialOut->ambientColor = { color.r, color.g, color.b };
 		mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
-		material->specularColor = { color.r, color.g, color.b };
-		material->materialColor = { 1.0f, 1.0f, 1.0f };
+		materialOut->specularColor = { color.r, color.g, color.b };
+		materialOut->materialColor = { 1.0f, 1.0f, 1.0f };
 
 		//return material;
 	}
+
+	void ResourcesManager::LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<TextureData> textureData, 
+												const aiTextureType& textureType ,const std::string& directory)
+	{
+		if (mat->GetTextureCount(textureType) > 0)
+		{
+			aiString path;
+			if (mat->GetTexture(textureType, 0, &path) == AI_SUCCESS)
+			{
+				std::string fullPath = directory + path.data;
+
+				if (m_textures.count(fullPath) != 0)
+					textureData = m_textures[fullPath];
+				else
+					CreateTextureFromImage(fullPath.c_str(), textureData, true);
+					m_textures.emplace(fullPath, textureData);
+			}
+		}
+	}
+
 
 	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)
 	{
@@ -375,7 +311,6 @@ namespace Resources::Loader
 		else
 		{
 			currentNode.nameMesh = "nothing";
-			std::cout << "nothing " << currentNode.nameMesh << std::endl;
 		}
 
 		node->mTransformation.Decompose(scale, rotation, position);
@@ -383,7 +318,6 @@ namespace Resources::Loader
 		currentNode.position = { position.x, position.y, position.z };
 		currentNode.rotation = { rotation.x, rotation.y, rotation.z };
 		currentNode.scale = { scale.x, scale.y, scale.z };
-
 
 		int numChildren = node->mNumChildren;
 		if (numChildren > 0)
@@ -396,6 +330,8 @@ namespace Resources::Loader
 	{
 		std::string s = filename;
 
+		if (m_textures.count(filename) > 0)
+			textureData = m_textures[filename];
 
 		std::cout << filename << std::endl;
 		// load and generate the texture
@@ -403,18 +339,16 @@ namespace Resources::Loader
 		stbi_set_flip_vertically_on_load(shouldFlip);
 		textureData->data = stbi_load(s.c_str(), &textureData->width, &textureData->height, &nrChannels, 4);
 
-
-		/*if (data)
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}*/
 		if (!textureData->data)
 		{
 			std::cout << "Failed to load " << filename << std::endl;
 			stbi_image_free(textureData->data);
+			textureData->stateTexture = EOpenGLLinkState::LOADPROBLEM;
+			return;
 		}
-
+		textureData->stateTexture = EOpenGLLinkState::CANLINK;
+		m_textures.emplace(filename, textureData);
+		m_texturesToLink.push_back(textureData);
 	}
 
 	void ResourcesManager::linkAllTextureToOpenGl()
@@ -429,8 +363,9 @@ namespace Resources::Loader
 			}
 			if ((*it)->stateTexture == EOpenGLLinkState::CANTLINK)
 				return;
-			
-			std::cout << "Link" << std::endl;
+			if ((*it)->stateTexture == EOpenGLLinkState::ISLINK)
+				return;
+			std::cout << "Link Texture" << std::endl;
 			GLuint texture;
 			glGenTextures(1, &texture);
 			glBindTexture(GL_TEXTURE_2D, texture);
@@ -444,21 +379,25 @@ namespace Resources::Loader
 			glGenerateMipmap(GL_TEXTURE_2D);
 
 			(*it)->stateTexture = EOpenGLLinkState::ISLINK;
+			(*it)->texture = texture;
 
-			m_texturesToLink.erase(it);
+			//m_texturesToLink.erase(it);
 		}
 	}
 
 	void ResourcesManager::linkAllModelToOpenGl()
 	{
+		//std::cout << "Link " << m_modelsToLink.size() << std::endl;
 		for (std::list<std::shared_ptr<ModelData>>::iterator it = m_modelsToLink.begin();
-			it != m_modelsToLink.end(); ++it)
+			it != m_modelsToLink.end(); it++)
 		{
 			if ((*it)->stateVAO == EOpenGLLinkState::LOADPROBLEM)
 			{
 				m_modelsToLink.erase(it);
 			}
 			if ((*it)->stateVAO == EOpenGLLinkState::CANTLINK)
+				return;
+			if ((*it)->stateVAO == EOpenGLLinkState::ISLINK)
 				return;
 
 			GLuint VAO, VBO, EBO;
@@ -480,11 +419,57 @@ namespace Resources::Loader
 
 			(*it)->indices.clear();
 			(*it)->vertices.clear();
+			(*it)->VAOModel = VAO;
 
 			glBindVertexArray(0);
 
 			(*it)->stateVAO = EOpenGLLinkState::ISLINK;
-			m_modelsToLink.erase(it);
+			//m_modelsToLink.erase(it);
 		}
+	}
+
+	void	ResourcesManager::CreateProgram(const char* vertex, const char* fragment, const std::string& nameShader)
+	{
+		std::cout << "Tried to create program" << std::endl;
+		GLuint Program = glCreateProgram();
+
+		GLuint VertexShader = glCreateShader(GL_VERTEX_SHADER);
+		std::vector<const char*> Sources;
+		Sources.push_back("#version 330 core");
+		Sources.push_back(vertex);
+		glShaderSource(VertexShader, (GLsizei)Sources.size(), &Sources[0], nullptr);
+		glCompileShader(VertexShader);
+		GLint Compile;
+		glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &Compile);
+		if (Compile == GL_FALSE)
+		{
+			std::cout << "Vertex shader didn't load." << std::endl;
+			return;
+		}
+
+		GLuint FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		std::vector<const char*> FragSources;
+		FragSources.push_back("#version 330 core");
+		FragSources.push_back(fragment);
+		glShaderSource(FragmentShader, (GLsizei)FragSources.size(), &FragSources[0], nullptr);
+		glCompileShader(FragmentShader);
+		glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &Compile);
+		if (Compile == GL_FALSE)
+		{
+			std::cout << "Fragment shader didn't load." << std::endl;
+			return;
+		}
+
+		glAttachShader(Program, VertexShader);
+		glAttachShader(Program, FragmentShader);
+
+		glLinkProgram(Program);
+
+		m_shaders.emplace(nameShader, std::make_shared<GLuint>(Program));
+
+		glDeleteShader(VertexShader);
+		glDeleteShader(FragmentShader);
+
+		std::cout << "program load" << std::endl;
 	}
 }

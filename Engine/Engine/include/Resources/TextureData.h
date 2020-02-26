@@ -8,7 +8,7 @@ namespace Resources
 {
 	struct TextureData
 	{
-		std::shared_ptr<GLuint> texture;
+		GLuint texture{0};
 		unsigned char* data;
 		int height;
 		int width;

@@ -53,50 +53,6 @@ Renderer::~Renderer()
 
 }
 
-GLuint	Renderer::CreateProgram(const char* vertex, const char* fragment)
-{
-	std::cout << "Tried to create program" << std::endl;
-	GLuint Program = glCreateProgram();
-
-	GLuint VertexShader = glCreateShader(GL_VERTEX_SHADER);
-	std::vector<const char*> Sources;
-	Sources.push_back("#version 330 core");
-	Sources.push_back(vertex);
-	glShaderSource(VertexShader, (GLsizei)Sources.size(), &Sources[0], nullptr);
-	glCompileShader(VertexShader);
-	GLint Compile;
-	glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &Compile);
-	if (Compile == GL_FALSE)
-	{
-		std::cout << "Vertex shader didn't load." << std::endl;
-		return 0;
-	}
-
-	GLuint FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	std::vector<const char*> FragSources;
-	FragSources.push_back("#version 330 core");
-	FragSources.push_back(fragment);
-	glShaderSource(FragmentShader, (GLsizei)FragSources.size(), &FragSources[0], nullptr);
-	glCompileShader(FragmentShader);
-	glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &Compile);
-	if (Compile == GL_FALSE)
-	{
-		std::cout << "Fragment shader didn't load." << std::endl;
-		return 0;
-	}
-
-	glAttachShader(Program, VertexShader);
-	glAttachShader(Program, FragmentShader);
-
-	glLinkProgram(Program);
-
-	glDeleteShader(VertexShader);
-	glDeleteShader(FragmentShader);
-
-	std::cout << "program load" << std::endl;
-	return Program;
-}
-
 GLuint Renderer::CreateTextureFromColor(const Core::Maths::Vec4& color)
 {
 	GLuint texture;
@@ -141,7 +97,7 @@ Mesh*	Renderer::CreatePlane()
 {
 	Mesh* m = new Mesh();
 	m->Start();
-	m->m_program = CreateProgram(gVertexShaderStr, gFragmentShaderStr);
+	//m->m_program = ;
 	m->m_vertexCount = 6;
 
 	float Plane[] = {
@@ -183,7 +139,7 @@ Mesh* Renderer::CreateCube()
 {
 	Mesh* m = new Mesh();
 	//m->Start();
-	m->m_program = CreateProgram(gVertexShaderStr, gFragmentShaderStr);
+	//m->m_program = CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 	m->m_vertexCount = 36;
 	
 

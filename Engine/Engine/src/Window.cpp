@@ -107,20 +107,16 @@ void	Window::Update()
 	
 	//Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
 	Core::Datastructure::Object* o{ root->CreateChild({}) };
-	Mesh* m{ new Mesh() };
-	m->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
-	manager.LoadResourcesIRenderable(m, "Resources/Umbreon/UmbreonHighPoly.obj", o);
+
+	manager.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 
 	Mesh* testMesh{ new Mesh() };
-	testMesh->m_program = r.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
+	testMesh->SendProjectionMatrix(c->GetPerspectiveMatrix());
+	manager.LoadResourcesIRenderable(testMesh, "Resources/Umbreon/UmbreonHighPoly.obj", o);
 	//manager.LoadResourcesIRenderable(testMesh, "Resources/level.fbx", o);
 
-	//o->AddComponent(m);
-	o->SetScale(Core::Maths::Vec3(.1f, .1f, .1f));
-	o->SetPos({ 0, -0.f, -1.f });
-	o->SetRot({ 0, 0.f, 0.f });
-	m->SendProjectionMatrix(c->GetPerspectiveMatrix());
-	r.AddMesh(m);
+	//m->SendProjectionMatrix(c->GetPerspectiveMatrix());
+	//r.AddMesh(m);
 	while (!glfwWindowShouldClose(m_window))
 	{
 		glfwSwapBuffers(m_window);
