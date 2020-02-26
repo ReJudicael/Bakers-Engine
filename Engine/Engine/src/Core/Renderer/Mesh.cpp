@@ -82,8 +82,9 @@ void Mesh::OnDraw()
 	//std::cout << *m_program << std::endl;
 
 	glBindVertexArray(m_modelMesh->VAOModel);
-	glUseProgram(*m_program);
 
+	glUseProgram(*m_program);
+	
 	for (int i = 0; i < m_modelMesh->offsetsMesh.size(); i++)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_modelMesh->offsetsMesh[i];

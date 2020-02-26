@@ -8,43 +8,6 @@
 #include "Loadresources.h"
 #include "Camera.h"
 
-static const char* gVertexShaderStr = R"GLSL(
-// Attributes
-layout(location = 0) in vec3 aPosition;
-layout(location = 1) in vec2 aUV;
-layout(location = 2) in vec3 aNormal;
-
-// Uniforms
-uniform mat4 uModel;
-uniform mat4 uProj;
-
-// Varyings (variables that are passed to fragment shader with perspective interpolation)
-out vec2 vUV;
-out vec3 Normal;
-
-void main()
-{
-	vUV = aUV;
-    gl_Position = uProj * uModel * vec4(aPosition, 1.0);
-})GLSL";
-
-static const char* gFragmentShaderStr = R"GLSL(
-// Varyings
-in vec2 vUV;
-
-
-// Uniforms
-uniform sampler2D uColorTexture;
-
-// Shader outputs
-out vec4 oColor;
-
-void main()
-{
-    oColor = texture(uColorTexture, vUV);
-	//oColor = vec4(vUV,0.0f,0.0f);
-})GLSL";
-
 Window::Window()
 {
 	if (!glfwInit())
@@ -103,12 +66,10 @@ void	Window::Update()
 	root->AddComponent(c);
 	c->UpdateCamera();
 	Renderer r;
-	Resources::Loader::ResourcesManager manager;
+	Resources::Loader::ResourcesManager manager{};
 	
 	//Core::Datastructure::RootObject* root{ Core::Datastructure::RootObject::CreateRootNode() };
 	Core::Datastructure::Object* o{ root->CreateChild({}) };
-
-	manager.CreateProgram(gVertexShaderStr, gFragmentShaderStr);
 
 	Mesh* testMesh{ new Mesh() };
 	testMesh->SendProjectionMatrix(c->GetPerspectiveMatrix());

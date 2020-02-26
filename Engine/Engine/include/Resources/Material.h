@@ -17,6 +17,8 @@ namespace Resources
 
 		Core::Maths::Vec3 materialColor;
 
+		std::shared_ptr<GLuint> program;
+
 		std::vector<std::shared_ptr<TextureData>> textures;
 	};
 }

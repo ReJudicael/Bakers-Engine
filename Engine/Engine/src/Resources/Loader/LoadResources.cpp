@@ -15,8 +15,51 @@
 #include "Assimp/RemoveComments.h"
 #include "Object.hpp"
 
+static const char* gVertexShaderStr = R"GLSL(
+// Attributes
+layout(location = 0) in vec3 aPosition;
+layout(location = 1) in vec2 aUV;
+layout(location = 2) in vec3 aNormal;
+
+// Uniforms
+uniform mat4 uModel;
+uniform mat4 uProj;
+
+// Varyings (variables that are passed to fragment shader with perspective interpolation)
+out vec2 vUV;
+out vec3 Normal;
+
+void main()
+{
+	vUV = aUV;
+    gl_Position = uProj * uModel * vec4(aPosition, 1.0);
+})GLSL";
+
+static const char* gFragmentShaderStr = R"GLSL(
+// Varyings
+in vec2 vUV;
+
+
+// Uniforms
+uniform sampler2D uColorTexture;
+
+// Shader outputs
+out vec4 oColor;
+
+void main()
+{
+    oColor = texture(uColorTexture, vUV);
+	//oColor = vec4(vUV,0.0f,0.0f);
+})GLSL";
+
+
 namespace Resources::Loader
 {
+
+	ResourcesManager::ResourcesManager()
+	{
+		CreateProgram(gVertexShaderStr, gFragmentShaderStr, "Default");
+	}
 
 	void ResourcesManager::LoadResourcesIRenderable(Mesh* renderObject, const char* fileName, Core::Datastructure::Object* rootObject)
 	{
@@ -38,7 +81,6 @@ namespace Resources::Loader
 
 		CreateScene(scene, rootObject);
 	}
-
 
 	bool ResourcesManager::LoadAssimpScene(Mesh* renderObject, const char* fileName,
 		Core::Datastructure::Object* rootComponent)
@@ -86,14 +128,13 @@ namespace Resources::Loader
 	{
 		if (node.nameMesh.find("nothing") == std::string::npos)
 		{
-			std::cout << "coucou" << node.nameMesh << std::endl;
 			Mesh* mesh = { new Mesh() };
 
 			if (m_models.count(node.nameMesh) > 0)
 			{
 				mesh->AddModel(m_models[node.nameMesh]);
-				mesh->m_program = m_shaders["Default"];
 				mesh->m_projection = persperct;
+				mesh->m_program = m_shaders["Default"];
 				Object->AddComponent(mesh);
 			}
 		}
@@ -104,7 +145,6 @@ namespace Resources::Loader
 
 		for (auto i{ 0 }; i < node.children.size(); i++)
 		{
-			std::cout << "child" << std::endl;
 			Core::Datastructure::Object* childObject{ Object->CreateChild({}) };
 			RecurciveCreateScene(node.children[i], childObject);
 		}
@@ -430,6 +470,9 @@ namespace Resources::Loader
 
 	void	ResourcesManager::CreateProgram(const char* vertex, const char* fragment, const std::string& nameShader)
 	{
+		if (m_shaders.count(nameShader) > 0)
+			return;
+
 		std::cout << "Tried to create program" << std::endl;
 		GLuint Program = glCreateProgram();
 

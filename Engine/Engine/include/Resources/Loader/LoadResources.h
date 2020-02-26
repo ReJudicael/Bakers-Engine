@@ -37,6 +37,8 @@ namespace Resources::Loader
 
 		float* persperct;
 	public :
+
+		ResourcesManager();
 		void LoadResourcesIRenderable(Mesh* renderObject, const char* fileName, 
 										Core::Datastructure::Object* rootComponent = nullptr);
 
@@ -64,7 +66,7 @@ namespace Resources::Loader
 		void linkAllTextureToOpenGl();
 		void linkAllModelToOpenGl();
 
-		void CreateProgram(const char* vertex, const char* fragment, const std::string& nameShader = "Default");
+		void CreateProgram(const char* vertex, const char* fragment, const std::string& nameShader);
 	};
 
 }
