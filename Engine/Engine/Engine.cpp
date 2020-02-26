@@ -14,12 +14,11 @@ int main()
 	//win.Update();
 
 	FileSystem fs;
-	std::vector<std::filesystem::path> vec;
-	fs.GetContentsInCurrentyPath(vec);
+	std::vector<std::filesystem::path> vec = fs.GetContents();
 	
 	for (auto a : vec)
 	{
-		std::cout << a.string() << std::endl;
+		std::cout << fs.GetExtension(a) << std::endl;
 	}
 }
 
