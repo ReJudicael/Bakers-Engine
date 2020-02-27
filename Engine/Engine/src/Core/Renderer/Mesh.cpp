@@ -106,59 +106,6 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	glBindVertexArray(0);
 }
 
-/*void Mesh::DrawMesh()
-{
-	glUseProgram(m_program);
-	
-	Core::Maths::Quaternion q(0, 0.01, 0);
-	m_transform.Rotate(q);
-	Core::Maths::Mat4 trs = m_transform.GetLocalTrs();
-	/*for (int i = 0; i < 16; ++i)
-		std::cout << trs.m_array[i] << " ; ";
-	std::cout << std::endl;*/
-
-	/*trs.mat.Print();
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "uModel"), 1, GL_FALSE, trs.m_array);
-
-	glBindTexture(GL_TEXTURE_2D, m_texture);
-	glBindVertexArray(m_VAO);
-
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	glBindVertexArray(0);
-}*/
-
-/*Mesh* Mesh::CreateCube(const float offset, const float scale)
-{
-	Mesh* result = new Mesh();
-	result->AddVertex(offset - scale, offset - scale, offset - scale - 1);
-	result->AddVertex(offset - scale, offset - scale, offset + scale - 1);
-	result->AddVertex(offset - scale, offset + scale, offset - scale - 1);
-	result->AddVertex(offset - scale, offset + scale, offset + scale - 1);
-	result->AddVertex(offset + scale, offset - scale, offset - scale - 1);
-	result->AddVertex(offset + scale, offset - scale, offset + scale - 1);
-	result->AddVertex(offset + scale, offset + scale, offset - scale - 1);
-	result->AddVertex(offset + scale, offset + scale, offset + scale - 1);
-
-	result->AddTriangle(0, 6, 4);
-	result->AddTriangle(0, 2, 6);
-	result->AddTriangle(0, 3, 2);
-	result->AddTriangle(0, 1, 3);
-	result->AddTriangle(2, 7, 6);
-	result->AddTriangle(2, 3, 7);
-	result->AddTriangle(4, 6, 7);
-	result->AddTriangle(4, 7, 5);
-	result->AddTriangle(0, 4, 5);
-	result->AddTriangle(0, 5, 1);
-	result->AddTriangle(1, 5, 7);
-	result->AddTriangle(1, 7, 3);
-
-	result->m_vertexCount = 36;
-
-	result->Initialize();
-	return result;
-}*/
-
 Core::Maths::Mat4 Mesh::projectionMatrix(float FovY, float Aspect, float Near, float Far)
 {
 	float Top = Near * tanf(FovY / 2.f);

@@ -31,7 +31,7 @@ public:
 	float*	m_projection;
 
 	int		AddTriangle(int v1, int v2, int v3);
-	int		AddVertex(float x, float y, float z);
+	int		AddVertex(float x, float y, float z);	
 
 public:
 	Mesh();

@@ -9,6 +9,7 @@
 #include "Debug.h"
 #include "TaskSystem.hpp"
 #include "PlayerCamera.h"
+#include "Maths.hpp"
 
 Window::Window():
 	m_width{ 1280 },

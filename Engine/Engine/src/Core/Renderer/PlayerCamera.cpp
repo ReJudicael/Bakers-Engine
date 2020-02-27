@@ -38,6 +38,11 @@ void PlayerCamera::ComputeTranslation()
 	if (Input()->IsKeyDown(EKey::S))
 		move += m_front;
 
+	if (Input()->IsKeyDown(EKey::LEFT_SHIFT))
+		m_isRunning = true;
+	else
+		m_isRunning = false;
+
 	if (move.SquaredLength() > 0)
 		Move(move);
 }
@@ -74,7 +79,10 @@ void PlayerCamera::UpdatePosition(float deltaTime)
 	if (length == 0) // Do not update transform if no movement has been made
 		return;
 
-	m_parent->Translate(m_movement * m_speed * deltaTime);
+	if (m_isRunning)
+		m_parent->Translate(m_movement * m_runningSpeed * deltaTime);
+	else
+		m_parent->Translate(m_movement * m_speed * deltaTime);
 
 	// Decrease movement
 	m_movement *= m_moveLerpSpeed;
