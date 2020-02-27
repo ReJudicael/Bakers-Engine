@@ -47,6 +47,7 @@ void Window::Init(const int width, const int height)
 		fprintf(stderr, "gladLoadGL failed. \n");
 		return;
 	}
+	TracyGpuContext
 
 	OnResizeWindow += BIND_EVENT_2(Window::SetSizeWindow);
 
@@ -102,13 +103,18 @@ void	Window::Update()
 			ZoneNamedN(swapBuffers, "glfwSwapBuffers", true)
 			TRACY_GL_IMAGE_SEND(m_width, m_height)
 			glfwSwapBuffers(m_window);
+			TracyGpuCollect
 		}
 		FrameMark;
 		m_root->RemoveDestroyed();
 		m_inputSystem->ClearRegisteredInputs();
 	}
-	m_root->Destroy();
-	delete m_root;
+	{
+		ZoneScopedN("Cleanup scene")
+			ZoneText("Delete scene and clean up conponents and objects", 49)
+		m_root->Destroy();
+		delete m_root;
+	}
 }
 
 void Window::SetSizeWindow(const double width, const double height)

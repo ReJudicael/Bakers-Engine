@@ -58,6 +58,8 @@ namespace Core::Debug
 
 	inline void TracyGL::SendCapture(int screenWidth, int screenHeight)
 	{
+		ZoneScoped
+			ZoneText("Sending data to tracy server", 29)
 		while (!m_fiQueue.empty())
 		{
 			const auto fiIdx = m_fiQueue.front();
@@ -69,7 +71,7 @@ namespace Core::Debug
 			glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
 			m_fiQueue.erase(m_fiQueue.begin());
 		}
-
+		TracyGpuZone("Resizing frame data for capture sending")
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fiFramebuffer[m_fiIdx]);
 		glBlitFramebuffer(0, 0, screenWidth, screenHeight, 0, 0, m_width, m_height, GL_COLOR_BUFFER_BIT, GL_LINEAR);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);

@@ -36,6 +36,7 @@ namespace Core::Datastructure
 	{
 		ZoneScoped
 			ZoneText("Render of components done here", 31)
+		TracyGpuZone("Rendering all components")
 		for (auto it{ m_renderables.begin() }; it != m_renderables.end(); ++it)
 			(*it)->Draw(m_cameras);
 	}
@@ -94,6 +95,8 @@ namespace Core::Datastructure
 	
 	void RootObject::Destroy()
 	{
+		ZoneScoped
+			ZoneText("Destroying scene and all its objects and components", 52)
 		for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
 			(*it)->Destroy();
 		for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)

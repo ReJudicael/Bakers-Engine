@@ -16,6 +16,7 @@ namespace Core::Datastructure
 	{
 		ZoneScoped
 			ZoneText("Render of a component", 22)
+		TracyGpuZone("Rendering single component")
 		if (IsInit() && m_isActive)
 		{
 			for (auto it{ cameras.begin() }; it != cameras.end(); ++it)

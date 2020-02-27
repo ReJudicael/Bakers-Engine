@@ -38,7 +38,7 @@ namespace Core::SystemManagement
 		 * Method allowing each thread to do its task
 		 * @param indexThread: Index of the thread calling this method
 		 */
-		void WaitTaskLoop() noexcept;
+		void WaitTaskLoop(int i) noexcept;
 
 	public:
 		/**
@@ -84,7 +84,7 @@ namespace Core::SystemManagement
 
 		// Give task-receiving method to threads
 		for (unsigned int i = 0; i < m_maxThreads; ++i)
-			m_threads.push_back(std::thread(&TaskSystem::WaitTaskLoop, this));
+			m_threads.push_back(std::thread(&TaskSystem::WaitTaskLoop, this, i));
 	}
 
 	inline TaskSystem::~TaskSystem()
@@ -97,8 +97,9 @@ namespace Core::SystemManagement
 		m_threads.clear();
 	}
 
-	inline void TaskSystem::WaitTaskLoop() noexcept
+	inline void TaskSystem::WaitTaskLoop(int i) noexcept
 	{
+		SET_THREAD_NAME((std::string("Worker number ") + std::to_string(i)).c_str())
 		Task task;
 		while (true)
 		{
