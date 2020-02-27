@@ -55,16 +55,16 @@ namespace Core::SystemManagement
 		/**
 		 * Get the absolute file of the given path
 		 * @param path: Path to be converted into absolute path
-		 * @return Absolute path with quote
+		 * @return Absolute path
 		 */
-		std::string GetAbsoluteWithQuote(const Path& path) const noexcept;
+		std::string GetAbsolute(const Path& path) const noexcept;
 
 		/**
 		 * Get the absolute file of the given path
 		 * @param path: Path to be converted into absolute path
-		 * @return Absolute path
+		 * @return Absolute path with quote
 		 */
-		std::string GetAbsolute(const Path& path) const noexcept;
+		std::string GetAbsoluteWithQuote(const Path& path) const noexcept;
 
 		/**
 		 * Get the local absolute file of the given path
@@ -74,13 +74,6 @@ namespace Core::SystemManagement
 		std::string GetLocalAbsolute(const std::string& itemPath) const noexcept;
 
 		/**
-		 * Get the extension of the given
-		 * @param path: Path to the file from which the extension is get
-		 * @return Extension of the given file
-		 */
-		std::string GetExtension(const Path& path) const noexcept;
-
-		/**
 		 * Get the name of the file at the given path
 		 * @param path: Path to be the file from which the name is get
 		 * @return Name of the file
@@ -88,10 +81,18 @@ namespace Core::SystemManagement
 		std::string GetFilename(const Path& path) const noexcept;
 
 		/**
-		 * Get the parent directory of the current path
-		 * @return Parent directory from current path
+		 * Get the extension of the given path
+		 * @param path: Path to the file from which the extension is get
+		 * @return Extension of the given file with a dot
 		 */
-		std::string GetParentCurrentPath() const noexcept;
+		std::string GetExtension(const Path& path) const noexcept;
+
+		/**
+		 * Get the extension of the given file
+		 * @param itemPath: Path to the file from which the extension is get
+		 * @return Extension of the given file without a dot
+		 */
+		std::string GetExtensionWithoutDot(const Path& path) const noexcept;
 
 		/**
 		 * Get the parent directory of the given path
@@ -101,10 +102,10 @@ namespace Core::SystemManagement
 		std::string GetParentPath(const Path& path) const noexcept;
 
 		/**
-		 * Get the current path separated by directories
-		 * @return Vector of strings containing each directory of the current path
+		 * Get the parent directory of the current path
+		 * @return Parent directory from current path
 		 */
-		std::vector<std::string> GetExplodedCurrentPath() const noexcept;
+		std::string GetParentCurrentPath() const noexcept;
 
 		/**
 		 * Get the current path separated by directories
@@ -112,6 +113,12 @@ namespace Core::SystemManagement
 		 * @return Vector of strings containing each directory of the current path
 		 */
 		std::vector<std::string> GetExplodedPath(const std::string& pathStr) const noexcept;
+
+		/**
+		 * Get the current path separated by directories
+		 * @return Vector of strings containing each directory of the current path
+		 */
+		std::vector<std::string> GetExplodedCurrentPath() const noexcept;
 
 		/**
 		 * Cut substring from beginning of current path to given pos
@@ -134,6 +141,18 @@ namespace Core::SystemManagement
 		bool OpenFile(const std::string& itemPath) noexcept;
 
 		/**
+		 * Create a folder
+		 * @return path of the new folder
+		 */
+		std::string CreateFolder() noexcept;
+
+		/**
+		 * Create a file
+		 * @return path of the new file
+		 */
+		std::string CreateFile() noexcept;
+
+		/**
 		 * Open given file or directory
 		 * @param itemPath: Path to the file or directory to open;
 		 * @return True if the given path leads to a file or a directory
@@ -154,34 +173,21 @@ namespace Core::SystemManagement
 		void DeleteContent(const std::string& itemPath) noexcept;
 
 		/**
-		 * Create a folder
-		 * @return path of the new folder
-		 */
-		std::string CreateFolder() noexcept;
-
-		/**
-		 * Create a file
-		 * @return path of the new file
-		 */
-		std::string CreateFile() noexcept;
-
-
-		/**
 		 * Move current path to closest available directory
 		 */
 		void MoveCurrentToClosestDirectory() noexcept;
-
-		/**
-		 * Get all elements inside current directory
-		 * @return vector storing each files and directories inside current directory
-		 */
-		std::vector<Path> GetContentsInCurrentPath() const noexcept;
 
 		/**
 		 * Get all elements inside given directory
 		 * @return vector storing each files and directories inside given directory
 		 */
 		std::vector<Path> GetContentsInPath(const Path& path) const noexcept;
+
+		/**
+		 * Get all elements inside current directory
+		 * @return vector storing each files and directories inside current directory
+		 */
+		std::vector<Path> GetContentsInCurrentPath() const noexcept;
 	};
 
 	inline bool FileSystem::IsRegularFile(const Path& path) const noexcept
@@ -209,14 +215,14 @@ namespace Core::SystemManagement
 		return path.is_absolute();
 	}
 
-	inline std::string FileSystem::GetAbsoluteWithQuote(const Path& path) const noexcept
-	{
-		return "\"" + std::filesystem::absolute(path).string() + "\"";
-	}
-
 	inline std::string FileSystem::GetAbsolute(const Path& path) const noexcept
 	{
 		return std::filesystem::absolute(path).string();
+	}
+
+	inline std::string FileSystem::GetAbsoluteWithQuote(const Path& path) const noexcept
+	{
+		return "\"" + std::filesystem::absolute(path).string() + "\"";
 	}
 
 	inline std::string FileSystem::GetLocalAbsolute(const std::string& itemPath) const noexcept
@@ -224,19 +230,19 @@ namespace Core::SystemManagement
 		return currentDirectory == "." ? itemPath : currentDirectory + '\\' + itemPath;
 	}
 
-	inline std::string FileSystem::GetExtension(const Path& path) const noexcept
-	{
-		return path.extension().string();
-	}
-
 	inline std::string FileSystem::GetFilename(const Path& path) const noexcept
 	{
 		return path.filename().string();
 	}
 
-	inline std::string FileSystem::GetParentCurrentPath() const noexcept
+	inline std::string FileSystem::GetExtension(const Path& path) const noexcept
 	{
-		return GetParentPath(currentDirectory);
+		return path.extension().string();
+	}
+
+	inline std::string FileSystem::GetExtensionWithoutDot(const Path& path) const noexcept
+	{
+		return path.extension().string().erase(0, 1);
 	}
 
 	inline std::string FileSystem::GetParentPath(const Path& path) const noexcept
@@ -244,14 +250,19 @@ namespace Core::SystemManagement
 		return path.parent_path().string();
 	}
 
-	inline std::vector<std::string> FileSystem::GetExplodedCurrentPath() const noexcept
+	inline std::string FileSystem::GetParentCurrentPath() const noexcept
 	{
-		return GetExplodedPath(currentDirectory);
+		return GetParentPath(currentDirectory);
 	}
 
 	inline std::vector<std::string> FileSystem::GetExplodedPath(const std::string& pathStr) const noexcept
 	{
 		return Ext::Explode(pathStr, '\\');
+	}
+
+	inline std::vector<std::string> FileSystem::GetExplodedCurrentPath() const noexcept
+	{
+		return GetExplodedPath(currentDirectory);
 	}
 
 	inline void FileSystem::CutCurrentPathAtPos(size_t pos) noexcept
@@ -279,35 +290,6 @@ namespace Core::SystemManagement
 		}
 		else
 			return false;
-	}
-
-	inline bool FileSystem::OpenContent(const std::string& itemPath) noexcept
-	{
-		if (!OpenFolder(itemPath))
-			return OpenFile(itemPath);
-		else
-			return true;
-	}
-
-	inline void FileSystem::RenameContent(const std::string& itemPath, char newName[64]) noexcept
-	{
-		bool isValidName = true;
-		constexpr char forbiddenChar[10] = "<>:\"/\\|?*";
-
-		for (int i{ 0 }; i < sizeof(newName) && isValidName; ++i)
-		{
-			for (int j{ 0 }; j < sizeof(forbiddenChar) - 1; ++j)
-			{
-				if (newName[i] == forbiddenChar[j])
-				{
-					isValidName = false;
-					break;
-				}
-			}
-		}
-		std::string newNamePath = GetLocalAbsolute(newName);
-		if (isValidName && !Exists(newNamePath))
-			std::filesystem::rename(itemPath, newNamePath);
 	}
 
 	inline std::string FileSystem::CreateFolder() noexcept
@@ -340,7 +322,7 @@ namespace Core::SystemManagement
 		std::string filePath = GetLocalAbsolute(defaultNameNewFile);
 		if (!Exists(filePath))
 		{
-			std::string cmd = "break > " + GetAbsoluteWithQuote(filePath);
+			std::string cmd = "break >" + GetAbsoluteWithQuote(filePath);
 			system(cmd.c_str());
 		}
 		else
@@ -352,13 +334,42 @@ namespace Core::SystemManagement
 
 				if (!Exists(filePath))
 				{
-					std::string cmd = "break > " + GetAbsoluteWithQuote(filePath);
+					std::string cmd = "echo > " + GetAbsoluteWithQuote(filePath);
 					system(cmd.c_str());
 					break;
 				}
 			}
 		}
 		return filePath;
+	}
+
+	inline bool FileSystem::OpenContent(const std::string& itemPath) noexcept
+	{
+		if (!OpenFolder(itemPath))
+			return OpenFile(itemPath);
+		else
+			return true;
+	}
+
+	inline void FileSystem::RenameContent(const std::string& itemPath, char newName[64]) noexcept
+	{
+		bool isValidName = true;
+		constexpr char forbiddenChar[10] = "<>:\"/\\|?*";
+
+		for (int i{ 0 }; i < sizeof(newName) && isValidName; ++i)
+		{
+			for (int j{ 0 }; j < sizeof(forbiddenChar) - 1; ++j)
+			{
+				if (newName[i] == forbiddenChar[j])
+				{
+					isValidName = false;
+					break;
+				}
+			}
+		}
+		std::string newNamePath = GetLocalAbsolute(newName);
+		if (isValidName && !Exists(newNamePath))
+			std::filesystem::rename(itemPath, newNamePath);
 	}
 
 	inline void FileSystem::DeleteContent(const std::string& itemPath) noexcept
@@ -380,11 +391,6 @@ namespace Core::SystemManagement
 		}
 	}
 
-	inline std::vector<Path> FileSystem::GetContentsInCurrentPath() const noexcept
-	{
-		return GetContentsInPath(currentDirectory);
-	}
-
 	inline std::vector<Path> FileSystem::GetContentsInPath(const Path& path) const noexcept
 	{
 		std::vector<Path> contents;
@@ -402,5 +408,10 @@ namespace Core::SystemManagement
 			}
 		}
 		return contents;
+	}
+
+	inline std::vector<Path> FileSystem::GetContentsInCurrentPath() const noexcept
+	{
+		return GetContentsInPath(currentDirectory);
 	}
 }
