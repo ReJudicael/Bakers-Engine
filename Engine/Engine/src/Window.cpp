@@ -9,6 +9,7 @@
 #include "Debug.h"
 #include "TaskSystem.hpp"
 #include "PlayerCamera.h"
+#include "Maths.hpp"
 
 static const char* gVertexShaderStr = R"GLSL(
 // Attributes
@@ -117,7 +118,7 @@ void	Window::Update()
 	o->AddComponent(m);
 	o->SetScale(Core::Maths::Vec3(.1f, .1f, .1f));
 	o->SetPos({ 0, -2.f, -5.f });
-	o->SetRot({ -90, 0.f, 0.f });
+	o->SetRot({Core::Maths::ToRadians(-90), 0.f, 0.f });
 	m->SendProjectionMatrix(c->GetPerspectiveMatrix());
 	r.AddMesh(m);
 

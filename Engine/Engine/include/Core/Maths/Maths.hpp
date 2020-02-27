@@ -11,6 +11,9 @@
 #include "Ref3D.hpp"
 #include "Quaternion.hpp"
 
+constexpr double RAD2DEG = 180.f / M_PI;
+constexpr double DEG2RAD = M_PI / 180.f;
+
 /**
  * Contains the core of the engine
  */
@@ -67,6 +70,24 @@ namespace Core
 			if (v1 < v2)
 				return v1;
 			return v2;
+		}
+
+		/**
+		 * Return given angle in radians
+		 * @param angle: Angle in degrees
+		 */
+		inline constexpr double ToRadians(const double& angle)
+		{
+			return angle * DEG2RAD;
+		}
+
+		/**
+		 * Return given angle in degrees
+		 * @param angle: Angle in radians
+		 */
+		inline constexpr double ToDegrees(const double& angle)
+		{
+			return angle * RAD2DEG;
 		}
 	}
 }
