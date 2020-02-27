@@ -10,16 +10,8 @@ using namespace Core::SystemManagement;
 
 int main()
 {
-	//Window win;
-	//win.Update();
-
-	FileSystem fs;
-	std::vector<std::filesystem::path> vec = fs.GetContents();
-	
-	for (auto a : vec)
-	{
-		std::cout << fs.GetExtension(a) << std::endl;
-	}
+	Window win;
+	win.Update();
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
