@@ -7,6 +7,7 @@
 #include "IComponent.hpp"
 #include "ICamera.h"
 #include <list>
+#include "Debug.h"
 
 namespace Core::Datastructure
 {

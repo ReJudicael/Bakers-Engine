@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IComponent.hpp"
+#include "Debug.h"
 
 namespace Core::Datastructure
 {

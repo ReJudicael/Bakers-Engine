@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Vec3.hpp"
-
+#include "Debug.h"
 
 namespace Resources
 {

@@ -8,6 +8,7 @@
 #include "IRenderable.hpp"
 #include "ICamera.h"
 #include "InputSystem.hpp"
+#include "Debug.h"
 
 namespace Core::Datastructure
 {
@@ -33,6 +34,11 @@ namespace Core::Datastructure
 		 */
 		RootObject(SystemManagement::InputSystem* inputSystem) noexcept;
 	public:
+		~RootObject()
+		{
+			if (!IsDestroyed())
+				Destroy();
+		}
 		/**
 		 * Calls OnStart on every component that requires to be started.
 		 * If a component cannot be started in the frame, it will try again
@@ -112,6 +118,11 @@ namespace Core::Datastructure
 		 * Queues an object to be destroyed
 		 */
 		void		DestroyObject(Object* i) noexcept;
+
+		/**
+		 * Destroys the scene
+		 */
+		void		Destroy();
 
 		/**
 		 * Creates a root node with default transform and no parent,

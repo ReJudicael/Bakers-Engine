@@ -6,7 +6,7 @@
 
 #include "Vec3.hpp"
 #include "TextureData.h"
-
+#include "Debug.h"
 
 namespace Resources
 {

@@ -3,6 +3,7 @@
 #include "ComponentBase.h"
 #include "ICamera.h"
 #include "IUpdatable.hpp"
+#include "Debug.h"
 
 class Camera : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
 {
@@ -30,12 +31,7 @@ public:
 	virtual void OnStart() override;
 
 	void SetRatio(const float newRatio) override;
-
-	/**
-	 * Destructor
-	 */
-	~Camera();
-
+	
 	/**
 	 * Create Perspective Matrix
 	 * @param ratio: Ratio (width / height) of the window

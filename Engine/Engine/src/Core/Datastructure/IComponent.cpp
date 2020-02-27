@@ -28,6 +28,7 @@ namespace Core::Datastructure
 		ZoneScoped
 			ZoneText("Destroy of a component", 23)
 		OnDestroy();
+		m_root->DestroyComponent(this);
 		m_isDestroyed = true;
 	}
 

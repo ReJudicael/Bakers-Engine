@@ -2,6 +2,7 @@
 
 #include "ComponentBase.h"
 #include "IUpdatable.hpp"
+#include "Debug.h"
 
 namespace Core::Datastructure
 {

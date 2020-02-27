@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include "OpenGLLinkState.h"
+#include "Debug.h"
 
 
 namespace Resources

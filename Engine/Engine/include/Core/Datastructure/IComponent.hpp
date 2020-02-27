@@ -1,6 +1,7 @@
 #pragma once
 
 #include "InputSystem.hpp"
+#include "Debug.h"
 
 namespace Core::Datastructure
 {
@@ -19,8 +20,12 @@ namespace Core::Datastructure
 		RootObject* m_root{ nullptr };
 	protected:
 		bool		m_isActive = true;
-		Object* m_parent{ nullptr };
+		Object*		m_parent{ nullptr };
 	public:
+		/**
+		 * Destructor, declared virtual as this class is inherited
+		 */
+		virtual ~IComponent() noexcept {}
 		/**
 		 * Sets the parent of the component
 		 * @param parent: New parent of the component

@@ -10,6 +10,7 @@
 #include "ModelData.h"
 #include "SceneData.h"
 #include "Vertex.h" 
+#include "Debug.h"
 
 //#define OFFSETOF(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
 

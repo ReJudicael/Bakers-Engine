@@ -26,6 +26,18 @@ namespace Core::Datastructure
 			m_transform.UpdatePos();
 	}
 
+	void Object::Destroy() noexcept
+	{
+		m_isDestroyed = true;
+
+		for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
+			(*it)->Destroy();
+		for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+			(*it)->Destroy();
+
+		m_root->DestroyObject(this);
+	}
+
 	Object* Datastructure::Object::CreateChild(const Transform& localPos) noexcept
 	{
 		m_childs.push_back(new Object(localPos, this, m_root));

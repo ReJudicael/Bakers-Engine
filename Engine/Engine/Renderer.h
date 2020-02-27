@@ -4,6 +4,7 @@
 
 #include "Mesh.h"
 #include "IRenderable.hpp"
+#include "Debug.h"
 
 class Renderer
 {

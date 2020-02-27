@@ -3,6 +3,7 @@
 #include "Vec3.hpp"
 #include "Mat4.hpp"
 #include "IComponent.hpp"
+#include "Debug.h"
 
 namespace Core::Datastructure
 {

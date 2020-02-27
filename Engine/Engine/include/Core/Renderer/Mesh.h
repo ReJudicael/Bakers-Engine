@@ -12,7 +12,7 @@
 #include "OffsetMesh.h"
 #include "Vertex.h"
 #include "ModelData.h"
-
+#include "Debug.h"
 
 class Mesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
 {

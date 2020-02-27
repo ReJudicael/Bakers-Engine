@@ -5,6 +5,7 @@
 
 #include "InputSystem.hpp"
 #include "RootObject.hpp"
+#include "Debug.h"
 
 class Window
 {

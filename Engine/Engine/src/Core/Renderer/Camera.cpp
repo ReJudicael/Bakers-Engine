@@ -41,10 +41,6 @@ void Camera::OnStart()
 	IUpdatable::OnStart();
 }
 
-Camera::~Camera()
-{
-}
-
 void Camera::SetRatio(const float newRatio)
 {
 	m_ratio = newRatio;

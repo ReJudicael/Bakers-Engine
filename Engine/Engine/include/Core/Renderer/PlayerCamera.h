@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Vec2.hpp"
+#include "Debug.h"
 
 /**
  * Camera controllable through WASD and mouse inputs

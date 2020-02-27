@@ -58,6 +58,9 @@
     <Filter Include="Fichiers d%27en-tête\Core\Debug">
       <UniqueIdentifier>{d1a12c79-ce72-41f4-9861-84ee4af81d39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\Core\Debug">
+      <UniqueIdentifier>{512c8774-f2ec-47ea-8547-9525da4d5396}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -122,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Debug\Debug.cpp">
+      <Filter>Fichiers sources\Core\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

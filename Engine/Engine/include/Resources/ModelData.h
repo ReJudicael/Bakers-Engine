@@ -6,6 +6,7 @@
 #include "OffsetMesh.h" 
 #include "Vertex.h" 
 #include "OpenGlLinkState.h" 
+#include "Debug.h"
 
 namespace Resources
 {

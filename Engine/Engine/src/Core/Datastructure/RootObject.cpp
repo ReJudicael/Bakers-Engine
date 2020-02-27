@@ -85,22 +85,42 @@ namespace Core::Datastructure
 
 	void RootObject::DestroyComponent(IComponent* i) noexcept
 	{
-		m_destroyedComponents.emplace_back(i);
+		m_destroyedComponents.push_back(i);
 	}
 	void RootObject::DestroyObject(Object* i) noexcept
 	{
-		m_destroyedObjects.emplace_back(i);
+		m_destroyedObjects.push_back(i);
 	}
+	
+	void RootObject::Destroy()
+	{
+		for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
+			(*it)->Destroy();
+		for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+			(*it)->Destroy();
+	
+		RemoveDestroyed();
+		SetDestroyed();
+	}
+
 	void RootObject::RemoveDestroyed() noexcept
 	{
 		ZoneScoped
-			ZoneText("Removing of destroyed components done here", 43)
-		for (auto it{ m_destroyedComponents.begin() }; it != m_destroyedComponents.end(); ++it)
-			delete* it;
-		m_destroyedComponents.clear();
-		for (auto it{ m_destroyedObjects.begin() }; it != m_destroyedObjects.end(); ++it)
-			delete* it;
-		m_destroyedObjects.clear();
+			ZoneText("Removing destroyed objects and components", 42)
+		{
+			ZoneScoped
+				ZoneText("Removing of destroyed components done here", 43)
+				for (auto it{ m_destroyedComponents.begin() }; it != m_destroyedComponents.end(); ++it)
+					delete (*it);
+			m_destroyedComponents.clear();
+		}
+		{
+			ZoneScoped
+				ZoneText("Removing of destroyed objects done here", 43)
+				for (auto it{ m_destroyedObjects.begin() }; it != m_destroyedObjects.end(); ++it)
+					delete (*it);
+			m_destroyedObjects.clear();
+		}
 	}
 
 	RootObject* RootObject::CreateRootNode(SystemManagement::InputSystem* inputSystem) noexcept

@@ -296,6 +296,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClCompile Include="include\Core\Datastructure\ICamera.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
     <ClCompile Include="src\Core\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Core\Renderer\PlayerCamera.cpp" />

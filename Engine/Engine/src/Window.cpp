@@ -26,6 +26,8 @@ Window::Window(const int width, const int height) :
 
 void Window::Init(const int width, const int height)
 {
+	ZoneScoped
+		ZoneText("Initializing window", 20)
 	if (!glfwInit())
 		return;
 
@@ -65,21 +67,24 @@ Window::~Window()
 
 void	Window::Update()
 {
-	m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem);
-	Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
-
-	PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
-	camNode->AddComponent(c);
-	Renderer r;
 	Resources::Loader::ResourcesManager manager{};
-	
-	Core::Datastructure::Object* o{ m_root->CreateChild({}) };
+	{
+		ZoneScopedN("Engine init scene")
+			ZoneText("Initializing scene of the engine", 33)
+		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem);
+		Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
 
-	Mesh* testMesh{ new Mesh() };
-	testMesh->SendProjectionMatrix(c->GetPerspectiveMatrix());
-	manager.LoadResourcesIRenderable(testMesh, "Resources/Umbreon/UmbreonHighPoly.obj", o);
-	//manager.LoadResourcesIRenderable(testMesh, "Resources/level.fbx", o);
+		PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
+		camNode->AddComponent(c);
+		Renderer r;
 
+		Core::Datastructure::Object* o{ m_root->CreateChild({}) };
+
+		Mesh* testMesh{ new Mesh() };
+		testMesh->SendProjectionMatrix(c->GetPerspectiveMatrix());
+		manager.LoadResourcesIRenderable(testMesh, "Resources/Umbreon/UmbreonHighPoly.obj", o);
+		//manager.LoadResourcesIRenderable(testMesh, "Resources/level.fbx", o);
+	}
 	INIT_TRACY_GL_IMAGE(320, 180)
 
 	while (!glfwWindowShouldClose(m_window))
@@ -103,7 +108,7 @@ void	Window::Update()
 		m_inputSystem->ClearRegisteredInputs();
 	}
 	m_root->Destroy();
-	m_root->RemoveDestroyed();
+	delete m_root;
 }
 
 void Window::SetSizeWindow(const double width, const double height)

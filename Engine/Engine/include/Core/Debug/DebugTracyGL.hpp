@@ -1,9 +1,7 @@
 #pragma once
 
 #include <Tracy.hpp>
-#ifndef __glad_h_
 #include <glad/glad.h>
-#endif
 #include <TracyOpenGL.hpp>
 #include <vector>
 
@@ -81,6 +79,7 @@ namespace Core::Debug
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 		m_fiFence[m_fiIdx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 		m_fiQueue.emplace_back(m_fiIdx);
-		m_fiIdx = (m_fiIdx + 1) % 4;	}
+		m_fiIdx = (m_fiIdx + 1) % 4;
+	}
 }
 #endif

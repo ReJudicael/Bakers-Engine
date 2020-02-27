@@ -4,6 +4,7 @@
 
 #include "Transform.hpp"
 #include "ComponentBase.h"
+#include "Debug.h"
 
 namespace Core::Datastructure
 {
@@ -40,6 +41,14 @@ namespace Core::Datastructure
 		}
 
 		/**
+		 * Sets destruction flag to true
+		 */
+		void				SetDestroyed() noexcept
+		{
+			m_isDestroyed = true;
+		}
+
+		/**
 		 * Constructor of the object. Takes as argument the local position
 		 * and its parent. Will update the transform if the parent is not null
 		 * @param localPos: Local position of the transform
@@ -59,15 +68,7 @@ namespace Core::Datastructure
 		 * Sets the object for destruction. Calls OnDestroy on every components
 		 * and Destroy on all of its childs
 		 */
-		void				Destroy() noexcept
-		{
-			m_isDestroyed = true;
-
-			for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
-				(*it)->Destroy();
-			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
-				(*it)->Destroy();
-		}
+		void				Destroy() noexcept;
 
 		/**
 		 * Returns if the object was marked for destruction

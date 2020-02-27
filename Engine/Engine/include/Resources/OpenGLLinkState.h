@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Debug.h"
 
 namespace Resources
 {
