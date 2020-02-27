@@ -61,6 +61,9 @@
     <Filter Include="Fichiers sources\Core\Debug">
       <UniqueIdentifier>{512c8774-f2ec-47ea-8547-9525da4d5396}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Types">
+      <UniqueIdentifier>{97b376be-4406-43d0-99b4-4669211c3232}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -244,6 +247,12 @@
     </ClInclude>
     <ClInclude Include="include\Resources\OpenGLLinkState.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.hpp">
+      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="StringExtension.hpp">
+      <Filter>Fichiers d%27en-tête\Types</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
