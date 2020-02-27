@@ -64,9 +64,9 @@ namespace Resources::Loader
 		void LoadMeshIndices(const aiMesh* mesh, std::vector<GLuint>& indices, const GLuint& indexLastMesh);
 
 
-		void LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material> material,
-												const std::string& directory);
-		bool LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<TextureData> textureData, const aiTextureType& textureType, const std::string& directory);
+		void LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material>& material,
+												const std::string& directory, const int meshNameCall = 0);
+		bool LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<TextureData>& textureData, const aiTextureType& textureType, const std::string& directory);
 
 		void LoadSceneResources(const aiScene* scene, const std::string& fileNameconst,const std::string& directory);
 		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, Node& currentNode, const std::string& directory);

@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <memory>
+#include <string>
 
 #include "Vec3.hpp"
 #include "TextureData.h"

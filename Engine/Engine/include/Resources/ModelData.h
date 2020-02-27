@@ -17,6 +17,7 @@ namespace Resources
 		std::vector<OffsetMesh> offsetsMesh;
 		std::vector<std::shared_ptr<Material>> materialsModel;
 		std::string materialModelName;
+		std::string ModelName;
 		EOpenGLLinkState stateVAO;
 
 	};

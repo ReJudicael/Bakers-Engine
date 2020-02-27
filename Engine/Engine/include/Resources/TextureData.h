@@ -14,5 +14,6 @@ namespace Resources
 		int height;
 		int width;
 		EOpenGLLinkState stateTexture;
+		std::string nameTexture;
 	};
 }
