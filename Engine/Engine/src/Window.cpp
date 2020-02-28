@@ -77,8 +77,8 @@ void	Window::Update()
 
 	Mesh* testMesh{ new Mesh() };
 	testMesh->SendProjectionMatrix(c->GetPerspectiveMatrix());
-	//manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
-	manager.LoadResourcesIRenderable("Resources/level.fbx", o);
+	manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
+	//manager.LoadResourcesIRenderable("Resources/level.fbx", o);
 
 	o->SetScale({ 0.1,0.1,0.1 });
 

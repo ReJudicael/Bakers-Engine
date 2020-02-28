@@ -6,11 +6,12 @@
 #include <string>
 
 #include "Vec3.hpp"
-#include "TextureData.h"
+#include "Texture.h"
 
 
 namespace Resources
 {
+	struct Texture;
 	struct Material
 	{
 		Core::Maths::Vec3 diffuseColor;
@@ -21,7 +22,7 @@ namespace Resources
 
 		std::shared_ptr<GLuint> program;
 
-		std::vector<std::shared_ptr<TextureData>> textures;
+		std::vector<std::shared_ptr<Texture>> textures;
 	};
 }
 

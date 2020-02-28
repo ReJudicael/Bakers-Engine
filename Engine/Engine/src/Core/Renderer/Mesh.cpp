@@ -5,6 +5,8 @@
 #include "Mat4.hpp"
 #include "Object.hpp"
 #include "OpenGLLinkState.h"
+#include "Model.h"
+#include "Texture.h"
 
 Mesh::Mesh() : ComponentBase()
 {
@@ -68,10 +70,10 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
 	// check if the mesh have a modelMesh
-	if (m_modelMesh == nullptr)
+	if (m_model == nullptr)
 		return;
 	// check if the VAO of the model is link to OpenGL
-	if (m_modelMesh->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+	if (m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
 		return;
 
 	glEnable(GL_DEPTH_TEST);
@@ -85,16 +87,16 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
 	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
 
-	glBindVertexArray(m_modelMesh->VAOModel);
+	glBindVertexArray(m_model->VAOModel);
 
 	glUseProgram(*m_program);
 	
 
-	for (int i = 0; i < m_modelMesh->offsetsMesh.size(); i++)
+	for (int i = 0; i < m_model->offsetsMesh.size(); i++)
 	{
-		Resources::OffsetMesh currOffsetMesh = m_modelMesh->offsetsMesh[i];
+		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
 		
-		Resources::Material material = *m_modelMesh->materialsModel[currOffsetMesh.materialIndices];
+		Resources::Material material = *m_model->materialsModel[currOffsetMesh.materialIndices];
 
 		// check if the material have a texture
 		if (material.textures.size() > 0)

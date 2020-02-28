@@ -123,6 +123,12 @@
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\ModelData.cpp">
+      <Filter>Fichiers sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\SceneData.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -235,6 +241,15 @@
     </ClInclude>
     <ClInclude Include="include\Resources\Loader\LoadResources.h">
       <Filter>Fichiers d%27en-tête\Resources\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Model.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Texture.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\TextureData.cpp">
+      <Filter>Fichiers sources\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

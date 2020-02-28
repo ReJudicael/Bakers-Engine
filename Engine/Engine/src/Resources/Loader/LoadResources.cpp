@@ -14,6 +14,10 @@
 #include "Assimp/texture.h"
 #include "Assimp/RemoveComments.h"
 #include "Object.hpp"
+#include "Model.h"
+#include "Texture.h"
+#include "TextureData.h"
+#include "SceneData.h"
 
 static const char* gVertexShaderStr = R"GLSL(
 // Attributes
@@ -122,7 +126,6 @@ namespace Resources::Loader
 		}
 		else if (Name.find(".fbx") != std::string::npos)
 		{
-			std::cout << "fbx num Mesh : " << scene->mNumMeshes << std::endl;
 			LoadMeshResourcesIRenderable(scene, Name, directoryFile);
 			LoadSceneResources(scene, Name, directoryFile);
 			std::cout << "it's an Fbx" << std::endl;
@@ -147,7 +150,6 @@ namespace Resources::Loader
 			if (m_models.count(node.nameMesh) > 0)
 			{
 				mesh->AddModel(m_models[node.nameMesh]);
-				mesh->m_projection = persperct;
 				mesh->m_program = m_shaders["Default"];
 				Object->AddComponent(mesh);
 			}
@@ -226,6 +228,7 @@ namespace Resources::Loader
 			aiMesh* mesh = scene->mMeshes[i];
 
 			std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
+			std::shared_ptr<Model> model = std::make_shared<Model>();
 
 
 			int tmpint{ 0 };
@@ -240,32 +243,32 @@ namespace Resources::Loader
 				}
 				modelData->ModelName = name;
 				m_modelsToLink.push_back(modelData);
-				m_models.emplace(name, modelData);
+				m_models.emplace(name, model);
 			}
 			else
 			{
 				modelData->ModelName = directory + mesh->mName.data;
 				m_modelsToLink.push_back(modelData);
-				m_models.emplace(directory + mesh->mName.data, modelData);
+				m_models.emplace(directory + mesh->mName.data, model);
 			}
 
 			std::cout << modelData->ModelName << std::endl;
 
+			modelData->model = model;
 			indexLastMesh = modelData->vertices.size();
 			lastNumIndices = modelData->indices.size();
 
-			LoadMeshVertices(mesh, modelData->vertices);
+			modelData->LoadVertices(mesh);
+			modelData->LoadIndices(mesh);
 
-			LoadMeshIndices(mesh, modelData->indices, indexLastMesh);
-
-			OffsetMesh offset;
+			/*OffsetMesh offset;
 			offset.count = modelData->indices.size() - lastNumIndices;
 			offset.beginIndices = lastNumIndices;
-			offset.materialIndices = 0/*modelData->offsetsMesh.size()*/;
+			offset.materialIndices = 0;
 
-			modelData->offsetsMesh.push_back(offset);
+			modelData->offsetsMesh.push_back(offset);*/
+
 			modelData->materialsModel.resize(modelData->offsetsMesh.size());
-
 			modelData->materialsModel[modelData->offsetsMesh.size() - 1] = std::make_shared<Material>();
 			LoadMaterialResourcesIRenderable(scene, mesh, modelData->materialsModel[modelData->offsetsMesh.size() - 1], directory, tmpint);
 
@@ -276,16 +279,17 @@ namespace Resources::Loader
 	void ResourcesManager::LoadSingleMeshResourcesIRenderable(const aiScene* scene,
 		const std::string& fileName, const std::string& directory)
 	{
+		if (m_models.count(directory + scene->mMeshes[0]->mName.data) > 0)
+			return;
 
 		std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
-
+		std::shared_ptr<Model> model = std::make_shared<Model>();
 
 		unsigned int indexLastMesh = 0;
-		unsigned int lastNumIndices = 0;
 
 		modelData->materialsModel.resize(scene->mNumMeshes);
-
-		m_models.emplace(directory + scene->mMeshes[0]->mName.data, modelData);
+		modelData->model = model;
+		m_models.emplace(directory + scene->mMeshes[0]->mName.data, model);
 
 		m_modelsToLink.push_back(modelData);
 
@@ -293,59 +297,16 @@ namespace Resources::Loader
 		{
 			aiMesh* mesh = scene->mMeshes[i];
 
-			LoadMeshVertices(mesh, modelData->vertices);
+			modelData->LoadVertices(mesh);
 
-			LoadMeshIndices(mesh, modelData->indices, indexLastMesh);
-
-			OffsetMesh offset;
-			offset.count = modelData->indices.size() - lastNumIndices;
-			offset.beginIndices = lastNumIndices;
-			offset.materialIndices = i;
+			modelData->LoadIndices(mesh, indexLastMesh);
 
 			indexLastMesh = modelData->vertices.size();
-			lastNumIndices = modelData->indices.size();
-
-			modelData->offsetsMesh.push_back(offset);
 
 			modelData->materialsModel[i] = std::make_shared<Material>();
 			LoadMaterialResourcesIRenderable(scene, mesh, modelData->materialsModel[i], directory);
 		}
 		modelData->stateVAO = EOpenGLLinkState::CANLINK;
-	}
-
-	void ResourcesManager::LoadMeshVertices(const aiMesh* mesh, std::vector<Vertex>& vertices)
-	{
-		Vertex v;
-		aiVector3D Zeor3D{ 0.f,0.f,0.f };
-
-		for (int j = 0; j < mesh->mNumVertices; j++)
-		{
-			// get the position of the current vertice
-			aiVector3D* Pos = &mesh->mVertices[j];
-			// get the UV of the current vertice
-			aiVector3D* UV = mesh->HasTextureCoords(0) ? &(mesh->mTextureCoords[0][j]) : &Zeor3D;
-			// get the Normal of the current vertice
-			aiVector3D* Normal = &(mesh->mNormals[j]);
-
-			v.Position = { Pos->x, Pos->y, Pos->z };
-			v.UV = { UV->x, UV->y };
-			v.Normal = { Normal->x, Normal->y, Normal->z };
-
-			vertices.push_back(v);
-		}
-	}
-
-	void ResourcesManager::LoadMeshIndices(const aiMesh* mesh, std::vector<GLuint>& indices, const GLuint& indexLastMesh)
-	{
-		for (int fid = 0; fid < mesh->mNumFaces; fid++)
-		{
-			aiFace& face = mesh->mFaces[fid];
-			for (int iid = 0; iid < 3; iid++)
-			{
-				// get the indices of the face who is cut in triangle
-				indices.push_back(face.mIndices[iid] + indexLastMesh);
-			}
-		}		
 	}
 
 	void ResourcesManager::LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, 
@@ -370,21 +331,17 @@ namespace Resources::Loader
 		{
 			std::cout << "already know : "<< keyMaterial << std::endl;
 			materialOut = m_materials[keyMaterial];
-			/*if (material.textures.size() > 0)
-				std::cout << "Resources Texture : " << material.textures[0]->nameTexture << std::endl;*/
 			return;
 		}
 		m_materials.emplace(keyMaterial, materialOut);
 
 		materialOut->textures.resize(2);
 
-		materialOut->textures[0] = std::make_shared<TextureData>();
-		materialOut->textures[1] = std::make_shared<TextureData>();
+		materialOut->textures[0] = std::make_shared<Texture>();
+		materialOut->textures[1] = std::make_shared<Texture>();
 		std::cout << "new Material " << keyMaterial << std::endl;
 		LoadTextureMaterial(mat, materialOut->textures[0], aiTextureType_DIFFUSE, directory);
 		LoadTextureMaterial(mat, materialOut->textures[1], aiTextureType_NORMALS, directory);
-			//LoadTextureMaterial(mat, materialOut->textures[0], aiTextureType_DIFFUSE_ROUGHNESS, directory);
-
 
 		// maybe load a normalMap
 
@@ -397,10 +354,9 @@ namespace Resources::Loader
 		materialOut->specularColor = { color.r, color.g, color.b };
 		materialOut->materialColor = { 1.0f, 1.0f, 1.0f };
 
-		//return material;
 	}
 
-	bool ResourcesManager::LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<TextureData>& textureData, 
+	bool ResourcesManager::LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& texture, 
 												const aiTextureType& textureType ,const std::string& directory)
 	{
 		if (mat->GetTextureCount(textureType) > 0)
@@ -409,6 +365,7 @@ namespace Resources::Loader
 			if (mat->GetTexture(textureType, 0, &path) == AI_SUCCESS)
 			{
 				std::string fullPath = directory + path.data;
+				std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
 
 				std::cout << "texture here " << fullPath << std::endl;
 				textureData->nameTexture = fullPath;
@@ -416,12 +373,15 @@ namespace Resources::Loader
 				if (m_textures.count(fullPath) > 0)
 				{
 					std::cout << "already know textures : " << std::endl;
-					textureData = m_textures[fullPath];
+					texture = m_textures[fullPath];
 				}
 				else
 				{
-					CreateTextureFromImage(fullPath.c_str(), textureData, true);
-					m_textures.emplace(fullPath, textureData);
+					m_texturesToLink.push_back(textureData);
+					textureData->textureptr = texture;
+					textureData->CreateTextureFromImage(fullPath.c_str(), *this);
+					//CreateTextureFromImage(fullPath.c_str(), textureData, true);
+					m_textures.emplace(fullPath, texture);
 				}
 				return true;
 			}
@@ -436,81 +396,9 @@ namespace Resources::Loader
 
 		aiNode* rootNode = scene->mRootNode;
 
-		RecursiveSceneLoad(scene, rootNode, sceneData->rootNodeScene, directory);
+		sceneData->rootNodeScene.RecursiveSceneLoad(scene, rootNode, directory);
 
 		m_scenes.emplace(fileName, sceneData);
-	}
-
-	void ResourcesManager::RecursiveSceneLoad(const aiScene* scene, const aiNode* node, Node& currentNode,
-		const std::string& directory)
-	{
-		aiVector3D position;
-		aiVector3D rotation;
-		aiVector3D scale;
-		std::cout << "new node" << std::endl;
-		if (node->mNumMeshes > 0)
-		{
-			currentNode.nameMesh = directory + scene->mMeshes[node->mMeshes[0]]->mName.data;
-			std::cout << "\t \t \t new Node  " << currentNode.nameMesh << std::endl;
-
-
-			for (int i{ 1 }; i < node->mNumMeshes; i++)
-			{
-				Node child;
-				child.position = { 0.0f,  0.0f,  0.0f };
-				child.rotation = { 0.0f,  0.0f,  0.0f };
-				child.scale = { 1.f, 1.f, 1.f };
-				child.nameMesh = directory + scene->mMeshes[node->mMeshes[i]]->mName.data + std::to_string(i);
-				currentNode.children.push_back(child);
-				std::cout << "num Mesh in the scene " << scene->mMeshes[node->mMeshes[i]]->mName.data << std::endl;
-			}
-		}
-		else
-		{
-			currentNode.nameMesh = "nothing";
-		}
-
-		node->mTransformation.Decompose(scale, rotation, position);
-
-		currentNode.position = { position.x, position.y, position.z };
-		currentNode.rotation = { rotation.x, rotation.y, rotation.z };
-		currentNode.scale = { scale.x, scale.y, scale.z };
-
-		int numChildren{ (int)currentNode.children.size() + (int)node->mNumChildren };
-		int numCurrentChildren = (int)currentNode.children.size();
-		//std::cout << numChildren << std::endl;
-		if (numChildren > 0)
-			currentNode.children.resize(numChildren);
-		for (int i{ numCurrentChildren }; i < numChildren; i++)
-		{
-			//std::cout << "ta me" << std::endl;
-			RecursiveSceneLoad(scene, node->mChildren[i - numCurrentChildren], currentNode.children[i], directory);
-		}
-	}
-
-	void ResourcesManager::CreateTextureFromImage(const char* filename, std::shared_ptr<TextureData> textureData, bool shouldFlip)
-	{
-		std::string s = filename;
-
-		if (m_textures.count(filename) > 0)
-			textureData = m_textures[filename];
-
-		std::cout << filename << std::endl;
-		// load and generate the texture
-		int nrChannels;
-		stbi_set_flip_vertically_on_load(shouldFlip);
-		textureData->data = stbi_load(s.c_str(), &textureData->width, &textureData->height, &nrChannels, 4);
-
-		if (!textureData->data)
-		{
-			std::cout << "Failed to load " << filename << std::endl;
-			stbi_image_free(textureData->data);
-			textureData->stateTexture = EOpenGLLinkState::LOADPROBLEM;
-			return;
-		}
-		textureData->stateTexture = EOpenGLLinkState::CANLINK;
-		m_textures.emplace(filename, textureData);
-		m_texturesToLink.push_back(textureData);
 	}
 
 	void ResourcesManager::LinkAllTextureToOpenGl()
@@ -543,6 +431,7 @@ namespace Resources::Loader
 			(*it)->stateTexture = EOpenGLLinkState::ISLINK;
 			(*it)->texture = texture;
 
+			(*it)->EmplaceInTexture();
 			//m_texturesToLink.erase(it);
 		}
 	}
@@ -586,7 +475,8 @@ namespace Resources::Loader
 			glBindVertexArray(0);
 
 			(*it)->stateVAO = EOpenGLLinkState::ISLINK;
-			//m_modelsToLink.erase(it);
+
+			(*it)->EmplaceInModel();
 		}
 	}
 

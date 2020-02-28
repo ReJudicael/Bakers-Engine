@@ -305,6 +305,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClCompile Include="src\Core\Datastructure\IUpdatable.cpp" />
     <ClCompile Include="src\Core\Datastructure\RootObject.cpp" />
     <ClCompile Include="src\Resources\Material.cpp" />
+    <ClCompile Include="src\Resources\ModelData.cpp" />
+    <ClCompile Include="src\Resources\SceneData.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="src\Window.cpp" />
     <ClCompile Include="src\Core\Datastructure\ComponentBase.cpp" />
@@ -335,8 +337,10 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
     <ClInclude Include="include\Core\Renderer\Mesh.h" />
     <ClInclude Include="include\Core\Renderer\PlayerCamera.h" />
+    <ClInclude Include="include\Resources\Model.h" />
     <ClInclude Include="include\Resources\ModelData.h" />
     <ClInclude Include="include\Resources\OpenGLLinkState.h" />
+    <ClInclude Include="include\Resources\Texture.h" />
     <ClInclude Include="include\Resources\TextureData.h" />
     <ClInclude Include="include\Resources\OffsetMesh.h" />
     <ClInclude Include="include\Resources\Loader\LoadResources.h" />
@@ -350,6 +354,9 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\SceneData.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="include\Window.h" />
+    <ClCompile Include="src\Resources\TextureData.cpp">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

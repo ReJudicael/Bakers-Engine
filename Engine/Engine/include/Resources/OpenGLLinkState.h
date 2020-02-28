@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace Resources
 {
 	enum class EOpenGLLinkState : int
