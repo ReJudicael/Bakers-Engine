@@ -3,6 +3,9 @@
 #include "Vec3.hpp"
 #include "Debug.h"
 
+struct aiNode;
+struct aiScene;
+
 namespace Resources
 {
 	struct Node
@@ -14,10 +17,13 @@ namespace Resources
 		std::string			nameMesh;
 
 		std::vector<Node> children;
+
+		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory);
 	};
 
 	struct SceneData
 	{
 		Node rootNodeScene;
 	};
+
 }

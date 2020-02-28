@@ -5,6 +5,8 @@
 #include "Mat4.hpp"
 #include "Object.hpp"
 #include "OpenGLLinkState.h"
+#include "Model.h"
+#include "Texture.h"
 
 Mesh::Mesh() : ComponentBase()
 {
@@ -67,42 +69,59 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
-
-	if (m_modelMesh == nullptr)
+	// check if the mesh have a modelMesh
+	if (m_model == nullptr)
 		return;
-	if (m_modelMesh->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+	// check if the VAO of the model is link to OpenGL
+	if (m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
 		return;
-
 
 	glEnable(GL_DEPTH_TEST);
 
+	// init the value of the texture1
+	glUniform1i(glGetUniformLocation(*m_program, "uColorTexture"), 0);
+	// init the value of the texture2
+	glUniform1i(glGetUniformLocation(*m_program, "uNormalMap"), 1);
+
 	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uModel"), 1, GL_TRUE, trs.m_array);
-	/*glUniformMatrix4fv(glGetUniformLocation(*m_program, "uProj"), 1, GL_FALSE, m_projection);
-	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uModel"), 1, GL_TRUE, trs.m_array);*/
 	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
 	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
 
-	//std::cout << *m_program << std::endl;
-
-	glBindVertexArray(m_modelMesh->VAOModel);
+	glBindVertexArray(m_model->VAOModel);
 
 	glUseProgram(*m_program);
 	
-	for (int i = 0; i < m_modelMesh->offsetsMesh.size(); i++)
-	{
-		Resources::OffsetMesh currOffsetMesh = m_modelMesh->offsetsMesh[i];
-		
-		Resources::Material material = *m_modelMesh->materialsModel[currOffsetMesh.materialIndices];
 
+	for (int i = 0; i < m_model->offsetsMesh.size(); i++)
+	{
+		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
+		
+		Resources::Material material = *m_model->materialsModel[currOffsetMesh.materialIndices];
+
+		// check if the material have a texture
 		if (material.textures.size() > 0)
-			if(material.textures[0]->stateTexture ==
+		{
+			// check if the texture1 link to OpenGL
+			if (material.textures[0]->stateTexture ==
 				Resources::EOpenGLLinkState::ISLINK)
+			{
+				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, material.textures[0]->texture);
+			}
+			// check if the texture2 link to OpenGL
+			if (material.textures[1]->stateTexture ==
+				Resources::EOpenGLLinkState::ISLINK)
+			{
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, material.textures[1]->texture);
+			}
+		}
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,
 			(GLvoid*)(currOffsetMesh.beginIndices * sizeof(GLuint)));
 	}
-
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 }
 

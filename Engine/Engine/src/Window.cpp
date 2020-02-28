@@ -76,18 +76,13 @@ void	Window::Update()
 		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem);
 		Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
 
-		PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
-		camNode->AddComponent(c);
-		Renderer r;
+	Mesh* testMesh{ new Mesh() };
+	testMesh->SendProjectionMatrix(c->GetPerspectiveMatrix());
+	//manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
+	manager.LoadResourcesIRenderable("Resources/level.fbx", o);
 
-		Core::Datastructure::Object* o{ m_root->CreateChild({}) };
-
-		Mesh* testMesh{ new Mesh() };
-		testMesh->SendProjectionMatrix(c->GetPerspectiveMatrix());
-		manager.LoadResourcesIRenderable(testMesh, "Resources/Umbreon/UmbreonHighPoly.obj", o);
-		//manager.LoadResourcesIRenderable(testMesh, "Resources/level.fbx", o);
-	}
 	INIT_TRACY_GL_IMAGE(320, 180)
+	o->SetScale({ 0.1,0.1,0.1 });
 
 	while (!glfwWindowShouldClose(m_window))
 	{

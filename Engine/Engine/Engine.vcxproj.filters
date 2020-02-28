@@ -129,6 +129,12 @@
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\ModelData.cpp">
+      <Filter>Fichiers sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\SceneData.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\Debug\Debug.cpp">
       <Filter>Fichiers sources\Core\Debug</Filter>
     </ClCompile>
@@ -209,9 +215,6 @@
     <ClInclude Include="include\Core\Maths\Mat.hpp">
       <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\Loader\LoadResources.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Renderer\Mesh.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -233,20 +236,32 @@
     <ClInclude Include="include\Resources\Material.h">
       <Filter>Fichiers d%27en-tête\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="include\SceneData.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Resources\ModelData.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Resources\TextureData.h">
       <Filter>Fichiers d%27en-tête\Resources</Filter>
     </ClInclude>
     <ClInclude Include="include\Resources\Vertex.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="include\Resources\ModelData.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneData.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
     <ClInclude Include="include\Resources\OpenGLLinkState.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Loader\LoadResources.h">
+      <Filter>Fichiers d%27en-tête\Resources\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Model.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Texture.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\TextureData.cpp">
+      <Filter>Fichiers sources\Resources</Filter>
     </ClInclude>
     <ClInclude Include="FileSystem.hpp">
       <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
