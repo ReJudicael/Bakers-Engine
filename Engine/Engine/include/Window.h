@@ -15,6 +15,8 @@ private:
 	int m_width{ 0 };
 	int m_height{ 0 };
 
+	double m_time{ 0 };
+
 public:
 	Core::SystemManagement::EventSystem<EKey> OnPressKey;
 	Core::SystemManagement::EventSystem<EKey> OnReleaseKey;
@@ -32,6 +34,8 @@ public:
 	void	Init(const int width, const int height);
 	void	SetSizeWindow(const double width, const double height);
 	void	Update();
+
+	double	GetDeltaTime();
 
 	GLFWwindow* GetGLFWwindow() { return m_window; }
 
