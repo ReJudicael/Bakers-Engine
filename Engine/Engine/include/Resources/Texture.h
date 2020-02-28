@@ -10,6 +10,6 @@ namespace Resources
 	struct Texture
 	{
 		GLuint texture;
-		EOpenGLLinkState stateTexture;
+		EOpenGLLinkState stateTexture{EOpenGLLinkState::CANTLINK};
 	};
 }

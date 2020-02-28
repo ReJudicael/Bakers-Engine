@@ -389,7 +389,6 @@ namespace Resources::Loader
 		return false;
 	}
 
-
 	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)
 	{
 		std::shared_ptr<SceneData> sceneData = std::make_shared<SceneData>();
@@ -404,17 +403,24 @@ namespace Resources::Loader
 	void ResourcesManager::LinkAllTextureToOpenGl()
 	{
 
-		for (std::list<std::shared_ptr<TextureData>>::iterator it = m_texturesToLink.begin(); 
-				it != m_texturesToLink.end(); ++it)
+		for (auto it = m_texturesToLink.begin(); 
+				it != m_texturesToLink.end();)
 		{
 			if ((*it)->stateTexture == EOpenGLLinkState::LOADPROBLEM)
 			{
-				m_texturesToLink.erase(it);
+				it = m_texturesToLink.erase(it);
+				continue;
 			}
 			if ((*it)->stateTexture == EOpenGLLinkState::CANTLINK)
-				return;
+			{
+				it++;
+				continue;
+			}
 			if ((*it)->stateTexture == EOpenGLLinkState::ISLINK)
-				return;
+			{
+				it = m_texturesToLink.erase(it);
+				continue;
+			}
 			
 			GLuint texture;
 			glGenTextures(1, &texture);
@@ -432,24 +438,31 @@ namespace Resources::Loader
 			(*it)->texture = texture;
 
 			(*it)->EmplaceInTexture();
-			//m_texturesToLink.erase(it);
+			it = m_texturesToLink.erase(it);
 		}
 	}
 
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{
 		//std::cout << "Link " << m_modelsToLink.size() << std::endl;
-		for (std::list<std::shared_ptr<ModelData>>::iterator it = m_modelsToLink.begin();
-			it != m_modelsToLink.end(); it++)
+		for (auto it = m_modelsToLink.begin();
+			it != m_modelsToLink.end();)
 		{
 			if ((*it)->stateVAO == EOpenGLLinkState::LOADPROBLEM)
 			{
-				m_modelsToLink.erase(it);
+				it = m_modelsToLink.erase(it);
+				continue;
 			}
 			if ((*it)->stateVAO == EOpenGLLinkState::CANTLINK)
-				return;
+			{
+				it++;
+				continue;
+			}
 			if ((*it)->stateVAO == EOpenGLLinkState::ISLINK)
-				return;
+			{
+				it = m_modelsToLink.erase(it);
+				continue;
+			}
 
 			GLuint VAO, VBO, EBO;
 
@@ -477,6 +490,7 @@ namespace Resources::Loader
 			(*it)->stateVAO = EOpenGLLinkState::ISLINK;
 
 			(*it)->EmplaceInModel();
+			it = m_modelsToLink.erase(it);
 		}
 	}
 

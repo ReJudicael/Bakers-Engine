@@ -40,6 +40,7 @@ namespace Resources
 
 		public:
 
+
 			std::list<std::shared_ptr<TextureData>>								m_texturesToLink;
 			std::list<std::shared_ptr<ModelData>>								m_modelsToLink;
 

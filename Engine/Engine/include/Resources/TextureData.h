@@ -27,7 +27,11 @@ namespace Resources
 		std::string nameTexture;
 		std::shared_ptr<Texture> textureptr;
 
+		// just call by the material during a load mesh
 		void CreateTextureFromImage(const char* filename, Loader::ResourcesManager& resources, bool shouldFlip = true);
+
+		// TO DO 
+		// do the CreateTextureFromImage but without call of the material
 
 		void EmplaceInTexture();
 	};
