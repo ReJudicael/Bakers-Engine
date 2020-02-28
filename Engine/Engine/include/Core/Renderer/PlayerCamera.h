@@ -21,7 +21,7 @@ private:
 	// Rotation through mouse movements
 	bool	m_isRotating{ false };
 	bool	m_isMouseSet{ false };
-	float	m_angularSpeed{ 0.15f };
+	float	m_angularSpeed{ 1.f };
 	float	m_yaw{ 0.f };
 	float	m_pitch{ 0.f };
 	float	m_minAngularLength{ 0.001 };

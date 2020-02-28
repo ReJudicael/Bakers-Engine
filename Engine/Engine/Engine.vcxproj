@@ -306,6 +306,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClCompile Include="src\Core\Datastructure\IUpdatable.cpp" />
     <ClCompile Include="src\Core\Datastructure\RootObject.cpp" />
     <ClCompile Include="src\Resources\Material.cpp" />
+    <ClCompile Include="src\Resources\Shader.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="src\Window.cpp" />
     <ClCompile Include="src\Core\Datastructure\ComponentBase.cpp" />
@@ -339,6 +340,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\Core\Renderer\PlayerCamera.h" />
     <ClInclude Include="include\Resources\ModelData.h" />
     <ClInclude Include="include\Resources\OpenGLLinkState.h" />
+    <ClInclude Include="include\Resources\Shader.h" />
     <ClInclude Include="include\Resources\TextureData.h" />
     <ClInclude Include="include\Resources\OffsetMesh.h" />
     <ClInclude Include="include\Resources\Loader\LoadResources.h" />
@@ -352,6 +354,10 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\SceneData.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="include\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\DefaultShader.frag" />
+    <None Include="Resources\Shaders\DefaultShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

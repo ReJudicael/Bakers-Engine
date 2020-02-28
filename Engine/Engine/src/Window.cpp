@@ -10,6 +10,7 @@
 #include "TaskSystem.hpp"
 #include "PlayerCamera.h"
 #include "Maths.hpp"
+#include "Shader.h"
 
 Window::Window():
 	m_width{ 1280 },
@@ -96,7 +97,8 @@ void	Window::Update()
 		manager.LinkAllTextureToOpenGl();
 		manager.LinkAllModelToOpenGl();
 		m_root->StartFrame();
-		m_root->Update(0.2f);
+		double deltaTime = GetDeltaTime();
+		m_root->Update(deltaTime);
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		m_root->Render();
@@ -116,6 +118,16 @@ void	Window::Update()
 		m_root->Destroy();
 		delete m_root;
 	}
+}
+
+double Window::GetDeltaTime()
+{
+	double currentTime = glfwGetTime();
+	double deltaTime = currentTime - m_time;
+
+	m_time = currentTime;
+
+	return deltaTime;
 }
 
 void Window::SetSizeWindow(const double width, const double height)

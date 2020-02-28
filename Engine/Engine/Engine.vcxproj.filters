@@ -129,6 +129,9 @@
     <ClCompile Include="src\Core\Debug\Debug.cpp">
       <Filter>Fichiers sources\Core\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\Shader.cpp">
+      <Filter>Fichiers sources\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -245,5 +248,16 @@
     <ClInclude Include="include\Resources\OpenGLLinkState.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="include\Resources\Shader.h">
+      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\DefaultShader.vert">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="Resources\Shaders\DefaultShader.frag">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -75,7 +75,7 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 
 
 	glEnable(GL_DEPTH_TEST);
-
+	
 	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uModel"), 1, GL_TRUE, trs.m_array);
 	/*glUniformMatrix4fv(glGetUniformLocation(*m_program, "uProj"), 1, GL_FALSE, m_projection);
 	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uModel"), 1, GL_TRUE, trs.m_array);*/
