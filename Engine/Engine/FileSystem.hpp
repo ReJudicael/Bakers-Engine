@@ -89,10 +89,17 @@ namespace Core::SystemManagement
 
 		/**
 		 * Get the extension of the given file
-		 * @param itemPath: Path to the file from which the extension is get
+		 * @param path: Path to the file from which the extension is get
 		 * @return Extension of the given file without a dot
 		 */
 		std::string GetExtensionWithoutDot(const Path& path) const noexcept;
+
+		/**
+		 * Get the extension of the given file
+		 * @param itemPath: Path to the file from which the extension is get
+		 * @return Extension of the given file without a dot
+		 */
+		std::string GetExtensionWithoutDot_str(const std::string& itemPath) const noexcept;
 
 		/**
 		 * Get the parent directory of the given path
@@ -243,6 +250,12 @@ namespace Core::SystemManagement
 	inline std::string FileSystem::GetExtensionWithoutDot(const Path& path) const noexcept
 	{
 		return path.extension().string().erase(0, 1);
+	}
+
+	inline std::string FileSystem::GetExtensionWithoutDot_str(const std::string& itemPath) const noexcept
+	{
+		size_t offset{ itemPath.find_last_of(".") };
+		return itemPath.substr(offset + 1, itemPath.size() - offset);
 	}
 
 	inline std::string FileSystem::GetParentPath(const Path& path) const noexcept
