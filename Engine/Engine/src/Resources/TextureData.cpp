@@ -20,7 +20,7 @@ namespace Resources
 			return;
 		}
 
-		std::cout << filename << std::endl;
+		// std::cout filename << std::endl;
 		// load and generate the texture
 		int nrChannels;
 		stbi_set_flip_vertically_on_load(shouldFlip);
@@ -28,7 +28,7 @@ namespace Resources
 
 		if (!data)
 		{
-			std::cout << "Failed to load " << filename << std::endl;
+			// std::cout "Failed to load " << filename << std::endl;
 			stbi_image_free(data);
 			stateTexture = EOpenGLLinkState::LOADPROBLEM;
 			return;

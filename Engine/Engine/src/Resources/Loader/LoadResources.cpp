@@ -109,7 +109,7 @@ namespace Resources::Loader
 		//const aiScene* scene = aiImportFile(fileName, aiProcessPreset_TargetRealtime_Quality);
 		if (!scene)
 		{
-			std::cout << "could not load file" << std::endl;
+			// std::cout "could not load file" << std::endl;
 			return false;
 		}
 
@@ -128,7 +128,7 @@ namespace Resources::Loader
 		{
 			LoadMeshResourcesIRenderable(scene, Name, directoryFile);
 			LoadSceneResources(scene, Name, directoryFile);
-			std::cout << "it's an Fbx" << std::endl;
+			// std::cout "it's an Fbx" << std::endl;
 		}
 
 		aiReleaseImport(scene);
@@ -176,11 +176,11 @@ namespace Resources::Loader
 
 		if (!scene)
 		{
-			std::cout << "could not load file" << std::endl;
+			// std::cout "could not load file" << std::endl;
 			return;
 		}
 
-		std::cout << "file is loaded" << std::endl;
+		// std::cout "file is loaded" << std::endl;
 
 		auto index = Name.find_last_of("/");
 
@@ -204,7 +204,7 @@ namespace Resources::Loader
 		if (Name.find(".fbx") != std::string::npos)
 		{
 			LoadSceneResources(scene, Name, str);
-			std::cout << "it's an FBX " << std::endl;
+			// std::cout "it's an FBX " << std::endl;
 		}
 		aiReleaseImport(scene);*/
 
@@ -213,12 +213,7 @@ namespace Resources::Loader
 	void ResourcesManager::LoadMeshResourcesIRenderable(const aiScene* scene,
 		const std::string& fileName, const std::string& directory)
 	{
-		if (scene->HasTextures())
-			std::cout << "Textured" << std::endl;
-		else
-			std::cout << "there is no texture" << std::endl;
-
-		std::cout << "num mesh " << scene->mNumMeshes << std::endl;
+		// std::cout "num mesh " << scene->mNumMeshes << std::endl;
 
 		unsigned int indexLastMesh{ 0 };
 		unsigned int lastNumIndices{ 0 };
@@ -252,7 +247,7 @@ namespace Resources::Loader
 				m_models.emplace(directory + mesh->mName.data, model);
 			}
 
-			std::cout << modelData->ModelName << std::endl;
+			// std::cout modelData->ModelName << std::endl;
 
 			modelData->model = model;
 			indexLastMesh = modelData->vertices.size();
@@ -314,7 +309,7 @@ namespace Resources::Loader
 	{
 		if (!scene->HasMaterials())
 		{
-			std::cout << "no Material " << std::endl;
+			// std::cout "no Material " << std::endl;
 			return;
 		}
 		std::vector<unsigned int> vec;
@@ -329,7 +324,7 @@ namespace Resources::Loader
 
 		if (m_materials.count(keyMaterial) > 0)
 		{
-			std::cout << "already know : "<< keyMaterial << std::endl;
+			// std::cout "already know : "<< keyMaterial << std::endl;
 			materialOut = m_materials[keyMaterial];
 			return;
 		}
@@ -339,7 +334,7 @@ namespace Resources::Loader
 
 		materialOut->textures[0] = std::make_shared<Texture>();
 		materialOut->textures[1] = std::make_shared<Texture>();
-		std::cout << "new Material " << keyMaterial << std::endl;
+		// std::cout "new Material " << keyMaterial << std::endl;
 		LoadTextureMaterial(mat, materialOut->textures[0], aiTextureType_DIFFUSE, directory);
 		LoadTextureMaterial(mat, materialOut->textures[1], aiTextureType_NORMALS, directory);
 
@@ -367,12 +362,12 @@ namespace Resources::Loader
 				std::string fullPath = directory + path.data;
 				std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
 
-				std::cout << "texture here " << fullPath << std::endl;
+				// std::cout "texture here " << fullPath << std::endl;
 				textureData->nameTexture = fullPath;
 
 				if (m_textures.count(fullPath) > 0)
 				{
-					std::cout << "already know textures : " << std::endl;
+					// std::cout "already know textures : " << std::endl;
 					texture = m_textures[fullPath];
 				}
 				else
@@ -444,7 +439,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{
-		//std::cout << "Link " << m_modelsToLink.size() << std::endl;
+		//// std::cout "Link " << m_modelsToLink.size() << std::endl;
 		for (auto it = m_modelsToLink.begin();
 			it != m_modelsToLink.end();)
 		{
@@ -499,7 +494,7 @@ namespace Resources::Loader
 		if (m_shaders.count(nameShader) > 0)
 			return;
 
-		std::cout << "Tried to create program" << std::endl;
+		// std::cout "Tried to create program" << std::endl;
 		GLuint Program = glCreateProgram();
 
 		GLuint VertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -512,7 +507,7 @@ namespace Resources::Loader
 		glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &Compile);
 		if (Compile == GL_FALSE)
 		{
-			std::cout << "Vertex shader didn't load." << std::endl;
+			// std::cout "Vertex shader didn't load." << std::endl;
 			return;
 		}
 
@@ -525,7 +520,7 @@ namespace Resources::Loader
 		glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &Compile);
 		if (Compile == GL_FALSE)
 		{
-			std::cout << "Fragment shader didn't load." << std::endl;
+			// std::cout "Fragment shader didn't load." << std::endl;
 			return;
 		}
 
@@ -539,6 +534,6 @@ namespace Resources::Loader
 		glDeleteShader(VertexShader);
 		glDeleteShader(FragmentShader);
 
-		std::cout << "program load" << std::endl;
+		// std::cout "program load" << std::endl;
 	}
 }

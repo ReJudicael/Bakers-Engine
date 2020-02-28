@@ -12,7 +12,7 @@ namespace Resources
 		if (node->mNumMeshes > 0)
 		{
 			nameMesh = directory + scene->mMeshes[node->mMeshes[0]]->mName.data;
-			std::cout << "\t \t \t new Node  " << nameMesh << std::endl;
+			// std::cout "\t \t \t new Node  " << nameMesh << std::endl;
 
 
 			for (int i{ 1 }; i < node->mNumMeshes; i++)
@@ -23,7 +23,7 @@ namespace Resources
 				child.scale = { 1.f, 1.f, 1.f };
 				child.nameMesh = directory + scene->mMeshes[node->mMeshes[i]]->mName.data + std::to_string(i);
 				children.push_back(child);
-				std::cout << "num Mesh in the scene " << scene->mMeshes[node->mMeshes[i]]->mName.data << std::endl;
+				// std::cout "num Mesh in the scene " << scene->mMeshes[node->mMeshes[i]]->mName.data << std::endl;
 			}
 		}
 		else
