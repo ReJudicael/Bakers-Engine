@@ -1,287 +1,290 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Fichiers sources">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Fichiers de ressources">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Core">
-      <UniqueIdentifier>{6228e520-080d-489f-9ad1-c9cc181c146d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Core\Maths">
-      <UniqueIdentifier>{76a4e7f0-374b-4b09-9655-1903b199e116}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers sources\Core">
-      <UniqueIdentifier>{02f78a7e-5c77-47ac-8708-5c9e86da919d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Core\Datastructure">
-      <UniqueIdentifier>{af5458e1-47c0-44e7-952f-cb11717c4387}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers sources\Core\Datastructure">
-      <UniqueIdentifier>{38f36a14-1d29-4080-9451-f79d06acf66a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Fichiers sources\Core">
       <UniqueIdentifier>{a5097437-e8ee-48ca-931b-5ca52251b20b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers d%27en-tête\Core\SystemManagement">
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{6228e520-080d-489f-9ad1-c9cc181c146d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Maths">
+      <UniqueIdentifier>{76a4e7f0-374b-4b09-9655-1903b199e116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Datastructure">
+      <UniqueIdentifier>{af5458e1-47c0-44e7-952f-cb11717c4387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\SystemManagement">
       <UniqueIdentifier>{96319ca6-3aa4-4023-8985-f1560184870a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers sources\Core\SystemManagement">
-      <UniqueIdentifier>{181c0e82-ee12-49fa-8c7a-c055dc2780e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Core\Renderer">
+    <Filter Include="Header Files\Core\Renderer">
       <UniqueIdentifier>{1703a702-ffce-46ab-b877-7f37b08871ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers sources\Core\Renderer">
-      <UniqueIdentifier>{09f4609f-bc90-42a9-b9bc-fd2fd44b422a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Resources">
-      <UniqueIdentifier>{8659ac7f-e452-41a4-9415-889fe22ff392}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Resources\Loader">
-      <UniqueIdentifier>{a762b0f5-bc7f-4b40-bacb-e8f21ad2bf0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers sources\Resources">
-      <UniqueIdentifier>{546aa436-de03-44d7-9c65-83132a275d6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers sources\Resources\Loader">
-      <UniqueIdentifier>{70e1fdf5-c1da-4588-ac9a-bb3677a024a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Core\Debug">
+    <Filter Include="Header Files\Core\Debug">
       <UniqueIdentifier>{d1a12c79-ce72-41f4-9861-84ee4af81d39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers sources\Core\Debug">
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{02f78a7e-5c77-47ac-8708-5c9e86da919d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Datastructure">
+      <UniqueIdentifier>{38f36a14-1d29-4080-9451-f79d06acf66a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\SystemManagement">
+      <UniqueIdentifier>{181c0e82-ee12-49fa-8c7a-c055dc2780e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Renderer">
+      <UniqueIdentifier>{09f4609f-bc90-42a9-b9bc-fd2fd44b422a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Debug">
       <UniqueIdentifier>{512c8774-f2ec-47ea-8547-9525da4d5396}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers d%27en-tête\Types">
+    <Filter Include="Header Files\Core\Resources">
+      <UniqueIdentifier>{8659ac7f-e452-41a4-9415-889fe22ff392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Resources\Loader">
+      <UniqueIdentifier>{a762b0f5-bc7f-4b40-bacb-e8f21ad2bf0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Types">
       <UniqueIdentifier>{97b376be-4406-43d0-99b4-4669211c3232}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Resources">
+      <UniqueIdentifier>{546aa436-de03-44d7-9c65-83132a275d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Resources\Loader">
+      <UniqueIdentifier>{70e1fdf5-c1da-4588-ac9a-bb3677a024a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internal Dependencies">
+      <UniqueIdentifier>{57fddb2c-6e1c-4f2a-aa74-12a467094913}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Datastructure\Transform.cpp">
-      <Filter>Fichiers sources\Core\Datastructure</Filter>
+      <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\Object.cpp">
-      <Filter>Fichiers sources\Core\Datastructure</Filter>
-    </ClCompile>
-    <ClCompile Include="stb_image.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\ComponentBase.cpp">
-      <Filter>Fichiers sources\Core\Datastructure</Filter>
+      <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\ComponentUpdatable.cpp">
-      <Filter>Fichiers sources\Core\Datastructure</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resources\Loader\LoadResources.cpp">
-      <Filter>Fichiers sources\Resources\Loader</Filter>
+      <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\IUpdatable.cpp">
-      <Filter>Fichiers sources\Core\Datastructure</Filter>
+      <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\RootObject.cpp">
-      <Filter>Fichiers sources\Core\Datastructure</Filter>
+      <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\IComponent.cpp">
-      <Filter>Fichiers sources\Core\Datastructure</Filter>
+      <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\IRenderable.cpp">
-      <Filter>Fichiers sources\Core\Datastructure</Filter>
-    </ClCompile>
-    <ClCompile Include="InputSystem.cpp">
-      <Filter>Fichiers sources\Core\SystemManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Renderer\Mesh.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Window.cpp">
-      <Filter>Fichiers sources\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\Tracy\TracyClient.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="include\Core\Datastructure\ICamera.cpp">
-      <Filter>Fichiers sources\Core\Datastructure</Filter>
+      <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Renderer\PlayerCamera.cpp">
-      <Filter>Fichiers sources\Core\Renderer</Filter>
+      <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Renderer\Camera.cpp">
-      <Filter>Fichiers sources\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resources\Material.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resources\ModelData.cpp">
-      <Filter>Fichiers sources\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resources\SceneData.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Debug\Debug.cpp">
-      <Filter>Fichiers sources\Core\Debug</Filter>
+      <Filter>Source Files\Core\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resources\Shader.cpp">
-      <Filter>Fichiers sources\Resources</Filter>
+    <ClCompile Include="src\Core\Renderer\Mesh.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Renderer.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\SystemManagement\InputSystem.cpp">
+      <Filter>Source Files\Core\SystemManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Window.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\Material.cpp">
+      <Filter>Source Files\Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\ModelData.cpp">
+      <Filter>Source Files\Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\SceneData.cpp">
+      <Filter>Source Files\Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\Shader.cpp">
+      <Filter>Source Files\Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\TextureData.cpp">
+      <Filter>Source Files\Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\Loader\LoadResources.cpp">
+      <Filter>Source Files\Core\Resources\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\Tracy\TracyClient.cpp">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\stb\stb_image.cpp">
+      <Filter>Internal Dependencies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Maths.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Quaternion.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Ref.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Ref3D.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Vec.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Vec2.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Vec3.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Vec4.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\Transform.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\Object.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\ComponentBase.h">
-      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\IComponent.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\IUpdatable.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\ComponentUpdatable.h">
-      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\ICamera.h">
-      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\Camera.h">
-      <Filter>Fichiers d%27en-tête\Core\Renderer</Filter>
+      <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\RootObject.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Datastructure</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\SystemManagement\EventSystem.hpp">
-      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\SystemManagement\TaskSystem.hpp">
-      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\SystemManagement\InputSystem.hpp">
-      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\SystemManagement\Input.hpp">
-      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Mat.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Renderer\Mesh.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Window.h">
-      <Filter>Fichiers d%27en-tête\Core</Filter>
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Debug\Debug.h">
-      <Filter>Fichiers d%27en-tête\Core\Debug</Filter>
+      <Filter>Header Files\Core\Debug</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Debug\DebugTracyGL.hpp">
-      <Filter>Fichiers d%27en-tête\Core\Debug</Filter>
+      <Filter>Header Files\Core\Debug</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\PlayerCamera.h">
-      <Filter>Fichiers d%27en-tête\Core\Renderer</Filter>
+      <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\OffsetMesh.h">
-      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    <ClInclude Include="include\Core\SystemManagement\Input.hpp">
+      <Filter>Header Files\Core\SystemManagement</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\Material.h">
-      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    <ClInclude Include="include\Core\SystemManagement\InputSystem.hpp">
+      <Filter>Header Files\Core\SystemManagement</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\TextureData.h">
-      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    <ClInclude Include="include\Core\SystemManagement\TaskSystem.hpp">
+      <Filter>Header Files\Core\SystemManagement</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\Vertex.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Core\SystemManagement\EventSystem.hpp">
+      <Filter>Header Files\Core\SystemManagement</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\ModelData.h">
-      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    <ClInclude Include="include\Core\SystemManagement\FileSystem.hpp">
+      <Filter>Header Files\Core\SystemManagement</Filter>
     </ClInclude>
-    <ClInclude Include="include\SceneData.h">
-      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    <ClInclude Include="include\Core\Types\StringExtension.hpp">
+      <Filter>Header Files\Core\Types</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\OpenGLLinkState.h">
-      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    <ClInclude Include="include\Core\Resources\Material.h">
+      <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\Loader\LoadResources.h">
-      <Filter>Fichiers d%27en-tête\Resources\Loader</Filter>
+    <ClInclude Include="include\Core\Resources\Model.h">
+      <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\Model.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Core\Resources\ModelData.h">
+      <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\Texture.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Core\Resources\OffsetMesh.h">
+      <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resources\Shader.h">
-      <Filter>Fichiers d%27en-tête\Resources</Filter>
+    <ClInclude Include="include\Core\Resources\OpenGLLinkState.h">
+      <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\Resources\TextureData.cpp">
-      <Filter>Fichiers sources\Resources</Filter>
+    <ClInclude Include="include\Core\Resources\SceneData.h">
+      <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="FileSystem.hpp">
-      <Filter>Fichiers d%27en-tête\Core\SystemManagement</Filter>
+    <ClInclude Include="include\Core\Resources\Shader.h">
+      <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="StringExtension.hpp">
-      <Filter>Fichiers d%27en-tête\Types</Filter>
+    <ClInclude Include="include\Core\Resources\Texture.h">
+      <Filter>Header Files\Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Resources\TextureData.h">
+      <Filter>Header Files\Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Resources\Vertex.h">
+      <Filter>Header Files\Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Resources\Loader\LoadResources.h">
+      <Filter>Header Files\Core\Resources\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Renderer.h">
+      <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Mesh.h">
+      <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Window.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\DefaultShader.vert">
-      <Filter>Fichiers de ressources</Filter>
+      <Filter>Resource Files</Filter>
     </None>
     <None Include="Resources\Shaders\DefaultShader.frag">
-      <Filter>Fichiers de ressources</Filter>
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>
