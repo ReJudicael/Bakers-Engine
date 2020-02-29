@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Fichiers sources\Core">
-      <UniqueIdentifier>{a5097437-e8ee-48ca-931b-5ca52251b20b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -147,6 +144,9 @@
     <ClCompile Include="..\Dependencies\stb\stb_image.cpp">
       <Filter>Internal Dependencies</Filter>
     </ClCompile>
+    <ClCompile Include="include\Core\Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -277,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Window.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Log.h">
+      <Filter>Header Files\Core\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
