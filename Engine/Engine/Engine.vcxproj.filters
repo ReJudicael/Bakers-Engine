@@ -144,8 +144,8 @@
     <ClCompile Include="..\Dependencies\stb\stb_image.cpp">
       <Filter>Internal Dependencies</Filter>
     </ClCompile>
-    <ClCompile Include="include\Core\Log.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Core\Debug\Logger.cpp">
+      <Filter>Source Files\Core\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,7 +278,7 @@
     <ClInclude Include="include\Core\Window.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="include\Core\Log.h">
+    <ClInclude Include="include\Core\Debug\Logger.h">
       <Filter>Header Files\Core\Debug</Filter>
     </ClInclude>
   </ItemGroup>

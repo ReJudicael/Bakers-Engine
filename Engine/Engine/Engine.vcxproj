@@ -294,8 +294,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClCompile Include="..\Dependencies\stb\stb_image.cpp" />
     <ClCompile Include="..\Dependencies\Tracy\TracyClient.cpp" />
     <ClCompile Include="include\Core\Datastructure\ICamera.cpp" />
-    <ClCompile Include="include\Core\Log.cpp" />
     <ClCompile Include="src\Core\Debug\Debug.cpp" />
+    <ClCompile Include="src\Core\Debug\Logger.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
     <ClCompile Include="src\Core\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Core\Renderer\PlayerCamera.cpp" />
@@ -328,9 +328,9 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\Core\Datastructure\Object.hpp" />
     <ClInclude Include="include\Core\Datastructure\RootObject.hpp" />
     <ClInclude Include="include\Core\Datastructure\Transform.hpp" />
-    <ClInclude Include="include\Core\Log.h" />
     <ClInclude Include="include\Core\Debug\Debug.h" />
     <ClInclude Include="include\Core\Debug\DebugTracyGL.hpp" />
+    <ClInclude Include="include\Core\Debug\Logger.h" />
     <ClInclude Include="include\Core\Maths\Mat.hpp" />
     <ClInclude Include="include\Core\Maths\Mat4.hpp" />
     <ClInclude Include="include\Core\Maths\Maths.hpp" />

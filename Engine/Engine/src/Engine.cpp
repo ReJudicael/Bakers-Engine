@@ -3,12 +3,8 @@
 #include "Window.h"
 #include "Debug.h"
 
-using namespace Core::SystemManagement;
-
 int main()
 {
 	Window win;
-
 	win.Update();
 }
-
