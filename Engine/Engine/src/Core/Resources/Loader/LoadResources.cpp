@@ -213,7 +213,6 @@ namespace Resources::Loader
 	void ResourcesManager::LoadMeshResourcesIRenderable(const aiScene* scene,
 		const std::string& fileName, const std::string& directory)
 	{
-		// std::cout "num mesh " << scene->mNumMeshes << std::endl;
 
 		unsigned int indexLastMesh{ 0 };
 		unsigned int lastNumIndices{ 0 };
@@ -247,8 +246,6 @@ namespace Resources::Loader
 				m_models.emplace(directory + mesh->mName.data, model);
 			}
 
-			// std::cout modelData->ModelName << std::endl;
-
 			modelData->model = model;
 			indexLastMesh = modelData->vertices.size();
 			lastNumIndices = modelData->indices.size();
@@ -256,16 +253,11 @@ namespace Resources::Loader
 			modelData->LoadVertices(mesh);
 			modelData->LoadIndices(mesh);
 
-			/*OffsetMesh offset;
-			offset.count = modelData->indices.size() - lastNumIndices;
-			offset.beginIndices = lastNumIndices;
-			offset.materialIndices = 0;
-
-			modelData->offsetsMesh.push_back(offset);*/
-
+			//modelData->materialsModel.resize(modelData->offsetsMesh.size());
 			modelData->materialsModel.resize(modelData->offsetsMesh.size());
-			modelData->materialsModel[modelData->offsetsMesh.size() - 1] = std::make_shared<Material>();
-			LoadMaterialResourcesIRenderable(scene, mesh, modelData->materialsModel[modelData->offsetsMesh.size() - 1], directory, tmpint);
+			//modelData->materialsModel[modelData->offsetsMesh.size() - 1] = std::make_shared<Material>();
+			modelData->materialsModel[0] = std::make_shared<Material>();
+			modelData->materialsModel[0]->LoadaiSceneMaterial(scene, mesh->mMaterialIndex, directory, *this, tmpint);
 
 			modelData->stateVAO = EOpenGLLinkState::CANLINK;
 		}
@@ -280,12 +272,11 @@ namespace Resources::Loader
 		std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
 		std::shared_ptr<Model> model = std::make_shared<Model>();
 
-		unsigned int indexLastMesh = 0;
+		unsigned int indexLastMesh{ 0 };
 
 		modelData->materialsModel.resize(scene->mNumMeshes);
 		modelData->model = model;
 		m_models.emplace(directory + scene->mMeshes[0]->mName.data, model);
-
 		m_modelsToLink.push_back(modelData);
 
 		for (int i = 0; i < scene->mNumMeshes; i++)
@@ -296,10 +287,11 @@ namespace Resources::Loader
 
 			modelData->LoadIndices(mesh, indexLastMesh);
 
-			indexLastMesh = modelData->vertices.size();
+			indexLastMesh += mesh->mNumVertices;
 
 			modelData->materialsModel[i] = std::make_shared<Material>();
-			LoadMaterialResourcesIRenderable(scene, mesh, modelData->materialsModel[i], directory);
+			modelData->materialsModel[i]->LoadaiSceneMaterial(scene, mesh->mMaterialIndex, directory, *this);
+			//LoadMaterialResourcesIRenderable(scene, mesh, modelData->materialsModel[i], directory);
 		}
 		modelData->stateVAO = EOpenGLLinkState::CANLINK;
 	}
@@ -349,39 +341,6 @@ namespace Resources::Loader
 		materialOut->specularColor = { color.r, color.g, color.b };
 		materialOut->materialColor = { 1.0f, 1.0f, 1.0f };
 
-	}
-
-	bool ResourcesManager::LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& texture, 
-												const aiTextureType& textureType ,const std::string& directory)
-	{
-		if (mat->GetTextureCount(textureType) > 0)
-		{
-			aiString path;
-			if (mat->GetTexture(textureType, 0, &path) == AI_SUCCESS)
-			{
-				std::string fullPath = directory + path.data;
-				std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
-
-				// std::cout "texture here " << fullPath << std::endl;
-				textureData->nameTexture = fullPath;
-
-				if (m_textures.count(fullPath) > 0)
-				{
-					// std::cout "already know textures : " << std::endl;
-					texture = m_textures[fullPath];
-				}
-				else
-				{
-					m_texturesToLink.push_back(textureData);
-					textureData->textureptr = texture;
-					textureData->CreateTextureFromImage(fullPath.c_str(), *this);
-					//CreateTextureFromImage(fullPath.c_str(), textureData, true);
-					m_textures.emplace(fullPath, texture);
-				}
-				return true;
-			}
-		}
-		return false;
 	}
 
 	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)

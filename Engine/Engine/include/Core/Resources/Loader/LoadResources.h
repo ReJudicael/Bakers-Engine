@@ -25,7 +25,6 @@ namespace Resources
 	struct Model;
 	struct Texture;
 	struct TextureData;
-	//struct SceneData;
 
 	namespace Loader
 	{
@@ -63,6 +62,27 @@ namespace Resources
 				return m_textures[path];
 			}
 
+			inline int GetCountMaterials(const std::string& str) const
+			{
+				return m_materials.count(str);
+			}
+
+			inline void EmplaceMaterials(std::string name, std::shared_ptr<Material> texture)
+			{
+				m_materials.emplace(name, texture);
+			}
+
+			inline std::shared_ptr<Material> GetMaterial(std::string path)
+			{
+				return m_materials[path];
+			}
+
+
+			inline void PushTextureToLink(std::shared_ptr<TextureData> textureData)
+			{
+				m_texturesToLink.push_back(textureData);
+			}
+
 			void LoadResourcesIRenderable(const char* fileName,
 				Core::Datastructure::Object* rootComponent);
 
@@ -83,7 +103,6 @@ namespace Resources
 
 			void LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material>& material,
 				const std::string& directory, const int meshNameCall = 0);
-			bool LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& textureData, const aiTextureType& textureType, const std::string& directory);
 
 			void LoadSceneResources(const aiScene* scene, const std::string& fileNameconst, const std::string& directory);
 
