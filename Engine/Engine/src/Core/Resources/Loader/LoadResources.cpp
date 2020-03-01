@@ -327,8 +327,8 @@ namespace Resources::Loader
 		materialOut->textures[0] = std::make_shared<Texture>();
 		materialOut->textures[1] = std::make_shared<Texture>();
 		// std::cout "new Material " << keyMaterial << std::endl;
-		LoadTextureMaterial(mat, materialOut->textures[0], aiTextureType_DIFFUSE, directory);
-		LoadTextureMaterial(mat, materialOut->textures[1], aiTextureType_NORMALS, directory);
+		//LoadTextureMaterial(mat, materialOut->textures[0], aiTextureType_DIFFUSE, directory);
+		//LoadTextureMaterial(mat, materialOut->textures[1], aiTextureType_NORMALS, directory);
 
 		// maybe load a normalMap
 
