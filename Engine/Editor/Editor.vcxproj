@@ -169,10 +169,13 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="src\Canvas.cpp" />
     <ClCompile Include="src\Editor.cpp" />
+    <ClCompile Include="src\GUIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Canvas.h" />
     <ClInclude Include="include\Editor.h" />
+    <ClInclude Include="include\GUIManager.h" />
+    <ClInclude Include="include\IRenderable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

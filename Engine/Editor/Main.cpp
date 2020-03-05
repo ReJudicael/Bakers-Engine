@@ -1,12 +1,13 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_internal.h"
-#include "Editor.h"
+#include "GUIManager.h"
 
 #include <stdio.h>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 int main()
 {
@@ -30,34 +31,13 @@ int main()
         return 1;
     }
 
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-
-    ImGuiStyle& style = ImGui::GetStyle();
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        style.WindowRounding = 0.0f;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
-
-    // Setup Platform/Renderer bindings
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
     // Our state
     bool show_demo_window = true;
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    Editor* editor = new Editor();
+    Core::GUIManager* man = new Core::GUIManager(window, glsl_version, Core::GUIStyle::DARK);
+
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
@@ -71,8 +51,6 @@ int main()
         ImGui::ShowDemoWindow(&show_demo_window);
         ImGui::ShowStyleEditor();
 
-        editor->Update();
-
         // Rendering
         ImGui::Render();
         int display_w, display_h;
@@ -80,24 +58,10 @@ int main()
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
-            GLFWwindow* backup_current_context = glfwGetCurrentContext();
-            ImGui::UpdatePlatformWindows();
-            ImGui::RenderPlatformWindowsDefault();
-            glfwMakeContextCurrent(backup_current_context);
-        }
 
         glfwSwapBuffers(window);
     }
-    delete editor;
-
-    // Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    delete man;
 
     glfwDestroyWindow(window);
     glfwTerminate();

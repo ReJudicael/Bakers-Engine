@@ -48,12 +48,21 @@
     <ClCompile Include="src\Canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUIManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Canvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GUIManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IRenderable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

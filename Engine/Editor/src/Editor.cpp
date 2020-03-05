@@ -14,10 +14,7 @@ Editor::~Editor()
 
 void Editor::SetViewport()
 {
-    ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos(viewport->Pos);
-    ImGui::SetNextWindowSize(viewport->Size);
-    ImGui::SetNextWindowViewport(viewport->ID);
+
 }
 
 void Editor::BuildDock()
