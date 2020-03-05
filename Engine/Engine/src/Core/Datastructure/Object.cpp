@@ -2,6 +2,31 @@
 #include "RootObject.hpp"
 #include "Debug.h"
 
+RTTR_REGISTRATION
+{
+	using namespace Core::Datastructure;
+	registration::class_<Object>("Object")
+		.method("Destroy", &Object::Destroy)
+		.property_readonly("IsDestroyed", &Object::IsDestroyed)
+		.method("CreateChild", &Object::CreateChild)
+		.property_readonly("parent", &Object::GetParent)
+		.method("Translate", &Object::Translate)
+		.method("Rotate", &Object::Rotate)
+		.method("Scale", &Object::Scale)
+		.property("pos", &Object::GetPos, &Object::SetPos)
+		.property("rot", &Object::GetRot, &Object::SetRot)
+		.property("scale", &Object::GetScale, &Object::SetScale)
+		.property_readonly("GlobalPos", &Object::GetGlobalPos)
+		.property_readonly("GlobalRot", &Object::GetGlobalRot)
+		.property_readonly("GlobalScale", &Object::GetGlobalScale)
+		.method("GetLocalTRS", &Object::GetLocalTRS)
+		.method("GetGlobalTRS", &Object::GetGlobalTRS)
+		.method("AddComponent", &Object::AddComponent)
+		.method("RemoveComponent", &Object::RemoveComponent)
+		.method("EraseComponent", &Object::EraseComponent)
+		.property_readonly("Scene", &Object::GetScene);
+}
+
 namespace Core::Datastructure
 {
 	const Transform& Object::GetUpdatedTransform() noexcept

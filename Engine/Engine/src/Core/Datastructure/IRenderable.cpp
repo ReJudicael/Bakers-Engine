@@ -2,6 +2,14 @@
 #include "RootObject.hpp"
 #include "Debug.h"
 
+RTTR_REGISTRATION
+{
+	using namespace Core::Datastructure;
+	registration::class_<IRenderable>("IRenderable")
+		.method("Draw", &IRenderable::Draw)
+		.property("VAO", &IRenderable::m_VAO);
+}
+
 namespace Core::Datastructure
 {
 

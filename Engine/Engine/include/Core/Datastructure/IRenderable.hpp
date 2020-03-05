@@ -8,6 +8,7 @@
 #include "ICamera.h"
 #include <list>
 #include "Debug.h"
+#include "Reflection.h"
 
 namespace Core::Datastructure
 {
@@ -16,6 +17,12 @@ namespace Core::Datastructure
 	 */
 	class IRenderable : public virtual IComponent
 	{
+	protected:
+		/**
+		 * Called for rendering. Must be overriden if the component is inherited
+		 * @param cam: Camera to render to
+		 */
+		virtual void OnDraw(ICamera* cam) = 0;
 	public:
 		virtual void	OnStart() override;
 
@@ -24,15 +31,11 @@ namespace Core::Datastructure
 		GLuint m_VAO = 0;
 
 		/**
-		 * Called for rendering. Must be overriden if the component is inherited
-		 * @param cam: Camera to render to
-		 */
-		virtual void OnDraw(ICamera* cam) = 0;
-
-		/**
 		 * Function called by the engine to draw the object
 		 * @param cameras: Cameras of the scene
 		 */
 		void	Draw(const std::list<ICamera*>& cameras);
+		
+		REGISTER_CLASS(IComponent)
 	};
 }

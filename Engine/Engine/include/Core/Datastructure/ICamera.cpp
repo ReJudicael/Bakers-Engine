@@ -2,6 +2,17 @@
 #include "RootObject.hpp"
 #include "Debug.h"
 
+RTTR_REGISTRATION
+{
+	using namespace Core::Datastructure;
+	registration::class_<ICamera>("ICamera")
+		.method("GetCameraPerspective", &ICamera::GetPerspectiveMatrix)
+		.method("GetCameraMatrix", &ICamera::GetCameraMatrix)
+		.method("SetRatio", &ICamera::SetRatio)
+		.property_readonly("front", &ICamera::m_front)
+		.property_readonly("right", &ICamera::m_right);
+}
+
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 {
 	if (!m_isPerspectiveUpdated)

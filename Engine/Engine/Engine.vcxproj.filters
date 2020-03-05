@@ -281,6 +281,9 @@
     <ClInclude Include="include\Core\Debug\Logger.h">
       <Filter>Header Files\Core\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\Reflection.h">
+      <Filter>Header Files\Core\Datastructure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\DefaultShader.vert">

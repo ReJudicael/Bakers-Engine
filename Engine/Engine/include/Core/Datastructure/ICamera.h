@@ -4,6 +4,7 @@
 #include "Mat4.hpp"
 #include "IComponent.hpp"
 #include "Debug.h"
+#include "Reflection.h"
 
 namespace Core::Datastructure
 {
@@ -39,6 +40,17 @@ namespace Core::Datastructure
 		virtual void				OnStart() override;
 
 		virtual void				SetRatio(float ratio) = 0;
+
+		Core::Maths::Vec3			GetFront() const noexcept
+		{
+			return m_front;
+		}
+		Core::Maths::Vec3			GetRight() const noexcept
+		{
+			return m_right;
+		}
+
+		REGISTER_CLASS(IComponent)
 	};
 }
 

@@ -2,6 +2,7 @@
 
 #include "InputSystem.hpp"
 #include "Debug.h"
+#include "Reflection.h"
 
 namespace Core::Datastructure
 {
@@ -21,6 +22,17 @@ namespace Core::Datastructure
 	protected:
 		bool		m_isActive = true;
 		Object*		m_parent{ nullptr };
+
+		/**
+		 * Called on start of the component, on the first frame it
+		 * is active
+		 */
+		virtual void	OnStart() {};
+		/**
+		 * Called when destruction is asked. Destructor will be called
+		 * at the end of the frame
+		 */
+		virtual void	OnDestroy() {};
 	public:
 		/**
 		 * Destructor, declared virtual as this class is inherited
@@ -41,6 +53,14 @@ namespace Core::Datastructure
 		 */
 		void			SetScene(RootObject* scene);
 
+		/**
+		 * Gets the parent of the component
+		 * @return Parent of the component
+		 */
+		Object*			GetParent()
+		{
+			return m_parent;
+		}
 		/**
 		 * Returns root object of the parent
 		 * @return Root object
@@ -82,16 +102,7 @@ namespace Core::Datastructure
 		 * @return State of the component
 		 */
 		bool			IsActive() const noexcept { return m_isActive; }
-
-		/**
-		 * Called on start of the component, on the first frame it
-		 * is active
-		 */
-		virtual void	OnStart() {};
-		/**
-		 * Called when destruction is asked. Destructor will be called
-		 * at the end of the frame
-		 */
-		virtual void	OnDestroy() {};
+		
+		REGISTER_CLASS()
 	};
 }

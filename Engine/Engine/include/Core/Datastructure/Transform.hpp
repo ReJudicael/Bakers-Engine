@@ -4,6 +4,7 @@
 #include "Quaternion.hpp"
 #include "Mat4.hpp"
 #include "Debug.h"
+#include "Reflection.h"
 
 namespace Core::Datastructure
 {
@@ -194,6 +195,8 @@ namespace Core::Datastructure
 		 * @return Reference to global trs
 		 */
 		const Maths::Mat4& GetGlobalTrs() noexcept;
+
+		REGISTER_CLASS()
 	};
 
 	inline const Maths::Vec3& Transform::GetLocalPos() const noexcept

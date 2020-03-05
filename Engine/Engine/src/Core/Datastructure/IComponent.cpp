@@ -2,6 +2,20 @@
 #include "RootObject.hpp"
 #include "Debug.h"
 
+RTTR_REGISTRATION
+{
+	using namespace Core::Datastructure;
+	registration::class_<IComponent>("IComponent")
+		.property("parent", &IComponent::GetParent, &IComponent::SetParent)
+		.property("Scene", &IComponent::GetScene, &IComponent::SetScene)
+		.property_readonly("InputManager", &IComponent::Input)
+		.method("Start", &IComponent::Start)
+		.method("Destroy", &IComponent::Destroy)
+		.property_readonly("IsDestroyed", &IComponent::IsDestroyed)
+		.property_readonly("IsInit", &IComponent::IsInit)
+		.property("IsActive", &IComponent::m_isActive, detail::protected_access());
+}
+
 namespace Core::Datastructure
 {
 	void	IComponent::SetScene(RootObject* scene)

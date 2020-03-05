@@ -2,6 +2,14 @@
 #include "RootObject.hpp"
 #include "Debug.h"
 
+RTTR_REGISTRATION
+{
+	using namespace Core::Datastructure;
+	registration::class_<IUpdatable>("IUpdatable")
+		.method("Update", &IUpdatable::Update)
+		.property("IsUpdating", &IUpdatable::m_isUpdating, detail::protected_access());
+}
+
 namespace Core::Datastructure
 {
 	void Datastructure::IUpdatable::OnStart()

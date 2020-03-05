@@ -5,6 +5,7 @@
 #include "Transform.hpp"
 #include "ComponentBase.h"
 #include "Debug.h"
+#include "Reflection.h"
 
 namespace Core::Datastructure
 {
@@ -256,6 +257,8 @@ namespace Core::Datastructure
 		{
 			return m_root;
 		}
+
+		REGISTER_CLASS()
 	};
 
 	inline Object*	Datastructure::Object::GetParent() const noexcept

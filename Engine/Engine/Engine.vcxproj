@@ -137,7 +137,8 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\*.dll" "$(TargetDir)"
-xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Command>
+xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -166,7 +167,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     </PreLinkEvent>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\*.dll" "$(TargetDir)"
-xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Command>
+xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -194,7 +196,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\*.dll" "$(TargetDir)"
-xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Command>
+xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|Win32'">
@@ -222,7 +225,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\*.dll" "$(TargetDir)"
-xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Command>
+xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -254,7 +258,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     </PreLinkEvent>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\*.dll" "$(TargetDir)"
-xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Command>
+xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|x64'">
@@ -286,7 +291,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     </PreLinkEvent>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\*.dll" "$(TargetDir)"
-xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Command>
+xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -326,6 +332,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp" />
     <ClInclude Include="include\Core\Datastructure\IUpdatable.hpp" />
     <ClInclude Include="include\Core\Datastructure\Object.hpp" />
+    <ClInclude Include="include\Core\Datastructure\Reflection.h" />
     <ClInclude Include="include\Core\Datastructure\RootObject.hpp" />
     <ClInclude Include="include\Core\Datastructure\Transform.hpp" />
     <ClInclude Include="include\Core\Debug\Debug.h" />

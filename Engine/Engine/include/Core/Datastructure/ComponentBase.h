@@ -2,6 +2,7 @@
 
 #include "IComponent.hpp"
 #include "Debug.h"
+#include "Reflection.h"
 
 namespace Core::Datastructure
 {
@@ -17,5 +18,7 @@ namespace Core::Datastructure
 		ComponentBase(const ComponentBase& c) = default;
 		ComponentBase() = default;
 		~ComponentBase() = default;
+
+		REGISTER_CLASS(IComponent)
 	};
 }

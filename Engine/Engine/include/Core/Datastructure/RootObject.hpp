@@ -9,6 +9,7 @@
 #include "ICamera.h"
 #include "InputSystem.hpp"
 #include "Debug.h"
+#include "Reflection.h"
 
 namespace Core::Datastructure
 {
@@ -129,5 +130,7 @@ namespace Core::Datastructure
 		 * effectively making it the root node.
 		 */
 		static RootObject* CreateRootNode(SystemManagement::InputSystem* inputSystem) noexcept;
+
+		REGISTER_CLASS(Object)
 	};
 }

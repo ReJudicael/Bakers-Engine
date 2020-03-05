@@ -2,6 +2,7 @@
 
 #include "IComponent.hpp"
 #include "Debug.h"
+#include "Reflection.h"
 
 namespace Core::Datastructure
 {
@@ -11,8 +12,8 @@ namespace Core::Datastructure
 	class IUpdatable : public virtual IComponent
 	{
 	protected:
-		bool				m_isUpdating = true;
-	public:
+		bool				m_isUpdating = true; 
+		
 		virtual void		OnStart() override;
 		/**
 		 * Called once per frame before rendering. DeltaTime is
@@ -21,7 +22,7 @@ namespace Core::Datastructure
 		 * @param deltaTime: Time since previous frame
 		 */
 		virtual void		OnUpdate(float deltaTime) = 0;
-
+	public:
 		/**
 		 * Called by the engine to update the component
 		 * @param deltaTime: Time since previous frame
@@ -32,6 +33,8 @@ namespace Core::Datastructure
 		 * Returns if the component is updated.
 		 */
 		inline bool			IsUpdating();
+
+		REGISTER_CLASS(IComponent)
 	};
 	inline bool IUpdatable::IsUpdating()
 	{

@@ -1,6 +1,27 @@
 #include "Transform.hpp"
 #include "Debug.h "
 
+RTTR_REGISTRATION
+{
+	using namespace Core::Datastructure;
+	using namespace Core::Maths;
+	registration::class_<Transform>("Transform")
+		.constructor<const Transform&, const Vec3&, const Quat&, const Vec3&>()
+		.constructor<const Vec3&, const Quat&, const Vec3&>()
+		.constructor<const Transform&>()
+		.property("LocalPos", &Transform::GetLocalPos, &Transform::SetLocalPos)
+		.property("LocalRot", &Transform::GetLocalRot, &Transform::SetLocalRot)
+		.property("LocalScale", &Transform::GetLocalScale, &Transform::SetLocalScale)
+		.property_readonly("GlobalPos", &Transform::GetGlobalPos)
+		.property_readonly("GlobalRot", &Transform::GetGlobalRot)
+		.property_readonly("GlobalScale", &Transform::GetGlobalScale)
+		.method("GetLocalTRS", &Transform::GetLocalTrs)
+		.method("GetGlobalTRS", &Transform::GetGlobalTrs)
+		.property_readonly("IsGposUpdated", &Transform::m_isGUpdated)
+		.property_readonly("IsGTrsUpdated", &Transform::m_isGTrsUpdated)
+		.property_readonly("IsLTrsUpdated", &Transform::m_isTrsUpdated);
+}
+
 namespace Core::Datastructure
 {
 	inline void Transform::UpdatePos(const Transform& t) noexcept

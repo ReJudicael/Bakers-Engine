@@ -41,4 +41,6 @@ public:
 	 * @return Perspective matrix
 	 */
 	static Core::Maths::Mat4 CreatePerspectiveMatrix(const float ratio, const float near, const float far, const float fov);
+	
+	REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera, Core::Datastructure::IUpdatable)
 };

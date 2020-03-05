@@ -1,6 +1,29 @@
 #include "RootObject.hpp"
 #include "Debug.h"
 
+RTTR_REGISTRATION
+{
+	using namespace Core::Datastructure;
+	registration::class_<RootObject>("RootObject")
+		.method("StartFrame", &RootObject::StartFrame)
+		.method("Update", &RootObject::Update)
+		.method("Render", &RootObject::Render)
+		.method("RemoveDestroyed", &RootObject::RemoveDestroyed)
+		.method("AddUpdatable", &RootObject::AddUpdatable)
+		.method("AddRenderable", &RootObject::AddRenderable)
+		.method("AddStart", &RootObject::AddStart)
+		.method("AddCamera", &RootObject::AddCamera)
+		.property_readonly("Input", &RootObject::GetInput)
+		.method("RemoveUpdatable", &RootObject::RemoveUpdatable)
+		.method("RemoveRenderable", &RootObject::RemoveRenderable)
+		.method("RemoveCamera", &RootObject::RemoveCamera)
+		.method("SetCamerasRatio", &RootObject::SetCamerasRatio)
+		.method("DestroyComponent", &RootObject::DestroyComponent)
+		.method("DestroyObject", &RootObject::DestroyObject)
+		.method("Destroy", &RootObject::Destroy)
+		.property("Transform", &RootObject::m_transform, detail::protected_access());
+}
+
 namespace Core::Datastructure
 {
 	RootObject::RootObject(SystemManagement::InputSystem* inputSystem) noexcept : Object({}, nullptr, this)

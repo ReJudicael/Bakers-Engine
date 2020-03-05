@@ -3,6 +3,7 @@
 #include "ComponentBase.h"
 #include "IUpdatable.hpp"
 #include "Debug.h"
+#include "Reflection.h"
 
 namespace Core::Datastructure
 {
@@ -11,5 +12,6 @@ namespace Core::Datastructure
 	 */
 	class ComponentUpdatable : public ComponentBase, public virtual IUpdatable
 	{
+		REGISTER_CLASS(ComponentBase, IUpdatable)
 	};
 }

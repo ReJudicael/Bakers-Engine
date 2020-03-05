@@ -54,5 +54,7 @@ public:
 	{
 		m_model = model;
 	}
+
+	REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IRenderable)
 };
 
