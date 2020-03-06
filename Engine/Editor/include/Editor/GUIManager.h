@@ -1,13 +1,16 @@
 #pragma once
 
-#include "IRenderable.h"
+#include "Canvas.hpp"
 
 #include <GLFW/glfw3.h>
 #include <imgui\imgui.h>
 #include <imgui\imgui_impl_glfw.h>
 #include <imgui\imgui_impl_opengl3.h>
 
-namespace Core
+/*
+ * Contains the editor of the engine
+ */
+namespace Editor
 {
 	/*
 	 * UI Theme
@@ -27,6 +30,12 @@ namespace Core
 	{
 	public:
 		/*
+		 * Contains drawing elements (Widgets) and set dockspace
+		 */
+		Canvas* m_canvas{ nullptr };
+
+	public:
+		/**
 		 * Set and init ImGUI
 		 * @param glfwWindow: GLFWwindow to setup Platform/Renderer bindings
 		 * @param glsl_version: Store GLSL version string so we can refer to it later in case we recreate shaders
@@ -35,24 +44,42 @@ namespace Core
 		GUIManager(GLFWwindow* glfwWindow, const char* glsl_version, GUIStyle style);
 
 		/**
-		 * Clean up ImGui
+		 * Clean up canvas and ImGui
 		 */
 		~GUIManager();
 
 	private:
-		/*
+		/**
 		 * Set IO Configuration
 		 */
 		void SetIOConfiguration();
 
 	public:
-		/*
+		/**
 		 * Set UI Theme
 		 * @param style: UI Theme wanted
 		 * @return Returns true if the theme of the user interface is correctly defined, otherwise false
 		 */
 		bool SetStyle(GUIStyle style);
 
+		/**
+		 * Set Canvas to GUIManager
+		 * @param canvas: Canvas wanted
+		 */
+		void SetCanvas(Canvas* canvas);
+
+	private:
+		/**
+		 * Update ImGui
+		 */
+		void NewFrame();
+
+		/**
+		 * Render ImGui
+		 */
+		void EndFrame();
+
+	public:
 		/*
 		 * Draw UI
 		 */

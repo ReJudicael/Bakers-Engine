@@ -8,6 +8,12 @@
 #include "GUIManager.h"
 
 #include <stdio.h>
+#include <iostream>
+#include <WidgetFileBrowser.h>
+#include <WidgetConsole.h>
+#include <WidgetInspector.h>
+#include <WidgetScene.h>
+#include <WidgetHierarchy.h>
 
 int main()
 {
@@ -36,31 +42,33 @@ int main()
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    Core::GUIManager* man = new Core::GUIManager(window, glsl_version, Core::GUIStyle::DARK);
+    Editor::GUIManager* man = new Editor::GUIManager(window, glsl_version, Editor::GUIStyle::DARK);
+
+    Editor::Canvas* canvas= new Editor::Canvas();
+    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>();
+    canvas->AddWidget<Editor::Widget::WidgetConsole>();
+    canvas->AddWidget<Editor::Widget::WidgetInspector>();
+    canvas->AddWidget<Editor::Widget::WidgetScene>();
+    canvas->AddWidget<Editor::Widget::WidgetHierarchy>();
+    man->SetCanvas(canvas);
 
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
-
+        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+        glClear(GL_COLOR_BUFFER_BIT);
         // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
 
-        ImGui::ShowDemoWindow(&show_demo_window);
-        ImGui::ShowStyleEditor();
-
+        man->Render();
         // Rendering
-        ImGui::Render();
+
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-        glClear(GL_COLOR_BUFFER_BIT);
-
         glfwSwapBuffers(window);
     }
+    // delete canvas;
     delete man;
 
     glfwDestroyWindow(window);
