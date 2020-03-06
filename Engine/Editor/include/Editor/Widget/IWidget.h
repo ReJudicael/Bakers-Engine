@@ -11,12 +11,12 @@
 namespace Editor
 {
 	/**
-	 * A component of an interface that enables a user to perform a function
+	 * Interface component enabling features for the user
 	 */
 	namespace Widget
 	{
 		/**
-		 * A component of an interface that enables a user to perform a function
+		 * Interface component enabling features for the user
 		 */
 		class IWidget
 		{
@@ -27,12 +27,12 @@ namespace Editor
 			const char* m_name;
 
 			/**
-			 * Window of widget is visible
+			 * Whether the widget window is visible
 			 */
 			bool m_isVisible{ true };
 
 			/**
-			 * Window du widget has begun
+			 * Whether the widget window has begun
 			 */
 			bool m_windowBegun{ false };
 
@@ -43,7 +43,7 @@ namespace Editor
 
 		public:
 			/**
-			 * Constructor which set title of window of widget
+			 * Constructor which set title of the widget window
 			 * @param name: Set title of window
 			 */
 			IWidget(const char* name);
@@ -55,25 +55,25 @@ namespace Editor
 
 		private:
 			/**
-			 * Begin window of widget
+			 * Begin widget window
 			 * @return True if window has begun otherwise false
 			 */
 			bool Begin();
 
 			/**
-			 * End window of widget
+			 * End widget window
 			 * @return True if window has ended otherwise false
 			 */
 			bool End();
 
 		public:
 			/**
-			 * Draw elements of widget in window
+			 * Display elements of widget in window
 			 */
 			virtual void Tick() = 0;
 
 			/**
-			 * Draw window and widget
+			 * Display window and widget
 			 */
 			void Draw();
 		};

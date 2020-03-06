@@ -5,7 +5,7 @@
 namespace Editor::Widget
 {
 	/**
-	 * Widget File Browser
+	 * Widget Hierarchy
 	 */
 	class WidgetHierarchy : public IWidget
 	{

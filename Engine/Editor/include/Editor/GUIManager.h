@@ -13,7 +13,7 @@
 namespace Editor
 {
 	/*
-	 * UI Theme
+	 * UI Color scheme and appearence
 	 */
 	enum class GUIStyle : short int
 	{
@@ -24,13 +24,13 @@ namespace Editor
 	};
 
 	/*
-	 * Create, Draw and Destroy UI
+	 * Manager to handle UI creation, displaying and destruction
 	 */
 	class GUIManager
 	{
 	public:
 		/*
-		 * Contains drawing elements (Widgets) and set dockspace
+		 * Contains elements to display (Widgets) and set dockspace
 		 */
 		Canvas* m_canvas{ nullptr };
 
@@ -57,14 +57,14 @@ namespace Editor
 	public:
 		/**
 		 * Set UI Theme
-		 * @param style: UI Theme wanted
+		 * @param style: Desired UI Theme
 		 * @return Returns true if the theme of the user interface is correctly defined, otherwise false
 		 */
 		bool SetStyle(GUIStyle style);
 
 		/**
 		 * Set Canvas to GUIManager
-		 * @param canvas: Canvas wanted
+		 * @param canvas: Desired canvas
 		 */
 		void SetCanvas(Canvas* canvas);
 

@@ -10,7 +10,7 @@
 namespace Editor
 {
 	/**
-	 * Contains that holds widgets
+	 * Container that holds widgets
 	 */
 	class Canvas
 	{
@@ -22,9 +22,9 @@ namespace Editor
 
 	public:
 		/**
-		 * Add widget in canvas
-		 * @tparam T: specific class Widget
-		 * @tparam args: arguments of constructor of specific class Widget
+		 * Add widget to canvas
+		 * @tparam T: Specific  Widget class
+		 * @tparam args: Arguments of constructor of given Widget class
 		 */
 		template<class T, class... Args>
 		void AddWidget(Args&&... args);
@@ -48,7 +48,7 @@ namespace Editor
 
 	public:
 		/**
-		 * Draw contained in canvas
+		 * Display widgets in canvas
 		 */
 		void Draw();
 	};
