@@ -18,3 +18,7 @@ Engine/Editor/x64/
 Engine/Editor/imgui.ini
 
 Engine/Editor/Editor.vcxproj.user
+
+Engine/Doxygen/DocEditor/
+
+Engine/Doxygen/Doc/
