@@ -12,8 +12,9 @@ namespace Editor::Widget
 	public:
 		/**
 		 * Constructor which set title of window
+		 * @param name: Title of window
 		 */
-		WidgetInspector();
+		WidgetInspector(const char* name);
 
 		/**
 		 * Default destructor

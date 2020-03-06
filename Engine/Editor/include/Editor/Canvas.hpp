@@ -14,7 +14,7 @@ namespace Editor
 	 */
 	class Canvas
 	{
-	public:
+	private:
 		/**
 		 * Widgets contained in canvas
 		 */
@@ -56,6 +56,7 @@ namespace Editor
 	template<class T, class ...Args>
 	inline void Canvas::AddWidget(Args&&... args)
 	{
+		static_assert(std::is_base_of<Widget::IWidget, T>::value);
 		m_widgets.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
 	}
 }

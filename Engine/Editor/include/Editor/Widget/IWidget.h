@@ -20,7 +20,7 @@ namespace Editor
 		 */
 		class IWidget
 		{
-		public:
+		protected:
 			/**
 			 * Title of widget
 			 */
@@ -30,11 +30,6 @@ namespace Editor
 			 * Whether the widget window is visible
 			 */
 			bool m_isVisible{ true };
-
-			/**
-			 * Whether the widget window has begun
-			 */
-			bool m_windowBegun{ false };
 
 			/**
 			 * Window flags
@@ -62,9 +57,8 @@ namespace Editor
 
 			/**
 			 * End widget window
-			 * @return True if window has ended otherwise false
 			 */
-			bool End();
+			void End();
 
 		public:
 			/**

@@ -2,13 +2,13 @@
 
 namespace Editor::Widget
 {
-	WidgetInspector::WidgetInspector() :
-		IWidget(W_INSPECTOR)
+	WidgetInspector::WidgetInspector(const char* name) :
+		IWidget(name)
 	{
 	}
 
 	void WidgetInspector::Tick()
 	{
-		ImGui::Text(W_INSPECTOR);
+		ImGui::Text(m_name);
 	}
 }

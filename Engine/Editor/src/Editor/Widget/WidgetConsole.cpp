@@ -2,13 +2,13 @@
 
 namespace Editor::Widget
 {
-	WidgetConsole::WidgetConsole() :
-		IWidget(W_CONSOLE)
+	WidgetConsole::WidgetConsole(const char* name) :
+		IWidget(name)
 	{
 	}
 
 	void WidgetConsole::Tick()
 	{
-		ImGui::Text(W_CONSOLE);
+		ImGui::Text(m_name);
 	}
 }

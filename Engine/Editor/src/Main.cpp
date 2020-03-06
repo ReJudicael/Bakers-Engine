@@ -45,11 +45,11 @@ int main()
     Editor::GUIManager* man = new Editor::GUIManager(window, glsl_version, Editor::GUIStyle::DARK);
 
     Editor::Canvas* canvas= new Editor::Canvas();
-    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>();
-    canvas->AddWidget<Editor::Widget::WidgetConsole>();
-    canvas->AddWidget<Editor::Widget::WidgetInspector>();
-    canvas->AddWidget<Editor::Widget::WidgetScene>();
-    canvas->AddWidget<Editor::Widget::WidgetHierarchy>();
+    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>("File Browser");
+    canvas->AddWidget<Editor::Widget::WidgetConsole>("Console");
+    canvas->AddWidget<Editor::Widget::WidgetInspector>("Inspector");
+    canvas->AddWidget<Editor::Widget::WidgetScene>("Scene");
+    canvas->AddWidget<Editor::Widget::WidgetHierarchy>("Hierarchy");
     man->SetCanvas(canvas);
 
     // Main loop
@@ -68,7 +68,6 @@ int main()
         glViewport(0, 0, display_w, display_h);
         glfwSwapBuffers(window);
     }
-    // delete canvas;
     delete man;
 
     glfwDestroyWindow(window);
