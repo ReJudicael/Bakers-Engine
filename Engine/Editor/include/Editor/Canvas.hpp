@@ -23,7 +23,7 @@ namespace Editor
 	public:
 		/**
 		 * Add widget to canvas
-		 * @tparam T: Specific  Widget class
+		 * @tparam T: Specific Widget class
 		 * @tparam args: Arguments of constructor of given Widget class
 		 */
 		template<class T, class... Args>
@@ -31,9 +31,9 @@ namespace Editor
 
 		/**
 		 * Remove widget in canvas
+		 * @param name: Name of widget to remove
 		 */
-		// TODO
-		void RemoveWidget();
+		void RemoveWidget(const char* name);
 
 		/**
 		 * Remove all widgets

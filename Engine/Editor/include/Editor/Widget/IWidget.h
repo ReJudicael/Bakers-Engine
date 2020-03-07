@@ -50,7 +50,7 @@ namespace Editor
 
 			/**
 			 * Get whether the widget window is visible
-			 * @return Whether the widget window is visible
+			 * @return True if the widget window is visible, false otherwise
 			 */
 			bool IsVisible() const;
 

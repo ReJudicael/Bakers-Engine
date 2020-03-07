@@ -2,6 +2,17 @@
 
 namespace Editor
 {
+	void Canvas::RemoveWidget(const char* name)
+	{
+		for (size_t i{ 0 }; i < m_widgets.size();)
+		{
+			if (strcmp(m_widgets[i].get()->GetName(), name) == 0)
+				m_widgets.erase(m_widgets.begin() + i);
+			else
+				++i;
+		}
+	}
+
 	void Canvas::RemoveAllWidgets()
 	{
 		m_widgets.clear();

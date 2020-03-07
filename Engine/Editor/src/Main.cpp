@@ -46,7 +46,9 @@ int main()
 
     Editor::Canvas* canvas= new Editor::Canvas();
     canvas->AddWidget<Editor::Widget::WidgetFileBrowser>("File Browser");
+    canvas->RemoveWidget("File Browser");
     canvas->AddWidget<Editor::Widget::WidgetConsole>("Console");
+    canvas->RemoveWidget("Console");
     canvas->AddWidget<Editor::Widget::WidgetInspector>("Inspector");
     canvas->AddWidget<Editor::Widget::WidgetScene>("Scene");
     canvas->AddWidget<Editor::Widget::WidgetHierarchy>("Hierarchy");
