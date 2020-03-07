@@ -2,11 +2,18 @@
 
 namespace Editor
 {
-	void Canvas::RemoveWidget(const char* name)
+	Canvas::Canvas()
+	{
+		m_dockFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar;
+		m_dockFlags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		m_dockFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
+	}
+
+	void Canvas::RemoveWidget(std::string name)
 	{
 		for (size_t i{ 0 }; i < m_widgets.size();)
 		{
-			if (strcmp(m_widgets[i].get()->GetName(), name) == 0)
+			if (m_widgets[i].first->GetName().compare(name) == 0)
 				m_widgets.erase(m_widgets.begin() + i);
 			else
 				++i;
@@ -18,59 +25,110 @@ namespace Editor
 		m_widgets.clear();
 	}
 
-	void Canvas::SetDockspace()
-	{
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.2f));
-		{
-			ImGuiViewport* viewport = ImGui::GetMainViewport();
-			ImGui::SetNextWindowPos(viewport->Pos);
-			ImGui::SetNextWindowSize(viewport->Size);
-			ImGui::SetNextWindowViewport(viewport->ID);
-
-			ImGuiWindowFlags window_flags;
-			window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar;
-			window_flags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
-
-			if (ImGui::Begin("## Dockspace", NULL, window_flags))
-			{
-				const ImGuiID dockspace_id = ImGui::GetID("dockspace_id");
-				if (!ImGui::DockBuilderGetNode(dockspace_id))
-				{
-					// Reset current docking state
-					ImGui::DockBuilderRemoveNode(dockspace_id);
-					ImGui::DockBuilderAddNode(dockspace_id, ImGuiDockNodeFlags_None);
-					ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetMainViewport()->Size);
-
-					ImGuiID dock_main_id = dockspace_id;
-					ImGuiID dock_id_left = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.20f, nullptr, &dock_main_id);
-					ImGuiID dock_id_right = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Right, 0.20f, nullptr, &dock_main_id);
-					ImGuiID dock_id_bottom = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Down, 0.40f, nullptr, &dock_main_id);
-					ImGuiID dock_id_right_down = ImGui::DockBuilderSplitNode(dock_id_right, ImGuiDir_Down, 0.6f, nullptr, &dock_id_right);
-					ImGuiID dock_id_down_right = ImGui::DockBuilderSplitNode(dock_id_bottom, ImGuiDir_Right, 0.6f, nullptr, &dock_id_bottom);
-
-					ImGui::DockBuilderDockWindow("Scene", dock_main_id);
-					ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left);
-					ImGui::DockBuilderDockWindow("Inspector", dock_id_right);
-					ImGui::DockBuilderDockWindow("File Browser", dock_id_bottom);
-					ImGui::DockBuilderDockWindow("Console", dock_id_bottom);
-					ImGui::DockBuilderFinish(dock_main_id);
-				}
-				ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), ImGuiDockNodeFlags_PassthruCentralNode);
-				ImGui::End();
-			}
-		}
-		ImGui::PopStyleVar(2);
-	}
-
 	void Canvas::Draw()
 	{
 		SetDockspace();
 
 		for (auto& widget : m_widgets)
 		{
-			widget.get()->Draw();
+			widget.first->Draw();
 		}
+	}
+
+	void Canvas::PushDockStyle()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+	}
+
+	void Canvas::PopDockStyle()
+	{
+		ImGui::PopStyleVar(2);
+	}
+
+	void Canvas::SetViewport()
+	{
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(viewport->Pos);
+		ImGui::SetNextWindowSize(viewport->Size);
+		ImGui::SetNextWindowViewport(viewport->ID);
+	}
+
+	void Canvas::BuildDockWidgets(ImGuiID dock_main_id)
+	{
+		using U16 = unsigned short int;
+		ImGuiID	anchor[(U16)EAnchor::COUNT];
+
+		anchor[(U16)EAnchor::MIDDLE]		= dock_main_id;
+		anchor[(U16)EAnchor::LEFT]			= DockBuilderSplitNode(anchor[(U16)EAnchor::MIDDLE], ImGuiDir_Left);
+		anchor[(U16)EAnchor::RIGHT]			= DockBuilderSplitNode(anchor[(U16)EAnchor::MIDDLE], ImGuiDir_Right);
+		anchor[(U16)EAnchor::TOP]			= DockBuilderSplitNode(anchor[(U16)EAnchor::MIDDLE], ImGuiDir_Up);
+		anchor[(U16)EAnchor::BOTTOM]		= DockBuilderSplitNode(anchor[(U16)EAnchor::MIDDLE], ImGuiDir_Down);
+
+		anchor[(U16)EAnchor::MIDDLE_LEFT]	= DockBuilderSplitNode(anchor[(U16)EAnchor::MIDDLE], ImGuiDir_Left);
+		anchor[(U16)EAnchor::MIDDLE_RIGHT]	= DockBuilderSplitNode(anchor[(U16)EAnchor::MIDDLE], ImGuiDir_Right);
+		anchor[(U16)EAnchor::MIDDLE_TOP]	= DockBuilderSplitNode(anchor[(U16)EAnchor::MIDDLE], ImGuiDir_Up);
+		anchor[(U16)EAnchor::MIDDLE_BOTTOM]	= DockBuilderSplitNode(anchor[(U16)EAnchor::MIDDLE], ImGuiDir_Down);
+
+		anchor[(U16)EAnchor::TOP_LEFT]		= DockBuilderSplitNode(anchor[(U16)EAnchor::TOP], ImGuiDir_Left);
+		anchor[(U16)EAnchor::TOP_RIGHT]		= DockBuilderSplitNode(anchor[(U16)EAnchor::TOP], ImGuiDir_Right);
+		anchor[(U16)EAnchor::TOP_TOP]		= DockBuilderSplitNode(anchor[(U16)EAnchor::TOP], ImGuiDir_Up);
+		anchor[(U16)EAnchor::TOP_BOTTOM]	= DockBuilderSplitNode(anchor[(U16)EAnchor::TOP], ImGuiDir_Down);
+
+		anchor[(U16)EAnchor::BOTTOM_LEFT]	= DockBuilderSplitNode(anchor[(U16)EAnchor::BOTTOM], ImGuiDir_Left);
+		anchor[(U16)EAnchor::BOTTOM_RIGHT]	= DockBuilderSplitNode(anchor[(U16)EAnchor::BOTTOM], ImGuiDir_Right);
+		anchor[(U16)EAnchor::BOTTOM_TOP]	= DockBuilderSplitNode(anchor[(U16)EAnchor::BOTTOM], ImGuiDir_Up);
+		anchor[(U16)EAnchor::BOTTOM_BOTTOM]	= DockBuilderSplitNode(anchor[(U16)EAnchor::BOTTOM], ImGuiDir_Down);
+
+		anchor[(U16)EAnchor::LEFT_LEFT]		= DockBuilderSplitNode(anchor[(U16)EAnchor::LEFT], ImGuiDir_Left);
+		anchor[(U16)EAnchor::LEFT_RIGHT]	= DockBuilderSplitNode(anchor[(U16)EAnchor::LEFT], ImGuiDir_Right);
+		anchor[(U16)EAnchor::LEFT_TOP]		= DockBuilderSplitNode(anchor[(U16)EAnchor::LEFT], ImGuiDir_Up);
+		anchor[(U16)EAnchor::LEFT_BOTTOM]	= DockBuilderSplitNode(anchor[(U16)EAnchor::LEFT], ImGuiDir_Down);
+
+		anchor[(U16)EAnchor::RIGHT_LEFT]	= DockBuilderSplitNode(anchor[(U16)EAnchor::RIGHT], ImGuiDir_Left);
+		anchor[(U16)EAnchor::RIGHT_RIGHT]	= DockBuilderSplitNode(anchor[(U16)EAnchor::RIGHT], ImGuiDir_Right);
+		anchor[(U16)EAnchor::RIGHT_TOP]		= DockBuilderSplitNode(anchor[(U16)EAnchor::RIGHT], ImGuiDir_Up);
+		anchor[(U16)EAnchor::RIGHT_BOTTOM]	= DockBuilderSplitNode(anchor[(U16)EAnchor::RIGHT], ImGuiDir_Down);
+
+		for (std::pair<std::unique_ptr<Widget::IWidget>, EAnchor>& dockWidget : m_widgets)
+		{
+			ImGui::DockBuilderDockWindow(dockWidget.first->GetName().c_str(), anchor[(U16)dockWidget.second]);
+		}
+
+		ImGui::DockBuilderFinish(dock_main_id);
+	}
+
+	void Canvas::BuildDockspace()
+	{
+		if (ImGui::Begin("## Dockspace", NULL, m_dockFlags))
+		{
+			const ImGuiID dockspace_id = ImGui::GetID("dockspace_id");
+			if (!ImGui::DockBuilderGetNode(dockspace_id))
+			{
+				ImGui::DockBuilderRemoveNode(dockspace_id);
+				ImGui::DockBuilderAddNode(dockspace_id, ImGuiDockNodeFlags_None);
+				ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetMainViewport()->Size);
+
+				ImGuiID dock_main_id = dockspace_id;
+				BuildDockWidgets(dock_main_id);
+			}
+			ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), ImGuiDockNodeFlags_PassthruCentralNode);
+			ImGui::End();
+		}
+	}
+
+	void Canvas::SetDockspace()
+	{
+		PushDockStyle();
+		{
+			SetViewport();
+			BuildDockspace();
+		}
+		PopDockStyle();
+	}
+
+	ImGuiID Canvas::DockBuilderSplitNode(ImGuiID& ID, ImGuiDir_ dir)
+	{
+		return ImGui::DockBuilderSplitNode(ID, dir, 0.3f, nullptr, &ID);
 	}
 }

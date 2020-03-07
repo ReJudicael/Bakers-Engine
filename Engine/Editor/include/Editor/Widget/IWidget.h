@@ -1,6 +1,7 @@
 #pragma once
 
 #include <imgui\imgui.h>
+#include <string>
 
 namespace Editor
 {
@@ -14,11 +15,14 @@ namespace Editor
 		 */
 		class IWidget
 		{
+		private:
+			static unsigned int _ID_WIDGET_INCREMENT;
+
 		protected:
 			/**
 			 * Title of widget
 			 */
-			const char* m_name;
+			std::string m_name;
 
 			/**
 			 * Whether the widget window is visible
@@ -35,7 +39,7 @@ namespace Editor
 			 * Constructor which set title of the widget window
 			 * @param name: Set title of window
 			 */
-			IWidget(const char* name);
+			IWidget(std::string name);
 
 			/**
 			 * Default destructor
@@ -46,7 +50,7 @@ namespace Editor
 			 * Get title of widget
 			 * @return Title of widget
 			 */
-			const char* GetName() const;
+			std::string GetName() const;
 
 			/**
 			 * Get whether the widget window is visible

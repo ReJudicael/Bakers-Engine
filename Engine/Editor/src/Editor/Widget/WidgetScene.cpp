@@ -2,13 +2,13 @@
 
 namespace Editor::Widget
 {
-	WidgetScene::WidgetScene(const char* name) :
-		IWidget(name)
+	WidgetScene::WidgetScene() :
+		IWidget("Scene")
 	{
 	}
 
 	void WidgetScene::Tick()
 	{
-		ImGui::Text(m_name);
+		ImGui::Text(m_name.c_str());
 	}
 }

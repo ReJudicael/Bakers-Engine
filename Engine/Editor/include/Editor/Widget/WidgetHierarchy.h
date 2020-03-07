@@ -11,10 +11,9 @@ namespace Editor::Widget
 	{
 	public:
 		/**
-		 * Constructor which set title of window
-		 * @param name: Title of window
+		 * Constructor which set title of window ("Hierarchy")
 		 */
-		WidgetHierarchy(const char* name);
+		WidgetHierarchy();
 
 		/**
 		 * Default destructor

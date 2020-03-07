@@ -15,7 +15,7 @@ namespace Editor
 	/**
 	 * UI Color scheme and appearence
 	 */
-	enum class GUIStyle : short int
+	enum class GUIStyle : unsigned short int
 	{
 		CLASSIC = 0,
 		DARK,

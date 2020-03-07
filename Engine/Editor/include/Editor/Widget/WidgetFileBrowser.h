@@ -12,10 +12,9 @@ namespace Editor::Widget
 	{
 	public:
 		/**
-		 * Constructor which set title of window
-		 * @param name: Title of window
+		 * Constructor which set title of window ("File Browser")
 		 */
-		WidgetFileBrowser(const char* name);
+		WidgetFileBrowser();
 
 		/**
 		 * Default destructor
