@@ -14,8 +14,31 @@ namespace Core::SystemManagement
 	 */
 	class FileSystem final
 	{
+	private:
+		std::string m_currentDirectory{ "." };
+
 	public:
-		std::string currentDirectory{ "." };
+		/**
+		 * Default constructor
+		 */
+		FileSystem() = default;
+
+		/**
+		 * Default destructor
+		 */
+		~FileSystem() = default;
+
+		/**
+		 * Get current directory
+		 * @return Current directory
+		 */
+		std::string GetCurrentDirectory() const noexcept;
+
+		/**
+		 * Set current directory
+		 * @param dir: Directory wanted
+		 */
+		void SetCurrentDirectory(const std::string& dir) noexcept;
 
 		/**
 		 * Check if the given path leads to a file
@@ -86,13 +109,6 @@ namespace Core::SystemManagement
 		 * @return Extension of the given file with a dot
 		 */
 		std::string GetExtension(const Path& path) const noexcept;
-
-		/**
-		 * Get the extension of the given file
-		 * @param path: Path to the file from which the extension is get
-		 * @return Extension of the given file without a dot
-		 */
-		std::string GetExtensionWithoutDot(const Path& path) const noexcept;
 
 		/**
 		 * Get the extension of the given file
@@ -197,6 +213,17 @@ namespace Core::SystemManagement
 		std::vector<Path> GetContentsInCurrentPath() const noexcept;
 	};
 
+	inline std::string FileSystem::GetCurrentDirectory() const noexcept
+	{
+		return m_currentDirectory;
+	}
+
+	inline void FileSystem::SetCurrentDirectory(const std::string& dir) noexcept
+	{
+		if (IsDirectory(dir))
+			m_currentDirectory = dir;
+	}
+
 	inline bool FileSystem::IsRegularFile(const Path& path) const noexcept
 	{
 		return std::filesystem::is_regular_file(path);
@@ -234,7 +261,7 @@ namespace Core::SystemManagement
 
 	inline std::string FileSystem::GetLocalAbsolute(const std::string& itemPath) const noexcept
 	{
-		return currentDirectory == "." ? itemPath : currentDirectory + '\\' + itemPath;
+		return m_currentDirectory == "." ? itemPath : m_currentDirectory + '\\' + itemPath;
 	}
 
 	inline std::string FileSystem::GetFilename(const Path& path) const noexcept
@@ -245,11 +272,6 @@ namespace Core::SystemManagement
 	inline std::string FileSystem::GetExtension(const Path& path) const noexcept
 	{
 		return path.extension().string();
-	}
-
-	inline std::string FileSystem::GetExtensionWithoutDot(const Path& path) const noexcept
-	{
-		return path.extension().string().erase(0, 1);
 	}
 
 	inline std::string FileSystem::GetExtensionWithoutDot_str(const std::string& itemPath) const noexcept
@@ -265,7 +287,7 @@ namespace Core::SystemManagement
 
 	inline std::string FileSystem::GetParentCurrentPath() const noexcept
 	{
-		return GetParentPath(currentDirectory);
+		return GetParentPath(m_currentDirectory);
 	}
 
 	inline std::vector<std::string> FileSystem::GetExplodedPath(const std::string& pathStr) const noexcept
@@ -275,19 +297,19 @@ namespace Core::SystemManagement
 
 	inline std::vector<std::string> FileSystem::GetExplodedCurrentPath() const noexcept
 	{
-		return GetExplodedPath(currentDirectory);
+		return GetExplodedPath(m_currentDirectory);
 	}
 
 	inline void FileSystem::CutCurrentPathAtPos(size_t pos) noexcept
 	{
-		currentDirectory = currentDirectory.substr(0, pos);
+		m_currentDirectory = m_currentDirectory.substr(0, pos);
 	}
 
 	inline bool FileSystem::OpenFolder(const std::string& itemPath) noexcept
 	{
 		if (IsDirectory(itemPath))
 		{
-			currentDirectory = (itemPath == "..") ? GetParentPath(currentDirectory) : itemPath;
+			m_currentDirectory = (itemPath == "..") ? GetParentPath(m_currentDirectory) : itemPath;
 			return true;
 		}
 		return false;
@@ -393,12 +415,12 @@ namespace Core::SystemManagement
 
 	inline void FileSystem::MoveCurrentToClosestDirectory() noexcept
 	{
-		while (!IsDirectory(currentDirectory))
+		while (!IsDirectory(m_currentDirectory))
 		{
 			// Try to repair path
-			size_t pos{ currentDirectory.rfind('\\') };
+			size_t pos{ m_currentDirectory.rfind('\\') };
 			if (pos == std::string::npos)
-				currentDirectory = ".";
+				m_currentDirectory = ".";
 
 			CutCurrentPathAtPos(pos);
 		}
@@ -425,6 +447,6 @@ namespace Core::SystemManagement
 
 	inline std::vector<Path> FileSystem::GetContentsInCurrentPath() const noexcept
 	{
-		return GetContentsInPath(currentDirectory);
+		return GetContentsInPath(m_currentDirectory);
 	}
 }

@@ -40,6 +40,16 @@ namespace Core
 
 		public:
 			/**
+			 * Default constructor
+			 */
+			EventSystem() = default;
+
+			/**
+			 * Default destructor
+			 */
+			~EventSystem() = default;
+
+			/**
 			 * Call each stored functions attached to its event
 			 * @param args: Arguments for the call (Variadic arguments)
 			 */
