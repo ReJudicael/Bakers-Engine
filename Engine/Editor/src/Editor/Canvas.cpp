@@ -39,11 +39,11 @@ namespace Editor
 					ImGuiID dock_id_right_down = ImGui::DockBuilderSplitNode(dock_id_right, ImGuiDir_Down, 0.6f, nullptr, &dock_id_right);
 					ImGuiID dock_id_down_right = ImGui::DockBuilderSplitNode(dock_id_bottom, ImGuiDir_Right, 0.6f, nullptr, &dock_id_bottom);
 
-					ImGui::DockBuilderDockWindow(W_SCENE, dock_main_id);
-					ImGui::DockBuilderDockWindow(W_HIERARCHY, dock_id_left);
-					ImGui::DockBuilderDockWindow(W_INSPECTOR, dock_id_right);
-					ImGui::DockBuilderDockWindow(W_FILEBROWSER, dock_id_bottom);
-					ImGui::DockBuilderDockWindow(W_CONSOLE, dock_id_bottom);
+					ImGui::DockBuilderDockWindow("Scene", dock_main_id);
+					ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left);
+					ImGui::DockBuilderDockWindow("Inspector", dock_id_right);
+					ImGui::DockBuilderDockWindow("File Browser", dock_id_bottom);
+					ImGui::DockBuilderDockWindow("Console", dock_id_bottom);
 					ImGui::DockBuilderFinish(dock_main_id);
 				}
 				ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), ImGuiDockNodeFlags_PassthruCentralNode);

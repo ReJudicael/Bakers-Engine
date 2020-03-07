@@ -7,6 +7,16 @@ namespace Editor::Widget
 	{
 	}
 
+	const char* IWidget::GetName() const
+	{
+		return m_name;
+	}
+
+	bool IWidget::IsVisible() const
+	{
+		return m_isVisible;
+	}
+
 	bool IWidget::Begin()
 	{
 		if (!m_isVisible)

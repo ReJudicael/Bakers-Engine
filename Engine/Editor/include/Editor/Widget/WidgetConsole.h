@@ -6,7 +6,7 @@ namespace Editor::Widget
 	/**
 	 * Widget Console
 	 */
-	class WidgetConsole : public IWidget
+	class WidgetConsole final : public IWidget
 	{
 	public:
 		/**

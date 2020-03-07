@@ -7,7 +7,7 @@ namespace Editor::Widget
 	/**
 	 * Widget Hierarchy
 	 */
-	class WidgetHierarchy : public IWidget
+	class WidgetHierarchy final : public IWidget
 	{
 	public:
 		/**

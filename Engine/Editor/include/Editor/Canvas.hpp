@@ -12,7 +12,7 @@ namespace Editor
 	/**
 	 * Container that holds widgets
 	 */
-	class Canvas
+	class Canvas final
 	{
 	private:
 		/**

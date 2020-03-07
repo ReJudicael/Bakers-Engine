@@ -7,12 +7,12 @@
 #include <imgui\imgui_impl_glfw.h>
 #include <imgui\imgui_impl_opengl3.h>
 
-/*
+/**
  * Contains the editor of the engine
  */
 namespace Editor
 {
-	/*
+	/**
 	 * UI Color scheme and appearence
 	 */
 	enum class GUIStyle : short int
@@ -23,13 +23,13 @@ namespace Editor
 		BAKER
 	};
 
-	/*
+	/**
 	 * Manager to handle UI creation, displaying and destruction
 	 */
-	class GUIManager
+	class GUIManager final
 	{
 	public:
-		/*
+		/**
 		 * Contains elements to display (Widgets) and set dockspace
 		 */
 		Canvas* m_canvas{ nullptr };
@@ -80,7 +80,7 @@ namespace Editor
 		void EndFrame();
 
 	public:
-		/*
+		/**
 		 * Draw UI
 		 */
 		void Render();

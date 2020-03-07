@@ -2,12 +2,6 @@
 
 #include <imgui\imgui.h>
 
-#define W_SCENE "Scene"
-#define W_HIERARCHY "Hierarchy"
-#define W_INSPECTOR "Inspector"
-#define W_FILEBROWSER "File Browser"
-#define W_CONSOLE "Console"
-
 namespace Editor
 {
 	/**
@@ -47,6 +41,18 @@ namespace Editor
 			 * Default destructor
 			 */
 			~IWidget() = default;
+
+			/**
+			 * Get title of widget
+			 * @return Title of widget
+			 */
+			const char* GetName() const;
+
+			/**
+			 * Get whether the widget window is visible
+			 * @return Whether the widget window is visible
+			 */
+			bool IsVisible() const;
 
 		private:
 			/**

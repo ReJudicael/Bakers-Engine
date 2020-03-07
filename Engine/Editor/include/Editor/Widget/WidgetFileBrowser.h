@@ -8,7 +8,7 @@ namespace Editor::Widget
 	/**
 	 * Widget File Browser
 	 */
-	class WidgetFileBrowser : public IWidget
+	class WidgetFileBrowser final : public IWidget
 	{
 	public:
 		/**

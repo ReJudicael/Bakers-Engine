@@ -7,7 +7,7 @@ namespace Editor::Widget
 	/**
 	 * Widget Scene
 	 */
-	class WidgetScene : public IWidget
+	class WidgetScene final : public IWidget
 	{
 	public:
 		/**

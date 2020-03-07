@@ -7,7 +7,7 @@ namespace Editor::Widget
 	/**
 	 * Widget Inspector
 	 */
-	class WidgetInspector : public IWidget
+	class WidgetInspector final : public IWidget
 	{
 	public:
 		/**
