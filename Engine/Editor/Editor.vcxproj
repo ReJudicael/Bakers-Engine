@@ -163,13 +163,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\glad-4.6\src\glad.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c" />
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui.cpp" />
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Editor\Canvas.cpp" />
     <ClCompile Include="src\Editor\GUIManager.cpp" />
     <ClCompile Include="src\Editor\Widget\IWidget.cpp" />

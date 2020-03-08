@@ -40,17 +40,22 @@ int main()
     // Our state
     bool show_demo_window = true;
 
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.6f, 1.f);
 
     Editor::GUIManager* man = new Editor::GUIManager(window, glsl_version, Editor::GUIStyle::DARK);
 
     Editor::Canvas* canvas= new Editor::Canvas();
-    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>("File Browser");
-    canvas->AddWidget<Editor::Widget::WidgetConsole>("Console");
-    canvas->AddWidget<Editor::Widget::WidgetInspector>("Inspector");
-    canvas->AddWidget<Editor::Widget::WidgetScene>("Scene");
-    canvas->AddWidget<Editor::Widget::WidgetHierarchy>("Hierarchy");
     man->SetCanvas(canvas);
+    std::string ID = canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::BOTTOM);
+    std::string ID2 = canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::RIGHT_LEFT);
+    canvas->AddWidget<Editor::Widget::WidgetScene>(Editor::EAnchor::MIDDLE);
+    canvas->AddWidget<Editor::Widget::WidgetConsole>(Editor::EAnchor::BOTTOM);
+    canvas->AddWidget<Editor::Widget::WidgetInspector>(Editor::EAnchor::RIGHT);
+    canvas->AddWidget<Editor::Widget::WidgetInspector>(Editor::EAnchor::LEFT_BOTTOM);
+    canvas->AddWidget<Editor::Widget::WidgetHierarchy>(Editor::EAnchor::LEFT);
+
+    canvas->RemoveWidget(ID);
+    canvas->RemoveWidget(ID2);
 
     // Main loop
     while (!glfwWindowShouldClose(window))

@@ -7,14 +7,13 @@ namespace Editor::Widget
 	/**
 	 * Widget Scene
 	 */
-	class WidgetScene : public IWidget
+	class WidgetScene final : public IWidget
 	{
 	public:
 		/**
-		 * Constructor which set title of window
-		 * @param name: Title of window
+		 * Constructor which set title of window ("Scene")
 		 */
-		WidgetScene(const char* name);
+		WidgetScene();
 
 		/**
 		 * Default destructor

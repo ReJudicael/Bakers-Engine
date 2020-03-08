@@ -7,14 +7,13 @@ namespace Editor::Widget
 	/**
 	 * Widget Inspector
 	 */
-	class WidgetInspector : public IWidget
+	class WidgetInspector final : public IWidget
 	{
 	public:
 		/**
-		 * Constructor which set title of window
-		 * @param name: Title of window
+		 * Constructor which set title of window ("Inspector")
 		 */
-		WidgetInspector(const char* name);
+		WidgetInspector();
 
 		/**
 		 * Default destructor

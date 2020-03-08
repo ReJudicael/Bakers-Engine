@@ -2,13 +2,13 @@
 
 namespace Editor::Widget
 {
-	WidgetHierarchy::WidgetHierarchy(const char* name) :
-		IWidget(name)
+	WidgetHierarchy::WidgetHierarchy() :
+		IWidget("Hierarchy")
 	{
 	}
 
 	void WidgetHierarchy::Tick()
 	{
-		ImGui::Text(m_name);
+		ImGui::Text(m_name.c_str());
 	}
 }

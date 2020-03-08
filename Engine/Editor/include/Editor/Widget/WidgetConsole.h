@@ -6,14 +6,13 @@ namespace Editor::Widget
 	/**
 	 * Widget Console
 	 */
-	class WidgetConsole : public IWidget
+	class WidgetConsole final : public IWidget
 	{
 	public:
 		/**
-		 * Constructor which set title of window
-		 * @param name: Title of window
+		 * Constructor which set title of window ("Console")
 		 */
-		WidgetConsole(const char* name);
+		WidgetConsole();
 
 		/**
 		 * Default destructor

@@ -30,27 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\glad-4.6\src\glad.c">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_demo.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_draw.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_impl_glfw.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_impl_opengl3.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\charl\Documents\New\Engine_Editor\Engine_Editor\Dependencies\imgui-1.75\src\imgui\imgui_widgets.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -77,6 +56,27 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Widget\WidgetScene.cpp">
       <Filter>Source Files\Editor\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui.cpp">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_demo.cpp">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_draw.cpp">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_glfw.cpp">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_widgets.cpp">
+      <Filter>Internal Dependencies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

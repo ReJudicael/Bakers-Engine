@@ -7,14 +7,13 @@ namespace Editor::Widget
 	/**
 	 * Widget Hierarchy
 	 */
-	class WidgetHierarchy : public IWidget
+	class WidgetHierarchy final : public IWidget
 	{
 	public:
 		/**
-		 * Constructor which set title of window
-		 * @param name: Title of window
+		 * Constructor which set title of window ("Hierarchy")
 		 */
-		WidgetHierarchy(const char* name);
+		WidgetHierarchy();
 
 		/**
 		 * Default destructor

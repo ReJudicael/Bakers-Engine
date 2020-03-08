@@ -1,12 +1,7 @@
 #pragma once
 
 #include <imgui\imgui.h>
-
-#define W_SCENE "Scene"
-#define W_HIERARCHY "Hierarchy"
-#define W_INSPECTOR "Inspector"
-#define W_FILEBROWSER "File Browser"
-#define W_CONSOLE "Console"
+#include <string>
 
 namespace Editor
 {
@@ -20,11 +15,17 @@ namespace Editor
 		 */
 		class IWidget
 		{
+		private:
+			/**
+			 * ID of widget (incremented when a widget has been instantiated)
+			 */
+			static unsigned int _ID_WIDGET_INCREMENT;
+
 		protected:
 			/**
 			 * Title of widget
 			 */
-			const char* m_name;
+			std::string m_name;
 
 			/**
 			 * Whether the widget window is visible
@@ -41,12 +42,24 @@ namespace Editor
 			 * Constructor which set title of the widget window
 			 * @param name: Set title of window
 			 */
-			IWidget(const char* name);
+			IWidget(std::string name);
 
 			/**
 			 * Default destructor
 			 */
 			~IWidget() = default;
+
+			/**
+			 * Get title of widget
+			 * @return Title of widget
+			 */
+			std::string GetName() const;
+
+			/**
+			 * Get whether the widget window is visible
+			 * @return True if the widget window is visible, false otherwise
+			 */
+			bool IsVisible() const;
 
 		private:
 			/**

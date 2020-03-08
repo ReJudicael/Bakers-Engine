@@ -2,13 +2,13 @@
 
 namespace Editor::Widget
 {
-	WidgetFileBrowser::WidgetFileBrowser(const char* name) :
-		IWidget(name)
+	WidgetFileBrowser::WidgetFileBrowser() :
+		IWidget("File Browser")
 	{
 	}
 
 	void WidgetFileBrowser::Tick()
 	{
-		ImGui::Text(m_name);
+		ImGui::Text(m_name.c_str());
 	}
 }
