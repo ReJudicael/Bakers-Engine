@@ -89,8 +89,6 @@ namespace Resources::Loader
 
 		std::string directoryFile;
 		directoryFile = Name.substr(0, index + 1);
-
-		CreateScene(scene, rootObject);
 	}
 
 	bool ResourcesManager::LoadAssimpScene(const char* fileName,
@@ -106,7 +104,6 @@ namespace Resources::Loader
 											/*| aiProcess_PreTransformVertices*/
 											| aiProcess_ValidateDataStructure 
 											/*| aiProcess_FindDegenerates*/);
-		//const aiScene* scene = aiImportFile(fileName, aiProcessPreset_TargetRealtime_Quality);
 		if (!scene)
 		{
 			// std::cout "could not load file" << std::endl;
@@ -134,37 +131,6 @@ namespace Resources::Loader
 		aiReleaseImport(scene);
 
 		return true;
-	}
-
-	void ResourcesManager::CreateScene(std::shared_ptr<SceneData> scene, Core::Datastructure::Object* rootObject)
-	{
-		RecurciveCreateScene(scene->rootNodeScene, rootObject);
-	}
-
-	void ResourcesManager::RecurciveCreateScene(const Node& node, Core::Datastructure::Object* Object)
-	{
-		if (node.nameMesh.find("nothing") == std::string::npos)
-		{
-			Mesh* mesh = { new Mesh() };
-
-			if (m_models.count(node.nameMesh) > 0)
-			{
-				mesh->AddModel(m_models[node.nameMesh]);
-				mesh->m_program = m_shaders["Default"];
-				Object->AddComponent(mesh);
-			}
-		}
-
-		Object->SetScale(node.scale);
-		//Object->SetScale({0,0,0});
-		Object->SetPos(node.position);
-		Object->SetRot(node.rotation);
-
-		for (auto i{ 0 }; i < node.children.size(); i++)
-		{
-			Core::Datastructure::Object* childObject{ Object->CreateChild({}) };
-			RecurciveCreateScene(node.children[i], childObject);
-		}
 	}
 
 	void ResourcesManager::LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject, const bool newObjectChild)
@@ -253,12 +219,14 @@ namespace Resources::Loader
 			modelData->LoadVertices(mesh);
 			modelData->LoadIndices(mesh);
 
-			//modelData->materialsModel.resize(modelData->offsetsMesh.size());
-			modelData->materialsModel.resize(modelData->offsetsMesh.size());
-			//modelData->materialsModel[modelData->offsetsMesh.size() - 1] = std::make_shared<Material>();
-			modelData->materialsModel[0] = std::make_shared<Material>();
-			modelData->materialsModel[0]->LoadaiSceneMaterial(scene, mesh->mMaterialIndex, directory, *this, tmpint);
-
+			if (scene->HasMaterials())
+			{
+				modelData->materialsModel.resize(modelData->offsetsMesh.size());
+				//modelData->materialsModel[modelData->offsetsMesh.size() - 1] = std::make_shared<Material>();
+				//modelData->materialsModel[0];
+				//modelData->materialsModel[0]->LoadaiSceneMaterial(scene, mesh->mMaterialIndex, directory, *this, tmpint);
+				LoadMeshMaterial(scene, mesh, modelData->materialsModel[0], directory, tmpint);
+			}
 			modelData->stateVAO = EOpenGLLinkState::CANLINK;
 		}
 	}
@@ -288,27 +256,22 @@ namespace Resources::Loader
 			modelData->LoadIndices(mesh, indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
-
-			modelData->materialsModel[i] = std::make_shared<Material>();
-			modelData->materialsModel[i]->LoadaiSceneMaterial(scene, mesh->mMaterialIndex, directory, *this);
-			//LoadMaterialResourcesIRenderable(scene, mesh, modelData->materialsModel[i], directory);
+			if (scene->HasMaterials())
+			{
+				//modelData->materialsModel[i]->LoadaiSceneMaterial(scene, mesh->mMaterialIndex, directory, *this);
+				LoadMeshMaterial(scene, mesh, modelData->materialsModel[i], directory);
+			}
 		}
 		modelData->stateVAO = EOpenGLLinkState::CANLINK;
 	}
 
-	void ResourcesManager::LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, 
+	void ResourcesManager::LoadMeshMaterial(const aiScene* scene, aiMesh* mesh,
 								std::shared_ptr<Material>& materialOut, const std::string& directory, const int meshNameCall)
-	{
-		if (!scene->HasMaterials())
-		{
-			// std::cout "no Material " << std::endl;
-			return;
-		}
-		std::vector<unsigned int> vec;
-		
+	{	
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 		Material material;
 		std::string keyMaterial;
+
 		if (meshNameCall > 0)
 			keyMaterial = directory + mat->GetName().data + std::to_string(meshNameCall);
 		else
@@ -316,31 +279,28 @@ namespace Resources::Loader
 
 		if (m_materials.count(keyMaterial) > 0)
 		{
-			// std::cout "already know : "<< keyMaterial << std::endl;
 			materialOut = m_materials[keyMaterial];
 			return;
 		}
+
+		materialOut = std::make_shared<Material>();
+
 		m_materials.emplace(keyMaterial, materialOut);
 
-		materialOut->textures.resize(2);
+		materialOut->LoadMaterialFromaiMaterial(mat, directory, *this);
 
-		materialOut->textures[0] = std::make_shared<Texture>();
-		materialOut->textures[1] = std::make_shared<Texture>();
-		// std::cout "new Material " << keyMaterial << std::endl;
-		//LoadTextureMaterial(mat, materialOut->textures[0], aiTextureType_DIFFUSE, directory);
-		//LoadTextureMaterial(mat, materialOut->textures[1], aiTextureType_NORMALS, directory);
+	}
 
-		// maybe load a normalMap
+	void ResourcesManager::LoadTexture(const std::string& keyName, std::shared_ptr<Texture>& texture)
+	{
+		if (m_textures.count(keyName) > 0)
+		{
+			texture = m_textures[keyName];
+			return;
+		}
+		texture = std::make_shared<Texture>();
 
-		aiColor3D color;
-		mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-		materialOut->diffuseColor = { color.r, color.g, color.b };
-		mat->Get(AI_MATKEY_COLOR_AMBIENT, color);
-		materialOut->ambientColor = { color.r, color.g, color.b };
-		mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
-		materialOut->specularColor = { color.r, color.g, color.b };
-		materialOut->materialColor = { 1.0f, 1.0f, 1.0f };
-
+		texture->LoadTexture(keyName, *this);
 	}
 
 	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)

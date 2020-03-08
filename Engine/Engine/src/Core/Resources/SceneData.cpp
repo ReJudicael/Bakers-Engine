@@ -1,5 +1,7 @@
 #include "Assimp/scene.h"
 #include "SceneData.h"
+#include "LoadResources.h"
+#include "Object.hpp"
 
 namespace Resources
 {
@@ -46,5 +48,37 @@ namespace Resources
 		{
 			children[i].RecursiveSceneLoad(scene, node->mChildren[i - numCurrentChildren], directory);
 		}
+	}
+
+	void Node::CreateObjectScene(Core::Datastructure::Object* Object, Loader::ResourcesManager& resources)
+	{
+		if (nameMesh.find("nothing") == std::string::npos)
+		{
+			Mesh* mesh = { new Mesh() };
+
+			if (resources.GetCountModel(nameMesh) > 0)
+			{
+				mesh->AddModel(resources.GetModel(nameMesh));
+				mesh->m_program = resources.GetShader("Default");
+				Object->AddComponent(mesh);
+			}
+		}
+
+		Object->SetScale(scale);
+		Object->SetPos(position);
+		Object->SetRot(rotation);
+
+		for (auto i{ 0 }; i < children.size(); i++)
+		{
+			Core::Datastructure::Object* childObject{ Object->CreateChild({}) };
+			children[i].CreateObjectScene(childObject, resources);
+		}
+	}
+
+	void SceneData::CreateScene(const std::string& keyName, Loader::ResourcesManager& resources, Core::Datastructure::Object* rootObject)
+	{
+		std::shared_ptr<SceneData> scene = resources.GetScene(keyName);
+
+		scene->rootNodeScene.CreateObjectScene(rootObject, resources);
 	}
 }

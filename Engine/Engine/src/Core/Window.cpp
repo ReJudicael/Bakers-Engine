@@ -86,6 +86,8 @@ void	Window::Update()
 		//manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
 		manager.LoadResourcesIRenderable("Resources/level.fbx", o);
 
+		Resources::SceneData::CreateScene("Resources/level.fbx", manager, o);
+
 		o->SetScale({ 0.1,0.1,0.1 });
 	}
 	INIT_TRACY_GL_IMAGE(320, 180)

@@ -30,6 +30,7 @@ namespace Resources
 	{
 		class ResourcesManager
 		{
+
 		private:
 			std::unordered_map<std::string, std::shared_ptr<GLuint>>			m_shaders;
 			std::unordered_map<std::string, std::shared_ptr<Texture>>			m_textures;
@@ -59,7 +60,7 @@ namespace Resources
 
 			inline std::shared_ptr<Texture> GetTexture(std::string path)
 			{
-				return m_textures[path];
+				return m_textures[path]->getPtr();
 			}
 
 			inline int GetCountMaterials(const std::string& str) const
@@ -77,6 +78,25 @@ namespace Resources
 				return m_materials[path];
 			}
 
+			inline int GetCountModel(const std::string& str) const
+			{
+				return m_models.count(str);
+			}
+
+			inline std::shared_ptr<Model> GetModel(std::string path)
+			{
+				return m_models[path];
+			}
+
+			inline std::shared_ptr<GLuint> GetShader(std::string path)
+			{
+				return m_shaders[path];
+			}
+
+			inline std::shared_ptr<SceneData> GetScene(const std::string& path)
+			{
+				return m_scenes[path];
+			}
 
 			inline void PushTextureToLink(std::shared_ptr<TextureData> textureData)
 			{
@@ -89,9 +109,6 @@ namespace Resources
 			bool LoadAssimpScene(const char* fileName,
 				Core::Datastructure::Object* rootComponent);
 
-			void CreateScene(std::shared_ptr<SceneData> scene, Core::Datastructure::Object* rootObject);
-			void RecurciveCreateScene(const Node& scene, Core::Datastructure::Object* rootObject);
-
 			void LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject,
 				const bool newObjectChild);
 
@@ -101,8 +118,10 @@ namespace Resources
 			void LoadSingleMeshResourcesIRenderable(const aiScene* scene, const std::string& fileName,
 				const std::string& directory);
 
-			void LoadMaterialResourcesIRenderable(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material>& material,
+			void LoadMeshMaterial(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material>& material,
 				const std::string& directory, const int meshNameCall = 0);
+
+			void LoadTexture(const std::string& keyName, std::shared_ptr<Texture>& texture);
 
 			void LoadSceneResources(const aiScene* scene, const std::string& fileNameconst, const std::string& directory);
 

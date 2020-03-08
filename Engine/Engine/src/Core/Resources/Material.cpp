@@ -14,11 +14,8 @@ namespace Resources
 	{
 		textures.resize(2);
 
-		textures[0] = std::make_shared<Texture>();
-		textures[1] = std::make_shared<Texture>();
-
 		LoadTextureMaterial(mat, textures[0], aiTextureType_DIFFUSE, directory, resources);
-		LoadTextureMaterial(mat, textures[1], aiTextureType_NORMALS, directory, resources);
+		LoadTextureMaterial(mat, textures[textures.size()- 1], aiTextureType_NORMALS, directory, resources);
 
 		// maybe load a normalMap
 
@@ -41,36 +38,19 @@ namespace Resources
 			if (mat->GetTexture(textureType, 0, &path) == AI_SUCCESS)
 			{
 				std::string fullPath = directory + path.data;
-				std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
-
-				// std::cout "texture here " << fullPath << std::endl;
-				textureData->nameTexture = fullPath;
-
-				if (resources.GetCountTextures(fullPath) > 0)
-				{
-					// std::cout "already know textures : " << std::endl;
-					texture = resources.GetTexture(fullPath);
-				}
-				else
-				{
-					resources.PushTextureToLink(textureData);
-					textureData->textureptr = texture;
-					textureData->CreateTextureFromImage(fullPath.c_str(), resources);
-
-					resources.EmplaceTextures(fullPath, texture);
-				}
+				resources.LoadTexture(fullPath, texture);
 			}
 		}
+		else
+		{
+			textures.resize(textures.size() - 1);
+		}
+
 	}
 
 	void Material::LoadaiSceneMaterial(const aiScene* scene, const unsigned int& mMaterialIndex, const std::string& directory,
 		Loader::ResourcesManager& resources, const int meshNameCall)
 	{
-		if (!scene->HasMaterials())
-		{
-			// std::cout "no Material " << std::endl;
-			return;
-		}
 		std::vector<unsigned int> vec;
 
 		aiMaterial* mat = scene->mMaterials[mMaterialIndex];

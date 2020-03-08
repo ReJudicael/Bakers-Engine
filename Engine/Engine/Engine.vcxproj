@@ -305,6 +305,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClCompile Include="src\Core\Resources\ModelData.cpp" />
     <ClCompile Include="src\Core\Resources\SceneData.cpp" />
     <ClCompile Include="src\Core\Resources\Shader.cpp" />
+    <ClCompile Include="src\Core\Resources\Texture.cpp" />
     <ClCompile Include="src\Core\Resources\TextureData.cpp" />
     <ClCompile Include="src\Core\SystemManagement\InputSystem.cpp" />
     <ClCompile Include="src\Core\Window.cpp" />
