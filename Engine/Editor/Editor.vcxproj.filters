@@ -104,5 +104,14 @@
     <ClInclude Include="include\Editor\GUIManager.h">
       <Filter>Header Files\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="include\Editor\StringExtension.hpp">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\FileSystem.hpp">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IRenderable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

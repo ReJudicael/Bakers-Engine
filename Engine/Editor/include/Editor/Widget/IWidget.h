@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IRenderable.h"
 #include <imgui\imgui.h>
 #include <string>
 
@@ -13,7 +14,7 @@ namespace Editor
 		/**
 		 * Interface component enabling features for the user
 		 */
-		class IWidget
+		class IWidget : public IDrawable
 		{
 		private:
 			/**
@@ -23,7 +24,12 @@ namespace Editor
 
 		protected:
 			/**
-			 * Title of widget
+			 * Name ID of widget (Widget Name##0)
+			 */
+			std::string m_nameID;
+
+			/**
+			 * Name of widget without ID (Widget Name)
 			 */
 			std::string m_name;
 
@@ -50,8 +56,14 @@ namespace Editor
 			~IWidget() = default;
 
 			/**
-			 * Get title of widget
-			 * @return Title of widget
+			 * Get name ID of widget
+			 * @return Name ID of widget
+			 */
+			std::string GetNameID() const;
+
+			/**
+			 * Get name of widget
+			 * @return Name of widget
 			 */
 			std::string GetName() const;
 
@@ -60,6 +72,12 @@ namespace Editor
 			 * @return True if the widget window is visible, false otherwise
 			 */
 			bool IsVisible() const;
+
+			/**
+			 * Set visiblity of the widget window
+			 * @param state: New widget window visibility state
+			 */
+			void SetVisible(bool state = true);
 
 		private:
 			/**
@@ -73,16 +91,17 @@ namespace Editor
 			 */
 			void End();
 
-		public:
+		protected:
 			/**
 			 * Display elements of widget in window
 			 */
 			virtual void Tick() = 0;
 
+		public:
 			/**
 			 * Display window and widget
 			 */
-			void Draw();
+			void Draw() override;
 		};
 	}
 }

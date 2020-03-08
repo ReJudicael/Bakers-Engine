@@ -46,16 +46,13 @@ int main()
 
     Editor::Canvas* canvas= new Editor::Canvas();
     man->SetCanvas(canvas);
-    std::string ID = canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::BOTTOM);
-    std::string ID2 = canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::RIGHT_LEFT);
     canvas->AddWidget<Editor::Widget::WidgetScene>(Editor::EAnchor::MIDDLE);
     canvas->AddWidget<Editor::Widget::WidgetConsole>(Editor::EAnchor::BOTTOM);
     canvas->AddWidget<Editor::Widget::WidgetInspector>(Editor::EAnchor::RIGHT);
     canvas->AddWidget<Editor::Widget::WidgetInspector>(Editor::EAnchor::LEFT_BOTTOM);
     canvas->AddWidget<Editor::Widget::WidgetHierarchy>(Editor::EAnchor::LEFT);
-
-    canvas->RemoveWidget(ID);
-    canvas->RemoveWidget(ID2);
+    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::BOTTOM);
+    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::TOP);
 
     // Main loop
     while (!glfwWindowShouldClose(window))

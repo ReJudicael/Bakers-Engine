@@ -51,7 +51,7 @@ namespace Editor
 	/**
 	 * Container that holds widgets
 	 */
-	class Canvas final
+	class Canvas final : public IDrawable
 	{
 	private:
 		/**
@@ -79,16 +79,16 @@ namespace Editor
 		 * Add widget to canvas
 		 * @tparam T: Specific Widget class
 		 * @tparam args: Arguments of constructor of given Widget class
-		 * @return Name of widget added
+		 * @return NameID of widget added
 		 */
 		template<class T>
 		std::string AddWidget(EAnchor anchor);
 
 		/**
 		 * Remove widget in canvas
-		 * @param name: Name of widget to remove
+		 * @param name: NameID of widget to remove
 		 */
-		void RemoveWidget(std::string name);
+		void RemoveWidget(std::string nameID);
 
 		/**
 		 * Remove all widgets
@@ -127,11 +127,17 @@ namespace Editor
 		 */
 		void SetDockspace();
 
+		/**
+		 * Set Menu bar
+		 */
+		// TODO: Class Menu Bar
+		void SetMenuBar();
+
 	public:
 		/**
 		 * Display docked widgets in canvas
 		 */
-		void Draw();
+		void Draw() override;
 
 	private:
 		/**
@@ -149,7 +155,7 @@ namespace Editor
 		static_assert(std::is_base_of<Widget::IWidget, T>::value);
 
 		std::unique_ptr<Widget::IWidget> widget = std::make_unique<T>();
-		const std::string nameWidget = widget->GetName();
+		const std::string nameWidget = widget->GetNameID();
 		m_widgets.emplace_back(std::make_pair(std::move(widget), anchor));
 		return nameWidget;
 	}
