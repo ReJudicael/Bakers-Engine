@@ -7,6 +7,7 @@
 #include "OpenGLLinkState.h"
 #include "Model.h"
 #include "Texture.h"
+#include "LoadResources.h"
 
 Mesh::Mesh() : ComponentBase()
 {
@@ -96,7 +97,7 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
 		
-		Resources::Material material = *m_model->materialsModel[currOffsetMesh.materialIndices];
+		Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
 
 		// check if the material have a texture
 		if (material.textures.size() > 0)
@@ -109,7 +110,7 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 				glBindTexture(GL_TEXTURE_2D, material.textures[0]->texture);
 			}
 			// check if the texture2 link to OpenGL
-			if (material.textures[1]->stateTexture ==
+			if (material.textures.size() > 2 && material.textures[1]->stateTexture ==
 				Resources::EOpenGLLinkState::ISLINK)
 			{
 				glActiveTexture(GL_TEXTURE1);
@@ -137,4 +138,13 @@ Core::Maths::Mat4 Mesh::projectionMatrix(float FovY, float Aspect, float Near, f
 		0.f, 0.f, -(Far * Near * 2.f) / (Far - Near), 0.f
 		};
 	return Core::Maths::Mat4(f);
+}
+
+void Mesh::AddMaterials(Resources::Loader::ResourcesManager resources, const std::vector<std::string>& namesMaterial)
+{
+	for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
+	{
+		m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
+		std::cout << "coucou" << std::endl;
+	}
 }

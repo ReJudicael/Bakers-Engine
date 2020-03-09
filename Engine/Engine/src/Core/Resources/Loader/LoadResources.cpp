@@ -221,11 +221,7 @@ namespace Resources::Loader
 
 			if (scene->HasMaterials())
 			{
-				modelData->materialsModel.resize(modelData->offsetsMesh.size());
-				//modelData->materialsModel[modelData->offsetsMesh.size() - 1] = std::make_shared<Material>();
-				//modelData->materialsModel[0];
-				//modelData->materialsModel[0]->LoadaiSceneMaterial(scene, mesh->mMaterialIndex, directory, *this, tmpint);
-				LoadMeshMaterial(scene, mesh, modelData->materialsModel[0], directory, tmpint);
+				LoadMeshMaterial(scene, mesh, directory, tmpint);
 			}
 			modelData->stateVAO = EOpenGLLinkState::CANLINK;
 		}
@@ -242,7 +238,6 @@ namespace Resources::Loader
 
 		unsigned int indexLastMesh{ 0 };
 
-		modelData->materialsModel.resize(scene->mNumMeshes);
 		modelData->model = model;
 		m_models.emplace(directory + scene->mMeshes[0]->mName.data, model);
 		m_modelsToLink.push_back(modelData);
@@ -258,15 +253,13 @@ namespace Resources::Loader
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
 			{
-				//modelData->materialsModel[i]->LoadaiSceneMaterial(scene, mesh->mMaterialIndex, directory, *this);
-				LoadMeshMaterial(scene, mesh, modelData->materialsModel[i], directory);
+				LoadMeshMaterial(scene, mesh, directory);
 			}
 		}
 		modelData->stateVAO = EOpenGLLinkState::CANLINK;
 	}
 
-	void ResourcesManager::LoadMeshMaterial(const aiScene* scene, aiMesh* mesh,
-								std::shared_ptr<Material>& materialOut, const std::string& directory, const int meshNameCall)
+	void ResourcesManager::LoadMeshMaterial(const aiScene* scene, aiMesh* mesh, const std::string& directory, const int meshNameCall)
 	{	
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 		Material material;
@@ -279,11 +272,11 @@ namespace Resources::Loader
 
 		if (m_materials.count(keyMaterial) > 0)
 		{
-			materialOut = m_materials[keyMaterial];
+			//materialOut = m_materials[keyMaterial];
 			return;
 		}
 
-		materialOut = std::make_shared<Material>();
+		std::shared_ptr<Material> materialOut = std::make_shared<Material>();
 
 		m_materials.emplace(keyMaterial, materialOut);
 
@@ -308,8 +301,15 @@ namespace Resources::Loader
 		std::shared_ptr<SceneData> sceneData = std::make_shared<SceneData>();
 
 		aiNode* rootNode = scene->mRootNode;
-
-		sceneData->rootNodeScene.RecursiveSceneLoad(scene, rootNode, directory);
+		if (fileName.find(".obj") != std::string::npos)
+		{
+			//sceneData->rootNodeScene.RecursiveSceneLoad(scene, rootNode, directory);
+			sceneData->SceneLoad(scene, rootNode, directory, true);
+		}
+		else
+		{
+			sceneData->SceneLoad(scene, rootNode, directory, false);
+		}
 
 		m_scenes.emplace(fileName, sceneData);
 	}

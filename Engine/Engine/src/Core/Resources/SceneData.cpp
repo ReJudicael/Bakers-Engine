@@ -11,11 +11,13 @@ namespace Resources
 		aiVector3D rot;
 		aiVector3D sca;
 
+		aiMaterial* mat;
+
 		if (node->mNumMeshes > 0)
 		{
 			nameMesh = directory + scene->mMeshes[node->mMeshes[0]]->mName.data;
-			// std::cout "\t \t \t new Node  " << nameMesh << std::endl;
-
+			mat = scene->mMaterials[scene->mMeshes[node->mMeshes[0]]->mMaterialIndex];
+			namesMaterial.push_back(directory + mat->GetName().data);
 
 			for (int i{ 1 }; i < node->mNumMeshes; i++)
 			{
@@ -24,8 +26,10 @@ namespace Resources
 				child.rotation = { 0.0f,  0.0f,  0.0f };
 				child.scale = { 1.f, 1.f, 1.f };
 				child.nameMesh = directory + scene->mMeshes[node->mMeshes[i]]->mName.data + std::to_string(i);
+				mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
+				child.namesMaterial.push_back(directory + mat->GetName().data + std::to_string(i));
 				children.push_back(child);
-				// std::cout "num Mesh in the scene " << scene->mMeshes[node->mMeshes[i]]->mName.data << std::endl;
+				//std::cout << "num Mesh in the scene " << scene->mMeshes[node->mMeshes[i]]->mName.data << " curr name Mesh   " << nameMesh << std::endl;
 			}
 		}
 		else
@@ -59,6 +63,7 @@ namespace Resources
 			if (resources.GetCountModel(nameMesh) > 0)
 			{
 				mesh->AddModel(resources.GetModel(nameMesh));
+				mesh->AddMaterials(resources, namesMaterial);
 				mesh->m_program = resources.GetShader("Default");
 				Object->AddComponent(mesh);
 			}
@@ -75,8 +80,46 @@ namespace Resources
 		}
 	}
 
+	void Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory)
+	{
+		aiVector3D pos;
+		aiVector3D rot;
+		aiVector3D sca;
+
+		node->mTransformation.Decompose(sca, rot, pos);
+
+		position = { pos.x, pos.y, pos.z };
+		rotation = { rot.x, rot.y, rot.z };
+		scale = { sca.x, sca.y, sca.z };
+
+		const aiNode* currNode = currNode = node->mChildren[0];
+		aiMaterial* mat;
+
+		nameMesh = nameMesh = directory + scene->mMeshes[currNode->mMeshes[0]]->mName.data;
+
+		for (int i{ 0 }; i < currNode->mNumMeshes; i++)
+		{
+			mat = scene->mMaterials[scene->mMeshes[currNode->mMeshes[i]]->mMaterialIndex];
+			namesMaterial.push_back(directory + mat->GetName().data);
+		}
+
+	}
+
+	void SceneData::SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSingleMesh)
+	{
+		singleMesh = isSingleMesh;
+
+		if (singleMesh)
+			rootNodeScene.SingleMeshSceneLoad(scene, node, directory);
+		else
+			rootNodeScene.RecursiveSceneLoad(scene, node, directory);
+	}
+
 	void SceneData::CreateScene(const std::string& keyName, Loader::ResourcesManager& resources, Core::Datastructure::Object* rootObject)
 	{
+
+		if (resources.GetCountScene(keyName) <= 0)
+			return;
 		std::shared_ptr<SceneData> scene = resources.GetScene(keyName);
 
 		scene->rootNodeScene.CreateObjectScene(rootObject, resources);

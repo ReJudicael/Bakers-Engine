@@ -17,12 +17,20 @@
 namespace Resources
 {
 	struct Model;
+	struct Material;
+	namespace Loader
+	{
+		class ResourcesManager;
+	}
+
 }
 
 class Mesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
 {
 protected:
 	std::shared_ptr<Resources::Model> m_model;
+
+	std::vector<std::shared_ptr<Resources::Material>> m_materialsModel;
 public:
 
 	int		m_vertexCount = 0;
@@ -54,5 +62,6 @@ public:
 	{
 		m_model = model;
 	}
+	void AddMaterials(Resources::Loader::ResourcesManager resources, const std::vector<std::string>& namesMaterial);
 };
 

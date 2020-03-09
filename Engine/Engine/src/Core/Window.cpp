@@ -83,10 +83,13 @@ void	Window::Update()
 
 		Core::Datastructure::Object* o{ m_root->CreateChild({}) };
 
-		//manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
-		manager.LoadResourcesIRenderable("Resources/level.fbx", o);
+		manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
+		//manager.LoadResourcesIRenderable("Resources/Dog/12228_Dog_v1_L2.obj", o);
+		//manager.LoadResourcesIRenderable("Resources/level.fbx", o);
 
-		Resources::SceneData::CreateScene("Resources/level.fbx", manager, o);
+		//Resources::SceneData::CreateScene("Resources/level.fbx", manager, o);
+		Resources::SceneData::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", manager, o);
+		//Resources::SceneData::CreateScene("Resources/Dog/12228_Dog_v1_L2.obj", manager, o);
 
 		o->SetScale({ 0.1,0.1,0.1 });
 	}

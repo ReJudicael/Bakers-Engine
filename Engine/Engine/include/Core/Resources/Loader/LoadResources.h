@@ -97,6 +97,10 @@ namespace Resources
 			{
 				return m_scenes[path];
 			}
+			inline int GetCountScene(const std::string& path)
+			{
+				return m_scenes.count(path);
+			}
 
 			inline void PushTextureToLink(std::shared_ptr<TextureData> textureData)
 			{
@@ -118,7 +122,7 @@ namespace Resources
 			void LoadSingleMeshResourcesIRenderable(const aiScene* scene, const std::string& fileName,
 				const std::string& directory);
 
-			void LoadMeshMaterial(const aiScene* scene, aiMesh* mesh, std::shared_ptr<Material>& material,
+			void LoadMeshMaterial(const aiScene* scene, aiMesh* mesh,
 				const std::string& directory, const int meshNameCall = 0);
 
 			void LoadTexture(const std::string& keyName, std::shared_ptr<Texture>& texture);

@@ -26,6 +26,7 @@ namespace Resources
 		offset.materialIndices = offsetsMesh.size();
 
 		offsetsMesh.push_back(offset);
+		model->offsetsMesh = offsetsMesh;
 	}
 
 	void ModelData::LoadVertices(aiMesh* mesh)
@@ -54,7 +55,6 @@ namespace Resources
 	{
 		model->stateVAO = stateVAO;
 		model->VAOModel = VAOModel;
-		model->materialsModel = materialsModel;
-		model->offsetsMesh = offsetsMesh;
+		//model->offsetsMesh = offsetsMesh;
 	}
 }
