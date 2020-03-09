@@ -9,11 +9,11 @@ namespace Editor
 		m_dockFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
 	}
 
-	void Canvas::RemoveWidget(std::string name)
+	void Canvas::RemoveWidget(std::string nameID)
 	{
 		for (size_t i{ 0 }; i < m_widgets.size();)
 		{
-			if (m_widgets[i].first->GetName().compare(name) == 0)
+			if (m_widgets[i].first->GetNameID().compare(nameID) == 0)
 				m_widgets.erase(m_widgets.begin() + i);
 			else
 				++i;
@@ -23,16 +23,6 @@ namespace Editor
 	void Canvas::RemoveAllWidgets()
 	{
 		m_widgets.clear();
-	}
-
-	void Canvas::Draw()
-	{
-		SetDockspace();
-
-		for (auto& widget : m_widgets)
-		{
-			widget.first->Draw();
-		}
 	}
 
 	void Canvas::PushDockStyle()
@@ -92,7 +82,7 @@ namespace Editor
 
 		for (std::pair<std::unique_ptr<Widget::IWidget>, EAnchor>& dockWidget : m_widgets)
 		{
-			ImGui::DockBuilderDockWindow(dockWidget.first->GetName().c_str(), anchor[(U16)dockWidget.second]);
+			ImGui::DockBuilderDockWindow(dockWidget.first->GetNameID().c_str(), anchor[(U16)dockWidget.second]);
 		}
 
 		ImGui::DockBuilderFinish(dock_main_id);
@@ -113,6 +103,7 @@ namespace Editor
 				BuildDockWidgets(dock_main_id);
 			}
 			ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), ImGuiDockNodeFlags_PassthruCentralNode);
+
 			ImGui::End();
 		}
 	}
@@ -125,6 +116,39 @@ namespace Editor
 			BuildDockspace();
 		}
 		PopDockStyle();
+	}
+
+	void Canvas::SetMenuBar()
+	{
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("View"))
+			{
+				int i = 0;
+				for (const auto& widget : m_widgets)
+				{
+					ImGui::PushID(++i);
+					if (ImGui::Selectable(widget.first->GetName().c_str()))
+					{
+						widget.first->SetVisible(true);
+						ImGui::SetWindowFocus(widget.first->GetNameID().c_str());
+					}
+					ImGui::PopID();
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+	}
+
+	void Canvas::Draw()
+	{
+		SetDockspace();
+		SetMenuBar();
+		for (auto& widget : m_widgets)
+		{
+			widget.first->Draw();
+		}
 	}
 
 	ImGuiID Canvas::DockBuilderSplitNode(ImGuiID& ID, ImGuiDir_ dir)

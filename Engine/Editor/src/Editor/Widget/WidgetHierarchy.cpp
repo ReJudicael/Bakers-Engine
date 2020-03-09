@@ -9,6 +9,6 @@ namespace Editor::Widget
 
 	void WidgetHierarchy::Tick()
 	{
-		ImGui::Text(m_name.c_str());
+		ImGui::Text(m_nameID.c_str());
 	}
 }

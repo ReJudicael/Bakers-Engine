@@ -182,13 +182,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\Canvas.hpp" />
+    <ClInclude Include="include\Editor\FileSystem.hpp" />
     <ClInclude Include="include\Editor\GUIManager.h" />
+    <ClInclude Include="include\Editor\StringExtension.hpp" />
     <ClInclude Include="include\Editor\Widget\IWidget.h" />
     <ClInclude Include="include\Editor\Widget\WidgetConsole.h" />
     <ClInclude Include="include\Editor\Widget\WidgetFileBrowser.h" />
     <ClInclude Include="include\Editor\Widget\WidgetHierarchy.h" />
     <ClInclude Include="include\Editor\Widget\WidgetInspector.h" />
     <ClInclude Include="include\Editor\Widget\WidgetScene.h" />
+    <ClInclude Include="include\IRenderable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
