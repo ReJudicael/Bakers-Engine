@@ -46,13 +46,11 @@ int main()
 
     Editor::Canvas* canvas= new Editor::Canvas();
     man->SetCanvas(canvas);
-    canvas->AddWidget<Editor::Widget::WidgetScene>(Editor::EAnchor::MIDDLE);
-    canvas->AddWidget<Editor::Widget::WidgetConsole>(Editor::EAnchor::BOTTOM);
-    canvas->AddWidget<Editor::Widget::WidgetInspector>(Editor::EAnchor::RIGHT);
-    canvas->AddWidget<Editor::Widget::WidgetInspector>(Editor::EAnchor::LEFT_BOTTOM);
-    canvas->AddWidget<Editor::Widget::WidgetHierarchy>(Editor::EAnchor::LEFT);
-    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::BOTTOM);
-    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::TOP);
+    canvas->AddWidget<Editor::Widget::WidgetScene>();
+    canvas->AddWidget<Editor::Widget::WidgetConsole>();
+    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>();
+    canvas->AddWidget<Editor::Widget::WidgetInspector>();
+    canvas->AddWidget<Editor::Widget::WidgetHierarchy>();
 
     // Main loop
     while (!glfwWindowShouldClose(window))

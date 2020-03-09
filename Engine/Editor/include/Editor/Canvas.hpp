@@ -57,7 +57,7 @@ namespace Editor
 		/**
 		 * Widgets contained in canvas
 		 */
-		std::vector<std::pair<std::unique_ptr<Widget::IWidget>, EAnchor>> m_widgets;
+		std::vector<std::unique_ptr<Widget::IWidget>> m_widgets;
 
 		/**
 		 * Dockspace flags
@@ -81,12 +81,13 @@ namespace Editor
 		 * @tparam args: Arguments of constructor of given Widget class
 		 * @return NameID of widget added
 		 */
-		template<class T>
-		std::string AddWidget(EAnchor anchor);
+		template<class T, class ...Args>
+		std::string AddWidget(Args&&... args);
 
 		/**
 		 * Remove widget in canvas
 		 * @param name: NameID of widget to remove
+		 * @warning Don't call it when widget is drawing
 		 */
 		void RemoveWidget(std::string nameID);
 
@@ -112,12 +113,7 @@ namespace Editor
 		void SetViewport();
 
 		/**
-		 * Build docking widgets
-		 */
-		void BuildDockWidgets(ImGuiID dock_main_id);
-
-		/**
-		 * Build dockspqce
+		 * Build dockspace
 		 */
 		void BuildDockspace();
 
@@ -138,25 +134,16 @@ namespace Editor
 		 * Display docked widgets in canvas
 		 */
 		void Draw() override;
-
-	private:
-		/**
-		 * Create anchor in dockspace
-		 * @param ID: Default anchor ID
-		 * @param dir: Position relative to default anchor ID
-		 * @return ID of obtained anchor
-		 */
-		ImGuiID DockBuilderSplitNode(ImGuiID& ID, ImGuiDir_ dir);
 	};
 
-	template<class T>
-	inline std::string Canvas::AddWidget(EAnchor anchor)
+	template<class T, class ...Args>
+	inline std::string Canvas::AddWidget(Args&&... args)
 	{
 		static_assert(std::is_base_of<Widget::IWidget, T>::value);
 
-		std::unique_ptr<Widget::IWidget> widget = std::make_unique<T>();
+		std::unique_ptr<Widget::IWidget> widget = std::make_unique<T>(std::forward<Args>(args)...);
 		const std::string nameWidget = widget->GetNameID();
-		m_widgets.emplace_back(std::make_pair(std::move(widget), anchor));
+		m_widgets.emplace_back(std::move(widget));
 		return nameWidget;
 	}
 }

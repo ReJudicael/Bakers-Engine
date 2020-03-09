@@ -82,23 +82,21 @@ namespace Editor::Widget
 		memcpy(name, item.c_str(), item.size() + 1);
 		ImGui::SetNextItemWidth(-FLT_MIN);
 
-		if (m_canRename)
-			ImGui::SetScrollHereY();
-
-		bool apply = ImGui::InputText("### InputText", name, IM_ARRAYSIZE(name),
-			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank);
-
-		if (m_canRename)
+		if (!m_canRename)
 		{
+			ImGui::SetScrollHereY();
 			ImGui::SetKeyboardFocusHere();
-			m_canRename = false;
+			m_canRename = true;
 		}
+
+		bool apply = ImGui::InputText("## InputText", name, IM_ARRAYSIZE(name),
+			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank);
 
 		if (apply || ImGui::IsItemDeactivated())
 		{
 			fs.RenameContent(itemPath, name);
 			m_renamePath.clear();
-			m_canRename = true;
+			m_canRename = false;
 		}
 	}
 
@@ -168,7 +166,7 @@ namespace Editor::Widget
 				itemPath = fs.GetCurrentDirectory() + "\\" + item;
 
 			bool cancel{ false };
-			for (std::string exclude : excludedExtensions)
+			for (const std::string& exclude : excludedExtensions)
 			{
 				if (item.size() < exclude.size())
 					continue;

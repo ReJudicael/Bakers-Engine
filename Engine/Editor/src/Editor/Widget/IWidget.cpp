@@ -8,7 +8,14 @@ namespace Editor::Widget
 	IWidget::IWidget(std::string name) :
 		m_name{ name }
 	{
-		m_nameID = m_name + "##" + std::to_string(_ID_WIDGET_INCREMENT++);
+		m_ID = "##" + std::to_string(_ID_WIDGET_INCREMENT++);
+		m_nameID = m_name + m_ID;
+	}
+
+	IWidget::~IWidget()
+	{
+		if (m_windowBegun)
+			End();
 	}
 
 	std::string IWidget::GetNameID() const
@@ -21,28 +28,25 @@ namespace Editor::Widget
 		return m_name;
 	}
 
-	bool IWidget::IsVisible() const
+	std::string IWidget::GetID() const
 	{
-		return m_isVisible;
-	}
-
-	void IWidget::SetVisible(bool state)
-	{
-		m_isVisible = state;
+		return m_ID;
 	}
 
 	bool IWidget::Begin()
 	{
-		if (!m_isVisible)
+		if (!isVisible)
 			return false;
 
-		ImGui::Begin(m_nameID.c_str(), &m_isVisible, m_flags);
+		ImGui::Begin(m_nameID.c_str(), &isVisible, m_flags);
+		m_windowBegun = true;
 		return true;
 	}
 
 	void IWidget::End()
 	{
 		ImGui::End();
+		m_windowBegun = false;
 	}
 
 	void IWidget::Draw()

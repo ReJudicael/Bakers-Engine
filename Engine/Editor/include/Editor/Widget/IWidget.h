@@ -29,14 +29,23 @@ namespace Editor
 			std::string m_nameID;
 
 			/**
-			 * Name of widget without ID (Widget Name)
+			 * Name of widget (Widget Name)
 			 */
 			std::string m_name;
 
 			/**
+			 * ID of widget (##0)
+			 */
+			std::string m_ID;
+
+		public:
+			/**
 			 * Whether the widget window is visible
 			 */
-			bool m_isVisible{ true };
+			bool isVisible{ true };
+
+		private:
+			bool m_windowBegun{ false };
 
 			/**
 			 * Window flags
@@ -53,7 +62,7 @@ namespace Editor
 			/**
 			 * Default destructor
 			 */
-			~IWidget() = default;
+			~IWidget();
 
 			/**
 			 * Get name ID of widget
@@ -68,16 +77,10 @@ namespace Editor
 			std::string GetName() const;
 
 			/**
-			 * Get whether the widget window is visible
-			 * @return True if the widget window is visible, false otherwise
+			 * Get ID of widget
+			 * @return ID of widget
 			 */
-			bool IsVisible() const;
-
-			/**
-			 * Set visiblity of the widget window
-			 * @param state: New widget window visibility state
-			 */
-			void SetVisible(bool state = true);
+			std::string GetID() const;
 
 		private:
 			/**
