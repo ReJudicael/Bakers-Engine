@@ -73,26 +73,19 @@ namespace Resources::Loader
 
 	}
 
-	void ResourcesManager::LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject)
+	void ResourcesManager::Load3DObject(const char* fileName)
 	{
 		std::string Name = fileName;
 
 		std::shared_ptr<SceneData> scene;
-		if (m_scenes.count(fileName) == 0)
-			if (!LoadAssimpScene(fileName, rootObject))
+		if (m_scenes.count(Name) == 0)
+			if (!LoadAssimpScene(fileName))
 				return;
-
-		if (m_scenes.count(Name) != 0)
+		else
 			scene = m_scenes[Name];
-
-		auto index = Name.find_last_of("/");
-
-		std::string directoryFile;
-		directoryFile = Name.substr(0, index + 1);
 	}
 
-	bool ResourcesManager::LoadAssimpScene(const char* fileName,
-		Core::Datastructure::Object* rootComponent)
+	bool ResourcesManager::LoadAssimpScene(const char* fileName)
 	{
 		std::string Name = fileName;
 
@@ -118,12 +111,12 @@ namespace Resources::Loader
 
 		if (Name.find(".obj") != std::string::npos)
 		{
-			LoadSingleMeshResourcesIRenderable(scene, Name, directoryFile);
+			LoadMeshsSceneInSingleMesh(scene, Name, directoryFile);
 			LoadSceneResources(scene, Name, directoryFile);
 		}
 		else if (Name.find(".fbx") != std::string::npos)
 		{
-			LoadMeshResourcesIRenderable(scene, Name, directoryFile);
+			LoadMeshsScene(scene, Name, directoryFile);
 			LoadSceneResources(scene, Name, directoryFile);
 			// std::cout "it's an Fbx" << std::endl;
 		}
@@ -133,51 +126,7 @@ namespace Resources::Loader
 		return true;
 	}
 
-	void ResourcesManager::LoadResourcesIRenderable(const char* fileName, Core::Datastructure::Object* rootObject, const bool newObjectChild)
-	{
-		/*Mesh* mesh { new Mesh() };
-
-		std::string Name = fileName;
-		const aiScene* scene = aiImportFile(fileName, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
-
-		if (!scene)
-		{
-			// std::cout "could not load file" << std::endl;
-			return;
-		}
-
-		// std::cout "file is loaded" << std::endl;
-
-		auto index = Name.find_last_of("/");
-
-		std::string str;
-		str = Name.substr(0, index + 1);
-
-		if (Name.find(".obj") != std::string::npos)
-		{
-			LoadSingleMeshResourcesIRenderable(mesh, scene, str);
-			if (newObjectChild)
-			{
-				Core::Datastructure::Object* object{ rootObject->CreateChild({}) };
-				object->AddComponent(mesh);
-				return;
-			}
-			else
-				return;
-
-
-		}
-		if (Name.find(".fbx") != std::string::npos)
-		{
-			LoadSceneResources(scene, Name, str);
-			// std::cout "it's an FBX " << std::endl;
-		}
-		aiReleaseImport(scene);*/
-
-	}
-
-	void ResourcesManager::LoadMeshResourcesIRenderable(const aiScene* scene,
-		const std::string& fileName, const std::string& directory)
+	void ResourcesManager::LoadMeshsScene(const aiScene* scene, const std::string& directory)
 	{
 
 		unsigned int indexLastMesh{ 0 };
@@ -191,25 +140,40 @@ namespace Resources::Loader
 			std::shared_ptr<Model> model = std::make_shared<Model>();
 
 
-			int tmpint{ 0 };
-			if (m_models.count(directory + mesh->mName.data) > 0)
+			int numberOfSameKey{ 0 };
+			std::string name = directory + mesh->mName.data;
+			// check if the name of the mesh isn't already a key
+			if (m_models.count(name) > 0)
 			{
-				tmpint = 1;
-				std::string name = directory + mesh->mName.data + std::to_string(tmpint);
+				// the name of the mesh is already a key 
+				// the mesh have the same name of an other mesh but it's not the same mesh
+				// so we add a number to the name of the mesh for create a key
+
+				numberOfSameKey = 1;
+				std::string baseName = name;
+				name = baseName + std::to_string(numberOfSameKey);
+				// change the value of name with the prevent value + the number 1
+				name = baseName + std::to_string(numberOfSameKey);
+
+				// while the the key given to the unordered_map find an element
+				// increase the number of same key
 				while (m_models.count(name) > 0)
 				{
-					tmpint++;
-					name = directory + mesh->mName.data + std::to_string(tmpint);
+					numberOfSameKey++;
+					// chage the name with the new number of same key
+					name = baseName + std::to_string(numberOfSameKey);
 				}
+
+
 				modelData->ModelName = name;
 				m_modelsToLink.push_back(modelData);
 				m_models.emplace(name, model);
 			}
 			else
 			{
-				modelData->ModelName = directory + mesh->mName.data;
+				modelData->ModelName = name;
 				m_modelsToLink.push_back(modelData);
-				m_models.emplace(directory + mesh->mName.data, model);
+				m_models.emplace(name, model);
 			}
 
 			modelData->model = model;
@@ -221,14 +185,13 @@ namespace Resources::Loader
 
 			if (scene->HasMaterials())
 			{
-				LoadMeshMaterial(scene, mesh, directory, tmpint);
+				LoadMeshMaterial(scene, mesh, directory, numberOfSameKey);
 			}
 			modelData->stateVAO = EOpenGLLinkState::CANLINK;
 		}
 	}
 
-	void ResourcesManager::LoadSingleMeshResourcesIRenderable(const aiScene* scene,
-		const std::string& fileName, const std::string& directory)
+	void ResourcesManager::LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory)
 	{
 		if (m_models.count(directory + scene->mMeshes[0]->mName.data) > 0)
 			return;
@@ -303,7 +266,6 @@ namespace Resources::Loader
 		aiNode* rootNode = scene->mRootNode;
 		if (fileName.find(".obj") != std::string::npos)
 		{
-			//sceneData->rootNodeScene.RecursiveSceneLoad(scene, rootNode, directory);
 			sceneData->SceneLoad(scene, rootNode, directory, true);
 		}
 		else
