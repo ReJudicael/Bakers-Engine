@@ -191,7 +191,7 @@
     <ClInclude Include="include\Editor\Widget\WidgetHierarchy.h" />
     <ClInclude Include="include\Editor\Widget\WidgetInspector.h" />
     <ClInclude Include="include\Editor\Widget\WidgetScene.h" />
-    <ClInclude Include="include\IRenderable.h" />
+    <ClInclude Include="include\IDrawable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

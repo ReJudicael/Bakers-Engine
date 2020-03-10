@@ -47,7 +47,7 @@ namespace Editor::Widget
 
 	void WidgetFileBrowser::ShowCurrentLocalPath()
 	{
-		if (ImGui::ImageButton(GetIcon("."), { 15, 15 }, { 0, 1 }, { 1, 0 }))
+		if (ImGui::ImageButton(GetIcon("."), { 16, 16 }, { 0, 1 }, { 1, 0 }))
 			fs.SetCurrentDirectory(".");
 
 		std::vector<std::string> foldersPath{ fs.GetExplodedCurrentPath() };
@@ -80,7 +80,7 @@ namespace Editor::Widget
 	{
 		char name[64];
 		memcpy(name, item.c_str(), item.size() + 1);
-		ImGui::SetNextItemWidth(-FLT_MIN);
+		ImGui::SetNextItemWidth(m_contentPathSize - 10);
 
 		if (!m_canRename)
 		{
@@ -142,7 +142,7 @@ namespace Editor::Widget
 
 	void WidgetFileBrowser::ShowDirectoryContents(std::vector<std::filesystem::path> contents)
 	{
-		ImVec2 contentSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 25.f };
+		ImVec2 contentSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 30.f };
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
 		ImGui::BeginChild("##ContentRegion", contentSize, true);
 		ImGui::PopStyleVar(1);
@@ -180,7 +180,7 @@ namespace Editor::Widget
 
 			ImGui::PushID((int)i);
 			ImGui::BeginGroup();
-			ImGui::ImageButton(GetIcon(itemPath), { m_contentPathSize - 20, m_contentPathSize - 16 }, { 0, 1 }, { 1, 0 });
+			ImGui::ImageButton(GetIcon(itemPath), { m_contentPathSize - 20, m_contentPathSize - 20 }, { 0, 1 }, { 1, 0 });
 
 			bool isEditing = (m_renamePath == itemPath);
 			if (isEditing)

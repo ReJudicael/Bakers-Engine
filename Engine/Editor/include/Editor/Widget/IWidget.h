@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IRenderable.h"
+#include "IDrawable.h"
 #include <imgui\imgui.h>
 #include <string>
 

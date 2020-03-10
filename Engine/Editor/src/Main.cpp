@@ -6,7 +6,7 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui_internal.h"
 #include "GUIManager.h"
-
+#include "stb_image.h"
 #include <stdio.h>
 #include <iostream>
 #include <WidgetFileBrowser.h>
@@ -37,14 +37,19 @@ int main()
         return 1;
     }
 
+    GLFWimage icons[1];
+    icons[0].pixels = stbi_load("Resources\\Images\\bread.png", &icons[0].width, &icons[0].height, 0, STBI_rgb_alpha);
+    glfwSetWindowIcon(window, 1, icons);
+    stbi_image_free(icons[0].pixels);
+
     // Our state
     bool show_demo_window = true;
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.6f, 1.f);
 
-    Editor::GUIManager* man = new Editor::GUIManager(window, glsl_version, Editor::GUIStyle::DARK);
+    Editor::GUIManager* man = new Editor::GUIManager(window, glsl_version, Editor::GUIStyle::BAKER);
 
-    Editor::Canvas* canvas= new Editor::Canvas();
+    Editor::Canvas* canvas = new Editor::Canvas();
     man->SetCanvas(canvas);
     canvas->AddWidget<Editor::Widget::WidgetScene>();
     canvas->AddWidget<Editor::Widget::WidgetConsole>();

@@ -4,9 +4,11 @@ namespace Editor
 {
 	Canvas::Canvas()
 	{
-		m_dockFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar;
-		m_dockFlags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-		m_dockFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+		m_dockWindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar;
+		m_dockWindowFlags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		m_dockWindowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
 	}
 
 	void Canvas::RemoveWidget(std::string nameID)
@@ -47,10 +49,10 @@ namespace Editor
 
 	void Canvas::BuildDockspace()
 	{
-		if (ImGui::Begin("## Dockspace", NULL, m_dockFlags))
+		if (ImGui::Begin("## Dockspace", NULL, m_dockWindowFlags))
 		{
 			ImGuiID dockspace_id = ImGui::GetID("Dockspace");
-			ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), ImGuiDockNodeFlags_PassthruCentralNode);
+			ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), m_dockNodeFlags);
 			ImGui::End();
 		}
 	}
@@ -72,6 +74,15 @@ namespace Editor
 
 			if (ImGui::BeginMenu("View"))
 			{
+				if (ImGui::MenuItem("Open all"))
+					for (const auto& widget : m_widgets)
+						widget->isVisible = true;
+
+				if (ImGui::MenuItem("Close all"))
+					for (const auto& widget : m_widgets)
+						widget->isVisible = false;
+
+				ImGui::Separator();
 
 				int i = 0;
 				for (const auto& widget : m_widgets)

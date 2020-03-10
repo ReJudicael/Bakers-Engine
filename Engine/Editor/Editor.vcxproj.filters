@@ -80,9 +80,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Editor\Widget\IWidget.h">
-      <Filter>Header Files\Editor\Widget</Filter>
-    </ClInclude>
     <ClInclude Include="include\Editor\Widget\WidgetConsole.h">
       <Filter>Header Files\Editor\Widget</Filter>
     </ClInclude>
@@ -104,14 +101,17 @@
     <ClInclude Include="include\Editor\GUIManager.h">
       <Filter>Header Files\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="include\Editor\StringExtension.hpp">
+    <ClInclude Include="include\Editor\Widget\IWidget.h">
+      <Filter>Header Files\Editor\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IDrawable.h">
       <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\StringExtension.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Editor\FileSystem.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IRenderable.h">
-      <Filter>Header Files\Editor</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,45 +11,7 @@
 namespace Editor
 {
 	/**
-	 * Anchor (position of widget)
-	 */
-	enum class EAnchor : unsigned short int
-	{
-		MIDDLE = 0,
-		MIDDLE_LEFT,
-		MIDDLE_RIGHT,
-		MIDDLE_TOP,
-		MIDDLE_BOTTOM,
-
-		TOP,
-		TOP_LEFT,
-		TOP_RIGHT,
-		TOP_TOP,
-		TOP_BOTTOM,
-
-		BOTTOM,
-		BOTTOM_LEFT,
-		BOTTOM_RIGHT,
-		BOTTOM_TOP,
-		BOTTOM_BOTTOM,
-
-		LEFT,
-		LEFT_LEFT,
-		LEFT_RIGHT,
-		LEFT_TOP,
-		LEFT_BOTTOM,
-
-		RIGHT,
-		RIGHT_LEFT,
-		RIGHT_RIGHT,
-		RIGHT_TOP,
-		RIGHT_BOTTOM,
-
-		COUNT
-	};
-
-	/**
-	 * Container that holds widgets
+	 * Container that holds widgets, aka widget manager
 	 */
 	class Canvas final : public IDrawable
 	{
@@ -60,9 +22,14 @@ namespace Editor
 		std::vector<std::unique_ptr<Widget::IWidget>> m_widgets;
 
 		/**
-		 * Dockspace flags
+		 * Dockspace window flags
 		 */
-		ImGuiWindowFlags m_dockFlags;
+		ImGuiWindowFlags m_dockWindowFlags;
+
+		/**
+		 * Dockspace node flags
+		 */
+		ImGuiDockNodeFlags m_dockNodeFlags;
 
 	public:
 		/**

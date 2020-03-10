@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <map>
 
-#define PATH_TO_ICONS "Images\\icon_"
+#define PATH_TO_ICONS "Resources\\Images\\icon_"
 
 namespace Editor::Widget
 {
@@ -78,7 +78,6 @@ namespace Editor::Widget
 		 * Show current local path
 		 */
 		void ShowCurrentLocalPath();
-
 
 		void RenameContent(const std::string& itemPath, const std::string& item);
 		void DirectoryContentActionRight(const std::string& itemPath);
