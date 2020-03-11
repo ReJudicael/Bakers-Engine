@@ -1,13 +1,13 @@
 #pragma once
 
-#include "IWidget.h"
+#include "AWidget.h"
 
 namespace Editor::Widget
 {
 	/**
 	 * Widget Hierarchy
 	 */
-	class WidgetHierarchy final : public IWidget
+	class WidgetHierarchy final : public AWidget
 	{
 	public:
 		/**

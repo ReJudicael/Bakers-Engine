@@ -1,13 +1,13 @@
 #pragma once
 
-#include "IWidget.h"
+#include "AWidget.h"
 
 namespace Editor::Widget
 {
 	/**
 	 * Widget Inspector
 	 */
-	class WidgetInspector final : public IWidget
+	class WidgetInspector final : public AWidget
 	{
 	public:
 		/**

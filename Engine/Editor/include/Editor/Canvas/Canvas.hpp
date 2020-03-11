@@ -1,6 +1,7 @@
 #pragma once
 
-#include "IWidget.h"
+#include "IDrawable.h"
+#include "AWidget.h"
 
 #include <imgui\imgui.h>
 #include <imgui\imgui_internal.h>
@@ -11,15 +12,15 @@
 namespace Editor
 {
 	/**
-	 * Container that holds widgets, aka widget manager
+	 * Dockspace handler
 	 */
-	class Canvas final : public IDrawable
+	class Canvas final : public virtual Datastructure::IDrawable
 	{
 	private:
 		/**
-		 * Widgets contained in canvas
+		 * Widgets list
 		 */
-		std::vector<std::unique_ptr<Widget::IWidget>> m_widgets;
+		std::vector<std::unique_ptr<Widget::AWidget>> m_widgets;
 
 		/**
 		 * Dockspace window flags
@@ -42,21 +43,22 @@ namespace Editor
 		 */
 		~Canvas() = default;
 
+	public:
 		/**
-		 * Add widget to canvas
+		 * Add widget
 		 * @tparam T: Specific Widget class
 		 * @tparam args: Arguments of constructor of given Widget class
-		 * @return NameID of widget added
+		 * @return Instance of widget
 		 */
 		template<class T, class ...Args>
-		std::string AddWidget(Args&&... args);
+		T& AddWidget(Args&&... args);
 
 		/**
-		 * Remove widget in canvas
-		 * @param name: NameID of widget to remove
+		 * Remove widget
+		 * @param widget: Widget to remove
 		 * @warning Don't call it when widget is drawing
 		 */
-		void RemoveWidget(std::string nameID);
+		void RemoveWidget(const Widget::AWidget& widget);
 
 		/**
 		 * Remove all widgets
@@ -93,7 +95,7 @@ namespace Editor
 		/**
 		 * Set Menu bar
 		 */
-		// TODO: Class Menu Bar
+		 // TODO: Class Menu Bar
 		void SetMenuBar();
 
 	public:
@@ -104,13 +106,13 @@ namespace Editor
 	};
 
 	template<class T, class ...Args>
-	inline std::string Canvas::AddWidget(Args&&... args)
+	inline T& Canvas::AddWidget(Args&& ...args)
 	{
-		static_assert(std::is_base_of<Widget::IWidget, T>::value);
+		static_assert(std::is_base_of<Widget::AWidget, T>::value);
 
-		std::unique_ptr<Widget::IWidget> widget = std::make_unique<T>(std::forward<Args>(args)...);
-		const std::string nameWidget = widget->GetNameID();
+		std::unique_ptr<T> widget = std::make_unique<T>(std::forward<Args>(args)...);
+		T& output = *widget;
 		m_widgets.emplace_back(std::move(widget));
-		return nameWidget;
+		return output;
 	}
 }

@@ -15,8 +15,6 @@ Engine/Engine/DoxyGen/Doc/
 
 Engine/Editor/x64/
 
-Engine/Editor/imgui.ini
-
 Engine/Editor/Editor.vcxproj.user
 
 Engine/Doxygen/Doc/DocEditor/

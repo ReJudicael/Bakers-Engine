@@ -3,12 +3,12 @@
 namespace Editor::Widget
 {
 	WidgetConsole::WidgetConsole() :
-		IWidget("Console")
+		AWidget("Console")
 	{
 	}
 
 	void WidgetConsole::Tick()
 	{
-		ImGui::Text(m_nameID.c_str());
+		ImGui::Text(GetNameID().c_str());
 	}
 }

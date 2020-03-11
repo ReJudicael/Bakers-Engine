@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Editor
+namespace Editor::Datastructure
 {
 	/**
 	 * Interface to draw UI class

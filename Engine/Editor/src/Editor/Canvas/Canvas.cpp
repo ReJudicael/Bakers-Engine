@@ -11,14 +11,17 @@ namespace Editor
 		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
 	}
 
-	void Canvas::RemoveWidget(std::string nameID)
+	void Canvas::RemoveWidget(const Widget::AWidget& widget)
 	{
-		for (size_t i{ 0 }; i < m_widgets.size();)
+		auto found = std::find_if(m_widgets.begin(), m_widgets.end(),
+			[&widget](std::unique_ptr<Widget::AWidget>& w)
+			{
+				return w.get() == &widget;
+			});
+
+		if (found != m_widgets.end())
 		{
-			if (m_widgets[i]->GetNameID().compare(nameID) == 0)
-				m_widgets.erase(m_widgets.begin() + i);
-			else
-				++i;
+			m_widgets.erase(found);
 		}
 	}
 
@@ -90,8 +93,7 @@ namespace Editor
 					ImGui::PushID(++i);
 					if (ImGui::MenuItem(widget->GetNameID().c_str(), "", &widget->isVisible, true))
 					{
-						if (widget->isVisible)
-							ImGui::SetWindowFocus(widget->GetNameID().c_str());
+						widget->Focus();
 					}
 					ImGui::PopID();
 				}
@@ -107,6 +109,7 @@ namespace Editor
 	{
 		SetDockspace();
 		SetMenuBar();
+		
 		for (auto& widget : m_widgets)
 		{
 			widget->Draw();

@@ -19,7 +19,7 @@ namespace Editor::Widget
 	};
 
 	WidgetFileBrowser::WidgetFileBrowser() :
-		IWidget("File Browser")
+		AWidget("File Browser")
 	{
 	}
 

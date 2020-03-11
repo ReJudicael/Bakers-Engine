@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IWidget.h"
+#include "AWidget.h"
 #include "FileSystem.hpp"
 #include <stdio.h>
 #include <map>
@@ -12,7 +12,7 @@ namespace Editor::Widget
 	/**
 	 * Widget File Browser
 	 */
-	class WidgetFileBrowser final : public IWidget
+	class WidgetFileBrowser final : public AWidget
 	{
 	private:
 		/**
@@ -26,7 +26,7 @@ namespace Editor::Widget
 		std::map<std::string, ImTextureID> icons;
 
 		/**
-		 * Name of the path to be renamed 
+		 * Name of the path to be renamed
 		 */
 		std::string m_renamePath = "";
 

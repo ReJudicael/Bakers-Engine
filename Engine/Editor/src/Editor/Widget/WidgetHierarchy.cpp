@@ -3,12 +3,12 @@
 namespace Editor::Widget
 {
 	WidgetHierarchy::WidgetHierarchy() :
-		IWidget("Hierarchy")
+		AWidget("Hierarchy")
 	{
 	}
 
 	void WidgetHierarchy::Tick()
 	{
-		ImGui::Text(m_nameID.c_str());
+		ImGui::Text(GetNameID().c_str());
 	}
 }

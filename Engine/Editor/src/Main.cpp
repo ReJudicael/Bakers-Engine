@@ -51,11 +51,13 @@ int main()
 
     Editor::Canvas* canvas = new Editor::Canvas();
     man->SetCanvas(canvas);
-    canvas->AddWidget<Editor::Widget::WidgetScene>();
+
+    auto& a = canvas->AddWidget<Editor::Widget::WidgetScene>();
     canvas->AddWidget<Editor::Widget::WidgetConsole>();
     canvas->AddWidget<Editor::Widget::WidgetFileBrowser>();
     canvas->AddWidget<Editor::Widget::WidgetInspector>();
     canvas->AddWidget<Editor::Widget::WidgetHierarchy>();
+    canvas->RemoveWidget(a);
 
     // Main loop
     while (!glfwWindowShouldClose(window))

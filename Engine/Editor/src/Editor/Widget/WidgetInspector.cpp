@@ -3,12 +3,12 @@
 namespace Editor::Widget
 {
 	WidgetInspector::WidgetInspector() :
-		IWidget("Inspector")
+		AWidget("Inspector")
 	{
 	}
 
 	void WidgetInspector::Tick()
 	{
-		ImGui::Text(m_nameID.c_str());
+		ImGui::Text(GetNameID().c_str());
 	}
 }
