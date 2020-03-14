@@ -4,7 +4,7 @@ namespace Editor::Datastructure
 {
 	unsigned int DrawableComponent::_ID_COMPONENT_INCREMENT = 0;
 
-	DrawableComponent::DrawableComponent(std::string name) :
+	DrawableComponent::DrawableComponent(const std::string& name) :
 		m_name{ name }
 	{
 		m_ID = "##" + std::to_string(_ID_COMPONENT_INCREMENT++);

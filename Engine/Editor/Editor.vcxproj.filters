@@ -34,17 +34,17 @@
     <Filter Include="Header Files\Editor\Widget">
       <UniqueIdentifier>{7e63eed2-8c94-41f6-a063-b87124496da0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Editor\MenuBar">
-      <UniqueIdentifier>{eeeb1af6-cd5c-4d07-8120-df6cafd555bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Editor\Canvas">
       <UniqueIdentifier>{2e1c0004-5bdf-43a0-97ef-71fbcab46f20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Editor\MenuBar">
-      <UniqueIdentifier>{c220081e-84bd-4218-a5ef-6ba2d4e565c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Editor\Canvas">
       <UniqueIdentifier>{76d6752e-1009-4dab-b8a5-79f5e9b35a75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Editor\Menu">
+      <UniqueIdentifier>{eeeb1af6-cd5c-4d07-8120-df6cafd555bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor\Menu">
+      <UniqueIdentifier>{c220081e-84bd-4218-a5ef-6ba2d4e565c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,8 +99,23 @@
     <ClCompile Include="src\Editor\Canvas\Canvas.cpp">
       <Filter>Source Files\Editor\Canvas</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\MenuBar\AMenuBar.cpp">
-      <Filter>Source Files\Editor\MenuBar</Filter>
+    <ClCompile Include="src\Editor\Menu\MenuItem.cpp">
+      <Filter>Source Files\Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Menu\MenuGroup.cpp">
+      <Filter>Source Files\Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Menu\MenuBar.cpp">
+      <Filter>Source Files\Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Widget\WidgetProfiler.cpp">
+      <Filter>Source Files\Editor\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Menu\AMenu.cpp">
+      <Filter>Source Files\Editor\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Menu\MenuSeparator.cpp">
+      <Filter>Source Files\Editor\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,8 +155,26 @@
     <ClInclude Include="include\Editor\Canvas\Canvas.hpp">
       <Filter>Header Files\Editor\Canvas</Filter>
     </ClInclude>
-    <ClInclude Include="include\Editor\MenuBar\AMenuBar.h">
-      <Filter>Header Files\Editor\MenuBar</Filter>
+    <ClInclude Include="include\Editor\Menu\MenuBar.h">
+      <Filter>Header Files\Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Menu\MenuGroup.h">
+      <Filter>Header Files\Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Menu\MenuItem.h">
+      <Filter>Header Files\Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\EventSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Widget\WidgetProfiler.h">
+      <Filter>Header Files\Editor\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Menu\AMenu.h">
+      <Filter>Header Files\Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Menu\MenuSeparator.h">
+      <Filter>Header Files\Editor\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

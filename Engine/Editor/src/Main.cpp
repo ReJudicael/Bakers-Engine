@@ -14,6 +14,9 @@
 #include <WidgetInspector.h>
 #include <WidgetScene.h>
 #include <WidgetHierarchy.h>
+#include <Editor\Menu\MenuBar.h>
+#include <Editor\Widget\WidgetProfiler.h>
+#include <MenuGroup.h>
 
 int main()
 {
@@ -52,12 +55,12 @@ int main()
     Editor::Canvas* canvas = new Editor::Canvas();
     man->SetCanvas(canvas);
 
-    auto& a = canvas->AddWidget<Editor::Widget::WidgetScene>();
+    canvas->AddWidget<Editor::Widget::WidgetScene>();
     canvas->AddWidget<Editor::Widget::WidgetConsole>();
     canvas->AddWidget<Editor::Widget::WidgetFileBrowser>();
     canvas->AddWidget<Editor::Widget::WidgetInspector>();
     canvas->AddWidget<Editor::Widget::WidgetHierarchy>();
-    canvas->RemoveWidget(a);
+    canvas->AddWidget<Editor::Widget::WidgetProfiler>();
 
     // Main loop
     while (!glfwWindowShouldClose(window))

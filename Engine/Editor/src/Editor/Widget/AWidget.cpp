@@ -19,9 +19,8 @@ namespace Editor::Widget
 		if (!isVisible)
 			return false;
 
-		ImGui::Begin(GetNameID().c_str(), &isVisible, m_flags);
-		m_windowBegun = true;
-		return true;
+		m_windowBegun = ImGui::Begin(GetNameID().c_str(), &isVisible, m_flags);
+		return m_windowBegun;
 	}
 
 	void AWidget::End()

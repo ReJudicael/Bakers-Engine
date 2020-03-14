@@ -1,4 +1,5 @@
 #include "Canvas.hpp"
+#include <MenuSeparator.h>
 
 namespace Editor
 {
@@ -9,6 +10,17 @@ namespace Editor
 		m_dockWindowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
 		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
+
+		InitMenuBar();
+	}
+
+	void Canvas::InitMenuBar()
+	{
+		m_menuBar = new Menu::MenuBar();
+		m_view = &m_menuBar->AddMenu<Menu::MenuGroup>("View");
+		m_view->AddMenu<Menu::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::OpenAllWidgets, this, true);
+		m_view->AddMenu<Menu::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::OpenAllWidgets, this, false);
+		m_view->AddMenu<Menu::MenuSeparator>();
 	}
 
 	void Canvas::RemoveWidget(const Widget::AWidget& widget)
@@ -28,6 +40,12 @@ namespace Editor
 	void Canvas::RemoveAllWidgets()
 	{
 		m_widgets.clear();
+	}
+
+	void Canvas::OpenAllWidgets(bool opened)
+	{
+		for (auto& widget : m_widgets)
+			widget->isVisible = opened;
 	}
 
 	void Canvas::PushDockStyle()
@@ -70,46 +88,11 @@ namespace Editor
 		PopDockStyle();
 	}
 
-	void Canvas::SetMenuBar()
-	{
-		if (ImGui::BeginMainMenuBar())
-		{
-
-			if (ImGui::BeginMenu("View"))
-			{
-				if (ImGui::MenuItem("Open all"))
-					for (const auto& widget : m_widgets)
-						widget->isVisible = true;
-
-				if (ImGui::MenuItem("Close all"))
-					for (const auto& widget : m_widgets)
-						widget->isVisible = false;
-
-				ImGui::Separator();
-
-				int i = 0;
-				for (const auto& widget : m_widgets)
-				{
-					ImGui::PushID(++i);
-					if (ImGui::MenuItem(widget->GetNameID().c_str(), "", &widget->isVisible, true))
-					{
-						widget->Focus();
-					}
-					ImGui::PopID();
-				}
-
-				ImGui::EndMenu();
-			}
-
-			ImGui::EndMainMenuBar();
-		}
-	}
-
 	void Canvas::Draw()
 	{
 		SetDockspace();
-		SetMenuBar();
-		
+		m_menuBar->Draw();
+
 		for (auto& widget : m_widgets)
 		{
 			widget->Draw();

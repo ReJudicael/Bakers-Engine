@@ -37,7 +37,7 @@ namespace Editor
 			 * Explicite constructor
 			 * @param name: Name of component
 			 */
-			DrawableComponent(std::string name = "");
+			DrawableComponent(const std::string& name = "");
 
 			/**
 			 * Get ID of component
