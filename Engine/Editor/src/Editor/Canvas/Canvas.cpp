@@ -17,16 +17,16 @@ namespace Editor
 	void Canvas::InitMenuBar()
 	{
 		m_menuBar = new Menu::MenuBar();
-		m_view = &m_menuBar->AddMenu<Menu::MenuGroup>("View");
-		m_view->AddMenu<Menu::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::OpenAllWidgets, this, true);
-		m_view->AddMenu<Menu::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::OpenAllWidgets, this, false);
-		m_view->AddMenu<Menu::MenuSeparator>();
+		m_view = &m_menuBar->Add<Menu::MenuGroup>("View");
+		m_view->Add<Menu::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::OpenAllWidgets, this, true);
+		m_view->Add<Menu::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::OpenAllWidgets, this, false);
+		m_view->Add<Menu::MenuSeparator>();
 	}
 
-	void Canvas::RemoveWidget(const Widget::AWidget& widget)
+	void Canvas::RemoveWidget(const Window::AWindow& widget)
 	{
 		auto found = std::find_if(m_widgets.begin(), m_widgets.end(),
-			[&widget](std::unique_ptr<Widget::AWidget>& w)
+			[&widget](std::unique_ptr<Window::AWindow>& w)
 			{
 				return w.get() == &widget;
 			});

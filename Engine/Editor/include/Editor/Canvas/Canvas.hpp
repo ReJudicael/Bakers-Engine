@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IDrawable.h"
-#include "AWidget.h"
+#include "AWindow.h"
 
 #include "MenuGroup.h"
 #include "MenuBar.h"
@@ -34,7 +34,7 @@ namespace Editor
 		/**
 		 * Widgets list
 		 */
-		std::vector<std::unique_ptr<Widget::AWidget>> m_widgets;
+		std::vector<std::unique_ptr<Window::AWindow>> m_widgets;
 
 		/**
 		 * Menu bar to display menu groups and menu items
@@ -77,7 +77,7 @@ namespace Editor
 		 * @param widget: Widget to remove
 		 * @warning Don't call it when widget is drawing
 		 */
-		void RemoveWidget(const Widget::AWidget& widget);
+		void RemoveWidget(const Window::AWindow& widget);
 
 		/**
 		 * Remove all widgets
@@ -128,13 +128,13 @@ namespace Editor
 	template<class T, class ...Args>
 	inline T& Canvas::AddWidget(Args&& ...args)
 	{
-		static_assert(std::is_base_of<Widget::AWidget, T>::value);
+		static_assert(std::is_base_of<Window::AWindow, T>::value);
 
 		std::unique_ptr<T> widget = std::make_unique<T>(std::forward<Args>(args)...);
 		T& output = *widget;
 		m_widgets.emplace_back(std::move(widget));
 
-		m_view->AddMenu<Menu::MenuItem>(output.GetName().c_str(), "", &output.isVisible, true).OnClick +=
+		m_view->Add<Menu::MenuItem>(output.GetName().c_str(), "", &output.isVisible, true).OnClick +=
 			[&output]
 			{
 				if (output.isVisible)

@@ -1,24 +1,24 @@
 #pragma once
 
-#include "AWidget.h"
+#include "AWindow.h"
 
-namespace Editor::Widget
+namespace Editor::Window
 {
 	/**
 	 * Widget Hierarchy
 	 */
-	class WidgetHierarchy final : public AWidget
+	class WindowHierarchy final : public AWindow
 	{
 	public:
 		/**
 		 * Constructor which set title of window ("Hierarchy")
 		 */
-		WidgetHierarchy();
+		WindowHierarchy();
 
 		/**
 		 * Default destructor
 		 */
-		~WidgetHierarchy() = default;
+		~WindowHierarchy() = default;
 
 		/**
 		 * Draw elements of widget in window

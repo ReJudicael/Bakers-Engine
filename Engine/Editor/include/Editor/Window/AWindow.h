@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DrawableComponent.h"
+
 #include <imgui\imgui.h>
 #include <string>
 
@@ -9,12 +10,12 @@ namespace Editor
 	/**
 	 * Window enabling features for the user
 	 */
-	namespace Widget
+	namespace Window
 	{
 		/**
 		 * Base class for widgets
 		 */
-		class AWidget : public Datastructure::DrawableComponent
+		class AWindow : public Datastructure::DrawableComponent
 		{
 		protected:
 			/**
@@ -38,12 +39,12 @@ namespace Editor
 			 * Explicit constructor which set title of the widget window
 			 * @param name: Set title of window
 			 */
-			AWidget(const std::string& name);
+			AWindow(const std::string& name);
 
 			/**
 			 * Destructor
 			 */
-			~AWidget();
+			~AWindow();
 
 		private:
 			/**

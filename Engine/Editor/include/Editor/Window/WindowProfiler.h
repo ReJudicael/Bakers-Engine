@@ -1,24 +1,24 @@
 #pragma once
 
-#include "AWidget.h"
+#include "AWindow.h"
 
-namespace Editor::Widget
+namespace Editor::Window
 {
 	/**
-	 * Widget Console
+	 * Widget Profiler
 	 */
-	class WidgetConsole final : public AWidget
+	class WindowProfiler : public AWindow
 	{
 	public:
 		/**
 		 * Constructor which set title of window ("Console")
 		 */
-		WidgetConsole();
+		WindowProfiler();
 
 		/**
 		 * Default destructor
 		 */
-		~WidgetConsole() = default;
+		~WindowProfiler() = default;
 
 		/**
 		 * Draw elements of widget in window

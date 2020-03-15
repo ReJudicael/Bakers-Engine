@@ -1,5 +1,4 @@
 #include "GUIManager.h"
-#include "WidgetFileBrowser.h"
 #include <iostream>
 
 namespace Editor

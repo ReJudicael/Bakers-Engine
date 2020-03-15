@@ -1,20 +1,20 @@
-#include "AWidget.h"
+#include "AWindow.h"
 #include <iostream>
 
-namespace Editor::Widget
+namespace Editor::Window
 {
-	AWidget::AWidget(const std::string& name) :
+	AWindow::AWindow(const std::string& name) :
 		DrawableComponent{ name }
 	{
 	}
 
-	AWidget::~AWidget()
+	AWindow::~AWindow()
 	{
 		if (m_windowBegun)
 			End();
 	}
 
-	bool AWidget::Begin()
+	bool AWindow::Begin()
 	{
 		if (!isVisible)
 			return false;
@@ -23,19 +23,19 @@ namespace Editor::Widget
 		return m_windowBegun;
 	}
 
-	void AWidget::End()
+	void AWindow::End()
 	{
 		ImGui::End();
 		m_windowBegun = false;
 	}
 
-	void AWidget::Focus()
+	void AWindow::Focus()
 	{
 		if (isVisible)
 			ImGui::SetWindowFocus(GetNameID().c_str());
 	}
 
-	void AWidget::Draw()
+	void AWindow::Draw()
 	{
 		if (Begin())
 		{

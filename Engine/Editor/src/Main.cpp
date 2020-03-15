@@ -9,13 +9,12 @@
 #include "stb_image.h"
 #include <stdio.h>
 #include <iostream>
-#include <WidgetFileBrowser.h>
-#include <WidgetConsole.h>
-#include <WidgetInspector.h>
-#include <WidgetScene.h>
-#include <WidgetHierarchy.h>
-#include <Editor\Menu\MenuBar.h>
-#include <Editor\Widget\WidgetProfiler.h>
+#include <WindowFileBrowser.h>
+#include <WindowConsole.h>
+#include <WindowInspector.h>
+#include <WindowScene.h>
+#include <WindowHierarchy.h>
+#include <WindowProfiler.h>
 #include <MenuGroup.h>
 
 int main()
@@ -55,12 +54,12 @@ int main()
     Editor::Canvas* canvas = new Editor::Canvas();
     man->SetCanvas(canvas);
 
-    canvas->AddWidget<Editor::Widget::WidgetScene>();
-    canvas->AddWidget<Editor::Widget::WidgetConsole>();
-    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>();
-    canvas->AddWidget<Editor::Widget::WidgetInspector>();
-    canvas->AddWidget<Editor::Widget::WidgetHierarchy>();
-    canvas->AddWidget<Editor::Widget::WidgetProfiler>();
+    canvas->AddWidget<Editor::Window::WindowScene>();
+    canvas->AddWidget<Editor::Window::WindowConsole>();
+    canvas->AddWidget<Editor::Window::WindowFileBrowser>();
+    canvas->AddWidget<Editor::Window::WindowInspector>();
+    canvas->AddWidget<Editor::Window::WindowHierarchy>();
+    canvas->AddWidget<Editor::Window::WindowProfiler>();
 
     // Main loop
     while (!glfwWindowShouldClose(window))

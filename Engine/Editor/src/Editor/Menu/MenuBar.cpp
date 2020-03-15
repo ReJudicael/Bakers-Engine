@@ -11,25 +11,6 @@ namespace Editor::Menu
 			End();
 	}
 
-	void MenuBar::RemoveMenu(const AMenu& menu)
-	{
-		auto found = std::find_if(m_menus.begin(), m_menus.end(),
-			[&menu](std::unique_ptr<AMenu>& m)
-			{
-				return m.get() == &menu;
-			});
-
-		if (found != m_menus.end())
-		{
-			m_menus.erase(found);
-		}
-	}
-
-	void MenuBar::RemoveAllMenus()
-	{
-		m_menus.clear();
-	}
-
 	bool MenuBar::Begin()
 	{
 		m_menuBarBegun = ImGui::BeginMainMenuBar();
@@ -46,7 +27,7 @@ namespace Editor::Menu
 	{
 		if (Begin())
 		{
-			for (auto& menu : m_menus)
+			for (auto& menu : m_contents)
 				menu->Draw();
 			End();
 		}

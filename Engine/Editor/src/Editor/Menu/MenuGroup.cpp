@@ -27,30 +27,11 @@ namespace Editor::Menu
 		m_menuGroupBegun = false;
 	}
 
-	void MenuGroup::RemoveMenu(const AMenu& menu)
-	{
-		auto found = std::find_if(m_menus.begin(), m_menus.end(),
-			[&menu](std::unique_ptr<AMenu>& m)
-			{
-				return m.get() == &menu;
-			});
-
-		if (found != m_menus.end())
-		{
-			m_menus.erase(found);
-		}
-	}
-
-	void Editor::Menu::MenuGroup::RemoveAllMenus()
-	{
-		m_menus.clear();
-	}
-
 	void MenuGroup::Draw()
 	{
 		if (Begin())
 		{
-			for (auto& menu : m_menus)
+			for (auto& menu : m_contents)
 				menu->Draw();
 
 			End();

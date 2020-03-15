@@ -22,17 +22,11 @@
     <Filter Include="Source Files\Editor">
       <UniqueIdentifier>{b9f4dbb4-06c6-4f11-b5eb-bb34a2e0d143}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Editor\Widget">
-      <UniqueIdentifier>{464d6c4f-4883-485e-b6f9-b1182a0ca529}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Editor\Datastructure">
       <UniqueIdentifier>{21dabc33-002f-48e2-b8bf-6a072deeaa84}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Editor\Datastructure">
       <UniqueIdentifier>{17a6bf17-4089-499e-b13b-afec5c71278c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Editor\Widget">
-      <UniqueIdentifier>{7e63eed2-8c94-41f6-a063-b87124496da0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Editor\Canvas">
       <UniqueIdentifier>{2e1c0004-5bdf-43a0-97ef-71fbcab46f20}</UniqueIdentifier>
@@ -46,6 +40,12 @@
     <Filter Include="Source Files\Editor\Menu">
       <UniqueIdentifier>{c220081e-84bd-4218-a5ef-6ba2d4e565c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Editor\Window">
+      <UniqueIdentifier>{7e63eed2-8c94-41f6-a063-b87124496da0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor\Window">
+      <UniqueIdentifier>{464d6c4f-4883-485e-b6f9-b1182a0ca529}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -53,21 +53,6 @@
     </ClCompile>
     <ClCompile Include="src\Editor\GUIManager.cpp">
       <Filter>Source Files\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Widget\WidgetConsole.cpp">
-      <Filter>Source Files\Editor\Widget</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Widget\WidgetFileBrowser.cpp">
-      <Filter>Source Files\Editor\Widget</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Widget\WidgetHierarchy.cpp">
-      <Filter>Source Files\Editor\Widget</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Widget\WidgetInspector.cpp">
-      <Filter>Source Files\Editor\Widget</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Editor\Widget\WidgetScene.cpp">
-      <Filter>Source Files\Editor\Widget</Filter>
     </ClCompile>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Internal Dependencies</Filter>
@@ -90,9 +75,6 @@
     <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_widgets.cpp">
       <Filter>Internal Dependencies</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Widget\AWidget.cpp">
-      <Filter>Source Files\Editor\Widget</Filter>
-    </ClCompile>
     <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp">
       <Filter>Source Files\Editor\Datastructure</Filter>
     </ClCompile>
@@ -108,32 +90,35 @@
     <ClCompile Include="src\Editor\Menu\MenuBar.cpp">
       <Filter>Source Files\Editor\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Widget\WidgetProfiler.cpp">
-      <Filter>Source Files\Editor\Widget</Filter>
-    </ClCompile>
     <ClCompile Include="src\Editor\Menu\AMenu.cpp">
       <Filter>Source Files\Editor\Menu</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Menu\MenuSeparator.cpp">
       <Filter>Source Files\Editor\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowFileBrowser.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowHierarchy.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowInspector.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowProfiler.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowScene.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\AWindow.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowConsole.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Editor\Widget\WidgetConsole.h">
-      <Filter>Header Files\Editor\Widget</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Editor\Widget\WidgetFileBrowser.h">
-      <Filter>Header Files\Editor\Widget</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Editor\Widget\WidgetHierarchy.h">
-      <Filter>Header Files\Editor\Widget</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Editor\Widget\WidgetInspector.h">
-      <Filter>Header Files\Editor\Widget</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Editor\Widget\WidgetScene.h">
-      <Filter>Header Files\Editor\Widget</Filter>
-    </ClInclude>
     <ClInclude Include="include\Editor\GUIManager.h">
       <Filter>Header Files\Editor</Filter>
     </ClInclude>
@@ -142,9 +127,6 @@
     </ClInclude>
     <ClInclude Include="include\Editor\FileSystem.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Editor\Widget\AWidget.h">
-      <Filter>Header Files\Editor\Widget</Filter>
     </ClInclude>
     <ClInclude Include="include\Editor\Datastructure\IDrawable.h">
       <Filter>Header Files\Editor\Datastructure</Filter>
@@ -167,14 +149,35 @@
     <ClInclude Include="include\Editor\EventSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Editor\Widget\WidgetProfiler.h">
-      <Filter>Header Files\Editor\Widget</Filter>
-    </ClInclude>
     <ClInclude Include="include\Editor\Menu\AMenu.h">
       <Filter>Header Files\Editor\Menu</Filter>
     </ClInclude>
     <ClInclude Include="include\Editor\Menu\MenuSeparator.h">
       <Filter>Header Files\Editor\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowFileBrowser.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowHierarchy.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowInspector.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowProfiler.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowScene.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\AWindow.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowConsole.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Datastructure\Container.hpp">
+      <Filter>Header Files\Editor\Datastructure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

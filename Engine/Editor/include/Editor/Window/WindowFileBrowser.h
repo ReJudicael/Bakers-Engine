@@ -1,18 +1,18 @@
 #pragma once
 
-#include "AWidget.h"
+#include "AWindow.h"
 #include "FileSystem.hpp"
 #include <stdio.h>
 #include <map>
 
 #define PATH_TO_ICONS "Resources\\Images\\icon_"
 
-namespace Editor::Widget
+namespace Editor::Window
 {
 	/**
 	 * Widget File Browser
 	 */
-	class WidgetFileBrowser final : public AWidget
+	class WindowFileBrowser final : public AWindow
 	{
 	private:
 		/**
@@ -49,12 +49,12 @@ namespace Editor::Widget
 		/**
 		 * Constructor which set title of window ("File Browser")
 		 */
-		WidgetFileBrowser();
+		WindowFileBrowser();
 
 		/**
 		 * Default destructor
 		 */
-		~WidgetFileBrowser() = default;
+		~WindowFileBrowser() = default;
 
 	private:
 		/**
