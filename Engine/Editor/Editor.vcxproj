@@ -195,7 +195,6 @@
     <ClInclude Include="include\Editor\Datastructure\DrawableComponent.h" />
     <ClInclude Include="include\Editor\Datastructure\IDrawable.h" />
     <ClInclude Include="include\Editor\GUIManager.h" />
-    <ClInclude Include="include\Editor\ShellFileAPI.h" />
     <ClInclude Include="include\Editor\Widget\AWidget.h" />
     <ClInclude Include="include\Editor\Widget\MenuGroup.h" />
     <ClInclude Include="include\Editor\Widget\MenuItem.h" />

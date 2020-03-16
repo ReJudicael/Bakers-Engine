@@ -173,9 +173,6 @@
     <ClInclude Include="include\Editor\Widget\MenuGroup.h">
       <Filter>Header Files\Editor\Widget</Filter>
     </ClInclude>
-    <ClInclude Include="include\Editor\ShellFileAPI.h">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
     <ClInclude Include="include\FileSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

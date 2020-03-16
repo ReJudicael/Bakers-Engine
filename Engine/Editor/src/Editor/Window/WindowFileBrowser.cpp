@@ -19,16 +19,15 @@ namespace Editor::Window
 	};
 
 	WindowFileBrowser::WindowFileBrowser(bool visible) :
-		AWindow{ "File Browser" }
+		AWindow{ "File Browser", visible }
 	{
-		isVisible = visible;
 	}
 
 	void WindowFileBrowser::PushWidgetStyle()
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.259f, 0.588f, 0.980f, 0.f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.259f, 0.588f, 0.980f, 0.392f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, { 0.059f, 0.529f, 0.980f, 0.392f });
+		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.259f, 0.588f, 0.980f, 0.f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.259f, 0.588f, 0.980f, 0.392f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive,	{ 0.059f, 0.529f, 0.980f, 0.392f });
 	}
 
 	void WindowFileBrowser::PopWidgetStyle()
@@ -208,9 +207,9 @@ namespace Editor::Window
 
 	void WindowFileBrowser::ShowDirectory(const std::vector<std::filesystem::path>& content)
 	{
-		this->ShowCurrentLocalPath();
+		ShowCurrentLocalPath();
 		ImGui::Separator();
-		this->ShowDirectoryContents(content);
+		ShowDirectoryContents(content);
 	}
 
 	ImTextureID WindowFileBrowser::GetIcon(const std::string& item)

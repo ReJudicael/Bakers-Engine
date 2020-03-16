@@ -3,9 +3,8 @@
 namespace Editor::Window
 {
 	WindowConsole::WindowConsole(bool visible) :
-		AWindow{ "Console" }
+		AWindow{ "Console", visible }
 	{
-		isVisible = visible;
 	}
 
 	void WindowConsole::Tick()

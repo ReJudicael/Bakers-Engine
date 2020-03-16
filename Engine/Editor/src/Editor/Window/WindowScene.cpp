@@ -3,9 +3,8 @@
 namespace Editor::Window
 {
 	WindowScene::WindowScene(bool visible) :
-		AWindow{ "Scene" }
+		AWindow{ "Scene", visible }
 	{
-		isVisible = visible;
 	}
 
 	void WindowScene::Tick()
