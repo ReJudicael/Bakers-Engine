@@ -1,4 +1,4 @@
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 #ifdef TRACY_ENABLE
 

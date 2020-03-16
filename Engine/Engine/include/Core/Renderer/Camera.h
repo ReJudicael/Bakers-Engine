@@ -3,9 +3,9 @@
 #include "ComponentBase.h"
 #include "ICamera.h"
 #include "IUpdatable.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
-class Camera : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
+BAKERS_API_CLASS Camera : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
 {
 protected:
 	float m_ratio;

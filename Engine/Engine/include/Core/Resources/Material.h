@@ -7,7 +7,7 @@
 
 #include "Vec3.hpp"
 #include "Texture.h"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Resources
 {

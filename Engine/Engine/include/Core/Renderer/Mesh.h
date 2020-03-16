@@ -12,14 +12,14 @@
 #include "OffsetMesh.h"
 #include "Vertex.h"
 #include "ModelData.h"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Resources
 {
 	struct Model;
 }
 
-class Mesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
+BAKERS_API_CLASS Mesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
 {
 protected:
 	std::shared_ptr<Resources::Model> m_model;

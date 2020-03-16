@@ -10,7 +10,7 @@
 #include "ModelData.h"
 #include "SceneData.h"
 #include "Vertex.h" 
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 
 struct aiScene;

@@ -6,7 +6,7 @@
 #include "RootObject.hpp"
 #include "ComponentUpdatable.h"
 #include "Loadresources.h"
-#include "Debug.h"
+#include "CoreMinimal.h"
 #include "TaskSystem.hpp"
 #include "PlayerCamera.h"
 #include "Maths.hpp"

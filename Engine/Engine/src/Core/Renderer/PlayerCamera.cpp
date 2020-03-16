@@ -2,7 +2,7 @@
 
 #include "PlayerCamera.h"
 #include "Object.hpp"
-
+#include "InputSystem.hpp"
 
 PlayerCamera::PlayerCamera() : Camera()
 {

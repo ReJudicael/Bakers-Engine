@@ -5,7 +5,7 @@
 
 #include "InputSystem.hpp"
 #include "RootObject.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 class Window
 {

@@ -284,6 +284,12 @@
     <ClInclude Include="include\Core\Datastructure\Reflection.h">
       <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\CoreMinimal.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\EngineDefines.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\DefaultShader.vert">

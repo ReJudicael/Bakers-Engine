@@ -1,6 +1,6 @@
 #include "ICamera.h"
 #include "RootObject.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 RTTR_REGISTRATION
 {

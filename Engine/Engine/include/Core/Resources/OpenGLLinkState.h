@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Resources
 {

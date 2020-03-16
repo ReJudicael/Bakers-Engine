@@ -4,8 +4,7 @@
 
 #include "Transform.hpp"
 #include "ComponentBase.h"
-#include "Debug.h"
-#include "Reflection.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
@@ -15,7 +14,7 @@ namespace Core::Datastructure
 	 * Container for all components of the game. It updates its transform and holds
 	 * the components.
 	 */
-	class Object
+	BAKERS_API_CLASS Object
 	{
 	private:
 		bool						m_isDestroyed = false;

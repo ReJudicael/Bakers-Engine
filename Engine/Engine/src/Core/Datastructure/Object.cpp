@@ -1,6 +1,6 @@
 #include "Object.hpp"
 #include "RootObject.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 RTTR_REGISTRATION
 {

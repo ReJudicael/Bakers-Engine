@@ -3,12 +3,11 @@
 #include "Vec3.hpp"
 #include "Mat4.hpp"
 #include "IComponent.hpp"
-#include "Debug.h"
-#include "Reflection.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
-	class ICamera : public virtual IComponent
+	BAKERS_API_CLASS ICamera : public virtual IComponent
 	{
 	private:
 		Core::Maths::Mat4	m_perspective;

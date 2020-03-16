@@ -2,7 +2,7 @@
 
 #include "Vec3.hpp" 
 #include "Vec2.hpp" 
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 struct Vertex
 {

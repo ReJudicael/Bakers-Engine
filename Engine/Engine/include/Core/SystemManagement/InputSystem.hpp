@@ -5,7 +5,7 @@
 
 #include "EventSystem.hpp"
 #include "Input.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 #include "Vec2.hpp"
 
 class Window;

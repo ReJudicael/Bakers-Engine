@@ -1,8 +1,7 @@
 #pragma once
 
 #include "IComponent.hpp"
-#include "Debug.h"
-#include "Reflection.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
@@ -12,7 +11,7 @@ namespace Core::Datastructure
 	 * Default implementation of a base component. Every component should inherit it.
 	 * Does absolutly nothing
 	 */
-	class ComponentBase : public virtual IComponent
+	BAKERS_API_CLASS ComponentBase : public virtual IComponent
 	{
 	public:
 		ComponentBase(const ComponentBase& c) = default;
