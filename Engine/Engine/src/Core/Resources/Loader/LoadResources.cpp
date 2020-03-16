@@ -17,7 +17,7 @@
 #include "Model.h"
 #include "Texture.h"
 #include "TextureData.h"
-#include "SceneData.h"
+#include "Object3DGraph.h"
 
 static const char* gVertexShaderStr = R"GLSL(
 // Attributes
@@ -87,7 +87,7 @@ namespace Resources::Loader
 	{
 		std::string Name = fileName;
 
-		std::shared_ptr<SceneData> scene;
+		std::shared_ptr<Object3DGraph> scene;
 		if (m_scenes.count(Name) == 0)
 			if (!LoadAssimpScene(fileName))
 				return;
@@ -276,7 +276,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)
 	{
-		std::shared_ptr<SceneData> sceneData = std::make_shared<SceneData>();
+		std::shared_ptr<Object3DGraph> sceneData = std::make_shared<Object3DGraph>();
 
 		aiNode* rootNode = scene->mRootNode;
 		if (fileName.find(".obj") != std::string::npos)

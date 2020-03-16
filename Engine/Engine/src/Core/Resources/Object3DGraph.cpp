@@ -1,5 +1,5 @@
 #include "Assimp/scene.h"
-#include "SceneData.h"
+#include "Object3DGraph.h"
 #include "LoadResources.h"
 #include "Object.hpp"
 
@@ -105,7 +105,7 @@ namespace Resources
 
 	}
 
-	void SceneData::SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSingleMesh)
+	void Object3DGraph::SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSingleMesh)
 	{
 		singleMesh = isSingleMesh;
 
@@ -115,12 +115,12 @@ namespace Resources
 			rootNodeScene.RecursiveSceneLoad(scene, node, directory);
 	}
 
-	void SceneData::CreateScene(const std::string& keyName, Loader::ResourcesManager& resources, Core::Datastructure::Object* rootObject)
+	void Object3DGraph::CreateScene(const std::string& keyName, Loader::ResourcesManager& resources, Core::Datastructure::Object* rootObject)
 	{
 
 		if (resources.GetCountScene(keyName) <= 0)
 			return;
-		std::shared_ptr<SceneData> scene = resources.GetScene(keyName);
+		std::shared_ptr<Object3DGraph> scene = resources.GetScene(keyName);
 
 		scene->rootNodeScene.CreateObjectScene(rootObject, resources);
 	}

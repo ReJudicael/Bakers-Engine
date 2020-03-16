@@ -8,7 +8,7 @@
 #include "Vec3.hpp"
 #include "Vec2.hpp"
 #include "ModelData.h"
-#include "SceneData.h"
+#include "Object3DGraph.h"
 #include "Vertex.h" 
 #include "Debug.h"
 
@@ -20,7 +20,7 @@ struct aiMaterial;
 enum aiTextureType;
 class Core::Datastructure::Object;
 
-#define unorderedmapSceneData
+#define unorderedmapObject3DGraph
 
 namespace Resources
 {
@@ -32,7 +32,7 @@ namespace Resources
 	#define unorderedmapShader std::unordered_map<std::string, std::shared_ptr<GLuint>>
 	#define unorderedmapModel std::unordered_map<std::string, std::shared_ptr<Model>>	
 	#define unorderedmapMaterial std::unordered_map<std::string, std::shared_ptr<Material>>	
-	#define unorderedmapSceneData std::unordered_map<std::string, std::shared_ptr<SceneData>>	
+	#define unorderedmapObject3DGraph std::unordered_map<std::string, std::shared_ptr<Object3DGraph>>	
 
 	namespace Loader
 	{
@@ -49,7 +49,7 @@ namespace Resources
 			unorderedmapTexture			m_textures;
 			unorderedmapMaterial		m_materials;
 			unorderedmapModel			m_models;
-			unorderedmapSceneData		m_scenes;
+			unorderedmapObject3DGraph		m_scenes;
 
 
 		public:
@@ -183,7 +183,7 @@ namespace Resources
 			 * @param keyName: the key of the scene with which we try to find
 			 * @return the shared_ptr of the scene we try to find with the keyName
 			 */
-			inline std::shared_ptr<SceneData> GetScene(const std::string& keyName)
+			inline std::shared_ptr<Object3DGraph> GetScene(const std::string& keyName)
 			{
 				return m_scenes[keyName];
 			}

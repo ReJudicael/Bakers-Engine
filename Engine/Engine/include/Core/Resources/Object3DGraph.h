@@ -38,7 +38,7 @@ namespace Resources
 		void CreateObjectScene(Core::Datastructure::Object* rootObject, Loader::ResourcesManager& resources);
 	};
 
-	struct SceneData
+	struct Object3DGraph
 	{
 		Node rootNodeScene;
 		bool singleMesh;
