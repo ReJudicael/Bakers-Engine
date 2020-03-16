@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Maths.hpp"
 #include "Window.h"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 int main()
 {

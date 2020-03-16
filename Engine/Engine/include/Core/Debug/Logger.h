@@ -2,8 +2,8 @@
 
 #include <string>
 #include <iostream>
-#include <windows.h>
 #include <vector>
+#include "EngineDefines.h"
 
 namespace Core::Debug
 {
@@ -23,7 +23,7 @@ namespace Core::Debug
 		const char* function;
 	};
 
-	class Logger
+	BAKERS_API_CLASS Logger
 	{
 	private:
 		static Logger* m_instance;

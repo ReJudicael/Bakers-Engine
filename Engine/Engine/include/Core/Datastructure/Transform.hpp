@@ -3,14 +3,14 @@
 #include "Vec3.hpp"
 #include "Quaternion.hpp"
 #include "Mat4.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
 	/**
 	 * Computes local and global TRS, global rotation, scale and position
 	 */
-	class Transform
+	BAKERS_API_CLASS Transform
 	{
 	protected:
 		//Local pos

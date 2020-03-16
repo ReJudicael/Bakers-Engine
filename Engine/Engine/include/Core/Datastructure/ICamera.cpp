@@ -1,6 +1,6 @@
 #include "ICamera.h"
 #include "RootObject.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 {

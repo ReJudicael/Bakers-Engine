@@ -1,6 +1,6 @@
 #include "IUpdatable.hpp"
 #include "RootObject.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {

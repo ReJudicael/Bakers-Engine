@@ -1,7 +1,11 @@
 #pragma once
 
-#include "InputSystem.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
+
+namespace Core::SystemManagement
+{
+	class InputSystem;
+}
 
 namespace Core::Datastructure
 {
@@ -12,7 +16,7 @@ namespace Core::Datastructure
 	 * Default component interface. Gives access to OnStart, OnDestroy and
 	 * the parent and root node of the component
 	 */
-	class IComponent
+	BAKERS_API_CLASS IComponent
 	{
 	private:
 		bool		m_isDestroyed = false;

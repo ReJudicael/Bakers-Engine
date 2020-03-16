@@ -3,7 +3,7 @@
 #include <queue>
 #include <future>
 #include <chrono>
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Core::SystemManagement
 {

@@ -4,9 +4,9 @@
 
 #include "Mesh.h"
 #include "IRenderable.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
-class Renderer
+BAKERS_API_CLASS Renderer
 {
 private:
 	std::vector<Core::Datastructure::IRenderable*> m_meshes;
@@ -20,4 +20,3 @@ public:
 	Mesh*	CreatePlane();
 	Mesh*	CreateCube();
 };
-

@@ -2,6 +2,7 @@
 
 #include <Tracy.hpp>
 #include "DebugTracyGL.hpp"
+#include "Logger.h"
 
 #ifdef TRACY_ENABLE
 void* operator new(std::size_t count);

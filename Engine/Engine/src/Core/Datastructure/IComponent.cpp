@@ -1,6 +1,7 @@
 #include "IComponent.hpp"
+#include "InputSystem.hpp"
 #include "RootObject.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {

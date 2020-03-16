@@ -5,7 +5,7 @@
  
 #include "Vertex.h" 
 #include "OpenGlLinkState.h" 
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 
 struct aiMesh;

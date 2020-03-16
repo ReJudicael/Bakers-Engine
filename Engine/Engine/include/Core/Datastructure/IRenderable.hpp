@@ -7,14 +7,14 @@
 #include "IComponent.hpp"
 #include "ICamera.h"
 #include <list>
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
 	/**
 	 * Component interface to make a component that is drawn.
 	 */
-	class IRenderable : public virtual IComponent
+	BAKERS_API_CLASS IRenderable : public virtual IComponent
 	{
 	public:
 		virtual void	OnStart() override;

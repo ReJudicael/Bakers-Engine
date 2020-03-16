@@ -2,12 +2,12 @@
 
 #include "Camera.h"
 #include "Vec2.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 /**
  * Camera controllable through WASD and mouse inputs
  */
-class PlayerCamera : public Camera
+BAKERS_API_CLASS PlayerCamera : public Camera
 {
 private:
 	// Movement through WASD keys

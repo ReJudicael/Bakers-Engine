@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "OpenGLLinkState.h"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 
 struct aiMaterial;

@@ -8,7 +8,7 @@
 #include "IRenderable.hpp"
 #include "ICamera.h"
 #include "InputSystem.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
@@ -16,7 +16,7 @@ namespace Core::Datastructure
 	 * Root object of the scene, contains all others objects. 
 	 * Will start, update, draw and destroy components
 	 */
-	class RootObject : public Object
+	BAKERS_API_CLASS RootObject : public Object
 	{
 	protected:
 		std::list<IUpdatable*>	m_updatables;

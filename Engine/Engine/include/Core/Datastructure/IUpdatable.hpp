@@ -1,14 +1,14 @@
 #pragma once
 
 #include "IComponent.hpp"
-#include "Debug.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
 	/**
 	 * Component interface to make a component updatable
 	 */
-	class IUpdatable : public virtual IComponent
+	BAKERS_API_CLASS IUpdatable : public virtual IComponent
 	{
 	protected:
 		bool				m_isUpdating = true;
