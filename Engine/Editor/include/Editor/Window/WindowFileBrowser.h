@@ -49,7 +49,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("File Browser")
 		 */
-		WindowFileBrowser();
+		WindowFileBrowser(bool visible = true);
 
 		/**
 		 * Default destructor

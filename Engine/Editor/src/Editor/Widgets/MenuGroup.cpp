@@ -1,10 +1,10 @@
 #include "MenuGroup.h"
 #include <imgui\imgui.h>
 
-namespace Editor::Menu
+namespace Editor::Widget
 {
 	MenuGroup::MenuGroup(const std::string& name, bool enabled) :
-		AMenu{ name },
+		AWidget{ name },
 		isEnabled{ enabled }
 	{
 	}

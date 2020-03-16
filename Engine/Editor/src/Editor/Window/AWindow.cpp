@@ -3,8 +3,9 @@
 
 namespace Editor::Window
 {
-	AWindow::AWindow(const std::string& name) :
-		DrawableComponent{ name }
+	AWindow::AWindow(const std::string& name, bool visible) :
+		DrawableComponent{ name },
+		isVisible{ visible }
 	{
 	}
 
@@ -19,8 +20,9 @@ namespace Editor::Window
 		if (!isVisible)
 			return false;
 
-		m_windowBegun = ImGui::Begin(GetNameID().c_str(), &isVisible, m_flags);
-		return m_windowBegun;
+		ImGui::Begin(GetNameID().c_str(), &isVisible, m_flags);
+		m_windowBegun = true;
+		return true;
 	}
 
 	void AWindow::End()

@@ -2,9 +2,10 @@
 
 namespace Editor::Window
 {
-	WindowScene::WindowScene() :
-		AWindow("Scene")
+	WindowScene::WindowScene(bool visible) :
+		AWindow{ "Scene" }
 	{
+		isVisible = visible;
 	}
 
 	void WindowScene::Tick()

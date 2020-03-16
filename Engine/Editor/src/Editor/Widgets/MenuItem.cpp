@@ -1,10 +1,10 @@
 #include "MenuItem.h"
 #include <imgui\imgui.h>
 
-namespace Editor::Menu
+namespace Editor::Widget
 {
 	MenuItem::MenuItem(const std::string& name, const std::string& shortcut, bool* selected, bool enabled) :
-		AMenu{ name },
+		AWidget{ name },
 		m_shortcut{ shortcut },
 		m_selected{ selected },
 		isEnabled{ enabled }

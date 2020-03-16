@@ -1,24 +1,24 @@
 #pragma once
 
-#include "AMenu.h"
+#include "AWidget.h"
 
-namespace Editor::Menu
+namespace Editor::Widget
 {
 	/**
 	 * Separator
 	 */
-	class MenuSeparator : public AMenu
+	class Separator : public AWidget
 	{
 	public:
 		/**
 		 * Default constructor
 		 */
-		MenuSeparator();
+		Separator();
 
 		/**
 		 * Default destructor
 		 */
-		~MenuSeparator() = default;
+		~Separator() = default;
 
 		/**
 		 * Display Separator

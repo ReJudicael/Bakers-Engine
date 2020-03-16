@@ -18,9 +18,10 @@ namespace Editor::Window
 	".pdb"
 	};
 
-	WindowFileBrowser::WindowFileBrowser() :
-		AWindow("File Browser")
+	WindowFileBrowser::WindowFileBrowser(bool visible) :
+		AWindow{ "File Browser" }
 	{
+		isVisible = visible;
 	}
 
 	void WindowFileBrowser::PushWidgetStyle()

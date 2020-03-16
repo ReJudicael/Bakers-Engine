@@ -52,14 +52,15 @@ int main()
     Editor::GUIManager* man = new Editor::GUIManager(window, glsl_version, Editor::GUIStyle::BAKER);
 
     Editor::Canvas* canvas = new Editor::Canvas();
-    man->SetCanvas(canvas);
 
-    canvas->AddWidget<Editor::Window::WindowScene>();
-    canvas->AddWidget<Editor::Window::WindowConsole>();
-    canvas->AddWidget<Editor::Window::WindowFileBrowser>();
-    canvas->AddWidget<Editor::Window::WindowInspector>();
-    canvas->AddWidget<Editor::Window::WindowHierarchy>();
-    canvas->AddWidget<Editor::Window::WindowProfiler>();
+    canvas->Add<Editor::Window::WindowHierarchy>();
+    canvas->Add<Editor::Window::WindowInspector>();
+    canvas->Add<Editor::Window::WindowScene>();
+    canvas->Add<Editor::Window::WindowConsole>();
+    canvas->Add<Editor::Window::WindowFileBrowser>();
+    canvas->Add<Editor::Window::WindowProfiler>(false);
+
+    man->SetCanvas(canvas);
 
     // Main loop
     while (!glfwWindowShouldClose(window))

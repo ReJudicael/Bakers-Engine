@@ -39,7 +39,7 @@ namespace Editor
 			 * Explicit constructor which set title of the widget window
 			 * @param name: Set title of window
 			 */
-			AWindow(const std::string& name);
+			AWindow(const std::string& name, bool visible = true);
 
 			/**
 			 * Destructor

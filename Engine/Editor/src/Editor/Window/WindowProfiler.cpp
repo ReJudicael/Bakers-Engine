@@ -2,9 +2,10 @@
 
 namespace Editor::Window
 {
-	WindowProfiler::WindowProfiler() :
-		AWindow("Profiler")
+	WindowProfiler::WindowProfiler(bool visible) :
+		AWindow{ "Profiler" }
 	{
+		isVisible = visible;
 	}
 
 	void WindowProfiler::Tick()

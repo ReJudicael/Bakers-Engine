@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-namespace Editor::Menu
+namespace Editor
 {
 	MenuBar::~MenuBar()
 	{
@@ -13,8 +13,9 @@ namespace Editor::Menu
 
 	bool MenuBar::Begin()
 	{
-		m_menuBarBegun = ImGui::BeginMainMenuBar();
-		return m_menuBarBegun;
+		ImGui::BeginMainMenuBar();
+		m_menuBarBegun = true;
+		return true;
 	}
 
 	void MenuBar::End()

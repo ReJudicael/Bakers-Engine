@@ -1,18 +1,18 @@
 #pragma once
 
 #include "DrawableComponent.h"
-#include "AMenu.h"
+#include "AWidget.h"
 #include "Container.hpp"
 #include <vector>
 #include <memory>
 #include <MenuGroup.h>
 
-namespace Editor::Menu
+namespace Editor
 {
 	/**
 	 * Base class for menu bar
 	 */
-	class MenuBar final : public Datastructure::IDrawable, public Datastructure::Container<Menu::MenuGroup>
+	class MenuBar final : public virtual Datastructure::IDrawable, public Datastructure::Container<Widget::MenuGroup>
 	{
 	private:
 		/**

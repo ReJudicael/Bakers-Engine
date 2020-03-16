@@ -13,7 +13,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Scene")
 		 */
-		WindowScene();
+		WindowScene(bool visible = true);
 
 		/**
 		 * Default destructor

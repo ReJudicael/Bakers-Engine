@@ -2,9 +2,10 @@
 
 namespace Editor::Window
 {
-	WindowHierarchy::WindowHierarchy() :
-		AWindow("Hierarchy")
+	WindowHierarchy::WindowHierarchy(bool visible) :
+		AWindow{ "Hierarchy" }
 	{
+		isVisible = visible;
 	}
 
 	void WindowHierarchy::Tick()

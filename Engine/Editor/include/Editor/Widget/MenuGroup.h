@@ -1,15 +1,15 @@
 #pragma once
 
-#include "AMenu.h"
+#include "AWidget.h"
 #include "MenuItem.h"
 #include "Container.hpp"
 
-namespace Editor::Menu
+namespace Editor::Widget
 {
 	/**
 	 * Menu group contains menu groups and menu items
 	 */
-	class MenuGroup final : public AMenu, public Datastructure::Container<AMenu>
+	class MenuGroup final : public AWidget, public Datastructure::Container<AWidget>
 	{
 	private:
 		/**

@@ -1,5 +1,5 @@
 #include "Canvas.hpp"
-#include <MenuSeparator.h>
+#include "Separator.h"
 
 namespace Editor
 {
@@ -11,40 +11,21 @@ namespace Editor
 
 		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
 
-		InitMenuBar();
+		 InitMenuBar();
 	}
 
 	void Canvas::InitMenuBar()
 	{
-		m_menuBar = new Menu::MenuBar();
-		m_view = &m_menuBar->Add<Menu::MenuGroup>("View");
-		m_view->Add<Menu::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::OpenAllWidgets, this, true);
-		m_view->Add<Menu::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::OpenAllWidgets, this, false);
-		m_view->Add<Menu::MenuSeparator>();
-	}
-
-	void Canvas::RemoveWidget(const Window::AWindow& widget)
-	{
-		auto found = std::find_if(m_widgets.begin(), m_widgets.end(),
-			[&widget](std::unique_ptr<Window::AWindow>& w)
-			{
-				return w.get() == &widget;
-			});
-
-		if (found != m_widgets.end())
-		{
-			m_widgets.erase(found);
-		}
-	}
-
-	void Canvas::RemoveAllWidgets()
-	{
-		m_widgets.clear();
+		m_menuBar = new MenuBar();
+		m_view = &m_menuBar->Add<Widget::MenuGroup>("View");
+		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::OpenAllWidgets, this, true);
+		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::OpenAllWidgets, this, false);
+		m_view->Add<Widget::Separator>();
 	}
 
 	void Canvas::OpenAllWidgets(bool opened)
 	{
-		for (auto& widget : m_widgets)
+		for (auto& widget : m_contents)
 			widget->isVisible = opened;
 	}
 
@@ -93,7 +74,7 @@ namespace Editor
 		SetDockspace();
 		m_menuBar->Draw();
 
-		for (auto& widget : m_widgets)
+		for (auto& widget : m_contents)
 		{
 			widget->Draw();
 		}

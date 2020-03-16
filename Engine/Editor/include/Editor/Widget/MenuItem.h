@@ -1,14 +1,14 @@
 #pragma once
 
-#include "AMenu.h"
+#include "AWidget.h"
 #include "EventSystem.hpp"
 
-namespace Editor::Menu
+namespace Editor::Widget
 {
 	/**
 	 * Item of a menu
 	 */
-	class MenuItem final : public AMenu
+	class MenuItem final : public AWidget
 	{
 	private:
 		/**

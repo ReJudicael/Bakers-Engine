@@ -2,9 +2,10 @@
 
 namespace Editor::Window
 {
-	WindowInspector::WindowInspector() :
-		AWindow("Inspector")
+	WindowInspector::WindowInspector(bool visible) :
+		AWindow{ "Inspector" }
 	{
+		isVisible = visible;
 	}
 
 	void WindowInspector::Tick()
