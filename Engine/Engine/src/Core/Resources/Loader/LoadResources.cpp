@@ -70,7 +70,17 @@ namespace Resources::Loader
 
 	ResourcesManager::~ResourcesManager()
 	{
+		for (unorderedmapModel::iterator itmodel = m_models.begin();
+			itmodel != m_models.end(); ++itmodel)
+			glDeleteBuffers(1, &itmodel->second->VAOModel);
 
+		for (unorderedmapTexture::iterator ittexture = m_textures.begin();
+			ittexture != m_textures.end(); ++ittexture)
+			glDeleteTextures(1, &ittexture->second->texture);
+
+		for (unorderedmapShader::iterator itshader = m_shaders.begin();
+			itshader != m_shaders.end(); ++itshader)
+			glDeleteProgram(*itshader->second);
 	}
 
 	void ResourcesManager::Load3DObject(const char* fileName)
@@ -111,12 +121,12 @@ namespace Resources::Loader
 
 		if (Name.find(".obj") != std::string::npos)
 		{
-			LoadMeshsSceneInSingleMesh(scene, Name, directoryFile);
+			LoadMeshsSceneInSingleMesh(scene, directoryFile);
 			LoadSceneResources(scene, Name, directoryFile);
 		}
 		else if (Name.find(".fbx") != std::string::npos)
 		{
-			LoadMeshsScene(scene, Name, directoryFile);
+			LoadMeshsScene(scene, directoryFile);
 			LoadSceneResources(scene, Name, directoryFile);
 			// std::cout "it's an Fbx" << std::endl;
 		}
@@ -139,42 +149,9 @@ namespace Resources::Loader
 			std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
 			std::shared_ptr<Model> model = std::make_shared<Model>();
 
-
-			int numberOfSameKey{ 0 };
 			std::string name = directory + mesh->mName.data;
-			// check if the name of the mesh isn't already a key
-			if (m_models.count(name) > 0)
-			{
-				// the name of the mesh is already a key 
-				// the mesh have the same name of an other mesh but it's not the same mesh
-				// so we add a number to the name of the mesh for create a key
 
-				numberOfSameKey = 1;
-				std::string baseName = name;
-				name = baseName + std::to_string(numberOfSameKey);
-				// change the value of name with the prevent value + the number 1
-				name = baseName + std::to_string(numberOfSameKey);
-
-				// while the the key given to the unordered_map find an element
-				// increase the number of same key
-				while (m_models.count(name) > 0)
-				{
-					numberOfSameKey++;
-					// chage the name with the new number of same key
-					name = baseName + std::to_string(numberOfSameKey);
-				}
-
-
-				modelData->ModelName = name;
-				m_modelsToLink.push_back(modelData);
-				m_models.emplace(name, model);
-			}
-			else
-			{
-				modelData->ModelName = name;
-				m_modelsToLink.push_back(modelData);
-				m_models.emplace(name, model);
-			}
+			int numberOfSameKey{ LoadMeshsSceneCheckModelIsLoaded(modelData, model, name) };
 
 			modelData->model = model;
 			indexLastMesh = modelData->vertices.size();
@@ -185,10 +162,49 @@ namespace Resources::Loader
 
 			if (scene->HasMaterials())
 			{
-				LoadMeshMaterial(scene, mesh, directory, numberOfSameKey);
+				LoadaiMeshMaterial(scene, mesh, directory, numberOfSameKey);
 			}
 			modelData->stateVAO = EOpenGLLinkState::CANLINK;
 		}
+	}
+
+	int ResourcesManager::LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, std::shared_ptr<Model>& currModel, const std::string& nameMesh)
+	{
+		int numberOfSameKey{ 0 };
+		std::string name = nameMesh;
+		// check if the name of the mesh isn't already a key
+		if (m_models.count(nameMesh) > 0)
+		{
+			// the name of the mesh is already a key 
+			// the mesh have the same name of an other mesh but it's not the same mesh
+			// so we add a number to the name of the mesh for create a key
+			numberOfSameKey = 1;
+			std::string baseName = name;
+			name = baseName + std::to_string(numberOfSameKey);
+			// change the value of name with the prevent value + the number 1
+			name = baseName + std::to_string(numberOfSameKey);
+
+			// while the the key given to the unordered_map find an element
+			// increase the number of same key
+			while (m_models.count(name) > 0)
+			{
+				numberOfSameKey++;
+				// chage the name with the new number of same key
+				name = baseName + std::to_string(numberOfSameKey);
+			}
+
+
+			currModelData->ModelName = name;
+			m_modelsToLink.push_back(currModelData);
+			m_models.emplace(name, currModel);
+		}
+		else
+		{
+			currModelData->ModelName = name;
+			m_modelsToLink.push_back(currModelData);
+			m_models.emplace(name, currModel);
+		}
+		return numberOfSameKey;
 	}
 
 	void ResourcesManager::LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory)
@@ -216,26 +232,25 @@ namespace Resources::Loader
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
 			{
-				LoadMeshMaterial(scene, mesh, directory);
+				LoadaiMeshMaterial(scene, mesh, directory);
 			}
 		}
 		modelData->stateVAO = EOpenGLLinkState::CANLINK;
 	}
 
-	void ResourcesManager::LoadMeshMaterial(const aiScene* scene, aiMesh* mesh, const std::string& directory, const int meshNameCall)
+	void ResourcesManager::LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh, const std::string& directory, const int numberOfSameKey)
 	{	
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 		Material material;
 		std::string keyMaterial;
 
-		if (meshNameCall > 0)
-			keyMaterial = directory + mat->GetName().data + std::to_string(meshNameCall);
+		if (numberOfSameKey > 0)
+			keyMaterial = directory + mat->GetName().data + std::to_string(numberOfSameKey);
 		else
 			keyMaterial = directory + mat->GetName().data;
 
 		if (m_materials.count(keyMaterial) > 0)
 		{
-			//materialOut = m_materials[keyMaterial];
 			return;
 		}
 

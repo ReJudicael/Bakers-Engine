@@ -47,7 +47,6 @@ public:
 	Mesh();
 	~Mesh();
 
-	//virtual void OnStart() override {};
 	virtual void OnDestroy() override {};
 
 	void Initialize();
@@ -62,6 +61,7 @@ public:
 	{
 		m_model = model;
 	}
-	void AddMaterials(Resources::Loader::ResourcesManager resources, const std::vector<std::string>& namesMaterial);
+
+	void AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial);
 };
 

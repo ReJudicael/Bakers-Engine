@@ -140,11 +140,10 @@ Core::Maths::Mat4 Mesh::projectionMatrix(float FovY, float Aspect, float Near, f
 	return Core::Maths::Mat4(f);
 }
 
-void Mesh::AddMaterials(Resources::Loader::ResourcesManager resources, const std::vector<std::string>& namesMaterial)
+void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)
 {
 	for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
 	{
 		m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
-		std::cout << "coucou" << std::endl;
 	}
 }
