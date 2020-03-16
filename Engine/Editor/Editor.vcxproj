@@ -186,6 +186,7 @@
     <ClCompile Include="src\Editor\Window\WindowProfiler.cpp" />
     <ClCompile Include="src\Editor\Window\WindowScene.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\ShellFileAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\Canvas\Canvas.hpp" />
@@ -193,10 +194,8 @@
     <ClInclude Include="include\Editor\Datastructure\Container.hpp" />
     <ClInclude Include="include\Editor\Datastructure\DrawableComponent.h" />
     <ClInclude Include="include\Editor\Datastructure\IDrawable.h" />
-    <ClInclude Include="include\Editor\EventSystem.hpp" />
-    <ClInclude Include="include\Editor\FileSystem.hpp" />
     <ClInclude Include="include\Editor\GUIManager.h" />
-    <ClInclude Include="include\Editor\StringExtension.hpp" />
+    <ClInclude Include="include\Editor\ShellFileAPI.h" />
     <ClInclude Include="include\Editor\Widget\AWidget.h" />
     <ClInclude Include="include\Editor\Widget\MenuGroup.h" />
     <ClInclude Include="include\Editor\Widget\MenuItem.h" />
@@ -208,6 +207,10 @@
     <ClInclude Include="include\Editor\Window\WindowInspector.h" />
     <ClInclude Include="include\Editor\Window\WindowProfiler.h" />
     <ClInclude Include="include\Editor\Window\WindowScene.h" />
+    <ClInclude Include="include\EventSystem.hpp" />
+    <ClInclude Include="include\FileSystem.hpp" />
+    <ClInclude Include="include\ShellFileAPI.h" />
+    <ClInclude Include="include\StringExtension.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -117,16 +117,13 @@
     <ClCompile Include="src\Editor\Widgets\AWidget.cpp">
       <Filter>Source Files\Editor\Widget</Filter>
     </ClCompile>
+    <ClCompile Include="src\ShellFileAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\GUIManager.h">
       <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Editor\StringExtension.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Editor\FileSystem.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Editor\Datastructure\IDrawable.h">
       <Filter>Header Files\Editor\Datastructure</Filter>
@@ -136,9 +133,6 @@
     </ClInclude>
     <ClInclude Include="include\Editor\Canvas\Canvas.hpp">
       <Filter>Header Files\Editor\Canvas</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Editor\EventSystem.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Editor\Window\WindowFileBrowser.h">
       <Filter>Header Files\Editor\Window</Filter>
@@ -178,6 +172,21 @@
     </ClInclude>
     <ClInclude Include="include\Editor\Widget\MenuGroup.h">
       <Filter>Header Files\Editor\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\ShellFileAPI.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ShellFileAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StringExtension.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EventSystem.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

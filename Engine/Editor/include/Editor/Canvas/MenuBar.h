@@ -12,7 +12,7 @@ namespace Editor
 	/**
 	 * Base class for menu bar
 	 */
-	class MenuBar final : public virtual Datastructure::IDrawable, public Datastructure::Container<Widget::MenuGroup>
+	class MenuBar final : public virtual Datastructure::IDrawable, public Datastructure::Container<Widget::AWidget>
 	{
 	private:
 		/**

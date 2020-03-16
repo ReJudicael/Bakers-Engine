@@ -17,9 +17,9 @@ namespace Editor
 		{
 		private:
 			/**
-			 * ID of component (incremented when a component has been instantiated)
+			 * Number of components (incremented when a component has been instantiated)
 			 */
-			static unsigned int _ID_COMPONENT_INCREMENT;
+			static unsigned int _NB_COMPONENTS;
 
 		protected:
 			/**
@@ -28,7 +28,7 @@ namespace Editor
 			std::string m_name;
 
 			/**
-			 * ID of component (##0)
+			 * ID of component ("##" + _NB_COMPONENTS)
 			 */
 			std::string m_ID;
 
