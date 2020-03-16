@@ -1,24 +1,24 @@
 #pragma once
 
-#include "IWidget.h"
+#include "AWindow.h"
 
-namespace Editor::Widget
+namespace Editor::Window
 {
 	/**
 	 * Widget Scene
 	 */
-	class WidgetScene final : public IWidget
+	class WindowScene final : public AWindow
 	{
 	public:
 		/**
 		 * Constructor which set title of window ("Scene")
 		 */
-		WidgetScene();
+		WindowScene(bool visible = true);
 
 		/**
 		 * Default destructor
 		 */
-		~WidgetScene() = default;
+		~WindowScene() = default;
 
 		/**
 		 * Draw elements of widget in window

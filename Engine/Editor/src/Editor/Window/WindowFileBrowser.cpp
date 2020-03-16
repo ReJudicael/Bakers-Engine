@@ -1,11 +1,11 @@
-#include "WidgetFileBrowser.h"
+#include "WindowFileBrowser.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <glad\glad.h>
 #include <imgui\imgui_internal.h>
 
-namespace Editor::Widget
+namespace Editor::Window
 {
 	std::string excludedExtensions[] = {
 	".exe",
@@ -18,24 +18,25 @@ namespace Editor::Widget
 	".pdb"
 	};
 
-	WidgetFileBrowser::WidgetFileBrowser() :
-		IWidget("File Browser")
+	WindowFileBrowser::WindowFileBrowser(bool visible) :
+		AWindow{ "File Browser" }
 	{
+		isVisible = visible;
 	}
 
-	void WidgetFileBrowser::PushWidgetStyle()
+	void WindowFileBrowser::PushWidgetStyle()
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.259f, 0.588f, 0.980f, 0.f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.259f, 0.588f, 0.980f, 0.392f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, { 0.059f, 0.529f, 0.980f, 0.392f });
 	}
 
-	void WidgetFileBrowser::PopWidgetStyle()
+	void WindowFileBrowser::PopWidgetStyle()
 	{
 		ImGui::PopStyleColor(3);
 	}
 
-	void WidgetFileBrowser::Tick()
+	void WindowFileBrowser::Tick()
 	{
 		PushWidgetStyle();
 		{
@@ -45,9 +46,9 @@ namespace Editor::Widget
 		PopWidgetStyle();
 	}
 
-	void WidgetFileBrowser::ShowCurrentLocalPath()
+	void WindowFileBrowser::ShowCurrentLocalPath()
 	{
-		if (ImGui::ImageButton(GetIcon("."), { 15, 15 }, { 0, 1 }, { 1, 0 }))
+		if (ImGui::ImageButton(GetIcon("."), { 16, 16 }, { 0, 1 }, { 1, 0 }))
 			fs.SetCurrentDirectory(".");
 
 		std::vector<std::string> foldersPath{ fs.GetExplodedCurrentPath() };
@@ -76,33 +77,31 @@ namespace Editor::Widget
 		}
 	}
 
-	void WidgetFileBrowser::RenameContent(const std::string& itemPath, const std::string& item)
+	void WindowFileBrowser::RenameContent(const std::string& itemPath, const std::string& item)
 	{
 		char name[64];
 		memcpy(name, item.c_str(), item.size() + 1);
-		ImGui::SetNextItemWidth(-FLT_MIN);
+		ImGui::SetNextItemWidth(m_contentPathSize - 10);
 
-		if (m_canRename)
-			ImGui::SetScrollHereY();
-
-		bool apply = ImGui::InputText("### InputText", name, IM_ARRAYSIZE(name),
-			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank);
-
-		if (m_canRename)
+		if (!m_canRename)
 		{
+			ImGui::SetScrollHereY();
 			ImGui::SetKeyboardFocusHere();
-			m_canRename = false;
+			m_canRename = true;
 		}
+
+		bool apply = ImGui::InputText("## InputText", name, IM_ARRAYSIZE(name),
+			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank);
 
 		if (apply || ImGui::IsItemDeactivated())
 		{
 			fs.RenameContent(itemPath, name);
 			m_renamePath.clear();
-			m_canRename = true;
+			m_canRename = false;
 		}
 	}
 
-	void WidgetFileBrowser::DirectoryContentActionRight(const std::string& itemPath)
+	void WindowFileBrowser::DirectoryContentActionRight(const std::string& itemPath)
 	{
 		ImGui::OpenPopupOnItemClick("Menu");
 		if (ImGui::BeginPopup("Menu", ImGuiWindowFlags_NoMove))
@@ -134,7 +133,7 @@ namespace Editor::Widget
 		}
 	}
 
-	void WidgetFileBrowser::ZoomPathContents()
+	void WindowFileBrowser::ZoomPathContents()
 	{
 		ImGui::Indent(ImGui::GetWindowWidth() - 150);
 		ImGui::SetNextItemWidth(100);
@@ -142,9 +141,9 @@ namespace Editor::Widget
 		m_contentPathSize = 65.f + m_size * 1.3f;
 	}
 
-	void WidgetFileBrowser::ShowDirectoryContents(std::vector<std::filesystem::path> contents)
+	void WindowFileBrowser::ShowDirectoryContents(std::vector<std::filesystem::path> contents)
 	{
-		ImVec2 contentSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 25.f };
+		ImVec2 contentSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 30.f };
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
 		ImGui::BeginChild("##ContentRegion", contentSize, true);
 		ImGui::PopStyleVar(1);
@@ -168,7 +167,7 @@ namespace Editor::Widget
 				itemPath = fs.GetCurrentDirectory() + "\\" + item;
 
 			bool cancel{ false };
-			for (std::string exclude : excludedExtensions)
+			for (const std::string& exclude : excludedExtensions)
 			{
 				if (item.size() < exclude.size())
 					continue;
@@ -182,7 +181,7 @@ namespace Editor::Widget
 
 			ImGui::PushID((int)i);
 			ImGui::BeginGroup();
-			ImGui::ImageButton(GetIcon(itemPath), { m_contentPathSize - 20, m_contentPathSize - 16 }, { 0, 1 }, { 1, 0 });
+			ImGui::ImageButton(GetIcon(itemPath), { m_contentPathSize - 20, m_contentPathSize - 20 }, { 0, 1 }, { 1, 0 });
 
 			bool isEditing = (m_renamePath == itemPath);
 			if (isEditing)
@@ -207,14 +206,14 @@ namespace Editor::Widget
 
 	}
 
-	void WidgetFileBrowser::ShowDirectory(const std::vector<std::filesystem::path>& content)
+	void WindowFileBrowser::ShowDirectory(const std::vector<std::filesystem::path>& content)
 	{
 		this->ShowCurrentLocalPath();
 		ImGui::Separator();
 		this->ShowDirectoryContents(content);
 	}
 
-	ImTextureID WidgetFileBrowser::GetIcon(const std::string& item)
+	ImTextureID WindowFileBrowser::GetIcon(const std::string& item)
 	{
 		std::string ext = "default";
 		if (fs.IsDirectory(item))

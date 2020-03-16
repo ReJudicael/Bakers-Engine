@@ -1,24 +1,24 @@
 #pragma once
 
-#include "IWidget.h"
+#include "AWindow.h"
 
-namespace Editor::Widget
+namespace Editor::Window
 {
 	/**
 	 * Widget Inspector
 	 */
-	class WidgetInspector final : public IWidget
+	class WindowInspector final : public AWindow
 	{
 	public:
 		/**
 		 * Constructor which set title of window ("Inspector")
 		 */
-		WidgetInspector();
+		WindowInspector(bool visible = true);
 
 		/**
 		 * Default destructor
 		 */
-		~WidgetInspector() = default;
+		~WindowInspector() = default;
 
 		/**
 		 * Draw elements of widget in window

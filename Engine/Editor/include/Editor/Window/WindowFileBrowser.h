@@ -1,18 +1,18 @@
 #pragma once
 
-#include "IWidget.h"
+#include "AWindow.h"
 #include "FileSystem.hpp"
 #include <stdio.h>
 #include <map>
 
-#define PATH_TO_ICONS "Images\\icon_"
+#define PATH_TO_ICONS "Resources\\Images\\icon_"
 
-namespace Editor::Widget
+namespace Editor::Window
 {
 	/**
 	 * Widget File Browser
 	 */
-	class WidgetFileBrowser final : public IWidget
+	class WindowFileBrowser final : public AWindow
 	{
 	private:
 		/**
@@ -26,7 +26,7 @@ namespace Editor::Widget
 		std::map<std::string, ImTextureID> icons;
 
 		/**
-		 * Name of the path to be renamed 
+		 * Name of the path to be renamed
 		 */
 		std::string m_renamePath = "";
 
@@ -49,12 +49,12 @@ namespace Editor::Widget
 		/**
 		 * Constructor which set title of window ("File Browser")
 		 */
-		WidgetFileBrowser();
+		WindowFileBrowser(bool visible = true);
 
 		/**
 		 * Default destructor
 		 */
-		~WidgetFileBrowser() = default;
+		~WindowFileBrowser() = default;
 
 	private:
 		/**
@@ -78,7 +78,6 @@ namespace Editor::Widget
 		 * Show current local path
 		 */
 		void ShowCurrentLocalPath();
-
 
 		void RenameContent(const std::string& itemPath, const std::string& item);
 		void DirectoryContentActionRight(const std::string& itemPath);

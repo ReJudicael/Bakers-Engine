@@ -6,14 +6,16 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui_internal.h"
 #include "GUIManager.h"
-
+#include "stb_image.h"
 #include <stdio.h>
 #include <iostream>
-#include <WidgetFileBrowser.h>
-#include <WidgetConsole.h>
-#include <WidgetInspector.h>
-#include <WidgetScene.h>
-#include <WidgetHierarchy.h>
+#include <WindowFileBrowser.h>
+#include <WindowConsole.h>
+#include <WindowInspector.h>
+#include <WindowScene.h>
+#include <WindowHierarchy.h>
+#include <WindowProfiler.h>
+#include <MenuGroup.h>
 
 int main()
 {
@@ -37,22 +39,28 @@ int main()
         return 1;
     }
 
+    GLFWimage icons[1];
+    icons[0].pixels = stbi_load("Resources\\Images\\bread.png", &icons[0].width, &icons[0].height, 0, STBI_rgb_alpha);
+    glfwSetWindowIcon(window, 1, icons);
+    stbi_image_free(icons[0].pixels);
+
     // Our state
     bool show_demo_window = true;
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.6f, 1.f);
 
-    Editor::GUIManager* man = new Editor::GUIManager(window, glsl_version, Editor::GUIStyle::DARK);
+    Editor::GUIManager* man = new Editor::GUIManager(window, glsl_version, Editor::GUIStyle::BAKER);
 
-    Editor::Canvas* canvas= new Editor::Canvas();
+    Editor::Canvas* canvas = new Editor::Canvas();
+
+    canvas->Add<Editor::Window::WindowHierarchy>();
+    canvas->Add<Editor::Window::WindowInspector>();
+    canvas->Add<Editor::Window::WindowScene>();
+    canvas->Add<Editor::Window::WindowConsole>();
+    canvas->Add<Editor::Window::WindowFileBrowser>();
+    canvas->Add<Editor::Window::WindowProfiler>(false);
+
     man->SetCanvas(canvas);
-    canvas->AddWidget<Editor::Widget::WidgetScene>(Editor::EAnchor::MIDDLE);
-    canvas->AddWidget<Editor::Widget::WidgetConsole>(Editor::EAnchor::BOTTOM);
-    canvas->AddWidget<Editor::Widget::WidgetInspector>(Editor::EAnchor::RIGHT);
-    canvas->AddWidget<Editor::Widget::WidgetInspector>(Editor::EAnchor::LEFT_BOTTOM);
-    canvas->AddWidget<Editor::Widget::WidgetHierarchy>(Editor::EAnchor::LEFT);
-    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::BOTTOM);
-    canvas->AddWidget<Editor::Widget::WidgetFileBrowser>(Editor::EAnchor::TOP);
 
     // Main loop
     while (!glfwWindowShouldClose(window))
