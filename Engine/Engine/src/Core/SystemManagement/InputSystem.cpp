@@ -28,4 +28,20 @@ namespace Core::SystemManagement
 		glfwGetCursorPos(m_window->GetGLFWwindow(), &pos[0], &pos[1]);
 		return Core::Maths::Vec2(pos[0], pos[1]);
 	}
+
+	void SystemManagement::InputSystem::SetMousePos(Core::Maths::Vec2 pos) const noexcept
+	{
+		glfwSetCursorPos(m_window->GetGLFWwindow(), pos.x, pos.y);
+	}
+
+	void SystemManagement::InputSystem::SetMouseAppearance(ECursorAppearance type) const noexcept
+	{
+		switch (type)
+		{
+		case ECursorAppearance::DEFAULT:
+			glfwSetInputMode(m_window->GetGLFWwindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL); break;
+		case ECursorAppearance::INVISIBLE:
+			glfwSetInputMode(m_window->GetGLFWwindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN); break;
+		}
+	}
 }
