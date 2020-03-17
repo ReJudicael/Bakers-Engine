@@ -16,7 +16,6 @@ namespace Resources
 		GLuint VAOModel{ 0 };
 
 		std::vector<OffsetMesh> offsetsMesh;
-		std::vector<std::shared_ptr<Material>> materialsModel;
 
 		EOpenGLLinkState stateVAO;
 	};

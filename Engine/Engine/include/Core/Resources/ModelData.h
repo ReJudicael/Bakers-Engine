@@ -23,13 +23,14 @@ namespace Resources
 		std::vector<GLuint> indices;
 		std::vector<OffsetMesh> offsetsMesh;
 		std::shared_ptr<Model> model;
-		std::vector<std::shared_ptr<Material>> materialsModel;
-		std::string materialModelName;
+
 		std::string ModelName;
 		EOpenGLLinkState stateVAO;
 
 		void LoadVertices(aiMesh* mesh);
 		void LoadIndices(aiMesh* mesh, const int increaseIndices = 0);
+
+		void CreateVAOModel();
 
 		void EmplaceInModel();
 

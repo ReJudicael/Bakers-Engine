@@ -303,8 +303,9 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClCompile Include="src\Core\Resources\Loader\LoadResources.cpp" />
     <ClCompile Include="src\Core\Resources\Material.cpp" />
     <ClCompile Include="src\Core\Resources\ModelData.cpp" />
-    <ClCompile Include="src\Core\Resources\SceneData.cpp" />
+    <ClCompile Include="src\Core\Resources\Object3DGraph.cpp" />
     <ClCompile Include="src\Core\Resources\Shader.cpp" />
+    <ClCompile Include="src\Core\Resources\Texture.cpp" />
     <ClCompile Include="src\Core\Resources\TextureData.cpp" />
     <ClCompile Include="src\Core\SystemManagement\InputSystem.cpp" />
     <ClCompile Include="src\Core\Window.cpp" />
@@ -350,7 +351,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"</Comman
     <ClInclude Include="include\Core\Resources\ModelData.h" />
     <ClInclude Include="include\Core\Resources\OffsetMesh.h" />
     <ClInclude Include="include\Core\Resources\OpenGLLinkState.h" />
-    <ClInclude Include="include\Core\Resources\SceneData.h" />
+    <ClInclude Include="include\Core\Resources\Object3DGraph.h" />
     <ClInclude Include="include\Core\Resources\Shader.h" />
     <ClInclude Include="include\Core\Resources\Texture.h" />
     <ClInclude Include="include\Core\Resources\TextureData.h" />

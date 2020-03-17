@@ -10,5 +10,6 @@ namespace Resources
 		unsigned int materialIndices;
 		unsigned int count;
 		GLuint beginIndices;
+
 	};
 }
