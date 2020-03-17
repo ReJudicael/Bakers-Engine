@@ -20,9 +20,9 @@ int main()
     if (!glfwInit())
         return 1;
 
-    const char* glsl_version = "#version 460";
+    const char* glsl_version = "#version 400";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Editor", nullptr, nullptr);
     if (window == nullptr)
