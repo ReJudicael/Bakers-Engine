@@ -104,9 +104,7 @@ namespace Resources::Loader
 											| aiProcess_JoinIdenticalVertices 
 											| aiProcess_SplitLargeMeshes 
 											| aiProcess_SortByPType 
-											/*| aiProcess_PreTransformVertices*/
-											| aiProcess_ValidateDataStructure 
-											/*| aiProcess_FindDegenerates*/);
+											| aiProcess_ValidateDataStructure);
 		if (!scene)
 		{
 			// std::cout "could not load file" << std::endl;
@@ -297,91 +295,48 @@ namespace Resources::Loader
 		for (auto it = m_texturesToLink.begin(); 
 				it != m_texturesToLink.end();)
 		{
-			if ((*it)->stateTexture == EOpenGLLinkState::LOADPROBLEM)
+			switch ((*it)->stateTexture)
 			{
-				it = m_texturesToLink.erase(it);
-				continue;
+				case EOpenGLLinkState::LOADPROBLEM:
+					it = m_texturesToLink.erase(it);
+					break;
+				case EOpenGLLinkState::CANTLINK:
+					it++;
+					break;
+				case EOpenGLLinkState::ISLINK:
+					it = m_texturesToLink.erase(it);
+					break;
+				case EOpenGLLinkState::CANLINK:
+					(*it)->CreateOpenGLTexture();
+					it = m_texturesToLink.erase(it);
+					break;
 			}
-			if ((*it)->stateTexture == EOpenGLLinkState::CANTLINK)
-			{
-				it++;
-				continue;
-			}
-			if ((*it)->stateTexture == EOpenGLLinkState::ISLINK)
-			{
-				it = m_texturesToLink.erase(it);
-				continue;
-			}
-			
-			GLuint texture;
-			glGenTextures(1, &texture);
-			glBindTexture(GL_TEXTURE_2D, texture);
-			// set the texture wrapping/filtering options (on the currently bound texture object)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (*it)->width, (*it)->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (*it)->data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			(*it)->stateTexture = EOpenGLLinkState::ISLINK;
-			(*it)->texture = texture;
-
-			(*it)->EmplaceInTexture();
-			it = m_texturesToLink.erase(it);
 		}
 	}
 
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{
-		//// std::cout "Link " << m_modelsToLink.size() << std::endl;
 		for (auto it = m_modelsToLink.begin();
 			it != m_modelsToLink.end();)
 		{
-			if ((*it)->stateVAO == EOpenGLLinkState::LOADPROBLEM)
+
+			switch ((*it)->stateVAO)
 			{
-				it = m_modelsToLink.erase(it);
-				continue;
+				case EOpenGLLinkState::LOADPROBLEM:
+					it = m_modelsToLink.erase(it);
+					break;
+				case EOpenGLLinkState::CANTLINK:
+					it++;
+					break;
+				case EOpenGLLinkState::ISLINK:
+					it = m_modelsToLink.erase(it);
+					break;
+				case EOpenGLLinkState::CANLINK:
+					(*it)->CreateVAOModel();
+					it = m_modelsToLink.erase(it);
+					break;
+				
 			}
-			if ((*it)->stateVAO == EOpenGLLinkState::CANTLINK)
-			{
-				it++;
-				continue;
-			}
-			if ((*it)->stateVAO == EOpenGLLinkState::ISLINK)
-			{
-				it = m_modelsToLink.erase(it);
-				continue;
-			}
-
-			GLuint VAO, VBO, EBO;
-
-			glGenVertexArrays(1, &VAO);
-			glBindVertexArray(VAO);
-			glGenBuffers(1, &VBO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, (*it)->vertices.size() * sizeof(Vertex), &(*it)->vertices[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(0);
-			glEnableVertexAttribArray(1);
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, UV));
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
-			glGenBuffers(1, &EBO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, (*it)->indices.size() * sizeof(GLuint), &(*it)->indices[0], GL_STATIC_DRAW);
-
-			(*it)->indices.clear();
-			(*it)->vertices.clear();
-			(*it)->VAOModel = VAO;
-
-			glBindVertexArray(0);
-
-			(*it)->stateVAO = EOpenGLLinkState::ISLINK;
-
-			(*it)->EmplaceInModel();
-			it = m_modelsToLink.erase(it);
 		}
 	}
 
@@ -429,7 +384,5 @@ namespace Resources::Loader
 
 		glDeleteShader(VertexShader);
 		glDeleteShader(FragmentShader);
-
-		// std::cout "program load" << std::endl;
 	}
 }

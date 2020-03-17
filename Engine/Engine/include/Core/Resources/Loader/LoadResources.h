@@ -54,8 +54,8 @@ namespace Resources
 
 		public:
 			/* Used for stocked the different value which allow to bind different resources to OpengGL (for the multiThread)*/
-			std::list<std::shared_ptr<TextureData>>								m_texturesToLink;
-			std::list<std::shared_ptr<ModelData>>								m_modelsToLink;
+			std::list<std::shared_ptr<TextureData>>		m_texturesToLink;
+			std::list<std::shared_ptr<ModelData>>		m_modelsToLink;
 
 			/**
 			 * Construct the ResourcesManager and create the Default shader

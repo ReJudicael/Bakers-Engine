@@ -51,6 +51,36 @@ namespace Resources
 		}
 	}
 
+	void ModelData::CreateVAOModel()
+	{
+		GLuint VAO, VBO, EBO;
+
+		glGenVertexArrays(1, &VAO);
+		glBindVertexArray(VAO);
+		glGenBuffers(1, &VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, UV));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+		glGenBuffers(1, &EBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+
+		indices.clear();
+		vertices.clear();
+		VAOModel = VAO;
+
+		glBindVertexArray(0);
+
+		stateVAO = EOpenGLLinkState::ISLINK;
+
+		EmplaceInModel();
+	}
+
 	void ModelData::EmplaceInModel()
 	{
 		model->stateVAO = stateVAO;

@@ -21,7 +21,7 @@ namespace Resources
 
 	struct TextureData
 	{
-		GLuint texture{0};
+		GLuint ID{0};
 		unsigned char* data;
 		int height;
 		int width;
@@ -32,8 +32,7 @@ namespace Resources
 		// just call by the material during a load mesh
 		void CreateTextureFromImage(const std::string& filename, Loader::ResourcesManager& resources, bool shouldFlip = true);
 
-		// TO DO 
-		// do the CreateTextureFromImage but without call of the material
+		void CreateOpenGLTexture();
 
 		void EmplaceInTexture();
 	};

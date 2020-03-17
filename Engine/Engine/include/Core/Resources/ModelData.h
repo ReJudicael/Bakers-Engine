@@ -30,6 +30,8 @@ namespace Resources
 		void LoadVertices(aiMesh* mesh);
 		void LoadIndices(aiMesh* mesh, const int increaseIndices = 0);
 
+		void CreateVAOModel();
+
 		void EmplaceInModel();
 
 	};
