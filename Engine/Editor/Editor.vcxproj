@@ -90,7 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;include/Editor/Datastructure;include/Editor/Canvas;include/Editor/Window;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -111,7 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;include/Editor/Datastructure;include/Editor/Canvas;include/Editor/Window;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;include/Editor/Datastructure;include/Editor/Canvas;include/Editor/Window;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -159,7 +159,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;include/Editor/Datastructure;include/Editor/Canvas;include/Editor/Window;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -182,28 +182,41 @@
     <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\Editor\Canvas.cpp" />
+    <ClCompile Include="src\Editor\Canvas\Canvas.cpp" />
+    <ClCompile Include="src\Editor\Canvas\MenuBar.cpp" />
+    <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp" />
     <ClCompile Include="src\Editor\GUIManager.cpp" />
-    <ClCompile Include="src\Editor\Widget\IWidget.cpp" />
-    <ClCompile Include="src\Editor\Widget\WidgetConsole.cpp" />
-    <ClCompile Include="src\Editor\Widget\WidgetFileBrowser.cpp" />
-    <ClCompile Include="src\Editor\Widget\WidgetHierarchy.cpp" />
-    <ClCompile Include="src\Editor\Widget\WidgetInspector.cpp" />
-    <ClCompile Include="src\Editor\Widget\WidgetScene.cpp" />
+    <ClCompile Include="src\Editor\Widgets\AWidget.cpp" />
+    <ClCompile Include="src\Editor\Widgets\MenuGroup.cpp" />
+    <ClCompile Include="src\Editor\Widgets\MenuItem.cpp" />
+    <ClCompile Include="src\Editor\Widgets\Separator.cpp" />
+    <ClCompile Include="src\Editor\Window\AWindow.cpp" />
+    <ClCompile Include="src\Editor\Window\WindowConsole.cpp" />
+    <ClCompile Include="src\Editor\Window\WindowFileBrowser.cpp" />
+    <ClCompile Include="src\Editor\Window\WindowHierarchy.cpp" />
+    <ClCompile Include="src\Editor\Window\WindowInspector.cpp" />
+    <ClCompile Include="src\Editor\Window\WindowProfiler.cpp" />
+    <ClCompile Include="src\Editor\Window\WindowScene.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Editor\Canvas.hpp" />
-    <ClInclude Include="include\Editor\FileSystem.hpp" />
+    <ClInclude Include="include\Editor\Canvas\Canvas.hpp" />
+    <ClInclude Include="include\Editor\Canvas\MenuBar.h" />
+    <ClInclude Include="include\Editor\Datastructure\Container.hpp" />
+    <ClInclude Include="include\Editor\Datastructure\DrawableComponent.h" />
+    <ClInclude Include="include\Editor\Datastructure\IDrawable.h" />
     <ClInclude Include="include\Editor\GUIManager.h" />
-    <ClInclude Include="include\Editor\StringExtension.hpp" />
-    <ClInclude Include="include\Editor\Widget\IWidget.h" />
-    <ClInclude Include="include\Editor\Widget\WidgetConsole.h" />
-    <ClInclude Include="include\Editor\Widget\WidgetFileBrowser.h" />
-    <ClInclude Include="include\Editor\Widget\WidgetHierarchy.h" />
-    <ClInclude Include="include\Editor\Widget\WidgetInspector.h" />
-    <ClInclude Include="include\Editor\Widget\WidgetScene.h" />
-    <ClInclude Include="include\IRenderable.h" />
+    <ClInclude Include="include\Editor\Widget\AWidget.h" />
+    <ClInclude Include="include\Editor\Widget\MenuGroup.h" />
+    <ClInclude Include="include\Editor\Widget\MenuItem.h" />
+    <ClInclude Include="include\Editor\Widget\Separator.h" />
+    <ClInclude Include="include\Editor\Window\AWindow.h" />
+    <ClInclude Include="include\Editor\Window\WindowConsole.h" />
+    <ClInclude Include="include\Editor\Window\WindowFileBrowser.h" />
+    <ClInclude Include="include\Editor\Window\WindowHierarchy.h" />
+    <ClInclude Include="include\Editor\Window\WindowInspector.h" />
+    <ClInclude Include="include\Editor\Window\WindowProfiler.h" />
+    <ClInclude Include="include\Editor\Window\WindowScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

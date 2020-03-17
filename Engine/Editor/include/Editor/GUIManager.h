@@ -2,7 +2,7 @@
 
 #include "Canvas.hpp"
 
-#include <GLFW/glfw3.h>
+#include <GLFW\glfw3.h>
 #include <imgui\imgui.h>
 #include <imgui\imgui_impl_glfw.h>
 #include <imgui\imgui_impl_opengl3.h>
@@ -53,6 +53,12 @@ namespace Editor
 		 * Set IO Configuration
 		 */
 		void SetIOConfiguration();
+
+	private:
+		/**
+		 * Set Baker UI Theme
+		 */
+		void SetStyleBaker();
 
 	public:
 		/**

@@ -313,6 +313,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\Core\Resources\Shader.cpp" />
     <ClCompile Include="src\Core\Resources\TextureData.cpp" />
     <ClCompile Include="src\Core\SystemManagement\InputSystem.cpp" />
+    <ClCompile Include="src\Core\SystemManagement\ShellFileAPI.cpp" />
     <ClCompile Include="src\Core\Window.cpp" />
     <ClCompile Include="src\Core\Datastructure\IComponent.cpp" />
     <ClCompile Include="src\Core\Datastructure\IRenderable.cpp" />
@@ -368,6 +369,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="include\Core\SystemManagement\FileSystem.hpp" />
     <ClInclude Include="include\Core\SystemManagement\Input.hpp" />
     <ClInclude Include="include\Core\SystemManagement\InputSystem.hpp" />
+    <ClInclude Include="include\Core\SystemManagement\ShellFileAPI.h" />
     <ClInclude Include="include\Core\SystemManagement\TaskSystem.hpp" />
     <ClInclude Include="include\Core\Types\StringExtension.hpp" />
     <ClInclude Include="include\Core\Renderer\Camera.h" />

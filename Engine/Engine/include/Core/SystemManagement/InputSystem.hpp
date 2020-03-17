@@ -15,7 +15,7 @@ namespace Core::SystemManagement
 	/**
 	 * Handle inputs by storing whether each key is pressed or released
 	 */
-	class InputSystem final
+	BAKERS_API_CLASS InputSystem final
 	{
 	private:
 		/* Stockage mouse buttons, keys and scroll */

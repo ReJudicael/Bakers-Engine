@@ -1,9 +1,11 @@
 #pragma once
 
+#include "StringExtension.hpp"
+#include "ShellFileAPI.h"
+
 #include <filesystem>
 #include <string>
-
-#include "StringExtension.hpp"
+#include "CoreMinimal.h"
 
 namespace Core::SystemManagement
 {
@@ -319,8 +321,7 @@ namespace Core::SystemManagement
 	{
 		if (IsRegularFile(itemPath))
 		{
-			std::string cmd = "openwith " + GetAbsoluteWithQuote(itemPath);
-			system(cmd.c_str());
+			ShellFileAPI::OpenSpecifiedFile(GetAbsoluteWithQuote(itemPath));
 			return true;
 		}
 		else
