@@ -36,7 +36,7 @@ namespace Editor::Window
 		bool m_canRename{ false };
 
 		/**
-		 * Ratio size ( 1 to 100), to zoom path contents
+		 * Ratio size (1 to 100), to zoom path contents
 		 */
 		int m_size{ 1 };
 
@@ -60,30 +60,59 @@ namespace Editor::Window
 		/**
 		 * Push widget style
 		 */
-		void PushWidgetStyle();
+		void PushWindowStyle();
 
 		/**
 		 * Pop widget style
 		 */
-		void PopWidgetStyle();
+		void PopWindowStyle();
 
 	private:
-		/**
-		 * Draw elements of widget in window
-		 */
-		void Tick() override;
 
+		/**
+		 * Rename the selected file / folder
+		 * @param item: Name of the chosen file / folder
+		 */
+		void RenameContent(const std::string& item);
+
+		/**
+		 * Pop-up displayed when mouse right button is pressed
+		 * @param itemPath: Path of the chosen file / folder
+		 */
+		void DirectoryContentActionRight(const std::string& itemPath);
+
+		/**
+		 * Slider to zoom the displayed content
+		 */
+		void ZoomPathContents();
+
+		/**
+		 * Get the texture of the icon of the chosen file / folder
+		 * @param itemPath: Path of the chosen file / folder
+		 */
+		ImTextureID GetIcon(const std::string& itemPath);
 	private:
 		/**
 		 * Show current local path
 		 */
 		void ShowCurrentLocalPath();
 
-		void RenameContent(const std::string& itemPath, const std::string& item);
-		void DirectoryContentActionRight(const std::string& itemPath);
-		void ZoomPathContents();
+		/**
+		 * Display the contents of the current directory
+		 * @param contents: Contents of the current directory
+		 */
 		void ShowDirectoryContents(std::vector<std::filesystem::path> contents);
+
+		/**
+		 * Display the current local path and the contents of the current directory
+		 * @param contents: Contents of the current directory
+		 */
 		void ShowDirectory(const std::vector<std::filesystem::path>& content);
-		ImTextureID GetIcon(const std::string& item);
+
+	private:
+		/**
+		 * Draw elements of widget in window
+		 */
+		void Tick() override;
 	};
 }
