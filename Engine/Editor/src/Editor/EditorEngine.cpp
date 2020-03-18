@@ -5,7 +5,7 @@
 #include "WindowFileBrowser.h"
 #include "WindowConsole.h"
 #include "WindowInspector.h"
-#include "WindowScene.h"
+#include "WindowViewport.h"
 #include "WindowHierarchy.h"
 #include "WindowProfiler.h"
 #include "MenuGroup.h"
@@ -68,7 +68,7 @@ namespace Editor
 		canvas->Add<Editor::Window::WindowFileBrowser>(this);
 		canvas->Add<Editor::Window::WindowProfiler>(this, false);
 
-
+		m_root->AddComponent(new Core::Datastructure::ComponentBase());
 		ImVec4	clear_color = ImVec4(0.45f, 0.55f, 0.6f, 1.f);
 		m_fbo = CreateFrameBuffer(m_width, m_height);
 		INIT_TRACY_GL_IMAGE(m_width, m_height)

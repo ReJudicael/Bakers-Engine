@@ -91,6 +91,8 @@ namespace Core::Datastructure
 		 */
 		inline Object*		GetParent() const noexcept;
 
+		inline std::list<Object*>&	GetChilds() noexcept;
+
 		/**
 		 * Translates the object in local space by given vector
 		 * @param v: Vector to translate by
@@ -249,6 +251,8 @@ namespace Core::Datastructure
 		 */
 		void	EraseComponent(ComponentBase* c) noexcept;
 
+		std::list<ComponentBase*>& GetComponents() noexcept;
+
 		/**
 		 * Returns root object of the scene
 		 */
@@ -263,5 +267,15 @@ namespace Core::Datastructure
 	inline Object*	Datastructure::Object::GetParent() const noexcept
 	{
 		return m_parent;
+	}
+
+	inline std::list<Object*>& Datastructure::Object::GetChilds() noexcept
+	{
+		return m_childs;
+	}
+
+	inline std::list<ComponentBase*>& Datastructure::Object::GetComponents() noexcept
+	{
+		return m_components;
 	}
 }

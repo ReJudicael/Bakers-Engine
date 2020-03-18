@@ -236,9 +236,8 @@ namespace Editor::Window
 
 				ImGui::PopID();
 			}
-
-		ImGui::EndChild();
-		ImGui::PopStyleVar(1);
+			ImGui::EndChild();
+			ImGui::PopStyleVar(1);
 		}
 
 		ZoomPathContents();
@@ -253,11 +252,7 @@ namespace Editor::Window
 
 	void WindowFileBrowser::Tick()
 	{
-		PushWindowStyle();
-		{
-			fs.MoveCurrentToClosestDirectory();
-			ShowDirectory(fs.GetContentsInCurrentPath());
-		}
-		PopWindowStyle();
+		fs.MoveCurrentToClosestDirectory();
+		ShowDirectory(fs.GetContentsInCurrentPath());
 	}
 }

@@ -20,8 +20,20 @@ namespace Editor::Window
 		 */
 		~WindowHierarchy() = default;
 
+	private:
 		/**
-		 * Draw elements of widget in window
+		 * Push window style
+		 */
+		void PushWindowStyle() override;
+
+		/**
+		 * Pop window style
+		 */
+		void PopWindowStyle() override;
+
+	private:
+		/**
+		 * Draw elements in window
 		 */
 		void Tick() override;
 	};

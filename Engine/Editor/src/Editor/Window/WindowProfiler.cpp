@@ -7,6 +7,14 @@ namespace Editor::Window
 	{
 	}
 
+	void WindowProfiler::PushWindowStyle()
+	{
+	}
+
+	void WindowProfiler::PopWindowStyle()
+	{
+	}
+
 	void WindowProfiler::Tick()
 	{
 		ImGui::Text(GetNameID().c_str());

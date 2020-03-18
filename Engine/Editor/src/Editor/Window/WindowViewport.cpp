@@ -1,4 +1,4 @@
-#include "WindowScene.h"
+#include "WindowViewport.h"
 #include "EditorEngine.h"
 
 #include <string>
@@ -9,6 +9,16 @@ namespace Editor::Window
 		AWindow{ engine, "Viewport", visible }
 	{
 		m_flags |= ImGuiWindowFlags_NoScrollbar;
+	}
+
+	void WindowViewport::PushWindowStyle()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+	}
+
+	void WindowViewport::PopWindowStyle()
+	{
+		ImGui::PopStyleVar(1);
 	}
 
 	void WindowViewport::Tick()

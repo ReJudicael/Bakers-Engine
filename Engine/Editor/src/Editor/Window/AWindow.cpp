@@ -40,10 +40,12 @@ namespace Editor::Window
 
 	void AWindow::Draw()
 	{
+		PushWindowStyle();
 		if (Begin())
 		{
 			Tick();
 			End();
 		}
+		PopWindowStyle();
 	}
 }

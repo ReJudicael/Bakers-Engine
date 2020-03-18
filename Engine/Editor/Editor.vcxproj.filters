@@ -93,9 +93,6 @@
     <ClCompile Include="src\Editor\Window\WindowProfiler.cpp">
       <Filter>Source Files\Editor\Window</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Window\WindowScene.cpp">
-      <Filter>Source Files\Editor\Window</Filter>
-    </ClCompile>
     <ClCompile Include="src\Editor\Window\AWindow.cpp">
       <Filter>Source Files\Editor\Window</Filter>
     </ClCompile>
@@ -119,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="src\Editor\EditorEngine.cpp">
       <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowViewport.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,9 +144,6 @@
       <Filter>Header Files\Editor\Window</Filter>
     </ClInclude>
     <ClInclude Include="include\Editor\Window\WindowProfiler.h">
-      <Filter>Header Files\Editor\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Editor\Window\WindowScene.h">
       <Filter>Header Files\Editor\Window</Filter>
     </ClInclude>
     <ClInclude Include="include\Editor\Window\AWindow.h">
@@ -175,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="include\Editor\EditorEngine.h">
       <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowViewport.h">
+      <Filter>Header Files\Editor\Window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

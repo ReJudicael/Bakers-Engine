@@ -58,14 +58,14 @@ namespace Editor::Window
 
 	private:
 		/**
-		 * Push widget style
+		 * Push window style
 		 */
-		void PushWindowStyle();
+		void PushWindowStyle() override;
 
 		/**
-		 * Pop widget style
+		 * Pop window style
 		 */
-		void PopWindowStyle();
+		void PopWindowStyle() override;
 
 	private:
 
@@ -110,8 +110,9 @@ namespace Editor::Window
 		void ShowDirectory(const std::vector<std::filesystem::path>& content);
 
 	private:
+
 		/**
-		 * Draw elements of widget in window
+		 * Draw elements in window
 		 */
 		void Tick() override;
 	};

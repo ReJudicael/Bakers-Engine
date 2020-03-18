@@ -66,6 +66,16 @@ namespace Editor
 
 		protected:
 			/**
+			 * Push window style
+			 */
+			virtual void PushWindowStyle() = 0;
+
+			/**
+			 * Pop window style
+			 */
+			virtual void PopWindowStyle() = 0;
+
+			/**
 			 * Display elements of widget in window
 			 */
 			virtual void Tick() = 0;
