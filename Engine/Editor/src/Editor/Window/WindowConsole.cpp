@@ -2,8 +2,8 @@
 
 namespace Editor::Window
 {
-	WindowConsole::WindowConsole(bool visible) :
-		AWindow{ "Console", visible }
+	WindowConsole::WindowConsole(EditorEngine* engine, bool visible) :
+		AWindow{ engine, "Console", visible }
 	{
 	}
 

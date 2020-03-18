@@ -13,7 +13,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Inspector")
 		 */
-		WindowInspector(bool visible = true);
+		WindowInspector(EditorEngine* engine, bool visible = true);
 
 		/**
 		 * Default destructor

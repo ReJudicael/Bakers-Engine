@@ -2,8 +2,8 @@
 
 namespace Editor::Window
 {
-	WindowInspector::WindowInspector(bool visible) :
-		AWindow{ "Inspector", visible }
+	WindowInspector::WindowInspector(EditorEngine* engine, bool visible) :
+		AWindow{ engine, "Inspector", visible }
 	{
 	}
 

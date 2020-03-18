@@ -3,8 +3,9 @@
 
 namespace Editor::Window
 {
-	AWindow::AWindow(const std::string& name, bool visible) :
+	AWindow::AWindow(EditorEngine* engine, const std::string& name, bool visible) :
 		DrawableComponent{ name },
+		m_engine{engine},
 		isVisible{ visible }
 	{
 	}

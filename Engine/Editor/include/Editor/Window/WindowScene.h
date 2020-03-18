@@ -7,18 +7,18 @@ namespace Editor::Window
 	/**
 	 * Widget Scene
 	 */
-	class WindowScene final : public AWindow
+	class WindowViewport final : public AWindow
 	{
 	public:
 		/**
 		 * Constructor which set title of window ("Scene")
 		 */
-		WindowScene(bool visible = true);
+		WindowViewport(EditorEngine* engine, bool visible = true);
 
 		/**
 		 * Default destructor
 		 */
-		~WindowScene() = default;
+		~WindowViewport() = default;
 
 		/**
 		 * Draw elements of widget in window

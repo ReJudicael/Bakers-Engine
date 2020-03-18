@@ -13,7 +13,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Console")
 		 */
-		WindowConsole(bool visible = true);
+		WindowConsole(EditorEngine* engine, bool visible = true);
 
 		/**
 		 * Default destructor

@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include "RootObject.hpp"
+#include "LoadResources.h"
+#include "PlayerCamera.h"
 
 RTTR_REGISTRATION
 {

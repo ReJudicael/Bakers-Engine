@@ -77,7 +77,6 @@ void	Window::Update()
 
 		PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
 		camNode->AddComponent(c);
-		Renderer r;
 
 		Core::Datastructure::Object* o{ m_root->CreateChild({}) };
 
@@ -86,6 +85,7 @@ void	Window::Update()
 
 		o->SetScale({ 0.1,0.1,0.1 });
 	}
+	TRACY_GL_IMAGE
 	INIT_TRACY_GL_IMAGE(320, 180)
 
 	while (!glfwWindowShouldClose(m_window))

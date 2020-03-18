@@ -18,8 +18,8 @@ namespace Editor::Window
 	".pdb"
 	};
 
-	WindowFileBrowser::WindowFileBrowser(bool visible) :
-		AWindow{ "File Browser", visible }
+	WindowFileBrowser::WindowFileBrowser(EditorEngine* engine, bool visible) :
+		AWindow{ engine, "File Browser", visible }
 	{
 	}
 

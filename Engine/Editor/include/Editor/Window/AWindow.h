@@ -7,6 +7,7 @@
 
 namespace Editor
 {
+	class EditorEngine;
 	/**
 	 * Window enabling features for the user
 	 */
@@ -24,11 +25,16 @@ namespace Editor
 			bool m_windowBegun{ false };
 
 			/**
+			 * Parent of the window
+			 */
+			EditorEngine* m_engine;
+
+		public:
+			/**
 			 * Window flags
 			 */
 			ImGuiWindowFlags m_flags{ ImGuiWindowFlags_NoCollapse };
 
-		public:
 			/**
 			 * Whether the widget window is visible
 			 */
@@ -39,7 +45,7 @@ namespace Editor
 			 * Explicit constructor which set title of the widget window
 			 * @param name: Set title of window
 			 */
-			AWindow(const std::string& name, bool visible = true);
+			AWindow(EditorEngine* parent, const std::string& name, bool visible = true);
 
 			/**
 			 * Destructor

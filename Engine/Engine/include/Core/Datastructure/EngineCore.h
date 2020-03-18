@@ -4,6 +4,10 @@
 #include "InputSystem.hpp"
 #include "CoreMinimal.h"
 
+namespace Resources::Loader
+{
+	class ResourcesManager;
+}
 namespace Core::Datastructure
 {
 	class RootObject;
