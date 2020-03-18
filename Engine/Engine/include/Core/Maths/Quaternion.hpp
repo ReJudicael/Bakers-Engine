@@ -2,6 +2,7 @@
 #define __QUATERNION__
 
 #include <functional>
+#include <cmath>
 
 #include "Vec3.hpp"
 #include "Vec4.hpp"

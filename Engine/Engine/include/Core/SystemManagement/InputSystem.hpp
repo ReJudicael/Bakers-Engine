@@ -8,7 +8,10 @@
 #include "CoreMinimal.h"
 #include "Vec2.hpp"
 
-class Window;
+namespace Core::Datastructure
+{
+	class EngineCore;
+}
 
 namespace Core::SystemManagement
 {
@@ -36,14 +39,14 @@ namespace Core::SystemManagement
 		ID m_mouseButtonReleasedListenerID{ 0 };
 		ID m_scrollListenerID{ 0 };
 
-		Window* m_window;
+		Core::Datastructure::EngineCore* m_core;
 
 	public:
 		/**
 		 * Constructor setting events into given window
 		 * @param window: Window that will store the key press and release events
 		 */
-		InputSystem(Window* window);
+		InputSystem(Core::Datastructure::EngineCore* core);
 
 		/**
 		 * Remove each event from the stored window

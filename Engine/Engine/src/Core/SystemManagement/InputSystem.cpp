@@ -1,31 +1,29 @@
 #include "InputSystem.hpp"
-#include "Window.h"
+#include "EngineCore.h"
 
 namespace Core::SystemManagement
 {
-	InputSystem::InputSystem(Window* window) :
-		m_window{ window }
+	InputSystem::InputSystem(Core::Datastructure::EngineCore* core) :
+		m_core{ core }
 	{
-		m_keyPressedListenerID = m_window->OnPressKey += BIND_EVENT(InputSystem::SetKeyDown);
-		m_keyReleasedListenerID = m_window->OnReleaseKey += BIND_EVENT(InputSystem::SetKeyUp);
-		m_mouseButtonPressedListenerID = m_window->OnPressMouseButton += BIND_EVENT(InputSystem::SetMouseButtonDown);
-		m_mouseButtonReleasedListenerID = m_window->OnReleaseMouseButton += BIND_EVENT(InputSystem::SetMouseButtonUp);
-		m_scrollListenerID = m_window->OnScrollYAxis += BIND_EVENT(InputSystem::SetScrollYAxis);
+		m_keyPressedListenerID = m_core->OnPressKey += BIND_EVENT(InputSystem::SetKeyDown);
+		m_keyReleasedListenerID = m_core->OnReleaseKey += BIND_EVENT(InputSystem::SetKeyUp);
+		m_mouseButtonPressedListenerID = m_core->OnPressMouseButton += BIND_EVENT(InputSystem::SetMouseButtonDown);
+		m_mouseButtonReleasedListenerID = m_core->OnReleaseMouseButton += BIND_EVENT(InputSystem::SetMouseButtonUp);
+		m_scrollListenerID = m_core->OnScrollYAxis += BIND_EVENT(InputSystem::SetScrollYAxis);
 	}
 
 	InputSystem::~InputSystem()
 	{
-		m_window->OnPressKey -= m_keyPressedListenerID;
-		m_window->OnReleaseKey -= m_keyReleasedListenerID;
-		m_window->OnPressMouseButton -= m_mouseButtonPressedListenerID;
-		m_window->OnReleaseMouseButton -= m_mouseButtonReleasedListenerID;
-		m_window->OnScrollYAxis -= m_scrollListenerID;
+		m_core->OnPressKey -= m_keyPressedListenerID;
+		m_core->OnReleaseKey -= m_keyReleasedListenerID;
+		m_core->OnPressMouseButton -= m_mouseButtonPressedListenerID;
+		m_core->OnReleaseMouseButton -= m_mouseButtonReleasedListenerID;
+		m_core->OnScrollYAxis -= m_scrollListenerID;
 	}
 
 	Core::Maths::Vec2 SystemManagement::InputSystem::GetMousePos() const noexcept
 	{
-		double pos[2];
-		glfwGetCursorPos(m_window->GetGLFWwindow(), &pos[0], &pos[1]);
-		return Core::Maths::Vec2(pos[0], pos[1]);
+		return m_core->GetMousePos();
 	}
 }

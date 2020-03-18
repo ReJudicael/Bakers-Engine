@@ -13,25 +13,23 @@
 #include "Shader.h"
 
 Window::Window():
-	m_width{ 1280 },
-	m_height{ 800 }
+	EngineCore(1280, 800)
 {
 	Init(m_width, m_height);
 }
 
 Window::Window(const int width, const int height) :
-	m_width{ width },
-	m_height{ height }
+	EngineCore(width, height)
 {
 	Init(m_width, m_height);
 }
 
-void Window::Init(const int width, const int height)
+int Window::Init(const int width, const int height)
 {
 	ZoneScoped
 		ZoneText("Initializing window", 20)
 	if (!glfwInit())
-		return;
+		return 1;
 
 	glfwDefaultWindowHints();
 	//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
@@ -47,7 +45,7 @@ void Window::Init(const int width, const int height)
 	if (!gladLoadGL())
 	{
 		fprintf(stderr, "gladLoadGL failed. \n");
-		return;
+		return 1;
 	}
 	TracyGpuContext
 
@@ -120,14 +118,11 @@ void	Window::Update()
 	}
 }
 
-double Window::GetDeltaTime()
+Core::Maths::Vec2 Window::GetMousePos() noexcept
 {
-	double currentTime = glfwGetTime();
-	double deltaTime = currentTime - m_time;
-
-	m_time = currentTime;
-
-	return deltaTime;
+	double pos[2];
+	glfwGetCursorPos(GetGLFWwindow(), &pos[0], &pos[1]);
+	return Core::Maths::Vec2(pos[0], pos[1]);
 }
 
 void Window::SetSizeWindow(const double width, const double height)

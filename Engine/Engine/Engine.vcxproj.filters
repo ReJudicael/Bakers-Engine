@@ -150,6 +150,9 @@
     <ClCompile Include="src\Core\SystemManagement\ShellFileAPI.cpp">
       <Filter>Source Files\Core\SystemManagement</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\EngineCore.cpp">
+      <Filter>Source Files\Core\Datastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -295,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\SystemManagement\ShellFileAPI.h">
       <Filter>Header Files\Core\SystemManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\EngineCore.h">
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

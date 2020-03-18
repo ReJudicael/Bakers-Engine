@@ -300,6 +300,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="..\Dependencies\stb\stb_image.cpp" />
     <ClCompile Include="..\Dependencies\Tracy\TracyClient.cpp" />
     <ClCompile Include="include\Core\Datastructure\ICamera.cpp" />
+    <ClCompile Include="src\Core\Datastructure\EngineCore.cpp" />
     <ClCompile Include="src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Core\Debug\Logger.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
@@ -333,6 +334,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="include\Core\Datastructure\IComponent.hpp" />
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp" />
     <ClInclude Include="include\Core\Datastructure\IUpdatable.hpp" />
+    <ClInclude Include="include\Core\Datastructure\EngineCore.h" />
     <ClInclude Include="include\Core\Datastructure\Object.hpp" />
     <ClInclude Include="include\Core\Datastructure\Reflection.h" />
     <ClInclude Include="include\Core\Datastructure\RootObject.hpp" />

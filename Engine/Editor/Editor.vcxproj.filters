@@ -117,6 +117,9 @@
     <ClCompile Include="src\Editor\Widgets\AWidget.cpp">
       <Filter>Source Files\Editor\Widget</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\EditorEngine.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\GUIManager.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="include\Editor\Widget\MenuGroup.h">
       <Filter>Header Files\Editor\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\EditorEngine.h">
+      <Filter>Header Files\Editor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
