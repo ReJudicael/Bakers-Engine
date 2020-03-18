@@ -12,6 +12,16 @@ class Window;
 
 namespace Core::SystemManagement
 {
+
+	/**
+	 * Define cursor appearance type
+	 */
+	enum class ECursorAppearance
+	{
+		DEFAULT = 0,
+		INVISIBLE = 1
+	};
+
 	/**
 	 * Handle inputs by storing whether each key is pressed or released
 	 */
@@ -230,6 +240,18 @@ namespace Core::SystemManagement
 		 * @return The position of the cursor, in screen coordinates, relative to the upper-left corner of the content area of the window
 		 */
 		Core::Maths::Vec2 GetMousePos() const noexcept;
+
+		/**
+		 * Set cursor position
+		 * @param pos: The desired position for the mouse cursor
+		 */
+		void SetMousePos(Core::Maths::Vec2 pos) const noexcept;
+
+		/**
+		 * Set cursor type
+		 * @param type: Desired appearance for mouse cursor
+		 */
+		void SetMouseAppearance(ECursorAppearance type) const noexcept;
 	};
 
 	inline EStateKey InputSystem::GetKeyState(EKey key) const noexcept

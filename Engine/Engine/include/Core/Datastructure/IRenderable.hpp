@@ -8,6 +8,7 @@
 #include "ICamera.h"
 #include <list>
 #include "Debug.h"
+#include "Shader.h"
 
 namespace Core::Datastructure
 {
@@ -19,7 +20,7 @@ namespace Core::Datastructure
 	public:
 		virtual void	OnStart() override;
 
-		std::shared_ptr<GLuint> m_program = 0;
+		std::shared_ptr<Resources::Shader> m_shader;
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;
 

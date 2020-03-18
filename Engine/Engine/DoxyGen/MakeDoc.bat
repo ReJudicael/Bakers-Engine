@@ -1,2 +1,0 @@
-doxygen config
-pause

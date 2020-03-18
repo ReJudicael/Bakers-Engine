@@ -65,7 +65,11 @@ namespace Resources::Loader
 
 	ResourcesManager::ResourcesManager()
 	{
-		CreateProgram(gVertexShaderStr, gFragmentShaderStr, "Default");
+		Shader defaultShader("./Resources/Shaders/DefaultShader.vert", "./Resources/Shaders/DefaultShader.frag");
+		m_shaders.emplace("Default", std::make_shared<Shader>(defaultShader));
+
+		Shader normalMapShader("./Resources/Shaders/DefaultShader.vert", "./Resources/Shaders/DefaultShaderNormalMap.frag");
+		m_shaders.emplace("NormalMapDefault", std::make_shared<Shader>(normalMapShader));
 	}
 
 	ResourcesManager::~ResourcesManager()
@@ -80,7 +84,7 @@ namespace Resources::Loader
 
 		for (unorderedmapShader::iterator itshader = m_shaders.begin();
 			itshader != m_shaders.end(); ++itshader)
-			glDeleteProgram(*itshader->second);
+			itshader->second->Delete();
 	}
 
 	void ResourcesManager::Load3DObject(const char* fileName)
@@ -338,51 +342,5 @@ namespace Resources::Loader
 				
 			}
 		}
-	}
-
-	void	ResourcesManager::CreateProgram(const char* vertex, const char* fragment, const std::string& nameShader)
-	{
-		if (m_shaders.count(nameShader) > 0)
-			return;
-
-		// std::cout "Tried to create program" << std::endl;
-		GLuint Program = glCreateProgram();
-
-		GLuint VertexShader = glCreateShader(GL_VERTEX_SHADER);
-		std::vector<const char*> Sources;
-		Sources.push_back("#version 330 core");
-		Sources.push_back(vertex);
-		glShaderSource(VertexShader, (GLsizei)Sources.size(), &Sources[0], nullptr);
-		glCompileShader(VertexShader);
-		GLint Compile;
-		glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &Compile);
-		if (Compile == GL_FALSE)
-		{
-			// std::cout "Vertex shader didn't load." << std::endl;
-			return;
-		}
-
-		GLuint FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		std::vector<const char*> FragSources;
-		FragSources.push_back("#version 330 core");
-		FragSources.push_back(fragment);
-		glShaderSource(FragmentShader, (GLsizei)FragSources.size(), &FragSources[0], nullptr);
-		glCompileShader(FragmentShader);
-		glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &Compile);
-		if (Compile == GL_FALSE)
-		{
-			// std::cout "Fragment shader didn't load." << std::endl;
-			return;
-		}
-
-		glAttachShader(Program, VertexShader);
-		glAttachShader(Program, FragmentShader);
-
-		glLinkProgram(Program);
-
-		m_shaders.emplace(nameShader, std::make_shared<GLuint>(Program));
-
-		glDeleteShader(VertexShader);
-		glDeleteShader(FragmentShader);
 	}
 }

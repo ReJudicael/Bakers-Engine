@@ -11,6 +11,7 @@
 #include "Object3DGraph.h"
 #include "Vertex.h" 
 #include "Debug.h"
+#include "Shader.h"
 
 
 struct aiScene;
@@ -29,7 +30,7 @@ namespace Resources
 	struct TextureData;
 
 	#define unorderedmapTexture std::unordered_map<std::string, std::shared_ptr<Texture>>
-	#define unorderedmapShader std::unordered_map<std::string, std::shared_ptr<GLuint>>
+	#define unorderedmapShader std::unordered_map<std::string, std::shared_ptr<Shader>>
 	#define unorderedmapModel std::unordered_map<std::string, std::shared_ptr<Model>>	
 	#define unorderedmapMaterial std::unordered_map<std::string, std::shared_ptr<Material>>	
 	#define unorderedmapObject3DGraph std::unordered_map<std::string, std::shared_ptr<Object3DGraph>>	
@@ -161,7 +162,7 @@ namespace Resources
 			 * @param keyName: the key of the shader with which we try to find
 			 * @return the shared_ptr of the shader we try to find with the keyName
 			 */
-			inline std::shared_ptr<GLuint> GetShader(std::string keyName)
+			inline std::shared_ptr<Shader> GetShaderContent(std::string keyName)
 			{
 				return m_shaders[keyName];
 			}

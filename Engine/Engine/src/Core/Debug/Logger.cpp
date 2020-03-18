@@ -1,4 +1,4 @@
-#include "Log.h"
+#include "Logger.h"
 
 Core::Debug::Logger* Core::Debug::Logger::m_instance = nullptr;
 

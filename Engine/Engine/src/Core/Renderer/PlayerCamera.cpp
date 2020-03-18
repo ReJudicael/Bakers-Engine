@@ -16,11 +16,13 @@ void PlayerCamera::MoveWithInput()
 {
 	if (Input()->IsMouseButtonUnused(EMouseButton::RIGHT))
 	{
-		m_mousePos = 0;
+		Input()->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
+		m_mousePos = Input()->GetMousePos();
 		m_isMouseSet = false;
 		return;
 	}
 	
+	Input()->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::INVISIBLE);
 	ComputeTranslation();
 	ComputeRotation();
 }
@@ -58,7 +60,7 @@ void PlayerCamera::ComputeRotation()
 			Rotate({ mouseMove.y, mouseMove.x, 0 });
 	}
 
-	m_mousePos = newPos;
+	Input()->SetMousePos(m_mousePos);
 	m_isMouseSet = true;
 }
 
@@ -124,6 +126,6 @@ void PlayerCamera::Move(Core::Maths::Vec3 move)
 
 void PlayerCamera::Rotate(Core::Maths::Vec3 move)
 {
-	m_angularMovement = move.Normalized();
+	m_angularMovement = move;
 	m_isRotating = true;
 }
