@@ -80,17 +80,17 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	glEnable(GL_DEPTH_TEST);
 
 	// init the value of the texture1
-	glUniform1i(glGetUniformLocation(*m_program, "uColorTexture"), 0);
+	glUniform1i(m_shader->GetLocation("uColorTexture"), 0);
 	// init the value of the texture2
-	glUniform1i(glGetUniformLocation(*m_program, "uNormalMap"), 1);
+	glUniform1i(m_shader->GetLocation("uNormalMap"), 1);
 
-	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uModel"), 1, GL_TRUE, trs.m_array);
-	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
-	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
+	glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, trs.m_array);
+	glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
+	glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
 
 	glBindVertexArray(m_model->VAOModel);
 
-	glUseProgram(*m_program);
+	m_shader->UseProgram();
 	
 
 	for (int i = 0; i < m_model->offsetsMesh.size(); i++)
