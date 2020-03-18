@@ -263,7 +263,7 @@ namespace Core::SystemManagement
 
 	inline std::string FileSystem::GetLocalAbsolute(const std::string& itemPath) const noexcept
 	{
-		return m_currentDirectory == "." ? itemPath : m_currentDirectory + '\\' + itemPath;
+		return m_currentDirectory == "." || itemPath == ".." ? itemPath : m_currentDirectory + '\\' + itemPath;
 	}
 
 	inline std::string FileSystem::GetFilename(const Path& path) const noexcept
