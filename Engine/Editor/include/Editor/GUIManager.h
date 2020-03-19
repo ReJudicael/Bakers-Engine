@@ -29,7 +29,6 @@ namespace Editor
 	 */
 	class GUIManager final
 	{
-		EditorEngine* m_parent;
 	public:
 		/**
 		 * Contains elements to display (Widgets) and set dockspace
@@ -43,7 +42,7 @@ namespace Editor
 		 * @param glsl_version: Store GLSL version string so we can refer to it later in case we recreate shaders
 		 * @param style: UI Theme
 		 */
-		GUIManager(EditorEngine* parent, const char* glsl_version, GUIStyle style);
+		GUIManager(GLFWwindow* window, const char* glsl_version, GUIStyle style);
 
 		/**
 		 * Clean up canvas and ImGui
@@ -75,7 +74,6 @@ namespace Editor
 		 * @param canvas: Desired canvas
 		 */
 		void SetCanvas(Canvas* canvas);
-		EditorEngine*	GetParent();
 
 	private:
 		/**

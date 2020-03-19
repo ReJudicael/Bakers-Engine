@@ -132,7 +132,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\RTTR\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -158,7 +158,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\RTTR\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
     </Link>
     <PreLinkEvent>
@@ -191,7 +191,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\RTTR\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -220,7 +220,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\RTTR\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -250,7 +250,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\RTTR\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -283,7 +283,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\RTTR\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -304,6 +304,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Core\Debug\Logger.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Core\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Core\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Core\Renderer\PlayerCamera.cpp" />
     <ClCompile Include="src\Core\Renderer\Renderer.cpp" />
@@ -353,6 +354,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="include\Core\Maths\Vec2.hpp" />
     <ClInclude Include="include\Core\Maths\Vec3.hpp" />
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
+    <ClInclude Include="include\Core\Renderer\Framebuffer.h" />
     <ClInclude Include="include\Core\Renderer\Mesh.h" />
     <ClInclude Include="include\Core\Renderer\PlayerCamera.h" />
     <ClInclude Include="include\Core\Renderer\Renderer.h" />

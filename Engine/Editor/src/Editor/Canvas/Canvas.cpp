@@ -29,16 +29,6 @@ namespace Editor
 			widget->isVisible = opened;
 	}
 
-	void Canvas::SetParent(GUIManager* parent)
-	{
-		m_parent = parent;
-	}
-
-	GUIManager* Canvas::GetParent()
-	{
-		return m_parent;
-	}
-
 	void Canvas::PushDockStyle()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);

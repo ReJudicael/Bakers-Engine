@@ -14,7 +14,6 @@
 
 namespace Editor
 {
-	class GUIManager;
 	/**
 	 * Dockspace handler
 	 */
@@ -45,7 +44,6 @@ namespace Editor
 		/**
 		 * Parent of the canvas
 		 */
-		GUIManager* m_parent;
 	public:
 		/**
 		 * Default constructor
@@ -77,10 +75,6 @@ namespace Editor
 		 * @param opened: If true, open all widgets, otherwise it will close them all.
 		 */
 		void OpenAllWidgets(bool opened);
-
-		void		SetParent(GUIManager* parent);
-		GUIManager* GetParent();
-
 	private:
 		/**
 		 * Push dockspace style

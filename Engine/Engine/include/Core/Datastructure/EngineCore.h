@@ -3,6 +3,7 @@
 #include "EventSystem.hpp"
 #include "InputSystem.hpp"
 #include "CoreMinimal.h"
+#include "Framebuffer.h"
 
 namespace Resources::Loader
 {
@@ -10,6 +11,7 @@ namespace Resources::Loader
 }
 namespace Core::Datastructure
 {
+	static const char* glsl_version = "#version 460";
 	class RootObject;
 	BAKERS_API_CLASS EngineCore
 	{
@@ -17,12 +19,16 @@ namespace Core::Datastructure
 		Core::SystemManagement::InputSystem* m_inputSystem{ nullptr };
 		int m_width{ 0 };
 		int m_height{ 0 };
+		Core::Renderer::Framebuffer* m_fbo;
+		GLFWwindow* m_window;
 
 		double m_time{ 0 };
+
+		TRACY_GL_IMAGE
 	public:
 		EngineCore();
 		EngineCore(const int width, const int height);
-		virtual ~EngineCore() = default;
+		virtual ~EngineCore();
 
 		Core::Datastructure::RootObject* m_root;
 
@@ -34,11 +40,13 @@ namespace Core::Datastructure
 		Core::SystemManagement::EventSystem<double, double> OnResizeWindow;
 
 		int				Init();
-		virtual int		Init(const int width, const int height) = 0;
+		virtual int		Init(const int width, const int height);
 		virtual void	SetSizeWindow(const double width, const double height) = 0;
-		virtual void	Update() = 0;
+		virtual void	Update();
 
-		double	GetDeltaTime();
+		double			GetDeltaTime();
+		GLFWwindow*		GetWindow();
+		Core::Renderer::Framebuffer* GetFBO();
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept = 0;
 

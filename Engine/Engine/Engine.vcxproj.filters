@@ -153,6 +153,9 @@
     <ClCompile Include="src\Core\Datastructure\EngineCore.cpp">
       <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Framebuffer.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -301,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\EngineCore.h">
       <Filter>Header Files\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Framebuffer.h">
+      <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

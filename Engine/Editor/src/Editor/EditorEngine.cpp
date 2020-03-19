@@ -24,28 +24,22 @@ namespace Editor
 		Init(width, height);
 	}
 
+	void	error(int error, const char* message)
+	{
+		std::cout << message << std::endl;
+	}
+
 	int EditorEngine::Init(const int width, const int height)
 	{
+		glfwSetErrorCallback(error);
+		int init = EngineCore::Init(width, height);
+		if (init != 0)
+			return init;
 		if (!glfwInit())
 			return 1;
-
-		const char* glsl_version = "#version 460";
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-
-		m_window = glfwCreateWindow(width, height, "Editor", nullptr, nullptr);
-		if (m_window == nullptr)
-			return 1;
-
 		glfwMakeContextCurrent(m_window);
-		glfwSwapInterval(1);
-
 		if (!gladLoadGL())
-		{
-			fprintf(stderr, "gladLoadGL failed. \n");
 			return 1;
-		}
-		TracyGpuContext
 
 		OnResizeWindow += BIND_EVENT_2(EditorEngine::SetSizeWindow);
 
@@ -56,7 +50,7 @@ namespace Editor
 
 		SetCallbackToGLFW();
 
-		m_man = new Editor::GUIManager(this, glsl_version, Editor::GUIStyle::BAKER);
+		m_man = new Editor::GUIManager(m_window, Core::Datastructure::glsl_version, Editor::GUIStyle::BAKER);
 
 		Editor::Canvas* canvas = new Editor::Canvas();
 		m_man->SetCanvas(canvas);
@@ -70,7 +64,6 @@ namespace Editor
 
 		m_root->AddComponent(new Core::Datastructure::ComponentBase());
 		ImVec4	clear_color = ImVec4(0.45f, 0.55f, 0.6f, 1.f);
-		m_fbo = CreateFrameBuffer(m_width, m_height);
 		INIT_TRACY_GL_IMAGE(m_width, m_height)
 		// Main loop
 		while (!glfwWindowShouldClose(m_window))
@@ -104,54 +97,14 @@ namespace Editor
 
 	void EditorEngine::Update()
 	{
-		ZoneNamedN(updateLoop, "Main update loop", true)
-			glfwPollEvents();
-		m_root->StartFrame();
-		double deltaTime = GetDeltaTime();
-		m_root->Update(deltaTime);
-		GLint PreviousFramebuffer;
-		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo.FBO);
-		glClear(GL_COLOR_BUFFER_BIT);
-		m_root->Render();
-		{
-			ZoneNamedN(swapBuffers, "glfwSwapBuffers", true)
-			TRACY_GL_IMAGE_SEND(m_width, m_height)
-			TracyGpuCollect
-		}
-		glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
-		FrameMark;
-		m_root->RemoveDestroyed();
-		m_inputSystem->ClearRegisteredInputs();
+		glfwPollEvents();
+		EngineCore::Update();
 	}
 
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept
 	{
 		return Core::Maths::Vec2();
 	}
-
-	GLFWwindow* EditorEngine::GetWindow()
-	{
-		return m_window;
-	}
-
-	Framebuffer& EditorEngine::GetFBO()
-	{
-		return m_fbo;
-	}
-
-	void EditorEngine::ResizeFBO(int width, int height)
-	{
-
-		glBindTexture(GL_TEXTURE_2D, m_fbo.ColorTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-		m_fbo.Size[2] = width;
-		m_fbo.Size[3] = height;
-	}
-
 
 	void EditorEngine::SetCallbackToGLFW()
 	{
@@ -224,65 +177,4 @@ namespace Editor
 		};
 		return glfwSetWindowSizeCallback(m_window, window_size_callback);
 	}
-
-	Framebuffer EditorEngine::CreateFrameBuffer(int width, int height)
-	{
-		GLint PreviousFramebuffer;
-		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
-
-		// Create Framebuffer that will hold 1 color attachement
-		GLuint FBO;
-		glGenFramebuffers(1, &FBO);
-		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-
-		// Create texture that will be used as color attachment
-		GLuint ColorTexture;
-		glGenTextures(1, &ColorTexture);
-		glBindTexture(GL_TEXTURE_2D, ColorTexture);
-		glObjectLabel(GL_TEXTURE, ColorTexture, -1, "ColorTexture");
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		// Note: Here we store the depth stencil in a renderbuffer object, 
-		// but we can as well store it in a texture if we want to display it later
-		GLuint DepthStencilRenderbuffer;
-		glGenRenderbuffers(1, &DepthStencilRenderbuffer);
-		glBindRenderbuffer(GL_RENDERBUFFER, DepthStencilRenderbuffer);
-		glObjectLabel(GL_RENDERBUFFER, DepthStencilRenderbuffer, -1, "DepthStencilRenderbuffer");
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-
-		// Setup attachements
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, ColorTexture, 0);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, DepthStencilRenderbuffer);
-
-		unsigned int DrawAttachments[1] = { GL_COLOR_ATTACHMENT0 + 0 };
-		glDrawBuffers(1, DrawAttachments);
-
-		GLenum FramebufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-		if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
-		{
-			fprintf(stderr, "demo_impostor::framebuffer failed to complete (0x%x)\n", FramebufferStatus);
-		}
-
-		glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
-
-		Framebuffer Framebuffer = {};
-		Framebuffer.FBO = FBO;
-		Framebuffer.ColorTexture = ColorTexture;
-		Framebuffer.DepthStencilRenderbuffer = DepthStencilRenderbuffer;
-		Framebuffer.Size[0] = 0;
-		Framebuffer.Size[1] = 0;
-		Framebuffer.Size[2] = width;
-		Framebuffer.Size[3] = height;
-
-		return Framebuffer;
-	}
-
-	void EditorEngine::DeleteFrameBuffer()
-	{
-		glDeleteTextures(1, &m_fbo.ColorTexture);
-		glDeleteFramebuffers(1, &m_fbo.FBO);
-	}
-
 }

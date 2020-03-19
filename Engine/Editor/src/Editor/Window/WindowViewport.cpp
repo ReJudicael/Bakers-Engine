@@ -23,12 +23,12 @@ namespace Editor::Window
 
 	void WindowViewport::Tick()
 	{
-		Framebuffer& fbo{ m_engine->GetFBO() };
+		Core::Renderer::Framebuffer* fbo{ m_engine->GetFBO() };
 		ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
-		if (fbo.Size[2] != windowSize.x || fbo.Size[3] != windowSize.y)
+		if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
 		{
-			m_engine->ResizeFBO(windowSize.x, windowSize.y);
+			fbo->Resize(windowSize.x, windowSize.y);
 		}
-		ImGui::Image((ImTextureID)fbo.ColorTexture, windowSize);
+		ImGui::Image((ImTextureID)fbo->ColorTexture, windowSize);
 	}
 }
