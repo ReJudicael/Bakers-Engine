@@ -16,7 +16,8 @@
 
 int main()
 {
-    Editor::EditorEngine    engine;
+    Editor::EditorEngine engine;
+    engine.Update();
 
     return 0;
 }

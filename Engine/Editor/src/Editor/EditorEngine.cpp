@@ -24,34 +24,40 @@ namespace Editor
 		Init(width, height);
 	}
 
-	void	error(int error, const char* message)
+	EditorEngine::~EditorEngine()
 	{
-		std::cout << message << std::endl;
+		glfwDestroyWindow(m_window);
+		glfwTerminate();
+	}
+	
+	void callback_error(int error, const char* message)
+	{
+		std::cerr << message << std::endl;
 	}
 
 	int EditorEngine::Init(const int width, const int height)
 	{
-		glfwSetErrorCallback(error);
-		int init = EngineCore::Init(width, height);
-		if (init != 0)
-			return init;
+		glfwSetErrorCallback(callback_error);
+
+		if (EngineCore::Init(width, height))
+			return 1;
+
 		if (!glfwInit())
 			return 1;
-		glfwMakeContextCurrent(m_window);
+
 		if (!gladLoadGL())
 			return 1;
 
-		OnResizeWindow += BIND_EVENT_2(EditorEngine::SetSizeWindow);
-
-		GLFWimage icons[1];
-		icons[0].pixels = stbi_load("Resources\\Images\\bread.png", &icons[0].width, &icons[0].height, 0, STBI_rgb_alpha);
-		glfwSetWindowIcon(m_window, 1, icons);
-		stbi_image_free(icons[0].pixels);
-
+		glfwMakeContextCurrent(m_window);
+		{
+			GLFWimage icons[1];
+			icons[0].pixels = stbi_load("Resources\\Images\\bread.png", &icons[0].width, &icons[0].height, 0, STBI_rgb_alpha);
+			glfwSetWindowIcon(m_window, 1, icons);
+			stbi_image_free(icons[0].pixels);
+		}
 		SetCallbackToGLFW();
 
 		m_man = new Editor::GUIManager(this, Core::Datastructure::glsl_version, Editor::GUIStyle::BAKER);
-
 		Editor::Canvas* canvas = new Editor::Canvas();
 		m_man->SetCanvas(canvas);
 
@@ -63,29 +69,8 @@ namespace Editor
 		canvas->Add<Editor::Window::WindowProfiler>(false);
 
 		m_root->AddComponent(new Core::Datastructure::ComponentBase());
-		ImVec4	clear_color = ImVec4(0.45f, 0.55f, 0.6f, 1.f);
 		INIT_TRACY_GL_IMAGE(m_width, m_height)
-		// Main loop
-		while (!glfwWindowShouldClose(m_window))
-		{
-			glfwPollEvents();
-			glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-			glClear(GL_COLOR_BUFFER_BIT);
-			// Start the Dear ImGui frame
 
-			// Rendering
-			Update();
-			m_man->Render();
-
-			int display_w, display_h;
-			glfwGetFramebufferSize(m_window, &display_w, &display_h);
-			glViewport(0, 0, display_w, display_h);
-			glfwSwapBuffers(m_window);
-		}
-
-
-		glfwDestroyWindow(m_window);
-		glfwTerminate();
 		return 0;
 	}
 
@@ -97,17 +82,34 @@ namespace Editor
 
 	void EditorEngine::Update()
 	{
-		glfwPollEvents();
-		EngineCore::Update();
+		while (!glfwWindowShouldClose(m_window))
+		{
+			glClearColor(0.45f, 0.55f, 0.6f, 1.f);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			glfwPollEvents();
+			EngineCore::Update();
+			m_man->Render();
+
+			int display_w, display_h;
+			glfwGetFramebufferSize(m_window, &display_w, &display_h);
+			glViewport(0, 0, display_w, display_h);
+
+			glfwSwapBuffers(m_window);
+		}
 	}
 
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept
 	{
-		return Core::Maths::Vec2();
+		double pos[2];
+		glfwGetCursorPos(GetWindow(), &pos[0], &pos[1]);
+		return Core::Maths::Vec2(pos[0], pos[1]);
 	}
 
 	void EditorEngine::SetCallbackToGLFW()
 	{
+		OnResizeWindow += BIND_EVENT_2(EditorEngine::SetSizeWindow);
+
 		SetKeyCallBackToGLFW();
 		SetMouseButtonCallBackToGLFW();
 		SetScrollCallBackToGLFW();

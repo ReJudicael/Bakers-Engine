@@ -46,6 +46,7 @@ namespace Core::Datastructure
 
 		double			GetDeltaTime();
 		GLFWwindow*		GetWindow();
+
 		Core::Renderer::Framebuffer* GetFBO();
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept = 0;
