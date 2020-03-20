@@ -20,7 +20,6 @@ namespace Core::Datastructure
 	public:
 		virtual void	OnStart() override;
 
-		std::shared_ptr<Resources::Shader> m_shader;
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;
 

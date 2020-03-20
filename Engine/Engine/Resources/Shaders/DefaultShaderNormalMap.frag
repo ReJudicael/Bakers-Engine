@@ -12,5 +12,5 @@ out vec4 oColor;
 
 void main()
 {
-    oColor = texture(uColorTexture, vUV);
+    oColor = texture(uNormalMap, vUV);
 }

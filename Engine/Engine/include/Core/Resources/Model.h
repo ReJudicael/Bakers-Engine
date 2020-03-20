@@ -11,6 +11,9 @@ namespace Resources
 	struct Material;
 	struct OffsetMesh;
 
+	/*
+	 * Contains the values with which we can draw the geometry of the mesh
+	 */
 	struct Model
 	{
 		GLuint VAOModel{ 0 };

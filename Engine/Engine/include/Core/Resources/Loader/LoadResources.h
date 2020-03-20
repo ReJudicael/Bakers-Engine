@@ -29,11 +29,11 @@ namespace Resources
 	struct Texture;
 	struct TextureData;
 
-	#define unorderedmapTexture std::unordered_map<std::string, std::shared_ptr<Texture>>
-	#define unorderedmapShader std::unordered_map<std::string, std::shared_ptr<Shader>>
-	#define unorderedmapModel std::unordered_map<std::string, std::shared_ptr<Model>>	
-	#define unorderedmapMaterial std::unordered_map<std::string, std::shared_ptr<Material>>	
-	#define unorderedmapObject3DGraph std::unordered_map<std::string, std::shared_ptr<Object3DGraph>>	
+	#define unorderedmapTexture			std::unordered_map<std::string, std::shared_ptr<Texture>>
+	#define unorderedmapShader			std::unordered_map<std::string, std::shared_ptr<Shader>>
+	#define unorderedmapModel			std::unordered_map<std::string, std::shared_ptr<Model>>	
+	#define unorderedmapMaterial		std::unordered_map<std::string, std::shared_ptr<Material>>	
+	#define unorderedmapObject3DGraph	std::unordered_map<std::string, std::shared_ptr<Object3DGraph>>	
 
 	namespace Loader
 	{
@@ -46,10 +46,10 @@ namespace Resources
 
 		private:
 			/* the resources load*/
-			unorderedmapShader			m_shaders;
-			unorderedmapTexture			m_textures;
-			unorderedmapMaterial		m_materials;
-			unorderedmapModel			m_models;
+			unorderedmapShader				m_shaders;
+			unorderedmapTexture				m_textures;
+			unorderedmapMaterial			m_materials;
+			unorderedmapModel				m_models;
 			unorderedmapObject3DGraph		m_scenes;
 
 
@@ -162,7 +162,7 @@ namespace Resources
 			 * @param keyName: the key of the shader with which we try to find
 			 * @return the shared_ptr of the shader we try to find with the keyName
 			 */
-			inline std::shared_ptr<Shader> GetShaderContent(std::string keyName)
+			inline std::shared_ptr<Shader> GetShader(std::string keyName)
 			{
 				return m_shaders[keyName];
 			}

@@ -12,11 +12,12 @@ namespace Resources
 	void Material::LoadMaterialFromaiMaterial(aiMaterial* mat, const std::string& directory, 
 												Loader::ResourcesManager& resources)
 	{
+
 		textures.resize(2);
 
+		shader = resources.GetShader("Default");
 		LoadTextureMaterial(mat, textures[0], aiTextureType_DIFFUSE, directory, resources);
 		LoadTextureMaterial(mat, textures[textures.size()- 1], aiTextureType_NORMALS, directory, resources);
-
 		// maybe load a normalMap
 
 		aiColor3D color;
@@ -39,6 +40,7 @@ namespace Resources
 			{
 				std::string fullPath = directory + path.data;
 				resources.LoadTexture(fullPath, texture);
+				shader = resources.GetShader("NormalMapDefault");
 			}
 		}
 		else
@@ -46,30 +48,5 @@ namespace Resources
 			textures.resize(textures.size() - 1);
 		}
 
-	}
-
-	void Material::LoadaiSceneMaterial(const aiScene* scene, const unsigned int& mMaterialIndex, const std::string& directory,
-		Loader::ResourcesManager& resources, const int meshNameCall)
-	{
-		std::vector<unsigned int> vec;
-
-		aiMaterial* mat = scene->mMaterials[mMaterialIndex];
-		Material material;
-		std::string keyMaterial;
-		if (meshNameCall > 0)
-			keyMaterial = directory + mat->GetName().data + std::to_string(meshNameCall);
-		else
-			keyMaterial = directory + mat->GetName().data;
-
-		if (resources.GetCountMaterials(keyMaterial) > 0)
-		{
-			//std::cout "already know : "<< keyMaterial << std::endl;
-			// TO DO think in another way
-			*shared_from_this() = *resources.GetMaterial(keyMaterial);
-			return;
-		}
-		resources.EmplaceMaterials(keyMaterial, shared_from_this());
-
-		LoadMaterialFromaiMaterial(mat, directory, resources);
 	}
 }
