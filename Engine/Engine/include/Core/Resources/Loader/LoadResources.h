@@ -162,7 +162,7 @@ namespace Resources
 			 * @param keyName: the key of the shader with which we try to find
 			 * @return the shared_ptr of the shader we try to find with the keyName
 			 */
-			inline std::shared_ptr<Shader> GetShaderContent(std::string keyName)
+			inline std::shared_ptr<Shader> GetShader(std::string keyName)
 			{
 				return m_shaders[keyName];
 			}

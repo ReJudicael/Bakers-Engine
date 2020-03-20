@@ -64,7 +64,7 @@ namespace Resources
 			{
 				mesh->AddModel(resources.GetModel(nameMesh));
 				mesh->AddMaterials(resources, namesMaterial);
-				mesh->m_shader = resources.GetShaderContent("Default");
+				mesh->m_shader = resources.GetShader("Default");
 				Object->AddComponent(mesh);
 			}
 		}

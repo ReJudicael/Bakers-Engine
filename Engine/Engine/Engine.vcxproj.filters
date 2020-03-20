@@ -150,6 +150,9 @@
     <ClCompile Include="src\Core\Resources\Object3DGraph.cpp">
       <Filter>Source Files\Core\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Light.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -283,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Resources\Object3DGraph.h">
       <Filter>Header Files\Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Light.h">
+      <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

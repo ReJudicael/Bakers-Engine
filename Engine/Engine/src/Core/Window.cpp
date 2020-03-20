@@ -81,6 +81,17 @@ void	Window::Update()
 		camNode->AddComponent(c);
 		Renderer r;
 
+		NRenderer::Light* l = new NRenderer::Light();
+		l->SetLightType(NRenderer::Light::ELightType::POINT);
+		l->SetAmbiant({ 0.1f, 0.1f, 0.1f });
+		l->SetDiffuse({ 0.9f, 0.2f, 0.2f });
+		l->SetSpecular({ 0.9f, 0.2f, 0.2f });
+		l->SetAttenuation({ 1.f, 0.022f, 0.0019f });
+		l->SetRange(10.f);
+		l->SetAngle(0.1f);
+		l->SetAngleSmoothness(0.01f);
+		camNode->AddComponent(l);
+
 		Core::Datastructure::Object* o{ m_root->CreateChild({}) };
 
 		manager.Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");

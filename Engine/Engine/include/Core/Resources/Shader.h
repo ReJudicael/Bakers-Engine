@@ -4,15 +4,23 @@
 #include <GLFW/glfw3.h>
 #include <unordered_map>
 #include <string>
+#include <vector>
+
+#include "Light.h"
 
 namespace Resources
 {
+	//const char* LightShaderSource = "./Resources/Shaders/LightHeader.shader";
+
 	/**
 	 * Handle program creation through vertex and fragment shader files
 	 */
 	class Shader
 	{
 	public:
+		const char* version = "#version 330 core\n";
+		const char* lightShaderSource = "./Resources/Shaders/LightHeader.shader";
+
 		/**
 		 * Indicate the type of shader
 		 */
@@ -22,7 +30,17 @@ namespace Resources
 			FRAGMENT
 		};
 
+		enum class EShaderHeaderType : unsigned int
+		{
+			NONE = 0,
+			LIGHT
+		};
+
+		static std::vector<NRenderer::Light*>	lights;
+
 	private:
+		EShaderHeaderType m_shaderHeader = EShaderHeaderType::NONE;
+
 		GLuint m_programID = UINT_MAX;
 		std::unordered_map<std::string, GLint> m_locations;
 
@@ -35,7 +53,7 @@ namespace Resources
 		 * @param vertexFilePath: Path to the vertex shader file
 		 * @param fragmentFilePath: Path to the fragment shader file
 		 */
-		Shader(const char* vertexFilePath, const char* fragmentFilePath);
+		Shader(const char* vertexFilePath, const char* fragmentFilePath, EShaderHeaderType header = EShaderHeaderType::NONE);
 
 		/**
 		 * Destructor
@@ -87,5 +105,10 @@ namespace Resources
 		 * Use glProgram
 		 */
 		void UseProgram();
+
+		/**
+		 * Send Lights to shader program
+		 */
+		void SendLights();
 	};
 }

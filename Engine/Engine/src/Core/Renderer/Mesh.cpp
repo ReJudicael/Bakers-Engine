@@ -84,6 +84,8 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	// init the value of the texture2
 	glUniform1i(m_shader->GetLocation("uNormalMap"), 1);
 
+	
+	m_shader->SendLights();
 	glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, trs.m_array);
 	glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
 	glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
