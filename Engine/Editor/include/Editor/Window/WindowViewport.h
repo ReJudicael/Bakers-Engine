@@ -13,7 +13,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Scene")
 		 */
-		WindowViewport(EditorEngine* engine, bool visible = true);
+		WindowViewport(Canvas* parent, bool visible = true);
 
 		/**
 		 * Default destructor

@@ -13,7 +13,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Hierarchy")
 		 */
-		WindowHierarchy(EditorEngine* engine, bool visible = true);
+		WindowHierarchy(Canvas* parent, bool visible = true);
 
 		/**
 		 * Default destructor

@@ -14,6 +14,8 @@
 
 namespace Editor
 {
+	class EditorEngine;
+	class GUIManager;
 	/**
 	 * Dockspace handler
 	 */
@@ -44,6 +46,7 @@ namespace Editor
 		/**
 		 * Parent of the canvas
 		 */
+		GUIManager* m_manager;
 	public:
 		/**
 		 * Default constructor
@@ -55,11 +58,26 @@ namespace Editor
 		 */
 		~Canvas() = default;
 
-	public:
 		/**
 		 * Initialize Menur Bar
 		 */
 		void InitMenuBar();
+
+		/**
+		 * Returns the manager of the canvas
+		 */
+		GUIManager* GetManager() noexcept;
+		
+		/**
+		 * Sets the manager of the canvas
+		 * @param manager: The manager of the canvas
+		 */
+		void		SetManager(GUIManager* manager) noexcept;
+
+		/**
+		 * Returns a pointer to the engine core
+		 */
+		EditorEngine* GetEngine() noexcept;
 
 		/**
 		 * Add widget
@@ -112,7 +130,7 @@ namespace Editor
 	template<class T, class ...Args>
 	inline T& Canvas::Add(Args&& ...args)
 	{
-		T& output = Datastructure::Container<Window::AWindow>::Add<T, Args...>(std::forward<Args>(args)...);
+		T& output = Datastructure::Container<Window::AWindow>::Add<T, Canvas*, Args...>(this, std::forward<Args>(args)...);
 
 		m_view->Add<Widget::MenuItem>(output.GetName().c_str(), "", &output.isVisible, true).OnClick +=
 			[&output]

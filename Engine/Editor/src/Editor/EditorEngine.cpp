@@ -50,17 +50,17 @@ namespace Editor
 
 		SetCallbackToGLFW();
 
-		m_man = new Editor::GUIManager(m_window, Core::Datastructure::glsl_version, Editor::GUIStyle::BAKER);
+		m_man = new Editor::GUIManager(this, Core::Datastructure::glsl_version, Editor::GUIStyle::BAKER);
 
 		Editor::Canvas* canvas = new Editor::Canvas();
 		m_man->SetCanvas(canvas);
 
-		canvas->Add<Editor::Window::WindowHierarchy>(this);
-		canvas->Add<Editor::Window::WindowInspector>(this);
-		canvas->Add<Editor::Window::WindowViewport>(this);
-		canvas->Add<Editor::Window::WindowConsole>(this);
-		canvas->Add<Editor::Window::WindowFileBrowser>(this);
-		canvas->Add<Editor::Window::WindowProfiler>(this, false);
+		canvas->Add<Editor::Window::WindowHierarchy>();
+		canvas->Add<Editor::Window::WindowInspector>();
+		canvas->Add<Editor::Window::WindowViewport>();
+		canvas->Add<Editor::Window::WindowConsole>();
+		canvas->Add<Editor::Window::WindowFileBrowser>();
+		canvas->Add<Editor::Window::WindowProfiler>(false);
 
 		m_root->AddComponent(new Core::Datastructure::ComponentBase());
 		ImVec4	clear_color = ImVec4(0.45f, 0.55f, 0.6f, 1.f);

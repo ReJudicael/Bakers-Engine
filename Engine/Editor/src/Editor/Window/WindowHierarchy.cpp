@@ -2,8 +2,8 @@
 
 namespace Editor::Window
 {
-	WindowHierarchy::WindowHierarchy(EditorEngine* engine, bool visible) :
-		AWindow{ engine, "Hierarchy", visible }
+	WindowHierarchy::WindowHierarchy(Canvas* parent, bool visible) :
+		AWindow{ parent, "Hierarchy", visible }
 	{
 	}
 

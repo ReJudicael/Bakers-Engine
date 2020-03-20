@@ -1,9 +1,15 @@
 #include "GUIManager.h"
+#include "EditorEngine.h"
 #include <iostream>
 
 namespace Editor
 {
-	GUIManager::GUIManager(GLFWwindow* window, const char* glsl_version, GUIStyle style)
+	EditorEngine* GUIManager::GetEngine() noexcept
+	{
+		return m_engine;
+	}
+
+	GUIManager::GUIManager(EditorEngine* engine, const char* glsl_version, GUIStyle style) : m_engine {engine}
 	{
 #if _DEBUG
 		IMGUI_CHECKVERSION();
@@ -16,7 +22,7 @@ namespace Editor
 		}
 
 		// Setup Platform/Renderer bindings
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
+		ImGui_ImplGlfw_InitForOpenGL(engine->GetWindow(), true);
 		ImGui_ImplOpenGL3_Init(glsl_version);
 	}
 
@@ -85,6 +91,7 @@ namespace Editor
 	void GUIManager::SetCanvas(Canvas* canvas)
 	{
 		m_canvas = canvas;
+		m_canvas->SetManager(this);
 	}
 
 	void GUIManager::NewFrame()

@@ -1,11 +1,20 @@
 #include "AWindow.h"
+#include "Canvas.hpp"
 #include <iostream>
 
 namespace Editor::Window
 {
-	AWindow::AWindow(EditorEngine* engine, const std::string& name, bool visible) :
+	Canvas* AWindow::GetCanvas() noexcept
+	{
+		return m_canvas;
+	}
+	EditorEngine* AWindow::GetEngine() noexcept
+	{
+		return m_canvas->GetEngine();
+	}
+	AWindow::AWindow(Canvas * parent, const std::string& name, bool visible) :
 		DrawableComponent{ name },
-		m_engine{engine},
+		m_canvas{parent},
 		isVisible{ visible }
 	{
 	}

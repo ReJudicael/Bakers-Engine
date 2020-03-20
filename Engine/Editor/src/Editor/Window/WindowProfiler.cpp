@@ -2,8 +2,8 @@
 
 namespace Editor::Window
 {
-	WindowProfiler::WindowProfiler(EditorEngine* engine, bool visible) :
-		AWindow{ engine, "Profiler", visible }
+	WindowProfiler::WindowProfiler(Canvas* parent, bool visible) :
+		AWindow{ parent, "Profiler", visible }
 	{
 	}
 

@@ -5,8 +5,8 @@
 
 namespace Editor::Window
 {
-	WindowViewport::WindowViewport(EditorEngine* engine, bool visible) :
-		AWindow{ engine, "Viewport", visible }
+	WindowViewport::WindowViewport(Canvas* parent, bool visible) :
+		AWindow{ parent, "Viewport", visible }
 	{
 		m_flags |= ImGuiWindowFlags_NoScrollbar;
 	}
@@ -23,7 +23,7 @@ namespace Editor::Window
 
 	void WindowViewport::Tick()
 	{
-		Core::Renderer::Framebuffer* fbo{ m_engine->GetFBO() };
+		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO() };
 		ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 		if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
 		{

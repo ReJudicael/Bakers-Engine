@@ -6,8 +6,8 @@
 
 namespace Editor::Window
 {
-	WindowInspector::WindowInspector(EditorEngine* engine, bool visible) :
-		AWindow{ engine, "Inspector", visible }
+	WindowInspector::WindowInspector(Canvas* parent, bool visible) :
+		AWindow{ parent, "Inspector", visible }
 	{
 	}
 
@@ -21,7 +21,7 @@ namespace Editor::Window
 
 	void WindowInspector::Tick()
 	{
-		auto root = m_engine->m_root;
+		auto root = GetEngine()->m_root;
 		
 		for (auto it = root->GetComponents().begin(); it != root->GetComponents().end(); ++it)
 		{

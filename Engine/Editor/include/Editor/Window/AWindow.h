@@ -7,6 +7,7 @@
 
 namespace Editor
 {
+	class Canvas;
 	class EditorEngine;
 	/**
 	 * Window enabling features for the user
@@ -27,9 +28,19 @@ namespace Editor
 			/**
 			 * Parent of the window
 			 */
-			EditorEngine* m_engine;
+			Canvas* m_canvas;
 
 		public:
+			/**
+			 * Returns the canvas containing the AWindow
+			 */
+			Canvas* GetCanvas() noexcept;
+
+			/**
+			 * Returns a pointer to the engine core
+			 */
+			EditorEngine* GetEngine() noexcept;
+
 			/**
 			 * Window flags
 			 */
@@ -45,7 +56,7 @@ namespace Editor
 			 * Explicit constructor which set title of the widget window
 			 * @param name: Set title of window
 			 */
-			AWindow(EditorEngine* parent, const std::string& name, bool visible = true);
+			AWindow(Canvas * parent, const std::string& name, bool visible = true);
 
 			/**
 			 * Destructor

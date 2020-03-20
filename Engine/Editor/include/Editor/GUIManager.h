@@ -34,15 +34,25 @@ namespace Editor
 		 * Contains elements to display (Widgets) and set dockspace
 		 */
 		Canvas* m_canvas{ nullptr };
+	private:
+		/**
+		 * Pointer to engine core
+		 */
+		EditorEngine* m_engine;
 
 	public:
+		/**
+		 * Returns pointer to engine core
+		 */
+		EditorEngine*	GetEngine() noexcept;
+
 		/**
 		 * Set and init ImGUI
 		 * @param glfwWindow: GLFWwindow to setup Platform/Renderer bindings
 		 * @param glsl_version: Store GLSL version string so we can refer to it later in case we recreate shaders
 		 * @param style: UI Theme
 		 */
-		GUIManager(GLFWwindow* window, const char* glsl_version, GUIStyle style);
+		GUIManager(EditorEngine* engine, const char* glsl_version, GUIStyle style);
 
 		/**
 		 * Clean up canvas and ImGui
