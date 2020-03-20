@@ -3,7 +3,6 @@
 #include "EngineCore.h"
 #include "GuiManager.h"
 #include "CoreMinimal.h"
-#include "LoadResources.h"
 
 namespace Editor
 {

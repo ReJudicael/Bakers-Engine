@@ -4,11 +4,8 @@
 #include "InputSystem.hpp"
 #include "CoreMinimal.h"
 #include "Framebuffer.h"
+#include "LoadResources.h"
 
-namespace Resources::Loader
-{
-	class ResourcesManager;
-}
 namespace Core::Datastructure
 {
 	static const char* glsl_version = "#version 460";
@@ -21,6 +18,7 @@ namespace Core::Datastructure
 		int m_height{ 0 };
 		Core::Renderer::Framebuffer* m_fbo;
 		GLFWwindow* m_window;
+		Resources::Loader::ResourcesManager* m_manager;
 
 		double m_time{ 0 };
 

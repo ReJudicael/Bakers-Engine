@@ -33,7 +33,7 @@ namespace Core::Datastructure
 	EngineCore::EngineCore() : EngineCore(1280, 800)
 	{}
 
-	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }
+	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo {nullptr}, m_window {nullptr}
 	{
 		m_inputSystem = new Core::SystemManagement::InputSystem(this);
 		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem);
@@ -53,6 +53,20 @@ namespace Core::Datastructure
 	void	error(int error, const char* message)
 	{
 		std::cout << message << std::endl;
+	}
+
+	void GLAPIENTRY
+		MessageCallback(GLenum source,
+			GLenum type,
+			GLuint id,
+			GLenum severity,
+			GLsizei length,
+			const GLchar* message,
+			const void* userParam)
+	{
+		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+			type, severity, message);
 	}
 
 	int EngineCore::Init(int width, int height)
@@ -77,10 +91,24 @@ namespace Core::Datastructure
 			fprintf(stderr, "gladLoadGL failed. \n");
 			return 1;
 		}
+		glDebugMessageCallback(MessageCallback, 0);
 		
 		TracyGpuContext
 
 		m_fbo = new Core::Renderer::Framebuffer(width, height);
+		m_manager = new Resources::Loader::ResourcesManager(); 
+		
+		Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
+
+		PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
+		camNode->AddComponent(c);
+
+		Core::Datastructure::Object* o{ m_root->CreateChild({}) };
+
+		//manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
+		m_manager->LoadResourcesIRenderable("Resources/level.fbx", o);
+
+		o->SetScale({ 0.1,0.1,0.1 });
 		return 0;
 	}
 
@@ -88,6 +116,9 @@ namespace Core::Datastructure
 	{
 		ZoneNamedN(updateLoop, "Main update loop", true)
 		m_root->StartFrame();
+
+		m_manager->LinkAllTextureToOpenGl();
+		m_manager->LinkAllModelToOpenGl();
 		double deltaTime = GetDeltaTime();
 		m_root->Update(deltaTime);
 		GLint PreviousFramebuffer;
