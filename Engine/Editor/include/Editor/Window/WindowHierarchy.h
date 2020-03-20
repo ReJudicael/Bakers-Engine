@@ -2,6 +2,11 @@
 
 #include "AWindow.h"
 
+namespace Core::Datastructure
+{
+	class Object;
+}
+
 namespace Editor::Window
 {
 	/**
@@ -32,6 +37,9 @@ namespace Editor::Window
 		void PopWindowStyle() override;
 
 	private:
+
+		void ShowChildrenOfObject(Core::Datastructure::Object* object);
+
 		/**
 		 * Draw elements in window
 		 */

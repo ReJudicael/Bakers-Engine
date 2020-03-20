@@ -101,6 +101,7 @@ namespace Editor::Window
 		ImGui::Indent(ImGui::GetWindowWidth() - 150);
 		ImGui::SetNextItemWidth(100);
 		ImGui::SliderInt("Size", &m_size, 1, 100);
+
 		m_contentPathSize = 65.f + m_size * 1.3f;
 	}
 

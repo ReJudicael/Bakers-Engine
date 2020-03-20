@@ -1,4 +1,6 @@
 #include "WindowHierarchy.h"
+#include "EditorEngine.h"
+#include "RootObject.hpp"
 
 namespace Editor::Window
 {
@@ -15,8 +17,41 @@ namespace Editor::Window
 	{
 	}
 
+	void WindowHierarchy::ShowChildrenOfObject(Core::Datastructure::Object* object)
+	{
+		int i = 0;
+		for (auto o : object->GetChilds())
+		{
+			ImGui::PushID(o);
+
+			bool isExist = !o->GetChilds().empty();
+			bool isOpen = false;
+
+			if (isExist)
+			{
+				isOpen = ImGui::TreeNode(o, "%s", o->GetName().c_str());
+				ImGui::SameLine();
+			}
+
+			if (ImGui::Selectable(o->GetName().c_str()))
+			{
+				GetEngine()->selected = o;
+			}
+
+			if (isOpen)
+			{
+				ShowChildrenOfObject(o);
+				ImGui::TreePop();
+			}
+
+			ImGui::PopID();
+		}
+	}
+
 	void WindowHierarchy::Tick()
 	{
-		ImGui::Text(GetNameID().c_str());
+		auto root = GetEngine()->m_root;
+
+		ShowChildrenOfObject(root);
 	}
 }

@@ -19,7 +19,9 @@ namespace Core::Datastructure
 	private:
 		bool						m_isDestroyed = false;
 		RootObject*					m_root{ nullptr };
+		
 	protected:
+		std::string					m_name;
 		Transform					m_transform;
 		Object* m_parent;
 		std::list<Object*>			m_childs;
@@ -252,6 +254,11 @@ namespace Core::Datastructure
 		void	EraseComponent(ComponentBase* c) noexcept;
 
 		std::list<ComponentBase*>& GetComponents() noexcept;
+
+		std::string GetName() const noexcept
+		{
+			return m_name;
+		}
 
 		/**
 		 * Returns root object of the scene
