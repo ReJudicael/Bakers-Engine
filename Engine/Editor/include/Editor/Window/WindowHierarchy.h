@@ -10,7 +10,7 @@ namespace Core::Datastructure
 namespace Editor::Window
 {
 	/**
-	 * Widget Hierarchy
+	 * Window Hierarchy
 	 */
 	class WindowHierarchy final : public AWindow
 	{
@@ -18,7 +18,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Hierarchy")
 		 */
-		WindowHierarchy(Canvas* parent, bool visible = true);
+		WindowHierarchy(Canvas* canvas, bool visible = true);
 
 		/**
 		 * Default destructor

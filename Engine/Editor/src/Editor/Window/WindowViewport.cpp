@@ -5,8 +5,8 @@
 
 namespace Editor::Window
 {
-	WindowViewport::WindowViewport(Canvas* parent, bool visible) :
-		AWindow{ parent, "Viewport", visible }
+	WindowViewport::WindowViewport(Canvas* canvas, bool visible) :
+		AWindow{ canvas, "Viewport", visible }
 	{
 		m_flags |= ImGuiWindowFlags_NoScrollbar;
 	}

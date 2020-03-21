@@ -125,7 +125,7 @@ Core::Maths::Vec2 Window::GetMousePos() noexcept
 	return Core::Maths::Vec2(pos[0], pos[1]);
 }
 
-void Window::SetSizeWindow(const double width, const double height)
+void Window::SetSizeWindow(const int width, const int height)
 {
 	m_width = width;
 	m_height = height;

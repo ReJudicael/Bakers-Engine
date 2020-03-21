@@ -4,17 +4,9 @@
 
 namespace Editor::Window
 {
-	Canvas* AWindow::GetCanvas() noexcept
-	{
-		return m_canvas;
-	}
-	EditorEngine* AWindow::GetEngine() noexcept
-	{
-		return m_canvas->GetEngine();
-	}
-	AWindow::AWindow(Canvas * parent, const std::string& name, bool visible) :
+	AWindow::AWindow(Canvas* canvas, const std::string& name, bool visible) :
 		DrawableComponent{ name },
-		m_canvas{parent},
+		m_canvas{ canvas },
 		isVisible{ visible }
 	{
 	}
@@ -56,5 +48,15 @@ namespace Editor::Window
 			End();
 		}
 		PopWindowStyle();
+	}
+
+	Canvas* AWindow::GetCanvas() noexcept
+	{
+		return m_canvas;
+	}
+
+	EditorEngine* AWindow::GetEngine() noexcept
+	{
+		return m_canvas->GetEngine();
 	}
 }

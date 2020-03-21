@@ -5,7 +5,7 @@
 namespace Editor::Window
 {
 	/**
-	 * Widget Console
+	 * Window Console
 	 */
 	class WindowConsole final : public AWindow
 	{
@@ -13,7 +13,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Console")
 		 */
-		WindowConsole(Canvas* parent, bool visible = true);
+		WindowConsole(Canvas* canvas, bool visible = true);
 
 		/**
 		 * Default destructor

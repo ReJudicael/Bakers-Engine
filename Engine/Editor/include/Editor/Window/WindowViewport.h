@@ -5,7 +5,7 @@
 namespace Editor::Window
 {
 	/**
-	 * Widget Scene
+	 * Window Viewport
 	 */
 	class WindowViewport final : public AWindow
 	{
@@ -13,7 +13,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Scene")
 		 */
-		WindowViewport(Canvas* parent, bool visible = true);
+		WindowViewport(Canvas* canvas, bool visible = true);
 
 		/**
 		 * Default destructor

@@ -74,7 +74,7 @@ namespace Editor
 		return 0;
 	}
 
-	void EditorEngine::SetSizeWindow(const double width, const double height)
+	void EditorEngine::SetSizeWindow(const int width, const int height)
 	{
 		m_width = width;
 		m_height = height;

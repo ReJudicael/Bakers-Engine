@@ -16,7 +16,7 @@ public:
 	~Window();
 
 	int		Init(const int width, const int height) override;
-	void	SetSizeWindow(const double width, const double height) override;
+	void	SetSizeWindow(const int width, const int height) override;
 	void	Update() override;
 
 	virtual Core::Maths::Vec2	GetMousePos() noexcept override;

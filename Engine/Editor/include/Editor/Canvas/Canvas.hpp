@@ -16,6 +16,7 @@ namespace Editor
 {
 	class EditorEngine;
 	class GUIManager;
+
 	/**
 	 * Dockspace handler
 	 */
@@ -39,14 +40,16 @@ namespace Editor
 		MenuBar* m_menuBar;
 
 		/**
-		 * Menu group "View" to display or not a widget 
+		 * Menu group "View" to display or not a window 
 		 */
 		Widget::MenuGroup* m_view;
 
+	private:
 		/**
-		 * Parent of the canvas
+		 * GUIManager of the canvas
 		 */
 		GUIManager* m_manager;
+
 	public:
 		/**
 		 * Default constructor
@@ -64,35 +67,20 @@ namespace Editor
 		void InitMenuBar();
 
 		/**
-		 * Returns the manager of the canvas
-		 */
-		GUIManager* GetManager() noexcept;
-		
-		/**
-		 * Sets the manager of the canvas
-		 * @param manager: The manager of the canvas
-		 */
-		void		SetManager(GUIManager* manager) noexcept;
-
-		/**
-		 * Returns a pointer to the engine core
-		 */
-		EditorEngine* GetEngine() noexcept;
-
-		/**
-		 * Add widget
-		 * @tparam T: Specific Widget class
-		 * @tparam args: Arguments of constructor of given Widget class
-		 * @return Instance of widget
+		 * Add window
+		 * @tparam T: Specific Window class
+		 * @tparam args: Arguments of constructor of given Window class
+		 * @return Instance of window
 		 */
 		template<class T, class ...Args>
 		T& Add(Args&&... args);
 
 		/**
-		 * Open or close all widgets
-		 * @param opened: If true, open all widgets, otherwise it will close them all.
+		 * Open or close all windows
+		 * @param opened: If true, open all windows, otherwise it will close them all.
 		 */
-		void OpenAllWidgets(bool opened);
+		void OpenAllWindows(bool opened);
+
 	private:
 		/**
 		 * Push dockspace style
@@ -122,9 +110,26 @@ namespace Editor
 
 	public:
 		/**
-		 * Display docked widgets in canvas
+		 * Display docked windows in canvas
 		 */
 		void Draw() override;
+
+	public:
+		/**
+		 * Sets the manager of the canvas
+		 * @param manager: The manager of the canvas
+		 */
+		void SetManager(GUIManager* manager) noexcept;
+
+		/**
+		 * Returns the manager of the canvas
+		 */
+		GUIManager* GetManager() noexcept;
+
+		/**
+		 * Returns a pointer to the engine core
+		 */
+		EditorEngine* GetEngine() noexcept;
 	};
 
 	template<class T, class ...Args>

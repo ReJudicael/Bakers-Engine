@@ -6,8 +6,8 @@
 
 namespace Editor::Window
 {
-	WindowInspector::WindowInspector(Canvas* parent, bool visible) :
-		AWindow{ parent, "Inspector", visible }
+	WindowInspector::WindowInspector(Canvas* canvas, bool visible) :
+		AWindow{ canvas, "Inspector", visible }
 	{
 	}
 

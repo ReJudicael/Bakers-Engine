@@ -5,7 +5,7 @@
 namespace Editor::Window
 {
 	/**
-	 * Widget Inspector
+	 * Window Inspector
 	 */
 	class WindowInspector final : public AWindow
 	{
@@ -13,7 +13,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Inspector")
 		 */
-		WindowInspector(Canvas* parent, bool visible = true);
+		WindowInspector(Canvas* canvas, bool visible = true);
 
 		/**
 		 * Default destructor

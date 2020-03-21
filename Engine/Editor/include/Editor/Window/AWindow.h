@@ -9,54 +9,48 @@ namespace Editor
 {
 	class Canvas;
 	class EditorEngine;
+
 	/**
 	 * Window enabling features for the user
 	 */
 	namespace Window
 	{
 		/**
-		 * Base class for widgets
+		 * Base class for windows
 		 */
 		class AWindow : public Datastructure::DrawableComponent
 		{
 		protected:
 			/**
-			 *  Whether the widget window has begun
+			 * Whether the widget window has begun
 			 */
 			bool m_windowBegun{ false };
-
-			/**
-			 * Parent of the window
-			 */
-			Canvas* m_canvas;
-
-		public:
-			/**
-			 * Returns the canvas containing the AWindow
-			 */
-			Canvas* GetCanvas() noexcept;
-
-			/**
-			 * Returns a pointer to the engine core
-			 */
-			EditorEngine* GetEngine() noexcept;
 
 			/**
 			 * Window flags
 			 */
 			ImGuiWindowFlags m_flags{ ImGuiWindowFlags_NoCollapse };
 
+		public:
 			/**
 			 * Whether the widget window is visible
 			 */
 			bool isVisible{ true };
 
+		protected:
+			/**
+			 * Canvas of the window
+			 */
+			Canvas* m_canvas;
+
 		public:
 			/**
-			 * Explicit constructor which set title of the widget window
+			 * Explicit constructor
+			 * @param canvas: Canvas of window
 			 * @param name: Set title of window
+			 * @param visible: Set whether the window is visible or not
 			 */
-			AWindow(Canvas * parent, const std::string& name, bool visible = true);
+			AWindow(Canvas* canvas, const std::string& name, bool visible = true);
 
 			/**
 			 * Destructor
@@ -101,6 +95,17 @@ namespace Editor
 			 * Display window and widget
 			 */
 			void Draw() override;
+
+		public:
+			/**
+			 * Returns the canvas containing the AWindow
+			 */
+			Canvas* GetCanvas() noexcept;
+
+			/**
+			 * Returns a pointer to the engine core
+			 */
+			EditorEngine* GetEngine() noexcept;
 		};
 	}
 }

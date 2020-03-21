@@ -19,27 +19,13 @@ namespace Editor
 	{
 		m_menuBar = new MenuBar();
 		m_view = &m_menuBar->Add<Widget::MenuGroup>("View");
-		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::OpenAllWidgets, this, true);
-		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::OpenAllWidgets, this, false);
+		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::OpenAllWindows, this, true);
+		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::OpenAllWindows, this, false);
 		m_view->Add<Widget::Separator>();
 	}
 
-	GUIManager* Canvas::GetManager() noexcept
-	{
-		return m_manager;
-	}
 
-	void Canvas::SetManager(GUIManager* manager) noexcept
-	{
-		m_manager = manager;
-	}
-
-	EditorEngine* Canvas::GetEngine() noexcept
-	{
-		return m_manager->GetEngine();
-	}
-
-	void Canvas::OpenAllWidgets(bool opened)
+	void Canvas::OpenAllWindows(bool opened)
 	{
 		for (auto& widget : m_contents)
 			widget->isVisible = opened;
@@ -94,5 +80,20 @@ namespace Editor
 		{
 			widget->Draw();
 		}
+	}
+
+	GUIManager* Canvas::GetManager() noexcept
+	{
+		return m_manager;
+	}
+
+	void Canvas::SetManager(GUIManager* manager) noexcept
+	{
+		m_manager = manager;
+	}
+
+	EditorEngine* Canvas::GetEngine() noexcept
+	{
+		return m_manager->GetEngine();
 	}
 }

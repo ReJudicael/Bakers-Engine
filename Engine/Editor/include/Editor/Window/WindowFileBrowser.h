@@ -10,7 +10,7 @@
 namespace Editor::Window
 {
 	/**
-	 * Widget File Browser
+	 * Widow File Browser
 	 */
 	class WindowFileBrowser final : public AWindow
 	{
@@ -49,7 +49,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("File Browser")
 		 */
-		WindowFileBrowser(Canvas* parent, bool visible = true);
+		WindowFileBrowser(Canvas* canvas, bool visible = true);
 
 		/**
 		 * Default destructor

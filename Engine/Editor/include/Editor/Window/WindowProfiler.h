@@ -5,7 +5,7 @@
 namespace Editor::Window
 {
 	/**
-	 * Widget Profiler
+	 * Window Profiler
 	 */
 	class WindowProfiler : public AWindow
 	{
@@ -13,7 +13,7 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Console")
 		 */
-		WindowProfiler(Canvas* parent, bool visible = true);
+		WindowProfiler(Canvas* canvas, bool visible = true);
 
 		/**
 		 * Default destructor

@@ -39,7 +39,7 @@ namespace Core::Datastructure
 
 		int				Init();
 		virtual int		Init(const int width, const int height);
-		virtual void	SetSizeWindow(const double width, const double height) = 0;
+		virtual void	SetSizeWindow(const int width, const int height) = 0;
 		virtual void	Update();
 
 		double			GetDeltaTime();

@@ -4,11 +4,6 @@
 
 namespace Editor
 {
-	EditorEngine* GUIManager::GetEngine() noexcept
-	{
-		return m_engine;
-	}
-
 	GUIManager::GUIManager(EditorEngine* engine, const char* glsl_version, GUIStyle style) : m_engine {engine}
 	{
 #if _DEBUG
@@ -123,5 +118,10 @@ namespace Editor
 				m_canvas->Draw();
 		}
 		EndFrame();
+	}
+
+	EditorEngine* GUIManager::GetEngine() noexcept
+	{
+		return m_engine;
 	}
 }

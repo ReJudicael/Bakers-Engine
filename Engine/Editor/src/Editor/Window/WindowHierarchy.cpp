@@ -4,8 +4,8 @@
 
 namespace Editor::Window
 {
-	WindowHierarchy::WindowHierarchy(Canvas* parent, bool visible) :
-		AWindow{ parent, "Hierarchy", visible }
+	WindowHierarchy::WindowHierarchy(Canvas* canvas, bool visible) :
+		AWindow{ canvas, "Hierarchy", visible }
 	{
 	}
 

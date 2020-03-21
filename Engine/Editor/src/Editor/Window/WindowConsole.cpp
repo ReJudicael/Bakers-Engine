@@ -2,8 +2,8 @@
 
 namespace Editor::Window
 {
-	WindowConsole::WindowConsole(Canvas* parent, bool visible) :
-		AWindow{ parent, "Console", visible }
+	WindowConsole::WindowConsole(Canvas* canvas, bool visible) :
+		AWindow{ canvas, "Console", visible }
 	{
 	}
 
