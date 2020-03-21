@@ -65,7 +65,7 @@ namespace Resources::Loader
 
 	ResourcesManager::ResourcesManager()
 	{
-		Shader defaultShader("./Resources/Shaders/DefaultShader.vert", "./Resources/Shaders/DefaultShader.frag");
+		Shader defaultShader("./Resources/Shaders/DefaultShader.vert", "./Resources/Shaders/DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		m_shaders.emplace("Default", std::make_shared<Shader>(defaultShader));
 
 		Shader normalMapShader("./Resources/Shaders/DefaultShader.vert", "./Resources/Shaders/DefaultShaderNormalMap.frag");

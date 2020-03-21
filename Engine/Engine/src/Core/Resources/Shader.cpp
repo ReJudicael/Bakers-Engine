@@ -6,8 +6,12 @@
 
 namespace Resources
 {
-	Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath)
+	std::vector<NRenderer::Light*>	Shader::lights;
+
+	Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath, EShaderHeaderType header)
 	{
+		m_shaderHeader = header;
+
 		LoadFromFile(vertexFilePath, EShaderType::VERTEX);
 		LoadFromFile(fragmentFilePath, EShaderType::FRAGMENT);
 
@@ -28,9 +32,19 @@ namespace Resources
 	void Shader::LoadFromFile(const char* file, EShaderType shaderType)
 	{
 		if (shaderType == EShaderType::VERTEX)
-			m_vertex = GetCodeFromFile(file).c_str();
+		{
+			std::string content = version + GetCodeFromFile(file);
+			m_vertex = content.c_str();
+		}
 		else
-			m_fragment = GetCodeFromFile(file).c_str();
+		{
+			std::string content = version;
+			if (m_shaderHeader == EShaderHeaderType::LIGHT)
+				content += GetCodeFromFile(lightShaderSource);
+			
+			content += GetCodeFromFile(file);
+			m_fragment = content.c_str();
+		}
 	}
 
 	std::string	Shader::GetCodeFromFile(const char* filePath)
@@ -91,6 +105,10 @@ namespace Resources
 		if (compileStatus == GL_FALSE)
 		{
 			std::cout << "Fragment shader didn't load" << std::endl;
+			GLsizei l = 200;
+			GLchar* info = new GLchar;
+			glGetShaderInfoLog(fragmentShader, l, &l, info);
+			std::cout << "error is: " << info << std::endl;
 			return;
 		}
 
@@ -136,5 +154,26 @@ namespace Resources
 	void Shader::UseProgram()
 	{
 		glUseProgram(m_programID);
+	}
+
+	void Shader::SendLights()
+	{
+		glUniform1i(GetLocation("uLightCount"), lights.size());
+
+		for (int i = 0; i < lights.size(); i++)
+		{
+			std::string loc = "uLight[" + std::to_string(i) + "].";
+
+			glUniform1i(GetLocation(loc + "type"), int(lights[0]->GetLightType()));
+			glUniform3fv(GetLocation(loc + "position"), 1, lights[i]->GetPosition().xyz);
+			glUniform3fv(GetLocation(loc + "direction"), 1, lights[i]->GetDirection().xyz);
+			glUniform3fv(GetLocation(loc + "ambient"), 1, lights[i]->GetAmbiant().xyz);
+			glUniform3fv(GetLocation(loc + "diffuse"), 1, lights[i]->GetDiffuse().xyz);
+			glUniform3fv(GetLocation(loc + "specular"), 1, lights[i]->GetSpecular().xyz);
+			glUniform3fv(GetLocation(loc + "attenuation"), 1, lights[i]->GetAttenuation().xyz);
+			glUniform1f(GetLocation(loc + "range"), lights[i]->GetRange());
+			glUniform1f(GetLocation(loc + "angle"), lights[i]->GetAngle());
+			glUniform1f(GetLocation(loc + "anglesmoothness"), lights[i]->GetAngleSmoothness());
+		}
 	}
 }

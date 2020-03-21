@@ -40,7 +40,8 @@ namespace Resources
 			{
 				std::string fullPath = directory + path.data;
 				resources.LoadTexture(fullPath, texture);
-				shader = resources.GetShader("NormalMapDefault");
+				if (textureType == aiTextureType_NORMALS)
+					shader = resources.GetShader("NormalMapDefault");
 			}
 		}
 		else
@@ -48,5 +49,12 @@ namespace Resources
 			textures.resize(textures.size() - 1);
 		}
 
+	}
+
+	void Material::SendMaterial()
+	{
+		glUniform3fv(shader->GetLocation("mat.diffuseColor"), 1, diffuseColor.xyz);
+		glUniform3fv(shader->GetLocation("mat.ambientColor"), 1, ambientColor.xyz);
+		glUniform3fv(shader->GetLocation("mat.specularColor"), 1, specularColor.xyz);
 	}
 }

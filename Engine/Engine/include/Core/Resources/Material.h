@@ -33,11 +33,9 @@ namespace Resources
 
 		Core::Maths::Vec3						materialColor;
 
-		std::shared_ptr<GLuint>					program;
-
 		std::vector<std::shared_ptr<Texture>>	textures;
 
-		std::shared_ptr<Shader>									shader;
+		std::shared_ptr<Shader>					shader;
 
 		/**
 		 * Load the current material with an aiMaterial from assimp
@@ -58,6 +56,8 @@ namespace Resources
 		 */
 		void LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& texture, 
 									const aiTextureType& textureType, const std::string& directory, Loader::ResourcesManager& resources);
+
+		void SendMaterial();
 	};
 }
 
