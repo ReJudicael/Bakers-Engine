@@ -8,6 +8,8 @@ struct Material
 	vec3	diffuseColor;
 	vec3	ambientColor;
 	vec3	specularColor;
+	float	shininess;
+	float	shininessStrength;
 };
 
 uniform Material mat;

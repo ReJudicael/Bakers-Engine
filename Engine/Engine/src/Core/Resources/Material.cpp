@@ -12,7 +12,6 @@ namespace Resources
 	void Material::LoadMaterialFromaiMaterial(aiMaterial* mat, const std::string& directory, 
 												Loader::ResourcesManager& resources)
 	{
-
 		textures.resize(2);
 
 		shader = resources.GetShader("Default");
@@ -27,6 +26,8 @@ namespace Resources
 		ambientColor = { color.r, color.g, color.b };
 		mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
 		specularColor = { color.r, color.g, color.b };
+		mat->Get(AI_MATKEY_SHININESS, shininess);
+		mat->Get(AI_MATKEY_SHININESS_STRENGTH, shininessStrength);
 		materialColor = { 1.0f, 1.0f, 1.0f };
 	}
 
@@ -56,5 +57,7 @@ namespace Resources
 		glUniform3fv(shader->GetLocation("mat.diffuseColor"), 1, diffuseColor.xyz);
 		glUniform3fv(shader->GetLocation("mat.ambientColor"), 1, ambientColor.xyz);
 		glUniform3fv(shader->GetLocation("mat.specularColor"), 1, specularColor.xyz);
+		glUniform1f(shader->GetLocation("mat.shininess"), shininess);
+		glUniform1f(shader->GetLocation("mat.shininessStrength"), shininessStrength);
 	}
 }

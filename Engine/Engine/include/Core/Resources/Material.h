@@ -30,6 +30,8 @@ namespace Resources
 		Core::Maths::Vec3						diffuseColor;
 		Core::Maths::Vec3						ambientColor;
 		Core::Maths::Vec3						specularColor;
+		float									shininess;
+		float									shininessStrength;
 
 		Core::Maths::Vec3						materialColor;
 
