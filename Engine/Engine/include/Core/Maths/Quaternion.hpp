@@ -111,7 +111,7 @@ namespace Core::Maths
 		 */
 		inline					Quaternion(float eulerX, float eulerY, float eulerZ) noexcept : Quaternion(0, 0, 0, 0)
 		{
-			float twoPi = M_PI * 2.f;
+			constexpr float twoPi = M_PI * 2.f;
 			eulerX = fmod(eulerX, twoPi);
 			eulerY = fmod(eulerY, twoPi);
 			eulerZ = fmod(eulerZ, twoPi);

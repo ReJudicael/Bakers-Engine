@@ -150,7 +150,7 @@ namespace Core::Datastructure
 			glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
 			glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 			glClearColor(0, 0, 0, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			m_root->Render();
 			TRACY_GL_IMAGE_SEND(m_width, m_height)
 			TracyGpuCollect
