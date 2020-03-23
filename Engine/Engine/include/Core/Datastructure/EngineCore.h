@@ -23,6 +23,8 @@ namespace Core::Datastructure
 		double m_time{ 0 };
 
 		TRACY_GL_IMAGE
+			
+		double			GetDeltaTime();
 	public:
 		EngineCore();
 		EngineCore(const int width, const int height);
@@ -40,9 +42,13 @@ namespace Core::Datastructure
 		int				Init();
 		virtual int		Init(const int width, const int height);
 		virtual void	SetSizeWindow(const int width, const int height) = 0;
+
+		virtual void	StartFrame();
+		virtual void	Render();
+		virtual void	EndFrame();
+
 		virtual void	Update();
 
-		double			GetDeltaTime();
 		GLFWwindow*		GetWindow();
 
 		Core::Renderer::Framebuffer* GetFBO();

@@ -33,7 +33,7 @@ namespace Core::Datastructure
 	EngineCore::EngineCore() : EngineCore(1280, 800)
 	{}
 
-	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo {nullptr}, m_window {nullptr}
+	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo{ nullptr }, m_window{ nullptr }
 	{
 		m_inputSystem = new Core::SystemManagement::InputSystem(this);
 		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem);
@@ -92,12 +92,12 @@ namespace Core::Datastructure
 			return 1;
 		}
 		glDebugMessageCallback(MessageCallback, 0);
-		
+
 		TracyGpuContext
 
-		m_fbo = new Core::Renderer::Framebuffer(width, height);
-		m_manager = new Resources::Loader::ResourcesManager(); 
-		
+			m_fbo = new Core::Renderer::Framebuffer(width, height);
+		m_manager = new Resources::Loader::ResourcesManager();
+
 		Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
 
 		PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
@@ -115,23 +115,15 @@ namespace Core::Datastructure
 	void	EngineCore::Update()
 	{
 		ZoneNamedN(updateLoop, "Main update loop", true)
-		m_root->StartFrame();
+			double deltaTime = GetDeltaTime();
 
-		m_manager->LinkAllTextureToOpenGl();
-		m_manager->LinkAllModelToOpenGl();
-		double deltaTime = GetDeltaTime();
+		StartFrame();
+
 		m_root->Update(deltaTime);
-		GLint PreviousFramebuffer;
-		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
-		glClear(GL_COLOR_BUFFER_BIT);
-		m_root->Render();
-		TRACY_GL_IMAGE_SEND(m_width, m_height)
-		TracyGpuCollect
-		glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
-		FrameMark;
-		m_root->RemoveDestroyed();
-		m_inputSystem->ClearRegisteredInputs();
+		
+		Render();
+
+		EndFrame();
 	}
 	Core::Renderer::Framebuffer* EngineCore::GetFBO()
 	{
@@ -141,5 +133,34 @@ namespace Core::Datastructure
 	GLFWwindow* EngineCore::GetWindow()
 	{
 		return m_window;
+	}
+
+	void		EngineCore::StartFrame()
+	{
+		ZoneScoped
+			m_root->StartFrame();
+			m_manager->LinkAllTextureToOpenGl();
+			m_manager->LinkAllModelToOpenGl();
+	}
+
+	void		EngineCore::Render()
+	{
+		ZoneScoped
+			GLint PreviousFramebuffer;
+			glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
+			glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
+			glClearColor(0, 0, 0, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_root->Render();
+			TRACY_GL_IMAGE_SEND(m_width, m_height)
+			TracyGpuCollect
+			glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
+		FrameMark
+	}
+	
+	void		EngineCore::EndFrame()
+	{
+		m_root->RemoveDestroyed();
+		m_inputSystem->ClearRegisteredInputs();
 	}
 }
