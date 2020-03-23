@@ -50,6 +50,8 @@ public:
 
 	Core::Maths::Mat4 projectionMatrix(float FovY, float Aspect, float Near, float Far);
 
+	int					GetVertexCount();
+
 	inline void AddModel(std::shared_ptr<Resources::Model> model)
 	{
 		m_model = model;

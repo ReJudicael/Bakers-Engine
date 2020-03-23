@@ -8,6 +8,12 @@
 #include "Model.h"
 #include "Texture.h"
 
+RTTR_REGISTRATION
+{
+	registration::class_<Mesh>("Mesh")
+		.property_readonly("vertex count", &Mesh::GetVertexCount);
+}
+
 Mesh::Mesh() : ComponentBase()
 {
 
@@ -137,4 +143,12 @@ Core::Maths::Mat4 Mesh::projectionMatrix(float FovY, float Aspect, float Near, f
 		0.f, 0.f, -(Far * Near * 2.f) / (Far - Near), 0.f
 		};
 	return Core::Maths::Mat4(f);
+}
+
+int Mesh::GetVertexCount()
+{
+	int size = 0;
+	for (int i = 0; i < m_model->offsetsMesh.size(); ++i)
+		size += m_model->offsetsMesh[i].count;
+	return size;
 }

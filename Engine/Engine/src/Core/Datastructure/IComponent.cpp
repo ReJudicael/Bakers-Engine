@@ -7,9 +7,9 @@ RTTR_REGISTRATION
 {
 	using namespace Core::Datastructure;
 	registration::class_<IComponent>("IComponent")
-		.property("parent", &IComponent::GetParent, &IComponent::SetParent)
-		.property("Scene", &IComponent::GetScene, &IComponent::SetScene)
-		.property_readonly("InputManager", &IComponent::Input)
+		.property("parent", &IComponent::GetParent, &IComponent::SetParent, detail::protected_access())
+		.property("Scene", &IComponent::GetScene, &IComponent::SetScene, detail::protected_access())
+		.property_readonly("InputManager", &IComponent::Input, detail::protected_access())
 		.method("Start", &IComponent::Start)
 		.method("Destroy", &IComponent::Destroy)
 		.property_readonly("IsDestroyed", &IComponent::IsDestroyed)
