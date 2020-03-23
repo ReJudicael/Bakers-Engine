@@ -1,3 +1,10 @@
+struct Material
+{
+	vec3	diffuseColor;
+	vec3	ambientColor;
+	vec3	specularColor;
+};
+
 struct light
 {
 	int type;
@@ -12,7 +19,7 @@ struct light
     vec3 attenuation;
 };
 
-vec3 getLightContribution(light light, vec3 pos, vec3 normal, vec3 color)
+vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal)
 {
 	vec3 lightDir;
 	float attenuation = 1;
@@ -53,20 +60,21 @@ vec3 getLightContribution(light light, vec3 pos, vec3 normal, vec3 color)
 		}
 	}
 
-	vec3 ambient = attenuation * light.ambient * color;
+	vec3 ambient = attenuation * light.ambient * mat.ambientColor;
 
 	float diff = dot(normal, lightDir);
 	if (diff < 0)
 		diff = 0;
-	vec3 diffuse = attenuation * diff * (light.diffuse * color);
+	vec3 diffuse = attenuation * diff * light.diffuse * mat.diffuseColor;
 
 	vec3 reflectDir = normalize(reflect(-lightDir, normal));
 	float spec = dot(pos, reflectDir);
         if (spec > 0)
-                spec = pow(spec, 2);
+                spec = pow(spec, 64);
         else
                 spec = 0;
-        vec3 specular = attenuation * spec * (light.specular * color);
+        vec3 specular = attenuation * spec * light.specular * mat.specularColor;
+		specular = clamp(specular, 0.0, 1.0);
 
 	return ambient + diffuse + specular;
 }

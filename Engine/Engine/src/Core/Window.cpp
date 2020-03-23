@@ -84,22 +84,22 @@ void	Window::Update()
 		NRenderer::Light* l = new NRenderer::Light();
 		l->SetLightType(NRenderer::Light::ELightType::POINT);
 		l->SetAmbiant({ 0.1f, 0.1f, 0.1f });
-		l->SetDiffuse({ 0.9f, 0.2f, 0.2f });
-		l->SetSpecular({ 0.9f, 0.2f, 0.2f });
+		l->SetDiffuse({ 0.1f, 0.2f, 0.2f });
+		l->SetSpecular({ 0.1f, 0.2f, 0.2f });
 		l->SetAttenuation({ 1.f, 0.022f, 0.0019f });
-		l->SetRange(10.f);
+		l->SetRange(100.f);
 		l->SetAngle(0.5f);
 		l->SetAngleSmoothness(0.01f);
 		camNode->AddComponent(l);
 
 		Core::Datastructure::Object* o{ m_root->CreateChild({}) };
 
-		manager.Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
-		//manager.Load3DObject("Resources/Dog/12228_Dog_v1_L2.obj", o);
-		//manager.Load3DObject("Resources/level.fbx");
+		//manager.Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
+		//manager.Load3DObject("Resources/Dog/12228_Dog_v1_L2.obj");
+		manager.Load3DObject("Resources/level.fbx");
 
-		//Resources::Object3DGraph::CreateScene("Resources/level.fbx", manager, o);
-		Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", manager, o);
+		Resources::Object3DGraph::CreateScene("Resources/level.fbx", manager, o);
+		//Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", manager, o);
 		//Resources::Object3DGraph::CreateScene("Resources/Dog/12228_Dog_v1_L2.obj", manager, o);
 
 		o->SetScale({ 0.1,0.1,0.1 });
