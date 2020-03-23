@@ -52,7 +52,7 @@ namespace Core::Datastructure
 
 	void	error(int error, const char* message)
 	{
-		std::cout << message << std::endl;
+		std::cerr << message << std::endl;
 	}
 
 	void GLAPIENTRY
