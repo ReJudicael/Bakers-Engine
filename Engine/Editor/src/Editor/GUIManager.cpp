@@ -55,8 +55,10 @@ namespace Editor
 		style->TabRounding						= 3.f;
 		style->Colors[ImGuiCol_WindowBg]		= ImVec4(0.10f, 0.10f, 0.12f, 1.00f);
 		style->Colors[ImGuiCol_FrameBg]			= ImVec4(0.25f, 0.25f, 0.30f, 0.50f);
-		style->Colors[ImGuiCol_FrameBgHovered]	= ImVec4(0.25f, 0.25f, 0.30f, 1.00f);
 		style->Colors[ImGuiCol_FrameBgActive]	= ImVec4(0.55f, 0.55f, 0.58f, 1.00f);
+		style->Colors[ImGuiCol_FrameBgHovered]	= ImVec4(0.25f, 0.25f, 0.30f, 1.00f);
+		style->Colors[ImGuiCol_ButtonActive]	= ImVec4(0.55f, 0.55f, 0.58f, 1.00f);
+		style->Colors[ImGuiCol_ButtonHovered]	= ImVec4(0.25f, 0.25f, 0.30f, 1.00f);
 		style->Colors[ImGuiCol_TitleBgActive]	= ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
 		style->Colors[ImGuiCol_TextSelectedBg]	= ImVec4(0.50f, 1.00f, 0.50f, 0.33f);
 	}

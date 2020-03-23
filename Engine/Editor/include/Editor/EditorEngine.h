@@ -12,7 +12,7 @@ namespace Editor
 		Editor::GUIManager* m_man;
 
 	public:
-		Core::Datastructure::Object* selected{ nullptr };
+		Core::Datastructure::Object* objectSelected{ nullptr };
 
 	public:
 		EditorEngine();

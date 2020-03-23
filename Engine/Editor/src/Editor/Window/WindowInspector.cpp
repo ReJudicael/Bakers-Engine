@@ -10,7 +10,7 @@ namespace Editor::Window
 	WindowInspector::WindowInspector(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Inspector", visible }
 	{
-		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow;
+		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen;
 	}
 
 	void WindowInspector::PushWindowStyle()
@@ -25,21 +25,26 @@ namespace Editor::Window
 	{
 		if (ImGui::CollapsingHeader("Transform", m_treeNodeFlags))
 		{
-			if (ImGui::Button(m_isLocal ? "Local" : "Global", { ImGui::GetContentRegionAvailWidth(), 0.f }))
-				m_isLocal = !m_isLocal;
+			ImGui::PushStyleColor(ImGuiCol_Button, m_isLocal ? ImVec4(0.0f, 0.58f, 0.20f, 1.00f) : ImVec4(0.60f, 0.35f, 0.71f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, m_isLocal ? ImVec4(0.0f, 0.58f, 0.20f, 0.70f) : ImVec4(0.60f, 0.35f, 0.71f, 0.70f));
+			{
+				if (ImGui::Button(m_isLocal ? "Local" : "Global", { ImGui::GetContentRegionAvail().x, 0.f }))
+					m_isLocal = !m_isLocal;
+			}
+			ImGui::PopStyleColor(2);
 
 			Core::Maths::Vec3 pos = m_isLocal ? selected->GetPos() : selected->GetGlobalPos();
 			if (ImGui::DragFloat3("Position", pos.xyz))
-				m_isLocal ? selected->SetPos(pos) : selected->SetPos(pos);
+				m_isLocal ? selected->SetPos(pos) : selected->SetPos(pos);	// TODO: Set Global Pos
 
 			Core::Maths::Vec3 rot = m_isLocal ? selected->GetRot().ToEulerAngles() : selected->GetGlobalRot().ToEulerAngles();
 			rot *= RAD2DEG;
 			if (ImGui::DragFloat3("Rotation", rot.xyz))
-				selected->SetRot(rot * DEG2RAD);
+				m_isLocal ? selected->SetRot(rot * DEG2RAD) : selected->SetRot(rot * DEG2RAD); // TODO : Set Global Rot
 
 			Core::Maths::Vec3 scale = m_isLocal ? selected->GetScale() : selected->GetGlobalScale();
 			if (ImGui::DragFloat3("Scale", scale.xyz))
-				m_isLocal ? selected->SetScale(scale) : selected->SetScale(scale);
+				m_isLocal ? selected->SetScale(scale) : selected->SetScale(scale); // Set Global Scale
 
 			ImGui::Spacing();
 		}
@@ -47,18 +52,18 @@ namespace Editor::Window
 
 	void WindowInspector::Tick()
 	{
-		auto root = GetEngine()->selected;
+		Core::Datastructure::Object* gO = GetEngine()->objectSelected;
 
-		if (root == nullptr)
+		if (gO == nullptr)
 			return;
 
-		ImGui::Text(root->GetName().c_str());
+		ImGui::Text(gO->GetName().c_str());
 		ImGui::Separator();
-		DisplayTransform(root);
+		DisplayTransform(gO);
 
 		if (ImGui::CollapsingHeader("Properties", m_treeNodeFlags))
 		{
-			for (auto it = root->GetComponents().begin(); it != root->GetComponents().end(); ++it)
+			for (auto it = gO->GetComponents().begin(); it != gO->GetComponents().end(); ++it)
 			{
 				type t = (*it)->get_type();
 				ImGui::Text(t.get_name().to_string().c_str());

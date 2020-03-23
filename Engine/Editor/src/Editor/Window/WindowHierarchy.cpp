@@ -19,29 +19,27 @@ namespace Editor::Window
 
 	void WindowHierarchy::ShowChildrenOfObject(Core::Datastructure::Object* object)
 	{
-		int i = 0;
-		for (auto o : object->GetChilds())
+		for (auto gO : object->GetChilds())
 		{
-			ImGui::PushID(o);
-
-			bool isExist = !o->GetChilds().empty();
-			bool isOpen = false;
-
-			if (isExist)
+			ImGui::PushID(gO);
 			{
-				isOpen = ImGui::TreeNode(o, "");
-				ImGui::SameLine();
+				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanFullWidth;
+				flags |= gO->GetChilds().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
+
+				if (GetEngine()->objectSelected == gO)
+					flags |= ImGuiTreeNodeFlags_Selected;
+
+				bool isOpen = ImGui::TreeNodeEx(gO, flags, gO->GetName().c_str());
+
+				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+					GetEngine()->objectSelected = gO;
+
+				if (isOpen)
+				{
+					ShowChildrenOfObject(gO);
+					ImGui::TreePop();
+				}
 			}
-
-			if (ImGui::Selectable(o->GetName().c_str(), GetEngine()->selected == o))
-				GetEngine()->selected = o;
-
-			if (isOpen)
-			{
-				ShowChildrenOfObject(o);
-				ImGui::TreePop();
-			}
-
 			ImGui::PopID();
 		}
 	}
@@ -49,6 +47,7 @@ namespace Editor::Window
 	void WindowHierarchy::Tick()
 	{
 		auto root = GetEngine()->m_root;
+
 		ShowChildrenOfObject(root);
 	}
 }
