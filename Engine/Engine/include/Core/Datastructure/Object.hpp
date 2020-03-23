@@ -57,7 +57,7 @@ namespace Core::Datastructure
 		 * @param parent: Parent of the object
 		 * @param Scene: Root node of the object
 		 */
-		Object(const Transform& localPos, Object* parent, RootObject* scene) noexcept;
+		Object(const std::string& name, const Transform& localPos, Object* parent, RootObject* scene) noexcept;
 	public:
 		/**
 		 * Destructor of the object. Destroys all of its children and components.
@@ -85,7 +85,7 @@ namespace Core::Datastructure
 		 * @param localPos: Local position of the object
 		 * @return Pointer to created object
 		 */
-		Object*				CreateChild(const Transform& localPos) noexcept;
+		Object*				CreateChild(const std::string& name, const Transform& localPos) noexcept;
 		/**
 		 * Returns a pointer to the parent of the object. If the
 		 * pointer is nullptr, the object is the root node

@@ -29,7 +29,7 @@ namespace Editor::Window
 
 			if (isExist)
 			{
-				isOpen = ImGui::TreeNode(o, "%s", o->GetName().c_str());
+				isOpen = ImGui::TreeNode(o, "%s", "");
 				ImGui::SameLine();
 			}
 

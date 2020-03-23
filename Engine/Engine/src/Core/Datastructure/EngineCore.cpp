@@ -98,12 +98,12 @@ namespace Core::Datastructure
 			m_fbo = new Core::Renderer::Framebuffer(width, height);
 		m_manager = new Resources::Loader::ResourcesManager();
 
-		Core::Datastructure::Object* camNode{ m_root->CreateChild({}) };
+		Core::Datastructure::Object* camNode{ m_root->CreateChild("Camera", {}) };
 
 		PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
 		camNode->AddComponent(c);
 
-		Core::Datastructure::Object* o{ m_root->CreateChild({}) };
+		Core::Datastructure::Object* o{ m_root->CreateChild("Scene", {}) };
 
 		//manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
 		m_manager->LoadResourcesIRenderable("Resources/level.fbx", o);
