@@ -2,6 +2,7 @@
 #include "Reflection.h"
 #include "EditorEngine.h"
 #include "RootObject.hpp"
+#include "Maths.hpp"
 #include <iostream>
 
 namespace Editor::Window
@@ -24,15 +25,22 @@ namespace Editor::Window
 	{
 		if (ImGui::CollapsingHeader("Transform", m_treeNodeFlags))
 		{
-			static Core::Maths::Vec3 pos = selected->GetGlobalPos();
+			if (ImGui::Button(m_isLocal ? "Local" : "Global", { ImGui::GetContentRegionAvailWidth(), 0.f }))
+				m_isLocal = !m_isLocal;
+
+			Core::Maths::Vec3 pos = m_isLocal ? selected->GetPos() : selected->GetGlobalPos();
 			if (ImGui::DragFloat3("Position", pos.xyz))
-				selected->SetPos(pos);
-			static Core::Maths::Vec3 rot = selected->GetGlobalRot().ToEulerAngles();
+				m_isLocal ? selected->SetPos(pos) : selected->SetPos(pos);
+
+			Core::Maths::Vec3 rot = m_isLocal ? selected->GetRot().ToEulerAngles() : selected->GetGlobalRot().ToEulerAngles();
+			rot *= RAD2DEG;
 			if (ImGui::DragFloat3("Rotation", rot.xyz))
-				selected->SetRot(rot);
-			static Core::Maths::Vec3 scale = selected->GetGlobalScale();
+				selected->SetRot(rot * DEG2RAD);
+
+			Core::Maths::Vec3 scale = m_isLocal ? selected->GetScale() : selected->GetGlobalScale();
 			if (ImGui::DragFloat3("Scale", scale.xyz))
-				selected->SetScale(scale);
+				m_isLocal ? selected->SetScale(scale) : selected->SetScale(scale);
+
 			ImGui::Spacing();
 		}
 	}

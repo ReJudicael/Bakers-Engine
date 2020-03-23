@@ -20,6 +20,9 @@ namespace Editor::Window
 		 */
 		ImGuiTreeNodeFlags m_treeNodeFlags;
 
+	private:
+		bool m_isLocal{ true };
+
 	public:
 		/**
 		 * Constructor which set title of window ("Inspector")
