@@ -43,7 +43,7 @@ namespace Core::Datastructure
 		return m_transform;
 	}
 
-	Object::Object(const Transform& localPos, Object* parent, RootObject* scene) noexcept : m_root{ scene }, m_transform { localPos }, m_parent{ parent }
+	Object::Object(const std::string& name, const Transform& localPos, Object* parent, RootObject* scene) noexcept : m_name{ name }, m_root { scene }, m_transform{ localPos }, m_parent{ parent }
 	{
 		if (parent != nullptr)
 			m_transform.UpdatePos(parent->GetUpdatedTransform());
@@ -63,9 +63,9 @@ namespace Core::Datastructure
 		m_root->DestroyObject(this);
 	}
 
-	Object* Datastructure::Object::CreateChild(const Transform& localPos) noexcept
+	Object* Datastructure::Object::CreateChild(const std::string& name, const Transform& localPos) noexcept
 	{
-		m_childs.push_back(new Object(localPos, this, m_root));
+		m_childs.push_back(new Object(name, localPos, this, m_root));
 		return m_childs.back();
 	}
 

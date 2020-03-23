@@ -26,7 +26,7 @@ RTTR_REGISTRATION
 
 namespace Core::Datastructure
 {
-	RootObject::RootObject(SystemManagement::InputSystem* inputSystem) noexcept : Object({}, nullptr, this)
+	RootObject::RootObject(SystemManagement::InputSystem* inputSystem) noexcept : Object("Root", {}, nullptr, this)
 	{
 		m_transform.RequireUpdate();
 		m_transform.UpdatePos();

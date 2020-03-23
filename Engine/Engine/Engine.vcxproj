@@ -316,12 +316,10 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\Core\Resources\TextureData.cpp" />
     <ClCompile Include="src\Core\SystemManagement\InputSystem.cpp" />
     <ClCompile Include="src\Core\SystemManagement\ShellFileAPI.cpp" />
-    <ClCompile Include="src\Core\Window.cpp" />
     <ClCompile Include="src\Core\Datastructure\IComponent.cpp" />
     <ClCompile Include="src\Core\Datastructure\IRenderable.cpp" />
     <ClCompile Include="src\Core\Datastructure\IUpdatable.cpp" />
     <ClCompile Include="src\Core\Datastructure\RootObject.cpp" />
-    <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\Core\Datastructure\ComponentBase.cpp" />
     <ClCompile Include="src\Core\Datastructure\ComponentUpdatable.cpp" />
     <ClCompile Include="src\Core\Datastructure\Object.cpp" />
@@ -377,7 +375,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="include\Core\SystemManagement\TaskSystem.hpp" />
     <ClInclude Include="include\Core\Types\StringExtension.hpp" />
     <ClInclude Include="include\Core\Renderer\Camera.h" />
-    <ClInclude Include="include\Core\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\DefaultShader.frag" />

@@ -162,7 +162,7 @@ namespace Resources::Loader
 
 		for (auto i{ 0 }; i < node.children.size(); i++)
 		{
-			Core::Datastructure::Object* childObject{ Object->CreateChild({}) };
+			Core::Datastructure::Object* childObject{ Object->CreateChild(node.nameMesh, {}) };
 			RecurciveCreateScene(node.children[i], childObject);
 		}
 	}
