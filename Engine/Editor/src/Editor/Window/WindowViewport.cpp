@@ -29,6 +29,6 @@ namespace Editor::Window
 		{
 			fbo->Resize(windowSize.x, windowSize.y);
 		}
-		ImGui::Image((ImTextureID)fbo->ColorTexture, windowSize);
+		ImGui::Image((ImTextureID)fbo->ColorTexture, windowSize, { 0.f, 1.f }, { 1.f , 0.f });
 	}
 }

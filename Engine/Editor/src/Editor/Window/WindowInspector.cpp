@@ -52,6 +52,8 @@ namespace Editor::Window
 		if (root == nullptr)
 			return;
 
+		ImGui::Text(root->GetName().c_str());
+		ImGui::Separator();
 		DisplayTransform(root);
 
 		if (ImGui::CollapsingHeader("Properties", m_treeNodeFlags))
@@ -67,7 +69,6 @@ namespace Editor::Window
 						prop.get_name().to_string().c_str(),
 						prop.get_value(*it).to_string().c_str());
 				}
-
 			}
 		}
 	}

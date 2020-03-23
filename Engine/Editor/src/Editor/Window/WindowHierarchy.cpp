@@ -33,11 +33,8 @@ namespace Editor::Window
 				ImGui::SameLine();
 			}
 
-			if (ImGui::Selectable(o->GetName().c_str()))
-			{
-				std::cout << "Selected" << std::endl;
+			if (ImGui::Selectable(o->GetName().c_str(), GetEngine()->selected == o))
 				GetEngine()->selected = o;
-			}
 
 			if (isOpen)
 			{
@@ -52,7 +49,6 @@ namespace Editor::Window
 	void WindowHierarchy::Tick()
 	{
 		auto root = GetEngine()->m_root;
-
 		ShowChildrenOfObject(root);
 	}
 }
