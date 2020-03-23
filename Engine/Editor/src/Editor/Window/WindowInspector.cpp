@@ -9,6 +9,7 @@ namespace Editor::Window
 	WindowInspector::WindowInspector(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Inspector", visible }
 	{
+		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow;
 	}
 
 	void WindowInspector::PushWindowStyle()
@@ -19,6 +20,23 @@ namespace Editor::Window
 	{
 	}
 
+	void WindowInspector::DisplayTransform(Core::Datastructure::Object* selected)
+	{
+		if (ImGui::CollapsingHeader("Transform", m_treeNodeFlags))
+		{
+			static Core::Maths::Vec3 pos = selected->GetGlobalPos();
+			if (ImGui::DragFloat3("Position", pos.xyz))
+				selected->SetPos(pos);
+			static Core::Maths::Vec3 rot = selected->GetGlobalRot().ToEulerAngles();
+			if (ImGui::DragFloat3("Rotation", rot.xyz))
+				selected->SetRot(rot);
+			static Core::Maths::Vec3 scale = selected->GetGlobalScale();
+			if (ImGui::DragFloat3("Scale", scale.xyz))
+				selected->SetScale(scale);
+			ImGui::Spacing();
+		}
+	}
+
 	void WindowInspector::Tick()
 	{
 		auto root = GetEngine()->selected;
@@ -26,16 +44,22 @@ namespace Editor::Window
 		if (root == nullptr)
 			return;
 
-		for (auto it = root->GetComponents().begin(); it != root->GetComponents().end(); ++it)
+		DisplayTransform(root);
+
+		if (ImGui::CollapsingHeader("Properties", m_treeNodeFlags))
 		{
-			type t = (*it)->get_type();
-			ImGui::Text(t.get_name().to_string().c_str());
-			for (const auto& prop : t.get_properties())
+			for (auto it = root->GetComponents().begin(); it != root->GetComponents().end(); ++it)
 			{
-				ImGui::Text("type: %s\nname: %s\nvalue: %s\n\n",
-					prop.get_type().get_name().to_string().c_str(),
-					prop.get_name().to_string().c_str(),
-					prop.get_value(*it).to_string().c_str());
+				type t = (*it)->get_type();
+				ImGui::Text(t.get_name().to_string().c_str());
+				for (const auto& prop : t.get_properties())
+				{
+					ImGui::Text("type: %s\nname: %s\nvalue: %s\n\n",
+						prop.get_type().get_name().to_string().c_str(),
+						prop.get_name().to_string().c_str(),
+						prop.get_value(*it).to_string().c_str());
+				}
+
 			}
 		}
 	}

@@ -29,12 +29,13 @@ namespace Editor::Window
 
 			if (isExist)
 			{
-				isOpen = ImGui::TreeNode(o, "%s", o->GetName().c_str());
+				isOpen = ImGui::TreeNode(o, "");
 				ImGui::SameLine();
 			}
 
-			if (ImGui::Selectable(o->GetName().c_str()))
+			if (ImGui::Selectable("GameObject"/* o->GetName().c_str()*/))
 			{
+				std::cout << "Selected" << std::endl;
 				GetEngine()->selected = o;
 			}
 

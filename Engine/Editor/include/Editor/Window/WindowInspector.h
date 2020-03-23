@@ -2,6 +2,11 @@
 
 #include "AWindow.h"
 
+namespace Core::Datastructure
+{
+	class Object;
+}
+
 namespace Editor::Window
 {
 	/**
@@ -9,6 +14,12 @@ namespace Editor::Window
 	 */
 	class WindowInspector final : public AWindow
 	{
+	private:
+		/**
+		 * Flags for Collapsing Header
+		 */
+		ImGuiTreeNodeFlags m_treeNodeFlags;
+
 	public:
 		/**
 		 * Constructor which set title of window ("Inspector")
@@ -30,6 +41,12 @@ namespace Editor::Window
 		 * Pop window style
 		 */
 		void PopWindowStyle() override;
+
+	private:
+		/**
+		 * Display transform of selected object in hierarchy
+		 */
+		void DisplayTransform(Core::Datastructure::Object* selected);
 
 	private:
 		/**
