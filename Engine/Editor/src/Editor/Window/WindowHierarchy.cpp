@@ -33,7 +33,7 @@ namespace Editor::Window
 				ImGui::SameLine();
 			}
 
-			if (ImGui::Selectable("GameObject"/* o->GetName().c_str()*/))
+			if (ImGui::Selectable(o->GetName().c_str()))
 			{
 				std::cout << "Selected" << std::endl;
 				GetEngine()->selected = o;

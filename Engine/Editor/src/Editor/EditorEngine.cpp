@@ -35,6 +35,20 @@ namespace Editor
 		std::cerr << message << std::endl;
 	}
 
+	void GLAPIENTRY
+		MessageCallback(GLenum source,
+			GLenum type,
+			GLuint id,
+			GLenum severity,
+			GLsizei length,
+			const GLchar* message,
+			const void* userParam)
+	{
+		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+			type, severity, message);
+	}
+
 	int EditorEngine::Init(const int width, const int height)
 	{
 		glfwSetErrorCallback(callback_error);
@@ -47,6 +61,8 @@ namespace Editor
 
 		if (!gladLoadGL())
 			return 1;
+
+		glDebugMessageCallback(MessageCallback, 0);
 
 		glfwMakeContextCurrent(m_window);
 		{
@@ -85,7 +101,7 @@ namespace Editor
 		while (!glfwWindowShouldClose(m_window))
 		{
 			glClearColor(0.45f, 0.55f, 0.6f, 1.f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glfwPollEvents();
 			EngineCore::Update();
