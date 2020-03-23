@@ -89,7 +89,8 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 		{
 
 			// init the value of the texture1
-			glUniform1i(material.shader->GetLocation("uColorTexture"), 0);
+			GLint bitten = material.shader->GetLocation("uColorTexture");
+			glUniform1i(bitten, 0);
 			// init the value of the texture2
 			glUniform1i(material.shader->GetLocation("uNormalMap"), 1);
 

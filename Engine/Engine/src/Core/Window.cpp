@@ -83,9 +83,9 @@ void	Window::Update()
 
 		NRenderer::Light* l = new NRenderer::Light();
 		l->SetLightType(NRenderer::Light::ELightType::POINT);
-		l->SetAmbiant({ 0.1f, 0.1f, 0.1f });
-		l->SetDiffuse({ 0.1f, 0.2f, 0.2f });
-		l->SetSpecular({ 0.1f, 0.2f, 0.2f });
+		l->SetAmbiant({ 0.3f, 0.3f, 0.3f });
+		l->SetDiffuse({ 0.2f, 0.2f, 0.2f });
+		l->SetSpecular({ 0.2f, 0.2f, 0.2f });
 		l->SetAttenuation({ 1.f, 0.022f, 0.0019f });
 		l->SetRange(100.f);
 		l->SetAngle(0.5f);
@@ -115,7 +115,7 @@ void	Window::Update()
 		m_root->StartFrame();
 		double deltaTime = GetDeltaTime();
 		m_root->Update(deltaTime);
-		glClearColor(0, 0, 0, 1);
+		glClearColor(0.1, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		m_root->Render();
 		{

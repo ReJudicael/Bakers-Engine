@@ -18,8 +18,8 @@ void main()
     oColor = texture(uColorTexture, vUV);
 	vec3 normalFromMap = vec3(texture(uNormalMap, vUV));
 	
-	vec3 lightContribution = vec3(oColor);
+	vec3 lightContribution;
 	for (int i = 0; i < uLightCount; i++)
-		lightContribution = getLightContribution(uLight[i], mat, unprojectedPos, normal);
-	oColor = vec4(lightContribution, 1.0);
+		lightContribution += getLightContribution(uLight[i], mat, unprojectedPos, normal);
+	oColor *= vec4(lightContribution, 1.0);
 }

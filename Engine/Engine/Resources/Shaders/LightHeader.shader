@@ -3,6 +3,8 @@ struct Material
 	vec3	diffuseColor;
 	vec3	ambientColor;
 	vec3	specularColor;
+	float	shininess;
+	float	shininessStrength;
 };
 
 struct light
@@ -70,12 +72,12 @@ vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal)
 	vec3 reflectDir = normalize(reflect(-lightDir, normal));
 	float spec = dot(pos, reflectDir);
         if (spec > 0)
-                spec = pow(spec, 64);
+                spec = pow(spec, mat.shininess / 4.0);
         else
                 spec = 0;
         vec3 specular = attenuation * spec * light.specular * mat.specularColor;
-		specular = clamp(specular, 0.0, 1.0);
+		specular = clamp(specular * mat.shininessStrength, 0.0, 1.0);
 
-	return ambient + diffuse + specular;
+	return ambient + diffuse;// + specular;
 }
 
