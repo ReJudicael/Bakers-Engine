@@ -1,5 +1,6 @@
 #include "ICamera.h"
 #include "RootObject.hpp"
+#include "EngineCore.h"
 #include "CoreMinimal.h"
 
 RTTR_REGISTRATION
@@ -41,5 +42,22 @@ const Core::Maths::Mat4& Core::Datastructure::ICamera::GetCameraMatrix()
 
 void Core::Datastructure::ICamera::OnStart()
 {
+	IComponent::OnStart();
 	GetScene()->AddCamera(this);
+	m_fbo = GetScene()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight);
+}
+
+void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRenderable*>& renderables)
+{
+	ZoneScoped
+		ZoneText("Render of a camera", 22)
+		TracyGpuZone("Rendering frame buffer")
+	if (IsInit() && m_isActive)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
+			(*it)->Draw(this);
+	}
 }

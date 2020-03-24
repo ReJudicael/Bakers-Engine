@@ -6,6 +6,7 @@
 #include "RootObject.hpp"
 #include "LoadResources.h"
 #include "PlayerCamera.h"
+#include "Framebuffer.h"
 
 RTTR_REGISTRATION
 {
@@ -33,16 +34,20 @@ namespace Core::Datastructure
 	EngineCore::EngineCore() : EngineCore(1280, 800)
 	{}
 
-	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo{ nullptr }, m_window{ nullptr }
+	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo{ nullptr }, m_window{ nullptr }, m_manager {nullptr}
 	{
 		m_inputSystem = new Core::SystemManagement::InputSystem(this);
-		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem);
+		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem, this);
 	}
 
 	EngineCore::~EngineCore()
 	{
 		delete m_root;
 		delete m_inputSystem;
+		for (auto fbo : m_fbo)
+		{
+			delete fbo;
+		}
 	}
 
 	int EngineCore::Init()
@@ -94,8 +99,6 @@ namespace Core::Datastructure
 		glDebugMessageCallback(MessageCallback, 0);
 
 		TracyGpuContext
-
-			m_fbo = new Core::Renderer::Framebuffer(width, height);
 		m_manager = new Resources::Loader::ResourcesManager();
 
 		Core::Datastructure::Object* camNode{ m_root->CreateChild("Camera", {}) };
@@ -109,6 +112,7 @@ namespace Core::Datastructure
 		m_manager->LoadResourcesIRenderable("Resources/level.fbx", o);
 
 		o->SetScale({ 0.1,0.1,0.1 });
+		m_fbo.clear();
 		return 0;
 	}
 
@@ -125,9 +129,12 @@ namespace Core::Datastructure
 
 		EndFrame();
 	}
-	Core::Renderer::Framebuffer* EngineCore::GetFBO()
+	Core::Renderer::Framebuffer* EngineCore::GetFBO(int num)
 	{
-		return m_fbo;
+		auto it{ m_fbo.begin() };
+		std::advance(it, num);
+
+		return *it;
 	}
 
 	GLFWwindow* EngineCore::GetWindow()
@@ -146,15 +153,11 @@ namespace Core::Datastructure
 	void		EngineCore::Render()
 	{
 		ZoneScoped
-			GLint PreviousFramebuffer;
-			glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
-			glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
-			glClearColor(0, 0, 0, 1);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			m_root->Render();
-			TRACY_GL_IMAGE_SEND(m_width, m_height)
+			m_root->Render(m_fbo);
+
+		TRACY_GL_IMAGE_SEND(m_width, m_height)
 			TracyGpuCollect
-			glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
+
 		FrameMark
 	}
 	
@@ -162,5 +165,27 @@ namespace Core::Datastructure
 	{
 		m_root->RemoveDestroyed();
 		m_inputSystem->ClearRegisteredInputs();
+	}
+
+	Core::Renderer::Framebuffer* EngineCore::CreateFBO()
+	{
+		return CreateFBO(m_width, m_height);
+	}
+
+	Core::Renderer::Framebuffer* EngineCore::CreateFBO(int width, int height)
+	{
+		return m_fbo.emplace_back(new Core::Renderer::Framebuffer(width, height));
+	}
+
+	void EngineCore::DeleteFBO(Core::Renderer::Framebuffer* fbo)
+	{
+		for (auto it{ m_fbo.begin() }; it != m_fbo.end(); ++it)
+		{
+			if (*it == fbo)
+			{
+				it = m_fbo.erase(it);
+				delete fbo;
+			}
+		}
 	}
 }

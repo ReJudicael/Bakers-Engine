@@ -72,7 +72,6 @@ void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
 
 void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 {
-
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
 	// check if the mesh have a modelMesh

@@ -29,12 +29,8 @@ namespace Core::Datastructure
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;
 
-		/**
-		 * Function called by the engine to draw the object
-		 * @param cameras: Cameras of the scene
-		 */
-		void	Draw(const std::list<ICamera*>& cameras);
-		
+		void Draw(ICamera* cam);
+
 		REGISTER_CLASS(IComponent)
 	};
 }

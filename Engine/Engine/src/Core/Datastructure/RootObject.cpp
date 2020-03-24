@@ -1,4 +1,5 @@
 #include "RootObject.hpp"
+#include "EngineCore.h"
 #include "CoreMinimal.h"
 
 RTTR_REGISTRATION
@@ -26,7 +27,7 @@ RTTR_REGISTRATION
 
 namespace Core::Datastructure
 {
-	RootObject::RootObject(SystemManagement::InputSystem* inputSystem) noexcept : Object("Root", {}, nullptr, this)
+	RootObject::RootObject(SystemManagement::InputSystem* inputSystem, EngineCore* engine) noexcept : Object("Root", {}, nullptr, this), m_engine{ engine }
 	{
 		m_transform.RequireUpdate();
 		m_transform.UpdatePos();
@@ -55,13 +56,23 @@ namespace Core::Datastructure
 			(*it)->Update(deltaTime);
 	}
 
-	void RootObject::Render() const noexcept
+	void RootObject::Render(std::list<Core::Renderer::Framebuffer*>& fboList) const noexcept
 	{
 		ZoneScoped
 			ZoneText("Render of components done here", 31)
-		TracyGpuZone("Rendering all components")
-		for (auto it{ m_renderables.begin() }; it != m_renderables.end(); ++it)
-			(*it)->Draw(m_cameras);
+			TracyGpuZone("Rendering all components")
+		auto fbo{ fboList.begin() };
+		GLint PreviousFramebuffer;
+		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
+		glClearColor(0, 0, 0, 1);
+		for (auto it{ m_cameras.begin() }; it != m_cameras.end(); ++it)
+		{
+			if (fbo == fboList.end())
+				return;
+			++fbo;
+			(*it)->Draw(m_renderables);
+		}
+		glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
 	}
 	void RootObject::AddUpdatable(IUpdatable* i) noexcept
 	{
@@ -149,8 +160,8 @@ namespace Core::Datastructure
 		}
 	}
 
-	RootObject* RootObject::CreateRootNode(SystemManagement::InputSystem* inputSystem) noexcept
+	RootObject* RootObject::CreateRootNode(SystemManagement::InputSystem* inputSystem, EngineCore* engine) noexcept
 	{
-		return new RootObject(inputSystem);
+		return new RootObject(inputSystem, engine);
 	}
 }

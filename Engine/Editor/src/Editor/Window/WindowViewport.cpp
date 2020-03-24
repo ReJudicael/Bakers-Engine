@@ -23,7 +23,7 @@ namespace Editor::Window
 
 	void WindowViewport::Tick()
 	{
-		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO() };
+		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO(0) };
 		ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 		if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
 		{
