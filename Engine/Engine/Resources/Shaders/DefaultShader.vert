@@ -2,6 +2,7 @@
 layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec2 aUV;
 layout(location = 2) in vec3 aNormal;
+layout(location = 3) in vec3 aTangent;
 
 // Uniforms
 uniform mat4 uModel;
@@ -12,6 +13,7 @@ uniform mat4 uCam;
 out vec2 vUV;
 out vec3 unprojectedPos;
 out vec3 normal;
+out vec3 tangent;
 
 void main()
 {
@@ -20,4 +22,5 @@ void main()
 	unprojectedPos = vec3(pos);
     gl_Position = uProj * uCam * pos;
 	normal = aNormal;
+	tangent = aTangent;
 }

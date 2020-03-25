@@ -26,6 +26,7 @@ namespace Resources
 		Core::Maths::Vec3	scale;
 
 		std::string					nameMesh;
+		std::string					nameObject;
 		std::vector<std::string>	namesMaterial;
 
 		std::vector<Node> children;
@@ -33,7 +34,6 @@ namespace Resources
 		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory);
 
 		void SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory);
-
 
 		void CreateObjectScene(Core::Datastructure::Object* rootObject, Loader::ResourcesManager& resources);
 	};

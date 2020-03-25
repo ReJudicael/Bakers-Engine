@@ -12,6 +12,7 @@ namespace Resources
 		aiVector3D sca;
 
 		aiMaterial* mat;
+		nameObject = node->mName.data;
 
 		if (node->mNumMeshes > 0)
 		{

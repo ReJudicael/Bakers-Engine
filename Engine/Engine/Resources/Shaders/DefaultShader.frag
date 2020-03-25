@@ -13,8 +13,8 @@ in vec3 unprojectedPos;
 in vec3 normal;
 
 void main()
-{
-    oColor = texture(uColorTexture, vUV);
+{    
+	oColor = texture(uColorTexture, vUV);
 	vec3 lightContribution;
 	for (int i = 0; i < uLightCount; i++)
 		lightContribution += getLightContribution(uLight[i], mat, unprojectedPos, normal);

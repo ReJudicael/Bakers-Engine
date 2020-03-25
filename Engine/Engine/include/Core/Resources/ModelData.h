@@ -19,6 +19,7 @@ namespace Resources
 	struct ModelData
 	{
 		GLuint VAOModel{0};
+		bool				haveTangent;
 		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
 		std::vector<OffsetMesh> offsetsMesh;

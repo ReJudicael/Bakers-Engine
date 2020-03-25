@@ -34,6 +34,8 @@ namespace Resources
 		Vertex v;
 		aiVector3D Zeor3D{ 0.f,0.f,0.f };
 
+		haveTangent = mesh->HasTangentsAndBitangents();
+
 		for (int j = 0; j < mesh->mNumVertices; j++)
 		{
 			// get the position of the current vertice
@@ -46,10 +48,17 @@ namespace Resources
 			v.Position = { Pos->x, Pos->y, Pos->z };
 			v.UV = { UV->x, UV->y };
 			v.Normal = { Normal->x, Normal->y, Normal->z };
+			if (haveTangent)
+			{
+				// get the tangent of the current vertice
+				aiVector3D* Tangent = &(mesh->mTangents[j]);
+				v.Tangent = { Tangent->x, Tangent->y, Tangent->z };
+			}
 
 			vertices.push_back(v);
 		}
 	}
+
 
 	void ModelData::CreateVAOModel()
 	{
@@ -66,6 +75,11 @@ namespace Resources
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, UV));
 		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+		if (haveTangent)
+		{
+			glEnableVertexAttribArray(3);
+			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+		}
 		glGenBuffers(1, &EBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
