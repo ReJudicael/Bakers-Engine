@@ -12,6 +12,7 @@ namespace Resources
 		aiVector3D sca;
 
 		aiMaterial* mat;
+		nameObject = node->mName.data;
 
 		if (node->mNumMeshes > 0)
 		{
@@ -64,6 +65,7 @@ namespace Resources
 			{
 				mesh->AddModel(resources.GetModel(nameMesh));
 				mesh->AddMaterials(resources, namesMaterial);
+				std::cout << nameObject << std::endl;
 				Object->AddComponent(mesh);
 			}
 		}

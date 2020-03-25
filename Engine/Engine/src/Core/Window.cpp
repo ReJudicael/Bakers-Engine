@@ -94,13 +94,13 @@ void	Window::Update()
 
 		Core::Datastructure::Object* o{ m_root->CreateChild({}) };
 
-		manager.Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
-		//manager.Load3DObject("Resources/Dog/12228_Dog_v1_L2.obj", o);
+		//manager.Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
+		manager.Load3DObject("Resources/Dog/12228_Dog_v1_L2.obj");
 		//manager.Load3DObject("Resources/level.fbx");
 
 		//Resources::Object3DGraph::CreateScene("Resources/level.fbx", manager, o);
-		Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", manager, o);
-		//Resources::Object3DGraph::CreateScene("Resources/Dog/12228_Dog_v1_L2.obj", manager, o);
+		//Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", manager, o);
+		Resources::Object3DGraph::CreateScene("Resources/Dog/12228_Dog_v1_L2.obj", manager, o);
 
 		o->SetScale({ 0.1,0.1,0.1 });
 	}

@@ -108,7 +108,8 @@ namespace Resources::Loader
 											| aiProcess_JoinIdenticalVertices 
 											| aiProcess_SplitLargeMeshes 
 											| aiProcess_SortByPType 
-											| aiProcess_ValidateDataStructure);
+											| aiProcess_ValidateDataStructure
+											| aiProcess_CalcTangentSpace);
 		if (!scene)
 		{
 			// std::cout "could not load file" << std::endl;
