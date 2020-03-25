@@ -28,7 +28,7 @@ namespace Core::Datastructure
 
 	void	IComponent::Start()
 	{
-		if (m_isInit || !m_isActive)
+		if (m_isInit || !m_isActive || IsDestroyed())
 			return;
 		ZoneScoped
 			ZoneText("Start of a component", 21)
