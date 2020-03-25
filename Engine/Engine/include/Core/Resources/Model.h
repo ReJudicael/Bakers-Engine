@@ -11,12 +11,14 @@ namespace Resources
 	struct Material;
 	struct OffsetMesh;
 
+	/*
+	 * Contains the values with which we can draw the geometry of the mesh
+	 */
 	struct Model
 	{
 		GLuint VAOModel{ 0 };
 
 		std::vector<OffsetMesh> offsetsMesh;
-		std::vector<std::shared_ptr<Material>> materialsModel;
 
 		EOpenGLLinkState stateVAO;
 	};

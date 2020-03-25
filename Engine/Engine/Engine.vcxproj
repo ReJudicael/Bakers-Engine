@@ -305,14 +305,16 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="src\Core\Debug\Logger.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
     <ClCompile Include="src\Core\Renderer\Framebuffer.cpp" />
+    <ClCompile Include="src\Core\Renderer\Light.cpp" />
     <ClCompile Include="src\Core\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Core\Renderer\PlayerCamera.cpp" />
     <ClCompile Include="src\Core\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Core\Resources\Loader\LoadResources.cpp" />
     <ClCompile Include="src\Core\Resources\Material.cpp" />
     <ClCompile Include="src\Core\Resources\ModelData.cpp" />
-    <ClCompile Include="src\Core\Resources\SceneData.cpp" />
+    <ClCompile Include="src\Core\Resources\Object3DGraph.cpp" />
     <ClCompile Include="src\Core\Resources\Shader.cpp" />
+    <ClCompile Include="src\Core\Resources\Texture.cpp" />
     <ClCompile Include="src\Core\Resources\TextureData.cpp" />
     <ClCompile Include="src\Core\SystemManagement\InputSystem.cpp" />
     <ClCompile Include="src\Core\SystemManagement\ShellFileAPI.cpp" />
@@ -353,6 +355,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="include\Core\Maths\Vec3.hpp" />
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
     <ClInclude Include="include\Core\Renderer\Framebuffer.h" />
+    <ClInclude Include="include\Core\Renderer\Light.h" />
     <ClInclude Include="include\Core\Renderer\Mesh.h" />
     <ClInclude Include="include\Core\Renderer\PlayerCamera.h" />
     <ClInclude Include="include\Core\Renderer\Renderer.h" />
@@ -362,7 +365,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="include\Core\Resources\ModelData.h" />
     <ClInclude Include="include\Core\Resources\OffsetMesh.h" />
     <ClInclude Include="include\Core\Resources\OpenGLLinkState.h" />
-    <ClInclude Include="include\Core\Resources\SceneData.h" />
+    <ClInclude Include="include\Core\Resources\Object3DGraph.h" />
     <ClInclude Include="include\Core\Resources\Shader.h" />
     <ClInclude Include="include\Core\Resources\Texture.h" />
     <ClInclude Include="include\Core\Resources\TextureData.h" />

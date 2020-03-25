@@ -109,28 +109,45 @@ namespace Core::Datastructure
 		PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
 		camNode->AddComponent(c);
 
+		NRenderer::Light* l = new NRenderer::Light();
+		l->SetLightType(NRenderer::Light::ELightType::POINT);
+		l->SetAmbiant({ 0.3f, 0.3f, 0.3f });
+		l->SetDiffuse({ 0.2f, 0.2f, 0.2f });
+		l->SetSpecular({ 0.2f, 0.2f, 0.2f });
+		l->SetAttenuation({ 1.f, 0.022f, 0.0019f });
+		l->SetRange(1000.f);
+		l->SetAngle(0.5f);
+		l->SetAngleSmoothness(0.01f);
+		camNode->AddComponent(l);
+
 		Core::Datastructure::Object* o{ m_root->CreateChild("Scene", {}) };
 
 		//manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
-		m_manager->LoadResourcesIRenderable("Resources/level.fbx", o);
+		m_manager->Load3DObject("Resources/level.fbx");
+		Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, o);
 
 		o->SetScale({ 0.1,0.1,0.1 });
 		m_fbo.clear();
 		return 0;
 	}
 
-	void	EngineCore::Update()
+	void	EngineCore::DoLoop()
 	{
-		ZoneNamedN(updateLoop, "Main update loop", true)
-			double deltaTime = GetDeltaTime();
+		ZoneNamedN(updateLoop, "Main loop iteration", true)
+		
+		double deltaTime = GetDeltaTime();
 
 		StartFrame();
 
-		m_root->Update(deltaTime);
-		
+		Update(deltaTime);
+
 		Render();
 
 		EndFrame();
+	}
+	void	EngineCore::Update(double deltaTime)
+	{
+		m_root->Update(deltaTime);
 	}
 
 	Core::SystemManagement::InputSystem* EngineCore::GetInputSystem()
@@ -157,6 +174,7 @@ namespace Core::Datastructure
 			m_root->StartFrame();
 			m_manager->LinkAllTextureToOpenGl();
 			m_manager->LinkAllModelToOpenGl();
+			m_manager->ShaderUpdate();
 	}
 
 	void		EngineCore::Render()
@@ -173,8 +191,8 @@ namespace Core::Datastructure
 	void		EngineCore::EndFrame()
 	{
 		m_root->RemoveDestroyed();
-		// TODO:
-		// m_inputSystem->ClearRegisteredInputs();
+		
+		m_inputSystem->ClearRegisteredInputs();
 	}
 
 	Core::Renderer::Framebuffer* EngineCore::CreateFBO()
