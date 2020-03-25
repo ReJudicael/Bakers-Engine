@@ -1,6 +1,8 @@
 #ifndef __REF3D__
 #define __REF3D__
 
+#include "MathMinimal.h"
+
 #include "Vec3.hpp"
 #include "Mat4.hpp"
 #include "Ref.hpp"

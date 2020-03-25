@@ -1,8 +1,9 @@
 #ifndef __QUATERNION__
 #define __QUATERNION__
 
+#include "MathMinimal.h"
+
 #include <functional>
-#include <cmath>
 
 #include "Vec3.hpp"
 #include "Vec4.hpp"
@@ -111,7 +112,7 @@ namespace Core::Maths
 		 */
 		inline					Quaternion(float eulerX, float eulerY, float eulerZ) noexcept : Quaternion(0, 0, 0, 0)
 		{
-			constexpr float twoPi = M_PI * 2.f;
+			constexpr float twoPi = (float)M_PI * 2.f;
 			eulerX = fmod(eulerX, twoPi);
 			eulerY = fmod(eulerY, twoPi);
 			eulerZ = fmod(eulerZ, twoPi);

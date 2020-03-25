@@ -1,7 +1,8 @@
 #ifndef __VEC__
 #define __VEC__
 
-#include <cmath>
+#include "MathMinimal.h"
+
 #include "Mat.hpp"
 #include <iostream>
 

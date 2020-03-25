@@ -4,8 +4,9 @@
 #include <rttr/registration_friend.h>
 using namespace rttr;
 
-#define REGISTER_CLASS(parents) \
-RTTR_ENABLE(parents)			\
+
+#define REGISTER_CLASS(...) \
+RTTR_ENABLE(__VA_ARGS__)			\
 RTTR_REGISTRATION_FRIEND		
 
 namespace Core::Datastructure

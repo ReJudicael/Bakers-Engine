@@ -21,7 +21,8 @@ namespace Core::Datastructure
 
 	void IRenderable::Draw(ICamera* cam)
 	{
-		ZoneText("Rendering single component")
+		ZoneScoped
+		ZoneText("Rendering single component", 27)
 			TracyGpuZone("Rendering single component")
 		
 		if (IsInit() && m_isActive)

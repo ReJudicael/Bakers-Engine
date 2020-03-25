@@ -27,8 +27,9 @@ namespace Editor::Window
 		ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 		if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
 		{
-			fbo->Resize(windowSize.x, windowSize.y);
+			fbo->Resize((int)windowSize.x, (int)windowSize.y);
 		}
+#pragma warning(suppress : 4312)
 		ImGui::Image((ImTextureID)fbo->ColorTexture, windowSize);
 	}
 }

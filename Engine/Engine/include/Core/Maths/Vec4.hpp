@@ -1,8 +1,9 @@
 #ifndef __VEC4__
 #define __VEC4__
 
+#include "MathMinimal.h"
+
 #include <type_traits>
-#include <cmath>
 
 #include "Vec.hpp"
 #include "Vec3.hpp"

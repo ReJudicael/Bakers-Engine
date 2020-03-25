@@ -299,6 +299,9 @@
     <ClInclude Include="include\Core\Renderer\Framebuffer.h">
       <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Maths\MathMinimal.h">
+      <Filter>Header Files\Core\Maths</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\DefaultShader.vert">

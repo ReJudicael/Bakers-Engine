@@ -34,6 +34,7 @@ int Mesh::AddTriangle(int v1, int v2, int v3)
 	m_indices.push_back(v1);
 	m_indices.push_back(v2);
 	m_indices.push_back(v3);
+	return 0;
 }
 
 int Mesh::AddVertex(float x, float y, float z)

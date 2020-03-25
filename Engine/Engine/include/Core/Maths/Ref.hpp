@@ -1,6 +1,8 @@
 #ifndef __REF__
 #define __REF__
 
+#include "MathMinimal.h"
+
 #include <Vec.hpp>
 
 namespace Core::Maths

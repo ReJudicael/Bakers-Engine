@@ -1,6 +1,8 @@
 #ifndef __VEC2__
 #define __VEC2__
 
+#include "MathMinimal.h"
+
 #include <type_traits>
 
 #include "Vec.hpp"

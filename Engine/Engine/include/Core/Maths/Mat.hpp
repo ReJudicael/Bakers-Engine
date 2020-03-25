@@ -1,8 +1,9 @@
 #ifndef __MAT__
 #define __MAT__
 
+#include "MathMinimal.h"
+
 #include <string>
-#include <cmath>
 #include <utility>
 #include <iostream>
 
