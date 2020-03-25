@@ -55,7 +55,7 @@ namespace Editor
 			/**
 			 * Destructor
 			 */
-			~AWindow();
+			virtual ~AWindow();
 
 		private:
 			/**

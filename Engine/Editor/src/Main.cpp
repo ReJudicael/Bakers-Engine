@@ -16,8 +16,9 @@
 
 int main()
 {
-    Editor::EditorEngine engine;
-    engine.Update();
+    Editor::EditorEngine* engine = new Editor::EditorEngine();
+    engine->Update();
+    delete engine;
 
     return 0;
 }

@@ -40,6 +40,11 @@ namespace Editor
 			DrawableComponent(const std::string& name = "");
 
 			/**
+			 * Default destructor
+			 */
+			~DrawableComponent() = default;
+
+			/**
 			 * Get ID of component
 			 * @return ID of component
 			 */
