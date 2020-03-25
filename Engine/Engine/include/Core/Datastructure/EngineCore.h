@@ -8,7 +8,7 @@
 
 namespace Core::Datastructure
 {
-	static const char* glsl_version = "#version 460";
+	static const char* glsl_version = "#version 400";
 	class RootObject;
 	BAKERS_API_CLASS EngineCore
 	{
@@ -38,6 +38,11 @@ namespace Core::Datastructure
 		Core::SystemManagement::EventSystem<EMouseButton> OnReleaseMouseButton;
 		Core::SystemManagement::EventSystem<double> OnScrollYAxis;
 		Core::SystemManagement::EventSystem<double, double> OnResizeWindow;
+
+		inline Resources::Loader::ResourcesManager* GetResourcesManager()
+		{
+			return m_manager;
+		}
 
 		int				Init();
 		virtual int		Init(const int width, const int height);

@@ -1,4 +1,6 @@
 #include "WindowFileBrowser.h"
+#include "EditorEngine.h"
+#include "LoadResources.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -117,8 +119,16 @@ namespace Editor::Window
 		}
 		else
 			ext = fs.GetExtensionWithoutDot_str(itemPath);
+		std::string s{ std::string(PATH_TO_ICONS) + ext + std::string(".png") };
 
-		auto it{ icons.find(ext) };
+		std::shared_ptr<Resources::Texture> texture;
+		GetEngine()->GetResourcesManager()->LoadTexture(s,texture);
+		if(texture->stateTexture == Resources::EOpenGLLinkState::LOADPROBLEM)
+			if (ext != "default")
+				return GetIcon(".default");
+		return (ImTextureID)texture->texture;
+
+		/*auto it{ icons.find(ext) };
 		if (it == icons.end())
 		{
 			int w, h, channels;
@@ -144,9 +154,9 @@ namespace Editor::Window
 
 #pragma warning(suppress : 4312)
 			it = icons.insert({ ext, (ImTextureID)texture }).first;
-		}
+		}*/
 
-		return it->second;
+		//return it->second;
 	}
 
 	void WindowFileBrowser::ShowCurrentLocalPath()

@@ -83,7 +83,7 @@ namespace Core::Datastructure
 			return 1;
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
 		m_window = glfwCreateWindow(width, height, "Editor", nullptr, nullptr);
 		if (m_window == nullptr)
