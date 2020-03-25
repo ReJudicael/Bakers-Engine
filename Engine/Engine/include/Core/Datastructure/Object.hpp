@@ -86,6 +86,13 @@ namespace Core::Datastructure
 		 * @return Pointer to created object
 		 */
 		Object*				CreateChild(const std::string& name, const Transform& localPos) noexcept;
+
+		/**
+		 * Removes given object from children if it is one
+		 * @param object: Pointer to object to remove
+		 */
+		void				RemoveChild(Object* object) noexcept;
+
 		/**
 		 * Returns a pointer to the parent of the object. If the
 		 * pointer is nullptr, the object is the root node
