@@ -8,7 +8,7 @@
 
 namespace Core::Datastructure
 {
-	static const char* glsl_version = "#version 460";
+	static const char* glsl_version = "#version 400";
 	class RootObject;
 	BAKERS_API_CLASS EngineCore
 	{

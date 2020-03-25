@@ -12,6 +12,7 @@ uniform mat4 uCam;
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
 out vec2 vUV;
 out vec3 unprojectedPos;
+out vec3 camPos;
 out vec3 normal;
 out vec3 tangent;
 
@@ -20,7 +21,8 @@ void main()
 	vUV = aUV;
 	vec4 pos = uModel * vec4(aPosition, 1.0);
 	unprojectedPos = vec3(pos);
-    gl_Position = uProj * uCam * pos;
+    camPos = vec3(uCam[3][0], uCam[3][1], uCam[3][2]);
 	normal = aNormal;
 	tangent = aTangent;
+	gl_Position = uProj * uCam * pos;
 }

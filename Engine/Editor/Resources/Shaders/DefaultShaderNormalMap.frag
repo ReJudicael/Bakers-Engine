@@ -1,6 +1,7 @@
 // Varyings
 in vec2 vUV;
 in vec3 unprojectedPos;
+in vec3 camPos;
 in vec3 normal;
 in vec3 tangent;
 
@@ -24,14 +25,14 @@ mat3 GetTBNMatrix(vec3 t, vec3 b, vec3 n)
 void main()
 {
     oColor = texture(uColorTexture, vUV);
-	return;
 	vec3 normalFromMap = (vec3(texture(uNormalMap, vUV)) * 2.0) - 1.0;
 	vec3 bitangent = cross(normal, tangent);
 	vec3 newNormal = GetTBNMatrix(tangent, bitangent, normal) * normalFromMap;
 	normalize(newNormal);
+	vec3 view = normalize(camPos - unprojectedPos);
 	
 	vec3 lightContribution;
 	for (int i = 0; i < uLightCount; i++)
-		lightContribution += getLightContribution(uLight[i], mat, unprojectedPos, newNormal);
+		lightContribution += getLightContribution(uLight[i], mat, unprojectedPos, newNormal, view);
 	oColor *= vec4(lightContribution, 1.0);
 }
