@@ -53,13 +53,14 @@ namespace Core::Datastructure
 
 	void Object::Destroy() noexcept
 	{
+		if (m_isDestroyed)
+			return;
 		m_isDestroyed = true;
 
 		for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
 			(*it)->Destroy();
-		for (auto it{ m_childs.begin() }; it != m_childs.end(); it = m_childs.begin())
+		for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 			(*it)->Destroy();
-		m_parent->RemoveChild(this);
 		m_root->DestroyObject(this);
 	}
 

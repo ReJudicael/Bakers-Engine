@@ -133,7 +133,7 @@ namespace Core::Datastructure
 			ZoneText("Destroying scene and all its objects and components", 52)
 		for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
 			(*it)->Destroy();
-		for (auto it{ m_childs.begin() }; it != m_childs.end(); it = m_childs.begin())
+		for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 			(*it)->Destroy();
 	
 		RemoveDestroyed();

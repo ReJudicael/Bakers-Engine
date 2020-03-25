@@ -23,6 +23,10 @@ namespace Core::Datastructure
 		 */
 		virtual void OnDraw(ICamera* cam) = 0;
 	public:
+		/**
+		 * Destructor of the renderable interface
+		 */
+		~IRenderable() noexcept;
 		virtual void	OnStart() override;
 
 		std::shared_ptr<GLuint> m_program = 0;

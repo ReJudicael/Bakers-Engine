@@ -33,6 +33,11 @@ namespace Core::Datastructure
 		virtual Core::Maths::Mat4	OnGenerateCamera() = 0;
 	public:
 		/**
+		 * Destructor of the camera interface
+		 */
+		~ICamera() noexcept;
+
+		/**
 		 * Get perspective matrix of the camera
 		 * @return Stored perspective matrix
 		 */

@@ -18,6 +18,12 @@ namespace Core::Datastructure
 			return;
 		GetScene()->AddRenderable(this);
 	}
+	IRenderable::~IRenderable()
+	{
+		if (GetScene() == nullptr)
+			return;
+		GetScene()->RemoveRenderable(this);
+	}
 
 	void IRenderable::Draw(ICamera* cam)
 	{

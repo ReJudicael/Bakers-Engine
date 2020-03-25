@@ -21,6 +21,8 @@ namespace Editor::Window
 	{
 		for (auto gO : object->GetChilds())
 		{
+			if (gO->IsDestroyed())
+				continue;
 			ImGui::PushID(gO);
 			{
 				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanFullWidth;
@@ -33,6 +35,17 @@ namespace Editor::Window
 
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 					GetEngine()->objectSelected = gO;
+				
+				if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+				{
+					gO->Destroy();
+					if (isOpen)
+						ImGui::TreePop();
+					ImGui::PopID();
+					if (GetEngine()->objectSelected == gO)
+						GetEngine()->objectSelected = nullptr;
+					continue;
+				}
 
 				if (isOpen)
 				{

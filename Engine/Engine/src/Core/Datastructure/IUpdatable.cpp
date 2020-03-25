@@ -12,18 +12,25 @@ RTTR_REGISTRATION
 
 namespace Core::Datastructure
 {
-	void Datastructure::IUpdatable::OnStart()
+	void IUpdatable::OnStart()
 	{
 		if (GetScene() == nullptr)
 			return;
 		GetScene()->AddUpdatable(this);
 	}
 
+	IUpdatable::~IUpdatable()
+	{
+		if (GetScene() == nullptr)
+			return;
+		GetScene()->RemoveUpdatable(this);
+	}
+
 	void	IUpdatable::Update(float deltaTime)
 	{
 		ZoneScoped
 			ZoneText("Update of a component", 22)
-		if (m_isUpdating && m_isActive)
+		if (m_isUpdating && m_isActive && !IsDestroyed())
 			OnUpdate(deltaTime);
 	}
 }

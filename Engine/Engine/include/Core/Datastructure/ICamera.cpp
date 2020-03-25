@@ -47,6 +47,13 @@ void Core::Datastructure::ICamera::OnStart()
 	m_fbo = GetScene()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight);
 }
 
+Core::Datastructure::ICamera::~ICamera() noexcept
+{
+	if (GetScene() == nullptr)
+		return;
+	GetScene()->RemoveCamera(this);
+}
+
 void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRenderable*>& renderables)
 {
 	ZoneScoped

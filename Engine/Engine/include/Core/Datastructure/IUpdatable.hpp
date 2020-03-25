@@ -23,6 +23,11 @@ namespace Core::Datastructure
 		virtual void		OnUpdate(float deltaTime) = 0;
 	public:
 		/**
+		 * Destructor of the updatable interface
+		 */
+		~IUpdatable() noexcept;
+
+		/**
 		 * Called by the engine to update the component
 		 * @param deltaTime: Time since previous frame
 		 */

@@ -64,6 +64,8 @@ namespace Core::Datastructure
 		 */
 		~Object() noexcept
 		{
+			if (m_parent != nullptr)
+				m_parent->RemoveChild(this);
 		}
 
 		/**
