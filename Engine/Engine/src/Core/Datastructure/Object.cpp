@@ -26,7 +26,10 @@ RTTR_REGISTRATION
 		.method("AddComponent", &Object::AddComponent)
 		.method("RemoveComponent", &Object::RemoveComponent)
 		.method("EraseComponent", &Object::EraseComponent)
-		.property_readonly("Scene", &Object::GetScene);
+		.property_readonly("Scene", &Object::GetScene)
+		.property_readonly("Forward", &Object::Forward)
+		.property_readonly("Up", &Object::Up)
+		.property_readonly("Right", &Object::Right);
 }
 
 namespace Core::Datastructure

@@ -308,6 +308,36 @@ namespace Core::Datastructure
 			return m_root;
 		}
 
+		/**
+		 * Returns the forward vector of the object
+		 */
+		Core::Maths::Vec3	Forward() noexcept
+		{
+			constexpr Core::Maths::Vec3 forward{ 1, 0, 0 };
+			constexpr Core::Maths::Quat	forQuat{ 0, forward };
+			return (GetGlobalRot() * forQuat * GetGlobalRot().Inversed()).GetVec();
+		}
+
+		/**
+		 * Returns the up vector of the object
+		 */
+		Core::Maths::Vec3	Up() noexcept
+		{
+			constexpr Core::Maths::Vec3 up{ 0, 1, 0 };
+			constexpr Core::Maths::Quat	upQuat{ 0, up };
+			return (GetGlobalRot() * upQuat * GetGlobalRot().Inversed()).GetVec();
+		}
+
+		/**
+		 * Returns the right vector of the object
+		 */
+		Core::Maths::Vec3	Right() noexcept
+		{
+			constexpr Core::Maths::Vec3 right{ 0, 0, 1 };
+			constexpr Core::Maths::Quat	rightQuat{ 0, right };
+			return (GetGlobalRot() * rightQuat * GetGlobalRot().Inversed()).GetVec();
+		}
+
 		REGISTER_CLASS()
 	};
 
