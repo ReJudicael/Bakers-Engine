@@ -58,6 +58,13 @@ namespace Core::Datastructure
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept = 0;
 
+	private:
+		void				SetCallbackToGLFW();
+		GLFWkeyfun			SetKeyCallBackToGLFW();
+		GLFWmousebuttonfun	SetMouseButtonCallBackToGLFW();
+		GLFWscrollfun		SetScrollCallBackToGLFW();
+		GLFWwindowsizefun	SetWindowSizeToGLFW();
+
 		REGISTER_CLASS()
 	};
 }
