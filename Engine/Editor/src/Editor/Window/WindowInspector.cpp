@@ -35,16 +35,16 @@ namespace Editor::Window
 
 			Core::Maths::Vec3 pos = m_isLocal ? selected->GetPos() : selected->GetGlobalPos();
 			if (ImGui::DragFloat3("Position", pos.xyz))
-				m_isLocal ? selected->SetPos(pos) : selected->SetPos(pos);	// TODO: Set Global Pos
+				m_isLocal ? selected->SetPos(pos) : selected->SetGlobalPos(pos);	// TODO: Set Global Pos
 
 			Core::Maths::Vec3 rot = m_isLocal ? selected->GetRot().ToEulerAngles() : selected->GetGlobalRot().ToEulerAngles();
 			rot *= RAD2DEG;
 			if (ImGui::DragFloat3("Rotation", rot.xyz))
-				m_isLocal ? selected->SetRot(rot * DEG2RAD) : selected->SetRot(rot * DEG2RAD); // TODO : Set Global Rot
+				m_isLocal ? selected->SetRot(rot * DEG2RAD) : selected->SetGlobalRot(rot * DEG2RAD); // TODO : Set Global Rot
 
 			Core::Maths::Vec3 scale = m_isLocal ? selected->GetScale() : selected->GetGlobalScale();
-			if (ImGui::DragFloat3("Scale", scale.xyz))
-				m_isLocal ? selected->SetScale(scale) : selected->SetScale(scale); // Set Global Scale
+			if (ImGui::DragFloat3("Scale", scale.xyz, 0.01f))
+				m_isLocal ? selected->SetScale(scale) : selected->SetGlobalScale(scale); // Set Global Scale
 
 			ImGui::Spacing();
 		}

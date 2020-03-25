@@ -218,6 +218,37 @@ namespace Core::Datastructure
 				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
 			return m_transform.GetGlobalScale();
 		}
+
+		/**
+		 * Sets the global position of the object
+		 * @param pos: Global pos of the object
+		 */
+		void SetGlobalPos(const Maths::Vec3& pos) noexcept
+		{
+			m_transform.SetGlobalPos(m_parent->GetUpdatedTransform(), pos);
+			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+				(*it)->RequireUpdate();
+		}
+		/**
+		 * Sets the global rotation of the object
+		 * @param rot: Global rotation of the object
+		 */
+		void SetGlobalRot(const Maths::Quat& rot) noexcept
+		{
+			m_transform.SetGlobalRot(m_parent->GetUpdatedTransform(), rot);
+			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+				(*it)->RequireUpdate();
+		}
+		/**
+		 * Sets the global scale of the object
+		 * @param scale: Global scale of the object
+		 */
+		void SetGlobalScale(const Maths::Vec3& scale) noexcept
+		{
+			m_transform.SetGlobalScale(m_parent->GetUpdatedTransform(), scale);
+			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+				(*it)->RequireUpdate();
+		}
 		
 		/**
 		 * Generates, if needed, local TRS matrix and returns it
