@@ -16,7 +16,7 @@ namespace Core::Datastructure
 		Core::SystemManagement::InputSystem* m_inputSystem{ nullptr };
 		int m_width{ 0 };
 		int m_height{ 0 };
-		Core::Renderer::Framebuffer* m_fbo;
+		std::list<Core::Renderer::Framebuffer*> m_fbo;
 		GLFWwindow* m_window;
 		Resources::Loader::ResourcesManager* m_manager;
 
@@ -51,9 +51,19 @@ namespace Core::Datastructure
 
 		GLFWwindow*		GetWindow();
 
-		Core::Renderer::Framebuffer* GetFBO();
+		Core::Renderer::Framebuffer*	GetFBO(int num);
+		Core::Renderer::Framebuffer*	CreateFBO();
+		Core::Renderer::Framebuffer*	CreateFBO(int width, int height);
+		void							DeleteFBO(Core::Renderer::Framebuffer* fbo);
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept = 0;
+
+	private:
+		void				SetCallbackToGLFW();
+		GLFWkeyfun			SetKeyCallBackToGLFW();
+		GLFWmousebuttonfun	SetMouseButtonCallBackToGLFW();
+		GLFWscrollfun		SetScrollCallBackToGLFW();
+		GLFWwindowsizefun	SetWindowSizeToGLFW();
 
 		REGISTER_CLASS()
 	};

@@ -3,10 +3,12 @@
 #include "Vec3.hpp"
 #include "Mat4.hpp"
 #include "IComponent.hpp"
+#include "Framebuffer.h"
 #include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
+	class IRenderable;
 	BAKERS_API_CLASS ICamera : public virtual IComponent
 	{
 	private:
@@ -18,6 +20,11 @@ namespace Core::Datastructure
 
 		Core::Maths::Vec3	m_front;
 		Core::Maths::Vec3	m_right;
+
+		unsigned			m_cameraWidth{1280};
+		unsigned			m_cameraHeight{800};
+
+		Core::Renderer::Framebuffer* m_fbo;
 
 		bool				m_isPerspectiveUpdated{ false };
 		bool				m_isCamUpdated{ false };
@@ -49,6 +56,12 @@ namespace Core::Datastructure
 			return m_right;
 		}
 
+		/**
+		 * Function called by the engine to draw the objects
+		 * @param renderables: Objects of the scene
+		 */
+		void Draw(const std::list<IRenderable*>& renderables);
+		
 		REGISTER_CLASS(IComponent)
 	};
 }

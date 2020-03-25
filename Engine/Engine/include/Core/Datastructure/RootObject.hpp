@@ -9,9 +9,12 @@
 #include "ICamera.h"
 #include "InputSystem.hpp"
 #include "CoreMinimal.h"
+#include "Framebuffer.h"
 
 namespace Core::Datastructure
 {
+	class EngineCore;
+
 	/**
 	 * Root object of the scene, contains all others objects. 
 	 * Will start, update, draw and destroy components
@@ -28,11 +31,12 @@ namespace Core::Datastructure
 
 		SystemManagement::InputSystem* m_inputSystem{ nullptr };
 
+		EngineCore*				m_engine;
 		/**
 		 * Default constructor (requires input system)
 		 * @param inputSystem: Pointer to Input handling system to link inputs with each objects of hierarchy
 		 */
-		RootObject(SystemManagement::InputSystem* inputSystem) noexcept;
+		RootObject(SystemManagement::InputSystem* inputSystem, EngineCore* engine) noexcept;
 	public:
 		~RootObject()
 		{
@@ -54,7 +58,7 @@ namespace Core::Datastructure
 		 * Calls OnDraw on every compatible components that are initialized.
 		 * If a component is not initialized, it will not be updated
 		 */
-		void		Render() const noexcept;
+		void		Render(std::list<Core::Renderer::Framebuffer*>& fboList) const noexcept;
 		/**
 		 * Deletes every destroyed components. 
 		 */
@@ -86,6 +90,14 @@ namespace Core::Datastructure
 		 * @return Input System
 		 */
 		SystemManagement::InputSystem* GetInput();
+
+		/**
+		 * Get the engine core
+		 */
+		EngineCore* GetEngine() const noexcept
+		{
+			return m_engine;
+		}
 
 		/**
 		 * removes a component from the updated ones
@@ -128,7 +140,7 @@ namespace Core::Datastructure
 		 * Creates a root node with default transform and no parent,
 		 * effectively making it the root node.
 		 */
-		static RootObject* CreateRootNode(SystemManagement::InputSystem* inputSystem) noexcept;
+		static RootObject* CreateRootNode(SystemManagement::InputSystem* inputSystem, EngineCore* engine) noexcept;
 
 		REGISTER_CLASS(Object)
 	};
