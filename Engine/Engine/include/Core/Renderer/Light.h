@@ -3,6 +3,7 @@
 #include "ComponentBase.h"
 #include "Vec3.hpp"
 
+#include "CoreMinimal.h"
 
 namespace NRenderer
 {
@@ -21,7 +22,6 @@ namespace NRenderer
 		};
 
 	private:
-
 		ELightType			m_type = ELightType::DIRECTION;
 		float				m_range;
 		float				m_angle;
@@ -93,6 +93,8 @@ namespace NRenderer
 		 * @return Direction of owner's forward vector in World Space
 		 */
 		Core::Maths::Vec3 GetDirection();
+
+		REGISTER_CLASS(ComponentBase)
 	};
 
 };

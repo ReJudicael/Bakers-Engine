@@ -4,6 +4,21 @@
 #include "Shader.h"
 #include "Object.hpp"
 #include "Quaternion.hpp"
+#include "CoreMinimal.h"
+
+RTTR_REGISTRATION
+{
+    using namespace NRenderer;
+    registration::class_<Light>("Light")
+        .property("Type", &Light::m_type)
+        .property("Range", &Light::m_range)
+        .property("Angle", &Light::m_angle)
+        .property("Angle smoothness", &Light::m_angleSmoothness)
+        .property("Color", &Light::m_color)
+        .property("Ambiant", &Light::m_ambiant)
+        .property("Diffuse", &Light::m_diffuse)
+        .property("Attenuation", &Light::m_attenuation);
+}
 
 std::string LightShaderContent = R"GLSL(
 
