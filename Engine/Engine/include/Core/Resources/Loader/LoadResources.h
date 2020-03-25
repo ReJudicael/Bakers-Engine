@@ -269,6 +269,8 @@ namespace Resources
 			 */
 			void LinkAllModelToOpenGl();
 
+			void ShaderUpdate();
+
 			void CreateProgram(const char* vertex, const char* fragment, const std::string& nameShader);
 		};
 	}

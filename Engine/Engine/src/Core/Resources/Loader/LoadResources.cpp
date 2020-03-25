@@ -319,6 +319,7 @@ namespace Resources::Loader
 		}
 	}
 
+
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{
 		for (auto it = m_modelsToLink.begin();
@@ -342,6 +343,15 @@ namespace Resources::Loader
 					break;
 				
 			}
+		}
+	}
+	void ResourcesManager::ShaderUpdate()
+	{
+		for (unorderedmapShader::iterator itshader = m_shaders.begin();
+			itshader != m_shaders.end(); ++itshader)
+		{
+			itshader->second->UseProgram();
+			itshader->second->SendLights();
 		}
 	}
 }

@@ -87,7 +87,7 @@ void	Window::Update()
 		l->SetDiffuse({ 0.2f, 0.2f, 0.2f });
 		l->SetSpecular({ 0.2f, 0.2f, 0.2f });
 		l->SetAttenuation({ 1.f, 0.022f, 0.0019f });
-		l->SetRange(100.f);
+		l->SetRange(1000.f);
 		l->SetAngle(0.5f);
 		l->SetAngleSmoothness(0.01f);
 		camNode->AddComponent(l);
@@ -112,6 +112,7 @@ void	Window::Update()
 		glfwPollEvents();
 		manager.LinkAllTextureToOpenGl();
 		manager.LinkAllModelToOpenGl();
+		manager.ShaderUpdate();
 		m_root->StartFrame();
 		double deltaTime = GetDeltaTime();
 		m_root->Update(deltaTime);
