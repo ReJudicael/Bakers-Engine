@@ -36,6 +36,8 @@ namespace Editor::Window
 		 */
 		void PopWindowStyle() override;
 
+		void PopupMenu(Core::Datastructure::Object* object);
+
 	private:
 
 		void ShowChildrenOfObject(Core::Datastructure::Object* object);

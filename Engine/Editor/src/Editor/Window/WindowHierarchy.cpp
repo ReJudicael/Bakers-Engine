@@ -17,14 +17,42 @@ namespace Editor::Window
 	{
 	}
 
+	void WindowHierarchy::PopupMenu(Core::Datastructure::Object* object)
+	{
+		ImGui::OpenPopupOnItemClick("WindowHierarchy");
+		if (ImGui::BeginPopup("WindowHierarchy", ImGuiWindowFlags_NoMove))
+		{
+			if (ImGui::MenuItem("Rename"))
+			{
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Create Empty"))
+			{
+				object->CreateChild("Empty", {});
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Destroy"))
+			{
+				object->Destroy();
+				if (GetEngine()->objectSelected == object)
+					GetEngine()->objectSelected = nullptr;
+			}
+			ImGui::EndPopup();
+		}
+	}
+
 	void WindowHierarchy::ShowChildrenOfObject(Core::Datastructure::Object* object)
 	{
 		for (auto gO : object->GetChilds())
 		{
-			if (gO->IsDestroyed())
-				continue;
 			ImGui::PushID(gO);
 			{
+				if (gO->IsDestroyed())
+					continue;
 				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanFullWidth;
 				flags |= gO->GetChilds().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
 
@@ -35,25 +63,16 @@ namespace Editor::Window
 
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 					GetEngine()->objectSelected = gO;
-				
-				if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
-				{
-					gO->Destroy();
-					if (isOpen)
-						ImGui::TreePop();
-					ImGui::PopID();
-					if (GetEngine()->objectSelected == gO)
-						GetEngine()->objectSelected = nullptr;
-					continue;
-				}
+				else
+					PopupMenu(gO);
 
 				if (isOpen)
 				{
 					ShowChildrenOfObject(gO);
 					ImGui::TreePop();
 				}
+				ImGui::PopID();
 			}
-			ImGui::PopID();
 		}
 	}
 
