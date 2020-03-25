@@ -22,6 +22,7 @@ namespace NRenderer
 
 	private:
 
+		bool				m_isActive = true;
 		ELightType			m_type = ELightType::DIRECTION;
 		float				m_range;
 		float				m_angle;
@@ -62,6 +63,9 @@ namespace NRenderer
 		 */
 		Light& operator=(Light&& other) noexcept;
 
+		virtual void	OnDestroy() override { m_isActive = false;};
+
+		inline bool IsActive() const { return m_isActive; };
 		inline ELightType GetLightType() const { return m_type; };
 		inline float GetRange() const { return m_range; };
 		inline float GetAngle() const { return m_angle; };
