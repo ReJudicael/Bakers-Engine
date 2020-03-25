@@ -21,11 +21,6 @@ namespace Editor::Window
 		Core::SystemManagement::FileSystem fs;
 
 		/**
-		 * Map contains the name of icon and its texture ID
-		 */
-		std::map<std::string, ImTextureID> icons;
-
-		/**
 		 * Name of the path to be renamed
 		 */
 		std::string m_renamePath = "";
@@ -68,18 +63,17 @@ namespace Editor::Window
 		void PopWindowStyle() override;
 
 	private:
-
 		/**
 		 * Rename the selected file / folder
-		 * @param item: Name of the chosen file / folder
+		 * @param itemName: Name of the chosen file / folder
 		 */
-		void RenameContent(const std::string& item);
+		void RenameContent(const std::string& itemName);
 
 		/**
 		 * Pop-up displayed when mouse right button is pressed
 		 * @param itemPath: Path of the chosen file / folder
 		 */
-		void DirectoryContentActionRight(const std::string& itemPath);
+		void PopupMenu(const std::string& itemPath);
 
 		/**
 		 * Slider to zoom the displayed content
@@ -91,26 +85,39 @@ namespace Editor::Window
 		 * @param itemPath: Path of the chosen file / folder
 		 */
 		ImTextureID GetIcon(const std::string& itemPath);
+
 	private:
 		/**
-		 * Show current local path
+		 * Show current local path on header
 		 */
-		void ShowCurrentLocalPath();
+		void ShowCurrentPathOnHeader();
+
+		/**
+		 * Whether the file has an excluded extension or not
+		 * @param itemName: Name of the chosen file / folder
+		 */
+		bool FileHasExcludedExtension(const std::string& itemName);
+
+		/**
+		 * Show the chosen file / folder
+		 * @param itemName: Name of the chosen file / folder
+		 * @param itemPath: Path of the chosen file / folder
+		 */
+		void ShowItem(const std::string& itemName, const std::string& itemPath);
 
 		/**
 		 * Display the contents of the current directory
 		 * @param contents: Contents of the current directory
 		 */
-		void ShowDirectoryContents(std::vector<std::filesystem::path> contents);
+		void ShowDirectoryContent(std::vector<std::filesystem::path> contents);
 
 		/**
 		 * Display the current local path and the contents of the current directory
 		 * @param contents: Contents of the current directory
 		 */
-		void ShowDirectory(const std::vector<std::filesystem::path>& content);
+		void ShowFileBrowser(const std::vector<std::filesystem::path>& content);
 
 	private:
-
 		/**
 		 * Draw elements in window
 		 */

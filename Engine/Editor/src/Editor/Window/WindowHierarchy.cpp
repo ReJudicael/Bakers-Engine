@@ -37,6 +37,7 @@ namespace Editor::Window
 
 			if (ImGui::MenuItem("Destroy"))
 			{
+				m_destroySelected = true;
 				object->Destroy();
 				if (GetEngine()->objectSelected == object)
 					GetEngine()->objectSelected = nullptr;
@@ -65,6 +66,15 @@ namespace Editor::Window
 					GetEngine()->objectSelected = gO;
 				else
 					PopupMenu(gO);
+
+				if (m_destroySelected)
+				{
+					if (isOpen)
+						ImGui::TreePop();
+					ImGui::PopID();
+					m_destroySelected = false;
+					continue;
+				}
 
 				if (isOpen)
 				{
