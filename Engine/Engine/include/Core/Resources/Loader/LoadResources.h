@@ -42,7 +42,7 @@ namespace Resources
 		  * Manage/Handle the resources loaded and storage.
 		  * 
 		  */
-		class ResourcesManager
+		BAKERS_API_CLASS ResourcesManager
 		{
 
 		private:
