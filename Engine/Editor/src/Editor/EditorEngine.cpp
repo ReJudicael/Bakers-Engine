@@ -26,6 +26,7 @@ namespace Editor
 
 	EditorEngine::~EditorEngine()
 	{
+		delete m_man;
 		glfwDestroyWindow(m_window);
 		glfwTerminate();
 	}

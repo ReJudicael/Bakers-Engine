@@ -57,9 +57,9 @@ namespace Core::Datastructure
 
 		for (auto it{ m_components.begin() }; it != m_components.end(); ++it)
 			(*it)->Destroy();
-		for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+		for (auto it{ m_childs.begin() }; it != m_childs.end(); it = m_childs.begin())
 			(*it)->Destroy();
-
+		m_parent->RemoveChild(this);
 		m_root->DestroyObject(this);
 	}
 
@@ -89,4 +89,10 @@ namespace Core::Datastructure
 				return;
 			}
 	}
+
+	void	Object::RemoveChild(Object* object) noexcept
+	{
+		m_childs.remove(object);
+	}
 }
+

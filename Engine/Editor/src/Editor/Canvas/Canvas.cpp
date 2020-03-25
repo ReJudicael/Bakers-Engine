@@ -19,7 +19,6 @@ namespace Editor
 	Canvas::~Canvas()
 	{
 		delete m_menuBar;
-		delete m_view;
 	}
 
 	void Canvas::InitMenuBar()

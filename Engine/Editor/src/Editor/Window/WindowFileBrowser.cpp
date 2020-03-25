@@ -142,6 +142,7 @@ namespace Editor::Window
 			glBindTexture(GL_TEXTURE_2D, 0);
 			stbi_image_free(image);
 
+#pragma warning(suppress : 4312)
 			it = icons.insert({ ext, (ImTextureID)texture }).first;
 		}
 

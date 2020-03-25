@@ -1,6 +1,8 @@
 #ifndef __MAT4__
 #define __MAT4__
 
+#include "MathMinimal.h"
+
 #include "Mat.hpp"
 #include "Vec4.hpp"
 

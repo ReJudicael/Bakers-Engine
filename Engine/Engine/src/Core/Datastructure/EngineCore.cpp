@@ -48,6 +48,7 @@ namespace Core::Datastructure
 		{
 			delete fbo;
 		}
+		delete m_manager;
 	}
 
 	int EngineCore::Init()

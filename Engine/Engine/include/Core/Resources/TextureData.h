@@ -8,7 +8,7 @@
 
 
 struct aiMaterial;
-enum aiTextureType;
+enum aiTextureType : int;
 
 namespace Resources
 {
