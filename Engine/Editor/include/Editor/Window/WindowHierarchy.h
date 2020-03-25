@@ -16,6 +16,7 @@ namespace Editor::Window
 	{
 	private:
 		bool m_destroySelected = false;
+
 	public:
 		/**
 		 * Constructor which set title of window ("Hierarchy")

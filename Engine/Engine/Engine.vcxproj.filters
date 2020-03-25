@@ -302,9 +302,6 @@
     <ClInclude Include="include\Core\Renderer\Framebuffer.h">
       <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="include\Core\Maths\MathMinimal.h">
-      <Filter>Header Files\Core\Maths</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Resources\Object3DGraph.h">
       <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>

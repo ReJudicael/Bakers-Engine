@@ -28,12 +28,10 @@ namespace Editor::Window
 
 			ImGui::Separator();
 
-			if (ImGui::MenuItem("Create Empty"))
+			if (ImGui::MenuItem("Create"))
 			{
 				object->CreateChild("Empty", {});
 			}
-
-			ImGui::Separator();
 
 			if (ImGui::MenuItem("Destroy"))
 			{
@@ -54,6 +52,7 @@ namespace Editor::Window
 			{
 				if (gO->IsDestroyed())
 					continue;
+
 				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanFullWidth;
 				flags |= gO->GetChilds().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
 
@@ -89,7 +88,6 @@ namespace Editor::Window
 	void WindowHierarchy::Tick()
 	{
 		auto root = GetEngine()->m_root;
-
 		ShowChildrenOfObject(root);
 	}
 }

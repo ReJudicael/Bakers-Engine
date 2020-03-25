@@ -5,41 +5,6 @@
 #include "Object.hpp"
 #include "Quaternion.hpp"
 
-std::string LightShaderContent = R"GLSL(
-
-struct light
-{
-    vec3 viewPosition;
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-    vec3 attenuation;
-};
-
-vec3 getLightContribution(light light, vec3 pos, vec3 normal)
-{
-    vec3 lightDir = normalize(light.position);
-
-	vec3 ambient = light.ambient * materialAmbient;
-
-	float diff = dot(norm, lightDir);
-	if (diff < 0)
-		diff = 0;
-	vec3 diffuse = diff * (light.diffuse * materialDiffuse);
-
-	vec3 reflectDir = normalize(reflect(-lightDir, norm));
-	float spec = dot(view, reflectDir);
-        if (spec > 0)
-                spec = pow(spec, shininess);
-        else
-                spec = 0;
-        vec3 specular = spec * (light.specular * materialSpecular);
-
-	return ambient + diffuse + specular;
-}
-
-)GLSL";
-
 namespace NRenderer
 {
     Light::Light() : ComponentBase()
