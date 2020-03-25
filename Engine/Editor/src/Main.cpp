@@ -17,7 +17,7 @@
 int main()
 {
     Editor::EditorEngine* engine = new Editor::EditorEngine();
-    engine->Update();
+    engine->MainLoop();
     delete engine;
 
     return 0;

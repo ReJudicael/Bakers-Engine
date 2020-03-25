@@ -47,7 +47,9 @@ namespace Core::Datastructure
 		virtual void	Render();
 		virtual void	EndFrame();
 
-		virtual void	Update();
+		virtual void	Update(double deltaTime);
+
+		void			DoLoop();
 
 		GLFWwindow*		GetWindow();
 

@@ -119,18 +119,23 @@ namespace Core::Datastructure
 		return 0;
 	}
 
-	void	EngineCore::Update()
+	void	EngineCore::DoLoop()
 	{
-		ZoneNamedN(updateLoop, "Main update loop", true)
-			double deltaTime = GetDeltaTime();
+		ZoneNamedN(updateLoop, "Main loop iteration", true)
+		
+		double deltaTime = GetDeltaTime();
 
 		StartFrame();
 
-		m_root->Update(deltaTime);
-		
+		Update(deltaTime);
+
 		Render();
 
 		EndFrame();
+	}
+	void	EngineCore::Update(double deltaTime)
+	{
+		m_root->Update(deltaTime);
 	}
 
 	Core::SystemManagement::InputSystem* EngineCore::GetInputSystem()
@@ -173,8 +178,8 @@ namespace Core::Datastructure
 	void		EngineCore::EndFrame()
 	{
 		m_root->RemoveDestroyed();
-		// TODO:
-		// m_inputSystem->ClearRegisteredInputs();
+		
+		m_inputSystem->ClearRegisteredInputs();
 	}
 
 	Core::Renderer::Framebuffer* EngineCore::CreateFBO()

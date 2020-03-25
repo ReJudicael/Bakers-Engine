@@ -97,7 +97,7 @@ namespace Editor
 		m_height = height;
 	}
 
-	void EditorEngine::Update()
+	void EditorEngine::MainLoop()
 	{
 		while (!glfwWindowShouldClose(m_window))
 		{
@@ -105,16 +105,20 @@ namespace Editor
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glfwPollEvents();
-			EngineCore::Update();
-			m_man->Render();
+			DoLoop();
 
 			int display_w, display_h;
 			glfwGetFramebufferSize(m_window, &display_w, &display_h);
 			glViewport(0, 0, display_w, display_h);
 
 			glfwSwapBuffers(m_window);
-			m_inputSystem->ClearRegisteredInputs();
 		}
+	}
+
+	void EditorEngine::Render()
+	{
+		EngineCore::Render();
+		m_man->Render();
 	}
 
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept
