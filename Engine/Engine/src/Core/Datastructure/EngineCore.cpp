@@ -131,6 +131,12 @@ namespace Core::Datastructure
 
 		EndFrame();
 	}
+
+	Core::SystemManagement::InputSystem* EngineCore::GetInputSystem()
+	{
+		return m_inputSystem;
+	}
+
 	Core::Renderer::Framebuffer* EngineCore::GetFBO(int num)
 	{
 		auto it{ m_fbo.begin() };
@@ -166,7 +172,8 @@ namespace Core::Datastructure
 	void		EngineCore::EndFrame()
 	{
 		m_root->RemoveDestroyed();
-		m_inputSystem->ClearRegisteredInputs();
+		// TODO:
+		// m_inputSystem->ClearRegisteredInputs();
 	}
 
 	Core::Renderer::Framebuffer* EngineCore::CreateFBO()

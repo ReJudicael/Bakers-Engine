@@ -51,6 +51,7 @@ namespace Core::Datastructure
 
 		GLFWwindow*		GetWindow();
 
+		Core::SystemManagement::InputSystem* GetInputSystem();
 		Core::Renderer::Framebuffer*	GetFBO(int num);
 		Core::Renderer::Framebuffer*	CreateFBO();
 		Core::Renderer::Framebuffer*	CreateFBO(int width, int height);

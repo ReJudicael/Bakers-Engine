@@ -59,7 +59,7 @@ namespace Editor
 		/**
 		 * Default destructor
 		 */
-		~Canvas() = default;
+		~Canvas();
 
 		/**
 		 * Initialize Menur Bar
@@ -80,6 +80,12 @@ namespace Editor
 		 * @param opened: If true, open all windows, otherwise it will close them all.
 		 */
 		void OpenAllWindows(bool opened);
+
+	private:
+		/**
+		 * Check shortcuts
+		 */
+		void CheckShortcuts();
 
 	private:
 		/**

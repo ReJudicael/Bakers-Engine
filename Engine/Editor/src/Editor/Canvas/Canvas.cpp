@@ -1,6 +1,7 @@
 #include "Canvas.hpp"
 #include "GUIManager.h"
 #include "Separator.h"
+#include "EditorEngine.h"
 
 namespace Editor
 {
@@ -13,6 +14,12 @@ namespace Editor
 		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
 
 		 InitMenuBar();
+	}
+
+	Canvas::~Canvas()
+	{
+		delete m_menuBar;
+		delete m_view;
 	}
 
 	void Canvas::InitMenuBar()
@@ -29,6 +36,16 @@ namespace Editor
 	{
 		for (auto& widget : m_contents)
 			widget->isVisible = opened;
+	}
+
+	void Canvas::CheckShortcuts()
+	{
+		Core::SystemManagement::InputSystem* inputSystem = GetEngine()->GetInputSystem();
+
+		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::P))
+			OpenAllWindows(true);
+		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::M))
+			OpenAllWindows(false);
 	}
 
 	void Canvas::PushDockStyle()
@@ -73,6 +90,7 @@ namespace Editor
 
 	void Canvas::Draw()
 	{
+		CheckShortcuts();
 		SetDockspace();
 		m_menuBar->Draw();
 
@@ -80,7 +98,6 @@ namespace Editor
 		{
 			widget->Draw();
 		}
-
 		ImGui::ShowDemoWindow();
 	}
 

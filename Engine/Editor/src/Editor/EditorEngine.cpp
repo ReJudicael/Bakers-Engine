@@ -112,6 +112,7 @@ namespace Editor
 			glViewport(0, 0, display_w, display_h);
 
 			glfwSwapBuffers(m_window);
+			m_inputSystem->ClearRegisteredInputs();
 		}
 	}
 
