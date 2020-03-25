@@ -17,12 +17,20 @@
 namespace Resources
 {
 	struct Model;
+	struct Material;
+	namespace Loader
+	{
+		class ResourcesManager;
+	}
+
 }
 
 BAKERS_API_CLASS Mesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
 {
 protected:
 	std::shared_ptr<Resources::Model> m_model;
+
+	std::vector<std::shared_ptr<Resources::Material>> m_materialsModel;
 public:
 
 	int		m_vertexCount = 0;
@@ -39,7 +47,6 @@ public:
 	Mesh();
 	~Mesh();
 
-	//virtual void OnStart() override {};
 	virtual void OnDestroy() override {};
 
 	void Initialize();
@@ -56,6 +63,8 @@ public:
 	{
 		m_model = model;
 	}
+
+	void AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial);
 
 	REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IRenderable)
 };

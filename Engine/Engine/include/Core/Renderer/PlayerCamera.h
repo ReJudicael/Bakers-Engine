@@ -12,8 +12,8 @@ BAKERS_API_CLASS PlayerCamera : public Camera
 private:
 	// Movement through WASD keys
 	bool	m_isRunning{ false };
-	float	m_speed{ 1 };
-	float	m_runningSpeed{ 5 };
+	float	m_speed{ 5 };
+	float	m_runningSpeed{ 20 };
 	float	m_minMoveLength{ 0.001 };
 	float	m_moveLerpSpeed{ 0.5 };
 	Core::Maths::Vec3 m_movement;
@@ -21,7 +21,7 @@ private:
 	// Rotation through mouse movements
 	bool	m_isRotating{ false };
 	bool	m_isMouseSet{ false };
-	float	m_angularSpeed{ 1.f };
+	float	m_angularSpeed{ 0.1f };
 	float	m_yaw{ 0.f };
 	float	m_pitch{ 0.f };
 	float	m_minAngularLength{ 0.001 };

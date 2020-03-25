@@ -7,6 +7,7 @@
 #include "OpenGLLinkState.h"
 #include "Model.h"
 #include "Texture.h"
+#include "LoadResources.h"
 
 RTTR_REGISTRATION
 {
@@ -84,25 +85,28 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 
 	glEnable(GL_DEPTH_TEST);
 
-	// init the value of the texture1
-	glUniform1i(glGetUniformLocation(*m_program, "uColorTexture"), 0);
-	// init the value of the texture2
-	glUniform1i(glGetUniformLocation(*m_program, "uNormalMap"), 1);
-
-	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uModel"), 1, GL_TRUE, trs.m_array);
-	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
-	glUniformMatrix4fv(glGetUniformLocation(*m_program, "uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
-
 	glBindVertexArray(m_model->VAOModel);
-
-	glUseProgram(*m_program);
-	
 
 	for (int i = 0; i < m_model->offsetsMesh.size(); i++)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
 		
-		Resources::Material material = *m_model->materialsModel[currOffsetMesh.materialIndices];
+		Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
+		material.shader->UseProgram();
+		{
+
+			// init the value of the texture1
+			glUniform1i(material.shader->GetLocation("uColorTexture"), 0);
+			// init the value of the texture2
+			glUniform1i(material.shader->GetLocation("uNormalMap"), 1);
+
+			//material.shader->SendLights();
+
+			material.SendMaterial();
+			glUniformMatrix4fv(material.shader->GetLocation("uModel"), 1, GL_TRUE, trs.m_array);
+			glUniformMatrix4fv(material.shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
+			glUniformMatrix4fv(material.shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
+		}
 
 		// check if the material have a texture
 		if (material.textures.size() > 0)
@@ -115,7 +119,7 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 				glBindTexture(GL_TEXTURE_2D, material.textures[0]->texture);
 			}
 			// check if the texture2 link to OpenGL
-			if (material.textures[1]->stateTexture ==
+			if (material.textures.size() >= 2 && material.textures[1]->stateTexture ==
 				Resources::EOpenGLLinkState::ISLINK)
 			{
 				glActiveTexture(GL_TEXTURE1);
@@ -143,6 +147,14 @@ Core::Maths::Mat4 Mesh::projectionMatrix(float FovY, float Aspect, float Near, f
 		0.f, 0.f, -(Far * Near * 2.f) / (Far - Near), 0.f
 		};
 	return Core::Maths::Mat4(f);
+}
+
+void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)
+{
+	for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
+	{
+		m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
+	}
 }
 
 int Mesh::GetVertexCount()

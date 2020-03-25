@@ -7,6 +7,8 @@
 #include "IComponent.hpp"
 #include "ICamera.h"
 #include <list>
+#include "Debug.h"
+#include "Shader.h"
 #include "CoreMinimal.h"
 
 namespace Core::Datastructure
@@ -29,7 +31,6 @@ namespace Core::Datastructure
 		~IRenderable() noexcept;
 		virtual void	OnStart() override;
 
-		std::shared_ptr<GLuint> m_program = 0;
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;
 
