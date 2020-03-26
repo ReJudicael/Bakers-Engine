@@ -42,8 +42,8 @@ namespace Editor::Window
 	{
 		char name[64];
 		memcpy(name, itemName.c_str(), itemName.size() + 1);
-		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
 
+		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
 		if (!m_canRename)
 		{
 			ImGui::SetScrollHereY();

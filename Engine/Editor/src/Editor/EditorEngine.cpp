@@ -67,10 +67,10 @@ namespace Editor
 
 		glfwMakeContextCurrent(m_window);
 		{
-			GLFWimage icons[1];
-			icons[0].pixels = stbi_load("Resources\\Images\\bread.png", &icons[0].width, &icons[0].height, 0, STBI_rgb_alpha);
-			glfwSetWindowIcon(m_window, 1, icons);
-			stbi_image_free(icons[0].pixels);
+			GLFWimage icons;
+			icons.pixels = stbi_load("Resources\\Images\\bread.png", &icons.width, &icons.height, 0, STBI_rgb_alpha);
+			glfwSetWindowIcon(m_window, 1, &icons);
+			stbi_image_free(icons.pixels);
 		}
 		SetCallbackToGLFW();
 

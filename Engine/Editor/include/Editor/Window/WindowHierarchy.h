@@ -16,7 +16,9 @@ namespace Editor::Window
 	{
 	private:
 		bool m_destroySelected = false;
-
+		bool m_canRename = false;
+		ImVec2 m_cursorPos;
+		Core::Datastructure::Object* m_objectToRename{ nullptr };
 	public:
 		/**
 		 * Constructor which set title of window ("Hierarchy")
@@ -39,12 +41,22 @@ namespace Editor::Window
 		 */
 		void PopWindowStyle() override;
 
-		void PopupMenu(Core::Datastructure::Object* object);
+		void RenameObject(Core::Datastructure::Object* object);
 
 	private:
+		/**
+		 * Pop-up displayed when mouse right button is pressed on item
+		 * @param object: Item/Object on which the right mouse button has been pressed
+		 */
+		void PopupMenuOnItem(Core::Datastructure::Object* object);
 
+		/**
+		 * Show children of object
+		 * @param object: Object from which the children are shown/displayed.
+		 */
 		void ShowChildrenOfObject(Core::Datastructure::Object* object);
 
+	private:
 		/**
 		 * Draw elements in window
 		 */

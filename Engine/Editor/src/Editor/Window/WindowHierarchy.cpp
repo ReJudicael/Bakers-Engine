@@ -17,29 +17,62 @@ namespace Editor::Window
 	{
 	}
 
-	void WindowHierarchy::PopupMenu(Core::Datastructure::Object* object)
+	void WindowHierarchy::RenameObject(Core::Datastructure::Object* object)
 	{
-		ImGui::OpenPopupOnItemClick("WindowHierarchy");
-		if (ImGui::BeginPopup("WindowHierarchy", ImGuiWindowFlags_NoMove))
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 3.f, 0.f });
+		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.f);
+		{
+			char name[64];
+			memcpy(name, m_objectToRename->GetName().c_str(), m_objectToRename->GetName().size() + 1);
+
+			ImGui::SetCursorPos(m_cursorPos);
+			ImGui::SetNextItemWidth(-FLT_MIN);
+
+			if (!m_canRename)
+			{
+				ImGui::SetKeyboardFocusHere();
+				m_canRename = true;
+			}
+
+			bool apply = ImGui::InputText("## InputText", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue);
+
+			if (apply || ImGui::IsItemDeactivated())
+			{
+				m_objectToRename = nullptr;
+				object->SetName(name);
+				m_canRename = true;
+			}
+		}
+		ImGui::PopStyleVar(2);
+	}
+
+	void WindowHierarchy::PopupMenuOnItem(Core::Datastructure::Object* object)
+	{
+		if (ImGui::BeginPopupContextItem("## PopupMenuOnItem"))
 		{
 			if (ImGui::MenuItem("Rename"))
 			{
+				m_objectToRename = object;
 			}
 
-			ImGui::Separator();
-
-			if (ImGui::MenuItem("Create"))
-			{
-				object->CreateChild("Empty", {});
-			}
-
-			if (ImGui::MenuItem("Destroy"))
+			if (ImGui::MenuItem("Delete"))
 			{
 				m_destroySelected = true;
 				object->Destroy();
 				if (GetEngine()->objectSelected == object)
 					GetEngine()->objectSelected = nullptr;
 			}
+
+			ImGui::Separator();
+
+			if (ImGui::BeginMenu("Create"))
+			{
+				if (ImGui::MenuItem("Empty"))
+					object->CreateChild("GameObject", {});
+				
+				ImGui::EndMenu();
+			}
+
 			ImGui::EndPopup();
 		}
 	}
@@ -53,18 +86,26 @@ namespace Editor::Window
 				if (gO->IsDestroyed())
 					continue;
 
-				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanFullWidth;
+				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
 				flags |= gO->GetChilds().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
-
 				if (GetEngine()->objectSelected == gO)
 					flags |= ImGuiTreeNodeFlags_Selected;
 
-				bool isOpen = ImGui::TreeNodeEx(gO, flags, gO->GetName().c_str());
+				bool isOpen;
+				if (gO == m_objectToRename)
+				{
+					m_cursorPos = { ImGui::GetCursorPos().x + 20, ImGui::GetCursorPos().y };
+					isOpen = ImGui::TreeNodeEx(gO, flags, gO->GetName().c_str());
+					RenameObject(gO);
+				}
+				else
+					bool isOpen = ImGui::TreeNodeEx(gO, flags, gO->GetName().c_str());
+
+				PopupMenuOnItem(gO);
 
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 					GetEngine()->objectSelected = gO;
-				else
-					PopupMenu(gO);
+
 
 				if (m_destroySelected)
 				{
@@ -80,6 +121,7 @@ namespace Editor::Window
 					ShowChildrenOfObject(gO);
 					ImGui::TreePop();
 				}
+
 				ImGui::PopID();
 			}
 		}

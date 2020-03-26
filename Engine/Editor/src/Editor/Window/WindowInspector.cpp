@@ -21,7 +21,17 @@ namespace Editor::Window
 	{
 	}
 
-	void WindowInspector::DisplayTransform(Core::Datastructure::Object* selected)
+	void WindowInspector::DisplayObjectName(Core::Datastructure::Object* object)
+	{
+		char name[64];
+		memcpy(name, object->GetName().c_str(), object->GetName().size() + 1);
+		ImGui::SetNextItemWidth(-FLT_MIN);
+
+		if (ImGui::InputText("## Name", name, IM_ARRAYSIZE(name)))
+			object->SetName(name);
+	}
+
+	void WindowInspector::DisplayObjectTransform(Core::Datastructure::Object* object)
 	{
 		if (ImGui::CollapsingHeader("Transform", m_treeNodeFlags))
 		{
@@ -33,33 +43,31 @@ namespace Editor::Window
 			}
 			ImGui::PopStyleColor(2);
 
-			Core::Maths::Vec3 pos = m_isLocal ? selected->GetPos() : selected->GetGlobalPos();
+			Core::Maths::Vec3 pos = m_isLocal ? object->GetPos() : object->GetGlobalPos();
 			if (ImGui::DragFloat3("Position", pos.xyz))
-				m_isLocal ? selected->SetPos(pos) : selected->SetPos(pos);	// TODO: Set Global Pos
+				m_isLocal ? object->SetPos(pos) : object->SetPos(pos);	// TODO: Set Global Pos
 
-			Core::Maths::Vec3 rot = m_isLocal ? selected->GetRot().ToEulerAngles() : selected->GetGlobalRot().ToEulerAngles();
+			Core::Maths::Vec3 rot = m_isLocal ? object->GetRot().ToEulerAngles() : object->GetGlobalRot().ToEulerAngles();
 			rot *= RAD2DEG;
 			if (ImGui::DragFloat3("Rotation", rot.xyz))
-				m_isLocal ? selected->SetRot(rot * DEG2RAD) : selected->SetRot(rot * DEG2RAD); // TODO : Set Global Rot
+				m_isLocal ? object->SetRot(rot * DEG2RAD) : object->SetRot(rot * DEG2RAD); // TODO : Set Global Rot
 
-			Core::Maths::Vec3 scale = m_isLocal ? selected->GetScale() : selected->GetGlobalScale();
+			Core::Maths::Vec3 scale = m_isLocal ? object->GetScale() : object->GetGlobalScale();
 			if (ImGui::DragFloat3("Scale", scale.xyz))
-				m_isLocal ? selected->SetScale(scale) : selected->SetScale(scale); // Set Global Scale
-
-			ImGui::Spacing();
+				m_isLocal ? object->SetScale(scale) : object->SetScale(scale); // Set Global Scale
 		}
 	}
 
 	void WindowInspector::Tick()
 	{
 		Core::Datastructure::Object* gO = GetEngine()->objectSelected;
-
 		if (gO == nullptr)
 			return;
 
-		ImGui::Text(gO->GetName().c_str());
+		DisplayObjectName(gO);
 		ImGui::Separator();
-		DisplayTransform(gO);
+		DisplayObjectTransform(gO);
+		ImGui::Spacing();
 
 		if (ImGui::CollapsingHeader("Properties", m_treeNodeFlags))
 		{

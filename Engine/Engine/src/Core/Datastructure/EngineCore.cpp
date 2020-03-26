@@ -85,7 +85,7 @@ namespace Core::Datastructure
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-		m_window = glfwCreateWindow(width, height, "Editor", nullptr, nullptr);
+		m_window = glfwCreateWindow(width, height, "Bakers Engine", nullptr, nullptr);
 		if (m_window == nullptr)
 			return 1;
 
@@ -120,13 +120,11 @@ namespace Core::Datastructure
 		l->SetAngleSmoothness(0.01f);
 		camNode->AddComponent(l);
 
-		Core::Datastructure::Object* o{ m_root->CreateChild("Scene", {}) };
-
-		//manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
+		Core::Datastructure::Object* scene{ m_root->CreateChild("Scene", {}) };
 		m_manager->Load3DObject("Resources/level.fbx");
-		Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, o);
+		Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, scene);
 
-		o->SetScale({ 0.1,0.1,0.1 });
+		scene->SetScale({ 0.01f, 0.01f, 0.01f });
 		m_fbo.clear();
 		return 0;
 	}

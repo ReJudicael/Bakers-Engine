@@ -47,9 +47,14 @@ namespace Editor::Window
 
 	private:
 		/**
+		 * Display name of selected object in hierarchy
+		 */
+		void DisplayObjectName(Core::Datastructure::Object* object);
+
+		/**
 		 * Display transform of selected object in hierarchy
 		 */
-		void DisplayTransform(Core::Datastructure::Object* selected);
+		void DisplayObjectTransform(Core::Datastructure::Object* object);
 
 	private:
 		/**

@@ -269,6 +269,11 @@ namespace Core::Datastructure
 			return m_name;
 		}
 
+		void SetName(const std::string& name) noexcept
+		{
+			m_name = name;
+		}
+
 		/**
 		 * Returns root object of the scene
 		 */

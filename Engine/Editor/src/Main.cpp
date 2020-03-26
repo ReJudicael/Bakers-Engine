@@ -16,9 +16,9 @@
 
 int main()
 {
-    Editor::EditorEngine* engine = new Editor::EditorEngine();
-    engine->MainLoop();
-    delete engine;
+	Editor::EditorEngine* engine = new Editor::EditorEngine();
+	engine->MainLoop();
+	delete engine;
 
-    return 0;
+	return 0;
 }
