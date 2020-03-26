@@ -358,7 +358,7 @@ namespace Core::SystemManagement
 		std::string filePath = GetLocalAbsolute(defaultNameNewFile);
 		if (!Exists(filePath))
 		{
-			std::string cmd = "break >" + GetAbsoluteWithQuote(filePath);
+			std::string cmd = "echo off >" + GetAbsoluteWithQuote(filePath);
 			system(cmd.c_str());
 		}
 		else
@@ -370,7 +370,7 @@ namespace Core::SystemManagement
 
 				if (!Exists(filePath))
 				{
-					std::string cmd = "echo > " + GetAbsoluteWithQuote(filePath);
+					std::string cmd = "echo off > " + GetAbsoluteWithQuote(filePath);
 					system(cmd.c_str());
 					break;
 				}

@@ -70,11 +70,22 @@ namespace Editor::Window
 		void RenameContent(const std::string& itemName);
 
 		/**
-		 * Pop-up displayed when mouse right button is pressed
+		 * Menu item view
+		 */
+		void MenuItemNew();
+
+		/**
+		 * Pop-up displayed when mouse right button is pressed on window
+		 */
+		void PopupMenuOnWindow();
+
+		/**
+		 * Pop-up displayed when mouse right button is pressed on item
 		 * @param itemPath: Path of the chosen file / folder
 		 */
-		void PopupMenu(const std::string& itemPath);
+		void PopupMenuOnItem(const std::string& itemPath);
 
+	private:
 		/**
 		 * Slider to zoom the displayed content
 		 */

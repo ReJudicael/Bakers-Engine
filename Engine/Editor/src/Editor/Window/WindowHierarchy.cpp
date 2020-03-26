@@ -88,6 +88,7 @@ namespace Editor::Window
 	void WindowHierarchy::Tick()
 	{
 		auto root = GetEngine()->m_root;
-		ShowChildrenOfObject(root);
+		if (ImGui::CollapsingHeader(root->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+			ShowChildrenOfObject(root);
 	}
 }

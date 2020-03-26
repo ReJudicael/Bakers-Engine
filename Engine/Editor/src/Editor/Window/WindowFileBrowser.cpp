@@ -62,10 +62,32 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowFileBrowser::PopupMenu(const std::string& itemPath)
+	void WindowFileBrowser::MenuItemNew()
 	{
-		ImGui::OpenPopupOnItemClick("## WindowFileBrowser");
-		if (ImGui::BeginPopup("## WindowFileBrowser", ImGuiWindowFlags_NoMove))
+		if (ImGui::BeginMenu("New"))
+		{
+			if (ImGui::MenuItem("Folder"))
+				m_renamePath = fs.CreateFolder();
+
+			if (ImGui::MenuItem("File"))
+				m_renamePath = fs.CreateFile();
+
+			ImGui::EndMenu();
+		}
+	}
+
+	void WindowFileBrowser::PopupMenuOnWindow()
+	{
+		if (ImGui::BeginPopupContextWindow("## PopupOnWindow", ImGuiMouseButton_Right, false))
+		{
+			MenuItemNew();
+			ImGui::EndPopup();
+		}
+	}
+
+	void WindowFileBrowser::PopupMenuOnItem(const std::string& itemPath)
+	{
+		if (ImGui::BeginPopupContextItem("## PopupOnItem", ImGuiMouseButton_Right))
 		{
 			if (ImGui::MenuItem("Open"))
 				fs.OpenContent(itemPath);
@@ -79,18 +101,8 @@ namespace Editor::Window
 				if (ImGui::MenuItem("Delete"))
 					fs.DeleteContent(itemPath);
 			}
-
 			ImGui::Separator();
-			if (ImGui::BeginMenu("New"))
-			{
-				if (ImGui::MenuItem("Folder"))
-					m_renamePath = fs.CreateFolder();
-
-				if (ImGui::MenuItem("File"))
-					m_renamePath = fs.CreateFile();
-
-				ImGui::EndMenu();
-			}
+			MenuItemNew();
 
 			ImGui::EndPopup();
 		}
@@ -116,17 +128,16 @@ namespace Editor::Window
 				ext = "folder";
 		}
 		else
-			ext = fs.GetExtensionWithoutDot_str(itemPath);
-
-		std::string path{ std::string(PATH_TO_ICONS) + ext + std::string(".png") };
-		std::shared_ptr<Resources::Texture> icon;
-		GetEngine()->GetResourcesManager()->LoadTexture(path, icon);
-
-		if (icon->stateTexture == Resources::EOpenGLLinkState::LOADPROBLEM)
 		{
-			if (ext != "default")
-				return GetIcon(".default");
+			ext = fs.GetExtensionWithoutDot_str(itemPath);
 		}
+
+		std::string iconsPath{ std::string(PATH_TO_ICONS) + ext + std::string(".png") };
+		std::shared_ptr<Resources::Texture> icon;
+		if (fs.Exists(iconsPath))
+			GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
+		else
+			return GetIcon(".default");
 
 #pragma warning(suppress : 4312)
 		return reinterpret_cast<ImTextureID>(icon->texture);
@@ -190,12 +201,13 @@ namespace Editor::Window
 
 		ImGui::EndGroup();
 
+		// if ImageButton is clicked on right mouse button
+		PopupMenuOnItem(itemPath);
+		PopupMenuOnWindow();
+
 		// if ImageButton is clicked on twice by left mouse button
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && !isEditing)
 			fs.OpenContent(itemPath);
-
-		// if ImageButton is clicked on right mouse button
-		PopupMenu(itemPath);
 	}
 
 	void WindowFileBrowser::ShowDirectoryContent(std::vector<std::filesystem::path> contents)
@@ -216,6 +228,7 @@ namespace Editor::Window
 			{
 				itemName = std::filesystem::path(contents[i]).filename().string();
 				itemPath = fs.GetLocalAbsolute(itemName);
+
 				if (FileHasExcludedExtension(itemName))
 					continue;
 
