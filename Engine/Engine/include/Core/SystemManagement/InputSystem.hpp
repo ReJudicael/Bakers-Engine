@@ -34,6 +34,7 @@ namespace Core::SystemManagement
 		/* Stockage mouse buttons, keys and scroll */
 		std::unordered_map<EKey, EStateKey> m_registeredKeys;
 		std::unordered_map<EMouseButton, EStateMouseButton> m_registeredMouseButtons;
+		ECursorAppearance m_cursorAppearance{ ECursorAppearance::DEFAULT };
 		EStateScroll m_registeredScrollYAxis{ EStateScroll::UNUSED };
 
 		/* Double click handling */
@@ -254,7 +255,13 @@ namespace Core::SystemManagement
 		 * Set cursor type
 		 * @param type: Desired appearance for mouse cursor
 		 */
-		void SetMouseAppearance(ECursorAppearance type) const noexcept;
+		void SetMouseAppearance(ECursorAppearance type) noexcept;
+
+		/**
+		 * Indicate whether mouse cursor is visible or not
+		 * @return true if the mouse cursor is invisible, false otherwise
+		 */
+		bool IsCursorHidden() const noexcept;
 	};
 
 	inline EStateKey InputSystem::GetKeyState(EKey key) const noexcept
@@ -449,5 +456,15 @@ namespace Core::SystemManagement
 	inline bool InputSystem::IsScrollUnused() const noexcept
 	{
 		return GetScrollState() == EStateScroll::UNUSED;
+	}
+
+	inline void InputSystem::SetMouseAppearance(ECursorAppearance type) noexcept
+	{
+		m_cursorAppearance = type;
+	}
+
+	inline bool InputSystem::IsCursorHidden() const noexcept
+	{
+		return m_cursorAppearance == ECursorAppearance::INVISIBLE;
 	}
 }

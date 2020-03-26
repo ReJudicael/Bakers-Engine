@@ -105,12 +105,15 @@ namespace Editor
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glfwPollEvents();
+			if (m_inputSystem->IsCursorHidden())
+				ImGui::SetMouseCursor(-1);
+
 			DoLoop();
 
 			int display_w, display_h;
 			glfwGetFramebufferSize(m_window, &display_w, &display_h);
 			glViewport(0, 0, display_w, display_h);
-
+			
 			glfwSwapBuffers(m_window);
 		}
 	}
