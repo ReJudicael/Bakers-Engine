@@ -45,16 +45,16 @@ namespace Editor::Window
 
 			Core::Maths::Vec3 pos = m_isLocal ? object->GetPos() : object->GetGlobalPos();
 			if (ImGui::DragFloat3("Position", pos.xyz))
-				m_isLocal ? object->SetPos(pos) : object->SetPos(pos);	// TODO: Set Global Pos
+				m_isLocal ? object->SetPos(pos) : object->SetGlobalPos(pos);
 
 			Core::Maths::Vec3 rot = m_isLocal ? object->GetRot().ToEulerAngles() : object->GetGlobalRot().ToEulerAngles();
 			rot *= RAD2DEG;
 			if (ImGui::DragFloat3("Rotation", rot.xyz))
-				m_isLocal ? object->SetRot(rot * DEG2RAD) : object->SetRot(rot * DEG2RAD); // TODO : Set Global Rot
+				m_isLocal ? object->SetRot(rot * DEG2RAD) : object->SetGlobalRot(rot * DEG2RAD);
 
 			Core::Maths::Vec3 scale = m_isLocal ? object->GetScale() : object->GetGlobalScale();
-			if (ImGui::DragFloat3("Scale", scale.xyz))
-				m_isLocal ? object->SetScale(scale) : object->SetScale(scale); // Set Global Scale
+			if (ImGui::DragFloat3("Scale", scale.xyz, 0.01f))
+				m_isLocal ? object->SetScale(scale) : object->SetGlobalScale(scale);
 		}
 	}
 

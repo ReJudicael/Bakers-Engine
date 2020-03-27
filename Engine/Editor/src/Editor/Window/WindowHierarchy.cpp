@@ -40,7 +40,7 @@ namespace Editor::Window
 			{
 				m_objectToRename = nullptr;
 				object->SetName(name);
-				m_canRename = true;
+				m_canRename = false;
 			}
 		}
 		ImGui::PopStyleVar(2);
@@ -86,12 +86,12 @@ namespace Editor::Window
 				if (gO->IsDestroyed())
 					continue;
 
-				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+				ImGuiTreeNodeFlags flags{ ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap };
 				flags |= gO->GetChilds().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
 				if (GetEngine()->objectSelected == gO)
 					flags |= ImGuiTreeNodeFlags_Selected;
 
-				bool isOpen;
+				bool isOpen{ false };
 				if (gO == m_objectToRename)
 				{
 					m_cursorPos = { ImGui::GetCursorPos().x + 20, ImGui::GetCursorPos().y };
@@ -99,13 +99,14 @@ namespace Editor::Window
 					RenameObject(gO);
 				}
 				else
-					bool isOpen = ImGui::TreeNodeEx(gO, flags, gO->GetName().c_str());
+				{
+					isOpen = ImGui::TreeNodeEx(gO, flags, gO->GetName().c_str());
+				}
 
 				PopupMenuOnItem(gO);
 
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 					GetEngine()->objectSelected = gO;
-
 
 				if (m_destroySelected)
 				{
