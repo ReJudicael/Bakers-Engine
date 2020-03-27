@@ -26,7 +26,7 @@ namespace Editor::Window
 		std::string m_renamePath = "";
 
 		/**
-		 * Decide whether the user can rename an other path or not
+		 * Decide whether the user can rename a path or not
 		 */
 		bool m_canRename{ false };
 

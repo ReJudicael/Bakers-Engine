@@ -7,6 +7,7 @@ namespace Editor::Window
 	WindowHierarchy::WindowHierarchy(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Hierarchy", visible }
 	{
+		m_rootObject = GetEngine()->m_root;
 	}
 
 	void WindowHierarchy::PushWindowStyle()
@@ -25,11 +26,10 @@ namespace Editor::Window
 			char name[64];
 			memcpy(name, m_objectToRename->GetName().c_str(), m_objectToRename->GetName().size() + 1);
 
-			ImGui::SetCursorPos(m_cursorPos);
 			ImGui::SetNextItemWidth(-FLT_MIN);
-
 			if (!m_canRename)
 			{
+				ImGui::SetScrollHereY();
 				ImGui::SetKeyboardFocusHere();
 				m_canRename = true;
 			}
@@ -46,6 +46,26 @@ namespace Editor::Window
 		ImGui::PopStyleVar(2);
 	}
 
+	void WindowHierarchy::CreateObject(Core::Datastructure::Object* parent)
+	{
+		if (ImGui::BeginMenu("Create"))
+		{
+			if (ImGui::MenuItem("Empty"))
+				m_objectToRename = parent->CreateChild("GameObject", {});
+
+			ImGui::EndMenu();
+		}
+	}
+
+	void WindowHierarchy::PopupMenuOnWindow(Core::Datastructure::Object* root)
+	{
+		if (ImGui::BeginPopupContextWindow("## PopupOnWindow", ImGuiMouseButton_Right, false))
+		{
+			CreateObject(root);
+			ImGui::EndPopup();
+		}
+	}
+
 	void WindowHierarchy::PopupMenuOnItem(Core::Datastructure::Object* object)
 	{
 		if (ImGui::BeginPopupContextItem("## PopupMenuOnItem"))
@@ -57,21 +77,14 @@ namespace Editor::Window
 
 			if (ImGui::MenuItem("Delete"))
 			{
-				m_destroySelected = true;
+				m_destroyObject = true;
 				object->Destroy();
 				if (GetEngine()->objectSelected == object)
 					GetEngine()->objectSelected = nullptr;
 			}
 
 			ImGui::Separator();
-
-			if (ImGui::BeginMenu("Create"))
-			{
-				if (ImGui::MenuItem("Empty"))
-					object->CreateChild("GameObject", {});
-				
-				ImGui::EndMenu();
-			}
+			CreateObject(object);
 
 			ImGui::EndPopup();
 		}
@@ -94,8 +107,9 @@ namespace Editor::Window
 				bool isOpen{ false };
 				if (gO == m_objectToRename)
 				{
-					m_cursorPos = { ImGui::GetCursorPos().x + 20, ImGui::GetCursorPos().y };
+					ImVec2 cursorPos = { ImGui::GetCursorPos().x + 20, ImGui::GetCursorPos().y };
 					isOpen = ImGui::TreeNodeEx(gO, flags, gO->GetName().c_str());
+					ImGui::SetCursorPos(cursorPos);
 					RenameObject(gO);
 				}
 				else
@@ -108,12 +122,12 @@ namespace Editor::Window
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 					GetEngine()->objectSelected = gO;
 
-				if (m_destroySelected)
+				if (m_destroyObject)
 				{
 					if (isOpen)
 						ImGui::TreePop();
 					ImGui::PopID();
-					m_destroySelected = false;
+					m_destroyObject = false;
 					continue;
 				}
 
@@ -130,8 +144,9 @@ namespace Editor::Window
 
 	void WindowHierarchy::Tick()
 	{
-		auto root = GetEngine()->m_root;
-		if (ImGui::CollapsingHeader(root->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
-			ShowChildrenOfObject(root);
+		if (ImGui::CollapsingHeader(m_rootObject->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+			ShowChildrenOfObject(m_rootObject);
+
+		PopupMenuOnWindow(m_rootObject);
 	}
 }

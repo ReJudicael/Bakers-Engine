@@ -229,7 +229,7 @@ namespace Editor::Window
 				itemName = std::filesystem::path(contents[i]).filename().string();
 				itemPath = fs.GetLocalAbsolute(itemName);
 
-				if (FileHasExcludedExtension(itemName))
+				if (FileHasExcludedExtension(itemName) || !fs.Exists(itemPath))
 					continue;
 
 				ImGui::PushID(static_cast<int>(i));
