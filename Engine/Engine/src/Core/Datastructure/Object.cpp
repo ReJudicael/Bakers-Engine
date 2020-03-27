@@ -100,5 +100,14 @@ namespace Core::Datastructure
 	{
 		m_childs.remove(object);
 	}
-}
 
+	bool			Object::IsChild(Object* o) const noexcept
+	{
+		for (auto c : m_childs)
+		{
+			if (c == o || c->IsChild(o))
+				return true;
+		}
+		return false;
+	}
+}

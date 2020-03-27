@@ -96,13 +96,16 @@ namespace Core::Datastructure
 		void				RemoveChild(Object* object) noexcept;
 
 		/**
-		 * Returns a pointer to the parent of the object. If the
-		 * pointer is nullptr, the object is the root node
+		 * Returns a pointer to the parent of the object
+		 * If the pointer is nullptr, the object is the root node
 		 * @return Pointer to the parent
 		 */
 		inline Object*		GetParent() const noexcept;
 
-		inline std::list<Object*>&	GetChilds() noexcept;
+		/**
+		 * Get children of the object
+		 */
+		inline std::list<Object*>&	GetChildren() noexcept;
 
 		/**
 		 * Translates the object in local space by given vector
@@ -343,6 +346,14 @@ namespace Core::Datastructure
 			return (GetGlobalRot() * rightQuat * GetGlobalRot().Inversed()).GetVec();
 		}
 
+		/**
+		 * Checks if given object is a child of this object.
+		 * Also checks if it is a child of its child etc
+		 * @param o: Object to check
+		 * @return Whether it is a child or not
+		 */
+		bool				IsChild(Object* o) const noexcept;
+
 		REGISTER_CLASS()
 	};
 
@@ -351,7 +362,7 @@ namespace Core::Datastructure
 		return m_parent;
 	}
 
-	inline std::list<Object*>& Datastructure::Object::GetChilds() noexcept
+	inline std::list<Object*>& Datastructure::Object::GetChildren() noexcept
 	{
 		return m_childs;
 	}

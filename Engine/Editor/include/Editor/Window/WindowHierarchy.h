@@ -85,9 +85,9 @@ namespace Editor::Window
 
 		/**
 		 * Show children of object
-		 * @param object: Object from which the children are displayed
+		 * @param parent: Object from which the children are displayed
 		 */
-		void ShowChildrenOfObject(Core::Datastructure::Object* object);
+		void ShowChildrenOfObject(Core::Datastructure::Object* parent);
 
 	private:
 		/**

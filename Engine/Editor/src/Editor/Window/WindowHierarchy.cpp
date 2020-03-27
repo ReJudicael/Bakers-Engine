@@ -79,7 +79,7 @@ namespace Editor::Window
 			{
 				m_destroyObject = true;
 				object->Destroy();
-				if (GetEngine()->objectSelected == object)
+				if (GetEngine()->objectSelected == object || object->IsChild(GetEngine()->objectSelected))
 					GetEngine()->objectSelected = nullptr;
 			}
 
@@ -90,37 +90,37 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowHierarchy::ShowChildrenOfObject(Core::Datastructure::Object* object)
+	void WindowHierarchy::ShowChildrenOfObject(Core::Datastructure::Object* parent)
 	{
-		for (auto gO : object->GetChilds())
+		for (auto object : parent->GetChildren())
 		{
-			ImGui::PushID(gO);
+			ImGui::PushID(object);
 			{
-				if (gO->IsDestroyed())
+				if (object->IsDestroyed())
 					continue;
 
 				ImGuiTreeNodeFlags flags{ ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap };
-				flags |= gO->GetChilds().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
-				if (GetEngine()->objectSelected == gO)
+				flags |= object->GetChildren().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
+				if (GetEngine()->objectSelected == object)
 					flags |= ImGuiTreeNodeFlags_Selected;
 
 				bool isOpen{ false };
-				if (gO == m_objectToRename)
+				if (object == m_objectToRename)
 				{
 					ImVec2 cursorPos = { ImGui::GetCursorPos().x + 20, ImGui::GetCursorPos().y };
-					isOpen = ImGui::TreeNodeEx(gO, flags, gO->GetName().c_str());
+					isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
 					ImGui::SetCursorPos(cursorPos);
-					RenameObject(gO);
+					RenameObject(object);
 				}
 				else
 				{
-					isOpen = ImGui::TreeNodeEx(gO, flags, gO->GetName().c_str());
+					isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
 				}
 
-				PopupMenuOnItem(gO);
+				PopupMenuOnItem(object);
 
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-					GetEngine()->objectSelected = gO;
+					GetEngine()->objectSelected = object;
 
 				if (m_destroyObject)
 				{
@@ -133,7 +133,7 @@ namespace Editor::Window
 
 				if (isOpen)
 				{
-					ShowChildrenOfObject(gO);
+					ShowChildrenOfObject(object);
 					ImGui::TreePop();
 				}
 
