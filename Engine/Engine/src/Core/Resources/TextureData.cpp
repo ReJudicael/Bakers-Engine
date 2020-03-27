@@ -39,6 +39,8 @@ namespace Resources
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		stbi_image_free(data);
+		data = nullptr;
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		stateTexture = EOpenGLLinkState::ISLINK;
