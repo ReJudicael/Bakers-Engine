@@ -1,7 +1,7 @@
 #include "Transform.hpp"
 #include "Debug.h "
 
-RTTR_REGISTRATION
+RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
 	using namespace Core::Maths;

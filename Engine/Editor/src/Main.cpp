@@ -13,12 +13,22 @@
 #include "RootObject.hpp"
 #include "InputSystem.hpp"
 #include "EditorEngine.h"
+#include "CoreMinimal.h"
+#include <rttr/library.h>
 
 int main()
 {
+	rttr::library lib{ "Engine" };
+	lib.load();
+
+	if (!lib.is_loaded())
+		std::cout << lib.get_error_string() << std::endl;
+
 	Editor::EditorEngine* engine = new Editor::EditorEngine();
 	engine->MainLoop();
 	delete engine;
+
+	lib.unload();
 
 	return 0;
 }

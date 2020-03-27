@@ -6,7 +6,7 @@
 #include "Quaternion.hpp"
 #include "CoreMinimal.h"
 
-RTTR_REGISTRATION
+RTTR_PLUGIN_REGISTRATION
 {
     using namespace NRenderer;
     registration::class_<Light>("Light")

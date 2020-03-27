@@ -8,10 +8,10 @@
 #include "PlayerCamera.h"
 #include "Framebuffer.h"
 
-RTTR_REGISTRATION
+RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
-	registration::class_<EngineCore>("IWindow")
+	registration::class_<EngineCore>("EngineCore")
 		.method("Update", &EngineCore::Update)
 		.method("Init", select_overload<int(void)>(&EngineCore::Init))
 		.method("Init", select_overload<int(int, int)>(&EngineCore::Init))

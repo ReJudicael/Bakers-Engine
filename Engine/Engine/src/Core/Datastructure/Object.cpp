@@ -2,7 +2,7 @@
 #include "RootObject.hpp"
 #include "CoreMinimal.h"
 
-RTTR_REGISTRATION
+RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
 	registration::class_<Object>("Object")
@@ -92,6 +92,7 @@ namespace Core::Datastructure
 			if (*it == c)
 			{
 				(*it)->Destroy();
+				m_components.erase(it);
 				return;
 			}
 	}

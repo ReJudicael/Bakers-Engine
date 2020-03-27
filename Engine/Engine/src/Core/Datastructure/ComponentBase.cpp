@@ -1,6 +1,6 @@
 #include "ComponentBase.h"
 
-RTTR_REGISTRATION
+RTTR_PLUGIN_REGISTRATION
 {
 	registration::class_<Core::Datastructure::ComponentBase>("ComponentBase")
 		.constructor<>()

@@ -3,6 +3,17 @@
 #include "Camera.h"
 #include "Object.hpp"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	registration::class_<Camera>("Camera")
+		.constructor()
+		.constructor<const float, const float, const float, const float>()
+		.property("Ratio", &Camera::m_ratio)
+		.property("FOV", &Camera::m_fov)
+		.property("Near", &Camera::m_near)
+		.property("Far", &Camera::m_far);
+}
+
 Core::Maths::Mat4 Camera::OnGenerateCamera()
 {
 	return m_parent->GetGlobalTRS().Inversed();

@@ -100,6 +100,7 @@ namespace Editor
 
 	void GUIManager::EndFrame()
 	{
+		ImGui::EndFrame();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
