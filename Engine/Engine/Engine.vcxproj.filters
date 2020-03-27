@@ -156,6 +156,9 @@
     <ClCompile Include="src\Core\Renderer\Light.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Physics\PhysicsScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -302,14 +305,17 @@
     <ClInclude Include="include\Core\Renderer\Framebuffer.h">
       <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="include\Core\Maths\MathMinimal.h">
-      <Filter>Header Files\Core\Maths</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Resources\Object3DGraph.h">
       <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\Light.h">
       <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\MathMinimal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\PhysicsScene.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
