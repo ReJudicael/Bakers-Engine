@@ -343,6 +343,14 @@ namespace Core::Datastructure
 			return (GetGlobalRot() * rightQuat * GetGlobalRot().Inversed()).GetVec();
 		}
 
+		/**
+		 * Checks if given object is a child of this object.
+		 * Also checks if it is a child of its child etc
+		 * @param o: Object to check
+		 * @return Whether it is a child or not
+		 */
+		bool				IsChild(Object* o) const noexcept;
+
 		REGISTER_CLASS()
 	};
 

@@ -121,6 +121,15 @@ namespace Editor
 		m_man->Render();
 	}
 
+	void EditorEngine::EndFrame()
+	{
+		if (objectSelected != nullptr && objectSelected->IsDestroyed())
+			objectSelected = nullptr;
+
+		EngineCore::EndFrame();
+	}
+
+
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept
 	{
 		double pos[2];

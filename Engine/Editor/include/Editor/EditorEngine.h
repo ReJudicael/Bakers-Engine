@@ -23,6 +23,7 @@ namespace Editor
 		void	SetSizeWindow(const int width, const int height) override;
 		void	MainLoop();
 		void	Render() override;
+		void	EndFrame() override;
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
 

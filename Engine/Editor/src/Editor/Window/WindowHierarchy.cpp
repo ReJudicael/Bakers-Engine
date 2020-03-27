@@ -79,7 +79,7 @@ namespace Editor::Window
 			{
 				m_destroyObject = true;
 				object->Destroy();
-				if (GetEngine()->objectSelected == object)
+				if (GetEngine()->objectSelected == object || object->IsChild(GetEngine()->objectSelected))
 					GetEngine()->objectSelected = nullptr;
 			}
 
