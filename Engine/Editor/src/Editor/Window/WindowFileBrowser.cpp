@@ -132,7 +132,7 @@ namespace Editor::Window
 			ext = fs.GetExtensionWithoutDot_str(itemPath);
 		}
 
-		std::string iconsPath{ std::string(PATH_TO_ICONS) + ext + std::string(".png") };
+		std::string iconsPath{ PATH_TO_ICONS + ext + ".png" };
 		std::shared_ptr<Resources::Texture> icon;
 		if (fs.Exists(iconsPath))
 			GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
@@ -201,11 +201,7 @@ namespace Editor::Window
 
 		ImGui::EndGroup();
 
-		// if ImageButton is clicked on right mouse button
 		PopupMenuOnItem(itemPath);
-		PopupMenuOnWindow();
-
-		// if ImageButton is clicked on twice by left mouse button
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && !isEditing)
 			fs.OpenContent(itemPath);
 	}
@@ -215,6 +211,8 @@ namespace Editor::Window
 		ImVec2 regionSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 30.f };
 		ImGui::BeginChild("## WindowFileBrowser", regionSize);
 		{
+			PopupMenuOnWindow();
+
 			int columns{ static_cast<int>(regionSize.x / m_contentPathSize) };
 			if (columns < 1)
 				columns = 1;
@@ -238,6 +236,7 @@ namespace Editor::Window
 
 				ImGui::NextColumn();
 			}
+
 			ImGui::EndChild();
 		}
 		ZoomPathContents();

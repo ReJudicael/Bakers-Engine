@@ -352,7 +352,7 @@ namespace Core::Datastructure
 		 * @param o: Object to check
 		 * @return Whether it is a child or not
 		 */
-		bool				IsChild(Object* o) const noexcept;
+		bool				IsChildOf(Object* o) const noexcept;
 
 		REGISTER_CLASS()
 	};

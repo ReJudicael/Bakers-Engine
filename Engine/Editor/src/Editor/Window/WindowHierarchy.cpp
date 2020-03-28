@@ -79,7 +79,7 @@ namespace Editor::Window
 			{
 				m_destroyObject = true;
 				object->Destroy();
-				if (GetEngine()->objectSelected == object || object->IsChild(GetEngine()->objectSelected))
+				if (GetEngine()->objectSelected == object || object->IsChildOf(GetEngine()->objectSelected))
 					GetEngine()->objectSelected = nullptr;
 			}
 
@@ -92,6 +92,7 @@ namespace Editor::Window
 
 	void WindowHierarchy::ShowChildrenOfObject(Core::Datastructure::Object* parent)
 	{
+		PopupMenuOnWindow(m_rootObject);
 		for (auto object : parent->GetChildren())
 		{
 			ImGui::PushID(object);
@@ -107,18 +108,20 @@ namespace Editor::Window
 				bool isOpen{ false };
 				if (object == m_objectToRename)
 				{
-					ImVec2 cursorPos = { ImGui::GetCursorPos().x + 20, ImGui::GetCursorPos().y };
+					ImVec2 cursorPos = { ImGui::GetCursorPos().x + 21, ImGui::GetCursorPos().y };
 					isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
 					ImGui::SetCursorPos(cursorPos);
 					RenameObject(object);
 				}
 				else
 				{
+					if (m_objectToRename != nullptr && object->IsChildOf(m_objectToRename) && !ImGui::TreeNodeBehaviorIsOpen(ImGui::GetID(object), flags))
+						ImGui::SetNextItemOpen(true);
+
 					isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
 				}
 
 				PopupMenuOnItem(object);
-
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 					GetEngine()->objectSelected = object;
 
@@ -136,9 +139,8 @@ namespace Editor::Window
 					ShowChildrenOfObject(object);
 					ImGui::TreePop();
 				}
-
-				ImGui::PopID();
 			}
+			ImGui::PopID();
 		}
 	}
 
@@ -146,7 +148,5 @@ namespace Editor::Window
 	{
 		if (ImGui::CollapsingHeader(m_rootObject->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 			ShowChildrenOfObject(m_rootObject);
-
-		PopupMenuOnWindow(m_rootObject);
 	}
 }
