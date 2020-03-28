@@ -20,33 +20,42 @@ namespace Editor::Window
 
 	void WindowHierarchy::RenameObject(Core::Datastructure::Object* object)
 	{
+		char name[64];
+		memcpy(name, m_objectToRename->GetName().c_str(), m_objectToRename->GetName().size() + 1);
+
+		ImGui::SetNextItemWidth(-FLT_MIN);
+
+		if (!m_scrollSetted)
+		{
+			ImGui::SetScrollHereY();
+			m_scrollSetted = true;
+			return;
+		}
+
+		if (!m_canRename && m_scrollSetted)
+		{
+			ImGui::SetScrollHereY();
+			ImGui::SetKeyboardFocusHere();
+			m_canRename = true;
+		}
+
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 3.f, 0.f });
 		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.f);
-		{
-			char name[64];
-			memcpy(name, m_objectToRename->GetName().c_str(), m_objectToRename->GetName().size() + 1);
 
-			ImGui::SetNextItemWidth(-FLT_MIN);
-			if (!m_canRename)
-			{
-				ImGui::SetScrollHereY();
-				ImGui::SetKeyboardFocusHere();
-				m_canRename = true;
-			}
+		bool apply = ImGui::InputText("## InputText", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue);
 
-			bool apply = ImGui::InputText("## InputText", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue);
-
-			if (apply || ImGui::IsItemDeactivated())
-			{
-				m_objectToRename = nullptr;
-				object->SetName(name);
-				m_canRename = false;
-			}
-		}
 		ImGui::PopStyleVar(2);
+
+		if (apply || ImGui::IsItemDeactivated())
+		{
+			m_objectToRename = nullptr;
+			object->SetName(name);
+			m_canRename = false;
+			m_scrollSetted = false;
+		}
 	}
 
-	void WindowHierarchy::CreateObject(Core::Datastructure::Object* parent)
+	void WindowHierarchy::MenuItemCreate(Core::Datastructure::Object* parent)
 	{
 		if (ImGui::BeginMenu("Create"))
 		{
@@ -61,7 +70,7 @@ namespace Editor::Window
 	{
 		if (ImGui::BeginPopupContextWindow("## PopupOnWindow", ImGuiMouseButton_Right, false))
 		{
-			CreateObject(root);
+			MenuItemCreate(root);
 			ImGui::EndPopup();
 		}
 	}
@@ -84,7 +93,7 @@ namespace Editor::Window
 			}
 
 			ImGui::Separator();
-			CreateObject(object);
+			MenuItemCreate(object);
 
 			ImGui::EndPopup();
 		}

@@ -44,9 +44,16 @@ namespace Editor::Window
 		memcpy(name, itemName.c_str(), itemName.size() + 1);
 
 		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
-		if (!m_canRename)
+
+		if (!m_scrollSetted)
 		{
 			ImGui::SetScrollHereY();
+			m_scrollSetted = true;
+			return;
+		}
+
+		if (!m_canRename && m_scrollSetted)
+		{
 			ImGui::SetKeyboardFocusHere();
 			m_canRename = true;
 		}
@@ -59,6 +66,7 @@ namespace Editor::Window
 			fs.RenameContent(fs.GetLocalAbsolute(itemName), name);
 			m_renamePath.clear();
 			m_canRename = false;
+			m_scrollSetted = false;
 		}
 	}
 

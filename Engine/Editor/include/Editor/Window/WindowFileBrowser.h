@@ -31,6 +31,11 @@ namespace Editor::Window
 		bool m_canRename{ false };
 
 		/**
+		 * Whether scrolling has been set or not
+		 */
+		bool m_scrollSetted{ false };
+
+		/**
 		 * Ratio size (1 to 100), to zoom path contents
 		 */
 		int m_size{ 1 };

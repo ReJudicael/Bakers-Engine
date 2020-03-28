@@ -1,4 +1,5 @@
 #include "WindowProfiler.h"
+#include <glad\glad.h>
 
 namespace Editor::Window
 {
@@ -17,6 +18,13 @@ namespace Editor::Window
 
 	void WindowProfiler::Tick()
 	{
-		ImGui::Text(GetNameID().c_str());
+		if (ImGui::CollapsingHeader("GPU Infos", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+			ImGui::Text("GL_VERSION: %s", glGetString(GL_VERSION));
+			ImGui::Text("GL_RENDERER: %s", glGetString(GL_RENDERER));
+			ImGui::Text("GL_SHADING_LANGUAGE_VERSION: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		}
 	}
 }

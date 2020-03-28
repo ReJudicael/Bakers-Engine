@@ -32,6 +32,11 @@ namespace Editor::Window
 		bool m_canRename{ false };
 
 		/**
+		 * Whether scrolling has been set or not
+		 */
+		bool m_scrollSetted{ false };
+
+		/**
 		 * Whether the game object is destroyed or not
 		 */
 		bool m_destroyObject{ false };
@@ -69,7 +74,7 @@ namespace Editor::Window
 		 * Create game object
 		 * @param parent: Parent of the future game object
 		 */
-		void CreateObject(Core::Datastructure::Object* parent);
+		void MenuItemCreate(Core::Datastructure::Object* parent);
 
 		/**
 		 * Pop-up displayed when mouse right button is pressed on window
