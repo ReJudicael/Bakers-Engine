@@ -25,6 +25,9 @@ int main()
 		std::cout << lib.get_error_string() << std::endl;
 
 	Editor::EditorEngine* engine = new Editor::EditorEngine();
+	int temp;
+	if (temp = engine->EngineCore::Init())
+		return temp;
 	engine->MainLoop();
 	delete engine;
 

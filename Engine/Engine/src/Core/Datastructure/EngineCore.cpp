@@ -87,7 +87,7 @@ namespace Core::Datastructure
 
 		m_window = glfwCreateWindow(width, height, "Bakers Engine", nullptr, nullptr);
 		if (m_window == nullptr)
-			return 1;
+			return 2;
 
 		glfwMakeContextCurrent(m_window);
 		glfwSetWindowUserPointer(m_window, this);
@@ -97,7 +97,7 @@ namespace Core::Datastructure
 		if (!gladLoadGL())
 		{
 			fprintf(stderr, "gladLoadGL failed. \n");
-			return 1;
+			return 3;
 		}
 		glDebugMessageCallback(MessageCallback, 0);
 
