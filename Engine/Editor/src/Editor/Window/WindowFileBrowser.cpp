@@ -10,7 +10,7 @@ namespace Editor::Window
 	/**
 	 * Excluded extensions
 	 */
-	std::string excludedExtensions[] = {
+	std::vector<std::string> excludedExtensions = {
 	".exe",
 	".dll",
 	".bat",
@@ -40,10 +40,8 @@ namespace Editor::Window
 
 	void WindowFileBrowser::RenameContent(const std::string& itemName)
 	{
-		char name[64];
-		memcpy(name, itemName.c_str(), itemName.size() + 1);
-
-		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
+		if (strncmp(m_name, itemName.c_str(), itemName.size() + 1) != 0)
+			memcpy(m_name, itemName.c_str(), itemName.size() + 1);
 
 		if (!m_scrollSetted)
 		{
@@ -52,21 +50,23 @@ namespace Editor::Window
 			return;
 		}
 
-		if (!m_canRename && m_scrollSetted)
+		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
+
+		if (m_scrollSetted && !m_canRename)
 		{
 			ImGui::SetKeyboardFocusHere();
 			m_canRename = true;
 		}
 
-		bool apply = ImGui::InputText("## InputText", name, IM_ARRAYSIZE(name),
-			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank);
+		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name),
+			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 
 		if (apply || ImGui::IsItemDeactivated())
 		{
-			fs.RenameContent(fs.GetLocalAbsolute(itemName), name);
+			fs.RenameContent(fs.GetLocalAbsolute(itemName), m_name);
 			m_renamePath.clear();
-			m_canRename = false;
 			m_scrollSetted = false;
+			m_canRename = false;
 		}
 	}
 
@@ -109,6 +109,7 @@ namespace Editor::Window
 				if (ImGui::MenuItem("Delete"))
 					fs.DeleteContent(itemPath);
 			}
+
 			ImGui::Separator();
 			MenuItemNew();
 
@@ -120,15 +121,19 @@ namespace Editor::Window
 	{
 		ImGui::Indent(ImGui::GetWindowWidth() - 150.f);
 		ImGui::SetNextItemWidth(100.f);
-		ImGui::SliderInt("Size", &m_size, 1, 100);
 
-		m_contentPathSize = 65.f + m_size * 1.3f;
+		if (ImGui::SliderInt("Size", &m_size, 1, 100))
+			m_contentPathSize = 65.f + m_size * 1.3f;
 	}
 
 	ImTextureID WindowFileBrowser::GetIcon(const std::string& itemPath)
 	{
 		std::string ext;
-		if (fs.IsDirectory(itemPath))
+		if (itemPath == "default")
+		{
+			ext = "default";
+		}
+		else if (fs.IsDirectory(itemPath))
 		{
 			if (itemPath == "..")
 				ext = "backFolder";
@@ -145,7 +150,7 @@ namespace Editor::Window
 		if (fs.Exists(iconsPath))
 			GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
 		else
-			return GetIcon(".default");
+			return GetIcon("default");
 
 #pragma warning(suppress : 4312)
 		return reinterpret_cast<ImTextureID>(icon->texture);
@@ -156,23 +161,20 @@ namespace Editor::Window
 		if (ImGui::ImageButton(GetIcon("."), { 16.f, 16.f }, { 0.f, 1.f }, { 1.f, 0.f }))
 			fs.SetCurrentDirectory(".");
 
-		std::vector<std::string> foldersPath{ fs.GetExplodedCurrentPath() };
-		for (int i = 0; i < foldersPath.size(); ++i)
+		const std::vector<std::string>& foldersPath{ fs.GetExplodedCurrentPath() };
+		for (int i = 0; i < foldersPath.size() && fs.GetCurrentDirectory() != "."; ++i)
 		{
-			if (fs.GetCurrentDirectory() != ".")
+			ImGui::SameLine();
+			ImGui::PushID(i);
+			if (ImGui::Button(foldersPath[i].c_str()))
 			{
-				ImGui::SameLine();
-				ImGui::PushID(i);
-				if (ImGui::Button(foldersPath[i].c_str()))
-				{
-					std::size_t found{ 0 };
-					for (int j{ 0 }; j < i; ++j)
-						found += foldersPath[j].size() + 1;	// + 1 for slash between each folders
-					found += foldersPath[i].size();			// Remove trailing slash, if existing
-					fs.CutCurrentPathAtPos(found);
-				}
-				ImGui::PopID();
+				std::size_t found{ 0 };
+				for (int j{ 0 }; j < i; ++j)
+					found += foldersPath[j].size() + 1;	// + 1 for slash between each folders
+				found += foldersPath[i].size();			// Remove trailing slash, if existing
+				fs.CutCurrentPathAtPos(found);
 			}
+			ImGui::PopID();
 
 			if (i < foldersPath.size() - 1)
 			{
@@ -182,27 +184,12 @@ namespace Editor::Window
 		}
 	}
 
-	bool WindowFileBrowser::FileHasExcludedExtension(const std::string& itemName)
-	{
-		for (const std::string& exclude : excludedExtensions)
-		{
-			if (itemName.size() < exclude.size())
-				continue;
-
-			const char* c{ &itemName.c_str()[itemName.size() - exclude.size()] };
-			if (strcmp(c, exclude.c_str()) == 0)
-				return true;
-		}
-		return false;
-	}
-
 	void WindowFileBrowser::ShowItem(const std::string& itemName, const std::string& itemPath)
 	{
 		ImGui::BeginGroup();
 
 		ImGui::ImageButton(GetIcon(itemPath), { m_contentPathSize - 20.f, m_contentPathSize - 20.f }, { 0.f, 1.f }, { 1.f, 0.f });
-		bool isEditing{ m_renamePath == itemPath };
-		if (isEditing)
+		if (m_renamePath == itemPath)
 			RenameContent(itemName);
 		else
 			ImGui::TextWrapped(itemName.c_str());
@@ -210,7 +197,7 @@ namespace Editor::Window
 		ImGui::EndGroup();
 
 		PopupMenuOnItem(itemPath);
-		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && !isEditing)
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			fs.OpenContent(itemPath);
 	}
 
@@ -235,7 +222,7 @@ namespace Editor::Window
 				itemName = std::filesystem::path(contents[i]).filename().string();
 				itemPath = fs.GetLocalAbsolute(itemName);
 
-				if (FileHasExcludedExtension(itemName) || !fs.Exists(itemPath))
+				if (fs.FileHasExcludedExtension(itemName, excludedExtensions) || !fs.Exists(itemPath))
 					continue;
 
 				ImGui::PushID(static_cast<int>(i));

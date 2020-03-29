@@ -2,10 +2,10 @@
 
 #include <Windows.h>
 
-namespace ShellFileAPI
+namespace Core::SystemManagement::ShellFileAPI
 {
 	void OpenSpecifiedFile(const std::string& pathFile) noexcept
 	{
-		ShellExecuteA(NULL, "open", (LPCSTR)pathFile.c_str(), NULL, NULL, SW_SHOWNORMAL);
+		ShellExecuteA(NULL, "open", pathFile.c_str(), NULL, NULL, SW_SHOWNORMAL);
 	}
 }

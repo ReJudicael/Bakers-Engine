@@ -3,11 +3,17 @@
 #include <string>
 #include "CoreMinimal.h"
 
-namespace ShellFileAPI
+namespace Core::SystemManagement
 {
 	/**
-	 * Open a specified file
-	 * @param path: Path to wanted file
+	 * Shell file API, used by Windows Property System
 	 */
-	BAKERS_API void OpenSpecifiedFile(const std::string& pathFile) noexcept;
+	namespace ShellFileAPI
+	{
+		/**
+		 * Open a specified file
+		 * @param path: Path to wanted file
+		 */
+		BAKERS_API void OpenSpecifiedFile(const std::string& pathFile) noexcept;
+	}
 }

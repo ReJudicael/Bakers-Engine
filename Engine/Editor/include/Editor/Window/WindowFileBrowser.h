@@ -23,7 +23,12 @@ namespace Editor::Window
 		/**
 		 * Name of the path to be renamed
 		 */
-		std::string m_renamePath = "";
+		std::string m_renamePath{ "" };
+
+		/**
+		 * Buffer InputText (to rename an item)
+		 */
+		char m_name[64]{};
 
 		/**
 		 * Decide whether the user can rename a path or not
@@ -43,7 +48,7 @@ namespace Editor::Window
 		/**
 		 * Size of path contents
 		 */
-		float m_contentPathSize{ 0.f };
+		float m_contentPathSize{ 66.3f };
 
 	public:
 		/**

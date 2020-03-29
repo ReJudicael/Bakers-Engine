@@ -8,6 +8,9 @@ namespace Editor::Window
 		AWindow{ canvas, "Hierarchy", visible }
 	{
 		m_rootObject = GetEngine()->m_root;
+		m_treeNodeFlags =	ImGuiTreeNodeFlags_OpenOnDoubleClick |
+							ImGuiTreeNodeFlags_SpanAvailWidth |
+							ImGuiTreeNodeFlags_AllowItemOverlap;
 	}
 
 	void WindowHierarchy::PushWindowStyle()
@@ -18,12 +21,10 @@ namespace Editor::Window
 	{
 	}
 
-	void WindowHierarchy::RenameObject(Core::Datastructure::Object* object)
+	void WindowHierarchy::RenameObject(Core::Datastructure::Object* object, const ImVec2& cursorPos)
 	{
-		char name[64];
-		memcpy(name, m_objectToRename->GetName().c_str(), m_objectToRename->GetName().size() + 1);
-
-		ImGui::SetNextItemWidth(-FLT_MIN);
+		if (strncmp(m_name, object->GetName().c_str(), object->GetName().size() + 1) != 0)
+			memcpy(m_name, object->GetName().c_str(), object->GetName().size() + 1);
 
 		if (!m_scrollSetted)
 		{
@@ -32,9 +33,11 @@ namespace Editor::Window
 			return;
 		}
 
-		if (!m_canRename && m_scrollSetted)
+		ImGui::SetNextItemWidth(-FLT_MIN);
+		ImGui::SetCursorPos(cursorPos);
+
+		if (m_scrollSetted && !m_canRename)
 		{
-			ImGui::SetScrollHereY();
 			ImGui::SetKeyboardFocusHere();
 			m_canRename = true;
 		}
@@ -42,14 +45,15 @@ namespace Editor::Window
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 3.f, 0.f });
 		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.f);
 
-		bool apply = ImGui::InputText("## InputText", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue);
+		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name),
+			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 
 		ImGui::PopStyleVar(2);
 
 		if (apply || ImGui::IsItemDeactivated())
 		{
+			object->SetName(m_name);
 			m_objectToRename = nullptr;
-			object->SetName(name);
 			m_canRename = false;
 			m_scrollSetted = false;
 		}
@@ -109,7 +113,7 @@ namespace Editor::Window
 				if (object->IsDestroyed())
 					continue;
 
-				ImGuiTreeNodeFlags flags{ ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap };
+				ImGuiTreeNodeFlags flags{ m_treeNodeFlags };
 				flags |= object->GetChildren().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
 				if (GetEngine()->objectSelected == object)
 					flags |= ImGuiTreeNodeFlags_Selected;
@@ -119,8 +123,7 @@ namespace Editor::Window
 				{
 					ImVec2 cursorPos = { ImGui::GetCursorPos().x + 21, ImGui::GetCursorPos().y };
 					isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
-					ImGui::SetCursorPos(cursorPos);
-					RenameObject(object);
+					RenameObject(object, cursorPos);
 				}
 				else
 				{

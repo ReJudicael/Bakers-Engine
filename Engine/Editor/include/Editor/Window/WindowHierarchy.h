@@ -22,9 +22,19 @@ namespace Editor::Window
 		Core::Datastructure::RootObject* m_rootObject{ nullptr };
 
 		/**
+		 * TreeNode flags
+		 */
+		ImGuiTreeNodeFlags m_treeNodeFlags;
+
+		/**
 		 * Game object to rename
 		 */
 		Core::Datastructure::Object* m_objectToRename{ nullptr };
+
+		/**
+		 * Buffer InputText (to rename an item)
+		 */
+		char m_name[64]{};
 
 		/**
 		 * Decide whether the user can rename a game object or not
@@ -67,8 +77,9 @@ namespace Editor::Window
 		/**
 		 * Rename game object
 		 * @param object: Item/Object on which the right mouse button has been pressed
+		 * @param cursorPos: Position of InputText
 		 */
-		void RenameObject(Core::Datastructure::Object* object);
+		void RenameObject(Core::Datastructure::Object* object, const ImVec2& cursorPos);
 
 		/**
 		 * Create game object
