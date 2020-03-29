@@ -66,6 +66,12 @@ namespace Core::SystemManagement
 		void SetCurrentDirectory(const std::string& dir) noexcept;
 
 		/**
+		 * Whether it is necessary to update the content in the current path or not
+		 * @return True if it is necessary to update the content in the current path, false otherwise
+		 */
+		bool NeedToActualizeContentsInCurrentPath() const noexcept;
+
+		/**
 		 * Check if the given path leads to a file
 		 * @param path: Path of the file to check
 		 * @return True if the path leads to a file, false if it is a directory or anything else
@@ -265,6 +271,11 @@ namespace Core::SystemManagement
 			m_currentDirectory = dir;
 
 		m_actualizeContentsInCurrentPath = true;
+	}
+
+	inline bool FileSystem::NeedToActualizeContentsInCurrentPath() const noexcept
+	{
+		return m_actualizeContentsInCurrentPath;
 	}
 
 	inline bool FileSystem::IsRegularFile(const Path& path) const noexcept

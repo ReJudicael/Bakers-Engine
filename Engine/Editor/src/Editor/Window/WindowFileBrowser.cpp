@@ -214,15 +214,18 @@ namespace Editor::Window
 
 			ImGui::Columns(columns, nullptr, false);
 			if (fs.GetCurrentDirectory() != ".")
-				contents.insert(contents.begin(), std::filesystem::path(".."));
+				contents.insert(contents.begin(), "..");
 
 			std::string itemName, itemPath;
 			for (size_t i{ 0 }; i < contents.size(); ++i)
 			{
-				itemName = std::filesystem::path(contents[i]).filename().string();
+				if (fs.NeedToActualizeContentsInCurrentPath())
+					break;
+
+				itemName = contents[i].filename().string();
 				itemPath = fs.GetLocalAbsolute(itemName);
 
-				if (fs.FileHasExcludedExtension(itemName, excludedExtensions) || !fs.Exists(itemPath))
+				if (fs.FileHasExcludedExtension(itemName, excludedExtensions))
 					continue;
 
 				ImGui::PushID(static_cast<int>(i));

@@ -20,3 +20,7 @@ Engine/Editor/Editor.vcxproj.user
 Engine/Doxygen/Doc/DocEditor/
 
 Engine/Doxygen/Doc/DocEngine/
+
+Engine/TracyClient/x64/
+
+Engine/TracyClient/TracyClient.vcxproj.user

@@ -21,7 +21,6 @@ namespace Editor
 
 	EditorEngine::EditorEngine(int width, int height) : EngineCore(width, height)
 	{
-		Init(width, height);
 	}
 
 	EditorEngine::~EditorEngine()
@@ -53,15 +52,15 @@ namespace Editor
 	int EditorEngine::Init(const int width, const int height)
 	{
 		glfwSetErrorCallback(callback_error);
-
-		if (EngineCore::Init(width, height))
-			return 1;
+		int temp;
+		if (temp = EngineCore::Init(width, height))
+			return temp;
 
 		if (!glfwInit())
-			return 1;
+			return 201;
 
 		if (!gladLoadGL())
-			return 1;
+			return 202;
 
 		glDebugMessageCallback(MessageCallback, 0);
 
