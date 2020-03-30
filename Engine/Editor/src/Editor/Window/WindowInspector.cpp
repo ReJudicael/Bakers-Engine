@@ -104,6 +104,18 @@ namespace Editor::Window
 		DisplayObjectTransform(GetEngine()->objectSelected);
 		ImGui::Spacing();
 
+		array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
+		for (auto it : possibleComponents)
+		{
+			if (ImGui::Selectable(it.get_name().to_string().c_str()))
+			{
+				variant v = it.create();
+
+				GetEngine()->objectSelected->AddComponent(it.invoke("GetCopy", v, {}).get_value<Core::Datastructure::ComponentBase*>());
+			}
+
+		}
+
 		if (ImGui::CollapsingHeader("Properties", m_treeNodeFlags))
 		{
 			for (auto it = GetEngine()->objectSelected->GetComponents().begin(); it != GetEngine()->objectSelected->GetComponents().end(); ++it)
