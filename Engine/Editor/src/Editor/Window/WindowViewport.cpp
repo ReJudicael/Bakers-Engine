@@ -13,7 +13,7 @@ namespace Editor::Window
 
 	void WindowViewport::PushWindowStyle()
 	{
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.f, 0.f });
 	}
 
 	void WindowViewport::PopWindowStyle()

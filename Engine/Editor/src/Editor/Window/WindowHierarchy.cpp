@@ -7,9 +7,8 @@ namespace Editor::Window
 	WindowHierarchy::WindowHierarchy(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Hierarchy", visible }
 	{
-		m_rootObject = GetEngine()->m_root;
-		m_treeNodeFlags =	ImGuiTreeNodeFlags_OpenOnDoubleClick |
-							ImGuiTreeNodeFlags_SpanAvailWidth |
+		m_treeNodeFlags	=	ImGuiTreeNodeFlags_OpenOnDoubleClick |
+							ImGuiTreeNodeFlags_SpanAvailWidth	 |
 							ImGuiTreeNodeFlags_AllowItemOverlap;
 	}
 
@@ -105,7 +104,7 @@ namespace Editor::Window
 
 	void WindowHierarchy::ShowChildrenOfObject(Core::Datastructure::Object* parent)
 	{
-		PopupMenuOnWindow(m_rootObject);
+		PopupMenuOnWindow(GetEngine()->m_root);
 		for (auto object : parent->GetChildren())
 		{
 			ImGui::PushID(object);
@@ -127,7 +126,7 @@ namespace Editor::Window
 				}
 				else
 				{
-					if (m_objectToRename != nullptr && object->IsChildOf(m_objectToRename) && !ImGui::TreeNodeBehaviorIsOpen(ImGui::GetID(object), flags))
+					if (m_objectToRename != nullptr && object->IsChildOf(m_objectToRename))
 						ImGui::SetNextItemOpen(true);
 
 					isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
@@ -158,7 +157,7 @@ namespace Editor::Window
 
 	void WindowHierarchy::Tick()
 	{
-		if (ImGui::CollapsingHeader(m_rootObject->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
-			ShowChildrenOfObject(m_rootObject);
+		if (ImGui::CollapsingHeader(GetEngine()->m_root->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+			ShowChildrenOfObject(GetEngine()->m_root);
 	}
 }
