@@ -2,7 +2,25 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	registration::class_<Core::Datastructure::ComponentBase>("ComponentBase")
+	using namespace Core::Datastructure;
+	registration::class_<ComponentBase>("ComponentBase")
 		.constructor<>()
-		.constructor<const Core::Datastructure::ComponentBase&>();
+		.constructor<const ComponentBase&>()
+		.method("GetCopy", &ComponentBase::GetCopy);
+}
+
+namespace Core::Datastructure
+{
+	void	ComponentBase::StartCopy(void*& copyTo) const
+	{
+		copyTo = new ComponentBase();
+		OnCopy(copyTo);
+	}
+
+	ComponentBase* ComponentBase::GetCopy() const
+	{
+		void* result;
+		StartCopy(result);
+		return (ComponentBase*)result;
+	}
 }
