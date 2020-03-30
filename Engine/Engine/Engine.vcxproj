@@ -150,15 +150,15 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;ENGINE_EXPORTS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RTTR\include;include/Core/;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Core/Resources;include/Core/Resources/Loader;include/Core/Debug;include/Core/Renderer;include/Core/SystemManagement;include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RTTR\include;$(SolutionDir)Dependencies\Lualib\include;include/Core/;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Core/Resources;include/Core/Resources/Loader;include/Core/Debug;include/Core/Renderer;include/Core/SystemManagement;include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\RTTR\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)Dependencies\RTTR\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>lua53.lib;glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
     </Link>
     <PreLinkEvent>
@@ -240,7 +240,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;ENGINE_EXPORTS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RTTR\include;include/Core/;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Core/Resources;include/Core/Resources/Loader;include/Core/Debug;include/Core/Renderer;include/Core/SystemManagement;include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RTTR\include;$(SolutionDir)Dependencies\Lualib\include;include/Core/;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Core/Resources;include/Core/Resources/Loader;include/Core/Debug;include/Core/Renderer;include/Core/SystemManagement;include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -249,8 +249,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\*.dll" "$(TargetDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\RTTR\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)Dependencies\RTTR\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>lua53.lib;glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -273,7 +273,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\Release\*.dll" "$(TargetDir)"</
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;ENGINE_EXPORTS;TRACY_ENABLE;TRACY_IMPORTS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RTTR\include;include/Core/;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Core/Resources;include/Core/Resources/Loader;include/Core/Debug;include/Core/Renderer;include/Core/SystemManagement;include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RTTR\include;$(SolutionDir)Dependencies\Lualib\include;include/Core/;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Core/Resources;include/Core/Resources/Loader;include/Core/Debug;include/Core/Renderer;include/Core/SystemManagement;include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -282,8 +282,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\Release\*.dll" "$(TargetDir)"</
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)$(Platform)\Tracy\;$(SolutionDir)Dependencies\RTTR\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>TracyClient.lib;glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)$(Platform)\Tracy\;$(SolutionDir)Dependencies\RTTR\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>TracyClient.lib;lua53.lib;glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
