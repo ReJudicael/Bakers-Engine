@@ -100,6 +100,7 @@ namespace Editor
 
 	void GUIManager::EndFrame()
 	{
+		ImGui::EndFrame();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -125,5 +126,10 @@ namespace Editor
 	EditorEngine* GUIManager::GetEngine() noexcept
 	{
 		return m_engine;
+	}
+
+	bool GUIManager::IsWindowFocused(const int id) 
+	{ 
+		return m_canvas->IsWindowFocused(id); 
 	}
 }

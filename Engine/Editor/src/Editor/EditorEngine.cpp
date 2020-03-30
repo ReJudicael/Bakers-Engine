@@ -103,7 +103,7 @@ namespace Editor
 		{
 			glClearColor(0.45f, 0.55f, 0.6f, 1.f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+			
 			glfwPollEvents();
 			if (m_inputSystem->IsCursorHidden())
 				ImGui::SetMouseCursor(-1);
@@ -122,6 +122,11 @@ namespace Editor
 	{
 		EngineCore::Render();
 		m_man->Render();
+	}
+
+	bool EditorEngine::IsSelectingEngineView()
+	{
+		return m_man->IsWindowFocused(2);
 	}
 
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept
