@@ -17,14 +17,14 @@ namespace Resources
 		stbi_set_flip_vertically_on_load(shouldFlip);
 		data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 4);
 
+		stateTexture = EOpenGLLinkState::CANLINK;
 		if (!data)
 		{
 			std::cout << "Failed to load " << filename << std::endl;
 			stbi_image_free(data);
 			stateTexture = EOpenGLLinkState::LOADPROBLEM;
-			return;
+			textureptr->stateTexture = EOpenGLLinkState::LOADPROBLEM;
 		}
-		stateTexture = EOpenGLLinkState::CANLINK;
 		resources.EmplaceTextures(filename, textureptr->getPtr());
 	}
 
@@ -39,6 +39,8 @@ namespace Resources
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		stbi_image_free(data);
+		data = nullptr;
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		stateTexture = EOpenGLLinkState::ISLINK;

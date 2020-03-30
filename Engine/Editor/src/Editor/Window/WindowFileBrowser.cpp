@@ -1,17 +1,16 @@
 #include "WindowFileBrowser.h"
+#include "EditorEngine.h"
+#include "LoadResources.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-
-#include <glad\glad.h>
-#include <imgui\imgui_internal.h>
 
 namespace Editor::Window
 {
 	/**
 	 * Excluded extensions
 	 */
-	std::string excludedExtensions[] = {
+	std::vector<std::string> excludedExtensions = {
 	".exe",
 	".dll",
 	".bat",
@@ -39,34 +38,64 @@ namespace Editor::Window
 		ImGui::PopStyleColor(3);
 	}
 
-	void WindowFileBrowser::RenameContent(const std::string& item)
+	void WindowFileBrowser::RenameContent(const std::string& itemName)
 	{
-		char name[64];
-		memcpy(name, item.c_str(), item.size() + 1);
-		ImGui::SetNextItemWidth(m_contentPathSize - 10);
+		if (strncmp(m_name, itemName.c_str(), itemName.size() + 1) != 0)
+			memcpy(m_name, itemName.c_str(), itemName.size() + 1);
 
-		if (!m_canRename)
+		if (!m_scrollSetted)
 		{
 			ImGui::SetScrollHereY();
+			m_scrollSetted = true;
+			return;
+		}
+
+		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
+
+		if (m_scrollSetted && !m_canRename)
+		{
 			ImGui::SetKeyboardFocusHere();
 			m_canRename = true;
 		}
 
-		bool apply = ImGui::InputText("## InputText", name, IM_ARRAYSIZE(name),
-			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank);
+		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name),
+			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 
 		if (apply || ImGui::IsItemDeactivated())
 		{
-			fs.RenameContent(fs.GetLocalAbsolute(item), name);
+			fs.RenameContent(fs.GetLocalAbsolute(itemName), m_name);
 			m_renamePath.clear();
+			m_scrollSetted = false;
 			m_canRename = false;
 		}
 	}
 
-	void WindowFileBrowser::DirectoryContentActionRight(const std::string& itemPath)
+	void WindowFileBrowser::MenuItemNew()
 	{
-		ImGui::OpenPopupOnItemClick("Menu");
-		if (ImGui::BeginPopup("Menu", ImGuiWindowFlags_NoMove))
+		if (ImGui::BeginMenu("New"))
+		{
+			if (ImGui::MenuItem("Folder"))
+				m_renamePath = fs.CreateFolder();
+
+			if (ImGui::MenuItem("File"))
+				m_renamePath = fs.CreateFile();
+
+			ImGui::EndMenu();
+		}
+	}
+
+	void WindowFileBrowser::PopupMenuOnWindow()
+	{
+		if (ImGui::BeginPopupContextWindow("## PopupOnWindow", ImGuiMouseButton_Right, false))
+		{
+			MenuItemNew();
+			ImGui::EndPopup();
+		}
+	}
+
+	void WindowFileBrowser::PopupMenuOnItem(const std::string& itemPath)
+	{
+		if (ImGui::BeginPopupContextItem("## PopupOnItem", ImGuiMouseButton_Right))
 		{
 			if (ImGui::MenuItem("Open"))
 				fs.OpenContent(itemPath);
@@ -82,33 +111,29 @@ namespace Editor::Window
 			}
 
 			ImGui::Separator();
-			if (ImGui::BeginMenu("New"))
-			{
-				if (ImGui::MenuItem("Folder"))
-					m_renamePath = fs.CreateFolder();
+			MenuItemNew();
 
-				if (ImGui::MenuItem("File"))
-					m_renamePath = fs.CreateFile();
-
-				ImGui::EndMenu();
-			}
 			ImGui::EndPopup();
 		}
 	}
 
 	void WindowFileBrowser::ZoomPathContents()
 	{
-		ImGui::Indent(ImGui::GetWindowWidth() - 150);
-		ImGui::SetNextItemWidth(100);
-		ImGui::SliderInt("Size", &m_size, 1, 100);
+		ImGui::Indent(ImGui::GetWindowWidth() - 150.f);
+		ImGui::SetNextItemWidth(100.f);
 
-		m_contentPathSize = 65.f + m_size * 1.3f;
+		if (ImGui::SliderInt("Size", &m_size, 1, 100))
+			m_contentPathSize = 65.f + m_size * 1.3f;
 	}
 
 	ImTextureID WindowFileBrowser::GetIcon(const std::string& itemPath)
 	{
-		std::string ext = "default";
-		if (fs.IsDirectory(itemPath))
+		std::string ext;
+		if (itemPath == "default")
+		{
+			ext = "default";
+		}
+		else if (fs.IsDirectory(itemPath))
 		{
 			if (itemPath == "..")
 				ext = "backFolder";
@@ -116,61 +141,40 @@ namespace Editor::Window
 				ext = "folder";
 		}
 		else
-			ext = fs.GetExtensionWithoutDot_str(itemPath);
-
-		auto it{ icons.find(ext) };
-		if (it == icons.end())
 		{
-			int w, h, channels;
-			stbi_set_flip_vertically_on_load(true);
-			std::string s{ std::string(PATH_TO_ICONS) + ext + std::string(".png") };
-			unsigned char* image{ stbi_load((s).c_str(), &w, &h, &channels, STBI_rgb_alpha) };
-			if (image == nullptr)
-			{
-				if (ext != "default")
-					return GetIcon(".default");
-				else
-					throw "You can't even load a texture!";
-			}
-
-			GLuint texture;
-			glGenTextures(1, &texture);
-			glBindTexture(GL_TEXTURE_2D, texture);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-			glBindTexture(GL_TEXTURE_2D, 0);
-			stbi_image_free(image);
-
-#pragma warning(suppress : 4312)
-			it = icons.insert({ ext, (ImTextureID)texture }).first;
+			ext = fs.GetExtensionWithoutDot_str(itemPath);
 		}
 
-		return it->second;
+		std::string iconsPath{ PATH_TO_ICONS + ext + ".png" };
+		std::shared_ptr<Resources::Texture> icon;
+		if (fs.Exists(iconsPath))
+			GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
+		else
+			return GetIcon("default");
+
+#pragma warning(suppress : 4312)
+		return reinterpret_cast<ImTextureID>(icon->texture);
 	}
 
-	void WindowFileBrowser::ShowCurrentLocalPath()
+	void WindowFileBrowser::ShowCurrentPathOnHeader()
 	{
-		if (ImGui::ImageButton(GetIcon("."), { 16, 16 }, { 0, 1 }, { 1, 0 }))
+		if (ImGui::ImageButton(GetIcon("."), { 16.f, 16.f }, { 0.f, 1.f }, { 1.f, 0.f }))
 			fs.SetCurrentDirectory(".");
 
-		std::vector<std::string> foldersPath{ fs.GetExplodedCurrentPath() };
-		for (int i = 0; i < foldersPath.size(); ++i)
+		const std::vector<std::string>& foldersPath{ fs.GetExplodedCurrentPath() };
+		for (int i = 0; i < foldersPath.size() && fs.GetCurrentDirectory() != "."; ++i)
 		{
-			if (fs.GetCurrentDirectory() != ".")
+			ImGui::SameLine();
+			ImGui::PushID(i);
+			if (ImGui::Button(foldersPath[i].c_str()))
 			{
-				ImGui::SameLine();
-				ImGui::PushID(i);
-				if (ImGui::Button(foldersPath[i].c_str()))
-				{
-					std::size_t found{ 0 };
-					for (int j{ 0 }; j < i; ++j)
-						found += foldersPath[j].size() + 1;	// + 1 for slash between each folders
-					found += foldersPath[i].size();			// Remove trailing slash, if existing
-					fs.CutCurrentPathAtPos(found);
-				}
-				ImGui::PopID();
+				std::size_t found{ 0 };
+				for (int j{ 0 }; j < i; ++j)
+					found += foldersPath[j].size() + 1;	// + 1 for slash between each folders
+				found += foldersPath[i].size();			// Remove trailing slash, if existing
+				fs.CutCurrentPathAtPos(found);
 			}
+			ImGui::PopID();
 
 			if (i < foldersPath.size() - 1)
 			{
@@ -180,81 +184,72 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowFileBrowser::ShowDirectoryContents(std::vector<std::filesystem::path> contents)
+	void WindowFileBrowser::ShowItem(const std::string& itemName, const std::string& itemPath)
 	{
-		ImVec2 contentSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 30.f };
+		ImGui::BeginGroup();
 
-		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
-		ImGui::BeginChild("## ContentRegion", contentSize, true);
+		ImGui::ImageButton(GetIcon(itemPath), { m_contentPathSize - 20.f, m_contentPathSize - 20.f }, { 0.f, 1.f }, { 1.f, 0.f });
+		if (m_renamePath == itemPath)
+			RenameContent(itemName);
+		else
+			ImGui::TextWrapped(itemName.c_str());
+
+		ImGui::EndGroup();
+
+		PopupMenuOnItem(itemPath);
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+			fs.OpenContent(itemPath);
+	}
+
+	void WindowFileBrowser::ShowDirectoryContent(std::vector<std::filesystem::path> contents)
+	{
+		ImVec2 regionSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 30.f };
+		ImGui::BeginChild("## WindowFileBrowser", regionSize);
 		{
-			int columns{ (int)(contentSize.x / m_contentPathSize) };
+			PopupMenuOnWindow();
+
+			int columns{ static_cast<int>(regionSize.x / m_contentPathSize) };
 			if (columns < 1)
 				columns = 1;
+
 			ImGui::Columns(columns, nullptr, false);
-
 			if (fs.GetCurrentDirectory() != ".")
-				contents.insert(contents.begin(), std::filesystem::path(".."));
+				contents.insert(contents.begin(), "..");
 
-			std::string item;
-			std::string itemPath;
+			std::string itemName, itemPath;
 			for (size_t i{ 0 }; i < contents.size(); ++i)
 			{
+				if (fs.NeedToActualizeContentsInCurrentPath())
+					break;
 
-				item = std::filesystem::path(contents[i]).filename().string();
-				itemPath = fs.GetLocalAbsolute(item);
+				itemName = contents[i].filename().string();
+				itemPath = fs.GetLocalAbsolute(itemName);
 
-				bool cancel{ false };
-				for (const std::string& exclude : excludedExtensions)
-				{
-					if (item.size() < exclude.size())
-						continue;
-
-					const char* c{ &item.c_str()[item.size() - exclude.size()] };
-					if (strcmp(c, exclude.c_str()) == 0)
-						cancel = true;
-				}
-				if (cancel)
+				if (fs.FileHasExcludedExtension(itemName, excludedExtensions))
 					continue;
 
 				ImGui::PushID(static_cast<int>(i));
-				ImGui::BeginGroup();
-				ImGui::ImageButton(GetIcon(itemPath), { m_contentPathSize - 20, m_contentPathSize - 20 }, { 0, 1 }, { 1, 0 });
-
-				bool isEditing = (m_renamePath == itemPath);
-				if (isEditing)
-					RenameContent(item);
-				else
-					ImGui::TextWrapped(item.c_str());
-
-				ImGui::EndGroup();
-				ImGui::NextColumn();
-
-				// if ImageButton is clicked on twice by left mouse button
-				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0) && !isEditing)
-					fs.OpenContent(itemPath);
-				else
-					// if ImageButton is clicked on right mouse button
-					DirectoryContentActionRight(itemPath);
-
+				ShowItem(itemName, itemPath);
 				ImGui::PopID();
-			}
-			ImGui::EndChild();
-			ImGui::PopStyleVar(1);
-		}
 
+				ImGui::NextColumn();
+			}
+
+			ImGui::EndChild();
+		}
 		ZoomPathContents();
 	}
 
-	void WindowFileBrowser::ShowDirectory(const std::vector<std::filesystem::path>& content)
+	void WindowFileBrowser::ShowFileBrowser(const std::vector<std::filesystem::path>& content)
 	{
-		ShowCurrentLocalPath();
+		ShowCurrentPathOnHeader();
 		ImGui::Separator();
-		ShowDirectoryContents(content);
+		ShowDirectoryContent(content);
 	}
 
 	void WindowFileBrowser::Tick()
 	{
 		fs.MoveCurrentToClosestDirectory();
-		ShowDirectory(fs.GetContentsInCurrentPath());
+		ShowFileBrowser(fs.GetContentsInCurrentPath());
 	}
 }

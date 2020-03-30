@@ -183,6 +183,48 @@ namespace Core::Datastructure
 		}
 
 		/**
+		 * Set pos to given pos
+		 * @param parent: Parent of the transform
+		 * @param pos: New pos
+		 */
+		void						SetGlobalPos(const Transform& parent, const Maths::Vec3& pos) noexcept
+		{
+			m_isTrsUpdated = false;
+			m_isGUpdated = false;
+			m_isGTrsUpdated = false;
+
+			m_pos = (parent.GetGlobalRot().Inversed() * Core::Maths::Quat(0, pos - parent.GetGlobalPos()) * parent.GetGlobalRot()).GetVec() / parent.GetGlobalScale();
+		}
+		
+		/**
+		 * Set rot to given rot
+		 * @param parent: Parent of the transform
+		 * @param rot: New rot
+		 */
+		void						SetGlobalRot(const Transform& parent, const Maths::Quat& rot) noexcept
+		{
+			m_isTrsUpdated = false;
+			m_isGUpdated = false;
+			m_isGTrsUpdated = false;
+
+			m_rot = parent.GetGlobalRot().Inversed() * rot;
+		}
+
+		/**
+		 * Set scale to given scale
+		 * @param parent: Parent of the transform
+		 * @param scale: New scale
+		 */
+		void						SetGlobalScale(const Transform& parent, const Maths::Vec3& scale) noexcept
+		{
+			m_isTrsUpdated = false;
+			m_isGUpdated = false;
+			m_isGTrsUpdated = false;
+
+			m_scale = scale / parent.GetGlobalScale();
+		}
+
+		/**
 		 * Returns reference to local trs. Can be updated, make a copy if current trs
 		 * is the required value. Will update current trs if required
 		 * @return Reference to local trs

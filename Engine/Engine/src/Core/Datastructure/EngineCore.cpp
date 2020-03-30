@@ -8,10 +8,10 @@
 #include "PlayerCamera.h"
 #include "Framebuffer.h"
 
-RTTR_REGISTRATION
+RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
-	registration::class_<EngineCore>("IWindow")
+	registration::class_<EngineCore>("EngineCore")
 		.method("Update", &EngineCore::Update)
 		.method("Init", select_overload<int(void)>(&EngineCore::Init))
 		.method("Init", select_overload<int(int, int)>(&EngineCore::Init))
@@ -85,9 +85,9 @@ namespace Core::Datastructure
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-		m_window = glfwCreateWindow(width, height, "Editor", nullptr, nullptr);
+		m_window = glfwCreateWindow(width, height, "Bakers Engine", nullptr, nullptr);
 		if (m_window == nullptr)
-			return 1;
+			return 2;
 
 		glfwMakeContextCurrent(m_window);
 		glfwSetWindowUserPointer(m_window, this);
@@ -97,7 +97,7 @@ namespace Core::Datastructure
 		if (!gladLoadGL())
 		{
 			fprintf(stderr, "gladLoadGL failed. \n");
-			return 1;
+			return 3;
 		}
 		glDebugMessageCallback(MessageCallback, 0);
 
@@ -120,13 +120,11 @@ namespace Core::Datastructure
 		l->SetAngleSmoothness(0.01f);
 		camNode->AddComponent(l);
 
-		Core::Datastructure::Object* o{ m_root->CreateChild("Scene", {}) };
-
-		//manager.LoadResourcesIRenderable("Resources/Umbreon/UmbreonHighPoly.obj", o);
+		Core::Datastructure::Object* scene{ m_root->CreateChild("Scene", {}) };
 		m_manager->Load3DObject("Resources/level.fbx");
-		Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, o);
+		Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, scene);
 
-		o->SetScale({ 0.1,0.1,0.1 });
+		scene->SetScale({ 0.01f, 0.01f, 0.01f });
 		m_fbo.clear();
 		return 0;
 	}

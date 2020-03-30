@@ -5,6 +5,7 @@
 namespace Core::Datastructure
 {
 	class Object;
+	class RootObject;
 }
 
 namespace Editor::Window
@@ -14,6 +15,42 @@ namespace Editor::Window
 	 */
 	class WindowHierarchy final : public AWindow
 	{
+	private:
+		/**
+		 * Root object
+		 */
+		Core::Datastructure::RootObject* m_rootObject{ nullptr };
+
+		/**
+		 * TreeNode flags
+		 */
+		ImGuiTreeNodeFlags m_treeNodeFlags;
+
+		/**
+		 * Game object to rename
+		 */
+		Core::Datastructure::Object* m_objectToRename{ nullptr };
+
+		/**
+		 * Buffer InputText (to rename an item)
+		 */
+		char m_name[64]{};
+
+		/**
+		 * Decide whether the user can rename a game object or not
+		 */
+		bool m_canRename{ false };
+
+		/**
+		 * Whether scrolling has been set or not
+		 */
+		bool m_scrollSetted{ false };
+
+		/**
+		 * Whether the game object is destroyed or not
+		 */
+		bool m_destroyObject{ false };
+
 	public:
 		/**
 		 * Constructor which set title of window ("Hierarchy")
@@ -37,9 +74,38 @@ namespace Editor::Window
 		void PopWindowStyle() override;
 
 	private:
+		/**
+		 * Rename game object
+		 * @param object: Item/Object on which the right mouse button has been pressed
+		 * @param cursorPos: Position of InputText
+		 */
+		void RenameObject(Core::Datastructure::Object* object, const ImVec2& cursorPos);
 
-		void ShowChildrenOfObject(Core::Datastructure::Object* object);
+		/**
+		 * Create game object
+		 * @param parent: Parent of the future game object
+		 */
+		void MenuItemCreate(Core::Datastructure::Object* parent);
 
+		/**
+		 * Pop-up displayed when mouse right button is pressed on window
+		 * @param root: Root of game objects
+		 */
+		void PopupMenuOnWindow(Core::Datastructure::Object* root);
+
+		/**
+		 * Pop-up displayed when mouse right button is pressed on item
+		 * @param object: Game object chosen
+		 */
+		void PopupMenuOnItem(Core::Datastructure::Object* object);
+
+		/**
+		 * Show children of object
+		 * @param parent: Object from which the children are displayed
+		 */
+		void ShowChildrenOfObject(Core::Datastructure::Object* parent);
+
+	private:
 		/**
 		 * Draw elements in window
 		 */

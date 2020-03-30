@@ -9,9 +9,10 @@
 #include "Texture.h"
 #include "LoadResources.h"
 
-RTTR_REGISTRATION
+RTTR_PLUGIN_REGISTRATION
 {
 	registration::class_<Mesh>("Mesh")
+		.constructor()
 		.property_readonly("vertex count", &Mesh::GetVertexCount);
 }
 

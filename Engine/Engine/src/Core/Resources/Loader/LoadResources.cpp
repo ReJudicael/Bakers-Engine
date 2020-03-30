@@ -304,6 +304,7 @@ namespace Resources::Loader
 			{
 				case EOpenGLLinkState::LOADPROBLEM:
 					it = m_texturesToLink.erase(it);
+					//it++;
 					break;
 				case EOpenGLLinkState::CANTLINK:
 					it++;
@@ -329,7 +330,8 @@ namespace Resources::Loader
 			switch ((*it)->stateVAO)
 			{
 				case EOpenGLLinkState::LOADPROBLEM:
-					it = m_modelsToLink.erase(it);
+					//it = m_modelsToLink.erase(it);
+					it++;
 					break;
 				case EOpenGLLinkState::CANTLINK:
 					it++;

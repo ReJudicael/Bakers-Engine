@@ -4,6 +4,18 @@
 #include "Object.hpp"
 #include "InputSystem.hpp"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	registration::class_<PlayerCamera>("PlayerCamera")
+		.constructor()
+		.constructor<const float, const float, const float, const float>()
+		.property("Is running", &PlayerCamera::m_isRunning)
+		.property("Speed", &PlayerCamera::m_speed)
+		.property("Running speed", &PlayerCamera::m_runningSpeed)
+		.property("Min move length", &PlayerCamera::m_minMoveLength)
+		.property("Move lerp speed", &PlayerCamera::m_moveLerpSpeed);
+}
+
 PlayerCamera::PlayerCamera() : Camera()
 {
 }

@@ -2,7 +2,7 @@
 #include "RootObject.hpp"
 #include "CoreMinimal.h"
 
-RTTR_REGISTRATION
+RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
 	registration::class_<Object>("Object")
@@ -15,7 +15,9 @@ RTTR_REGISTRATION
 		.method("Scale", &Object::Scale)
 		.property("pos", &Object::GetPos, &Object::SetPos)
 		.property("rot", &Object::GetRot, &Object::SetRot)
-		.property("scale", &Object::GetScale, &Object::SetScale)
+		.property("pos", &Object::GetGlobalPos, &Object::SetGlobalPos)
+		.property("rot", &Object::GetGlobalRot, &Object::SetGlobalRot)
+		.property("scale", &Object::GetGlobalScale, &Object::SetGlobalScale)
 		.property_readonly("GlobalPos", &Object::GetGlobalPos)
 		.property_readonly("GlobalRot", &Object::GetGlobalRot)
 		.property_readonly("GlobalScale", &Object::GetGlobalScale)
@@ -24,7 +26,10 @@ RTTR_REGISTRATION
 		.method("AddComponent", &Object::AddComponent)
 		.method("RemoveComponent", &Object::RemoveComponent)
 		.method("EraseComponent", &Object::EraseComponent)
-		.property_readonly("Scene", &Object::GetScene);
+		.property_readonly("Scene", &Object::GetScene)
+		.property_readonly("Forward", &Object::Forward)
+		.property_readonly("Up", &Object::Up)
+		.property_readonly("Right", &Object::Right);
 }
 
 namespace Core::Datastructure
@@ -87,6 +92,7 @@ namespace Core::Datastructure
 			if (*it == c)
 			{
 				(*it)->Destroy();
+				m_components.erase(it);
 				return;
 			}
 	}
@@ -95,5 +101,14 @@ namespace Core::Datastructure
 	{
 		m_childs.remove(object);
 	}
-}
 
+	bool			Object::IsChildOf(Object* o) const noexcept
+	{
+		for (auto c : m_childs)
+		{
+			if (c == o || c->IsChildOf(o))
+				return true;
+		}
+		return false;
+	}
+}

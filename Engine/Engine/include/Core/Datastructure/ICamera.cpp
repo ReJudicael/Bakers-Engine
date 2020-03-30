@@ -3,7 +3,7 @@
 #include "EngineCore.h"
 #include "CoreMinimal.h"
 
-RTTR_REGISTRATION
+RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
 	registration::class_<ICamera>("ICamera")

@@ -39,6 +39,11 @@ namespace Core::Datastructure
 		Core::SystemManagement::EventSystem<double> OnScrollYAxis;
 		Core::SystemManagement::EventSystem<double, double> OnResizeWindow;
 
+		inline Resources::Loader::ResourcesManager* GetResourcesManager()
+		{
+			return m_manager;
+		}
+
 		int				Init();
 		virtual int		Init(const int width, const int height);
 		virtual void	SetSizeWindow(const int width, const int height) = 0;

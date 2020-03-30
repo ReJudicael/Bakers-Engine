@@ -84,5 +84,7 @@ public:
 	 * @param move: New value for stored angular movement vector
 	 */
 	void	Rotate(Core::Maths::Vec3 move);
+
+	REGISTER_CLASS(Camera);
 };
 

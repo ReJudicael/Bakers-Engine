@@ -54,7 +54,7 @@ namespace Editor
 		style->GrabRounding						= 3.f;
 		style->TabRounding						= 3.f;
 		style->Colors[ImGuiCol_WindowBg]		= ImVec4(0.10f, 0.10f, 0.12f, 1.00f);
-		style->Colors[ImGuiCol_FrameBg]			= ImVec4(0.25f, 0.25f, 0.30f, 0.50f);
+		style->Colors[ImGuiCol_FrameBg]			= ImVec4(0.18f, 0.18f, 0.25f, 1.00f);
 		style->Colors[ImGuiCol_FrameBgActive]	= ImVec4(0.55f, 0.55f, 0.58f, 1.00f);
 		style->Colors[ImGuiCol_FrameBgHovered]	= ImVec4(0.25f, 0.25f, 0.30f, 1.00f);
 		style->Colors[ImGuiCol_ButtonActive]	= ImVec4(0.55f, 0.55f, 0.58f, 1.00f);
