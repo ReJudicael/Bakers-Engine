@@ -38,36 +38,46 @@ namespace Editor::Window
 		ImGui::PopStyleColor(3);
 	}
 
-	void WindowFileBrowser::RenameContent(const std::string& itemName)
+	bool WindowFileBrowser::CanRename()
 	{
-		if (strncmp(m_name, itemName.c_str(), itemName.size() + 1) != 0)
-			memcpy(m_name, itemName.c_str(), itemName.size() + 1);
-
 		if (!m_scrollSetted)
 		{
 			ImGui::SetScrollHereY();
 			m_scrollSetted = true;
-			return;
+			return false;
 		}
-
-		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
 
 		if (m_scrollSetted && !m_canRename)
 		{
 			ImGui::SetKeyboardFocusHere();
 			m_canRename = true;
 		}
+		return m_canRename;
+	}
+
+	void WindowFileBrowser::ApplyNameToItem(const std::string& itemName)
+	{
+		fs.RenameContent(fs.GetLocalAbsolute(itemName), m_name);
+		m_renamePath.clear();
+		m_scrollSetted = false;
+		m_canRename = false;
+	}
+
+	void WindowFileBrowser::RenameContent(const std::string& itemName)
+	{
+		if (!CanRename())
+			return;
+
+		if (strncmp(m_name, itemName.c_str(), itemName.size() + 1) != 0)
+			memcpy(m_name, itemName.c_str(), itemName.size() + 1);
+
+		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
 
 		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name),
 			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 
 		if (apply || ImGui::IsItemDeactivated())
-		{
-			fs.RenameContent(fs.GetLocalAbsolute(itemName), m_name);
-			m_renamePath.clear();
-			m_scrollSetted = false;
-			m_canRename = false;
-		}
+			ApplyNameToItem(itemName);
 	}
 
 	void WindowFileBrowser::MenuItemNew()
@@ -207,7 +217,6 @@ namespace Editor::Window
 		ImGui::BeginChild("## WindowFileBrowser", regionSize);
 		{
 			PopupMenuOnWindow();
-
 			int columns{ static_cast<int>(regionSize.x / m_contentPathSize) };
 			if (columns < 1)
 				columns = 1;
@@ -234,7 +243,6 @@ namespace Editor::Window
 
 				ImGui::NextColumn();
 			}
-
 			ImGui::EndChild();
 		}
 		ZoomPathContents();

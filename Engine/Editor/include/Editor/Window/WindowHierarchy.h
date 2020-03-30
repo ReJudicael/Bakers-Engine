@@ -75,6 +75,18 @@ namespace Editor::Window
 
 	private:
 		/**
+		 * Whether the user can write in the InputText or not
+		 * @return True if the user can write in the InputText, false otherwise
+		 */
+		bool CanRename();
+
+		/**
+		 * Set name to given object
+		 * @param object: Object to rename
+		 */
+		void ApplyNameToObject(Core::Datastructure::Object* object);
+
+		/**
 		 * Rename game object
 		 * @param object: Item/Object on which the right mouse button has been pressed
 		 * @param cursorPos: Position of InputText
@@ -100,10 +112,23 @@ namespace Editor::Window
 		void PopupMenuOnItem(Core::Datastructure::Object* object);
 
 		/**
+		 * Draw TreeNode of object
+		 * @param object: Game object chosen
+		 * @return True if the TreeNode is open, false otherwise
+		 */
+		bool DrawTreeNodeOfObject(Core::Datastructure::Object* object);
+
+		/**
 		 * Show children of object
 		 * @param parent: Object from which the children are displayed
 		 */
 		void ShowChildrenOfObject(Core::Datastructure::Object* parent);
+
+		/**
+		 * Display scene in Hierarchy
+		 * @param scene: Scene to display
+		 */
+		void DisplaySceneHierarchy(Core::Datastructure::RootObject* scene);
 
 	private:
 		/**

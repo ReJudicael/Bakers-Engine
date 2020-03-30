@@ -20,26 +20,42 @@ namespace Editor::Window
 	{
 	}
 
-	void WindowHierarchy::RenameObject(Core::Datastructure::Object* object, const ImVec2& cursorPos)
+	bool WindowHierarchy::CanRename()
 	{
-		if (strncmp(m_name, object->GetName().c_str(), object->GetName().size() + 1) != 0)
-			memcpy(m_name, object->GetName().c_str(), object->GetName().size() + 1);
-
 		if (!m_scrollSetted)
 		{
 			ImGui::SetScrollHereY();
 			m_scrollSetted = true;
-			return;
+			return false;
 		}
-
-		ImGui::SetNextItemWidth(-FLT_MIN);
-		ImGui::SetCursorPos(cursorPos);
 
 		if (m_scrollSetted && !m_canRename)
 		{
 			ImGui::SetKeyboardFocusHere();
 			m_canRename = true;
 		}
+		return m_canRename;
+	}
+
+	void WindowHierarchy::ApplyNameToObject(Core::Datastructure::Object* object)
+	{
+		object->SetName(m_name);
+
+		m_objectToRename	= nullptr;
+		m_canRename			= false;
+		m_scrollSetted		= false;
+	}
+
+	void WindowHierarchy::RenameObject(Core::Datastructure::Object* object, const ImVec2& cursorPos)
+	{
+		if (!CanRename())
+			return;
+
+		if (strncmp(m_name, object->GetName().c_str(), object->GetName().size() + 1) != 0)
+			memcpy(m_name, object->GetName().c_str(), object->GetName().size() + 1);
+
+		ImGui::SetNextItemWidth(-FLT_MIN);
+		ImGui::SetCursorPos(cursorPos);
 
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 3.f, 0.f });
 		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.f);
@@ -50,12 +66,7 @@ namespace Editor::Window
 		ImGui::PopStyleVar(2);
 
 		if (apply || ImGui::IsItemDeactivated())
-		{
-			object->SetName(m_name);
-			m_objectToRename = nullptr;
-			m_canRename = false;
-			m_scrollSetted = false;
-		}
+			ApplyNameToObject(object);
 	}
 
 	void WindowHierarchy::MenuItemCreate(Core::Datastructure::Object* parent)
@@ -94,43 +105,49 @@ namespace Editor::Window
 				if (GetEngine()->objectSelected == object || object->IsChildOf(GetEngine()->objectSelected))
 					GetEngine()->objectSelected = nullptr;
 			}
-
 			ImGui::Separator();
+
 			MenuItemCreate(object);
 
 			ImGui::EndPopup();
 		}
 	}
 
+	bool WindowHierarchy::DrawTreeNodeOfObject(Core::Datastructure::Object* object)
+	{
+		ImGuiTreeNodeFlags flags{ m_treeNodeFlags };
+		flags |= object->GetChildren().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
+		if (GetEngine()->objectSelected == object)
+			flags |= ImGuiTreeNodeFlags_Selected;
+
+		bool isOpen{ false };
+		if (object == m_objectToRename)
+		{
+			ImVec2 cursorPos = { ImGui::GetCursorPos().x + 21, ImGui::GetCursorPos().y };
+			isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
+			RenameObject(object, cursorPos);
+		}
+		else
+		{
+			if (m_objectToRename != nullptr && object->IsChildOf(m_objectToRename))
+				ImGui::SetNextItemOpen(true);
+
+			isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
+		}
+
+		return isOpen;
+	}
+
 	void WindowHierarchy::ShowChildrenOfObject(Core::Datastructure::Object* parent)
 	{
-		PopupMenuOnWindow(GetEngine()->m_root);
 		for (auto object : parent->GetChildren())
 		{
+			if (object->IsDestroyed())
+				continue;
+
 			ImGui::PushID(object);
 			{
-				if (object->IsDestroyed())
-					continue;
-
-				ImGuiTreeNodeFlags flags{ m_treeNodeFlags };
-				flags |= object->GetChildren().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
-				if (GetEngine()->objectSelected == object)
-					flags |= ImGuiTreeNodeFlags_Selected;
-
-				bool isOpen{ false };
-				if (object == m_objectToRename)
-				{
-					ImVec2 cursorPos = { ImGui::GetCursorPos().x + 21, ImGui::GetCursorPos().y };
-					isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
-					RenameObject(object, cursorPos);
-				}
-				else
-				{
-					if (m_objectToRename != nullptr && object->IsChildOf(m_objectToRename))
-						ImGui::SetNextItemOpen(true);
-
-					isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
-				}
+				bool isOpen = DrawTreeNodeOfObject(object);
 
 				PopupMenuOnItem(object);
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
@@ -155,9 +172,17 @@ namespace Editor::Window
 		}
 	}
 
+	void WindowHierarchy::DisplaySceneHierarchy(Core::Datastructure::RootObject* scene)
+	{
+		if (ImGui::CollapsingHeader(scene->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			PopupMenuOnWindow(scene);
+			ShowChildrenOfObject(scene);
+		}
+	}
+
 	void WindowHierarchy::Tick()
 	{
-		if (ImGui::CollapsingHeader(GetEngine()->m_root->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
-			ShowChildrenOfObject(GetEngine()->m_root);
+		DisplaySceneHierarchy(GetEngine()->m_root);
 	}
 }

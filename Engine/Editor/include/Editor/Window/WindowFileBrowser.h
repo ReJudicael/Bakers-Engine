@@ -72,7 +72,20 @@ namespace Editor::Window
 		 */
 		void PopWindowStyle() override;
 
+
 	private:
+		/**
+		 * Whether the user can write in the InputText or not
+		 * @return True if the user can write in the InputText, false otherwise
+		 */
+		bool CanRename();
+
+		/**
+		 * Set name to given item
+		 * @param itemName: Name of the item to rename
+		 */
+		void ApplyNameToItem(const std::string& itemName);
+
 		/**
 		 * Rename the selected file / folder
 		 * @param itemName: Name of the chosen file / folder
@@ -112,12 +125,6 @@ namespace Editor::Window
 		 * Show current local path on header
 		 */
 		void ShowCurrentPathOnHeader();
-
-		/**
-		 * Whether the file has an excluded extension or not
-		 * @param itemName: Name of the chosen file / folder
-		 */
-		bool FileHasExcludedExtension(const std::string& itemName);
 
 		/**
 		 * Show the chosen file / folder
