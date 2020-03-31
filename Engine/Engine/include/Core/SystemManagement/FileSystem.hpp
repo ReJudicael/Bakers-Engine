@@ -367,8 +367,8 @@ namespace Core::SystemManagement
 	{
 		if (m_explodedCurrentPathDirectory != m_currentDirectory)
 		{
-			m_explodedCurrentPathDirectory = m_currentDirectory;
 			m_explodedCurrentPath = GetExplodedPath(m_currentDirectory);
+			m_explodedCurrentPathDirectory = m_currentDirectory;
 		}
 
 		return m_explodedCurrentPath;

@@ -201,6 +201,15 @@
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imconfig.h" />
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui.h" />
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.h" />
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imstb_truetype.h" />
     <ClInclude Include="include\Editor\Canvas\Canvas.hpp" />
     <ClInclude Include="include\Editor\Canvas\MenuBar.h" />
     <ClInclude Include="include\Editor\Datastructure\Container.hpp" />
@@ -219,6 +228,9 @@
     <ClInclude Include="include\Editor\Window\WindowInspector.h" />
     <ClInclude Include="include\Editor\Window\WindowProfiler.h" />
     <ClInclude Include="include\Editor\Window\WindowViewport.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

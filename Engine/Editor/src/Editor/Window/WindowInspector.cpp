@@ -35,49 +35,39 @@ namespace Editor::Window
 
 	void WindowInspector::DisplayObjectLocalTransform(Core::Datastructure::Object* object)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.58f, 0.20f, 1.00f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.0f, 0.58f, 0.20f, 0.70f });
-		{
-			if (ImGui::Button("Local", { ImGui::GetContentRegionAvail().x, 0.f }))
-				m_isLocal = !m_isLocal;
-		}
-		ImGui::PopStyleColor(2);
+		if (ImGui::ColoredButton("Local", { ImGui::GetContentRegionAvail().x, 0.f }, { 0.00f, 0.58f, 0.20f }))
+			m_isLocal = !m_isLocal;
 
 		Core::Maths::Vec3 pos{ object->GetPos() };
-		if (ImGui::DragFloat3("Position", pos.xyz))
+		if (ImGui::RDragFloat3("Position", pos.xyz))
 			object->SetPos(pos);
 
 		Core::Maths::Vec3 rot{ object->GetRot().ToEulerAngles() };
 		rot *= RAD2DEG;
-		if (ImGui::DragFloat3("Rotation", rot.xyz))
+		if (ImGui::RDragFloat3("Rotation", rot.xyz))
 			object->SetRot(rot * DEG2RAD);
 
 		Core::Maths::Vec3 scale{ object->GetScale() };
-		if (ImGui::DragFloat3("Scale", scale.xyz, 0.01f))
+		if (ImGui::RDragFloat3("Scale", scale.xyz, 0.01f))
 			object->SetScale(scale);
 	}
 
 	void WindowInspector::DisplayObjectGlobalTransform(Core::Datastructure::Object* object)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.60f, 0.35f, 0.71f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.60f, 0.35f, 0.71f, 0.70f });
-		{
-			if (ImGui::Button("Global", { ImGui::GetContentRegionAvail().x, 0.f }))
-				m_isLocal = !m_isLocal;
-		}
-		ImGui::PopStyleColor(2);
+		if (ImGui::ColoredButton("Global", { ImGui::GetContentRegionAvail().x, 0.f }, { 0.60f, 0.35f, 0.71f }))
+			m_isLocal = !m_isLocal;
 
 		Core::Maths::Vec3 pos{ object->GetGlobalPos() };
-		if (ImGui::DragFloat3("Position", pos.xyz))
+		if (ImGui::RDragFloat3("Position", pos.xyz))
 			object->SetGlobalPos(pos);
 
 		Core::Maths::Vec3 rot{ object->GetGlobalRot().ToEulerAngles() };
 		rot *= RAD2DEG;
-		if (ImGui::DragFloat3("Rotation", rot.xyz))
+		if (ImGui::RDragFloat3("Rotation", rot.xyz))
 			object->SetGlobalRot(rot * DEG2RAD);
 
 		Core::Maths::Vec3 scale{ object->GetGlobalScale() };
-		if (ImGui::DragFloat3("Scale", scale.xyz, 0.01f))
+		if (ImGui::RDragFloat3("Scale", scale.xyz, 0.01f))
 			object->SetGlobalScale(scale);
 	}
 
@@ -104,24 +94,12 @@ namespace Editor::Window
 		DisplayObjectTransform(GetEngine()->objectSelected);
 		ImGui::Spacing();
 
-		array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
-		for (auto it : possibleComponents)
+		for (auto it : GetEngine()->objectSelected->GetComponents())
 		{
-			if (ImGui::Selectable(it.get_name().to_string().c_str()))
+			type t = it->get_type();
+			ImGui::PushID(it);
+			if (ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags))
 			{
-				variant v = it.create();
-
-				GetEngine()->objectSelected->AddComponent(it.invoke("GetCopy", v, {}).get_value<Core::Datastructure::ComponentBase*>());
-			}
-
-		}
-
-		if (ImGui::CollapsingHeader("Properties", m_treeNodeFlags))
-		{
-			for (auto it = GetEngine()->objectSelected->GetComponents().begin(); it != GetEngine()->objectSelected->GetComponents().end(); ++it)
-			{
-				type t = (*it)->get_type();
-				ImGui::Text(t.get_name().to_string().c_str());
 				for (const auto& prop : t.get_properties())
 				{
 					ImGui::Text("type: %s\nname: %s\nvalue: %s\n\n",
@@ -129,6 +107,20 @@ namespace Editor::Window
 						prop.get_name().to_string().c_str(),
 						prop.get_value(*it).to_string().c_str());
 				}
+			}
+			ImGui::PopID();
+			ImGui::Spacing();
+		}
+
+		ImGui::Separator();
+
+		array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
+		for (auto it : possibleComponents)
+		{
+			if (ImGui::Selectable(it.get_name().to_string().c_str()))
+			{
+				variant v = it.create();
+				GetEngine()->objectSelected->AddComponent(it.invoke("GetCopy", v, {}).get_value<Core::Datastructure::ComponentBase*>());
 			}
 		}
 	}

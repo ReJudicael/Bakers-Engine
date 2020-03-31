@@ -58,6 +58,7 @@ namespace Editor::Window
 	void WindowFileBrowser::ApplyNameToItem(const std::string& itemName)
 	{
 		fs.RenameContent(fs.GetLocalAbsolute(itemName), m_name);
+
 		m_renamePath.clear();
 		m_scrollSetted = false;
 		m_canRename = false;
@@ -168,7 +169,7 @@ namespace Editor::Window
 
 	void WindowFileBrowser::ShowCurrentPathOnHeader()
 	{
-		if (ImGui::ImageButton(GetIcon("."), { 16.f, 16.f }, { 0.f, 1.f }, { 1.f, 0.f }))
+		if (ImGui::ImageButtonUV(GetIcon("."), { 16.f }))
 			fs.SetCurrentDirectory(".");
 
 		const std::vector<std::string>& foldersPath{ fs.GetExplodedCurrentPath() };
@@ -194,16 +195,18 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowFileBrowser::ShowItem(const std::string& itemName, const std::string& itemPath)
+	void WindowFileBrowser::ShowItem(const std::string& itemName)
 	{
+		const std::string& itemPath = fs.GetLocalAbsolute(itemName);
+
 		ImGui::BeginGroup();
-
-		ImGui::ImageButton(GetIcon(itemPath), { m_contentPathSize - 20.f, m_contentPathSize - 20.f }, { 0.f, 1.f }, { 1.f, 0.f });
-		if (m_renamePath == itemPath)
-			RenameContent(itemName);
-		else
-			ImGui::TextWrapped(itemName.c_str());
-
+		{
+			ImGui::ImageButtonUV(GetIcon(itemPath), { m_contentPathSize - 20.f });
+			if (m_renamePath == itemPath)
+				RenameContent(itemName);
+			else
+				ImGui::TextWrapped(itemName.c_str());
+		}
 		ImGui::EndGroup();
 
 		PopupMenuOnItem(itemPath);
@@ -217,28 +220,27 @@ namespace Editor::Window
 		ImGui::BeginChild("## WindowFileBrowser", regionSize);
 		{
 			PopupMenuOnWindow();
+
 			int columns{ static_cast<int>(regionSize.x / m_contentPathSize) };
 			if (columns < 1)
 				columns = 1;
+			ImGui::Columns(columns, (const char*)0, false);
 
-			ImGui::Columns(columns, nullptr, false);
 			if (fs.GetCurrentDirectory() != ".")
 				contents.insert(contents.begin(), "..");
 
-			std::string itemName, itemPath;
+			std::string itemName;
 			for (size_t i{ 0 }; i < contents.size(); ++i)
 			{
 				if (fs.NeedToActualizeContentsInCurrentPath())
 					break;
 
 				itemName = contents[i].filename().string();
-				itemPath = fs.GetLocalAbsolute(itemName);
-
 				if (fs.FileHasExcludedExtension(itemName, excludedExtensions))
 					continue;
 
 				ImGui::PushID(static_cast<int>(i));
-				ShowItem(itemName, itemPath);
+				ShowItem(itemName);
 				ImGui::PopID();
 
 				ImGui::NextColumn();

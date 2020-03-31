@@ -129,9 +129,8 @@ namespace Editor::Window
 		/**
 		 * Show the chosen file / folder
 		 * @param itemName: Name of the chosen file / folder
-		 * @param itemPath: Path of the chosen file / folder
 		 */
-		void ShowItem(const std::string& itemName, const std::string& itemPath);
+		void ShowItem(const std::string& itemName);
 
 		/**
 		 * Display the contents of the current directory

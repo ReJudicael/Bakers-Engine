@@ -33,6 +33,11 @@ namespace Editor::Window
 
 	private:
 		/**
+		 * Display viewport
+		 */
+		void DisplayViewport();
+
+		/**
 		 * Draw elements in window
 		 */
 		void Tick() override;

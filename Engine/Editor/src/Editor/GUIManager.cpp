@@ -4,7 +4,8 @@
 
 namespace Editor
 {
-	GUIManager::GUIManager(EditorEngine* engine, const char* glsl_version, GUIStyle style) : m_engine {engine}
+	GUIManager::GUIManager(EditorEngine* engine, const char* glsl_version, GUIStyle style) :
+		m_engine {engine}
 	{
 #if _DEBUG
 		IMGUI_CHECKVERSION();

@@ -46,6 +46,15 @@
     <Filter Include="Source Files\Editor\Widget">
       <UniqueIdentifier>{c220081e-84bd-4218-a5ef-6ba2d4e565c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Internal Dependencies\imgui">
+      <UniqueIdentifier>{05c9f060-0687-46be-a745-cd05813d7d1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internal Dependencies\imgui\src">
+      <UniqueIdentifier>{9629e790-7f2f-4108-8001-9bc8de2fa6a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internal Dependencies\imgui\include">
+      <UniqueIdentifier>{86cfdc8b-0ff2-4075-b190-eca1317b33b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -55,24 +64,6 @@
       <Filter>Source Files\Editor</Filter>
     </ClCompile>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_demo.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_draw.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_glfw.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_opengl3.cpp">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_widgets.cpp">
       <Filter>Internal Dependencies</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp">
@@ -119,6 +110,24 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Window\WindowViewport.cpp">
       <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_demo.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_draw.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_glfw.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_widgets.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,5 +185,37 @@
     <ClInclude Include="include\Editor\Window\WindowViewport.h">
       <Filter>Header Files\Editor\Window</Filter>
     </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui_impl_glfw.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui_impl_opengl3.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui_internal.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imstb_rectpack.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imstb_textedit.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imstb_truetype.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imconfig.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.inl">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </None>
   </ItemGroup>
 </Project>

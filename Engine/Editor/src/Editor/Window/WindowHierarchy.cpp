@@ -102,7 +102,7 @@ namespace Editor::Window
 			{
 				m_destroyObject = true;
 				object->Destroy();
-				if (GetEngine()->objectSelected == object || object->IsChildOf(GetEngine()->objectSelected))
+				if (GetEngine()->objectSelected == object || object->HasChild(GetEngine()->objectSelected))
 					GetEngine()->objectSelected = nullptr;
 			}
 			ImGui::Separator();
@@ -129,9 +129,8 @@ namespace Editor::Window
 		}
 		else
 		{
-			if (m_objectToRename != nullptr && object->IsChildOf(m_objectToRename))
+			if (m_objectToRename != nullptr && object->HasChild(m_objectToRename))
 				ImGui::SetNextItemOpen(true);
-
 			isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
 		}
 
