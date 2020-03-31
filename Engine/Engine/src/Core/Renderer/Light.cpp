@@ -10,6 +10,7 @@ RTTR_PLUGIN_REGISTRATION
 {
     using namespace NRenderer;
     registration::class_<Light>("Light")
+        .constructor()
         .property("Type", &Light::m_type)
         .property("Range", &Light::m_range)
         .property("Angle", &Light::m_angle)
@@ -22,9 +23,36 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace NRenderer
 {
+    void Light::OnCopy(void* copyTo) const
+    {
+        ComponentBase::OnCopy(copyTo);
+        Light* copy{ (Light*)copyTo };
+
+        copy->m_type = m_type;
+        copy->m_range = m_range;
+        copy->m_angle = m_angle;
+        copy->m_angleSmoothness = m_angleSmoothness;
+        copy->m_color = m_color;
+        copy->m_ambiant = m_ambiant;
+        copy->m_diffuse = m_diffuse;
+        copy->m_specular = m_specular;
+        copy->m_attenuation = m_attenuation;
+    }
+
+    void Light::StartCopy(void*& copyTo) const
+    {
+        copyTo = new Light();
+        OnCopy(copyTo);
+    }
+
+    void Light::OnStart()
+    {
+        ComponentBase::OnStart();
+        Resources::Shader::lights.emplace_back(this);
+    }
+
     Light::Light() : ComponentBase()
     {
-        Resources::Shader::lights.emplace_back(this);
     }
 
     Light::Light(const Light& other) :

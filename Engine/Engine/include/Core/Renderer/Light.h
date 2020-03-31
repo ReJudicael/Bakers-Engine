@@ -11,7 +11,7 @@ namespace NRenderer
 	/**
 	 * Light Component
 	 */
-	class Light : public Core::Datastructure::ComponentBase
+	BAKERS_API_CLASS Light : public Core::Datastructure::ComponentBase
 	{
 	public :
 		enum class ELightType
@@ -32,6 +32,10 @@ namespace NRenderer
 		Core::Maths::Vec3	m_diffuse;
 		Core::Maths::Vec3	m_specular;
 		Core::Maths::Vec3	m_attenuation;
+	protected:
+		virtual void	StartCopy(void*& copyTo) const override;
+		virtual void	OnCopy(void* copyTo) const override;
+		virtual void	OnStart() override;
 
 	public:
 		/**

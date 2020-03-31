@@ -33,4 +33,9 @@ namespace Core::Datastructure
 		if (m_isUpdating && m_isActive && !IsDestroyed())
 			OnUpdate(deltaTime);
 	}
+
+	void	IUpdatable::OnCopy(void* copyTo) const
+	{
+		IComponent::OnCopy(copyTo);
+	}
 }
