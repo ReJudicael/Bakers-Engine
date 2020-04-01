@@ -305,6 +305,9 @@
     <ClInclude Include="include\Core\Renderer\Light.h">
       <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Maths\Color.hpp">
+      <Filter>Header Files\Core\Maths</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\DefaultShader.vert">

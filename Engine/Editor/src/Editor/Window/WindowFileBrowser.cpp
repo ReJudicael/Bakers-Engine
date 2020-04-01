@@ -81,6 +81,12 @@ namespace Editor::Window
 			ApplyNameToItem(itemName);
 	}
 
+	void WindowFileBrowser::MenuItemRefresh()
+	{
+		if (ImGui::MenuItem("Refresh"))
+			fs.ActualizeContentsInCurrentPath();
+	}
+
 	void WindowFileBrowser::MenuItemNew()
 	{
 		if (ImGui::BeginMenu("New"))
@@ -99,6 +105,8 @@ namespace Editor::Window
 	{
 		if (ImGui::BeginPopupContextWindow("## PopupOnWindow", ImGuiMouseButton_Right, false))
 		{
+			MenuItemRefresh();
+			ImGui::Separator();
 			MenuItemNew();
 			ImGui::EndPopup();
 		}
@@ -122,6 +130,8 @@ namespace Editor::Window
 			}
 
 			ImGui::Separator();
+			MenuItemRefresh();
+			ImGui::Separator();
 			MenuItemNew();
 
 			ImGui::EndPopup();
@@ -139,6 +149,7 @@ namespace Editor::Window
 
 	ImTextureID WindowFileBrowser::GetIcon(const std::string& itemPath)
 	{
+		// TODO: Optimize this
 		std::string ext;
 		if (itemPath == "default")
 		{

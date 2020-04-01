@@ -86,58 +86,18 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowInspector::Tick()
-	{
-		if (GetEngine()->objectSelected == nullptr)
-			return;
-
-		DisplayObjectName(GetEngine()->objectSelected);
-		ImGui::Spacing();
-		DisplayObjectTransform(GetEngine()->objectSelected);
-
-		for (auto it : GetEngine()->objectSelected->GetComponents())
-		{
-			type t = it->get_type();
-			ImGui::PushID(it);
-			if (ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags))
-			{
-				for (const auto& prop : t.get_properties())
-				{
-					if (prop.is_readonly())
-						continue;
-					DrawProperty(prop, it);
-				}
-			}
-			ImGui::PopID();
-		}
-
-		ImGui::Separator();
-		ImGui::Spacing();
-		ImGui::SetNextItemCenter(0.7f);
-		if (ImGui::BeginComboColoredButton("Add component", { 0.88f, 0.70f, 0.17f }))
-		{
-			array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
-			for (auto it : possibleComponents)
-			{
-				if (ImGui::Selectable(it.get_name().to_string().c_str()))
-					GetEngine()->objectSelected->AddComponent(it.invoke("GetCopy", it.create(), {}).get_value<Core::Datastructure::ComponentBase*>());
-			}
-			ImGui::EndCombo();
-		}
-		ImGui::Dummy({ 0.f, 90.f });
-	}
-
 	void WindowInspector::DrawEnum(rttr::property prop, Core::Datastructure::ComponentBase* component)
 	{
 		rttr::enumeration e{ prop.get_enumeration() };
-		ImGui::Text((prop.get_name().to_string() + " : " + e.value_to_name(prop.get_value(component)).to_string()).c_str());
-		/* Check here if pressed on the enum to change it
-		if ()
-		for (auto it : e.get_names())
+		if (ImGui::RBeginCombo(prop.get_name().to_string(), e.value_to_name(prop.get_value(component)).to_string().c_str()))
 		{
-			
+			for (auto name : e.get_names())
+			{
+				if (ImGui::Selectable(name.to_string().c_str()))
+					prop.set_value(component, e.name_to_value(name));
+			}
+			ImGui::EndCombo();
 		}
-		*/
 	}
 
 	void WindowInspector::DrawProperty(rttr::property prop, Core::Datastructure::ComponentBase* component)
@@ -148,31 +108,120 @@ namespace Editor::Window
 			return;
 		}
 		else if (prop.is_enumeration())
+		{
 			DrawEnum(prop, component);
+		}
 		else if (prop.get_type() == type::get<bool>())
 		{
 			bool b{ prop.get_value(component).get_value<bool>() };
-			if (ImGui::Checkbox(prop.get_name().to_string().c_str(), &b))
+			if (ImGui::RCheckbox(prop.get_name().to_string().c_str(), &b))
 				prop.set_value(component, b);
-		}
-		else if (prop.get_type() == type::get<float>())
-		{
-			float f{ prop.get_value(component).get_value<float>() };
-			if (ImGui::DragFloat(prop.get_name().to_string().c_str(), &f))
-				prop.set_value(component, f);
 		}
 		else if (prop.get_type() == type::get<int>())
 		{
 			int i{ prop.get_value(component).get_value<int>() };
-			if (ImGui::DragInt(prop.get_name().to_string().c_str(), &i))
+			if (ImGui::RDragInt(prop.get_name().to_string().c_str(), &i))
 				prop.set_value(component, i);
+		}
+		else if (prop.get_type() == type::get<float>())
+		{
+			float f{ prop.get_value(component).get_value<float>() };
+			if (ImGui::RDragFloat(prop.get_name().to_string().c_str(), &f))
+				prop.set_value(component, f);
+		}
+		else if (prop.get_type() == type::get<Core::Maths::Vec2>())
+		{
+			Core::Maths::Vec2 v{ prop.get_value(component).get_value<Core::Maths::Vec2>() };
+			if (ImGui::RDragFloat2(prop.get_name().to_string().c_str(), v.xy))
+				prop.set_value(component, v);
+		}
+		else if (prop.get_type() == type::get<Core::Maths::Vec3>())
+		{
+			Core::Maths::Vec3 v{ prop.get_value(component).get_value<Core::Maths::Vec3>() };
+			if (ImGui::RDragFloat3(prop.get_name().to_string().c_str(), v.xyz))
+				prop.set_value(component, v);
+		}
+		else if (prop.get_type() == type::get<Core::Maths::Vec4>())
+		{
+			Core::Maths::Vec4 v{ prop.get_value(component).get_value<Core::Maths::Vec4>() };
+			if (ImGui::RDragFloat4(prop.get_name().to_string().c_str(), v.xyzw))
+				prop.set_value(component, v);
+		}
+		else if (prop.get_type() == type::get<Core::Maths::Color>())
+		{
+			Core::Maths::Color c{ prop.get_value(component).get_value<Core::Maths::Color>() };
+			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba))
+				prop.set_value(component, c);
 		}
 		else
 		{
-			ImGui::Text("type: %s\nname: %s\nvalue: %s\n\n",
+			ImGui::Text("Type: %s\nName: %s\nValue: %s\n\n",
 				prop.get_type().get_name().to_string().c_str(),
 				prop.get_name().to_string().c_str(),
 				prop.get_value(*component).to_string().c_str());
 		}
+	}
+
+	void WindowInspector::DisplayObjectComponents(Core::Datastructure::Object* object)
+	{
+		for (auto it : object->GetComponents())
+		{
+			type t = it->get_type();
+			ImGui::PushID(it);
+			if (ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags))
+			{
+				ImGui::Spacing();
+				for (const auto& prop : t.get_properties())
+				{
+					if (prop.is_readonly())
+						continue;
+					DrawProperty(prop, it);
+				}
+				ImGui::Spacing();
+			}
+			ImGui::PopID();
+		}
+	}
+
+	void WindowInspector::AddComponentToObjectButton(Core::Datastructure::Object* object)
+	{
+		if (ImGui::BeginComboColoredButton("Add component", { 0.88f, 0.70f, 0.17f }))
+		{
+			array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
+			for (auto it : possibleComponents)
+			{
+				if (ImGui::Selectable(it.get_name().to_string().c_str()))
+					object->AddComponent(it.invoke("GetCopy", it.create(), {}).get_value<Core::Datastructure::ComponentBase*>());
+			}
+			ImGui::EndCombo();
+		}
+	}
+
+	void WindowInspector::ObjectInspector(Core::Datastructure::Object* object)
+	{
+		if (object == nullptr)
+			return;
+
+		DisplayObjectName(object);
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		DisplayObjectTransform(object);
+		DisplayObjectComponents(object);
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		ImGui::SetNextItemCenter(0.7f);
+		AddComponentToObjectButton(object);
+		ImGui::Spacing();
+	}
+
+	void WindowInspector::Tick()
+	{
+		ObjectInspector(GetEngine()->objectSelected);
 	}
 }

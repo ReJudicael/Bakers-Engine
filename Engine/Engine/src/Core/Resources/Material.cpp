@@ -54,9 +54,9 @@ namespace Resources
 
 	void Material::SendMaterial()
 	{
-		glUniform3fv(shader->GetLocation("mat.diffuseColor"), 1, diffuseColor.xyz);
-		glUniform3fv(shader->GetLocation("mat.ambientColor"), 1, ambientColor.xyz);
-		glUniform3fv(shader->GetLocation("mat.specularColor"), 1, specularColor.xyz);
+		glUniform3fv(shader->GetLocation("mat.diffuseColor"), 1, diffuseColor.rgb);
+		glUniform3fv(shader->GetLocation("mat.ambientColor"), 1, ambientColor.rgb);
+		glUniform3fv(shader->GetLocation("mat.specularColor"), 1, specularColor.rgb);
 		glUniform1f(shader->GetLocation("mat.shininess"), shininess);
 		glUniform1f(shader->GetLocation("mat.shininessStrength"), shininessStrength);
 	}

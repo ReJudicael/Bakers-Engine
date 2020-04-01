@@ -343,6 +343,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\Release\*.dll" "$(TargetDir)"</
     <ClInclude Include="include\Core\Debug\DebugTracyGL.hpp" />
     <ClInclude Include="include\Core\Debug\Logger.h" />
     <ClInclude Include="include\Core\EngineDefines.h" />
+    <ClInclude Include="include\Core\Maths\Color.hpp" />
     <ClInclude Include="include\Core\Maths\Mat.hpp" />
     <ClInclude Include="include\Core\Maths\Mat4.hpp" />
     <ClInclude Include="include\Core\Maths\Maths.hpp" />

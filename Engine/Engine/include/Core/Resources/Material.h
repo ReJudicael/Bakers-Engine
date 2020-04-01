@@ -6,6 +6,7 @@
 #include <string>
 
 #include "Vec3.hpp"
+#include "Color.hpp"
 #include "Texture.h"
 #include "CoreMinimal.h"
 
@@ -27,9 +28,9 @@ namespace Resources
 	 */
 	struct Material : public std::enable_shared_from_this<Material>
 	{
-		Core::Maths::Vec3						diffuseColor;
-		Core::Maths::Vec3						ambientColor;
-		Core::Maths::Vec3						specularColor;
+		Core::Maths::Color						diffuseColor;
+		Core::Maths::Color						ambientColor;
+		Core::Maths::Color						specularColor;
 		float									shininess;
 		float									shininessStrength;
 

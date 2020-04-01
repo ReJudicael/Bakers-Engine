@@ -169,10 +169,10 @@ namespace Resources
 				glUniform1i(GetLocation(loc + "type"), int(lights[i]->GetLightType()));
 				glUniform3fv(GetLocation(loc + "position"), 1, lights[i]->GetPosition().xyz);
 				glUniform3fv(GetLocation(loc + "direction"), 1, lights[i]->GetDirection().xyz);
-				glUniform3fv(GetLocation(loc + "ambient"), 1, lights[i]->GetAmbiant().xyz);
-				glUniform3fv(GetLocation(loc + "diffuse"), 1, lights[i]->GetDiffuse().xyz);
-				glUniform3fv(GetLocation(loc + "specular"), 1, lights[i]->GetSpecular().xyz);
-				glUniform3fv(GetLocation(loc + "attenuation"), 1, lights[i]->GetAttenuation().xyz);
+				glUniform3fv(GetLocation(loc + "ambient"), 1, lights[i]->GetAmbiant().rgb);
+				glUniform3fv(GetLocation(loc + "diffuse"), 1, lights[i]->GetDiffuse().rgb);
+				glUniform3fv(GetLocation(loc + "specular"), 1, lights[i]->GetSpecular().rgb);
+				glUniform3fv(GetLocation(loc + "attenuation"), 1, lights[i]->GetAttenuation().rgb);
 				glUniform1f(GetLocation(loc + "range"), lights[i]->GetRange());
 				glUniform1f(GetLocation(loc + "angle"), lights[i]->GetAngle());
 				glUniform1f(GetLocation(loc + "anglesmoothness"), lights[i]->GetAngleSmoothness());

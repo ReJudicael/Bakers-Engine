@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ComponentBase.h"
-#include "Vec3.hpp"
+#include "Color.hpp"
 
 #include "CoreMinimal.h"
 
@@ -27,11 +27,11 @@ namespace NRenderer
 		float				m_range;
 		float				m_angle;
 		float				m_angleSmoothness;
-		Core::Maths::Vec3	m_color;
-		Core::Maths::Vec3	m_ambiant;
-		Core::Maths::Vec3	m_diffuse;
-		Core::Maths::Vec3	m_specular;
-		Core::Maths::Vec3	m_attenuation;
+		Core::Maths::Color	m_color;
+		Core::Maths::Color	m_ambiant;
+		Core::Maths::Color	m_diffuse;
+		Core::Maths::Color	m_specular;
+		Core::Maths::Color	m_attenuation;
 	protected:
 		virtual void	StartCopy(void*& copyTo) const override;
 		virtual void	OnCopy(void* copyTo) const override;
@@ -74,21 +74,21 @@ namespace NRenderer
 		inline float GetRange() const { return m_range; };
 		inline float GetAngle() const { return m_angle; };
 		inline float GetAngleSmoothness() const { return m_angleSmoothness; };
-		inline Core::Maths::Vec3 GetColor() const { return m_color; };
-		inline Core::Maths::Vec3 GetAmbiant() const { return m_ambiant; };
-		inline Core::Maths::Vec3 GetDiffuse() const { return m_diffuse; };
-		inline Core::Maths::Vec3 GetSpecular() const { return m_specular; };
-		inline Core::Maths::Vec3 GetAttenuation() const { return m_attenuation; };
+		inline Core::Maths::Color GetColor() const { return m_color; };
+		inline Core::Maths::Color GetAmbiant() const { return m_ambiant; };
+		inline Core::Maths::Color GetDiffuse() const { return m_diffuse; };
+		inline Core::Maths::Color GetSpecular() const { return m_specular; };
+		inline Core::Maths::Color GetAttenuation() const { return m_attenuation; };
 
 		inline void SetLightType(ELightType value) { m_type = value; };
 		inline void SetRange(const float value) { m_range = value; };
 		inline void SetAngle(const float value) { m_angle = value; };
 		inline void SetAngleSmoothness(const float value) { m_angleSmoothness = value; };
-		inline void SetColor(const Core::Maths::Vec3& value) { m_color = value; };
-		inline void SetAmbiant(const Core::Maths::Vec3& value) { m_ambiant = value; };
-		inline void SetDiffuse(const Core::Maths::Vec3& value) { m_diffuse = value; };
-		inline void SetSpecular(const Core::Maths::Vec3& value) { m_specular = value; };
-		inline void SetAttenuation(const Core::Maths::Vec3& value) { m_attenuation = value; };
+		inline void SetColor(const Core::Maths::Color& value) { m_color = value; };
+		inline void SetAmbiant(const Core::Maths::Color& value) { m_ambiant = value; };
+		inline void SetDiffuse(const Core::Maths::Color& value) { m_diffuse = value; };
+		inline void SetSpecular(const Core::Maths::Color& value) { m_specular = value; };
+		inline void SetAttenuation(const Core::Maths::Color& value) { m_attenuation = value; };
 
 		/**
 		 * Get Light position in World Space

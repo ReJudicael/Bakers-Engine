@@ -64,6 +64,11 @@ namespace Core::SystemManagement
 		 * @param dir: Directory wanted
 		 */
 		void SetCurrentDirectory(const std::string& dir) noexcept;
+		
+		/**
+		 * Actualize contents in current path
+		 */
+		void ActualizeContentsInCurrentPath() noexcept;
 
 		/**
 		 * Whether it is necessary to update the content in the current path or not
@@ -270,6 +275,11 @@ namespace Core::SystemManagement
 		else if (IsDirectory(dir))
 			m_currentDirectory = dir;
 
+		m_actualizeContentsInCurrentPath = true;
+	}
+
+	inline void FileSystem::ActualizeContentsInCurrentPath() noexcept
+	{
 		m_actualizeContentsInCurrentPath = true;
 	}
 
