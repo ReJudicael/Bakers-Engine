@@ -1,5 +1,13 @@
 #include "ScriptedComponent.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	registration::class_<Core::Datastructure::ScriptedComponent>("ScriptedComponent")
+		.constructor()
+		.constructor<const char*>()
+		.property("Script", &Core::Datastructure::ScriptedComponent::m_script);
+}
+
 namespace Core::Datastructure
 {
 	ScriptedComponent::ScriptedComponent() : ComponentUpdatable()

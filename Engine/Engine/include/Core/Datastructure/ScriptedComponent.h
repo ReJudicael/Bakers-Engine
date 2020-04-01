@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ComponentUpdatable.h"
+#include "CoreMinimal.h"
 
 extern "C"
 {
@@ -15,8 +16,9 @@ extern "C"
 
 namespace Core::Datastructure
 {
-	class ScriptedComponent : public ComponentUpdatable
+	BAKERS_API_CLASS ScriptedComponent : public ComponentUpdatable
 	{
+	private:
 		const char* m_script = nullptr;
 		lua_State* m_lState;
 
@@ -29,6 +31,8 @@ namespace Core::Datastructure
 
 		virtual void OnStart() override;
 		virtual void OnUpdate(float deltaTime) override;
+
+		REGISTER_CLASS();
 	};
 }
 
