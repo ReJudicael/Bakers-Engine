@@ -6,6 +6,7 @@
 #include "RootObject.hpp"
 #include "LoadResources.h"
 #include "PlayerCamera.h"
+#include "ScriptedComponent.h"
 #include "Framebuffer.h"
 
 RTTR_PLUGIN_REGISTRATION
@@ -119,6 +120,9 @@ namespace Core::Datastructure
 		l->SetAngle(0.5f);
 		l->SetAngleSmoothness(0.01f);
 		camNode->AddComponent(l);
+
+		Core::Datastructure::ScriptedComponent* s = new Core::Datastructure::ScriptedComponent("./Resources/Scripts/DefaultScript.lua");
+		camNode->AddComponent(s);
 
 		Core::Datastructure::Object* scene{ m_root->CreateChild("Scene", {}) };
 		m_manager->Load3DObject("Resources/level.fbx");

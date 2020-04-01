@@ -15,9 +15,6 @@ namespace Core::Datastructure
 		Core::Maths::Mat4	m_perspective;
 		Core::Maths::Mat4	m_cameraMatrix;
 	protected:
-		//float m_theta = 0;
-		//float m_phi = 0;
-
 		Core::Maths::Vec3	m_front;
 		Core::Maths::Vec3	m_right;
 

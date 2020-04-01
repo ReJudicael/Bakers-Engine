@@ -10,8 +10,6 @@
 
 namespace Resources
 {
-	//const char* LightShaderSource = "./Resources/Shaders/LightHeader.shader";
-
 	/**
 	 * Handle program creation through vertex and fragment shader files
 	 */

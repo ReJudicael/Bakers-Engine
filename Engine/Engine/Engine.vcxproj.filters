@@ -153,6 +153,9 @@
     <ClCompile Include="src\Core\Renderer\Light.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\ScriptedComponent.cpp">
+      <Filter>Source Files\Core\Datastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\Light.h">
       <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\ScriptedComponent.h">
+      <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
