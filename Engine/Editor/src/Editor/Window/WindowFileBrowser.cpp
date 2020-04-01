@@ -38,36 +38,47 @@ namespace Editor::Window
 		ImGui::PopStyleColor(3);
 	}
 
-	void WindowFileBrowser::RenameContent(const std::string& itemName)
+	bool WindowFileBrowser::CanRename()
 	{
-		if (strncmp(m_name, itemName.c_str(), itemName.size() + 1) != 0)
-			memcpy(m_name, itemName.c_str(), itemName.size() + 1);
-
 		if (!m_scrollSetted)
 		{
 			ImGui::SetScrollHereY();
 			m_scrollSetted = true;
-			return;
+			return false;
 		}
-
-		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
 
 		if (m_scrollSetted && !m_canRename)
 		{
 			ImGui::SetKeyboardFocusHere();
 			m_canRename = true;
 		}
+		return m_canRename;
+	}
+
+	void WindowFileBrowser::ApplyNameToItem(const std::string& itemName)
+	{
+		fs.RenameContent(fs.GetLocalAbsolute(itemName), m_name);
+
+		m_renamePath.clear();
+		m_scrollSetted = false;
+		m_canRename = false;
+	}
+
+	void WindowFileBrowser::RenameContent(const std::string& itemName)
+	{
+		if (!CanRename())
+			return;
+
+		if (strncmp(m_name, itemName.c_str(), itemName.size() + 1) != 0)
+			memcpy(m_name, itemName.c_str(), itemName.size() + 1);
+
+		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
 
 		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name),
 			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
 
 		if (apply || ImGui::IsItemDeactivated())
-		{
-			fs.RenameContent(fs.GetLocalAbsolute(itemName), m_name);
-			m_renamePath.clear();
-			m_scrollSetted = false;
-			m_canRename = false;
-		}
+			ApplyNameToItem(itemName);
 	}
 
 	void WindowFileBrowser::MenuItemNew()
@@ -158,7 +169,7 @@ namespace Editor::Window
 
 	void WindowFileBrowser::ShowCurrentPathOnHeader()
 	{
-		if (ImGui::ImageButton(GetIcon("."), { 16.f, 16.f }, { 0.f, 1.f }, { 1.f, 0.f }))
+		if (ImGui::ImageButtonUV(GetIcon("."), { 16.f }))
 			fs.SetCurrentDirectory(".");
 
 		const std::vector<std::string>& foldersPath{ fs.GetExplodedCurrentPath() };
@@ -184,16 +195,18 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowFileBrowser::ShowItem(const std::string& itemName, const std::string& itemPath)
+	void WindowFileBrowser::ShowItem(const std::string& itemName)
 	{
+		const std::string& itemPath = fs.GetLocalAbsolute(itemName);
+
 		ImGui::BeginGroup();
-
-		ImGui::ImageButton(GetIcon(itemPath), { m_contentPathSize - 20.f, m_contentPathSize - 20.f }, { 0.f, 1.f }, { 1.f, 0.f });
-		if (m_renamePath == itemPath)
-			RenameContent(itemName);
-		else
-			ImGui::TextWrapped(itemName.c_str());
-
+		{
+			ImGui::ImageButtonUV(GetIcon(itemPath), { m_contentPathSize - 20.f });
+			if (m_renamePath == itemPath)
+				RenameContent(itemName);
+			else
+				ImGui::TextWrapped(itemName.c_str());
+		}
 		ImGui::EndGroup();
 
 		PopupMenuOnItem(itemPath);
@@ -211,30 +224,27 @@ namespace Editor::Window
 			int columns{ static_cast<int>(regionSize.x / m_contentPathSize) };
 			if (columns < 1)
 				columns = 1;
+			ImGui::Columns(columns, (const char*)0, false);
 
-			ImGui::Columns(columns, nullptr, false);
 			if (fs.GetCurrentDirectory() != ".")
 				contents.insert(contents.begin(), "..");
 
-			std::string itemName, itemPath;
+			std::string itemName;
 			for (size_t i{ 0 }; i < contents.size(); ++i)
 			{
 				if (fs.NeedToActualizeContentsInCurrentPath())
 					break;
 
 				itemName = contents[i].filename().string();
-				itemPath = fs.GetLocalAbsolute(itemName);
-
 				if (fs.FileHasExcludedExtension(itemName, excludedExtensions))
 					continue;
 
 				ImGui::PushID(static_cast<int>(i));
-				ShowItem(itemName, itemPath);
+				ShowItem(itemName);
 				ImGui::PopID();
 
 				ImGui::NextColumn();
 			}
-
 			ImGui::EndChild();
 		}
 		ZoomPathContents();

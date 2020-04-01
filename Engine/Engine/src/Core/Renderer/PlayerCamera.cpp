@@ -141,3 +141,30 @@ void PlayerCamera::Rotate(Core::Maths::Vec3 move)
 	m_angularMovement = move;
 	m_isRotating = true;
 }
+
+void PlayerCamera::OnCopy(void* copyTo) const
+{
+	Camera::OnCopy(copyTo);
+	PlayerCamera* copy{ (PlayerCamera*)copyTo };
+
+	copy->m_speed = m_speed;
+	copy->m_runningSpeed = m_runningSpeed;
+	copy->m_minMoveLength = m_minMoveLength;
+	copy->m_moveLerpSpeed = m_moveLerpSpeed;
+	copy->m_movement = m_movement;
+	copy->m_isRotating = m_isRotating;
+	copy->m_isMouseSet = m_isMouseSet;
+	copy->m_angularSpeed = m_angularSpeed;
+	copy->m_pitch = m_pitch;
+	copy->m_yaw = m_yaw;
+	copy->m_minAngularLength = m_minAngularLength;
+	copy->m_angularLerpSpeed = m_angularLerpSpeed;
+	copy->m_angularMovement = m_angularMovement;
+	copy->m_mousePos = m_mousePos;
+}
+
+void PlayerCamera::StartCopy(void*& copyTo) const
+{
+	copyTo = new PlayerCamera();
+	OnCopy(copyTo);
+}

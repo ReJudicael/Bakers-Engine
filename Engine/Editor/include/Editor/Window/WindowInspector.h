@@ -22,9 +22,9 @@ namespace Editor::Window
 
 	private:
 		/**
-		 * Object selected in hierarchy
+		 * Buffer of InputText (to rename the objectSelected)
 		 */
-		Core::Datastructure::Object* m_objectSelectedInHierarchy{ nullptr };
+		char m_name[64]{};
 
 		/**
 		 * Whether the user wants to modify the local transform or not
@@ -55,24 +55,28 @@ namespace Editor::Window
 
 	private:
 		/**
-		 * Display name of selected object in hierarchy
+		 * Display name in hierarchy
+		 * @param object: Selected object
 		 */
-		void DisplayObjectName();
+		void DisplayObjectName(Core::Datastructure::Object* object);
 
 		/**
-		 * Display local transform of selected object in hierarchy
+		 * Display local transform of object in hierarchy
+		 * @param object: Selected object
 		 */
-		void DisplayObjectLocalTransform();
+		void DisplayObjectLocalTransform(Core::Datastructure::Object* object);
 
 		/**
-		 * Display global transform of selected object in hierarchy
+		 * Display global transform object in hierarchy
+		 * @param object: Selected object
 		 */
-		void DisplayObjectGlobalTransform();
+		void DisplayObjectGlobalTransform(Core::Datastructure::Object* object);
 
 		/**
-		 * Display transform of selected object in hierarchy
+		 * Display transform of object in hierarchy
+		 * @param object: Selected object
 		 */
-		void DisplayObjectTransform();
+		void DisplayObjectTransform(Core::Datastructure::Object* object);
 
 	private:
 		/**

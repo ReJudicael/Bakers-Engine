@@ -76,3 +76,23 @@ Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float ratio, const float
 
 	return persp;
 }
+
+void Camera::OnCopy(void* toCopy) const
+{
+	ComponentBase::OnCopy(toCopy);
+	ICamera::OnCopy(toCopy);
+	IUpdatable::OnCopy(toCopy);
+
+	Camera* copy = (Camera*)toCopy;
+
+	copy->m_near = m_near;
+	copy->m_far = m_far;
+	copy->m_fov = m_fov;
+	copy->m_ratio = m_ratio;
+}
+
+void	Camera::StartCopy(void*& copyTo) const
+{
+	copyTo = new Camera();
+	OnCopy(copyTo);
+}

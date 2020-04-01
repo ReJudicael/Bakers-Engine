@@ -16,6 +16,8 @@ protected:
 	Core::Maths::Mat4	OnGenerateCamera() override;
 	Core::Maths::Mat4	OnGeneratePerspective() override;
 
+	virtual void OnCopy(void* toCopy) const override;
+	virtual void StartCopy(void*& copyTo) const override;
 public:
 	/**
 	 * Default Constructor

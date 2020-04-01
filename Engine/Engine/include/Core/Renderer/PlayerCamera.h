@@ -28,6 +28,9 @@ private:
 	float	m_angularLerpSpeed{ 0.5 };
 	Core::Maths::Vec3 m_angularMovement;
 	Core::Maths::Vec2	m_mousePos;
+protected:
+	virtual void	OnCopy(void* copyTo) const override;
+	virtual void	StartCopy(void*& copyTo) const override;
 
 public:
 	/**

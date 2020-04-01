@@ -22,6 +22,8 @@ namespace Core::Datastructure
 		const char* m_script = nullptr;
 		lua_State* m_lState;
 
+		virtual void	OnCopy(void* copyTo) const override;
+		virtual void	StartCopy(void*& copyTo) const override;
 	public:
 		ScriptedComponent();
 		ScriptedComponent(const char* fileName);
@@ -32,7 +34,7 @@ namespace Core::Datastructure
 		virtual void OnStart() override;
 		virtual void OnUpdate(float deltaTime) override;
 
-		REGISTER_CLASS();
+		REGISTER_CLASS(ComponentUpdatable);
 	};
 }
 

@@ -21,6 +21,8 @@ namespace Core::Datastructure
 		 * @param deltaTime: Time since previous frame
 		 */
 		virtual void		OnUpdate(float deltaTime) = 0;
+
+		virtual void		OnCopy(void* copyTo) const override;
 	public:
 		/**
 		 * Destructor of the updatable interface

@@ -68,3 +68,14 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 			(*it)->Draw(this);
 	}
 }
+
+void Core::Datastructure::ICamera::OnCopy(void* copyTo) const
+{
+	IComponent::OnCopy(copyTo);
+	ICamera* copy{ (Core::Datastructure::ICamera*)copyTo };
+
+	copy->m_front = m_front;
+	copy->m_right = m_right;
+	copy->m_cameraHeight = m_cameraHeight;
+	copy->m_cameraWidth = m_cameraWidth;
+}

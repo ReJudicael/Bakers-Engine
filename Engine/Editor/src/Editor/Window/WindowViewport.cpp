@@ -13,7 +13,7 @@ namespace Editor::Window
 
 	void WindowViewport::PushWindowStyle()
 	{
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.f, 0.f });
 	}
 
 	void WindowViewport::PopWindowStyle()
@@ -21,15 +21,20 @@ namespace Editor::Window
 		ImGui::PopStyleVar(1);
 	}
 
-	void WindowViewport::Tick()
+	void WindowViewport::DisplayViewport()
 	{
 		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO(0) };
 		ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
+
 		if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
-		{
-			fbo->Resize((int)windowSize.x, (int)windowSize.y);
-		}
+			fbo->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
+
 #pragma warning(suppress : 4312)
-		ImGui::Image((ImTextureID)fbo->ColorTexture, windowSize, { 0.f, 1.f }, { 1.f , 0.f });
+		ImGui::ImageUV(reinterpret_cast<ImTextureID>(fbo->ColorTexture), windowSize);
+	}
+
+	void WindowViewport::Tick()
+	{
+		DisplayViewport();
 	}
 }

@@ -61,4 +61,19 @@ namespace Core::Datastructure
 			lua_pcall(m_lState, 1, 0, 0);
 		}
 	}
+
+	void ScriptedComponent::OnCopy(void* copyTo) const
+	{
+		ComponentUpdatable::OnCopy(copyTo);
+		ScriptedComponent* copy{ (ScriptedComponent*)copyTo };
+
+		copy->m_script = m_script;
+		copy->m_lState = m_lState;
+	}
+
+	void ScriptedComponent::StartCopy(void*& copyTo) const
+	{
+		copyTo = new ScriptedComponent();
+		OnCopy(copyTo);
+	}
 }

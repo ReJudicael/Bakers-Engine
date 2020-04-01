@@ -21,104 +21,112 @@ namespace Editor::Window
 	{
 	}
 
-	void WindowInspector::DisplayObjectName()
+	void WindowInspector::DisplayObjectName(Core::Datastructure::Object* object)
 	{
-		char name[64];
-		memcpy(name, m_objectSelectedInHierarchy->GetName().c_str(), m_objectSelectedInHierarchy->GetName().size() + 1);
+		const std::string& getObjectSelected = object->GetName();
+		if (strncmp(m_name, getObjectSelected.c_str(), getObjectSelected.size() + 1) != 0)
+			memcpy(m_name, getObjectSelected.c_str(), getObjectSelected.size() + 1);
+
 		ImGui::SetNextItemWidth(-FLT_MIN);
 
-		if (ImGui::InputText("## Name", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_AutoSelectAll))
-			m_objectSelectedInHierarchy->SetName(name);
+		if (ImGui::InputText("## Name", m_name, IM_ARRAYSIZE(m_name), ImGuiInputTextFlags_AutoSelectAll))
+			object->SetName(m_name);
 	}
 
-	void WindowInspector::DisplayObjectLocalTransform()
+	void WindowInspector::DisplayObjectLocalTransform(Core::Datastructure::Object* object)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.58f, 0.20f, 1.00f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.0f, 0.58f, 0.20f, 0.70f });
-		{
-			if (ImGui::Button("Local", { ImGui::GetContentRegionAvail().x, 0.f }))
-				m_isLocal = !m_isLocal;
-		}
-		ImGui::PopStyleColor(2);
+		if (ImGui::ColoredButton("Local", { ImGui::GetContentRegionAvail().x, 0.f }, { 0.00f, 0.58f, 0.20f }))
+			m_isLocal = !m_isLocal;
 
-		Core::Maths::Vec3 pos{ m_objectSelectedInHierarchy->GetPos() };
-		if (ImGui::DragFloat3("Position", pos.xyz))
-			m_objectSelectedInHierarchy->SetPos(pos);
+		Core::Maths::Vec3 pos{ object->GetPos() };
+		if (ImGui::RDragFloat3("Position", pos.xyz))
+			object->SetPos(pos);
 
-		Core::Maths::Vec3 rot{ m_objectSelectedInHierarchy->GetRot().ToEulerAngles() };
+		Core::Maths::Vec3 rot{ object->GetRot().ToEulerAngles() };
 		rot *= RAD2DEG;
-		if (ImGui::DragFloat3("Rotation", rot.xyz))
-			m_objectSelectedInHierarchy->SetRot(rot * DEG2RAD);
+		if (ImGui::RDragFloat3("Rotation", rot.xyz))
+			object->SetRot(rot * DEG2RAD);
 
-		Core::Maths::Vec3 scale{ m_objectSelectedInHierarchy->GetScale() };
-		if (ImGui::DragFloat3("Scale", scale.xyz, 0.01f))
-			m_objectSelectedInHierarchy->SetScale(scale);
+		Core::Maths::Vec3 scale{ object->GetScale() };
+		if (ImGui::RDragFloat3("Scale", scale.xyz, 0.01f))
+			object->SetScale(scale);
 	}
 
-	void WindowInspector::DisplayObjectGlobalTransform()
+	void WindowInspector::DisplayObjectGlobalTransform(Core::Datastructure::Object* object)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.60f, 0.35f, 0.71f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.60f, 0.35f, 0.71f, 0.70f });
-		{
-			if (ImGui::Button("Global", { ImGui::GetContentRegionAvail().x, 0.f }))
-				m_isLocal = !m_isLocal;
-		}
-		ImGui::PopStyleColor(2);
+		if (ImGui::ColoredButton("Global", { ImGui::GetContentRegionAvail().x, 0.f }, { 0.60f, 0.35f, 0.71f }))
+			m_isLocal = !m_isLocal;
 
-		Core::Maths::Vec3 pos{ m_objectSelectedInHierarchy->GetGlobalPos() };
-		if (ImGui::DragFloat3("Position", pos.xyz))
-			m_objectSelectedInHierarchy->SetGlobalPos(pos);
+		Core::Maths::Vec3 pos{ object->GetGlobalPos() };
+		if (ImGui::RDragFloat3("Position", pos.xyz))
+			object->SetGlobalPos(pos);
 
-		Core::Maths::Vec3 rot{ m_objectSelectedInHierarchy->GetGlobalRot().ToEulerAngles() };
+		Core::Maths::Vec3 rot{ object->GetGlobalRot().ToEulerAngles() };
 		rot *= RAD2DEG;
-		if (ImGui::DragFloat3("Rotation", rot.xyz))
-			m_objectSelectedInHierarchy->SetGlobalRot(rot * DEG2RAD);
+		if (ImGui::RDragFloat3("Rotation", rot.xyz))
+			object->SetGlobalRot(rot * DEG2RAD);
 
-		Core::Maths::Vec3 scale{ m_objectSelectedInHierarchy->GetGlobalScale() };
-		if (ImGui::DragFloat3("Scale", scale.xyz, 0.01f))
-			m_objectSelectedInHierarchy->SetGlobalScale(scale);
+		Core::Maths::Vec3 scale{ object->GetGlobalScale() };
+		if (ImGui::RDragFloat3("Scale", scale.xyz, 0.01f))
+			object->SetGlobalScale(scale);
 	}
 
-	void WindowInspector::DisplayObjectTransform()
+	void WindowInspector::DisplayObjectTransform(Core::Datastructure::Object* object)
 	{
 		if (ImGui::CollapsingHeader("Transform", m_treeNodeFlags))
 		{
 			ImGui::Spacing();
 
 			if (m_isLocal)
-				DisplayObjectLocalTransform();
+				DisplayObjectLocalTransform(object);
 			else
-				DisplayObjectGlobalTransform();
+				DisplayObjectGlobalTransform(object);
+
+			ImGui::Spacing();
 		}
 	}
 
 	void WindowInspector::Tick()
 	{
-		if (m_objectSelectedInHierarchy != GetEngine()->objectSelected)
-			m_objectSelectedInHierarchy = GetEngine()->objectSelected;
-
-		if (m_objectSelectedInHierarchy == nullptr)
+		if (GetEngine()->objectSelected == nullptr)
 			return;
 
-		DisplayObjectName();
-		ImGui::Separator();
-		DisplayObjectTransform();
+		DisplayObjectName(GetEngine()->objectSelected);
 		ImGui::Spacing();
+		DisplayObjectTransform(GetEngine()->objectSelected);
 
-		if (ImGui::CollapsingHeader("Properties", m_treeNodeFlags))
+		for (auto it : GetEngine()->objectSelected->GetComponents())
 		{
-			for (auto it = m_objectSelectedInHierarchy->GetComponents().begin(); it != m_objectSelectedInHierarchy->GetComponents().end(); ++it)
+			type t = it->get_type();
+			ImGui::PushID(it);
+			if (ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags))
 			{
-				type t = (*it)->get_type();
-				ImGui::Text(t.get_name().to_string().c_str());
 				for (const auto& prop : t.get_properties())
 				{
+					if (prop.is_readonly())
+						continue;
 					ImGui::Text("type: %s\nname: %s\nvalue: %s\n\n",
 						prop.get_type().get_name().to_string().c_str(),
 						prop.get_name().to_string().c_str(),
 						prop.get_value(*it).to_string().c_str());
 				}
 			}
+			ImGui::PopID();
 		}
+
+		ImGui::Separator();
+		ImGui::Spacing();
+		ImGui::SetNextItemCenter(0.7f);
+		if (ImGui::BeginComboColoredButton("Add component", { 0.88f, 0.70f, 0.17f }))
+		{
+			array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
+			for (auto it : possibleComponents)
+			{
+				if (ImGui::Selectable(it.get_name().to_string().c_str()))
+					GetEngine()->objectSelected->AddComponent(it.invoke("GetCopy", it.create(), {}).get_value<Core::Datastructure::ComponentBase*>());
+			}
+			ImGui::EndCombo();
+		}
+		ImGui::Dummy({ 0.f, 90.f });
 	}
 }
