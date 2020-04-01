@@ -54,6 +54,7 @@ namespace Editor
 		style->ScrollbarRounding				= 3.f;
 		style->GrabRounding						= 3.f;
 		style->TabRounding						= 3.f;
+		style->FramePadding						= { 4.f, 4.f };
 		style->Colors[ImGuiCol_WindowBg]		= { 0.10f, 0.10f, 0.12f, 1.00f };
 		style->Colors[ImGuiCol_FrameBg]			= { 0.18f, 0.18f, 0.25f, 1.00f };
 		style->Colors[ImGuiCol_FrameBgActive]	= { 0.55f, 0.55f, 0.58f, 1.00f };

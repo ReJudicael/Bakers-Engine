@@ -17,4 +17,7 @@ namespace ImGui
 	IMGUI_API bool RDragFloat3(const std::string& label, float v[3], float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* format = "%.3f", float power = 1.0f);
     IMGUI_API void ImageUV(ImTextureID user_texture_id, const ImVec2& size);
     IMGUI_API bool ImageButtonUV(ImTextureID user_texture_id, const ImVec2& size);
+    IMGUI_API bool BeginComboButton(const char* label);
+    IMGUI_API bool BeginComboColoredButton(const char* label, const ImVec3& color);
+    IMGUI_API void SetNextItemCenter(float width_percentage);
 }

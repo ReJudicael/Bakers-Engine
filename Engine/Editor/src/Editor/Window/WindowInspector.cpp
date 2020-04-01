@@ -81,6 +81,8 @@ namespace Editor::Window
 				DisplayObjectLocalTransform(object);
 			else
 				DisplayObjectGlobalTransform(object);
+
+			ImGui::Spacing();
 		}
 	}
 
@@ -90,9 +92,8 @@ namespace Editor::Window
 			return;
 
 		DisplayObjectName(GetEngine()->objectSelected);
-		ImGui::Separator();
-		DisplayObjectTransform(GetEngine()->objectSelected);
 		ImGui::Spacing();
+		DisplayObjectTransform(GetEngine()->objectSelected);
 
 		for (auto it : GetEngine()->objectSelected->GetComponents())
 		{
@@ -102,6 +103,8 @@ namespace Editor::Window
 			{
 				for (const auto& prop : t.get_properties())
 				{
+					if (prop.is_readonly())
+						continue;
 					ImGui::Text("type: %s\nname: %s\nvalue: %s\n\n",
 						prop.get_type().get_name().to_string().c_str(),
 						prop.get_name().to_string().c_str(),
@@ -109,19 +112,21 @@ namespace Editor::Window
 				}
 			}
 			ImGui::PopID();
-			ImGui::Spacing();
 		}
 
 		ImGui::Separator();
-
-		array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
-		for (auto it : possibleComponents)
+		ImGui::Spacing();
+		ImGui::SetNextItemCenter(0.7f);
+		if (ImGui::BeginComboColoredButton("Add component", { 0.88f, 0.70f, 0.17f }))
 		{
-			if (ImGui::Selectable(it.get_name().to_string().c_str()))
+			array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
+			for (auto it : possibleComponents)
 			{
-				variant v = it.create();
-				GetEngine()->objectSelected->AddComponent(it.invoke("GetCopy", v, {}).get_value<Core::Datastructure::ComponentBase*>());
+				if (ImGui::Selectable(it.get_name().to_string().c_str()))
+					GetEngine()->objectSelected->AddComponent(it.invoke("GetCopy", it.create(), {}).get_value<Core::Datastructure::ComponentBase*>());
 			}
+			ImGui::EndCombo();
 		}
+		ImGui::Dummy({ 0.f, 90.f });
 	}
 }
