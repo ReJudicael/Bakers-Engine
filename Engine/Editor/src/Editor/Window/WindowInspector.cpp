@@ -105,10 +105,7 @@ namespace Editor::Window
 				{
 					if (prop.is_readonly())
 						continue;
-					ImGui::Text("type: %s\nname: %s\nvalue: %s\n\n",
-						prop.get_type().get_name().to_string().c_str(),
-						prop.get_name().to_string().c_str(),
-						prop.get_value(*it).to_string().c_str());
+					DrawProperty(prop, it);
 				}
 			}
 			ImGui::PopID();
@@ -128,5 +125,54 @@ namespace Editor::Window
 			ImGui::EndCombo();
 		}
 		ImGui::Dummy({ 0.f, 90.f });
+	}
+
+	void WindowInspector::DrawEnum(rttr::property prop, Core::Datastructure::ComponentBase* component)
+	{
+		rttr::enumeration e{ prop.get_enumeration() };
+		ImGui::Text((prop.get_name().to_string() + " : " + e.value_to_name(prop.get_value(component)).to_string()).c_str());
+		/* Check here if pressed on the enum to change it
+		if ()
+		for (auto it : e.get_names())
+		{
+			
+		}
+		*/
+	}
+
+	void WindowInspector::DrawProperty(rttr::property prop, Core::Datastructure::ComponentBase* component)
+	{
+		if (!prop.get_type().is_valid())
+		{
+			ImGui::Text("Invalid type");
+			return;
+		}
+		else if (prop.is_enumeration())
+			DrawEnum(prop, component);
+		else if (prop.get_type() == type::get<bool>())
+		{
+			bool b{ prop.get_value(component).get_value<bool>() };
+			if (ImGui::Checkbox(prop.get_name().to_string().c_str(), &b))
+				prop.set_value(component, b);
+		}
+		else if (prop.get_type() == type::get<float>())
+		{
+			float f{ prop.get_value(component).get_value<float>() };
+			if (ImGui::DragFloat(prop.get_name().to_string().c_str(), &f))
+				prop.set_value(component, f);
+		}
+		else if (prop.get_type() == type::get<int>())
+		{
+			int i{ prop.get_value(component).get_value<int>() };
+			if (ImGui::DragInt(prop.get_name().to_string().c_str(), &i))
+				prop.set_value(component, i);
+		}
+		else
+		{
+			ImGui::Text("type: %s\nname: %s\nvalue: %s\n\n",
+				prop.get_type().get_name().to_string().c_str(),
+				prop.get_name().to_string().c_str(),
+				prop.get_value(*component).to_string().c_str());
+		}
 	}
 }

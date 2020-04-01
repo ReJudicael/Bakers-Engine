@@ -1,6 +1,8 @@
 #pragma once
 
 #include "AWindow.h"
+#include "ComponentBase.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
@@ -83,5 +85,16 @@ namespace Editor::Window
 		 * Draw elements in window
 		 */
 		void Tick() override;
+
+		/**
+		 * Draw a property in window
+		 * @param prop: Property to draw
+		 */
+		void DrawProperty(rttr::property prop, Core::Datastructure::ComponentBase* component);
+		/**
+		 * Draw an enum property in window
+		 * @param prop: Property to draw
+		 */
+		void DrawEnum(rttr::property prop, Core::Datastructure::ComponentBase* component);
 	};
 }

@@ -104,6 +104,5 @@ namespace NRenderer
 
 		REGISTER_CLASS(ComponentBase)
 	};
-
 };
 
