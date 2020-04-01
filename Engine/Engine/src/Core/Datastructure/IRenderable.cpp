@@ -36,4 +36,13 @@ namespace Core::Datastructure
 			OnDraw(cam);
 		}
 	}
+
+	void IRenderable::OnCopy(void* copyTo) const
+	{
+		IComponent::OnCopy(copyTo);
+		IRenderable* copy{ (IRenderable*)copyTo };
+
+		copy->m_texture = m_texture;
+		copy->m_VAO = m_VAO;
+	}
 }
