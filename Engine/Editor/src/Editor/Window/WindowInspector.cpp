@@ -11,6 +11,7 @@ namespace Editor::Window
 		AWindow{ canvas, "Inspector", visible }
 	{
 		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen;
+		// GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\delete.png", m_deleteIcon);
 	}
 
 	void WindowInspector::PushWindowStyle()
@@ -86,7 +87,7 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowInspector::DrawEnum(rttr::property prop, Core::Datastructure::ComponentBase* component)
+	void WindowInspector::DrawEnum(rttr::property prop, rttr::instance component)
 	{
 		rttr::enumeration e{ prop.get_enumeration() };
 		if (ImGui::RBeginCombo(prop.get_name().to_string(), e.value_to_name(prop.get_value(component)).to_string().c_str()))
@@ -100,7 +101,7 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowInspector::DrawProperty(rttr::property prop, Core::Datastructure::ComponentBase* component)
+	void WindowInspector::DrawProperty(rttr::property prop, rttr::instance component)
 	{
 		if (!prop.get_type().is_valid())
 		{
@@ -153,12 +154,16 @@ namespace Editor::Window
 			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba))
 				prop.set_value(component, c);
 		}
+		else if (prop.get_type().is_class())
+		{
+			DisplayInstance(prop.get_type(), prop.get_value(component));
+		}
 		else
 		{
 			ImGui::Text("Type: %s\nName: %s\nValue: %s\n\n",
 				prop.get_type().get_name().to_string().c_str(),
 				prop.get_name().to_string().c_str(),
-				prop.get_value(*component).to_string().c_str());
+				prop.get_value(component).to_string().c_str());
 		}
 	}
 
@@ -167,20 +172,43 @@ namespace Editor::Window
 		for (auto it : object->GetComponents())
 		{
 			type t = it->get_type();
+
 			ImGui::PushID(it);
-			if (ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags))
+			bool isOpen = ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags);
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 20);
+
+			ImGui::SetItemAllowOverlap();
+			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
+			bool isClicked = ImGui::ImageButtonUV(NULL, { 16 });
+			ImGui::PopStyleColor(1);
+
+			if (isClicked)
+			{
+				object->RemoveComponent(it);
+				ImGui::PopID();
+				return;
+			}
+
+			if (isOpen)
 			{
 				ImGui::Spacing();
-				for (const auto& prop : t.get_properties())
-				{
-					if (prop.is_readonly())
-						continue;
-					DrawProperty(prop, it);
-				}
+				DisplayInstance(t, *it);
 				ImGui::Spacing();
 			}
 			ImGui::PopID();
 		}
+	}
+
+	void WindowInspector::DisplayInstance(rttr::type t, rttr::instance inst)
+	{
+		ImGui::Spacing();
+		for (const auto& prop : t.get_properties())
+		{
+			if (prop.is_readonly())
+				continue;
+			DrawProperty(prop, inst);
+		}
+		ImGui::Spacing();
 	}
 
 	void WindowInspector::AddComponentToObjectButton(Core::Datastructure::Object* object)
@@ -215,7 +243,7 @@ namespace Editor::Window
 		ImGui::Separator();
 		ImGui::Spacing();
 
-		ImGui::SetNextItemCenter(0.7f);
+		ImGui::PushItemToCenter(0.7f);
 		AddComponentToObjectButton(object);
 		ImGui::Spacing();
 	}

@@ -33,6 +33,11 @@ namespace Editor::Window
 		 */
 		bool m_isLocal{ true };
 
+		/**
+		 * Delete Icon to delete a component
+		 */
+		// std::shared_ptr<Resources::Texture> m_deleteIcon;
+
 	public:
 		/**
 		 * Constructor which set title of window ("Inspector")
@@ -85,14 +90,21 @@ namespace Editor::Window
 		 * @param prop: Property to draw
 		 * @param component:
 		 */
-		void DrawEnum(rttr::property prop, Core::Datastructure::ComponentBase* component);
+		void DrawEnum(rttr::property prop, rttr::instance component);
 
 		/**
 		 * Draw a property of the component in window
 		 * @param prop: Property to draw
 		 * @param component:
 		 */
-		void DrawProperty(rttr::property prop, Core::Datastructure::ComponentBase* component);
+		void DrawProperty(rttr::property prop, rttr::instance component);
+
+		/**
+		 * Display the properties of the given instance
+		 * @param t: Type of the instance to display properties
+		 * @param inst: Instance to display properties
+		 */
+		void DisplayInstance(rttr::type t, rttr::instance inst);
 
 		/**
 		 * Display the components of the object

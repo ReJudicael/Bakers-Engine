@@ -3,6 +3,12 @@
 
 namespace ImGui
 {
+    IMGUI_API void PushItemToCenter(float width_percentage)
+    {
+        ImGui::Indent(ImGui::GetWindowContentRegionWidth() * ((1 - width_percentage) / 2));
+        ImGui::SetNextItemWidth(ImGui::GetWindowContentRegionWidth() * width_percentage);
+    }
+
     IMGUI_API void PushItemToRight(const char* label, float offset)
     {
         if (label)
@@ -171,11 +177,5 @@ namespace ImGui
         PopStyleColor(2);
 
         return isOpen;
-    }
-
-    IMGUI_API void SetNextItemCenter(float width_percentage)
-    {
-        ImGui::Indent(ImGui::GetWindowContentRegionWidth() * ((1 - width_percentage) / 2));
-        ImGui::SetNextItemWidth(ImGui::GetWindowContentRegionWidth() * width_percentage);
     }
 }

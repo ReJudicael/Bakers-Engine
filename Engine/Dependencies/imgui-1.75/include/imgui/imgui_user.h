@@ -13,6 +13,7 @@ struct ImVec3
 
 namespace ImGui
 {
+    IMGUI_API void PushItemToCenter(float width_percentage);
     IMGUI_API void PushItemToRight(const char* label = (const char*)0, float offset = 2.5f);
 
     IMGUI_API bool RCheckbox(const std::string& label, bool* v);
@@ -30,5 +31,4 @@ namespace ImGui
     IMGUI_API bool ImageButtonUV(ImTextureID user_texture_id, const ImVec2& size);
     IMGUI_API bool BeginComboButton(const char* label);
     IMGUI_API bool BeginComboColoredButton(const char* label, const ImVec3& color);
-    IMGUI_API void SetNextItemCenter(float width_percentage);
 }
