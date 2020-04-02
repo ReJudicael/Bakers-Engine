@@ -321,7 +321,7 @@ namespace Core::Datastructure
 		 */
 		Core::Maths::Vec3	Forward() noexcept
 		{
-			constexpr Core::Maths::Vec3 forward{ 1, 0, 0 };
+			constexpr Core::Maths::Vec3 forward{ 0, 0, 1 };
 			constexpr Core::Maths::Quat	forQuat{ 0, forward };
 			return (GetGlobalRot() * forQuat * GetGlobalRot().Inversed()).GetVec();
 		}
@@ -341,7 +341,7 @@ namespace Core::Datastructure
 		 */
 		Core::Maths::Vec3	Right() noexcept
 		{
-			constexpr Core::Maths::Vec3 right{ 0, 0, 1 };
+			constexpr Core::Maths::Vec3 right{ 1, 0, 0 };
 			constexpr Core::Maths::Quat	rightQuat{ 0, right };
 			return (GetGlobalRot() * rightQuat * GetGlobalRot().Inversed()).GetVec();
 		}

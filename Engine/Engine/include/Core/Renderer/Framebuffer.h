@@ -6,10 +6,11 @@ namespace Core::Renderer
 {
 	BAKERS_API_STRUCT Framebuffer
 	{
-		GLuint FBO;
-		GLuint ColorTexture;
-		GLuint DepthStencilRenderbuffer;
-		int	   Size[4];
+		GLuint	FBO;
+		GLuint	ColorTexture;
+		GLuint	DepthStencilRenderbuffer;
+		int		Size[4];
+		void*	userPtr;
 
 		Framebuffer(const Framebuffer&) = delete;
 		Framebuffer(int width = 1280, int height = 800) noexcept;

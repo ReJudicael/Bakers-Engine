@@ -1,5 +1,6 @@
 #include "WindowViewport.h"
 #include "EditorEngine.h"
+#include "ICamera.h"
 
 #include <string>
 
@@ -27,7 +28,13 @@ namespace Editor::Window
 		ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 
 		if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
-			fbo->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
+		{
+			Core::Datastructure::ICamera* cam = reinterpret_cast<Core::Datastructure::ICamera*>(fbo->userPtr);
+			if (cam != nullptr)
+				cam->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
+			else
+				fbo->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
+		}
 
 #pragma warning(suppress : 4312)
 		ImGui::ImageUV(reinterpret_cast<ImTextureID>(fbo->ColorTexture), windowSize);

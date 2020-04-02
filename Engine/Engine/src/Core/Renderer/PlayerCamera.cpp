@@ -44,13 +44,13 @@ void PlayerCamera::ComputeTranslation()
 	Core::Maths::Vec3 move = { 0, 0, 0 };
 
 	if (Input()->IsKeyDown(EKey::W))
-		move += m_front * -1;
+		move += m_parent->Forward() * -1;
 	if (Input()->IsKeyDown(EKey::A))
-		move += m_right * -1;
+		move += m_parent->Right() * -1;
 	if (Input()->IsKeyDown(EKey::D))
-		move += m_right;
+		move += m_parent->Right();
 	if (Input()->IsKeyDown(EKey::S))
-		move += m_front;
+		move += m_parent->Forward();
 
 	if (Input()->IsKeyDown(EKey::LEFT_SHIFT))
 		m_isRunning = true;
