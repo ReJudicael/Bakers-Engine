@@ -1,6 +1,8 @@
 #pragma once
 
 #include "AWindow.h"
+#include "ComponentBase.h"
+#include "CoreMinimal.h"
 
 namespace Core::Datastructure
 {
@@ -77,6 +79,39 @@ namespace Editor::Window
 		 * @param object: Selected object
 		 */
 		void DisplayObjectTransform(Core::Datastructure::Object* object);
+
+		/**
+		 * Draw an enum property in window
+		 * @param prop: Property to draw
+		 * @param component:
+		 */
+		void DrawEnum(rttr::property prop, Core::Datastructure::ComponentBase* component);
+
+		/**
+		 * Draw a property of the component in window
+		 * @param prop: Property to draw
+		 * @param component:
+		 */
+		void DrawProperty(rttr::property prop, Core::Datastructure::ComponentBase* component);
+
+		/**
+		 * Display the components of the object
+		 * @param object: Chosen object
+		 */
+		void DisplayObjectComponents(Core::Datastructure::Object* object);
+
+		/**
+		 * Add component to the object
+		 * @param object: Chosen object
+		 */
+		void AddComponentToObjectButton(Core::Datastructure::Object* object);
+
+		/**
+		 * Display the names and current values of the properties
+		 * The user can be modify these values
+		 * @param object: Chosen object
+		 */
+		void ObjectInspector(Core::Datastructure::Object* object);
 
 	private:
 		/**

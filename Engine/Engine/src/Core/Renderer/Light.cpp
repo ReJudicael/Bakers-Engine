@@ -11,6 +11,12 @@ RTTR_PLUGIN_REGISTRATION
     using namespace NRenderer;
     registration::class_<Light>("Light")
         .constructor()
+        .enumeration<Light::ELightType>("LightType")
+        (
+            value("Directional", Light::ELightType::DIRECTION),
+            value("Point", Light::ELightType::POINT),
+            value("Spot", Light::ELightType::SPOT)
+        )
         .property("Type", &Light::m_type)
         .property("Range", &Light::m_range)
         .property("Angle", &Light::m_angle)

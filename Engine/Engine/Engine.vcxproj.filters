@@ -308,6 +308,9 @@
     <ClInclude Include="include\Core\Renderer\Light.h">
       <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Maths\Color.hpp">
+      <Filter>Header Files\Core\Maths</Filter>
+    </ClInclude>
     <ClInclude Include="include\Core\Datastructure\ScriptedComponent.h">
       <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>

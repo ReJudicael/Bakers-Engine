@@ -93,6 +93,11 @@ namespace Editor::Window
 		void RenameContent(const std::string& itemName);
 
 		/**
+		 * Refresh contents in current path
+		 */
+		void MenuItemRefresh();
+
+		/**
 		 * Menu item view
 		 */
 		void MenuItemNew();
