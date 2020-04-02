@@ -10,7 +10,7 @@ namespace Editor::Window
 	WindowInspector::WindowInspector(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Inspector", visible }
 	{
-		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen;
+		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\delete.png", m_deleteIcon);
 	}
 
@@ -175,14 +175,13 @@ namespace Editor::Window
 
 			ImGui::PushID(it);
 			bool isOpen = ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags);
-			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 20);
 
-			ImGui::SetItemAllowOverlap();
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
-			bool isClicked = ImGui::ImageButtonUV(reinterpret_cast<ImTextureID>(m_deleteIcon->texture), { 16 });
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
+			bool isClickedDelete = ImGui::ImageButtonUV(reinterpret_cast<ImTextureID>(m_deleteIcon->texture), { 16 });
 			ImGui::PopStyleColor(1);
 
-			if (isClicked)
+			if (isClickedDelete)
 			{
 				object->RemoveComponent(it);
 				ImGui::PopID();
