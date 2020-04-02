@@ -156,7 +156,9 @@ namespace Editor::Window
 		}
 		else if (prop.get_type().is_class())
 		{
-			DisplayInstance(prop.get_type(), prop.get_value(component));
+			auto temp{ prop.get_value(component) };
+			DisplayInstance(prop.get_type(), temp);
+			prop.set_value(component, temp);
 		}
 		else
 		{

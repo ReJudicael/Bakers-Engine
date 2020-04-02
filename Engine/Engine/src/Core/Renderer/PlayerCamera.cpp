@@ -54,7 +54,7 @@ void PlayerCamera::ComputeTranslation()
 
 	if (Input()->IsKeyDown(EKey::LEFT_SHIFT))
 		m_isRunning = true;
-	else
+	else if (Input()->IsKeyUp(EKey::LEFT_SHIFT))
 		m_isRunning = false;
 
 	if (move.SquaredLength() > 0)
