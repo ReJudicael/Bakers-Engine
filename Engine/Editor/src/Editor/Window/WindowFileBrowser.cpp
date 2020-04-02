@@ -149,7 +149,6 @@ namespace Editor::Window
 
 	ImTextureID WindowFileBrowser::GetIcon(const std::string& itemPath)
 	{
-		// TODO: Optimize this
 		std::string ext;
 		if (itemPath == "default")
 		{
@@ -167,15 +166,22 @@ namespace Editor::Window
 			ext = fs.GetExtensionWithoutDot_str(itemPath);
 		}
 
-		std::string iconsPath{ PATH_TO_ICONS + ext + ".png" };
-		std::shared_ptr<Resources::Texture> icon;
-		if (fs.Exists(iconsPath))
-			GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
-		else
-			return GetIcon("default");
-
+		auto it = m_icons.find(ext);
+		if (it == m_icons.end())
+		{
+			std::string iconsPath{ PATH_TO_ICONS + ext + ".png" };
+			std::shared_ptr<Resources::Texture> icon;
+			if (fs.Exists(iconsPath))
+				GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
+			else
+			{
+				GetIcon("default");
+				icon = m_icons.find("default")->second;
+			}
+			it = m_icons.emplace(ext, icon).first;
+		}
 #pragma warning(suppress : 4312)
-		return reinterpret_cast<ImTextureID>(icon->texture);
+		return reinterpret_cast<ImTextureID>(it->second->texture);
 	}
 
 	void WindowFileBrowser::ShowCurrentPathOnHeader()

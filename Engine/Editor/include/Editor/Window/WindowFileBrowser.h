@@ -2,8 +2,9 @@
 
 #include "AWindow.h"
 #include "FileSystem.hpp"
+#include "Texture.h"
 #include <stdio.h>
-#include <map>
+#include <unordered_map>
 
 #define PATH_TO_ICONS "Resources\\Images\\icon_"
 
@@ -49,6 +50,11 @@ namespace Editor::Window
 		 * Size of path contents
 		 */
 		float m_contentPathSize{ 66.3f };
+
+		/**
+		 * Icons of the extensions
+		 */
+		std::unordered_map<std::string, std::shared_ptr<Resources::Texture>>	m_icons;
 
 	public:
 		/**

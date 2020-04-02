@@ -3,6 +3,7 @@
 #include "AWindow.h"
 #include "ComponentBase.h"
 #include "CoreMinimal.h"
+#include "Texture.h"
 
 namespace Core::Datastructure
 {
@@ -36,7 +37,7 @@ namespace Editor::Window
 		/**
 		 * Delete Icon to delete a component
 		 */
-		// std::shared_ptr<Resources::Texture> m_deleteIcon;
+		std::shared_ptr<Resources::Texture> m_deleteIcon;
 
 	public:
 		/**

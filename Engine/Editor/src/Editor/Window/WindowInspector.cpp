@@ -11,7 +11,7 @@ namespace Editor::Window
 		AWindow{ canvas, "Inspector", visible }
 	{
 		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen;
-		// GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\delete.png", m_deleteIcon);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\delete.png", m_deleteIcon);
 	}
 
 	void WindowInspector::PushWindowStyle()
@@ -179,7 +179,7 @@ namespace Editor::Window
 
 			ImGui::SetItemAllowOverlap();
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
-			bool isClicked = ImGui::ImageButtonUV(NULL, { 16 });
+			bool isClicked = ImGui::ImageButtonUV(reinterpret_cast<ImTextureID>(m_deleteIcon->texture), { 16 });
 			ImGui::PopStyleColor(1);
 
 			if (isClicked)
