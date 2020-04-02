@@ -16,6 +16,12 @@
 constexpr double RAD2DEG = 180.f / M_PI;
 constexpr double DEG2RAD = M_PI / 180.f;
 
+namespace physx
+{
+	class PxVec3;
+	class PxQuat;
+}
+
 /**
  * Contains the core of the engine
  */

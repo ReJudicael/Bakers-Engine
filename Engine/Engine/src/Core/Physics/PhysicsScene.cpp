@@ -141,10 +141,9 @@ namespace Core::Physics
 		}
 	}
 
-	void PhysicsScene::CreateBoxShape(Collider& collider)
+	void PhysicsScene::CreatePhysicsShape(Collider& collider)
 	{
-		collider.createCuceShape(m_pxPhysics);
-
+		collider.CreateShape(m_pxPhysics);
 	}
 
 	void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)

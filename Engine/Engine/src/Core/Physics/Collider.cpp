@@ -7,20 +7,18 @@
 namespace Core::Physics
 {
 
-	void Collider::initCube(const Core::Maths::Vec3& extent, const Core::Maths::Vec3& physicsMaterial ,const Core::Maths::Vec3& localPosition)
+	void Collider::SetLocalPosition(const Core::Maths::Vec3& vec)
 	{
-		m_extent = extent;
-		m_physicsMaterial = physicsMaterial;
-		m_localPosition = localPosition;
+		physx::PxTransform transform = m_pxShape->getLocalPose();
+		transform.p = physx::PxVec3(vec.x, vec.y, vec.z);
+		m_pxShape->setLocalPose(transform);
 	}
-	void Collider::createCuceShape(physx::PxPhysics* physics)
+
+	void Collider::SetLocalRotation(const Core::Maths::Quat& quat)
 	{
-		physx::PxVec3 extent = physx::PxVec3(std::abs(m_extent.x), std::abs(m_extent.y), std::abs(m_extent.z));
-		physx::PxVec3 localPosition = physx::PxVec3(m_localPosition.x, m_localPosition.y, m_localPosition.z);
-		physx::PxVec3 material = physx::PxVec3(m_localPosition.x, m_localPosition.y, m_localPosition.z);
-		m_pxMaterial = physics->createMaterial(material.x, material.y, material.z);
-		m_pxShape = physics->createShape(physx::PxBoxGeometry(extent), *m_pxMaterial,true);
-		m_pxShape->setLocalPose(physx::PxTransform(localPosition));
+		physx::PxTransform transform = m_pxShape->getLocalPose();
+		transform.q = physx::PxQuat(quat.x, quat.y, quat.z, quat.w);
+		m_pxShape->setLocalPose(transform);
 	}
 
 }

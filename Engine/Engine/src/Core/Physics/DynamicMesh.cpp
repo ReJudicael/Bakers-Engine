@@ -12,13 +12,12 @@ namespace Core
 {
 	namespace Physics
 	{
-		DynamicMesh::DynamicMesh(Collider collider) :
-			IPhysics(collider)
+		DynamicMesh::DynamicMesh(Collider* collider) :
+			Core::Datastructure::IPhysics(collider)
 		{}
 
 		void DynamicMesh::OnStart()
 		{
-			//m_collider.SetExtent(GetParent()->GetGlobalScale());
 			IPhysics::OnStart();
 			IUpdatable::OnStart();
 
@@ -33,13 +32,13 @@ namespace Core
 			m_dynamicMesh = physics->createRigidDynamic(physx::PxTransform(position, rotation));
 			//shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
 			//shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
-			m_dynamicMesh->attachShape(*m_collider.GetShape());
+			m_dynamicMesh->attachShape(*m_collider->GetShape());
 			m_dynamicMesh->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
 			//setupFiltering(myActor3, EFilterCollision::JUDICAEL, EFilterCollision::VALENTIN, EFilterCollision::LAVIE | EFilterCollision::NATHAN);
 			//setupFiltering(myActor, EFilterCollision::JUDICAEL, EFilterCollision::NATHAN, EFilterCollision::LAVIE | EFilterCollision::VALENTIN);
 
 			scene->addActor(*m_dynamicMesh);
-			m_collider.GetShape()->release();
+			m_collider->GetShape()->release();
 		}
 
 		void DynamicMesh::OnUpdate(float deltaTime)

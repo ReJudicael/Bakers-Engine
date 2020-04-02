@@ -44,7 +44,7 @@ namespace Core::Physics
 		bool InitPhysX();
 
 		void AttachActor(Core::Datastructure::IPhysics* physics);
-		void CreateBoxShape(Collider& collider);
+		void CreatePhysicsShape(Collider& collider);
 		void BeginSimulate(const float deltaTime);
 		void CreateScene();
 		void EndSimulate();

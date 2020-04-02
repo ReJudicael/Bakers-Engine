@@ -8,6 +8,7 @@
 #include "PlayerCamera.h"
 #include "Framebuffer.h"
 #include "Collider.h"
+#include "BoxCollider.h"
 #include "StaticMesh.h"
 #include "Physics/PhysicsScene.h"
 #include "DynamicMesh.h"
@@ -137,10 +138,11 @@ namespace Core::Datastructure
 
 		obj->AddComponent(new Core::Physics::DynamicMesh());
 
-		Core::Physics::Collider col(Core::Maths::Vec3());
 		o2->SetPos({ 0.f,-2.f,0.f });
 		o2->SetScale({ 500.f,1.f,500.f });
-		o2->AddComponent(new Core::Physics::StaticMesh());
+		Core::Physics::StaticMesh* staticmesh1 = new Core::Physics::StaticMesh();
+		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f,1.f,500.f });
+		o2->AddComponent(staticmesh1);
 
 		m_manager->Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
 		//m_manager->Load3DObject("Resources/level.fbx");

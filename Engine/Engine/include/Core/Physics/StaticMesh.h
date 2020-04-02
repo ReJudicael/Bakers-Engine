@@ -25,7 +25,7 @@ namespace Core
 		public:
 
 			StaticMesh() = default;
-			StaticMesh(Collider collider);
+			StaticMesh(Collider* collider);
 
 			inline virtual void SetStaticMesh(physx::PxRigidStatic* staticMesh)
 			{

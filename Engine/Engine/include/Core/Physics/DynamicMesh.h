@@ -25,7 +25,7 @@ namespace Core
 
 		public:
 			DynamicMesh() = default;
-			DynamicMesh(Collider collider);
+			DynamicMesh(Collider* collider);
 			virtual void OnStart() override;
 			virtual void OnUpdate(float deltaTime) override;
 			virtual void CreateActor(physx::PxPhysics* physics, physx::PxScene* scene) override;

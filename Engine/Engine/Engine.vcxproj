@@ -331,11 +331,14 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\dll\*.dll" "$(TargetDir)"</Command
     <ClCompile Include="src\Core\Datastructure\EngineCore.cpp" />
     <ClCompile Include="src\Core\Datastructure\ICollidable.cpp" />
     <ClCompile Include="src\Core\Datastructure\IPhysics.cpp" />
+    <ClCompile Include="src\Core\Datastructure\IPhysicsEvent.cpp" />
     <ClCompile Include="src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Core\Debug\Logger.cpp" />
+    <ClCompile Include="src\Core\Physics\BoxCollider.cpp" />
     <ClCompile Include="src\Core\Physics\Collider.cpp" />
     <ClCompile Include="src\Core\Physics\DynamicMesh.cpp" />
     <ClCompile Include="src\Core\Physics\PhysicsScene.cpp" />
+    <ClCompile Include="src\Core\Physics\PhysicsSceneSimulationEventCallback.cpp" />
     <ClCompile Include="src\Core\Physics\StaticMesh.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
     <ClCompile Include="src\Core\Renderer\Framebuffer.cpp" />
@@ -369,6 +372,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\dll\*.dll" "$(TargetDir)"</Command
     <ClInclude Include="include\Core\Datastructure\ICollidable.h" />
     <ClInclude Include="include\Core\Datastructure\IComponent.hpp" />
     <ClInclude Include="include\Core\Datastructure\IPhysics.h" />
+    <ClInclude Include="include\Core\Datastructure\IPhysicsEvent.h" />
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp" />
     <ClInclude Include="include\Core\Datastructure\IUpdatable.hpp" />
     <ClInclude Include="include\Core\Datastructure\EngineCore.h" />
@@ -391,8 +395,10 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\dll\*.dll" "$(TargetDir)"</Command
     <ClInclude Include="include\Core\Maths\Vec2.hpp" />
     <ClInclude Include="include\Core\Maths\Vec3.hpp" />
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
+    <ClInclude Include="include\Core\Physics\BoxCollider.h" />
     <ClInclude Include="include\Core\Physics\DynamicMesh.h" />
     <ClInclude Include="include\Core\Physics\PhysicsScene.h" />
+    <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h" />
     <ClInclude Include="include\Core\Physics\StaticMesh.h" />
     <ClInclude Include="include\Core\Renderer\Framebuffer.h" />
     <ClInclude Include="include\Core\Renderer\Light.h" />

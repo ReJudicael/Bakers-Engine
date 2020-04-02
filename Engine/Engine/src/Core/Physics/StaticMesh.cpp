@@ -12,13 +12,12 @@ namespace Core
 {
 	namespace Physics
 	{
-		StaticMesh::StaticMesh(Collider collider):
+		StaticMesh::StaticMesh(Collider* collider):
 			IPhysics(collider)
 		{}
 
 		void StaticMesh::OnStart()
 		{
-			m_collider.SetExtent(GetParent()->GetGlobalScale());
 			IPhysics::OnStart();
 			IUpdatable::OnStart();
 
@@ -34,12 +33,12 @@ namespace Core
 			m_staticMesh = physics->createRigidStatic(physx::PxTransform(position, rotation));
 			//shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
 			//shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
-			m_staticMesh->attachShape(*m_collider.GetShape());
+			m_staticMesh->attachShape(*m_collider->GetShape());
 			//setupFiltering(myActor3, EFilterCollision::JUDICAEL, EFilterCollision::VALENTIN, EFilterCollision::LAVIE | EFilterCollision::NATHAN);
 			//setupFiltering(myActor, EFilterCollision::JUDICAEL, EFilterCollision::NATHAN, EFilterCollision::LAVIE | EFilterCollision::VALENTIN);
 
 			scene->addActor(*m_staticMesh);
-			m_collider.GetShape()->release();
+			m_collider->GetShape()->release();
 		}
 	}
 }
