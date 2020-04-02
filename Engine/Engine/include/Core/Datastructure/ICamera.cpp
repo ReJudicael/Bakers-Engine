@@ -45,6 +45,7 @@ void Core::Datastructure::ICamera::OnStart()
 	IComponent::OnStart();
 	GetScene()->AddCamera(this);
 	m_fbo = GetScene()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight);
+	m_fbo->userPtr = this;
 }
 
 Core::Datastructure::ICamera::~ICamera() noexcept
@@ -62,6 +63,7 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 	if (IsInit() && m_isActive && !IsDestroyed())
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
+		glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
@@ -78,4 +80,14 @@ void Core::Datastructure::ICamera::OnCopy(void* copyTo) const
 	copy->m_right = m_right;
 	copy->m_cameraHeight = m_cameraHeight;
 	copy->m_cameraWidth = m_cameraWidth;
+}
+
+void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
+{
+	m_cameraWidth = width;
+	m_cameraHeight = height;
+
+	SetRatio(width / (float)height);
+	
+	m_fbo->Resize(width, height);
 }

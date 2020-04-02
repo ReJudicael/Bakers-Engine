@@ -54,6 +54,12 @@ namespace Core::Datastructure
 
 		virtual void				SetRatio(float ratio) = 0;
 
+		/**
+		 * Call when viewport of the camera must be resized. 
+		 * It will resize the draw FBO and change its aspect ratio.
+		 */
+		virtual void				Resize(unsigned width, unsigned height);
+
 		Core::Maths::Vec3			GetFront() const noexcept
 		{
 			return m_front;

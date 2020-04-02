@@ -83,9 +83,8 @@ namespace Editor
 		canvas->Add<Editor::Window::WindowConsole>();
 		canvas->Add<Editor::Window::WindowFileBrowser>();
 		canvas->Add<Editor::Window::WindowProfiler>(false);
-
-		m_root->AddComponent(new Core::Datastructure::ComponentBase());
-		INIT_TRACY_GL_IMAGE(m_width, m_height)
+		
+		INIT_TRACY_GL_IMAGE(320, 180)
 
 		return 0;
 	}
@@ -204,7 +203,7 @@ namespace Editor
 			EditorEngine* this_window = reinterpret_cast<EditorEngine*>(glfwGetWindowUserPointer(window));
 			if (this_window)
 			{
-				this_window->OnResizeWindow(width, height);
+				//this_window->OnResizeWindow(width, height);
 			}
 		};
 		return glfwSetWindowSizeCallback(m_window, window_size_callback);

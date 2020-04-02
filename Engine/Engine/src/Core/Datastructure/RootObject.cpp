@@ -61,15 +61,12 @@ namespace Core::Datastructure
 		ZoneScoped
 			ZoneText("Render of components done here", 31)
 			TracyGpuZone("Rendering all components")
-		auto fbo{ fboList.begin() };
+		
 		GLint PreviousFramebuffer;
 		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
 		glClearColor(0, 0, 0, 1);
 		for (auto it{ m_cameras.begin() }; it != m_cameras.end(); ++it)
 		{
-			if (fbo == fboList.end())
-				return;
-			++fbo;
 			(*it)->Draw(m_renderables);
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
