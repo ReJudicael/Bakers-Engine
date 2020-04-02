@@ -43,6 +43,16 @@ Camera::Camera(const float ratio, const float fov, const float near, const float
 void Camera::OnUpdate(float deltaTime)
 {
 	m_isCamUpdated = false;
+
+	if (m_pRatio != m_ratio || m_pFov != m_fov
+		|| m_pNear != m_near || m_pFar != m_far)
+	{
+		m_isPerspectiveUpdated = false;
+		m_pRatio = m_ratio;
+		m_pFov = m_fov;
+		m_pNear = m_near;
+		m_pFar = m_far;
+	}
 }
 
 void Camera::OnStart()
@@ -89,6 +99,11 @@ void Camera::OnCopy(void* toCopy) const
 	copy->m_far = m_far;
 	copy->m_fov = m_fov;
 	copy->m_ratio = m_ratio;
+
+	copy->m_pNear = m_near;
+	copy->m_pFar = m_far;
+	copy->m_pFov = m_fov;
+	copy->m_pRatio = m_ratio;
 }
 
 void	Camera::StartCopy(void*& copyTo) const

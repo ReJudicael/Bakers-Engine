@@ -10,7 +10,6 @@
 #include "Assimp/scene.h"
 #include "Assimp/postprocess.h"
 #include "Assimp/material.h"
-#include "Renderer.h"
 #include "Assimp/texture.h"
 #include "Assimp/RemoveComments.h"
 #include "Object.hpp"

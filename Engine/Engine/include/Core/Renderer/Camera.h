@@ -5,8 +5,14 @@
 #include "IUpdatable.hpp"
 #include "CoreMinimal.h"
 
+
 BAKERS_API_CLASS Camera : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
 {
+private:
+	float m_pRatio;
+	float m_pFov;
+	float m_pNear;
+	float m_pFar;
 protected:
 	float m_ratio;
 	float m_fov;
