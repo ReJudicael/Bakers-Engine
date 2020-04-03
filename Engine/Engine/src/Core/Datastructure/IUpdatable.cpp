@@ -38,4 +38,9 @@ namespace Core::Datastructure
 	{
 		IComponent::OnCopy(copyTo);
 	}
+
+	void	IUpdatable::OnDestroy()
+	{
+		GetScene()->RemoveUpdatable(this);
+	}
 }

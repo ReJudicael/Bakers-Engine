@@ -118,4 +118,17 @@ namespace NRenderer
         Core::Maths::Quat q = m_parent->GetGlobalRot();
         return (q * forward * q.Inversed()).xyz;
     }
+
+    void    Light::OnDestroy()
+    {
+        m_isActive = false;
+        for (auto it{ Resources::Shader::lights.begin() }; it != Resources::Shader::lights.end(); ++it)
+        {
+            if (*it == this)
+            {
+                it = Resources::Shader::lights.erase(it);
+                return;
+            }
+        }
+    }
 }

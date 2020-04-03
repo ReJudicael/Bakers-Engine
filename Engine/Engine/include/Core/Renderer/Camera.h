@@ -18,6 +18,7 @@ protected:
 
 	virtual void OnCopy(void* toCopy) const override;
 	virtual void StartCopy(void*& copyTo) const override;
+	virtual void OnDestroy() override;
 public:
 	/**
 	 * Default Constructor
