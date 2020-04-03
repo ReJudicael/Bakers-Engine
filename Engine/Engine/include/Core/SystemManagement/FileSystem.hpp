@@ -448,7 +448,6 @@ namespace Core::SystemManagement
 	{
 		std::string cmd = "echo off >" + GetAbsoluteWithQuote(filePath);
 		system(cmd.c_str());
-		m_actualizeContentsInCurrentPath = true;
 	}
 
 	inline std::string FileSystem::CreateFile() noexcept
@@ -473,6 +472,8 @@ namespace Core::SystemManagement
 				}
 			}
 		}
+		m_actualizeContentsInCurrentPath = true;
+
 		return filePath;
 	}
 

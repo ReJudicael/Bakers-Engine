@@ -24,6 +24,7 @@ namespace Editor::Window
 	WindowFileBrowser::WindowFileBrowser(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "File Browser", visible }
 	{
+		m_inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
 	}
 
 	void WindowFileBrowser::PushWindowStyle()
@@ -74,8 +75,7 @@ namespace Editor::Window
 
 		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
 
-		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name),
-			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
+		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name), m_inputTextFlags);
 
 		if (apply || ImGui::IsItemDeactivated())
 			ApplyNameToItem(itemName);
@@ -149,36 +149,25 @@ namespace Editor::Window
 
 	ImTextureID WindowFileBrowser::GetIcon(const std::string& itemPath)
 	{
-		std::string ext;
-		if (itemPath == "default")
-		{
-			ext = "default";
-		}
-		else if (fs.IsDirectory(itemPath))
-		{
-			if (itemPath == "..")
-				ext = "backFolder";
-			else
-				ext = "folder";
-		}
-		else
-		{
-			ext = fs.GetExtensionWithoutDot_str(itemPath);
-		}
-
-		auto it = m_icons.find(ext);
+		auto it = m_icons.find(itemPath);
 		if (it == m_icons.end())
 		{
-			std::string iconsPath{ PATH_TO_ICONS + ext + ".png" };
+			std::string ext;
+			if (itemPath == "..")
+				ext = "backFolder";
+			else if (fs.IsDirectory(itemPath))
+				ext = "folder";
+			else
+				ext = fs.GetExtensionWithoutDot_str(itemPath);
+
+			std::string iconsPath{ "Resources\\Images\\icon_" + ext + ".png" };
 			std::shared_ptr<Resources::Texture> icon;
 			if (fs.Exists(iconsPath))
 				GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
 			else
-			{
-				GetIcon("default");
-				icon = m_icons.find("default")->second;
-			}
-			it = m_icons.emplace(ext, icon).first;
+				GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\icon_default.png", icon);
+
+			it = m_icons.emplace(itemPath, icon).first;
 		}
 #pragma warning(suppress : 4312)
 		return reinterpret_cast<ImTextureID>(it->second->texture);
@@ -250,7 +239,10 @@ namespace Editor::Window
 			for (size_t i{ 0 }; i < contents.size(); ++i)
 			{
 				if (fs.NeedToActualizeContentsInCurrentPath())
+				{
+					m_icons.clear();
 					break;
+				}
 
 				itemName = contents[i].filename().string();
 				if (fs.FileHasExcludedExtension(itemName, excludedExtensions))

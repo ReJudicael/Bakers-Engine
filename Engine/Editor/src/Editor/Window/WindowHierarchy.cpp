@@ -10,6 +10,8 @@ namespace Editor::Window
 		m_treeNodeFlags	=	ImGuiTreeNodeFlags_OpenOnDoubleClick |
 							ImGuiTreeNodeFlags_SpanAvailWidth	 |
 							ImGuiTreeNodeFlags_AllowItemOverlap;
+
+		m_inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
 	}
 
 	void WindowHierarchy::PushWindowStyle()
@@ -60,8 +62,7 @@ namespace Editor::Window
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 3.f, 0.f });
 		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.f);
 
-		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name),
-			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
+		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name), m_inputTextFlags);
 
 		ImGui::PopStyleVar(2);
 

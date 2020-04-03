@@ -3,10 +3,7 @@
 #include "AWindow.h"
 #include "FileSystem.hpp"
 #include "Texture.h"
-#include <stdio.h>
 #include <unordered_map>
-
-#define PATH_TO_ICONS "Resources\\Images\\icon_"
 
 namespace Editor::Window
 {
@@ -25,6 +22,11 @@ namespace Editor::Window
 		 * Name of the path to be renamed
 		 */
 		std::string m_renamePath{ "" };
+
+		/**
+		 * InputText flags to rename a path
+		 */
+		ImGuiInputTextFlags m_inputTextFlags;
 
 		/**
 		 * Buffer InputText (to rename an item)
@@ -54,7 +56,7 @@ namespace Editor::Window
 		/**
 		 * Icons of the extensions
 		 */
-		std::unordered_map<std::string, std::shared_ptr<Resources::Texture>>	m_icons;
+		std::unordered_map<std::string, std::shared_ptr<Resources::Texture>> m_icons;
 
 	public:
 		/**
@@ -77,7 +79,6 @@ namespace Editor::Window
 		 * Pop window style
 		 */
 		void PopWindowStyle() override;
-
 
 	private:
 		/**

@@ -37,6 +37,11 @@ namespace Editor::Window
 		char m_name[64]{};
 
 		/**
+		 * InputText flags to rename a path
+		 */
+		ImGuiInputTextFlags m_inputTextFlags;
+
+		/**
 		 * Decide whether the user can rename a game object or not
 		 */
 		bool m_canRename{ false };
