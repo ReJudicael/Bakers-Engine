@@ -62,16 +62,16 @@ namespace Core::Datastructure
 		}
 	}
 
-	void ScriptedComponent::OnCopy(void* copyTo) const
+	void ScriptedComponent::OnCopy(IComponent* copyTo) const
 	{
 		ComponentUpdatable::OnCopy(copyTo);
-		ScriptedComponent* copy{ (ScriptedComponent*)copyTo };
+		ScriptedComponent* copy{ dynamic_cast<ScriptedComponent*>(copyTo) };
 
 		copy->m_script = m_script;
 		copy->m_lState = m_lState;
 	}
 
-	void ScriptedComponent::StartCopy(void*& copyTo) const
+	void ScriptedComponent::StartCopy(IComponent*& copyTo) const
 	{
 		copyTo = new ScriptedComponent();
 		OnCopy(copyTo);

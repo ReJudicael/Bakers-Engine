@@ -34,7 +34,7 @@ namespace Core::Datastructure
 			OnUpdate(deltaTime);
 	}
 
-	void	IUpdatable::OnCopy(void* copyTo) const
+	void	IUpdatable::OnCopy(IComponent* copyTo) const
 	{
 		IComponent::OnCopy(copyTo);
 	}

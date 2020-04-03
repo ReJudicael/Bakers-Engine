@@ -33,8 +33,8 @@ namespace NRenderer
 		Core::Maths::Color	m_specular;
 		Core::Maths::Color	m_attenuation;
 	protected:
-		virtual void	StartCopy(void*& copyTo) const override;
-		virtual void	OnCopy(void* copyTo) const override;
+		virtual void	StartCopy(IComponent*& copyTo) const override;
+		virtual void	OnCopy(IComponent * copyTo) const override;
 		virtual void	OnStart() override;
 
 	public:

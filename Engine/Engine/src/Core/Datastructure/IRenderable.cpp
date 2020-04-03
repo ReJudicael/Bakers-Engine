@@ -37,10 +37,10 @@ namespace Core::Datastructure
 		}
 	}
 
-	void IRenderable::OnCopy(void* copyTo) const
+	void IRenderable::OnCopy(IComponent* copyTo) const
 	{
 		IComponent::OnCopy(copyTo);
-		IRenderable* copy{ (IRenderable*)copyTo };
+		IRenderable* copy{ dynamic_cast<IRenderable*>(copyTo) };
 
 		copy->m_texture = m_texture;
 		copy->m_VAO = m_VAO;

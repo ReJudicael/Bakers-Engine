@@ -18,7 +18,7 @@ namespace Core::Datastructure
 		 * Copies the component in the given pointer.
 		 * On override, should not call other versions of the function.
 		 */
-		virtual void	StartCopy(void*& copyTo) const;
+		virtual void	StartCopy(IComponent*& copyTo) const;
 	public:
 		ComponentBase(const ComponentBase& c) = default;
 		ComponentBase() = default;

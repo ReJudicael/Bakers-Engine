@@ -15,7 +15,7 @@ struct CameraPerspective
 	REGISTER_CLASS()
 };
 
-BAKERS_API_CLASS Camera : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
+BAKERS_API_CLASS Camera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
 {
 private:
 	float m_pRatio;
@@ -33,8 +33,8 @@ protected:
 	Core::Maths::Mat4	OnGenerateCamera() override;
 	Core::Maths::Mat4	OnGeneratePerspective() override;
 
-	virtual void OnCopy(void* toCopy) const override;
-	virtual void StartCopy(void*& copyTo) const override;
+	virtual void OnCopy(IComponent * copyTo) const override;
+	virtual void StartCopy(IComponent*& copyTo) const override;
 public:
 	/**
 	 * Default Constructor

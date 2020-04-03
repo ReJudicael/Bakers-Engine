@@ -29,7 +29,7 @@ namespace Core::Datastructure
 		virtual Core::Maths::Mat4	OnGeneratePerspective() = 0;
 		virtual Core::Maths::Mat4	OnGenerateCamera() = 0;
 
-		virtual void	OnCopy(void* copyTo) const override;
+		virtual void	OnCopy(IComponent * copyTo) const override;
 	public:
 		/**
 		 * Destructor of the camera interface

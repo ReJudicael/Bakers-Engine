@@ -11,7 +11,7 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Core::Datastructure
 {
-	void	ComponentBase::StartCopy(void*& copyTo) const
+	void	ComponentBase::StartCopy(IComponent*& copyTo) const
 	{
 		copyTo = new ComponentBase();
 		OnCopy(copyTo);
@@ -19,8 +19,8 @@ namespace Core::Datastructure
 
 	ComponentBase* ComponentBase::GetCopy() const
 	{
-		void* result;
+		IComponent* result;
 		StartCopy(result);
-		return (ComponentBase*)result;
+		return dynamic_cast<ComponentBase*>(result);
 	}
 }

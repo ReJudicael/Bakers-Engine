@@ -8,13 +8,13 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Core::Datastructure
 {
-	void	ComponentUpdatable::OnCopy(void* copyTo) const
+	void	ComponentUpdatable::OnCopy(IComponent* copyTo) const
 	{
 		ComponentBase::OnCopy(copyTo);
-		ComponentUpdatable* copy{ (ComponentUpdatable*)copyTo };
+		IUpdatable::OnCopy(copyTo);
 	}
 
-	void	ComponentUpdatable::StartCopy(void*& copyTo) const
+	void	ComponentUpdatable::StartCopy(IComponent*& copyTo) const
 	{
 		copyTo = new ComponentUpdatable();
 		OnCopy(copyTo);

@@ -27,11 +27,11 @@ Core::Maths::Mat4 Camera::OnGeneratePerspective()
 	return CreatePerspectiveMatrix(m_persp.ratio, m_persp.near, m_persp.far, m_persp.fov);
 }
 
-Camera::Camera() : ComponentBase()
+Camera::Camera() : ComponentBase(), ICamera(), IUpdatable()
 {
 }
 
-Camera::Camera(const float ratio, const float fov, const float near, const float far)
+Camera::Camera(const float ratio, const float fov, const float near, const float far) : ComponentBase(), ICamera(), IUpdatable()
 {
 	m_persp.ratio = m_prevPersp.ratio = ratio;
 	m_persp.fov = m_prevPersp.ratio = fov;
@@ -93,19 +93,19 @@ bool Camera::PerspectiveNeedUpdate() const noexcept
 	return result;
 }
 
-void Camera::OnCopy(void* toCopy) const
+void Camera::OnCopy(IComponent* toCopy) const
 {
 	ComponentBase::OnCopy(toCopy);
 	ICamera::OnCopy(toCopy);
 	IUpdatable::OnCopy(toCopy);
 
-	Camera* copy = (Camera*)toCopy;
+	Camera* copy = dynamic_cast<Camera*>(toCopy);
 
 	copy->m_persp = m_persp;
 	//copy->m_prevPersp = m_prevPersp;
 }
 
-void	Camera::StartCopy(void*& copyTo) const
+void	Camera::StartCopy(IComponent*& copyTo) const
 {
 	copyTo = new Camera();
 	OnCopy(copyTo);

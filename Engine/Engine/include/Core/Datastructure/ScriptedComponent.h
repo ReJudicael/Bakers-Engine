@@ -29,13 +29,13 @@ namespace Core::Datastructure
 		 * Copy event for editor component handling
 		 * @param copyTo: Store the copy
 		 */
-		virtual void	OnCopy(void* copyTo) const override;
+		virtual void	OnCopy(IComponent* copyTo) const override;
 
 		/**
 		 * Call method for editor component handling
 		 * @param copyTo: Store the copy
 		 */
-		virtual void	StartCopy(void*& copyTo) const override;
+		virtual void	StartCopy(IComponent*& copyTo) const override;
 	public:
 		/**
 		 * Default constructor

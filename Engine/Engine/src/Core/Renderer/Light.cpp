@@ -29,10 +29,10 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace NRenderer
 {
-    void Light::OnCopy(void* copyTo) const
+    void Light::OnCopy(IComponent* copyTo) const
     {
         ComponentBase::OnCopy(copyTo);
-        Light* copy{ (Light*)copyTo };
+        Light* copy{ dynamic_cast<Light*>(copyTo) };
 
         copy->m_type = m_type;
         copy->m_range = m_range;
@@ -45,7 +45,7 @@ namespace NRenderer
         copy->m_attenuation = m_attenuation;
     }
 
-    void Light::StartCopy(void*& copyTo) const
+    void Light::StartCopy(IComponent*& copyTo) const
     {
         copyTo = new Light();
         OnCopy(copyTo);
