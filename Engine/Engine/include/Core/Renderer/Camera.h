@@ -7,10 +7,10 @@
 
 struct CameraPerspective
 {
-	float ratio;
-	float fov;
-	float near;
-	float far;
+	float ratio = 1.714f;
+	float fov = 60.0f;
+	float near = 0.1f;
+	float far = 100.f;
 
 	REGISTER_CLASS()
 };
@@ -18,17 +18,10 @@ struct CameraPerspective
 BAKERS_API_CLASS Camera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
 {
 private:
-	float m_pRatio;
-	float m_pFov;
-	float m_pNear;
-	float m_pFar;
-protected:
-	/*float m_ratio;
-	float m_fov;
-	float m_near;
-	float m_far;*/
-	CameraPerspective m_persp;
 	CameraPerspective m_prevPersp;
+protected:
+	CameraPerspective m_persp;
+	
 
 	Core::Maths::Mat4	OnGenerateCamera() override;
 	Core::Maths::Mat4	OnGeneratePerspective() override;

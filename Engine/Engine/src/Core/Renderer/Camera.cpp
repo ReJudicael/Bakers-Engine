@@ -27,7 +27,7 @@ Core::Maths::Mat4 Camera::OnGeneratePerspective()
 	return CreatePerspectiveMatrix(m_persp.ratio, m_persp.near, m_persp.far, m_persp.fov);
 }
 
-Camera::Camera() : ComponentBase(), ICamera(), IUpdatable()
+Camera::Camera()
 {
 }
 
@@ -102,7 +102,7 @@ void Camera::OnCopy(IComponent* toCopy) const
 	Camera* copy = dynamic_cast<Camera*>(toCopy);
 
 	copy->m_persp = m_persp;
-	//copy->m_prevPersp = m_prevPersp;
+	copy->m_prevPersp = m_prevPersp;
 }
 
 void	Camera::StartCopy(IComponent*& copyTo) const

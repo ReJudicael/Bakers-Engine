@@ -172,7 +172,7 @@ namespace Resources
 				glUniform3fv(GetLocation(loc + "ambient"), 1, lights[i]->GetAmbiant().rgb);
 				glUniform3fv(GetLocation(loc + "diffuse"), 1, lights[i]->GetDiffuse().rgb);
 				glUniform3fv(GetLocation(loc + "specular"), 1, lights[i]->GetSpecular().rgb);
-				glUniform3fv(GetLocation(loc + "attenuation"), 1, lights[i]->GetAttenuation().rgb);
+				glUniform3fv(GetLocation(loc + "attenuation"), 1, lights[i]->GetAttenuation().xyz);
 				glUniform1f(GetLocation(loc + "range"), lights[i]->GetRange());
 				glUniform1f(GetLocation(loc + "angle"), lights[i]->GetAngle());
 				glUniform1f(GetLocation(loc + "anglesmoothness"), lights[i]->GetAngleSmoothness());
