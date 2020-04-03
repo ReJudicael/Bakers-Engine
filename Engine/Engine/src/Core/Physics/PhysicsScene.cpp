@@ -1,6 +1,7 @@
 #include <iostream>
 #include "PhysicsScene.h"
 
+#include "PhysicsSceneSimulationEventCallback.h"
 #include "PxPhysicsAPI.h"
 #include "PxMaterial.h"
 #include "PxDefaultSimulationFilterShader.h"
@@ -120,14 +121,15 @@ namespace Core::Physics
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
 		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
 		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
+		PhysicsSceneSimulationEventCallback* eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
 		// TO DO
 		// filterCallback fonction of a define for filter the collision
-		//sceneDesc.filterShader = &filterShader;
-		sceneDesc.filterShader = &physx::PxDefaultSimulationFilterShader;
+		sceneDesc.filterShader = &Core::Physics::filterShader;
+		//sceneDesc.filterShader = &physx::PxDefaultSimulationFilterShader;
 		// TO DO
 		// eventCallBack class inherite of a physx class for use OnContact, OnTigger
-		//sceneDesc.simulationEventCallback = eventCallBack;
+		sceneDesc.simulationEventCallback = eventCallBack;
 		//sceneDesc.filterCallback = filterCallback;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD;

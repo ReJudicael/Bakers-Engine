@@ -3,6 +3,7 @@
 #include "EngineCore.h"
 #include "BoxCollider.h"
 #include "PhysicsScene.h"
+#include <functional>
 
 
 namespace Core
@@ -11,10 +12,12 @@ namespace Core
 	{
 		IPhysics::IPhysics():
 			m_collider{new Core::Physics::BoxCollider()}
-		{}
+		{
+		}
 		IPhysics::IPhysics(Core::Physics::Collider* collider):
 			m_collider {collider}
-		{}
+		{
+		}
 
 		void IPhysics::OnStart()
 		{

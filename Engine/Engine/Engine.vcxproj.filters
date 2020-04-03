@@ -180,9 +180,6 @@
     <ClCompile Include="src\Core\Physics\PhysicsSceneSimulationEventCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Datastructure\IPhysicsEvent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -360,9 +357,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Datastructure\IPhysicsEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

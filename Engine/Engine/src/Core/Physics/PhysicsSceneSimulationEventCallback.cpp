@@ -6,25 +6,25 @@
 
 namespace Core::Physics
 {
-	void onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs) 
-	{
-		/*for (physx::PxU32 i; i < nbPairs; i++)
-		{
-			pairs[i].
-		}*/
+	void PhysicsSceneSimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs)
+	{	
+		Core::Datastructure::IPhysics* contact1 = static_cast<Core::Datastructure::IPhysics*>(pairHeader.actors[0]->userData);
+		Core::Datastructure::IPhysics* contact2 = static_cast<Core::Datastructure::IPhysics*>(pairHeader.actors[1]->userData);
+		
+		contact1->OnContactEvent(contact2);
+		contact2->OnContactEvent(contact1);
 	}
-	void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
+	void PhysicsSceneSimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
 	{
-		//Core::Datastructure::IPhysicsEvent* event = static_cast<Core::Datastructure::IPhysicsEvent*>(pairs->triggerActor->userData);
 		Core::Datastructure::IPhysics* triggered = static_cast<Core::Datastructure::IPhysics*>(pairs->triggerActor->userData);
 		Core::Datastructure::IPhysics* triggerWith = static_cast<Core::Datastructure::IPhysics*>(pairs->otherActor->userData);
 		if (pairs->status == physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{
-			triggered->m_event.OnTriggerEnterEvent.Invoke(triggerWith);
+			triggered->OnTriggerEnterEvent.Invoke(triggerWith);
 		}
 		else if (pairs->status == physx::PxPairFlag::eNOTIFY_TOUCH_LOST)
 		{
-			triggered->m_event.OnTriggerExitEvent.Invoke(triggerWith);
+			triggered->OnTriggerExitEvent.Invoke(triggerWith);
 		}
 	}
 }

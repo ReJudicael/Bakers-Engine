@@ -14,7 +14,8 @@ namespace Core
 	{
 		StaticMesh::StaticMesh(Collider* collider):
 			IPhysics(collider)
-		{}
+		{
+		}
 
 		void StaticMesh::OnStart()
 		{
@@ -36,6 +37,8 @@ namespace Core
 			m_staticMesh->attachShape(*m_collider->GetShape());
 			//setupFiltering(myActor3, EFilterCollision::JUDICAEL, EFilterCollision::VALENTIN, EFilterCollision::LAVIE | EFilterCollision::NATHAN);
 			//setupFiltering(myActor, EFilterCollision::JUDICAEL, EFilterCollision::NATHAN, EFilterCollision::LAVIE | EFilterCollision::VALENTIN);
+
+			m_staticMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));;
 
 			scene->addActor(*m_staticMesh);
 			m_collider->GetShape()->release();

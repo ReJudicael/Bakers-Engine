@@ -2,6 +2,7 @@
 
 #include "PxDefaultAllocator.h"
 #include "PxDefaultErrorCallback.h"
+#include "PxSimulationEventCallback.h"
 #include "IPhysics.h"
 
 namespace physx

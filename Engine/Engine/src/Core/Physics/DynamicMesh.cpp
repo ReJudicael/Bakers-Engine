@@ -14,7 +14,8 @@ namespace Core
 	{
 		DynamicMesh::DynamicMesh(Collider* collider) :
 			Core::Datastructure::IPhysics(collider)
-		{}
+		{
+		}
 
 		void DynamicMesh::OnStart()
 		{
@@ -36,6 +37,8 @@ namespace Core
 			m_dynamicMesh->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
 			//setupFiltering(myActor3, EFilterCollision::JUDICAEL, EFilterCollision::VALENTIN, EFilterCollision::LAVIE | EFilterCollision::NATHAN);
 			//setupFiltering(myActor, EFilterCollision::JUDICAEL, EFilterCollision::NATHAN, EFilterCollision::LAVIE | EFilterCollision::VALENTIN);
+
+			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));
 
 			scene->addActor(*m_dynamicMesh);
 			m_collider->GetShape()->release();
