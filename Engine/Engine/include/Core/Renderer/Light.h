@@ -36,7 +36,7 @@ namespace NRenderer
 		virtual void	StartCopy(void*& copyTo) const override;
 		virtual void	OnCopy(void* copyTo) const override;
 		virtual void	OnStart() override;
-
+		virtual void	OnDestroy() override;
 	public:
 		/**
 		 * Default Constructor
@@ -66,8 +66,6 @@ namespace NRenderer
 		 * @param other: Light to move
 		 */
 		Light& operator=(Light&& other) noexcept;
-
-		virtual void	OnDestroy() override { m_isActive = false;};
 
 		inline bool IsActive() const { return m_isActive; };
 		inline ELightType GetLightType() const { return m_type; };

@@ -96,3 +96,10 @@ void	Camera::StartCopy(void*& copyTo) const
 	copyTo = new Camera();
 	OnCopy(copyTo);
 }
+
+void	Camera::OnDestroy()
+{
+	ComponentBase::OnDestroy();
+	ICamera::OnDestroy();
+	IUpdatable::OnDestroy();
+}

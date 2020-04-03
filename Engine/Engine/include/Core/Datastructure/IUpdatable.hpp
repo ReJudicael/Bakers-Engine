@@ -23,6 +23,7 @@ namespace Core::Datastructure
 		virtual void		OnUpdate(float deltaTime) = 0;
 
 		virtual void		OnCopy(void* copyTo) const override;
+		virtual void		OnDestroy() override;
 	public:
 		/**
 		 * Destructor of the updatable interface

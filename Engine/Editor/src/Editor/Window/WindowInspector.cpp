@@ -183,7 +183,7 @@ namespace Editor::Window
 
 			if (isClickedDelete)
 			{
-				object->RemoveComponent(it);
+				object->EraseComponent(it);
 				ImGui::PopID();
 				return;
 			}
