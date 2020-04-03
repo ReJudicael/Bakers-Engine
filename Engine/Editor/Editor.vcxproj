@@ -92,6 +92,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Lualib\include;include;include/Editor;include/Editor/Widget;include/Editor/Datastructure;include/Editor/Canvas;include/Editor/Window;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -102,6 +103,9 @@
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)$(Platform)\$(Configuration)\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -109,20 +113,24 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_USE_MATH_DEFINES;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;_CRT_SECURE_NO_DEPRECATE;_WIN32;AG_PERFMON;_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;include/Editor/Datastructure;include/Editor/Canvas;include/Editor/Window;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine.lib;glfw3dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;glfw3dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;rttr_core_lib_s_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\RTTR\lib\;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -132,17 +140,18 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_USE_MATH_DEFINES;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;_CRT_SECURE_NO_WARNINGS;WIN32;WIN64;_CRT_SECURE_NO_DEPRECATE;_WIN32;AG_PERFMON;_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;include;include/Editor;include/Editor/Widget;include/Editor/Datastructure;include/Editor/Canvas;include/Editor/Window;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine.lib;glfw3dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;glfw3dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;rttr_core_s_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\RTTR\lib\;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -161,6 +170,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Lualib\include;include;include/Editor;include/Editor/Widget;include/Editor/Datastructure;include/Editor/Canvas;include/Editor/Window;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

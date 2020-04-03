@@ -8,6 +8,11 @@
 #include "PlayerCamera.h"
 #include "ScriptedComponent.h"
 #include "Framebuffer.h"
+#include "Collider.h"
+#include "BoxCollider.h"
+#include "StaticMesh.h"
+#include "Physics/PhysicsScene.h"
+#include "DynamicMesh.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -103,9 +108,16 @@ namespace Core::Datastructure
 		glDebugMessageCallback(MessageCallback, 0);
 
 		TracyGpuContext
+
+		m_physicsScene = new Core::Physics::PhysicsScene();
+
+		if (!m_physicsScene->InitPhysX())
+			return -1;
+
 		m_manager = new Resources::Loader::ResourcesManager();
 
 		Core::Datastructure::Object* camNode{ m_root->CreateChild("Camera", {}) };
+		camNode->SetPos({ 1.f, 3.f, 0.f });
 
 		PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
 		camNode->AddComponent(c);
@@ -123,12 +135,31 @@ namespace Core::Datastructure
 
 		Core::Datastructure::ScriptedComponent* s = new Core::Datastructure::ScriptedComponent("./Resources/Scripts/DefaultScript.lua");
 		camNode->AddComponent(s);
+		Core::Datastructure::Object* o{ m_root->CreateChild("Scene", {}) };
+		Core::Datastructure::Object* o2{ o->CreateChild("Scene2", {}) };
+		Core::Datastructure::Object* obj{ m_root->CreateChild("Scene3", {}) };
 
 		Core::Datastructure::Object* scene{ m_root->CreateChild("Scene", {}) };
-		m_manager->Load3DObject("Resources/level.fbx");
-		Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, scene);
+		//m_manager->Load3DObject("Resources/level.fbx");
+		//Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, scene);
+		obj->AddComponent(new Core::Physics::DynamicMesh());
 
 		scene->SetScale({ 0.01f, 0.01f, 0.01f });
+		o2->SetPos({ 0.f,-2.f,0.f });
+		o2->SetScale({ 500.f,1.f,500.f });
+		Core::Physics::StaticMesh* staticmesh1 = new Core::Physics::StaticMesh();
+		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f,1.f,500.f });
+		o2->AddComponent(staticmesh1);
+
+		m_manager->Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
+		//m_manager->Load3DObject("Resources/level.fbx");
+		Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", *m_manager, obj);
+		//Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, o);
+
+
+
+		obj->SetPos({ 0.f,10.f,-10.f });
+		o->SetScale({ 0.1,0.1,0.1 });
 		m_fbo.clear();
 		return 0;
 	}
@@ -149,6 +180,8 @@ namespace Core::Datastructure
 	}
 	void	EngineCore::Update(double deltaTime)
 	{
+		m_physicsScene->BeginSimulate(deltaTime);
+		m_physicsScene->EndSimulate();
 		m_root->Update(deltaTime);
 	}
 

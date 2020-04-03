@@ -2,6 +2,7 @@
 #include "Object3DGraph.h"
 #include "LoadResources.h"
 #include "Object.hpp"
+#include "StaticMesh.h"
 
 namespace Resources
 {
@@ -66,6 +67,9 @@ namespace Resources
 				mesh->AddModel(resources.GetModel(nameMesh));
 				mesh->AddMaterials(resources, namesMaterial);
 				Object->AddComponent(mesh);
+				/*For Test*/
+				//Core::Physics::StaticMesh* staticMesh{ new Core::Physics::StaticMesh() };
+				//Object->AddComponent(staticMesh);
 			}
 		}
 
