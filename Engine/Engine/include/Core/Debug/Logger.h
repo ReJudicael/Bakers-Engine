@@ -25,20 +25,12 @@ namespace Core::Debug
 
 	BAKERS_API_CLASS Logger
 	{
-	private:
-		static Logger* m_instance;
-		std::vector<LogData> m_logdata;
-
-		Logger() = default;
-		void AddLog(LogData data);
-
 	public:
+		Logger() = delete;
 		Logger(const Logger&) = delete;
 		Logger& operator=(const Logger&) = delete;
 
 		static void DebugLog(LogType type, const char* messageLog, const char* file, int line, const char* function) noexcept;
-
-		static Logger* GetInstance();
 	};
 };
 

@@ -3,16 +3,11 @@
 
 namespace Core::Debug
 {
-	Logger* Core::Debug::Logger::m_instance = nullptr;
-
-	void Logger::AddLog(LogData data)
-	{
-		m_logdata.push_back(data);
-	}
+	std::vector<LogData> logData;
 
 	void Logger::DebugLog(LogType type, const char* messageLog, const char* file, int line, const char* function) noexcept
 	{
-		GetInstance()->AddLog({ type, messageLog, file, line, function });
+		logData.push_back({ type, messageLog, file, line, function });
 
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		WORD wAtt;
@@ -36,12 +31,5 @@ namespace Core::Debug
 		SetConsoleTextAttribute(hConsole, wAtt);
 		std::cout << "[" << function << "] " << messageLog << std::endl;
 		SetConsoleTextAttribute(hConsole, 0x0F);
-	}
-
-	Logger* Core::Debug::Logger::GetInstance()
-	{
-		if (!m_instance)
-			m_instance = new Logger;
-		return m_instance;
 	}
 }
