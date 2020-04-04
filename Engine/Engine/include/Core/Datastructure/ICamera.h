@@ -15,9 +15,6 @@ namespace Core::Datastructure
 		Core::Maths::Mat4	m_perspective;
 		Core::Maths::Mat4	m_cameraMatrix;
 	protected:
-		//float m_theta = 0;
-		//float m_phi = 0;
-
 		Core::Maths::Vec3	m_front;
 		Core::Maths::Vec3	m_right;
 
@@ -32,7 +29,7 @@ namespace Core::Datastructure
 		virtual Core::Maths::Mat4	OnGeneratePerspective() = 0;
 		virtual Core::Maths::Mat4	OnGenerateCamera() = 0;
 
-		virtual void	OnCopy(void* copyTo) const override;
+		virtual void	OnCopy(IComponent * copyTo) const override;
 		virtual void	OnDestroy() override;
 	public:
 		/**

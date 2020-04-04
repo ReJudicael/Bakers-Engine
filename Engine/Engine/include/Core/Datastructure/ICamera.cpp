@@ -71,10 +71,10 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 	}
 }
 
-void Core::Datastructure::ICamera::OnCopy(void* copyTo) const
+void Core::Datastructure::ICamera::OnCopy(IComponent* copyTo) const
 {
 	IComponent::OnCopy(copyTo);
-	ICamera* copy{ (Core::Datastructure::ICamera*)copyTo };
+	ICamera* copy{ dynamic_cast<Core::Datastructure::ICamera*>(copyTo) };
 
 	copy->m_front = m_front;
 	copy->m_right = m_right;

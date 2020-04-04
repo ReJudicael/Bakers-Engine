@@ -31,15 +31,4 @@ namespace Core::SystemManagement
 	{
 		glfwSetCursorPos(m_core->GetWindow(), pos.x, pos.y);
 	}
-
-	void SystemManagement::InputSystem::SetMouseAppearance(ECursorAppearance type) const noexcept
-	{
-		switch (type)
-		{
-		case ECursorAppearance::DEFAULT:
-			glfwSetInputMode(m_core->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL); break;
-		case ECursorAppearance::INVISIBLE:
-			glfwSetInputMode(m_core->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN); break;
-		}
-	}
 }

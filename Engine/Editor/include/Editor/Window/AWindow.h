@@ -92,6 +92,12 @@ namespace Editor
 			void Focus();
 
 			/**
+			 * Indicate the last frame the window was set to focused
+			 * @return The last frame the window has been focused
+			 */
+			int LastFrameFocused();
+
+			/**
 			 * Display window and widget
 			 */
 			void Draw() override;

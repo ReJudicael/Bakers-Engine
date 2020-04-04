@@ -24,6 +24,7 @@ namespace Editor
 		void	MainLoop();
 		void	Render() override;
 		void	EndFrame() override;
+		bool	IsSelectingEngineView();
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
 

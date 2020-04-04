@@ -105,9 +105,6 @@
     <ClCompile Include="src\Core\Renderer\Mesh.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Renderer\Renderer.cpp">
-      <Filter>Source Files\Core\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\SystemManagement\InputSystem.cpp">
       <Filter>Source Files\Core\SystemManagement</Filter>
     </ClCompile>
@@ -152,6 +149,33 @@
     </ClCompile>
     <ClCompile Include="src\Core\Renderer\Light.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\ScriptedComponent.cpp">
+      <Filter>Source Files\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\PhysicsScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\Collider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\StaticMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\DynamicMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\BoxCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\PhysicsSceneSimulationEventCallback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\IPhysics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\ICollidable.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,9 +296,6 @@
     <ClInclude Include="include\Core\Resources\Loader\LoadResources.h">
       <Filter>Header Files\Core\Resources\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="include\Core\Renderer\Renderer.h">
-      <Filter>Header Files\Core\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Renderer\Mesh.h">
       <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
@@ -307,6 +328,36 @@
     </ClInclude>
     <ClInclude Include="include\Core\Maths\Color.hpp">
       <Filter>Header Files\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\ScriptedComponent.h">
+      <Filter>Header Files\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Maths\MathMinimal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\PhysicsScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\StaticMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\IPhysics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\ICollidable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\DynamicMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\BoxCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

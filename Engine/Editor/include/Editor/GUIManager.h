@@ -102,5 +102,12 @@ namespace Editor
 		 * Returns pointer to engine core
 		 */
 		EditorEngine* GetEngine() noexcept;
+
+		/**
+		 * Indicate whether the given window is focused or not
+		 * @param id: The id of the window within the canvas vector
+		 * @return True if the given window is focused or false if it is not or the id is invalid
+		 */
+		bool IsWindowFocused(const int id);
 	};
 }

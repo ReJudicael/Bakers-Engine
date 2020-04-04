@@ -39,6 +39,15 @@ namespace Editor::Window
 			ImGui::SetWindowFocus(GetNameID().c_str());
 	}
 
+	int AWindow::LastFrameFocused()
+	{
+		ImGuiWindow* win = ImGui::FindWindowByName(GetNameID().c_str());
+		if (win)
+			return win->LastFrameJustFocused;
+
+		return 0;
+	}
+
 	void AWindow::Draw()
 	{
 		PushWindowStyle();

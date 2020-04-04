@@ -24,7 +24,7 @@ namespace Core::Datastructure
 		 * @param cam: Camera to render to
 		 */
 		virtual void OnDraw(ICamera* cam) = 0;
-		virtual void OnCopy(void* copyTo) const override;
+		virtual void OnCopy(IComponent* copyTo) const override;
 	public:
 		/**
 		 * Destructor of the renderable interface

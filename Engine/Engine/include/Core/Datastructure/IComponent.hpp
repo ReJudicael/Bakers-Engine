@@ -41,7 +41,7 @@ namespace Core::Datastructure
 		 * Copies the data of the component into the given component.
 		 * Should always be safe to cast pointer to current component type.
 		 */
-		virtual void	OnCopy(void* copyTo) const {};
+		virtual void	OnCopy(IComponent * copyTo) const {};
 	public:
 		/**
 		 * Destructor, declared virtual as this class is inherited

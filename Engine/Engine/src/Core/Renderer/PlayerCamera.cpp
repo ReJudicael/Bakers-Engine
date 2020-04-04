@@ -54,7 +54,7 @@ void PlayerCamera::ComputeTranslation()
 
 	if (Input()->IsKeyDown(EKey::LEFT_SHIFT))
 		m_isRunning = true;
-	else
+	else if (Input()->IsKeyUp(EKey::LEFT_SHIFT))
 		m_isRunning = false;
 
 	if (move.SquaredLength() > 0)
@@ -142,10 +142,10 @@ void PlayerCamera::Rotate(Core::Maths::Vec3 move)
 	m_isRotating = true;
 }
 
-void PlayerCamera::OnCopy(void* copyTo) const
+void PlayerCamera::OnCopy(IComponent* copyTo) const
 {
 	Camera::OnCopy(copyTo);
-	PlayerCamera* copy{ (PlayerCamera*)copyTo };
+	PlayerCamera* copy{ dynamic_cast<PlayerCamera*>(copyTo) };
 
 	copy->m_speed = m_speed;
 	copy->m_runningSpeed = m_runningSpeed;
@@ -163,8 +163,9 @@ void PlayerCamera::OnCopy(void* copyTo) const
 	copy->m_mousePos = m_mousePos;
 }
 
-void PlayerCamera::StartCopy(void*& copyTo) const
+void PlayerCamera::StartCopy(IComponent*& copyTo) const
 {
-	copyTo = new PlayerCamera();
+	PlayerCamera* test = new PlayerCamera();
+	copyTo = test;
 	OnCopy(copyTo);
 }

@@ -5,13 +5,16 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	registration::class_<CameraPerspective>("Perspective")
+		.property("Ratio", &CameraPerspective::ratio)
+		.property("FOV", &CameraPerspective::fov)
+		.property("Near", &CameraPerspective::near)
+		.property("Far", &CameraPerspective::far);
+
 	registration::class_<Camera>("Camera")
 		.constructor()
 		.constructor<const float, const float, const float, const float>()
-		.property("Ratio", &Camera::m_ratio)
-		.property("FOV", &Camera::m_fov)
-		.property("Near", &Camera::m_near)
-		.property("Far", &Camera::m_far);
+		.property("Perspective", &Camera::m_persp);
 }
 
 Core::Maths::Mat4 Camera::OnGenerateCamera()
@@ -21,40 +24,36 @@ Core::Maths::Mat4 Camera::OnGenerateCamera()
 
 Core::Maths::Mat4 Camera::OnGeneratePerspective()
 {
-	return CreatePerspectiveMatrix(m_ratio, m_near, m_far, m_fov);
+	return CreatePerspectiveMatrix(m_persp.ratio, m_persp.near, m_persp.far, m_persp.fov);
 }
 
-Camera::Camera() : 
-	m_ratio{ 0 },
-	m_fov{ 0 },
-	m_near{ 0 },
-	m_far{ 0 }
+Camera::Camera()
 {
 }
 
-Camera::Camera(const float ratio, const float fov, const float near, const float far) :
-	m_ratio{ ratio },
-	m_fov{ fov },
-	m_near{ near },
-	m_far{ far }
+Camera::Camera(const float ratio, const float fov, const float near, const float far) : ComponentBase(), ICamera(), IUpdatable()
 {
+	m_persp.ratio = m_prevPersp.ratio = ratio;
+	m_persp.fov = m_prevPersp.ratio = fov;
+	m_persp.near = m_prevPersp.ratio = near;
+	m_persp.far = m_prevPersp.ratio = far;
 }
 
 void Camera::OnUpdate(float deltaTime)
 {
 	m_isCamUpdated = false;
+
+	if (PerspectiveNeedUpdate())
+	{
+		m_isPerspectiveUpdated = false;
+		m_prevPersp = m_persp;
+	}
 }
 
 void Camera::OnStart()
 {
 	ICamera::OnStart();
 	IUpdatable::OnStart();
-}
-
-void Camera::SetRatio(const float newRatio)
-{
-	m_ratio = newRatio;
-	m_isPerspectiveUpdated = false;
 }
 
 Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float ratio, const float near, const float far, const float fov)
@@ -77,21 +76,36 @@ Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float ratio, const float
 	return persp;
 }
 
-void Camera::OnCopy(void* toCopy) const
+void Camera::SetRatio(const float newRatio)
+{
+	m_persp.ratio = newRatio;
+	m_prevPersp.ratio = newRatio;
+	m_isPerspectiveUpdated = false;
+}
+
+bool Camera::PerspectiveNeedUpdate() const noexcept
+{
+	bool result = m_prevPersp.ratio != m_persp.ratio;
+	result |= m_prevPersp.fov != m_persp.fov;
+	result |= m_prevPersp.near != m_persp.near;
+	result |= m_prevPersp.far != m_persp.far;
+	
+	return result;
+}
+
+void Camera::OnCopy(IComponent* toCopy) const
 {
 	ComponentBase::OnCopy(toCopy);
 	ICamera::OnCopy(toCopy);
 	IUpdatable::OnCopy(toCopy);
 
-	Camera* copy = (Camera*)toCopy;
+	Camera* copy = dynamic_cast<Camera*>(toCopy);
 
-	copy->m_near = m_near;
-	copy->m_far = m_far;
-	copy->m_fov = m_fov;
-	copy->m_ratio = m_ratio;
+	copy->m_persp = m_persp;
+	copy->m_prevPersp = m_prevPersp;
 }
 
-void	Camera::StartCopy(void*& copyTo) const
+void	Camera::StartCopy(IComponent*& copyTo) const
 {
 	copyTo = new Camera();
 	OnCopy(copyTo);

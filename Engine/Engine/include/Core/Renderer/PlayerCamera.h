@@ -7,7 +7,7 @@
 /**
  * Camera controllable through WASD and mouse inputs
  */
-BAKERS_API_CLASS PlayerCamera : public Camera
+BAKERS_API_CLASS PlayerCamera : public virtual Camera
 {
 private:
 	// Movement through WASD keys
@@ -29,8 +29,8 @@ private:
 	Core::Maths::Vec3 m_angularMovement;
 	Core::Maths::Vec2	m_mousePos;
 protected:
-	virtual void	OnCopy(void* copyTo) const override;
-	virtual void	StartCopy(void*& copyTo) const override;
+	virtual void	OnCopy(IComponent* copyTo) const override;
+	virtual void	StartCopy(IComponent*& copyTo) const override;
 
 public:
 	/**

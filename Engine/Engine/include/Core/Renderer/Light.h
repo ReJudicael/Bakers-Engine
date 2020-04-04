@@ -31,10 +31,10 @@ namespace NRenderer
 		Core::Maths::Color	m_ambiant;
 		Core::Maths::Color	m_diffuse;
 		Core::Maths::Color	m_specular;
-		Core::Maths::Color	m_attenuation;
+		Core::Maths::Vec3	m_attenuation;
 	protected:
-		virtual void	StartCopy(void*& copyTo) const override;
-		virtual void	OnCopy(void* copyTo) const override;
+		virtual void	StartCopy(IComponent*& copyTo) const override;
+		virtual void	OnCopy(IComponent * copyTo) const override;
 		virtual void	OnStart() override;
 		virtual void	OnDestroy() override;
 	public:
@@ -76,7 +76,7 @@ namespace NRenderer
 		inline Core::Maths::Color GetAmbiant() const { return m_ambiant; };
 		inline Core::Maths::Color GetDiffuse() const { return m_diffuse; };
 		inline Core::Maths::Color GetSpecular() const { return m_specular; };
-		inline Core::Maths::Color GetAttenuation() const { return m_attenuation; };
+		inline Core::Maths::Vec3 GetAttenuation() const { return m_attenuation; };
 
 		inline void SetLightType(ELightType value) { m_type = value; };
 		inline void SetRange(const float value) { m_range = value; };
@@ -86,7 +86,7 @@ namespace NRenderer
 		inline void SetAmbiant(const Core::Maths::Color& value) { m_ambiant = value; };
 		inline void SetDiffuse(const Core::Maths::Color& value) { m_diffuse = value; };
 		inline void SetSpecular(const Core::Maths::Color& value) { m_specular = value; };
-		inline void SetAttenuation(const Core::Maths::Color& value) { m_attenuation = value; };
+		inline void SetAttenuation(const Core::Maths::Vec3& value) { m_attenuation = value; };
 
 		/**
 		 * Get Light position in World Space

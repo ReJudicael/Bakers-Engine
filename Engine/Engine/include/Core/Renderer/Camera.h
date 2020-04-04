@@ -5,19 +5,29 @@
 #include "IUpdatable.hpp"
 #include "CoreMinimal.h"
 
-BAKERS_API_CLASS Camera : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
+struct CameraPerspective
 {
+	float ratio = 1.714f;
+	float fov = 60.0f;
+	float near = 0.1f;
+	float far = 100.f;
+
+	REGISTER_CLASS()
+};
+
+BAKERS_API_CLASS Camera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
+{
+private:
+	CameraPerspective m_prevPersp;
 protected:
-	float m_ratio;
-	float m_fov;
-	float m_near;
-	float m_far;
+	CameraPerspective m_persp;
+	
 
 	Core::Maths::Mat4	OnGenerateCamera() override;
 	Core::Maths::Mat4	OnGeneratePerspective() override;
 
-	virtual void OnCopy(void* toCopy) const override;
-	virtual void StartCopy(void*& copyTo) const override;
+	virtual void OnCopy(IComponent * copyTo) const override;
+	virtual void StartCopy(IComponent*& copyTo) const override;
 	virtual void OnDestroy() override;
 public:
 	/**
@@ -45,5 +55,7 @@ public:
 	 */
 	static Core::Maths::Mat4 CreatePerspectiveMatrix(const float ratio, const float near, const float far, const float fov);
 	
+	bool PerspectiveNeedUpdate() const noexcept;
+
 	REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera, Core::Datastructure::IUpdatable)
 };

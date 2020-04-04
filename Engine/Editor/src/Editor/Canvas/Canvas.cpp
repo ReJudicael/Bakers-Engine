@@ -115,4 +115,30 @@ namespace Editor
 	{
 		return m_manager->GetEngine();
 	}
+
+	bool Canvas::IsWindowFocused(const int id)
+	{
+		if (id >= m_contents.size())
+			return false;
+
+		return (GetFocusedWindow() == id) ? true : false;
+	}
+
+	int Canvas::GetFocusedWindow()
+	{
+		int idFrame = -1;
+		int id = 0;
+
+		for (int i{ 0 }; i < m_contents.size(); ++i)
+		{
+			int currentIdFrame = m_contents[i]->LastFrameFocused();
+			if (idFrame < currentIdFrame)
+			{
+				idFrame = currentIdFrame;
+				id = i;
+			}
+		}
+
+		return id;
+	}
 }

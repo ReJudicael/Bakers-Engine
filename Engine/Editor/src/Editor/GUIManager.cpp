@@ -129,4 +129,9 @@ namespace Editor
 	{
 		return m_engine;
 	}
+
+	bool GUIManager::IsWindowFocused(const int id) 
+	{ 
+		return m_canvas->IsWindowFocused(id); 
+	}
 }

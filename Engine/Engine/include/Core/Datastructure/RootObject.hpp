@@ -2,7 +2,6 @@
 
 #include <list>
 #include "Object.hpp"
-#include "Renderer.h"
 
 #include "IUpdatable.hpp"
 #include "IRenderable.hpp"
