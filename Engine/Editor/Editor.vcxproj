@@ -181,7 +181,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\RTTR\lib\$(Configuration)\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)$(Platform)\Tracy\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)$(Platform)\Tracy\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)\$(Platform)\Tracy\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

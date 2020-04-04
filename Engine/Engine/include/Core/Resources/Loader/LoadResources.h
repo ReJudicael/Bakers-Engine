@@ -31,8 +31,6 @@ namespace Resources
 
 	using unorderedmapTexture = std::unordered_map<std::string, std::shared_ptr<Texture>>;
 	using unorderedmapShader = std::unordered_map<std::string, std::shared_ptr<Shader>>;
-	//using std::unordered_map<std::string, std::shared_ptr<Texture>> =  unorderedmapTexture;
-	//#define unorderedmapShader			std::unordered_map<std::string, std::shared_ptr<Shader>>
 	using unorderedmapModel = std::unordered_map<std::string, std::shared_ptr<Model>>;
 	using unorderedmapMaterial = std::unordered_map<std::string, std::shared_ptr<Material>>;
 	using unorderedmapObject3DGraph = std::unordered_map<std::string, std::shared_ptr<Object3DGraph>>;
@@ -272,8 +270,6 @@ namespace Resources
 			void LinkAllModelToOpenGl();
 
 			void ShaderUpdate();
-
-			void CreateProgram(const char* vertex, const char* fragment, const std::string& nameShader);
 		};
 	}
 }

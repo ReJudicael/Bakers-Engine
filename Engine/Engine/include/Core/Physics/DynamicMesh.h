@@ -24,10 +24,36 @@ namespace Core
 			physx::PxRigidDynamic* m_dynamicMesh;
 
 		public:
+			/**
+			 * Default Constructor
+			 */
 			DynamicMesh() = default;
+
+			/**
+			 * Constructor with a Collider, for init the collider directly
+			 * @param collider: the collider with wich we want to construct the physics mesh
+			 */
 			DynamicMesh(Collider* collider);
+
+			/**
+			 * Function inheritated from IPhysics and IUpdatable,
+			 * override for call the two OnStart of IPhysics and IUpdatable
+			 */
 			virtual void OnStart() override;
+
+			/**
+			 * Function inheritated from IPhysics and IUpdatable,
+			 * override for assign the new position and new rotation to the Object
+			 * @param deltaTime: Time since previous frame
+			 */
 			virtual void OnUpdate(float deltaTime) override;
+
+			/**
+			 * Function inheritated from IPhysics,
+			 * override for create a specific physics mesh a dynamic mesh
+			 * @param physics: the PhysX physics from the PhysicsScene
+			 * @param scene: the PhysX scene from the PhysicsScene
+			 */
 			virtual void CreateActor(physx::PxPhysics* physics, physx::PxScene* scene) override;
 
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IPhysics, Core::Datastructure::IUpdatable)

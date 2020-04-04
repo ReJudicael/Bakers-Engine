@@ -38,8 +38,8 @@ namespace Core
 			}
 
 			virtual void OnStart() override;
-			virtual void OnUpdate(float deltaTime) override {};
 			virtual void CreateActor(physx::PxPhysics* physics, physx::PxScene* scene) override;
+			virtual void OnUpdate(float deltaTime) override {};
 
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IPhysics, Core::Datastructure::IUpdatable)
 		};
