@@ -6,7 +6,7 @@
 
 namespace Resources
 {
-	std::vector<NRenderer::Light*>	Shader::lights;
+	std::vector<Core::Renderer::Light*>	Shader::lights;
 
 	Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath, EShaderHeaderType header)
 	{
@@ -159,17 +159,17 @@ namespace Resources
 	void Shader::SendLights()
 	{
 		glUniform1i(GetLocation("uLightCount"), lights.size());
-
+	
 		for (int i = 0; i < lights.size(); i++)
 		{
-			if (lights[i] && !lights[i]->IsActive())
+			if (lights[i] && lights[i]->IsActive())
 			{
 				std::string loc = "uLight[" + std::to_string(i) + "].";
 
 				glUniform1i(GetLocation(loc + "type"), int(lights[i]->GetLightType()));
 				glUniform3fv(GetLocation(loc + "position"), 1, lights[i]->GetPosition().xyz);
 				glUniform3fv(GetLocation(loc + "direction"), 1, lights[i]->GetDirection().xyz);
-				glUniform3fv(GetLocation(loc + "ambient"), 1, lights[i]->GetAmbiant().rgb);
+				glUniform3fv(GetLocation(loc + "ambient"), 1, lights[i]->GetAmbient().rgb);
 				glUniform3fv(GetLocation(loc + "diffuse"), 1, lights[i]->GetDiffuse().rgb);
 				glUniform3fv(GetLocation(loc + "specular"), 1, lights[i]->GetSpecular().rgb);
 				glUniform3fv(GetLocation(loc + "attenuation"), 1, lights[i]->GetAttenuation().xyz);
