@@ -5,6 +5,10 @@
 
 namespace Resources
 {
+
+	/**
+	 * Contains the values for draw the model with indices
+	 */
 	struct OffsetMesh
 	{
 		unsigned int materialIndices;

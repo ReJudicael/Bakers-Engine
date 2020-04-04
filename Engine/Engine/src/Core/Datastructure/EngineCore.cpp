@@ -146,15 +146,15 @@ namespace Core::Datastructure
 
 		scene->SetScale({ 0.01f, 0.01f, 0.01f });
 		o2->SetPos({ 0.f,-2.f,0.f });
-		o2->SetScale({ 500.f,1.f,500.f });
+		o2->SetScale({ 50.f,1.f,50.f });
 		Core::Physics::StaticMesh* staticmesh1 = new Core::Physics::StaticMesh();
 		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f,1.f,500.f });
 		o2->AddComponent(staticmesh1);
 
-		m_manager->Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
-		//m_manager->Load3DObject("Resources/level.fbx");
-		Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", *m_manager, obj);
-		//Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, o);
+		//m_manager->Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
+		m_manager->Load3DObject("Resources/level.fbx");
+		//Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", *m_manager, obj);
+		Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, o);
 
 
 

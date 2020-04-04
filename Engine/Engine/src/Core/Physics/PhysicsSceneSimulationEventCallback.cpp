@@ -6,7 +6,8 @@
 
 namespace Core::Physics
 {
-	void PhysicsSceneSimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs)
+	void PhysicsSceneSimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHeader, 
+														const physx::PxContactPair* pairs, physx::PxU32 nbPairs)
 	{	
 		Core::Datastructure::IPhysics* contact1 = static_cast<Core::Datastructure::IPhysics*>(pairHeader.actors[0]->userData);
 		Core::Datastructure::IPhysics* contact2 = static_cast<Core::Datastructure::IPhysics*>(pairHeader.actors[1]->userData);
@@ -26,5 +27,31 @@ namespace Core::Physics
 		{
 			triggered->OnTriggerExitEvent.Invoke(triggerWith);
 		}
+	}
+
+	physx::PxFilterFlags PhysicsSceneSimulationEventCallback::filterShader(
+		physx::PxFilterObjectAttributes attributes0,
+		physx::PxFilterData filterData0,
+		physx::PxFilterObjectAttributes attributes1,
+		physx::PxFilterData filterData1,
+		physx::PxPairFlags& pairFlags,
+		const void* constantBlock,
+		physx::PxU32 constantBlockSize)
+	{
+		if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
+		{
+			pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
+			return physx::PxFilterFlag::eDEFAULT;
+		}
+
+		// generate contacts for all that were not filtered above
+
+		//pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
+		pairFlags = physx::PxPairFlag::eSOLVE_CONTACT;
+		pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
+		pairFlags |= physx::PxPairFlag::eDETECT_DISCRETE_CONTACT;
+		pairFlags |= physx::PxPairFlag::eDETECT_CCD_CONTACT;
+
+		return physx::PxFilterFlag::eDEFAULT;
 	}
 }

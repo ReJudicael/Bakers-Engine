@@ -19,6 +19,10 @@ namespace Resources
 		class ResourcesManager;
 	}
 
+	/**
+	 * Class use for create a Texture,
+	 * contains all the values use for link a Texture to OpenGL
+	 */
 	struct TextureData
 	{
 		GLuint ID{0};
@@ -29,11 +33,23 @@ namespace Resources
 		std::string nameTexture;
 		std::shared_ptr<Texture> textureptr;
 
-		// just call by the material during a load mesh
-		void CreateTextureFromImage(const std::string& filename, Loader::ResourcesManager& resources, bool shouldFlip = true);
+		/**
+		 * Create a texture from an image (.png, .jpg, etc...)
+		 * @param pathTexture: The path of the texture we want to load
+		 * @param resources: The resourcesManager
+		 * @param shouldFlip: Default value = true.
+		 * if true flip the texture
+		 */
+		void CreateTextureFromImage(const std::string& pathTexture, Loader::ResourcesManager& resources, bool shouldFlip = true);
 
+		/**
+		 * Link the Texture to OpenGL
+		 */
 		void CreateOpenGLTexture();
 
+		/**
+		 * Emplace all the usefull value in the Texture
+		 */
 		void EmplaceInTexture();
 	};
 }

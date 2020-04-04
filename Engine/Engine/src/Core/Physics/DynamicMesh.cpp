@@ -34,9 +34,13 @@ namespace Core
 			//shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
 			//shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 			m_dynamicMesh->attachShape(*m_collider->GetShape());
+			
 			m_dynamicMesh->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
-			//setupFiltering(myActor3, EFilterCollision::JUDICAEL, EFilterCollision::VALENTIN, EFilterCollision::LAVIE | EFilterCollision::NATHAN);
-			//setupFiltering(myActor, EFilterCollision::JUDICAEL, EFilterCollision::NATHAN, EFilterCollision::LAVIE | EFilterCollision::VALENTIN);
+			
+			// usefull if we don't want tu do the update every time if the rigid doesn't move
+			//m_dynamicMesh->setActorFlag(physx::PxActorFlag::eSEND_SLEEP_NOTIFIES);
+			
+			//setupFiltering(m_dynamicMesh, EFilterCollision::T1, EFilterCollision::T2, EFilterCollision::T3);
 
 			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));
 

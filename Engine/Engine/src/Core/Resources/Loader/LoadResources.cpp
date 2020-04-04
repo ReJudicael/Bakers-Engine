@@ -102,19 +102,18 @@ namespace Resources::Loader
 	{
 		std::string Name = fileName;
 
-		const aiScene* scene = aiImportFile(fileName, aiProcess_Triangulate 
+		const aiScene* scene = aiImportFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
 											| aiProcess_GenSmoothNormals 
-											| aiProcess_JoinIdenticalVertices 
+											| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
 											| aiProcess_SplitLargeMeshes 
 											| aiProcess_SortByPType 
-											| aiProcess_ValidateDataStructure
-											| aiProcess_CalcTangentSpace);
+											| aiProcess_ValidateDataStructure // validate the scene data
+											| aiProcess_CalcTangentSpace // calculate the tangent
+											);
 		if (!scene)
 		{
-			// std::cout "could not load file" << std::endl;
 			return false;
 		}
-
 
 		auto index = Name.find_last_of("/");
 
@@ -130,7 +129,6 @@ namespace Resources::Loader
 		{
 			LoadMeshsScene(scene, directoryFile);
 			LoadSceneResources(scene, Name, directoryFile);
-			// std::cout "it's an Fbx" << std::endl;
 		}
 
 		aiReleaseImport(scene);
@@ -144,7 +142,7 @@ namespace Resources::Loader
 		unsigned int indexLastMesh{ 0 };
 		unsigned int lastNumIndices{ 0 };
 
-		for (int i = 0; i < scene->mNumMeshes; i++)
+		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
 		{
 			aiMesh* mesh = scene->mMeshes[i];
 
@@ -156,8 +154,8 @@ namespace Resources::Loader
 			int numberOfSameKey{ LoadMeshsSceneCheckModelIsLoaded(modelData, model, name) };
 
 			modelData->model = model;
-			indexLastMesh = modelData->vertices.size();
-			lastNumIndices = modelData->indices.size();
+			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
+			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
 
 			modelData->LoadVertices(mesh);
 			modelData->LoadIndices(mesh);
@@ -180,10 +178,10 @@ namespace Resources::Loader
 			// the name of the mesh is already a key 
 			// the mesh have the same name of an other mesh but it's not the same mesh
 			// so we add a number to the name of the mesh for create a key
-			numberOfSameKey = 1;
+			numberOfSameKey++;
 			std::string baseName = name;
 			name = baseName + std::to_string(numberOfSameKey);
-			// change the value of name with the prevent value + the number 1
+			// change the value of name with the prevent value + numberOfSameKey
 			name = baseName + std::to_string(numberOfSameKey);
 
 			// while the the key given to the unordered_map find an element
@@ -223,7 +221,7 @@ namespace Resources::Loader
 		m_models.emplace(directory + scene->mMeshes[0]->mName.data, model);
 		m_modelsToLink.push_back(modelData);
 
-		for (int i = 0; i < scene->mNumMeshes; i++)
+		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
 		{
 			aiMesh* mesh = scene->mMeshes[i];
 
@@ -346,6 +344,7 @@ namespace Resources::Loader
 			}
 		}
 	}
+
 	void ResourcesManager::ShaderUpdate()
 	{
 		for (unorderedmapShader::iterator itshader = m_shaders.begin();

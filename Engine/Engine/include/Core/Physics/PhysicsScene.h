@@ -78,6 +78,16 @@ namespace Core::Physics
 		 * Fetch the result of the simulation
 		 */
 		void EndSimulate();
+
+		/*
+		 * Release all PhysXSDK
+		 */
+		void ReleasePhysXSDK();
+
+		/*
+		 * Default Destructor, call ReleasePhysXSDK()
+		 */
+		~PhysicsScene();
 	};
 }
 

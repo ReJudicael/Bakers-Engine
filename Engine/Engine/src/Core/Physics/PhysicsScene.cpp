@@ -62,20 +62,19 @@ namespace Core::Physics
 	{
 		physx::PxSceneDesc sceneDesc(m_pxPhysics->getTolerancesScale());
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
-		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
+		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(4);
 		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
 		PhysicsSceneSimulationEventCallback* eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
-		// TO DO
-		// filterCallback fonction of a define for filter the collision
-		sceneDesc.filterShader = &Core::Physics::filterShader;
+		sceneDesc.filterShader = &Core::Physics::PhysicsSceneSimulationEventCallback::filterShader;
 		//sceneDesc.filterShader = &physx::PxDefaultSimulationFilterShader;
-		// TO DO
-		// eventCallBack class inherite of a physx class for use OnContact, OnTigger
+
 		sceneDesc.simulationEventCallback = eventCallBack;
 		//sceneDesc.filterCallback = filterCallback;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD;
+		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_PCM;
+		//sceneDesc.flags |= physx::PxSceneFlag::eENABLE_STABILIZATION;
 		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
 
 		m_pxScene = m_pxPhysics->createScene(sceneDesc);
@@ -111,5 +110,42 @@ namespace Core::Physics
 	void PhysicsScene::EndSimulate()
 	{
 		m_pxScene->fetchResults(m_IsSimulating);
+	}
+
+	void PhysicsScene::ReleasePhysXSDK()
+	{
+		m_IsSimulating = true;
+
+		EndSimulate();
+
+		if (m_pxPhysics != nullptr)
+		{
+			PxCloseExtensions();
+
+			m_pxScene->release();
+			//m_pxDispatcher->release();
+			m_pxPhysics->release();
+			m_pxCooking->release();
+			if (m_pxPvd)
+			{
+				m_pxPvd->release();
+				m_pxPvd = nullptr;
+			}
+
+			//m_pxCudaContextManager->release();
+
+			m_pxFoundation->release();
+			m_pxScene = nullptr;
+			m_pxPhysics = nullptr;
+			m_pxCooking = nullptr;
+			m_pxFoundation = nullptr;
+			//m_pxDispatcher = nullptr;
+			//m_pxCudaContextManager = nullptr;
+		}
+	}
+
+	PhysicsScene::~PhysicsScene()
+	{
+		ReleasePhysXSDK();
 	}
 }

@@ -13,21 +13,30 @@ namespace Resources
 		class ResourcesManager;
 	}
 
+	/*
+	 * Contains the ID of the texture, inherit of enable_shared_from_this
+	 * for have the function shared_from_this()
+	 */
 	struct Texture : public std::enable_shared_from_this<Texture>
 	{
 		GLuint texture;
 		EOpenGLLinkState stateTexture{EOpenGLLinkState::CANTLINK};
 
+		/*
+		 * Get the pointer of Texture
+		 */
 		std::shared_ptr<Texture> getPtr()
 		{
 			return shared_from_this();
 		}
 
+		/*
+		 * Load a Texture, and create an TextureData
+		 * @param pathTexture: The path of the texture we want to load
+		 * @param resources: The resourcesManager
+		 */
 		void LoadTexture(const std::string& pathTexture, Loader::ResourcesManager& resources);
 
-		~Texture()
-		{
-			//std::cout << "je me detruit" << std::endl;
-		}
+		~Texture() = default;
 	};
 }

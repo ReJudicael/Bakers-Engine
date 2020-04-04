@@ -17,7 +17,9 @@ namespace Core
 {
 	namespace Physics
 	{
-
+		/**
+		 * Contains a collider and a link to a PxRigidDynamic from the PhysicsScene
+		 */
 		BAKERS_API_CLASS DynamicMesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IPhysics, public virtual Core::Datastructure::IUpdatable
 		{
 		private:
@@ -42,19 +44,19 @@ namespace Core
 			virtual void OnStart() override;
 
 			/**
+			 * Function inheritated from IPhysics,
+			 * override for create a specific physX actor a PxRigidDynamic
+			 * @param physics: the PhysX physics from the PhysicsScene
+			 * @param scene: the PhysX scene from the PhysicsScene
+			 */
+			virtual void CreateActor(physx::PxPhysics* physics, physx::PxScene* scene) override;
+
+			/**
 			 * Function inheritated from IPhysics and IUpdatable,
 			 * override for assign the new position and new rotation to the Object
 			 * @param deltaTime: Time since previous frame
 			 */
 			virtual void OnUpdate(float deltaTime) override;
-
-			/**
-			 * Function inheritated from IPhysics,
-			 * override for create a specific physics mesh a dynamic mesh
-			 * @param physics: the PhysX physics from the PhysicsScene
-			 * @param scene: the PhysX scene from the PhysicsScene
-			 */
-			virtual void CreateActor(physx::PxPhysics* physics, physx::PxScene* scene) override;
 
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IPhysics, Core::Datastructure::IUpdatable)
 		};
