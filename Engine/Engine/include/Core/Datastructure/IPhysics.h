@@ -22,6 +22,7 @@ namespace Core
 		{
 		protected:
 			Physics::Collider*		m_collider;
+			bool					m_MeshChangeGlobalPos{ false };
 
 		public:
 			Core::SystemManagement::EventSystem<IPhysics*>	OnTriggerEnterEvent;
@@ -66,7 +67,13 @@ namespace Core
 			 * @param physics: the PhysX physics from the PhysicsScene
 			 * @param scene: the PhysX scene from the PhysicsScene
 			 */
-			virtual void CreateActor(physx::PxPhysics* physics, physx::PxScene* scene) {};
+			virtual void CreateActor(physx::PxPhysics* physics, physx::PxScene* scene) = 0;
+
+
+			/*
+			 * Function call as an event whne the Transform of the Object change	 
+			 */
+			virtual void SetPhysicsTransformParent() = 0;
 
 			REGISTER_CLASS(IComponent)
 		};
