@@ -120,8 +120,6 @@ namespace Editor
 		{
 			widget->Draw();
 		}
-
-		ImGui::ShowDemoWindow();
 	}
 
 	GUIManager* Canvas::GetManager() noexcept

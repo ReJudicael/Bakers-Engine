@@ -85,14 +85,7 @@ namespace ImGui
     IMGUI_API bool ImageButtonUV_HelpMarker(ImTextureID user_texture_id, const char* help_marker, const ImVec2& size)
     {
         bool isClicked = ImageButton(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::BeginTooltip();
-            ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-            ImGui::TextUnformatted(help_marker);
-            ImGui::PopTextWrapPos();
-            ImGui::EndTooltip();
-        }
+        HelpMarkerItem(help_marker);
 
         return isClicked;
     }
@@ -100,6 +93,75 @@ namespace ImGui
     IMGUI_API bool ImageButtonUV(ImTextureID user_texture_id, const ImVec2& size)
     {
         return ImageButton(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
+    }
+
+    IMGUI_API bool ImageButtonUVWithText_HelpMarker(ImTextureID user_texture_id, const std::string& label, const char* help_marker, const ImVec2& icon_size)
+    {
+        bool isClicked = ImageButtonUVWithText(user_texture_id, label, icon_size);
+        HelpMarkerItem(help_marker);
+
+        return isClicked;
+    }
+
+    IMGUI_API bool ImageButtonUVWithText(ImTextureID user_texture_id, const std::string& label, const ImVec2& icon_size)
+    {
+        const char* text = label.c_str();
+        ImGuiWindow* window = GetCurrentWindow();
+        if (window->SkipItems)
+            return false;
+
+        ImVec2 size = icon_size;
+        if (size.x <= 0 && size.y <= 0)
+        {
+            size.x = size.y = ImGui::GetTextLineHeightWithSpacing();
+        }
+        else
+        {
+            if (size.x <= 0)
+                size.x = size.y;
+            else if (size.y <= 0)
+                size.y = size.x;
+            size *= window->FontWindowScale * ImGui::GetIO().FontGlobalScale;
+        }
+
+        ImGuiContext& g = *GImGui;
+        const ImGuiStyle& style = g.Style;
+
+        const ImGuiID id = window->GetID(text);
+        const ImVec2 textSize = ImGui::CalcTextSize(text, NULL, true);
+
+        const float innerSpacing = style.ItemInnerSpacing.x;
+        const ImVec2 padding = style.FramePadding;
+        const ImVec2 totalSizeWithoutPadding(size.x + innerSpacing + textSize.x, size.y > textSize.y ? size.y : textSize.y);
+        const ImRect bb(window->DC.CursorPos, window->DC.CursorPos + totalSizeWithoutPadding + padding * 2);
+
+        ImVec2 start = window->DC.CursorPos + padding;
+        if (size.y < textSize.y)
+            start.y += (textSize.y - size.y) * 0.5f;
+
+        const ImRect image_bb(start, start + size);
+        start = window->DC.CursorPos + padding;
+        start.x += size.x + innerSpacing;
+        if (size.y > textSize.y)
+            start.y += (size.y - textSize.y) * 0.5f;
+
+        ItemSize(bb);
+        if (!ItemAdd(bb, id))
+            return false;
+
+        bool hovered = false, held = false;
+        bool pressed = ButtonBehavior(bb, id, &hovered, &held);
+
+        // Render
+        const ImU32 col = GetColorU32((hovered && held) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
+        RenderFrame(bb.Min, bb.Max, col, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, style.FrameRounding));
+
+        window->DrawList->AddImage(user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
+
+        if (textSize.x > 0)
+            ImGui::RenderText(start, text);
+
+        return pressed;
     }
 
     static float CalcMaxPopupHeightFromItemCount(int items_count)
@@ -192,5 +254,17 @@ namespace ImGui
         PopStyleColor(2);
 
         return isOpen;
+    }
+
+    IMGUI_API void HelpMarkerItem(const char* help_marker)
+    {
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::BeginTooltip();
+            ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+            ImGui::TextUnformatted(help_marker);
+            ImGui::PopTextWrapPos();
+            ImGui::EndTooltip();
+        }
     }
 }
