@@ -23,6 +23,7 @@ namespace Core
 		protected:
 			Physics::Collider*		m_collider;
 
+			virtual void			OnReset() override;
 		public:
 			Core::SystemManagement::EventSystem<IPhysics*>	OnTriggerEnterEvent;
 			Core::SystemManagement::EventSystem<IPhysics*>	OnTriggerExitEvent;

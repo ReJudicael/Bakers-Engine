@@ -36,6 +36,7 @@ namespace Core::Datastructure
 		 * @param copyTo: Store the copy
 		 */
 		virtual void	StartCopy(IComponent*& copyTo) const override;
+		virtual void	OnReset() override;
 	public:
 		/**
 		 * Default constructor

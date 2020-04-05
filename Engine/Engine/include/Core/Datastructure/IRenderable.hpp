@@ -25,6 +25,7 @@ namespace Core::Datastructure
 		 */
 		virtual void OnDraw(ICamera* cam) = 0;
 		virtual void OnCopy(IComponent* copyTo) const override;
+		virtual void OnReset() override;
 	public:
 		/**
 		 * Destructor of the renderable interface

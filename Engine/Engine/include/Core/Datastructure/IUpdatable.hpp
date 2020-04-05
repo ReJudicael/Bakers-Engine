@@ -28,6 +28,7 @@ namespace Core::Datastructure
 		 */
 		virtual void		OnCopy(IComponent* copyTo) const override;
 		virtual void		OnDestroy() override;
+		virtual void		OnReset() override;
 	public:
 		/**
 		 * Destructor of the updatable interface

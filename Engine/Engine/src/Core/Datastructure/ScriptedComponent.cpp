@@ -76,4 +76,11 @@ namespace Core::Datastructure
 		copyTo = new ScriptedComponent();
 		OnCopy(copyTo);
 	}
+
+	void ScriptedComponent::OnReset()
+	{
+		ComponentUpdatable::OnReset();
+
+		m_script = nullptr;
+	}
 }

@@ -197,8 +197,8 @@ namespace Editor::Window
 				return;
 			}
 
-			//if (isClickedReset)
-			//	object->ResetComponent(it);
+			if (isClickedReset)
+				it->Reset();
 
 			if (isOpen)
 				DisplayInstance(t, *it);

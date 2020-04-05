@@ -27,6 +27,7 @@ namespace Core
 			physx::PxRigidStatic*	m_staticMesh;
 
 			virtual void OnDestroy() override;
+			virtual void OnReset() override;
 
 		public:
 

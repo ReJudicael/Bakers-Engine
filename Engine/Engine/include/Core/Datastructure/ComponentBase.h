@@ -19,6 +19,8 @@ namespace Core::Datastructure
 		 * On override, should not call other versions of the function.
 		 */
 		virtual void	StartCopy(IComponent*& copyTo) const;
+
+		virtual void	OnReset() override;
 	public:
 		ComponentBase(const ComponentBase& c) = default;
 		ComponentBase() = default;

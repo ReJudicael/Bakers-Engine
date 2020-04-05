@@ -119,4 +119,11 @@ namespace Core::Renderer
 		ICamera::OnDestroy();
 		IUpdatable::OnDestroy();
 	}
+
+	void	Camera::OnReset()
+	{
+		ComponentBase::OnReset();
+		ICamera::OnReset();
+		IUpdatable::OnReset();
+	}
 }

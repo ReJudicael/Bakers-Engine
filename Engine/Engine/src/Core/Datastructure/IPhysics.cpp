@@ -30,5 +30,12 @@ namespace Core
 		{
 			delete m_collider;
 		}
+
+		void IPhysics::OnReset()
+		{
+			IComponent::OnReset();
+			delete m_collider;
+			m_collider = new Core::Physics::BoxCollider();
+		}
 	}
 }

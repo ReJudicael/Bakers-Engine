@@ -86,4 +86,21 @@ namespace Core::Renderer
             }
         }
     }
+
+    void    Light::OnReset()
+    {
+        ComponentBase::OnReset();
+        
+        for (auto it{ Resources::Shader::lights.begin() }; it != Resources::Shader::lights.end(); ++it)
+        {
+            if (*it == this)
+            {
+                it = Resources::Shader::lights.erase(it);
+                return;
+            }
+        }
+
+        m_isActive = true;
+        m_type = ELightType::DIRECTION;
+    }
 }

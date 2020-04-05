@@ -96,3 +96,16 @@ void Core::Datastructure::ICamera::OnDestroy()
 {
 	GetScene()->RemoveCamera(this);
 }
+
+void	Core::Datastructure::ICamera::OnReset()
+{
+	IComponent::OnReset();
+	GetScene()->RemoveCamera(this);
+	m_front = {};
+	m_right = {};
+	m_cameraHeight = 800;
+	m_cameraWidth = 1280;
+
+	m_isPerspectiveUpdated = false;
+	m_isCamUpdated = false;
+}

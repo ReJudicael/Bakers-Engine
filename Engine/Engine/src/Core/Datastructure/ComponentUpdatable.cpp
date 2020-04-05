@@ -19,4 +19,9 @@ namespace Core::Datastructure
 		copyTo = new ComponentUpdatable();
 		OnCopy(copyTo);
 	}
+
+	void	ComponentUpdatable::OnReset()
+	{
+		IUpdatable::OnReset();
+	}
 }
