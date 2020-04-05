@@ -119,13 +119,13 @@ namespace Core::Datastructure
 		Core::Datastructure::Object* camNode{ m_root->CreateChild("Camera", {}) };
 		camNode->SetPos({ 1.f, 3.f, 0.f });
 
-		PlayerCamera* c = new PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
+		Renderer::PlayerCamera* c = new Renderer::PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
 		camNode->AddComponent(c);
 
-		NRenderer::Light* l = new NRenderer::Light();
-		l->SetLightType(NRenderer::Light::ELightType::POINT);
-		l->SetAmbiant({ 0.3f, 0.3f, 0.3f });
-		l->SetDiffuse({ 0.2f, 0.2f, 0.2f });
+		Core::Renderer::Light* l = new Core::Renderer::Light();
+		l->SetLightType(Core::Renderer::Light::ELightType::POINT);
+		l->SetAmbient({ 0.3f, 0.3f, 0.3f });
+		l->SetDiffuse({ 0.5f, 0.5f, 0.5f });
 		l->SetSpecular({ 0.2f, 0.2f, 0.2f });
 		l->SetAttenuation({ 1.f, 0.022f, 0.0019f });
 		l->SetRange(1000.f);

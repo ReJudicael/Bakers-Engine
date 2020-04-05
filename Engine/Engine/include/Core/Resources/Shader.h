@@ -28,13 +28,16 @@ namespace Resources
 			FRAGMENT
 		};
 
+		/**
+		 * Indicate the type of added content to a shader
+		 */
 		enum class EShaderHeaderType : unsigned int
 		{
 			NONE = 0,
 			LIGHT
 		};
 
-		static std::vector<NRenderer::Light*>	lights;
+		static std::vector<Core::Renderer::Light*>	lights;
 
 	private:
 		EShaderHeaderType m_shaderHeader = EShaderHeaderType::NONE;

@@ -91,6 +91,7 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 	
 	m_fbo->Resize(width, height);
 }
+
 void Core::Datastructure::ICamera::OnDestroy()
 {
 	GetScene()->RemoveCamera(this);

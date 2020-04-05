@@ -22,6 +22,10 @@ namespace Core::Datastructure
 		 */
 		virtual void		OnUpdate(float deltaTime) = 0;
 
+		/**
+		 * Copies the data of the component into the given component.
+		 * Should always be safe to cast pointer to current component type.
+		 */
 		virtual void		OnCopy(IComponent* copyTo) const override;
 		virtual void		OnDestroy() override;
 	public:
