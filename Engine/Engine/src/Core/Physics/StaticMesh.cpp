@@ -25,15 +25,26 @@ namespace Core
 
 		}
 
+		void StaticMesh::DestroyStaticMesh()
+		{
+			GetScene()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_staticMesh);
+			m_staticMesh->release();
+		}
+
 		void StaticMesh::OnDestroy()
 		{
+			DestroyStaticMesh();
 			ComponentBase::OnDestroy();
 			IPhysics::OnDestroy();
 			IUpdatable::OnDestroy();
+			GetParent()->RemoveEventTransformChange();
 		}
 
 		void StaticMesh::OnReset()
 		{
+			// TODO
+			//Maybe To improve
+			DestroyStaticMesh();
 			ComponentBase::OnReset();
 			IPhysics::OnReset();
 			IUpdatable::OnReset();
@@ -56,7 +67,7 @@ namespace Core
 			m_staticMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));;
 
 			scene->addActor(*m_staticMesh);
-			m_collider->GetShape()->release();
+			//m_collider->GetShape()->release();
 		}
 
 		void StaticMesh::SetPhysicsTransformParent()

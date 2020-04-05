@@ -53,6 +53,10 @@ namespace Core
 			 * @param physics: the PhysX physics from the PhysicsScene
 			 */
 			virtual void CreateShape(physx::PxPhysics* physics) = 0;
+
+			virtual void DestroyShape();
+
+			~Collider();
 		};
 	}
 }

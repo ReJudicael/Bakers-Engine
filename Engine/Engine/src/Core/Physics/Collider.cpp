@@ -21,4 +21,15 @@ namespace Core::Physics
 		m_pxShape->setLocalPose(transform);
 	}
 
+	void Collider::DestroyShape()
+	{
+		m_pxShape->release();
+		m_pxMaterial->release();
+	}
+
+	Collider::~Collider()
+	{
+		DestroyShape();
+	}
+
 }

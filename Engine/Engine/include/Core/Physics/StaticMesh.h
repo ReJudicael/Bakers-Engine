@@ -26,6 +26,11 @@ namespace Core
 		protected:
 			physx::PxRigidStatic*	m_staticMesh;
 
+			/*
+			 * Release the PxRigidStatic,
+			 * and release him from the PhysicsScene
+			 */
+			virtual void DestroyStaticMesh();
 			virtual void OnDestroy() override;
 			virtual void OnReset() override;
 
