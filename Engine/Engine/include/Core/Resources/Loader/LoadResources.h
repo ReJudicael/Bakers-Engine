@@ -31,8 +31,6 @@ namespace Resources
 
 	using unorderedmapTexture = std::unordered_map<std::string, std::shared_ptr<Texture>>;
 	using unorderedmapShader = std::unordered_map<std::string, std::shared_ptr<Shader>>;
-	//using std::unordered_map<std::string, std::shared_ptr<Texture>> =  unorderedmapTexture;
-	//#define unorderedmapShader			std::unordered_map<std::string, std::shared_ptr<Shader>>
 	using unorderedmapModel = std::unordered_map<std::string, std::shared_ptr<Model>>;
 	using unorderedmapMaterial = std::unordered_map<std::string, std::shared_ptr<Material>>;
 	using unorderedmapObject3DGraph = std::unordered_map<std::string, std::shared_ptr<Object3DGraph>>;
@@ -61,12 +59,12 @@ namespace Resources
 			std::list<std::shared_ptr<ModelData>>		m_modelsToLink;
 
 			/**
-			 * Construct the ResourcesManager and create the Default shader
+			 * Construct the ResourcesManager and create defaults shaders
 			 */
 			ResourcesManager();
 
 			/**
-			 * Remove all the resources and detach the link with OpenGL of some resources
+			 * Remove all the resources and detach the link with OpenGL of all resources
 			 */
 			~ResourcesManager();
 
@@ -76,7 +74,7 @@ namespace Resources
 			 * @param keyName: the key of the texture with which we want to know the count
 			 * @return the number of elements wich have the key
 			 */
-			inline int GetCountTextures(const std::string& keyName) const
+			inline size_t GetCountTextures(const std::string& keyName) const
 			{
 				return m_textures.count(keyName);
 			}
@@ -100,7 +98,7 @@ namespace Resources
 			 */
 			inline std::shared_ptr<Texture> GetTexture(std::string keyName)
 			{
-				return m_textures[keyName]->getPtr();
+				return m_textures[keyName];
 			}
 
 			/**
@@ -109,7 +107,7 @@ namespace Resources
 			 * @param keyName: the key of the material with which we want to know the count
 			 * @return the number of elements wich have the key
 			 */
-			inline int GetCountMaterials(const std::string& keyName) const
+			inline size_t GetCountMaterials(const std::string& keyName) const
 			{
 				return m_materials.count(keyName);
 			}
@@ -142,7 +140,7 @@ namespace Resources
 			 * @param keyName: the key of the model with which we want to know the count
 			 * @return the number of elements wich have the key
 			 */
-			inline int GetCountModel(const std::string& keyName) const
+			inline size_t GetCountModel(const std::string& keyName) const
 			{
 				return m_models.count(keyName);
 			}
@@ -175,7 +173,7 @@ namespace Resources
 			 * @param keyName: the key of the scene with which we want to know the count
 			 * @return the number of elements wich have the key
 			 */
-			inline int GetCountScene(const std::string& keyName)
+			inline size_t GetCountScene(const std::string& keyName)
 			{
 				return m_scenes.count(keyName);
 			}
@@ -272,8 +270,6 @@ namespace Resources
 			void LinkAllModelToOpenGl();
 
 			void ShaderUpdate();
-
-			void CreateProgram(const char* vertex, const char* fragment, const std::string& nameShader);
 		};
 	}
 }

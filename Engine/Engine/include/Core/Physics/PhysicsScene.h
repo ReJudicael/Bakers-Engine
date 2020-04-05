@@ -23,7 +23,9 @@ namespace Core::Physics
 {
 	class StaticMesh;
 	class Collider;
-
+	/**
+	 * Contains all the PhysX properties for create a PhysXScene
+	 */
 	class PhysicsScene
 	{
 	private:
@@ -42,13 +44,50 @@ namespace Core::Physics
 		float							m_stepSimulation{ 1.f/60.f };
 	public:
 
+		/**
+		 * Init the instance of PhysX for create the PhysXScene
+		 */
 		bool InitPhysX();
 
+		/**
+		 * Attach and create a PhysX actor
+		 * @param physics: the physics mesh that we want to attach and create
+		 * for this PhysicsScene
+		 */
 		void AttachActor(Core::Datastructure::IPhysics* physics);
+
+		/**
+		 * create a PhysX shape
+		 * @param collider: the colliderthat we want to create
+		 * for this PhysicsScene
+		 */
 		void CreatePhysicsShape(Collider& collider);
+
+		/**
+		 * simulate the physics of the scene
+		 * @param deltaTime: the deltaTime give by the update
+		 */
 		void BeginSimulate(const float deltaTime);
+
+		/**
+		 * Create the PhysX scene
+		 */
 		void CreateScene();
+
+		/**
+		 * Fetch the result of the simulation
+		 */
 		void EndSimulate();
+
+		/*
+		 * Release all PhysXSDK
+		 */
+		void ReleasePhysXSDK();
+
+		/*
+		 * Default Destructor, call ReleasePhysXSDK()
+		 */
+		~PhysicsScene();
 	};
 }
 

@@ -12,7 +12,7 @@
 
 struct aiMaterial;
 struct aiScene;
-enum aiTextureType;
+enum aiTextureType : int;
 
 namespace Resources
 {
@@ -21,7 +21,7 @@ namespace Resources
 		class ResourcesManager;
 	}
 	struct Texture;
-	struct Shader;
+	class Shader;
 
 	/**
 	 * Contains the values with which we can draw the color of the mesh

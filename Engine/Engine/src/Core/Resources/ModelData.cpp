@@ -8,9 +8,9 @@ namespace Resources
 {
 	void ModelData::LoadIndices(aiMesh* mesh, const int increaseIndices)
 	{
-		GLuint lastNumIndices = indices.size();
+		unsigned int lastNumIndices = static_cast<unsigned int>(indices.size());
 
-		for (int fid = 0; fid < mesh->mNumFaces; fid++)
+		for (unsigned int fid{ 0 }; fid < mesh->mNumFaces; fid++)
 		{
 			aiFace& face = mesh->mFaces[fid];
 			for (int iid = 0; iid < 3; iid++)
@@ -21,9 +21,9 @@ namespace Resources
 		}
 
 		OffsetMesh offset;
-		offset.count = indices.size() - lastNumIndices;
+		offset.count = static_cast<unsigned int>(indices.size()) - lastNumIndices;
 		offset.beginIndices = lastNumIndices;
-		offset.materialIndices = offsetsMesh.size();
+		offset.materialIndices = static_cast<unsigned int>(offsetsMesh.size());
 
 		offsetsMesh.push_back(offset);
 		model->offsetsMesh = offsetsMesh;
@@ -36,7 +36,7 @@ namespace Resources
 
 		haveTangent = mesh->HasTangentsAndBitangents();
 
-		for (int j = 0; j < mesh->mNumVertices; j++)
+		for (unsigned int j = 0; j < mesh->mNumVertices; j++)
 		{
 			// get the position of the current vertice
 			aiVector3D* Pos = &mesh->mVertices[j];
@@ -99,6 +99,5 @@ namespace Resources
 	{
 		model->stateVAO = stateVAO;
 		model->VAOModel = VAOModel;
-		//model->offsetsMesh = offsetsMesh;
 	}
 }

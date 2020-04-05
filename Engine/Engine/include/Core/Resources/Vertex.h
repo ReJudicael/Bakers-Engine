@@ -4,6 +4,9 @@
 #include "Vec2.hpp" 
 #include "CoreMinimal.h"
 
+/*
+ * Contain the values for create the shape and apply light of a Model
+ */
 struct Vertex
 {
 	Core::Maths::Vec3 Position;

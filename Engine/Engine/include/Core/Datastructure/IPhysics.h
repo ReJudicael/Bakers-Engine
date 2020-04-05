@@ -27,7 +27,6 @@ namespace Core
 			Core::SystemManagement::EventSystem<IPhysics*>	OnTriggerEnterEvent;
 			Core::SystemManagement::EventSystem<IPhysics*>	OnTriggerExitEvent;
 			Core::SystemManagement::EventSystem<IPhysics*>	OnContactEvent;
-			Core::SystemManagement::EventSystem<float>		OnContactEvent2;
 
 
 			/**
@@ -45,22 +44,22 @@ namespace Core
 			IPhysics();
 			
 			/**
-			 * Constructor by collider, for init the collider directly
+			 * Constructor with a Collider, for init the collider directly
 			 * @param collider: the collider with wich we want to construct the physics mesh
 			 */
 			IPhysics(Physics::Collider* collider);
 
 			/**
 			 * Function inheritated from IComponent,
-			 * override for delete the collider
-			 */
-			virtual void OnDestroy() override;
-
-			/**
-			 * Function inheritated from IComponent,
 			 * override for create the collider from the PhysicsScene
 			 */
 			virtual void OnStart() override;
+
+			/**
+			 * Function inheritated from IComponent,
+			 * override for delete the collider
+			 */
+			virtual void OnDestroy() override;
 
 			/**
 			 * Create a physics mesh from the PhysicsScene, call in the OnStart

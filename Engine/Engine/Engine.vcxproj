@@ -153,7 +153,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\debug\*.dll" "$(TargetDir)"</Comma
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_USE_MATH_DEFINES;ENGINE_EXPORTS;WIN32;WIN64;_CRT_SECURE_NO_DEPRECATE;_WIN32;AG_PERFMON;_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;ENGINE_EXPORTS;WIN32;WIN64;_CRT_SECURE_NO_DEPRECATE;_WIN32;AG_PERFMON;_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RTTR\include;$(SolutionDir)Dependencies\Lualib\include;$(SolutionDir)Dependencies\PhysX\source\geomUtils\src;$(SolutionDir)Dependencies\PhysX\source\physx\src;$(SolutionDir)Dependencies\PhysX\source\physx\src\buffering;$(SolutionDir)Dependencies\PhysX\source\pvdruntime\src;$(SolutionDir)Dependencies\PhysX\source\geomutils\headers;$(SolutionDir)Dependencies\PhysX\source\geomutils\include;$(SolutionDir)Dependencies\PhysX\source\geomutils\opcode;$(SolutionDir)Dependencies\PhysX\source\repx\include;$(SolutionDir)Dependencies\PhysX\source\repxupgrader\include;$(SolutionDir)Dependencies\PhysX\source\foundation\source;$(SolutionDir)Dependencies\PhysX\source\foundation\include;$(SolutionDir)Dependencies\PhysX\source\common\src;$(SolutionDir)Dependencies\PhysX\source\lowlevel\software\include;$(SolutionDir)Dependencies\PhysX\source\lowlevel\api\include;$(SolutionDir)Dependencies\PhysX\source\simulationcontroller\include;$(SolutionDir)Dependencies\PhysX\source\scenequery;$(SolutionDir)Dependencies\PhysX\include;$(SolutionDir)Dependencies\PhysX\include\characterkinematic;$(SolutionDir)Dependencies\PhysX\include\common;$(SolutionDir)Dependencies\PhysX\include\cooking;$(SolutionDir)Dependencies\PhysX\include\extensions;$(SolutionDir)Dependencies\PhysX\include\foundation;$(SolutionDir)Dependencies\PhysX\include\geometry;$(SolutionDir)Dependencies\PhysX\include\gpu;$(SolutionDir)Dependencies\PhysX\include\physxprofilesdk;$(SolutionDir)Dependencies\PhysX\include\physxvisualdebuggersdk;$(SolutionDir)Dependencies\PhysX\include\pvd;$(SolutionDir)Dependencies\PhysX\include\pxtask;$(SolutionDir)Dependencies\PhysX\include\repx;$(SolutionDir)Dependencies\PhysX\include\repxUpgrader;$(SolutionDir)Dependencies\PhysX\source;include/Core/;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Core/Resources;include/Core/Resources/Loader;include/Core/Debug;include/Core/Renderer;include/Core/SystemManagement;include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -258,7 +258,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\dll\*.dll" "$(TargetDir)"</Command
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_USE_MATH_DEFINES;ENGINE_EXPORTS;WIN32;WIN64;_CRT_SECURE_NO_DEPRECATE;_WIN32;AG_PERFMON;_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;ENGINE_EXPORTS;WIN32;WIN64;_CRT_SECURE_NO_DEPRECATE;_WIN32;AG_PERFMON;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;_CONSOLE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RTTR\include;$(SolutionDir)Dependencies\Lualib\include;$(SolutionDir)Dependencies\PhysX\source\geomUtils\src;$(SolutionDir)Dependencies\PhysX\source\physx\src;$(SolutionDir)Dependencies\PhysX\source\physx\src\buffering;$(SolutionDir)Dependencies\PhysX\source\pvdruntime\src;$(SolutionDir)Dependencies\PhysX\source\geomutils\headers;$(SolutionDir)Dependencies\PhysX\source\geomutils\include;$(SolutionDir)Dependencies\PhysX\source\geomutils\opcode;$(SolutionDir)Dependencies\PhysX\source\repx\include;$(SolutionDir)Dependencies\PhysX\source\repxupgrader\include;$(SolutionDir)Dependencies\PhysX\source\foundation\source;$(SolutionDir)Dependencies\PhysX\source\foundation\include;$(SolutionDir)Dependencies\PhysX\source\common\src;$(SolutionDir)Dependencies\PhysX\source\lowlevel\software\include;$(SolutionDir)Dependencies\PhysX\source\lowlevel\api\include;$(SolutionDir)Dependencies\PhysX\source\simulationcontroller\include;$(SolutionDir)Dependencies\PhysX\source\scenequery;$(SolutionDir)Dependencies\PhysX\include;$(SolutionDir)Dependencies\PhysX\include\characterkinematic;$(SolutionDir)Dependencies\PhysX\include\common;$(SolutionDir)Dependencies\PhysX\include\cooking;$(SolutionDir)Dependencies\PhysX\include\extensions;$(SolutionDir)Dependencies\PhysX\include\foundation;$(SolutionDir)Dependencies\PhysX\include\geometry;$(SolutionDir)Dependencies\PhysX\include\gpu;$(SolutionDir)Dependencies\PhysX\include\physxprofilesdk;$(SolutionDir)Dependencies\PhysX\include\physxvisualdebuggersdk;$(SolutionDir)Dependencies\PhysX\include\pvd;$(SolutionDir)Dependencies\PhysX\include\pxtask;$(SolutionDir)Dependencies\PhysX\include\repx;$(SolutionDir)Dependencies\PhysX\include\repxUpgrader;$(SolutionDir)Dependencies\PhysX\source;include/Core/;include/Core/Maths;include/Core/Physics;include/Core/Datastructure;include/Core/Resources;include/Core/Resources/Loader;include/Core/Debug;include/Core/Renderer;include/Core/SystemManagement;include/Core/Types;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -271,7 +271,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\dll\*.dll" "$(TargetDir)"</Command
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)Dependencies\RTTR\lib\$(Configuration)\;$(SolutionDir)Dependencies\PhysX\checked\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lua53.lib;glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua53.lib;glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core.lib;PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXVehicle_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -281,6 +281,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\dll\*.dll" "$(TargetDir)"</Command
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\*.dll" "$(TargetDir)"
 xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"
 xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\Release\*.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Lualib\*.dll" "$(TargetDir)"
 xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
     <ProjectReference>
@@ -307,8 +308,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)$(Platform)\Tracy\;$(SolutionDir)Dependencies\RTTR\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>TracyClient.lib;lua53.lib;glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Assimp\lib\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)$(Platform)\Tracy\;$(SolutionDir)Dependencies\RTTR\lib\Release;$(SolutionDir)Dependencies\PhysX\checked\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>TracyClient.lib;lua53.lib;glfw3dll.lib;assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;rttr_core.lib;PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXVehicle_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -317,7 +318,9 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\*.dll" "$(TargetDir)"
 xcopy /y /d "$(SolutionDir)Dependencies\Assimp\dll\*.dll" "$(TargetDir)"
-xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\Release\*.dll" "$(TargetDir)"</Command>
+xcopy /y /d "$(SolutionDir)Dependencies\RTTR\bin\Release\*.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Lualib\*.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>

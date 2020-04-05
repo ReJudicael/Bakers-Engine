@@ -8,66 +8,9 @@
 #include "PxRigidDynamic.h"
 #include "Collider.h"
 #include "StaticMesh.h"
-// physX test
 
-static const physx::PxVec3 convexVerts[] = { physx::PxVec3(0,1,0),physx::PxVec3(1,0,0),physx::PxVec3(-1,0,0),physx::PxVec3(0,0,1),
-physx::PxVec3(0,0,-1) };
+
 #define PVD_HOST "127.0.0.1"
-
-// test physx
-/*{
-	physx::PxMaterial* myMaterial;
-	myMaterial = mPhysics->createMaterial(0.5f, 0.5f, 0.1f); // static friction, dynamic friction, restitution
-
-
-	physx::PxRigidDynamic* myActor2 = mPhysics->createRigidDynamic(physx::PxTransform(0.f, 10.f, 0.f));
-
-	physx::PxShape* shape = mPhysics->createShape(physx::PxSphereGeometry(1.0f), *myMaterial, true);
-	physx::PxShape* shape2 = mPhysics->createShape(physx::PxSphereGeometry(1.0f), *myMaterial, true);
-	shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
-	shape2->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
-	physx::PxRigidStatic* myActor = mPhysics->createRigidStatic(physx::PxTransform(0.f, 0.f, 0.f));
-	//shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
-	//shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
-	myActor->attachShape(*shape2);
-	myActor2->attachShape(*shape);
-
-	//setupFiltering(myActor, EFilterCollision::LAVIE, EFilterCollision::NATHAN, EFilterCollision::JUDICAEL | EFilterCollision::VALENTIN);
-	//mScene->addActor(*myActor);
-	//setupFiltering(myActor2, EFilterCollision::VALENTIN, EFilterCollision::NATHAN, EFilterCollision::LAVIE | EFilterCollision::JUDICAEL);
-	//setupFiltering(myActor2, EFilterCollision::VALENTIN, EFilterCollision::JUDICAEL, EFilterCollision::LAVIE | EFilterCollision::NATHAN);
-	mScene->addActor(*myActor2);
-	shape->release();
-
-
-	physx::PxConvexMeshDesc convexDesc;
-	convexDesc.points.count = 5;
-	convexDesc.points.stride = sizeof(physx::PxVec3);
-	convexDesc.points.data = convexVerts;
-	convexDesc.flags = physx::PxConvexFlag::eCOMPUTE_CONVEX;
-
-	physx::PxDefaultMemoryOutputStream buf;
-	physx::PxConvexMeshCookingResult::Enum result;
-
-	if (!gPxCooking->cookConvexMesh(convexDesc, buf, &result))
-		return;
-	physx::PxDefaultMemoryInputData input(buf.getData(), buf.getSize());
-	physx::PxConvexMesh* convexMesh = mPhysics->createConvexMesh(input);
-
-	physx::PxShape* shape3 = mPhysics->createShape(physx::PxConvexMeshGeometry(convexMesh), *myMaterial, true);
-	physx::PxRigidStatic* myActor3 = mPhysics->createRigidStatic(physx::PxTransform(0.f, 0.f, 0.f));
-	//shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
-	//shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
-	myActor3->attachShape(*shape3);
-	//setupFiltering(myActor3, EFilterCollision::JUDICAEL, EFilterCollision::VALENTIN, EFilterCollision::LAVIE | EFilterCollision::NATHAN);
-	//setupFiltering(myActor, EFilterCollision::JUDICAEL, EFilterCollision::NATHAN, EFilterCollision::LAVIE | EFilterCollision::VALENTIN);
-
-	mScene->addActor(*myActor3);
-	shape3->release();
-
-	physx::PxShape** shapeBuff;
-	float jij = 0;
-}*/
 
 namespace Core::Physics
 {
@@ -84,7 +27,7 @@ namespace Core::Physics
 #ifdef NEED_PVD
 		m_pxPvd = physx::PxCreatePvd(*m_pxFoundation);
 		m_pxPvd->connect(*m_pxTransport, physx::PxPvdInstrumentationFlag::eALL);
-#endif // NEED_PVD
+#endif 
 		m_pxPhysics = PxCreateBasePhysics(PX_PHYSICS_VERSION, *m_pxFoundation,
 			physx::PxTolerancesScale(), true, m_pxPvd);
 		if (!m_pxPhysics)
@@ -119,20 +62,19 @@ namespace Core::Physics
 	{
 		physx::PxSceneDesc sceneDesc(m_pxPhysics->getTolerancesScale());
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
-		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
+		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(4);
 		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
 		PhysicsSceneSimulationEventCallback* eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
-		// TO DO
-		// filterCallback fonction of a define for filter the collision
-		sceneDesc.filterShader = &Core::Physics::filterShader;
+		sceneDesc.filterShader = &Core::Physics::PhysicsSceneSimulationEventCallback::filterShader;
 		//sceneDesc.filterShader = &physx::PxDefaultSimulationFilterShader;
-		// TO DO
-		// eventCallBack class inherite of a physx class for use OnContact, OnTigger
+
 		sceneDesc.simulationEventCallback = eventCallBack;
 		//sceneDesc.filterCallback = filterCallback;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD;
+		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_PCM;
+		//sceneDesc.flags |= physx::PxSceneFlag::eENABLE_STABILIZATION;
 		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
 
 		m_pxScene = m_pxPhysics->createScene(sceneDesc);
@@ -168,5 +110,42 @@ namespace Core::Physics
 	void PhysicsScene::EndSimulate()
 	{
 		m_pxScene->fetchResults(m_IsSimulating);
+	}
+
+	void PhysicsScene::ReleasePhysXSDK()
+	{
+		m_IsSimulating = true;
+
+		EndSimulate();
+
+		if (m_pxPhysics != nullptr)
+		{
+			PxCloseExtensions();
+
+			m_pxScene->release();
+			//m_pxDispatcher->release();
+			m_pxPhysics->release();
+			m_pxCooking->release();
+			if (m_pxPvd)
+			{
+				m_pxPvd->release();
+				m_pxPvd = nullptr;
+			}
+
+			//m_pxCudaContextManager->release();
+
+			m_pxFoundation->release();
+			m_pxScene = nullptr;
+			m_pxPhysics = nullptr;
+			m_pxCooking = nullptr;
+			m_pxFoundation = nullptr;
+			//m_pxDispatcher = nullptr;
+			//m_pxCudaContextManager = nullptr;
+		}
+	}
+
+	PhysicsScene::~PhysicsScene()
+	{
+		ReleasePhysXSDK();
 	}
 }

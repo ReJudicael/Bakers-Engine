@@ -25,7 +25,7 @@ namespace Resources
 			stateTexture = EOpenGLLinkState::LOADPROBLEM;
 			textureptr->stateTexture = EOpenGLLinkState::LOADPROBLEM;
 		}
-		resources.EmplaceTextures(filename, textureptr->getPtr());
+		resources.EmplaceTextures(filename, textureptr);
 	}
 
 	void TextureData::CreateOpenGLTexture()

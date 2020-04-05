@@ -21,17 +21,28 @@ namespace Resources
 			mat = scene->mMaterials[scene->mMeshes[node->mMeshes[0]]->mMaterialIndex];
 			namesMaterial.push_back(directory + mat->GetName().data);
 
-			for (int i{ 1 }; i < node->mNumMeshes; i++)
+			int sameKey{ 0 };
+
+			for (unsigned int i{ 1 }; i < node->mNumMeshes; i++)
 			{
 				Node child;
 				child.position = { 0.0f,  0.0f,  0.0f };
 				child.rotation = { 0.0f,  0.0f,  0.0f };
 				child.scale = { 1.f, 1.f, 1.f };
-				child.nameMesh = directory + scene->mMeshes[node->mMeshes[i]]->mName.data + std::to_string(i);
+				child.nameMesh = directory + scene->mMeshes[node->mMeshes[i]]->mName.data;
+				child.nameObject = node->mName.data;
 				mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
-				child.namesMaterial.push_back(directory + mat->GetName().data + std::to_string(i));
+				std::string nameMaterial = directory + mat->GetName().data;
+				if (static_cast<std::string>(scene->mMeshes[node->mMeshes[0]]->mName.data) == static_cast<std::string>(scene->mMeshes[node->mMeshes[i]]->mName.data))
+				{
+					sameKey++;
+					child.nameMesh += std::to_string(sameKey);
+					child.nameObject += std::to_string(sameKey);
+					nameMaterial += std::to_string(sameKey);
+				}
+
+				child.namesMaterial.push_back(nameMaterial);
 				children.push_back(child);
-				//std::cout << "num Mesh in the scene " << scene->mMeshes[node->mMeshes[i]]->mName.data << " curr name Mesh   " << nameMesh << std::endl;
 			}
 		}
 		else
@@ -58,6 +69,7 @@ namespace Resources
 
 	void Node::CreateObjectScene(Core::Datastructure::Object* Object, Loader::ResourcesManager& resources)
 	{
+		Object->SetName(nameObject);
 		if (nameMesh.find("nothing") == std::string::npos)
 		{
 			Mesh* mesh = { new Mesh() };
@@ -79,18 +91,21 @@ namespace Resources
 
 		for (auto i{ 0 }; i < children.size(); i++)
 		{
-			Core::Datastructure::Object* childObject{ Object->CreateChild(children[i].nameObject, {}) };
+			Core::Datastructure::Object* childObject{ Object->CreateChild("", {}) };
 			children[i].CreateObjectScene(childObject, resources);
 		}
 	}
 
 	void Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory)
 	{
+		nameObject = node->mName.data;
+
 		aiVector3D pos;
 		aiVector3D rot;
 		aiVector3D sca;
 
 		node->mTransformation.Decompose(sca, rot, pos);
+
 
 		position = { pos.x, pos.y, pos.z };
 		rotation = { rot.x, rot.y, rot.z };
@@ -101,7 +116,7 @@ namespace Resources
 
 		nameMesh = nameMesh = directory + scene->mMeshes[currNode->mMeshes[0]]->mName.data;
 
-		for (int i{ 0 }; i < currNode->mNumMeshes; i++)
+		for (unsigned int i{ 0 }; i < currNode->mNumMeshes; i++)
 		{
 			mat = scene->mMaterials[scene->mMeshes[currNode->mMeshes[i]]->mMaterialIndex];
 			namesMaterial.push_back(directory + mat->GetName().data);
