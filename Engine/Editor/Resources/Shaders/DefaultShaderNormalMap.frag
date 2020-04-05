@@ -25,6 +25,9 @@ mat3 GetTBNMatrix(vec3 t, vec3 b, vec3 n)
 void main()
 {
     oColor = texture(uColorTexture, vUV);
+	if (uLightCount == 0)
+		return;
+	
 	vec3 normalFromMap = (vec3(texture(uNormalMap, vUV)) * 2.0) - 1.0;
 	vec3 bitangent = cross(normal, tangent);
 	vec3 newNormal = GetTBNMatrix(tangent, bitangent, normal) * normalFromMap;

@@ -129,7 +129,7 @@ namespace Core::Datastructure
 		l->SetSpecular({ 0.2f, 0.2f, 0.2f });
 		l->SetAttenuation({ 1.f, 0.022f, 0.0019f });
 		l->SetRange(1000.f);
-		l->SetAngle(0.5f);
+		l->SetAngle(0.785f);
 		l->SetAngleSmoothness(0.01f);
 		camNode->AddComponent(l);
 

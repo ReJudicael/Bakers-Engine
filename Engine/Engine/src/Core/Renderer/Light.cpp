@@ -69,9 +69,7 @@ namespace Core::Renderer
 
     Core::Maths::Vec3 Light::GetDirection()
     {
-        Core::Maths::Vec4 forward(0, 0, 1, 0);
-        Core::Maths::Quat q = m_parent->GetGlobalRot();
-        return (q * forward * q.Inversed()).xyz;
+        return m_parent->Forward();
     }
 
     void    Light::OnDestroy()

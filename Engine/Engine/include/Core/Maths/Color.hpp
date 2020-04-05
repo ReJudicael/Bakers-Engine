@@ -107,6 +107,11 @@ namespace Core::Maths
 		{
 			return !operator==(c);
 		}
+
+		inline	std::string ToString() const noexcept
+		{
+			return std::to_string(r) + " " + std::to_string(g) + " " + std::to_string(b) + " " + std::to_string(a);
+		}
 	};
 }
 
