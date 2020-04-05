@@ -84,6 +84,8 @@ namespace Core::Physics
 		 */
 		void ReleasePhysXSDK();
 
+		void RemoveActorFromPhysicsScene(physx::PxRigidActor* actor);
+
 		/*
 		 * Default Destructor, call ReleasePhysXSDK()
 		 */

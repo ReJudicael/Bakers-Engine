@@ -25,15 +25,26 @@ namespace Core
 			IUpdatable::OnStart();
 
 		}
+		void DynamicMesh::DestroyDynamicMesh()
+		{
+			GetScene()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_dynamicMesh);
+			m_dynamicMesh->release();
+		}
+
 		void DynamicMesh::OnDestroy()
 		{
+			DestroyDynamicMesh();
 			ComponentBase::OnDestroy();
 			IPhysics::OnDestroy();
 			IUpdatable::OnDestroy();
+			GetParent()->RemoveEventTransformChange();
 		}
 
 		void DynamicMesh::OnReset()
 		{
+			// TODO
+			//Maybe To improve
+			DestroyDynamicMesh();
 			ComponentBase::OnReset();
 			IPhysics::OnReset();
 			IUpdatable::OnReset();
@@ -60,7 +71,7 @@ namespace Core
 			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));
 
 			scene->addActor(*m_dynamicMesh);
-			m_collider->GetShape()->release();
+			//m_collider->GetShape()->release();
 		}
 
 		void DynamicMesh::SetPhysicsTransformParent()

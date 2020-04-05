@@ -119,6 +119,14 @@ namespace Core::Datastructure
 		}
 
 		/**
+		 * Set an event call when the transform of the Object change
+		 */
+		inline void RemoveEventTransformChange()
+		{
+			m_EventTransformChange.RemoveAllListeners();
+		}
+
+		/**
 		 * Translates the object in local space by given vector
 		 * @param v: Vector to translate by
 		 * @return Const reference to position of the object

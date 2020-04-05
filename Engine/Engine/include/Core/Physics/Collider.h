@@ -54,6 +54,10 @@ namespace Core
 			 */
 			virtual void CreateShape(physx::PxPhysics* physics) = 0;
 
+			virtual void DestroyShape();
+
+			~Collider();
+
 
 		};
 	}

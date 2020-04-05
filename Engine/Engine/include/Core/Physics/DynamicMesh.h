@@ -25,6 +25,11 @@ namespace Core
 		private:
 			physx::PxRigidDynamic* m_dynamicMesh;
 		protected:
+			/*
+			 * Release the PxRigidDynamic, 
+			 * and release him from the PhysicsScene
+			 */
+			virtual void DestroyDynamicMesh();
 			virtual void OnDestroy() override;
 			virtual void OnReset() override;
 		public:

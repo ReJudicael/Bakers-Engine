@@ -144,6 +144,11 @@ namespace Core::Physics
 		}
 	}
 
+	void PhysicsScene::RemoveActorFromPhysicsScene(physx::PxRigidActor* actor)
+	{
+		m_pxScene->removeActor(*actor);
+	}
+
 	PhysicsScene::~PhysicsScene()
 	{
 		ReleasePhysXSDK();
