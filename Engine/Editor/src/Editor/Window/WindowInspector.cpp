@@ -149,19 +149,19 @@ namespace Editor::Window
 		else if (prop.get_type() == type::get<Core::Maths::Vec2>())
 		{
 			Core::Maths::Vec2 v{ prop.get_value(component).get_value<Core::Maths::Vec2>() };
-			if (ImGui::RDragFloat2(prop.get_name().to_string().c_str(), v.xy))
+			if (ImGui::RDragFloat2(prop.get_name().to_string().c_str(), v.xy, 0.01f))
 				prop.set_value(component, v);
 		}
 		else if (prop.get_type() == type::get<Core::Maths::Vec3>())
 		{
 			Core::Maths::Vec3 v{ prop.get_value(component).get_value<Core::Maths::Vec3>() };
-			if (ImGui::RDragFloat3(prop.get_name().to_string().c_str(), v.xyz))
+			if (ImGui::RDragFloat3(prop.get_name().to_string().c_str(), v.xyz, 0.01f))
 				prop.set_value(component, v);
 		}
 		else if (prop.get_type() == type::get<Core::Maths::Vec4>())
 		{
 			Core::Maths::Vec4 v{ prop.get_value(component).get_value<Core::Maths::Vec4>() };
-			if (ImGui::RDragFloat4(prop.get_name().to_string().c_str(), v.xyzw))
+			if (ImGui::RDragFloat4(prop.get_name().to_string().c_str(), v.xyzw, 0.01f))
 				prop.set_value(component, v);
 		}
 		else if (prop.get_type() == type::get<Core::Maths::Color>())
