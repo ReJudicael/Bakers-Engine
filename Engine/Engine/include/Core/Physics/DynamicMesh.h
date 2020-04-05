@@ -26,6 +26,7 @@ namespace Core
 			physx::PxRigidDynamic* m_dynamicMesh;
 		protected:
 			virtual void OnDestroy() override;
+			virtual void OnReset() override;
 		public:
 			/**
 			 * Default Constructor

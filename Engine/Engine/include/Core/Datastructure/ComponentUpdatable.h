@@ -14,7 +14,7 @@ namespace Core::Datastructure
 	protected:
 		virtual void	OnCopy(IComponent* copyTo) const override;
 		virtual void	StartCopy(IComponent*& copyTo) const override;
-
+		virtual void	OnReset() override;
 	public:
 		virtual void OnUpdate(float deltaTime) override {};
 

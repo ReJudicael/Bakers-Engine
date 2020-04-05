@@ -52,6 +52,8 @@ namespace Core::Datastructure
 		 * Destroy event
 		 */
 		virtual void	OnDestroy() override;
+
+		virtual void	OnReset() override;
 	public:
 		/**
 		 * Destructor of the camera interface

@@ -51,4 +51,22 @@ namespace Core::Datastructure
 	{
 		return m_root->GetInput();
 	}
+
+	void	IComponent::OnReset()
+	{
+		m_isInit = false;
+		m_root->AddStart(this);
+		m_isActive = true;
+	}
+
+	void	IComponent::Reset()
+	{
+		if (m_isDestroyed)
+			return; //We do not reset a destroyed component
+
+		ZoneScoped
+			ZoneText("Reset of a component", 21)
+
+		OnReset();
+	}
 }

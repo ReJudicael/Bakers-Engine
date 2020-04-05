@@ -58,6 +58,7 @@ namespace Core::Renderer
 		 * Destroy event
 		 */
 		virtual void OnDestroy() override;
+		virtual void OnReset() override;
 	public:
 		/**
 		 * Default Constructor

@@ -23,4 +23,9 @@ namespace Core::Datastructure
 		StartCopy(result);
 		return dynamic_cast<ComponentBase*>(result);
 	}
+
+	void	ComponentBase::OnReset()
+	{
+		IComponent::OnReset();
+	}
 }

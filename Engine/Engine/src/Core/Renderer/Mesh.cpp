@@ -165,3 +165,9 @@ int Mesh::GetVertexCount()
 		size += m_model->offsetsMesh[i].count;
 	return size;
 }
+
+void	Mesh::OnReset()
+{
+	ComponentBase::OnReset();
+	IRenderable::OnReset();
+}

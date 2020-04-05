@@ -43,4 +43,11 @@ namespace Core::Datastructure
 	{
 		GetScene()->RemoveUpdatable(this);
 	}
+
+	void	IUpdatable::OnReset()
+	{
+		IComponent::OnReset();
+		m_isUpdating = true;
+		GetScene()->RemoveUpdatable(this);
+	}
 }

@@ -30,6 +30,13 @@ namespace Core
 			IUpdatable::OnDestroy();
 		}
 
+		void DynamicMesh::OnReset()
+		{
+			ComponentBase::OnReset();
+			IPhysics::OnReset();
+			IUpdatable::OnReset();
+		}
+
 		void DynamicMesh::CreateActor(physx::PxPhysics* physics, physx::PxScene* scene)
 		{
 			Maths::Vec3 vec = GetParent()->GetPos();

@@ -38,6 +38,11 @@ namespace Core::Datastructure
 		virtual void	OnDestroy() {};
 
 		/**
+		 * Resets the component to its default parameters
+		 */
+		virtual void	OnReset();
+
+		/**
 		 * Copies the data of the component into the given component.
 		 * Should always be safe to cast pointer to current component type.
 		 */
@@ -95,6 +100,12 @@ namespace Core::Datastructure
 		 * and the destructor afterward
 		 */
 		void			Destroy();
+
+		/**
+		 * Resets the component to its default values. 
+		 * It resets the component to after it was added to an object
+		 */
+		void			Reset();
 
 		/**
 		 * Returns if the component has been destroyed

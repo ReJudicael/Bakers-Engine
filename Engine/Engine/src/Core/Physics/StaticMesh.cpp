@@ -31,6 +31,13 @@ namespace Core
 			IUpdatable::OnDestroy();
 		}
 
+		void StaticMesh::OnReset()
+		{
+			ComponentBase::OnReset();
+			IPhysics::OnReset();
+			IUpdatable::OnReset();
+		}
+
 		void StaticMesh::CreateActor(physx::PxPhysics* physics, physx::PxScene* scene)
 		{
 			Maths::Vec3 vec = GetParent()->GetGlobalPos();

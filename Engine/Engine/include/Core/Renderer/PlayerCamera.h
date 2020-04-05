@@ -42,7 +42,7 @@ namespace Core::Renderer
 		 * On override, should not call other versions of the function.
 		 */
 		virtual void	StartCopy(IComponent*& copyTo) const override;
-
+		virtual void	OnReset() override;
 	public:
 		/**
 		 * Default Constructor

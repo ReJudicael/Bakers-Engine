@@ -172,4 +172,22 @@ namespace Core::Renderer
 		OnCopy(copyTo);
 	}
 
+	void	PlayerCamera::OnReset()
+	{
+		Camera::OnReset();
+
+		m_isRunning = false;
+		m_speed = 5;
+		m_runningSpeed = 20;
+		m_minMoveLength = 0.001;
+		m_moveLerpSpeed = 0.5;
+
+		m_isRotating = false;
+		m_isMouseSet = false;
+		m_angularSpeed = 0.1f;
+		m_yaw = 0.f;
+		m_pitch = 0.f;
+		m_minAngularLength = 0.001;
+		m_angularLerpSpeed = 0.5;
+	}
 }

@@ -45,4 +45,10 @@ namespace Core::Datastructure
 		copy->m_texture = m_texture;
 		copy->m_VAO = m_VAO;
 	}
+
+	void IRenderable::OnReset()
+	{
+		IComponent::OnReset();
+		GetScene()->RemoveRenderable(this);
+	}
 }

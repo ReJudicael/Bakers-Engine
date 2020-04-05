@@ -31,6 +31,8 @@ protected:
 	std::shared_ptr<Resources::Model> m_model;
 
 	std::vector<std::shared_ptr<Resources::Material>> m_materialsModel;
+
+	virtual void	OnReset() override;
 public:
 
 	int		m_vertexCount = 0;
