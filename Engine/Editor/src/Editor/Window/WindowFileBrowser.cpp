@@ -160,12 +160,12 @@ namespace Editor::Window
 			else
 				ext = fs.GetExtensionWithoutDot_str(itemPath);
 
-			std::string iconsPath{ "Resources\\Images\\icon_" + ext + ".png" };
+			std::string iconsPath{ "Resources\\Images\\FileBrowserIcons\\icon_" + ext + ".png" };
 			std::shared_ptr<Resources::Texture> icon;
 			if (fs.Exists(iconsPath))
 				GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
 			else
-				GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\icon_default.png", icon);
+				GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\FileBrowserIcons\\icon_default.png", icon);
 
 			it = m_icons.emplace(itemPath, icon).first;
 		}

@@ -17,15 +17,16 @@ namespace Editor::Window
 	{
 	private:
 		/**
-		 * Root object
-		 */
-		Core::Datastructure::RootObject* m_rootObject{ nullptr };
-
-		/**
 		 * TreeNode flags
 		 */
 		ImGuiTreeNodeFlags m_treeNodeFlags;
 
+		/**
+		 * InputText flags to rename an object
+		 */
+		ImGuiInputTextFlags m_inputTextFlags;
+
+	private:
 		/**
 		 * Game object to rename
 		 */
@@ -35,11 +36,6 @@ namespace Editor::Window
 		 * Buffer InputText (to rename an item)
 		 */
 		char m_name[64]{};
-
-		/**
-		 * InputText flags to rename a path
-		 */
-		ImGuiInputTextFlags m_inputTextFlags;
 
 		/**
 		 * Decide whether the user can rename a game object or not

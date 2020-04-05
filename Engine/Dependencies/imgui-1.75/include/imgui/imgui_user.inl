@@ -5,15 +5,15 @@ namespace ImGui
 {
     IMGUI_API void PushItemToCenter(float width_percentage)
     {
-        ImGui::Indent(ImGui::GetWindowContentRegionWidth() * ((1 - width_percentage) / 2));
-        ImGui::SetNextItemWidth(ImGui::GetWindowContentRegionWidth() * width_percentage);
+        ImGui::Indent(GetWindowContentRegionWidth() * ((1 - width_percentage) / 2));
+        ImGui::SetNextItemWidth(GetWindowContentRegionWidth() * width_percentage);
     }
 
     IMGUI_API void PushItemToRight(const char* label, float offset)
     {
         if (label)
             Text(label);
-        SameLine(GetContentRegionAvail().x / offset);
+        SameLine(offset);
         PushItemWidth(GetContentRegionAvail().x);
     }
 
@@ -80,6 +80,21 @@ namespace ImGui
     IMGUI_API void ImageUV(ImTextureID user_texture_id, const ImVec2& size)
     {
         return Image(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
+    }
+
+    IMGUI_API bool ImageButtonUV_HelpMarker(ImTextureID user_texture_id, const char* help_marker, const ImVec2& size)
+    {
+        bool isClicked = ImageButton(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::BeginTooltip();
+            ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+            ImGui::TextUnformatted(help_marker);
+            ImGui::PopTextWrapPos();
+            ImGui::EndTooltip();
+        }
+
+        return isClicked;
     }
 
     IMGUI_API bool ImageButtonUV(ImTextureID user_texture_id, const ImVec2& size)

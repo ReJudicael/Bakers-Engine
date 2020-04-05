@@ -34,7 +34,7 @@ namespace Editor
 
 		public:
 			/**
-			 * Explicite constructor
+			 * Explicit constructor
 			 * @param name: Name of component
 			 */
 			DrawableComponent(const std::string& name = "");

@@ -37,6 +37,7 @@ namespace Editor::Window
 		 */
 		void DisplayViewport();
 
+	private:
 		/**
 		 * Draw elements in window
 		 */

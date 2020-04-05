@@ -3,6 +3,7 @@
 #include "AWindow.h"
 #include "FileSystem.hpp"
 #include "Texture.h"
+
 #include <unordered_map>
 
 namespace Editor::Window
@@ -14,6 +15,12 @@ namespace Editor::Window
 	{
 	private:
 		/**
+		 * InputText flags to rename a path
+		 */
+		ImGuiInputTextFlags m_inputTextFlags;
+
+	private:
+		/**
 		 * FileSystem to handle path navigation
 		 */
 		Core::SystemManagement::FileSystem fs;
@@ -22,11 +29,6 @@ namespace Editor::Window
 		 * Name of the path to be renamed
 		 */
 		std::string m_renamePath{ "" };
-
-		/**
-		 * InputText flags to rename a path
-		 */
-		ImGuiInputTextFlags m_inputTextFlags;
 
 		/**
 		 * Buffer InputText (to rename an item)
@@ -120,7 +122,6 @@ namespace Editor::Window
 		 */
 		void PopupMenuOnItem(const std::string& itemPath);
 
-	private:
 		/**
 		 * Slider to zoom the displayed content
 		 */

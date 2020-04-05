@@ -81,6 +81,19 @@ namespace Editor
 		 */
 		void OpenAllWindows(bool opened);
 
+		/**
+		 * Indicate whether the given window is focused or not
+		 * @param id: The id of the window within the canvas vector
+		 * @return True if the given window is focused or false if it is not or the id is invalid
+		 */
+		bool IsWindowFocused(const size_t id);
+
+		/**
+		 * Get ID of last focused window
+		 * @return ID within the canvas vector of the last focused Window
+		 */
+		size_t GetFocusedWindow();
+
 	private:
 		/**
 		 * Check shortcuts
@@ -129,26 +142,15 @@ namespace Editor
 
 		/**
 		 * Returns the manager of the canvas
+		 * @return The manager of the canvas
 		 */
 		GUIManager* GetManager() noexcept;
 
 		/**
-		 * Returns a pointer to the engine core
+		 * Returns the engine core
+		 * @return The engine core
 		 */
 		EditorEngine* GetEngine() noexcept;
-
-		/**
-		 * Indicate whether the given window is focused or not
-		 * @param id: The id of the window within the canvas vector
-		 * @return True if the given window is focused or false if it is not or the id is invalid
-		 */
-		bool	IsWindowFocused(const int id);
-
-		/**
-		 * Get id of last focused window
-		 * @return Id within the canvas vector of the last focused Window
-		 */
-		int GetFocusedWindow();
 	};
 
 	template<class T, class ...Args>

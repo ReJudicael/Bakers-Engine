@@ -11,7 +11,10 @@ namespace Editor::Window
 		AWindow{ canvas, "Inspector", visible }
 	{
 		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\delete.png", m_deleteIcon);
+		m_inputTextFlags = ImGuiInputTextFlags_AutoSelectAll;
+
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\delete.png", m_deleteIcon);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\reset.png", m_resetIcon);
 	}
 
 	void WindowInspector::PushWindowStyle()
@@ -30,7 +33,7 @@ namespace Editor::Window
 
 		ImGui::SetNextItemWidth(-FLT_MIN);
 
-		if (ImGui::InputText("## Name", m_name, IM_ARRAYSIZE(m_name), ImGuiInputTextFlags_AutoSelectAll))
+		if (ImGui::InputText("## Name", m_name, IM_ARRAYSIZE(m_name), m_inputTextFlags))
 			object->SetName(m_name);
 	}
 
@@ -44,9 +47,9 @@ namespace Editor::Window
 			object->SetPos(pos);
 
 		Core::Maths::Vec3 rot{ object->GetRot().ToEulerAngles() };
-		rot *= RAD2DEG;
+		rot *= static_cast<float>(RAD2DEG);
 		if (ImGui::RDragFloat3("Rotation", rot.xyz))
-			object->SetRot(rot * DEG2RAD);
+			object->SetRot(rot * static_cast<float>(DEG2RAD));
 
 		Core::Maths::Vec3 scale{ object->GetScale() };
 		if (ImGui::RDragFloat3("Scale", scale.xyz, 0.01f))
@@ -63,9 +66,9 @@ namespace Editor::Window
 			object->SetGlobalPos(pos);
 
 		Core::Maths::Vec3 rot{ object->GetGlobalRot().ToEulerAngles() };
-		rot *= RAD2DEG;
+		rot *= static_cast<float>(RAD2DEG);
 		if (ImGui::RDragFloat3("Rotation", rot.xyz))
-			object->SetGlobalRot(rot * DEG2RAD);
+			object->SetGlobalRot(rot * static_cast<float>(DEG2RAD));
 
 		Core::Maths::Vec3 scale{ object->GetGlobalScale() };
 		if (ImGui::RDragFloat3("Scale", scale.xyz, 0.01f))
@@ -173,14 +176,18 @@ namespace Editor::Window
 	{
 		for (auto it : object->GetComponents())
 		{
-			type t = it->get_type();
-
 			ImGui::PushID(it);
+
+			type t = it->get_type();
 			bool isOpen = ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags);
 
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
-			bool isClickedDelete = ImGui::ImageButtonUV(reinterpret_cast<ImTextureID>(m_deleteIcon->texture), { 16 });
+#pragma warning(suppress : 4312)
+			bool isClickedDelete = ImGui::ImageButtonUV_HelpMarker(reinterpret_cast<ImTextureID>(m_deleteIcon->texture), "Delete");
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
+#pragma warning(suppress : 4312)
+			bool isClickedReset = ImGui::ImageButtonUV_HelpMarker(reinterpret_cast<ImTextureID>(m_resetIcon->texture), "Reset");
 			ImGui::PopStyleColor(1);
 
 			if (isClickedDelete)
@@ -190,12 +197,12 @@ namespace Editor::Window
 				return;
 			}
 
+			//if (isClickedReset)
+			//	object->ResetComponent(it);
+
 			if (isOpen)
-			{
-				ImGui::Spacing();
 				DisplayInstance(t, *it);
-				ImGui::Spacing();
-			}
+
 			ImGui::PopID();
 		}
 	}
@@ -205,9 +212,8 @@ namespace Editor::Window
 		ImGui::Spacing();
 		for (const auto& prop : t.get_properties())
 		{
-			if (prop.is_readonly())
-				continue;
-			DrawProperty(prop, inst);
+			if (!prop.is_readonly())
+				DrawProperty(prop, inst);
 		}
 		ImGui::Spacing();
 	}

@@ -23,6 +23,11 @@ namespace Editor::Window
 		 */
 		ImGuiTreeNodeFlags m_treeNodeFlags;
 
+		/**
+		 * InputText flags to rename an object
+		 */
+		ImGuiInputTextFlags m_inputTextFlags;
+
 	private:
 		/**
 		 * Buffer of InputText (to rename the objectSelected)
@@ -35,9 +40,14 @@ namespace Editor::Window
 		bool m_isLocal{ true };
 
 		/**
-		 * Delete Icon to delete a component
+		 * Delete icon to delete a component
 		 */
 		std::shared_ptr<Resources::Texture> m_deleteIcon;
+
+		/**
+		 * Reset icon to reset a component
+		 */
+		std::shared_ptr<Resources::Texture> m_resetIcon;
 
 	public:
 		/**
@@ -89,14 +99,14 @@ namespace Editor::Window
 		/**
 		 * Draw an enum property in window
 		 * @param prop: Property to draw
-		 * @param component:
+		 * @param component: Component instance
 		 */
 		void DrawEnum(rttr::property prop, rttr::instance component);
 
 		/**
 		 * Draw a property of the component in window
 		 * @param prop: Property to draw
-		 * @param component:
+		 * @param component: Component instance
 		 */
 		void DrawProperty(rttr::property prop, rttr::instance component);
 

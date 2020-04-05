@@ -125,13 +125,13 @@ namespace Editor
 		EndFrame();
 	}
 
+	bool GUIManager::IsWindowFocused(const size_t id) 
+	{ 
+		return m_canvas->IsWindowFocused(id); 
+	}
+
 	EditorEngine* GUIManager::GetEngine() noexcept
 	{
 		return m_engine;
-	}
-
-	bool GUIManager::IsWindowFocused(const int id) 
-	{ 
-		return m_canvas->IsWindowFocused(id); 
 	}
 }

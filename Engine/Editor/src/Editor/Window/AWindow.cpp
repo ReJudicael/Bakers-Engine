@@ -41,11 +41,7 @@ namespace Editor::Window
 
 	int AWindow::LastFrameFocused()
 	{
-		ImGuiWindow* win = ImGui::FindWindowByName(GetNameID().c_str());
-		if (win)
-			return win->LastFrameJustFocused;
-
-		return 0;
+		return ImGui::FindWindowByName(GetNameID().c_str())->LastFrameJustFocused;
 	}
 
 	void AWindow::Draw()

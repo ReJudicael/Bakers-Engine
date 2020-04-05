@@ -69,6 +69,18 @@ namespace Editor
 			 */
 			void End();
 
+		public:
+			/**
+			 * Focus widget
+			 */
+			void Focus();
+
+			/**
+			 * Indicate the last frame the window was set to focused
+			 * @return The last frame the window has been focused
+			 */
+			int LastFrameFocused();
+
 		protected:
 			/**
 			 * Push window style
@@ -87,29 +99,20 @@ namespace Editor
 
 		public:
 			/**
-			 * Focus widget
-			 */
-			void Focus();
-
-			/**
-			 * Indicate the last frame the window was set to focused
-			 * @return The last frame the window has been focused
-			 */
-			int LastFrameFocused();
-
-			/**
 			 * Display window and widget
 			 */
 			void Draw() override;
 
 		public:
 			/**
-			 * Returns the canvas containing the AWindow
+			 * Returns the manager of the canvas
+			 * @return The manager of the canvas
 			 */
 			Canvas* GetCanvas() noexcept;
 
 			/**
-			 * Returns a pointer to the engine core
+			 * Returns the engine core
+			 * @return The engine core
 			 */
 			EditorEngine* GetEngine() noexcept;
 		};

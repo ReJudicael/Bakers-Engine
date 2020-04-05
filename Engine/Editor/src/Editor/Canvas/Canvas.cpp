@@ -37,6 +37,29 @@ namespace Editor
 			widget->isVisible = opened;
 	}
 
+	bool Canvas::IsWindowFocused(const size_t id)
+	{
+		return (GetFocusedWindow() == id) ? true : false;
+	}
+
+	size_t Canvas::GetFocusedWindow()
+	{
+		int idFrame{ -1 };
+		size_t id{ 0 };
+
+		for (size_t i{ 0 }; i < m_contents.size(); ++i)
+		{
+			int currentIdFrame{ m_contents[i]->LastFrameFocused() };
+			if (idFrame < currentIdFrame)
+			{
+				idFrame = currentIdFrame;
+				id = i;
+			}
+		}
+
+		return id;
+	}
+
 	void Canvas::CheckShortcuts()
 	{
 		Core::SystemManagement::InputSystem* inputSystem = GetEngine()->GetInputSystem();
@@ -114,31 +137,5 @@ namespace Editor
 	EditorEngine* Canvas::GetEngine() noexcept
 	{
 		return m_manager->GetEngine();
-	}
-
-	bool Canvas::IsWindowFocused(const int id)
-	{
-		if (id >= m_contents.size())
-			return false;
-
-		return (GetFocusedWindow() == id) ? true : false;
-	}
-
-	int Canvas::GetFocusedWindow()
-	{
-		int idFrame = -1;
-		int id = 0;
-
-		for (int i{ 0 }; i < m_contents.size(); ++i)
-		{
-			int currentIdFrame = m_contents[i]->LastFrameFocused();
-			if (idFrame < currentIdFrame)
-			{
-				idFrame = currentIdFrame;
-				id = i;
-			}
-		}
-
-		return id;
 	}
 }
