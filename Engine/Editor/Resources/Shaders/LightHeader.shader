@@ -26,7 +26,7 @@ vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3
 	vec3 lightDir;
 	float attenuation = 1;
 	if (light.type == 0)
-		lightDir = normalize(light.direction);
+		lightDir = normalize(-light.direction);
 	else
 	{
 		lightDir = (light.position - pos);
@@ -40,7 +40,7 @@ vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3
 		attenuation = 1 / (light.attenuation.x + light.attenuation.y * distance + light.attenuation.z * (distance * distance));
 		if (light.type == 2)
 		{
-			vec3 spotDir = normalize(-light.direction);
+			vec3 spotDir = normalize(light.direction);
 			float angle = acos(dot(lightDir, spotDir));
 			if (angle >= (light.angle * 0.5) - light.anglesmoothness)
 			{

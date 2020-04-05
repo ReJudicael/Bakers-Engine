@@ -158,13 +158,12 @@ namespace Resources
 
 	void Shader::SendLights()
 	{
-		glUniform1i(GetLocation("uLightCount"), lights.size());
-	
+		int activeLightsCount = 0;
 		for (int i = 0; i < lights.size(); i++)
 		{
 			if (lights[i] && lights[i]->IsActive())
 			{
-				std::string loc = "uLight[" + std::to_string(i) + "].";
+				std::string loc = "uLight[" + std::to_string(activeLightsCount) + "].";
 
 				glUniform1i(GetLocation(loc + "type"), int(lights[i]->GetLightType()));
 				glUniform3fv(GetLocation(loc + "position"), 1, lights[i]->GetPosition().xyz);
@@ -176,7 +175,10 @@ namespace Resources
 				glUniform1f(GetLocation(loc + "range"), lights[i]->GetRange());
 				glUniform1f(GetLocation(loc + "angle"), lights[i]->GetAngle());
 				glUniform1f(GetLocation(loc + "anglesmoothness"), lights[i]->GetAngleSmoothness());
+				activeLightsCount++;
 			}
 		}
+
+		glUniform1i(GetLocation("uLightCount"), activeLightsCount);
 	}
 }
