@@ -4,6 +4,7 @@
 
 #include "Transform.hpp"
 #include "ComponentBase.h"
+#include "EventSystem.hpp"
 #include "CoreMinimal.h"
 
 namespace Core::Datastructure
@@ -26,6 +27,8 @@ namespace Core::Datastructure
 		Object* m_parent;
 		std::list<Object*>			m_childs;
 		std::list<ComponentBase*>	m_components;
+		Core::SystemManagement::EventSystem<>	m_EventTransformChange;
+
 		/**
 		 * Returns the transform, updates it if needed.
 		 * @return Updated transform
@@ -108,6 +111,14 @@ namespace Core::Datastructure
 		inline std::list<Object*>&	GetChildren() noexcept;
 
 		/**
+		 * Set an event call when the transform of the Object change
+		 */
+		inline void SetAnEventTransformChange(std::function<void()> function)
+		{
+			m_EventTransformChange += function;
+		}
+
+		/**
 		 * Translates the object in local space by given vector
 		 * @param v: Vector to translate by
 		 * @return Const reference to position of the object
@@ -144,6 +155,7 @@ namespace Core::Datastructure
 			m_transform.SetLocalPos(pos);
 			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 				(*it)->RequireUpdate();
+			m_EventTransformChange.Invoke();
 		}
 		/**
 		 * Set local rotation of object to given value
@@ -154,6 +166,7 @@ namespace Core::Datastructure
 			m_transform.SetLocalRot(rot);
 			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 				(*it)->RequireUpdate();
+			m_EventTransformChange.Invoke();
 		}
 		/**
 		 * Set local scale of object to given value
@@ -231,6 +244,7 @@ namespace Core::Datastructure
 			m_transform.SetGlobalPos(m_parent->GetUpdatedTransform(), pos);
 			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 				(*it)->RequireUpdate();
+			m_EventTransformChange.Invoke();
 		}
 		/**
 		 * Sets the global rotation of the object
@@ -241,6 +255,7 @@ namespace Core::Datastructure
 			m_transform.SetGlobalRot(m_parent->GetUpdatedTransform(), rot);
 			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 				(*it)->RequireUpdate();
+			m_EventTransformChange.Invoke();
 		}
 		/**
 		 * Sets the global scale of the object

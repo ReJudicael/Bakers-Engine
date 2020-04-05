@@ -68,6 +68,12 @@ namespace Core
 			 */
 			virtual void CreateActor(physx::PxPhysics* physics, physx::PxScene* scene) override;
 
+			/*
+			 * Function inheritated from IPhysics,
+			 * override for set and reset the Transform of the PxRigidStatic
+			 */
+			virtual void SetPhysicsTransformParent() override;
+
 			/**
 			 * Function inheritated from IPhysics and IUpdatable,
 			 * @param deltaTime: Time since previous frame

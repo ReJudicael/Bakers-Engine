@@ -151,10 +151,10 @@ namespace Core::Datastructure
 		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f,1.f,500.f });
 		o2->AddComponent(staticmesh1);
 
-		//m_manager->Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
-		m_manager->Load3DObject("Resources/level.fbx");
-		//Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", *m_manager, obj);
-		Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, o);
+		m_manager->Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
+		//m_manager->Load3DObject("Resources/level.fbx");
+		Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", *m_manager, obj);
+		//Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, o);
 
 
 

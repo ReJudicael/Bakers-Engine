@@ -19,6 +19,7 @@ namespace Core
 
 		void StaticMesh::OnStart()
 		{
+			GetParent()->SetAnEventTransformChange(std::bind(&StaticMesh::SetPhysicsTransformParent, this));
 			IPhysics::OnStart();
 			IUpdatable::OnStart();
 
@@ -56,6 +57,19 @@ namespace Core
 
 			scene->addActor(*m_staticMesh);
 			m_collider->GetShape()->release();
+		}
+
+		void StaticMesh::SetPhysicsTransformParent()
+		{
+			if (m_staticMesh == nullptr)
+				return;
+
+			Maths::Vec3 vec = GetParent()->GetPos();
+			physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
+			Maths::Quat quat = GetParent()->GetRot();
+			physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
+
+			m_staticMesh->setGlobalPose(physx::PxTransform(position, rotation));
 		}
 	}
 }
