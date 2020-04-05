@@ -77,7 +77,20 @@ namespace Editor::Window
 
 	void WindowInspector::DisplayObjectTransform(Core::Datastructure::Object* object)
 	{
-		if (ImGui::CollapsingHeader("Transform", m_treeNodeFlags))
+		bool isOpen = ImGui::CollapsingHeader("Transform", m_treeNodeFlags);
+
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
+		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
+#pragma warning(suppress : 4312)
+		bool isClickedReset = ImGui::ImageButtonUV_HelpMarker(reinterpret_cast<ImTextureID>(m_resetIcon->texture), "Reset");
+		ImGui::PopStyleColor(1);
+
+		if (isClickedReset)
+		{
+			// Reset Transform
+		}
+
+		if (isOpen)
 		{
 			ImGui::Spacing();
 

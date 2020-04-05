@@ -5,7 +5,7 @@
 
 namespace Core::Renderer
 {
-	Framebuffer::Framebuffer(int width, int height) noexcept : FBO{ 0 }, ColorTexture {0}, DepthStencilRenderbuffer {0}, Size()
+	Framebuffer::Framebuffer(int width, int height) noexcept : FBO{ 0 }, ColorTexture{ 0 }, DepthStencilRenderbuffer{ 0 }, Size(), userPtr{ nullptr }
 	{
 		GLint PreviousFramebuffer;
 		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);

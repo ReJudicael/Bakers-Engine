@@ -40,7 +40,7 @@ namespace Core::Datastructure
 	EngineCore::EngineCore() : EngineCore(1280, 800)
 	{}
 
-	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo{ nullptr }, m_window{ nullptr }, m_manager {nullptr}
+	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo{ nullptr }, m_window{ nullptr }, m_manager{ nullptr }, m_physicsScene{ nullptr }
 	{
 		m_inputSystem = new Core::SystemManagement::InputSystem(this);
 		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem, this);
@@ -117,9 +117,10 @@ namespace Core::Datastructure
 		m_manager = new Resources::Loader::ResourcesManager();
 
 		Core::Datastructure::Object* camNode{ m_root->CreateChild("Camera", {}) };
-		camNode->SetPos({ 1.f, 3.f, 0.f });
+		camNode->SetPos({ 0.f, 2.f, 5.f });
+		camNode->SetRot({ 0.f, 0.f, 0.f });
 
-		Renderer::PlayerCamera* c = new Renderer::PlayerCamera(1200.f / 700.f, 60, 0.1, 100);
+		Renderer::PlayerCamera* c = new Renderer::PlayerCamera(1200.f / 700.f, 60.f, 0.1f, 100.f);
 		camNode->AddComponent(c);
 
 		Core::Renderer::Light* l = new Core::Renderer::Light();
@@ -127,39 +128,34 @@ namespace Core::Datastructure
 		l->SetAmbient({ 0.3f, 0.3f, 0.3f });
 		l->SetDiffuse({ 0.5f, 0.5f, 0.5f });
 		l->SetSpecular({ 0.2f, 0.2f, 0.2f });
-		l->SetAttenuation({ 1.f, 0.022f, 0.0019f });
+		l->SetAttenuation({ 0.3f, 0.02f, 0.002f });
 		l->SetRange(1000.f);
 		l->SetAngle(0.785f);
 		l->SetAngleSmoothness(0.01f);
 		camNode->AddComponent(l);
 
-		Core::Datastructure::ScriptedComponent* s = new Core::Datastructure::ScriptedComponent("./Resources/Scripts/DefaultScript.lua");
+		Core::Datastructure::ScriptedComponent* s = new Core::Datastructure::ScriptedComponent("Resources/Scripts/DefaultScript.lua");
 		camNode->AddComponent(s);
-		Core::Datastructure::Object* o{ m_root->CreateChild("Scene", {}) };
-		Core::Datastructure::Object* o2{ o->CreateChild("Scene2", {}) };
-		Core::Datastructure::Object* obj{ m_root->CreateChild("Scene3", {}) };
+		Core::Datastructure::Object* dining_room{ m_root->CreateChild("DiningRoom", {}) };
+		Core::Datastructure::Object* staticMesh{ dining_room->CreateChild("Static Mesh", {}) };
+		Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
 
-		Core::Datastructure::Object* scene{ m_root->CreateChild("Scene", {}) };
-		//m_manager->Load3DObject("Resources/level.fbx");
-		//Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, scene);
-		obj->AddComponent(new Core::Physics::DynamicMesh());
+		umbreon->AddComponent(new Core::Physics::DynamicMesh());
+		umbreon->SetPos({ 0.f,10.f,-10.f });
 
-		scene->SetScale({ 0.01f, 0.01f, 0.01f });
-		o2->SetPos({ 0.f,-2.f,0.f });
-		o2->SetScale({ 50.f,1.f,50.f });
+		staticMesh->SetPos({ 0.f,-2.f,0.f });
+		staticMesh->SetScale({ 50.f,1.f,50.f });
 		Core::Physics::StaticMesh* staticmesh1 = new Core::Physics::StaticMesh();
-		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f,1.f,500.f });
-		o2->AddComponent(staticmesh1);
+		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f, 1.f, 500.f });
+		staticMesh->AddComponent(staticmesh1);
 
-		m_manager->Load3DObject("Resources/Umbreon/UmbreonHighPoly.obj");
-		//m_manager->Load3DObject("Resources/level.fbx");
-		Resources::Object3DGraph::CreateScene("Resources/Umbreon/UmbreonHighPoly.obj", *m_manager, obj);
-		//Resources::Object3DGraph::CreateScene("Resources/level.fbx", *m_manager, o);
+		m_manager->Load3DObject("Resources/Models/Umbreon/UmbreonHighPoly.obj");
+		Resources::Object3DGraph::CreateScene("Resources/Models/Umbreon/UmbreonHighPoly.obj", *m_manager, umbreon);
 
+		m_manager->Load3DObject("Resources/Models/DiningRoom/dining_room.fbx");
+		Resources::Object3DGraph::CreateScene("Resources/Models/DiningRoom/dining_room.fbx", *m_manager, dining_room);
+		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
 
-
-		obj->SetPos({ 0.f,10.f,-10.f });
-		o->SetScale({ 0.1,0.1,0.1 });
 		m_fbo.clear();
 		return 0;
 	}
@@ -180,9 +176,9 @@ namespace Core::Datastructure
 	}
 	void	EngineCore::Update(double deltaTime)
 	{
-		m_physicsScene->BeginSimulate(deltaTime);
+		m_physicsScene->BeginSimulate(static_cast<float>(deltaTime));
 		m_physicsScene->EndSimulate();
-		m_root->Update(deltaTime);
+		m_root->Update(static_cast<float>(deltaTime));
 	}
 
 	Core::SystemManagement::InputSystem* EngineCore::GetInputSystem()
@@ -251,7 +247,6 @@ namespace Core::Datastructure
 			}
 		}
 	}
-
 
 	void EngineCore::SetCallbackToGLFW()
 	{

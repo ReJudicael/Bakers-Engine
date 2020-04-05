@@ -121,7 +121,6 @@ namespace Resources
 			mat = scene->mMaterials[scene->mMeshes[currNode->mMeshes[i]]->mMaterialIndex];
 			namesMaterial.push_back(directory + mat->GetName().data);
 		}
-
 	}
 
 	void Object3DGraph::SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSingleMesh)

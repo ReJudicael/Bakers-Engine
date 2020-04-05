@@ -13,9 +13,9 @@ namespace Core
 	namespace Physics
 	{
 		DynamicMesh::DynamicMesh(Collider* collider) :
-			Core::Datastructure::IPhysics(collider)
+			Core::Datastructure::IPhysics(collider),
+			m_dynamicMesh{ nullptr }
 		{
-			
 		}
 
 		void DynamicMesh::OnStart()

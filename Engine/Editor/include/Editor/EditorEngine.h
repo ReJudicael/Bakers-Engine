@@ -9,7 +9,7 @@ namespace Editor
 	class EditorEngine : public Core::Datastructure::EngineCore
 	{
 	protected:
-		Editor::GUIManager* m_man;
+		Editor::GUIManager* m_man{ nullptr };
 
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };

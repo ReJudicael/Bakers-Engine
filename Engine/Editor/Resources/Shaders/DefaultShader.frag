@@ -16,6 +16,9 @@ in vec3 normal;
 void main()
 {
 	oColor = texture(uColorTexture, vUV);
+	if (uLightCount == 0)
+		return;
+
 	vec3 view = normalize(camPos - unprojectedPos);
 	vec3 lightContribution;
 	for (int i = 0; i < uLightCount; i++)

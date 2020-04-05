@@ -16,7 +16,7 @@ RTTR_PLUGIN_REGISTRATION
 		.property_readonly("vertex count", &Mesh::GetVertexCount);
 }
 
-Mesh::Mesh() : ComponentBase()
+Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
 {
 
 }

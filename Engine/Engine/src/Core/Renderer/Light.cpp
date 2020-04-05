@@ -58,7 +58,7 @@ namespace Core::Renderer
         Resources::Shader::lights.emplace_back(this);
     }
 
-    Light::Light() : ComponentBase()
+    Light::Light() : ComponentBase(), m_angle{ 0.f }, m_angleSmoothness{ 0.f }, m_range{ 100.f }
     {
     }
 

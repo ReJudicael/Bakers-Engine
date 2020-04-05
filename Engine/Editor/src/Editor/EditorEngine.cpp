@@ -140,7 +140,7 @@ namespace Editor
 	{
 		double pos[2];
 		glfwGetCursorPos(GetWindow(), &pos[0], &pos[1]);
-		return Core::Maths::Vec2(pos[0], pos[1]);
+		return Core::Maths::Vec2(static_cast<float>(pos[0]), static_cast<float>(pos[1]));
 	}
 
 	void EditorEngine::SetCallbackToGLFW()
