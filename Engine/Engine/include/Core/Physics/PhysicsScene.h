@@ -15,6 +15,7 @@ namespace physx
 	class PxScene;
 	class PxShape;
 	class PxErrorCallback;
+	struct PxRaycastHit;
 }
 
 #define NEED_PVD
@@ -23,6 +24,19 @@ namespace Core::Physics
 {
 	class StaticMesh;
 	class Collider;
+
+	struct HitResult
+	{
+		Core::Datastructure::Object*		objectHit;
+		Core::Datastructure::IPhysics*		physicsMeshHit;
+		Core::Maths::Vec3					hitPoint;
+		float								distance;
+
+
+		void initHitResult(physx::PxRaycastHit raycastHit);
+	};
+
+
 	/**
 	 * Contains all the PhysX properties for create a PhysXScene
 	 */
@@ -55,6 +69,11 @@ namespace Core::Physics
 		 * for this PhysicsScene
 		 */
 		void AttachActor(Core::Datastructure::IPhysics* physics);
+		
+		/**
+		 * Create the PhysX scene
+		 */
+		void CreateScene();
 
 		/**
 		 * create a PhysX shape
@@ -63,16 +82,17 @@ namespace Core::Physics
 		 */
 		void CreatePhysicsShape(Collider& collider);
 
+		bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResult& result, const float Distance = FLT_MAX);
+
+
+		bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResult>& result, const float Distance = FLT_MAX);
+
 		/**
 		 * simulate the physics of the scene
 		 * @param deltaTime: the deltaTime give by the update
 		 */
 		void BeginSimulate(const float deltaTime);
 
-		/**
-		 * Create the PhysX scene
-		 */
-		void CreateScene();
 
 		/**
 		 * Fetch the result of the simulation

@@ -73,6 +73,19 @@ namespace Core
 			 */
 			virtual void OnUpdate(float deltaTime) override;
 
+			inline virtual void SetLinearVelocity(const Core::Maths::Vec3& newVelocity)
+			{
+				m_dynamicMesh->setLinearVelocity({ newVelocity.x, newVelocity.y, newVelocity.z });
+			}
+
+			inline virtual Core::Maths::Vec3 GetVelocity()
+			{
+				physx::PxVec3 vec{ m_dynamicMesh->getLinearVelocity() };
+				return { vec.x, vec.y, vec.z };
+			}
+
+			virtual void ClearForces();
+
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IPhysics, Core::Datastructure::IUpdatable)
 		};
 	}

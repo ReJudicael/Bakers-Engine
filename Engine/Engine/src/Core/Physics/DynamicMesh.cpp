@@ -70,6 +70,8 @@ namespace Core
 
 			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));
 
+			float i = m_dynamicMesh->getMass();
+			m_dynamicMesh->setMass(1000);
 			scene->addActor(*m_dynamicMesh);
 			//m_collider->GetShape()->release();
 		}
@@ -89,8 +91,7 @@ namespace Core
 
 			m_dynamicMesh->setGlobalPose(physx::PxTransform(position, rotation));
 
-			m_dynamicMesh->clearForce();
-			m_dynamicMesh->clearTorque();
+			ClearForces();
 		}
 
 		void DynamicMesh::OnUpdate(float deltaTime)
@@ -103,6 +104,12 @@ namespace Core
 			GetParent()->SetGlobalPos({ pos.x, pos.y, pos.z });
 			m_MeshChangeGlobalPos = true;
 			GetParent()->SetGlobalRot({ rot.w, rot.x, rot.y, rot.z });
+		}
+
+		void DynamicMesh::ClearForces()
+		{
+			m_dynamicMesh->clearForce();
+			m_dynamicMesh->clearTorque();
 		}
 	}
 }

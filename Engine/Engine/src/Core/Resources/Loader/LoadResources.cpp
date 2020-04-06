@@ -8,10 +8,12 @@
 #include "LoadResources.h"
 #include "Assimp/cimport.h"
 #include "Assimp/scene.h"
+#include "Assimp/Importer.hpp"
 #include "Assimp/postprocess.h"
 #include "Assimp/material.h"
 #include "Assimp/texture.h"
 #include "Assimp/RemoveComments.h"
+
 #include "Object.hpp"
 #include "Model.h"
 #include "Texture.h"
@@ -102,7 +104,12 @@ namespace Resources::Loader
 	{
 		std::string Name = fileName;
 
-		const aiScene* scene = aiImportFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
+		Assimp::Importer importer;
+
+		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
+
+		//aiImportFile
+		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
 											| aiProcess_GenSmoothNormals 
 											| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
 											| aiProcess_SplitLargeMeshes 
@@ -131,8 +138,8 @@ namespace Resources::Loader
 			LoadSceneResources(scene, Name, directoryFile);
 		}
 
-		aiReleaseImport(scene);
-
+		//aiReleaseImport(scene);
+		importer.FreeScene();
 		return true;
 	}
 

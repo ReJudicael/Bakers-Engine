@@ -90,6 +90,50 @@ namespace Core::Physics
 		collider.CreateShape(m_pxPhysics);
 	}
 
+	void HitResult::initHitResult(physx::PxRaycastHit raycastHit)
+	{
+		Core::Datastructure::IPhysics* physicsMesh{ static_cast<Core::Datastructure::IPhysics*>(raycastHit.actor->userData) };
+		physicsMeshHit = physicsMesh;
+		objectHit = physicsMesh->GetParent();
+
+		physx::PxVec3 posHit{ raycastHit.position };
+		hitPoint = { posHit.x, posHit.y, posHit.z };
+		distance = raycastHit.distance;
+	}
+
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResult& result, const float Distance)
+	{
+		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
+		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
+
+		physx::PxRaycastBuffer hit;
+		bool status = m_pxScene->raycast(origin, dir, static_cast<physx::PxReal>(Distance), hit);
+		if (status)
+		{
+			result.initHitResult(hit.block);
+		}
+		return status;
+	}
+
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResult>& results, const float Distance)
+	{
+		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
+		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
+
+		physx::PxRaycastBuffer hit;
+		bool status = m_pxScene->raycast(origin, dir, static_cast<physx::PxReal>(Distance), hit);
+		if (status)
+		{
+			for (physx::PxU32 i{ 0 }; i < hit.nbTouches; i++)
+			{
+				HitResult result;
+				result.initHitResult(hit.touches[i]);
+				results.push_back(result);
+			}
+		}
+		return status;
+	}
+
 	void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)
 	{
 		physics->CreateActor(m_pxPhysics, m_pxScene);
