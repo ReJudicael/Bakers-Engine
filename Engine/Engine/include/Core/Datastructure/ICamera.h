@@ -25,7 +25,7 @@ namespace Core::Datastructure
 		unsigned			m_cameraWidth{1280};
 		unsigned			m_cameraHeight{800};
 
-		Core::Renderer::Framebuffer* m_fbo;
+		Core::Renderer::Framebuffer* m_fbo{ nullptr };
 
 		bool				m_isPerspectiveUpdated{ false };
 		bool				m_isCamUpdated{ false };

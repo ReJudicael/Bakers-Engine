@@ -95,6 +95,7 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 void Core::Datastructure::ICamera::OnDestroy()
 {
 	GetScene()->RemoveCamera(this);
+	GetScene()->GetEngine()->DeleteFBO(m_fbo);
 }
 
 void	Core::Datastructure::ICamera::OnReset()
@@ -108,4 +109,9 @@ void	Core::Datastructure::ICamera::OnReset()
 
 	m_isPerspectiveUpdated = false;
 	m_isCamUpdated = false;
+	if (m_fbo != nullptr)
+	{
+		GetScene()->GetEngine()->DeleteFBO(m_fbo);
+		m_fbo = nullptr;
+	}
 }

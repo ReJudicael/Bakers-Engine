@@ -189,6 +189,8 @@ namespace Core::Datastructure
 
 	Core::Renderer::Framebuffer* EngineCore::GetFBO(int num)
 	{
+		if (num >= m_fbo.size())
+			return nullptr;
 		auto it{ m_fbo.begin() };
 		std::advance(it, num);
 
@@ -239,13 +241,15 @@ namespace Core::Datastructure
 
 	void EngineCore::DeleteFBO(Core::Renderer::Framebuffer* fbo)
 	{
-		for (auto it{ m_fbo.begin() }; it != m_fbo.end(); ++it)
+		for (auto it{ m_fbo.begin() }; it != m_fbo.end();)
 		{
 			if (*it == fbo)
 			{
 				it = m_fbo.erase(it);
 				delete fbo;
 			}
+			else
+				++it;
 		}
 	}
 
