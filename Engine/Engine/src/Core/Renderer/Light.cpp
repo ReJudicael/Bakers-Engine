@@ -58,7 +58,7 @@ namespace Core::Renderer
         Resources::Shader::lights.emplace_back(this);
     }
 
-    Light::Light() : ComponentBase(), m_angle{ 0.f }, m_angleSmoothness{ 0.f }, m_range{ 100.f }
+    Light::Light() : ComponentBase()
     {
     }
 
@@ -94,11 +94,18 @@ namespace Core::Renderer
             if (*it == this)
             {
                 it = Resources::Shader::lights.erase(it);
-                return;
+                break;
             }
         }
 
         m_isActive = true;
         m_type = ELightType::DIRECTION;
+        m_range = 100;
+        m_angle = 0.785f;
+        m_angleSmoothness = 0.001f;
+        m_ambient = { 1.f, 1.f, 1.f };
+        m_diffuse = { 1.f, 1.f, 1.f };
+        m_specular = { 1.f, 1.f, 1.f };
+        m_attenuation = { 1.f, 0.f, 0.f };
     }
 }

@@ -354,4 +354,13 @@ namespace Resources::Loader
 			itshader->second->SendLights();
 		}
 	}
+
+	void ResourcesManager::ReloadShaders()
+	{
+		for (unorderedmapShader::iterator itshader = m_shaders.begin();
+			itshader != m_shaders.end(); ++itshader)
+		{
+			itshader->second->Reload();
+		}
+	}
 }

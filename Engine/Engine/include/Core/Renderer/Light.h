@@ -26,13 +26,13 @@ namespace Core::Renderer
 	private:
 		bool				m_isActive = true;
 		ELightType			m_type = ELightType::DIRECTION;
-		float				m_range;
-		float				m_angle;
-		float				m_angleSmoothness;
+		float				m_range = 100;
+		float				m_angle = 0.785f;
+		float				m_angleSmoothness = 0.001f;
 		Core::Maths::Color	m_ambient;
 		Core::Maths::Color	m_diffuse;
 		Core::Maths::Color	m_specular;
-		Core::Maths::Vec3	m_attenuation;
+		Core::Maths::Vec3	m_attenuation = { 1.f, 0.f, 0.f };
 	protected:
 		/**
 		 * Copies the data of the component into the given component.
