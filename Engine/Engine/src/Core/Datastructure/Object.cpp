@@ -13,6 +13,7 @@ RTTR_PLUGIN_REGISTRATION
 		.method("Translate", &Object::Translate)
 		.method("Rotate", &Object::Rotate)
 		.method("Scale", &Object::Scale)
+		.property("Active", &Object::IsActive, &Object::SetActivity)
 		.property("pos", &Object::GetPos, &Object::SetPos)
 		.property("rot", &Object::GetRot, &Object::SetRot)
 		.property("pos", &Object::GetGlobalPos, &Object::SetGlobalPos)

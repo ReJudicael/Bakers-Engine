@@ -30,7 +30,7 @@ namespace Core::Datastructure
 	{
 		ZoneScoped
 			ZoneText("Update of a component", 22)
-		if (m_isUpdating && m_isActive && !IsDestroyed())
+		if (m_isUpdating && m_isActive && !IsDestroyed() && m_parent->IsActive())
 			OnUpdate(deltaTime);
 	}
 

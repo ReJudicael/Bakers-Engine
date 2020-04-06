@@ -65,7 +65,7 @@ namespace Core::Renderer
 		 * Activation getter
 		 * @return True is the light is active, false otherwise
 		 */
-		inline bool IsActive() const { return m_isActive; };
+		inline bool IsActive() const;
 		/**
 		 * Type getter
 		 * @return Current light type

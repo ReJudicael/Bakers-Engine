@@ -60,7 +60,7 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 	ZoneScoped
 		ZoneText("Render of a camera", 22)
 		TracyGpuZone("Rendering frame buffer")
-	if (IsInit() && m_isActive && !IsDestroyed())
+	if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 		glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);

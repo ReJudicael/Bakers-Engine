@@ -101,4 +101,9 @@ namespace Core::Renderer
         m_isActive = true;
         m_type = ELightType::DIRECTION;
     }
+
+    bool    Light::IsActive() const
+    {
+        return m_isActive && m_parent->IsActive();
+    }
 }

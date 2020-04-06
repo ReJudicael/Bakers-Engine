@@ -22,6 +22,7 @@ namespace Core::Datastructure
 		RootObject*					m_root{ nullptr };
 		
 	protected:
+		bool						m_isActive = true;
 		std::string					m_name;
 		Transform					m_transform;
 		Object* m_parent;
@@ -83,6 +84,28 @@ namespace Core::Datastructure
 		bool				IsDestroyed() const noexcept
 		{
 			return m_isDestroyed;
+		}
+
+		/**
+		 * Set the activity of the object
+		 * @param active: New activity of the object
+		 */
+		void				SetActivity(bool active) noexcept
+		{
+			m_isActive = active;
+			if (active)
+			{
+				for (auto it : m_childs)
+					it->SetActivity(active);
+			}
+		}
+
+		/**
+		 * Get the activity of the object
+		 */
+		bool				IsActive() const noexcept
+		{
+			return m_isActive;
 		}
 
 		/**
