@@ -3,9 +3,20 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+RTTR_PLUGIN_REGISTRATION
+{
+	using namespace Core::Renderer;
+	rttr::registration::enumeration<FBOType>("FBO types")
+		(
+			value("Camera", FBOType::CAMERA),
+			value("PostProcess", FBOType::POSTPROCESSING),
+			value("Custom", FBOType::CUSTOM)
+		);
+}
+
 namespace Core::Renderer
 {
-	Framebuffer::Framebuffer(int width, int height) noexcept : FBO{ 0 }, ColorTexture{ 0 }, DepthStencilRenderbuffer{ 0 }, Size(), userPtr{ nullptr }
+	Framebuffer::Framebuffer(int width, int height, FBOType t) noexcept : FBO{ 0 }, ColorTexture{ 0 }, DepthStencilRenderbuffer{ 0 }, Size(), userPtr{ nullptr }, type { t }
 	{
 		GLint PreviousFramebuffer;
 		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);

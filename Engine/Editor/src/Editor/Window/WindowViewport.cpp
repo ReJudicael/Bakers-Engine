@@ -24,7 +24,7 @@ namespace Editor::Window
 
 	void WindowViewport::DisplayViewport()
 	{
-		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO(0) };
+		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO(0, Core::Renderer::FBOType::CAMERA) };
 		if (fbo == nullptr)
 		{
 			ImGui::Text("No viewport available");

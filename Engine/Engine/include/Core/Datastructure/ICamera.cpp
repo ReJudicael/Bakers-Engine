@@ -44,7 +44,7 @@ void Core::Datastructure::ICamera::OnStart()
 {
 	IComponent::OnStart();
 	GetScene()->AddCamera(this);
-	m_fbo = GetScene()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight);
+	m_fbo = GetScene()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Core::Renderer::FBOType::CAMERA);
 	m_fbo->userPtr = this;
 }
 

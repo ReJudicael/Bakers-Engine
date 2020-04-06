@@ -72,9 +72,9 @@ namespace Core
 			GLFWwindow* GetWindow();
 
 			Core::SystemManagement::InputSystem* GetInputSystem();
-			Core::Renderer::Framebuffer* GetFBO(int num);
-			Core::Renderer::Framebuffer* CreateFBO();
-			Core::Renderer::Framebuffer* CreateFBO(int width, int height);
+			Core::Renderer::Framebuffer*	GetFBO(int num, Core::Renderer::FBOType t = Core::Renderer::FBOType::CUSTOM);
+			Core::Renderer::Framebuffer*	CreateFBO();
+			Core::Renderer::Framebuffer*	CreateFBO(int width, int height, Core::Renderer::FBOType t = Core::Renderer::FBOType::CUSTOM);
 			void							DeleteFBO(Core::Renderer::Framebuffer* fbo);
 
 			virtual Core::Maths::Vec2	GetMousePos() noexcept = 0;

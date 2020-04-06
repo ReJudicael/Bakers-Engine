@@ -129,6 +129,9 @@
     <ClCompile Include="..\Dependencies\imgui-1.75\src\imgui\imgui_widgets.cpp">
       <Filter>Internal Dependencies\imgui\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowScene.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\GUIManager.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.h">
       <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowScene.h">
+      <Filter>Header Files\Editor\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -187,14 +187,25 @@ namespace Core::Datastructure
 		return m_inputSystem;
 	}
 
-	Core::Renderer::Framebuffer* EngineCore::GetFBO(int num)
+	Core::Renderer::Framebuffer* EngineCore::GetFBO(int num, Core::Renderer::FBOType type)
 	{
 		if (num >= m_fbo.size())
 			return nullptr;
 		auto it{ m_fbo.begin() };
-		std::advance(it, num);
-
-		return *it;
+		int i = 0;
+		while (true)
+		{
+			if (it == m_fbo.end())
+				return nullptr;
+			if ((*it)->type == type)
+			{
+				if (i == num)
+					return *it;
+				else
+					++i;
+			}
+			++it;
+		}
 	}
 
 	GLFWwindow* EngineCore::GetWindow()
@@ -234,9 +245,9 @@ namespace Core::Datastructure
 		return CreateFBO(m_width, m_height);
 	}
 
-	Core::Renderer::Framebuffer* EngineCore::CreateFBO(int width, int height)
+	Core::Renderer::Framebuffer* EngineCore::CreateFBO(int width, int height, Core::Renderer::FBOType t)
 	{
-		return m_fbo.emplace_back(new Core::Renderer::Framebuffer(width, height));
+		return m_fbo.emplace_back(new Core::Renderer::Framebuffer(width, height, t));
 	}
 
 	void EngineCore::DeleteFBO(Core::Renderer::Framebuffer* fbo)
