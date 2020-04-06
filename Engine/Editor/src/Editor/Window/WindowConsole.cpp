@@ -48,9 +48,19 @@ namespace Editor::Window
 		m_textFilter.Draw("Filter", ImGui::GetContentRegionAvail().x - 37.f);
 	}
 
+	void	WindowConsole::ConsolePrint()
+	{
+		Core::Debug::LogData* logs = Core::Debug::Logger::GetLogdata();
+		int logSize = Core::Debug::Logger::GetLogdataSize();
+
+		for (int i = 0; i < logSize; ++i)
+			ImGui::Text(logs[i].message);
+	}
+
 	void WindowConsole::Tick()
 	{
 		ConsoleHeader();
 		ImGui::Separator();
+		ConsolePrint();
 	}
 }

@@ -61,6 +61,11 @@ namespace Editor::Window
 		 */
 		void ConsoleHeader();
 
+		/**
+		 * Draws the console messages
+		 */
+		void	ConsolePrint();
+
 	private:
 		/**
 		 * Draw elements in window

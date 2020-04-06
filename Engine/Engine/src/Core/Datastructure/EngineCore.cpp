@@ -162,6 +162,7 @@ namespace Core::Datastructure
 
 	void	EngineCore::DoLoop()
 	{
+		DEBUG_LOG("test");
 		ZoneNamedN(updateLoop, "Main loop iteration", true)
 		
 		double deltaTime = GetDeltaTime();

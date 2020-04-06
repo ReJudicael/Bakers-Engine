@@ -32,4 +32,14 @@ namespace Core::Debug
 		std::cout << "[" << function << "] " << messageLog << std::endl;
 		SetConsoleTextAttribute(hConsole, 0x0F);
 	}
+
+	int	Logger::GetLogdataSize()
+	{
+		return logData.size();
+	}
+
+	LogData* Logger::GetLogdata()
+	{
+		return logData.data();
+	}
 }

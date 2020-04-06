@@ -30,7 +30,10 @@ namespace Core::Debug
 		Logger(const Logger&) = delete;
 		Logger& operator=(const Logger&) = delete;
 
-		static void DebugLog(LogType type, const char* messageLog, const char* file, int line, const char* function) noexcept;
+		static void		DebugLog(LogType type, const char* messageLog, const char* file, int line, const char* function) noexcept;
+
+		static int		GetLogdataSize();
+		static LogData*	GetLogdata();
 	};
 };
 
