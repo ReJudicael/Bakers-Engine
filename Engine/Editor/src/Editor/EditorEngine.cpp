@@ -13,6 +13,7 @@
 #include "RootObject.hpp"
 #include "CoreMinimal.h"
 #include "LoadResources.h"
+#include "WindowToolbar.h"
 
 namespace Editor
 {
@@ -84,6 +85,7 @@ namespace Editor
 		canvas->Add<Editor::Window::WindowScene>();
 		canvas->Add<Editor::Window::WindowConsole>();
 		canvas->Add<Editor::Window::WindowFileBrowser>();
+		canvas->Add<Editor::Window::WindowToolbar>();
 		canvas->Add<Editor::Window::WindowProfiler>(false);
 		
 		INIT_TRACY_GL_IMAGE(320, 180)

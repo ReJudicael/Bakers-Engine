@@ -29,7 +29,8 @@ namespace Editor::Window
 	{
 		if (m_fbo == nullptr)
 		{
-			ImGui::Text("No scene camera available");
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("  No scene camera available");
 		}
 		else
 		{

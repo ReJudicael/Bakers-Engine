@@ -27,7 +27,8 @@ namespace Editor::Window
 		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO(0, Core::Renderer::FBOType::CAMERA) };
 		if (fbo == nullptr)
 		{
-			ImGui::Text("No viewport available");
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("  No viewport available");
 		}
 		else
 		{

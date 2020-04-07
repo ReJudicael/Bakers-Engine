@@ -59,7 +59,6 @@ namespace Editor::Window
 	void WindowFileBrowser::ApplyNameToItem(const std::string& itemName)
 	{
 		fs.RenameContent(fs.GetLocalAbsolute(itemName), m_name);
-
 		m_renamePath.clear();
 		m_scrollSetted = false;
 		m_canRename = false;

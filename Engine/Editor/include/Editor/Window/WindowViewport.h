@@ -11,7 +11,7 @@ namespace Editor::Window
 	{
 	public:
 		/**
-		 * Constructor which set title of window ("Scene")
+		 * Constructor which set title of window ("Viewport")
 		 */
 		WindowViewport(Canvas* canvas, bool visible = true);
 
@@ -33,7 +33,7 @@ namespace Editor::Window
 
 	private:
 		/**
-		 * Display viewport
+		 * Display Viewport
 		 */
 		void DisplayViewport();
 

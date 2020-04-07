@@ -59,7 +59,7 @@ namespace Resources
 			stream.close();
 		}
 		else
-			std::cout << "Can not open " << filePath << std::endl;
+			DEBUG_LOG_WARNING("Can not open: " + std::string(filePath));
 
 		return code;
 	}
