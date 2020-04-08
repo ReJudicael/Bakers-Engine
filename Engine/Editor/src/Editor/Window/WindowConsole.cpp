@@ -26,7 +26,7 @@ namespace Editor::Window
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, isEnabled ? ImVec4(0.18f, 0.32f, 0.45f, 1.0f) : ImVec4(0.18f, 0.18f, 0.25f, 1.0f));
 #pragma warning(suppress : 4312)
-		if (ImGui::ImageButtonUVWithText_HelpMarker(reinterpret_cast<ImTextureID>(icon->texture), label, help_marker.c_str()))
+		if (ImGui::ImageButtonUVWithText_HelpMarker(reinterpret_cast<ImTextureID>(icon->texture), "## LogButton", label, help_marker.c_str()))
 			isEnabled = !isEnabled;
 		ImGui::PopStyleColor();
 	}
@@ -63,6 +63,10 @@ namespace Editor::Window
 			ImGui::Text("%s\t-\t", log.time);
 			ImGui::SameLine();
 			ImGui::Text("%s", log.message);
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40.f);
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 0, 0 });
+			ImGui::ButtonEx("1", { 32, 16 }, ImGuiButtonFlags_Disabled);
+			ImGui::PopStyleVar(1);
 			ImGui::Separator();
 		}
 	}
