@@ -155,7 +155,7 @@ namespace Core::Datastructure
 		Resources::Object3DGraph::CreateScene("Resources/Models/DiningRoom/dining_room.fbx", *m_manager, dining_room);
 		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
 
-		umbreon->SetPos({ 0.f,10.f, 0.f });
+		umbreon->SetPos({ 0.f,3.f, 0.f });
 		m_fbo.clear();
 		return 0;
 	}

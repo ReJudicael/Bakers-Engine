@@ -3,10 +3,9 @@
 
 namespace Core::Physics
 {
-	class BoxCollider : public Collider
+	BAKERS_API_CLASS BoxCollider : public Collider
 	{
 		Core::Maths::Vec3	m_extent{ 0.5f,0.5f,0.5f };
-		Core::Maths::Vec3	m_localPosition{ 0.f,0.f,0.f };
 	public :
 		BoxCollider() = default;
 		/**
@@ -20,6 +19,11 @@ namespace Core::Physics
 		 * Set the half extent of the collider
 		 * @param halfExtent: the half extent we want to give to the shape
 		 */
-		void SetBoxHalfExtent(const Core::Maths::Vec3& halfExtent);
+		void SetBoxHalfExtent(Core::Maths::Vec3 halfExtent);
+
+
+		Core::Maths::Vec3 GetBoxHalfExtent();
+
+		REGISTER_CLASS(Collider)
 	};
 }

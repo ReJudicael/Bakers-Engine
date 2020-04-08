@@ -5,6 +5,7 @@
 #include "ICollidable.h"
 #include "IPhysics.h"
 #include "IUpdatable.hpp"
+#include "PxRigidDynamic.h"
 
 namespace physx
 {
@@ -26,6 +27,7 @@ namespace Core
 			physx::PxRigidDynamic* m_dynamicMesh;
 
 		protected:
+
 			/*
 			 * Release the PxRigidDynamic, 
 			 * and release him from the PhysicsScene
@@ -52,6 +54,11 @@ namespace Core
 			 */
 			virtual void OnStart() override;
 
+			virtual void StartCopy(IComponent*& copyTo) const override;
+
+			virtual void OnCopy(IComponent* copyTo) const override;
+
+
 			/**
 			 * Function inheritated from IPhysics,
 			 * override for create a specific physX actor a PxRigidDynamic
@@ -73,18 +80,26 @@ namespace Core
 			 */
 			virtual void OnUpdate(float deltaTime) override;
 
-			inline virtual void SetLinearVelocity(const Core::Maths::Vec3& newVelocity)
-			{
-				m_dynamicMesh->setLinearVelocity({ newVelocity.x, newVelocity.y, newVelocity.z });
-			}
+			inline virtual void SetLinearVelocity(Core::Maths::Vec3 newVelocity);
 
-			inline virtual Core::Maths::Vec3 GetVelocity()
-			{
-				physx::PxVec3 vec{ m_dynamicMesh->getLinearVelocity() };
-				return { vec.x, vec.y, vec.z };
-			}
+			virtual Core::Maths::Vec3 GetVelocity();
+
+			inline virtual void AddVelocity(const Core::Maths::Vec3 vector);
+
+			float GetMass();
+
+			void SetMass(const float mass);
 
 			virtual void ClearForces();
+
+			virtual void PhysicsLockRotation(bool Axisx, bool Axisy, bool Axisz);
+
+			virtual void SetPhysicsLockXRotation(bool Axisx);
+			virtual bool GetPhysicsLockXRotation();
+			virtual void SetPhysicsLockYRotation(bool Axisy);
+			virtual bool GetPhysicsLockYRotation();
+			virtual void SetPhysicsLockZRotation(bool Axisz);
+			virtual bool GetPhysicsLockZRotation();
 
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IPhysics, Core::Datastructure::IUpdatable)
 		};
