@@ -228,7 +228,6 @@ namespace Editor::Window
 		{
 			if (prop.get_access_level() == rttr::access_levels::public_access)
 				DrawProperty(prop, inst);
-			
 		}
 		ImGui::Spacing();
 	}
