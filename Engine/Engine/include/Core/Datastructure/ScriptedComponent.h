@@ -10,6 +10,8 @@ extern "C"
 #include "lualib.h"
 }
 
+#include "sol.hpp"
+
 #ifdef _WIN64
 #pragma comment(lib, "lua53.lib")
 #endif
@@ -23,7 +25,7 @@ namespace Core::Datastructure
 	{
 	private:
 		const char* m_script = nullptr;
-		lua_State* m_lState;
+		sol::state m_lua;
 
 		/**
 		 * Copy event for editor component handling
@@ -80,12 +82,13 @@ namespace Core::Datastructure
 		T get(const char* name);
 
 		/**
-		 * Template specialization for get method
+		 * Set value of given variable
 		 * @param name: Name of the desired variable in Lua script
-		 * @return: Value of given variable is it exists, default string otherwise
+		 * @param value: New value for given variable
 		 */
-		template<>
-		std::string get(const char* name);
+		template<class T>
+		void set(const char* name, const T& value);
+
 
 		REGISTER_CLASS(ComponentUpdatable);
 	};
@@ -93,29 +96,19 @@ namespace Core::Datastructure
 	template<class T>
 	T ScriptedComponent::get(const char* name)
 	{
-		T none = T();
+		if (!m_script)
+			return T();
 
-		if (!m_lState)
-			return none;
-
-		lua_getglobal(m_lState, name);
-		if (lua_isnumber(m_lState, -1))
-			return lua_tonumber(m_lState, -1);
-
-		return none;
+		return m_lua[name];
 	}
 
-	template<>
-	std::string ScriptedComponent::get(const char* name)
+	template<class T>
+	void ScriptedComponent::set(const char* name, const T& value)
 	{
-		if (!m_lState)
-			return "";
+		if (!m_script)
+			return;
 
-		lua_getglobal(m_lState, name);
-		if (lua_isstring(m_lState, -1))
-			return lua_tostring(m_lState, -1);
-
-		return "";
+		m_lua[name] = value;
 	}
 }
 

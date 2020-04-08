@@ -21,45 +21,32 @@ namespace Core::Datastructure
 
 	ScriptedComponent::~ScriptedComponent()
 	{
-		if (m_script && m_lState)
-			lua_close(m_lState);
 	}
 
 	void ScriptedComponent::OnStart()
-	{
+	{	
 		ComponentUpdatable::OnStart();
 
 		if (!m_script)
 			return;
 
-		m_lState = luaL_newstate();
-		luaL_openlibs(m_lState);
-		if (luaL_dofile(m_lState, m_script) != LUA_OK)
+		m_lua.open_libraries(sol::lib::base);
+		if (!m_lua.script_file(m_script).valid())
 		{
-			std::cout << "Lua file " << m_script << "Didn't load" << std::endl;
-			lua_close(m_lState);
-			m_lState = nullptr;
+			std::cout << "Failed to load " << m_script << std::endl;
 			m_script = nullptr;
 			return;
 		}
 
-		lua_getglobal(m_lState, "Start");
-		if (lua_isfunction(m_lState, -1))
-			lua_pcall(m_lState, 0, 0, 0);
+		m_lua["Start"]();
 	}
 
 	void ScriptedComponent::OnUpdate(float deltaTime)
 	{
-		if (!m_lState)
+		if (!m_script)
 			return;
 
-		lua_getglobal(m_lState, "Update");
-		if (lua_isfunction(m_lState, -1))
-		{
-			lua_pushnumber(m_lState, deltaTime);
-
-			lua_pcall(m_lState, 1, 0, 0);
-		}
+		m_lua["Update"](deltaTime);
 	}
 
 	void ScriptedComponent::OnCopy(IComponent* copyTo) const
@@ -68,7 +55,7 @@ namespace Core::Datastructure
 		ScriptedComponent* copy{ dynamic_cast<ScriptedComponent*>(copyTo) };
 
 		copy->m_script = m_script;
-		copy->m_lState = m_lState;
+		copy->m_lua.script_file(copy->m_script);
 	}
 
 	void ScriptedComponent::StartCopy(IComponent*& copyTo) const
