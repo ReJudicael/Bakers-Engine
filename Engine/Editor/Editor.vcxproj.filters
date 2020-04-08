@@ -132,6 +132,9 @@
     <ClCompile Include="src\Editor\Window\WindowScene.cpp">
       <Filter>Source Files\Editor\Window</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\GUIManager.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="include\Editor\Window\WindowScene.h">
       <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Datastructure\EditorCamera.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

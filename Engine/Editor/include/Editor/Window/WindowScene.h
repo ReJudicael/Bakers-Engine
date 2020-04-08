@@ -1,6 +1,8 @@
 #pragma once
 
 #include "AWindow.h"
+#include "Framebuffer.h"
+#include "EditorCamera.h"
 
 namespace Editor::Window
 {
@@ -9,7 +11,7 @@ namespace Editor::Window
 	 */
 	class WindowScene final : public AWindow
 	{
-		Core::Renderer::Framebuffer* m_fbo;
+		Datastructure::EditorCamera* m_cam;
 	public:
 		/**
 		 * Constructor which set title of window ("Scene")

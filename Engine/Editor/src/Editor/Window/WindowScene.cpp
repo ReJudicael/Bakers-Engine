@@ -1,6 +1,7 @@
 #include "WindowScene.h"
 #include "EditorEngine.h"
 #include "ICamera.h"
+#include "RootObject.hpp"
 
 #include <string>
 
@@ -12,7 +13,9 @@ namespace Editor::Window
 		m_flags |= ImGuiWindowFlags_NoScrollbar;
 
 		//Should be replaced by scene camera code
-		m_fbo = GetEngine()->GetFBO(0);
+		//m_fbo = GetEngine()->CreateFBO();
+		m_cam = new Datastructure::EditorCamera();
+		GetEngine()->m_root->AddComponent(m_cam);
 	}
 
 	void WindowScene::PushWindowStyle()
@@ -27,26 +30,23 @@ namespace Editor::Window
 
 	void WindowScene::DisplayScene()
 	{
-		if (m_fbo == nullptr)
+		if (m_cam == nullptr)
 		{
 			ImGui::Text("No scene camera available");
 		}
 		else
 		{
+			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 
-			if (m_fbo->Size[2] != windowSize.x || m_fbo->Size[3] != windowSize.y)
+			if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
 			{
 				//To redo with the scene camera;
-				Core::Datastructure::ICamera* cam = reinterpret_cast<Core::Datastructure::ICamera*>(m_fbo->userPtr);
-				if (cam != nullptr)
-					cam->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
-				else
-					m_fbo->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
+				m_cam->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
 			}
 
 #pragma warning(suppress : 4312)
-			ImGui::ImageUV(reinterpret_cast<ImTextureID>(m_fbo->ColorTexture), windowSize);
+			ImGui::ImageUV(reinterpret_cast<ImTextureID>(fbo->ColorTexture), windowSize);
 		}
 	}
 
