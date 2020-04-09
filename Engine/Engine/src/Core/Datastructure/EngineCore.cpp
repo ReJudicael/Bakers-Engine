@@ -141,7 +141,6 @@ namespace Core::Datastructure
 		Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
 
 		umbreon->AddComponent(new Core::Physics::DynamicMesh());
-		umbreon->SetPos({ 0.f,10.f,-10.f });
 
 		staticMesh->SetPos({ 0.f,-2.f,0.f });
 		staticMesh->SetScale({ 50.f,1.f,50.f });
@@ -156,6 +155,7 @@ namespace Core::Datastructure
 		Resources::Object3DGraph::CreateScene("Resources/Models/DiningRoom/dining_room.fbx", *m_manager, dining_room);
 		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
 
+		umbreon->SetPos({ 0.f,3.f, 0.f });
 		m_fbo.clear();
 		return 0;
 	}

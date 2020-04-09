@@ -339,6 +339,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClCompile Include="src\Core\Physics\BoxCollider.cpp" />
     <ClCompile Include="src\Core\Physics\Collider.cpp" />
     <ClCompile Include="src\Core\Physics\DynamicMesh.cpp" />
+    <ClCompile Include="src\Core\Physics\Maths.cpp" />
     <ClCompile Include="src\Core\Physics\PhysicsScene.cpp" />
     <ClCompile Include="src\Core\Physics\PhysicsSceneSimulationEventCallback.cpp" />
     <ClCompile Include="src\Core\Physics\StaticMesh.cpp" />

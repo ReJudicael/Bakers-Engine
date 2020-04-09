@@ -8,10 +8,12 @@
 #include "LoadResources.h"
 #include "Assimp/cimport.h"
 #include "Assimp/scene.h"
+#include "Assimp/Importer.hpp"
 #include "Assimp/postprocess.h"
 #include "Assimp/material.h"
 #include "Assimp/texture.h"
 #include "Assimp/RemoveComments.h"
+
 #include "Object.hpp"
 #include "Model.h"
 #include "Texture.h"
@@ -102,13 +104,19 @@ namespace Resources::Loader
 	{
 		std::string Name = fileName;
 
-		const aiScene* scene = aiImportFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
+		Assimp::Importer importer;
+
+		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
+
+		//aiImportFile
+		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
 											| aiProcess_GenSmoothNormals 
 											| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
 											| aiProcess_SplitLargeMeshes 
 											| aiProcess_SortByPType 
 											| aiProcess_ValidateDataStructure // validate the scene data
 											| aiProcess_CalcTangentSpace // calculate the tangent
+											| aiProcess_GenBoundingBoxes // generate the AABB of the meshs
 											);
 		if (!scene)
 		{
@@ -131,8 +139,8 @@ namespace Resources::Loader
 			LoadSceneResources(scene, Name, directoryFile);
 		}
 
-		aiReleaseImport(scene);
-
+		//aiReleaseImport(scene);
+		importer.FreeScene();
 		return true;
 	}
 
@@ -156,9 +164,10 @@ namespace Resources::Loader
 			modelData->model = model;
 			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
 			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
+			modelData->LoadaiMeshModel(mesh);
 
-			modelData->LoadVertices(mesh);
-			modelData->LoadIndices(mesh);
+			//modelData->LoadVertices(mesh);
+			//modelData->LoadIndices(mesh);
 
 			if (scene->HasMaterials())
 			{
@@ -225,9 +234,10 @@ namespace Resources::Loader
 		{
 			aiMesh* mesh = scene->mMeshes[i];
 
-			modelData->LoadVertices(mesh);
+			modelData->LoadaiMeshModel(mesh, indexLastMesh);
 
-			modelData->LoadIndices(mesh, indexLastMesh);
+			//modelData->LoadVertices(mesh);
+			//modelData->LoadIndices(mesh, indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
@@ -337,6 +347,13 @@ namespace Resources::Loader
 					it = m_modelsToLink.erase(it);
 					break;
 				case EOpenGLLinkState::CANLINK:
+					// THEO C ici que tu dois tout faire !!!!!!!!!!!
+					// l'itérateur contient toute les valeurs 
+					// vertices; 
+					// indices;
+					// offsetsMesh;
+					// min; AABB min
+					// max; AAB max
 					(*it)->CreateVAOModel();
 					it = m_modelsToLink.erase(it);
 					break;
