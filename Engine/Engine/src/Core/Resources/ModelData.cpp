@@ -113,6 +113,10 @@ namespace Resources
 
 	void ModelData::EmplaceInModel()
 	{
+		model->indices = indices;
+		model->vertices = vertices;
+		model->max = max;
+		model->min = min;
 		model->stateVAO = stateVAO;
 		model->VAOModel = VAOModel;
 	}
