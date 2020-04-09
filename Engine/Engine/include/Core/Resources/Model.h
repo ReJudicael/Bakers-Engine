@@ -16,10 +16,15 @@ namespace Resources
 	 */
 	struct Model
 	{
-		GLuint VAOModel{ 0 };
+		GLuint						VAOModel{ 0 };
 
-		std::vector<OffsetMesh> offsetsMesh;
+		std::vector<OffsetMesh>		offsetsMesh;
 
-		EOpenGLLinkState stateVAO;
+		EOpenGLLinkState			stateVAO;
+
+		Core::Maths::Vec3			min;
+		Core::Maths::Vec3			max;
+		std::vector<Vertex>			vertices;
+		std::vector<GLuint>			indices;
 	};
 }

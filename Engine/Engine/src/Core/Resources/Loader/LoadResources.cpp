@@ -347,13 +347,6 @@ namespace Resources::Loader
 					it = m_modelsToLink.erase(it);
 					break;
 				case EOpenGLLinkState::CANLINK:
-					// THEO C ici que tu dois tout faire !!!!!!!!!!!
-					// l'itérateur contient toute les valeurs 
-					// vertices; 
-					// indices;
-					// offsetsMesh;
-					// min; AABB min
-					// max; AAB max
 					(*it)->CreateVAOModel();
 					it = m_modelsToLink.erase(it);
 					break;
