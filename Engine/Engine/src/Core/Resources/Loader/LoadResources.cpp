@@ -116,6 +116,7 @@ namespace Resources::Loader
 											| aiProcess_SortByPType 
 											| aiProcess_ValidateDataStructure // validate the scene data
 											| aiProcess_CalcTangentSpace // calculate the tangent
+											| aiProcess_GenBoundingBoxes // generate the AABB of the meshs
 											);
 		if (!scene)
 		{
@@ -163,9 +164,10 @@ namespace Resources::Loader
 			modelData->model = model;
 			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
 			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
+			modelData->LoadaiMeshModel(mesh);
 
-			modelData->LoadVertices(mesh);
-			modelData->LoadIndices(mesh);
+			//modelData->LoadVertices(mesh);
+			//modelData->LoadIndices(mesh);
 
 			if (scene->HasMaterials())
 			{
@@ -232,9 +234,10 @@ namespace Resources::Loader
 		{
 			aiMesh* mesh = scene->mMeshes[i];
 
-			modelData->LoadVertices(mesh);
+			modelData->LoadaiMeshModel(mesh, indexLastMesh);
 
-			modelData->LoadIndices(mesh, indexLastMesh);
+			//modelData->LoadVertices(mesh);
+			//modelData->LoadIndices(mesh, indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
@@ -344,6 +347,13 @@ namespace Resources::Loader
 					it = m_modelsToLink.erase(it);
 					break;
 				case EOpenGLLinkState::CANLINK:
+					// THEO C ici que tu dois tout faire !!!!!!!!!!!
+					// l'itérateur contient toute les valeurs 
+					// vertices; 
+					// indices;
+					// offsetsMesh;
+					// min; AABB min
+					// max; AAB max
 					(*it)->CreateVAOModel();
 					it = m_modelsToLink.erase(it);
 					break;
