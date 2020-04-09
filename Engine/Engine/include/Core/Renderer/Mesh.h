@@ -55,6 +55,10 @@ public:
 
 	void SendProjectionMatrix(Core::Maths::Mat4 data);
 
+	bool IsModelLoaded();
+
+	void CreateAABBMesh();
+
 	virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
 
 	Core::Maths::Mat4 projectionMatrix(float FovY, float Aspect, float Near, float Far);

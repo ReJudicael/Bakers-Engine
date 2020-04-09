@@ -4,10 +4,14 @@
 #include "Mesh.h"
 #include "Mat4.hpp"
 #include "Object.hpp"
+#include "RootObject.hpp"
 #include "OpenGLLinkState.h"
 #include "Model.h"
 #include "Texture.h"
 #include "LoadResources.h"
+#include "PhysicsScene.h"
+#include "EngineCore.h"
+#include "PxRigidStatic.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -71,6 +75,25 @@ void Mesh::Initialize()
 void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
 {
 	m_projection = data.m_array;
+}
+
+bool Mesh::IsModelLoaded()
+{
+	if (m_model->stateVAO == Resources::EOpenGLLinkState::ISLINK)
+		return true;
+	return false;
+}
+
+void Mesh::CreateAABBMesh()
+{
+	Core::Datastructure::Object* object = GetParent();
+	Core::Datastructure::IComponent* component = dynamic_cast<Core::Datastructure::IComponent*>(this);
+	void* testCast = object->GetScene()
+							->GetEngine()
+							->GetPhysicsScene()
+							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(),m_model)->userData;
+	component = static_cast<Core::Datastructure::IComponent*>(testCast);
+	Mesh* meshComp = static_cast<Mesh*>(testCast);
 }
 
 void Mesh::OnDraw(Core::Datastructure::ICamera* cam)

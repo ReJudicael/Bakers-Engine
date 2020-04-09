@@ -4,6 +4,7 @@
 #include "PxDefaultErrorCallback.h"
 #include "PxSimulationEventCallback.h"
 #include "IPhysics.h"
+#include "PxRigidStatic.h"
 
 namespace physx
 {
@@ -15,101 +16,119 @@ namespace physx
 	class PxScene;
 	class PxShape;
 	class PxErrorCallback;
+	//class PxRigidStatic;
 	struct PxRaycastHit;
 }
 
 #define NEED_PVD
 
-namespace Core::Physics
+namespace Resources
 {
-	class StaticMesh;
-	class Collider;
+	struct Model;
+}
 
-	struct HitResult
+namespace Core
+{
+	namespace Datastructure
 	{
-		Core::Datastructure::Object*		objectHit;
-		Core::Datastructure::IPhysics*		physicsMeshHit;
-		Core::Maths::Vec3					hitPoint;
-		float								distance;
+		class Transform;
+	}
 
-
-		void initHitResult(physx::PxRaycastHit raycastHit);
-	};
-
-
-	/**
-	 * Contains all the PhysX properties for create a PhysXScene
-	 */
-	class PhysicsScene
+	namespace Physics
 	{
-	private:
-		physx::PxFoundation*			m_pxFoundation;
-		physx::PxPvd*					m_pxPvd;
-		physx::PxPvdTransport*			m_pxTransport;
-		physx::PxPhysics*				m_pxPhysics;
-		physx::PxCooking*				m_pxCooking;
-		physx::PxScene*					m_pxScene;
+		class StaticMesh;
+		class Collider;
 
-		physx::PxDefaultErrorCallback	m_pxDefaultErrorCallback;
-		physx::PxDefaultAllocator		m_pxDefaultAllocatorCallback;
-
-		bool							m_IsSimulating;
-		float							m_accumulator{ 0.f };
-		float							m_stepSimulation{ 1.f/60.f };
-	public:
-
-		/**
-		 * Init the instance of PhysX for create the PhysXScene
-		 */
-		bool InitPhysX();
-
-		/**
-		 * Attach and create a PhysX actor
-		 * @param physics: the physics mesh that we want to attach and create
-		 * for this PhysicsScene
-		 */
-		void AttachActor(Core::Datastructure::IPhysics* physics);
-		
-		/**
-		 * Create the PhysX scene
-		 */
-		void CreateScene();
-
-		/**
-		 * create a PhysX shape
-		 * @param collider: the colliderthat we want to create
-		 * for this PhysicsScene
-		 */
-		void CreatePhysicsShape(Collider& collider);
-
-		bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResult& result, const float Distance = FLT_MAX);
+		struct HitResult
+		{
+			Core::Datastructure::Object* objectHit;
+			Core::Datastructure::IPhysics* physicsMeshHit;
+			Core::Maths::Vec3					hitPoint;
+			float								distance;
 
 
-		bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResult>& result, const float Distance = FLT_MAX);
-
-		/**
-		 * simulate the physics of the scene
-		 * @param deltaTime: the deltaTime give by the update
-		 */
-		void BeginSimulate(const float deltaTime);
+			void initHitResult(physx::PxRaycastHit raycastHit);
+		};
 
 
 		/**
-		 * Fetch the result of the simulation
+		 * Contains all the PhysX properties for create a PhysXScene
 		 */
-		void EndSimulate();
+		class PhysicsScene
+		{
+		private:
+			physx::PxFoundation* m_pxFoundation;
+			physx::PxPvd* m_pxPvd;
+			physx::PxPvdTransport* m_pxTransport;
+			physx::PxPhysics* m_pxPhysics;
+			physx::PxCooking* m_pxCooking;
+			physx::PxScene* m_pxScene;
 
-		/*
-		 * Release all PhysXSDK
-		 */
-		void ReleasePhysXSDK();
+			physx::PxDefaultErrorCallback	m_pxDefaultErrorCallback;
+			physx::PxDefaultAllocator		m_pxDefaultAllocatorCallback;
 
-		void RemoveActorFromPhysicsScene(physx::PxRigidActor* actor);
+			bool							m_IsSimulating;
+			float							m_accumulator{ 0.f };
+			float							m_stepSimulation{ 1.f / 60.f };
+		public:
 
-		/*
-		 * Default Destructor, call ReleasePhysXSDK()
-		 */
-		~PhysicsScene();
-	};
+			/**
+			 * Init the instance of PhysX for create the PhysXScene
+			 */
+			bool InitPhysX();
+
+			/**
+			 * Attach and create a PhysX actor
+			 * @param physics: the physics mesh that we want to attach and create
+			 * for this PhysicsScene
+			 */
+			void AttachActor(Core::Datastructure::IPhysics* physics);
+
+			physx::PxRigidStatic* CreateEditorPhysicsActor(void* useDataPtr,
+															const Core::Datastructure::Transform& transform,
+														std::shared_ptr<Resources::Model> model);
+
+			/**
+			 * Create the PhysX scene
+			 */
+			void CreateScene();
+
+			/**
+			 * create a PhysX shape
+			 * @param collider: the colliderthat we want to create
+			 * for this PhysicsScene
+			 */
+			void CreatePhysicsShape(Collider& collider);
+
+			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResult& result, const float Distance = FLT_MAX);
+
+
+			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResult>& result, const float Distance = FLT_MAX);
+
+			/**
+			 * simulate the physics of the scene
+			 * @param deltaTime: the deltaTime give by the update
+			 */
+			void BeginSimulate(const float deltaTime);
+
+
+			/**
+			 * Fetch the result of the simulation
+			 */
+			void EndSimulate();
+
+			/*
+			 * Release all PhysXSDK
+			 */
+			void ReleasePhysXSDK();
+
+			void RemoveActorFromPhysicsScene(physx::PxRigidActor* actor);
+
+			/*
+			 * Default Destructor, call ReleasePhysXSDK()
+			 */
+			~PhysicsScene();
+		};
+	}
 }
 

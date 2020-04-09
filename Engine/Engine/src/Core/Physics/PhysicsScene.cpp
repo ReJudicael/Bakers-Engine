@@ -5,9 +5,11 @@
 #include "PxPhysicsAPI.h"
 #include "PxMaterial.h"
 #include "PxDefaultSimulationFilterShader.h"
-#include "PxRigidDynamic.h"
 #include "Collider.h"
 #include "StaticMesh.h"
+#include "Transform.hpp"
+#include "Model.h"
+#include "Vec3.hpp"
 
 
 #define PVD_HOST "127.0.0.1"
@@ -92,9 +94,9 @@ namespace Core::Physics
 
 	void HitResult::initHitResult(physx::PxRaycastHit raycastHit)
 	{
-		Core::Datastructure::IPhysics* physicsMesh{ static_cast<Core::Datastructure::IPhysics*>(raycastHit.actor->userData) };
-		physicsMeshHit = physicsMesh;
+		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(raycastHit.actor->userData) };
 		objectHit = physicsMesh->GetParent();
+		physicsMeshHit = dynamic_cast<Core::Datastructure::IPhysics*>(physicsMesh);
 
 		physx::PxVec3 posHit{ raycastHit.position };
 		hitPoint = { posHit.x, posHit.y, posHit.z };
@@ -137,6 +139,43 @@ namespace Core::Physics
 	void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)
 	{
 		physics->CreateActor(m_pxPhysics, m_pxScene);
+	}
+
+	physx::PxRigidStatic* PhysicsScene::CreateEditorPhysicsActor(void* useDataPtr,
+																const Core::Datastructure::Transform& transform,
+																std::shared_ptr<Resources::Model> model)
+	{
+		physx::PxMaterial* material = m_pxPhysics->createMaterial(0.f, 0.f, 0.f);
+		Core::Maths::Vec3 minG{ model->min * transform.GetGlobalScale() };
+		Core::Maths::Vec3 maxG{ model->max * transform.GetGlobalScale() };
+		//Core::Maths::Vec3 pos{ (model->min * transform.GetGlobalScale() - model->max * transform.GetGlobalScale()) };
+		Core::Maths::Vec3 pos{ (minG - maxG) };
+		Core::Maths::Vec3 extent{ abs(model->min.x) + abs(model->max.x), abs(model->min.y) + abs(model->max.y), abs(model->min.z) + abs(model->max.z) };
+		extent *= transform.GetGlobalScale();
+		extent /= 2;
+		if (extent.x == 0 || extent.y == 0 || extent.x == 0)
+			return nullptr;
+		physx::PxShape* shape = m_pxPhysics->createShape(physx::PxBoxGeometry(physx::PxVec3{ extent.x, extent.y, extent.z }), *material, true);
+		physx::PxTransform shapeTransform{ shape->getLocalPose() };
+		//pos *= transform.GetGlobalScale();
+		pos /= 2;
+		pos = maxG + pos;
+		shapeTransform.p = { pos.x, pos.y, pos.z };
+		shape->setLocalPose(shapeTransform);
+		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
+
+		physx::PxVec3 globalPos { transform.GetGlobalPos().x,transform.GetGlobalPos().y, transform.GetGlobalPos().z };
+		physx::PxQuat globalRot { transform.GetGlobalRot().x,transform.GetGlobalRot().y, transform.GetGlobalRot().z, transform.GetGlobalRot().w };
+		physx::PxTransform pxTransform{ globalPos, globalRot};
+		physx::PxRigidStatic* rigidStatic =  m_pxPhysics->createRigidStatic(pxTransform);
+		rigidStatic->attachShape(*shape);
+		shape->release();
+		rigidStatic->userData = useDataPtr;
+		rigidStatic->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+		m_pxScene->addActor(*rigidStatic);
+
+		return rigidStatic;
 	}
 
 	void PhysicsScene::BeginSimulate(const float deltaTime)

@@ -334,6 +334,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClCompile Include="src\Core\Datastructure\ICollidable.cpp" />
     <ClCompile Include="src\Core\Datastructure\IPhysics.cpp" />
     <ClCompile Include="src\Core\Datastructure\ScriptedComponent.cpp" />
+    <ClCompile Include="src\Core\Datastructure\TriggeredEvent.cpp" />
     <ClCompile Include="src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Core\Debug\Logger.cpp" />
     <ClCompile Include="src\Core\Physics\BoxCollider.cpp" />
@@ -382,6 +383,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClInclude Include="include\Core\Datastructure\RootObject.hpp" />
     <ClInclude Include="include\Core\Datastructure\ScriptedComponent.h" />
     <ClInclude Include="include\Core\Datastructure\Transform.hpp" />
+    <ClInclude Include="include\Core\Datastructure\TriggeredEvent.h" />
     <ClInclude Include="include\Core\Debug\Debug.h" />
     <ClInclude Include="include\Core\Debug\DebugTracyGL.hpp" />
     <ClInclude Include="include\Core\Debug\Logger.h" />
