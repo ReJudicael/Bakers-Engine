@@ -64,6 +64,12 @@
     <Filter Include="Internal Dependencies">
       <UniqueIdentifier>{57fddb2c-6e1c-4f2a-aa74-12a467094913}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Navigation">
+      <UniqueIdentifier>{27416196-cc26-4851-a54b-560270f22530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Navigation">
+      <UniqueIdentifier>{858877db-a292-48b0-897b-ab24665da2b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Datastructure\Transform.cpp">
@@ -179,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="src\Core\Physics\Maths.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Navigation\NavMesh.cpp">
+      <Filter>Source Files\Core\Navigation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Navigation\NavMesh.h">
+      <Filter>Header Files\Core\Navigation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
