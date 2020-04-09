@@ -87,7 +87,9 @@ namespace Editor::Window
 
 		if (isClickedReset)
 		{
-			// Reset Transform
+			object->SetPos({});
+			object->SetRot({});
+			object->SetScale({ 1, 1, 1 });
 		}
 
 		if (isOpen)
