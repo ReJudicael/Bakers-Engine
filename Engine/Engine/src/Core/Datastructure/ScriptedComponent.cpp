@@ -36,7 +36,7 @@ namespace Core::Datastructure
 		luaL_openlibs(m_lState);
 		if (luaL_dofile(m_lState, m_script) != LUA_OK)
 		{
-			std::cout << "Lua file " << m_script << "Didn't load" << std::endl;
+			DEBUG_LOG_WARNING("Failed to load: " + std::string(m_script));
 			lua_close(m_lState);
 			m_lState = nullptr;
 			m_script = nullptr;

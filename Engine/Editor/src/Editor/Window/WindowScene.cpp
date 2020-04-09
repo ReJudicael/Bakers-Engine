@@ -32,7 +32,8 @@ namespace Editor::Window
 	{
 		if (m_cam == nullptr)
 		{
-			ImGui::Text("No scene camera available");
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("  No scene camera available");
 		}
 		else
 		{

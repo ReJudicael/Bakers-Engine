@@ -6,22 +6,41 @@
 namespace Editor::Window
 {
 	/**
+	 * Structure for each type of log
+	 * to handle the console
+	 */
+	struct ConsoleLogDataType
+	{
+		/**
+		 * Icon to display the type of log
+		 */
+		std::shared_ptr<Resources::Texture> icon;
+
+		/**
+		 * Number of logs (by type)
+		 */
+		unsigned int nbLogs{ 0 };
+
+		/**
+		 * Wheter the icon is enabled or not
+		 */
+		bool isEnabled{ true };
+	};
+
+	/**
 	 * Window Console
 	 */
 	class WindowConsole final : public AWindow
 	{
 	private:
 		/**
-		 * Icons to display logs
+		 * Contains each type of log (Message, Warning, Error)
 		 */
-		std::shared_ptr<Resources::Texture> m_icons[3];
+		ConsoleLogDataType m_log[static_cast<int>(Core::Debug::LogType::COUNT)];
 
 		/**
-		 * Wheter the icon is enabled or not
+		 * Text Filter
 		 */
-		bool m_iconIsEnabled[3]{ true, true, true };
-
-		// Text Filter
 		ImGuiTextFilter m_textFilter;
 
 	public:
@@ -54,12 +73,14 @@ namespace Editor::Window
 		 * @param label: Label of button
 		 * @param isEnabled: Whether the button is enabled or not
 		 */
-		void AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, bool& isEnabled);
+		void AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled);
 
 		/**
 		 * Console header that contains the log buttons and the filter
 		 */
 		void ConsoleHeader();
+
+		void LogPrint(Core::Debug::LogData log);
 
 		/**
 		 * Draws the console messages

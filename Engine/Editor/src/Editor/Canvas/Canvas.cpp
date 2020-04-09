@@ -94,8 +94,7 @@ namespace Editor
 	{
 		if (ImGui::Begin("## Dockspace", NULL, m_dockWindowFlags))
 		{
-			ImGuiID dockspace_id = ImGui::GetID("Dockspace");
-			ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), m_dockNodeFlags);
+			ImGui::DockSpace(ImGui::GetID("Dockspace"), ImVec2(0.f, 0.f), m_dockNodeFlags);
 			ImGui::End();
 		}
 	}
@@ -120,6 +119,7 @@ namespace Editor
 		{
 			widget->Draw();
 		}
+		ImGui::ShowDemoWindow();
 	}
 
 	GUIManager* Canvas::GetManager() noexcept

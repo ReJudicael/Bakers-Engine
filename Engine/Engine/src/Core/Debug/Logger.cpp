@@ -1,39 +1,61 @@
 #include "Logger.h"
-#include <windows.h>
+#include <time.h>
 
 namespace Core::Debug
 {
 	std::vector<LogData> logData;
 
-	void Logger::DebugLog(LogType type, const char* messageLog, const char* file, int line, const char* function) noexcept
+	static std::string GetTimeAsTring()
 	{
-		logData.push_back({ type, messageLog, file, line, function });
+		std::string _time;
+		const time_t _now = time(nullptr);
+		tm _tm;
 
-		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		WORD wAtt;
+		localtime_s(&_tm, &_now);
 
-		switch (type)
+		std::string timeData[3] =
 		{
-		case LogType::LOG:
-			wAtt = 0x0F;
-			break;
-		case LogType::LOG_WARNING:
-			wAtt = 0x0E;
-			break;
-		case LogType::LOG_ERROR:
-			wAtt = 0x0C;
-			break;
-		default:
-			wAtt = 0x0F;
-			break;
+			std::to_string(_tm.tm_hour),
+			std::to_string(_tm.tm_min),
+			std::to_string(_tm.tm_sec)
+		};
+
+		for (int i = 0; i < 3; ++i)
+			if (timeData[i].size() < 2)
+				timeData[i].insert(timeData[i].begin(), '0');
+
+		for (int i = 0; i < 3; ++i)
+		{
+			_time += timeData[i];
+			if (i < 2)
+				_time += ':';
 		}
 
-		SetConsoleTextAttribute(hConsole, wAtt);
-		std::cout << "[" << function << "] " << messageLog << std::endl;
-		SetConsoleTextAttribute(hConsole, 0x0F);
+		return _time;
 	}
 
-	int	Logger::GetLogdataSize()
+	void Logger::DebugLog(LogType type, std::string messageLog, const char* file, int line, const char* function) noexcept
+	{
+		if (messageLog.size() <= 0)
+			return;
+
+		const std::string _time = GetTimeAsTring();
+
+		char* time = (char*)malloc(sizeof(char) * 9);
+		memcpy(time, _time.c_str(), 9);
+
+		char* message = (char*)malloc(sizeof(char) * (messageLog.size() + 1));
+		memcpy(message, messageLog.c_str(), messageLog.size() + 1);
+
+		logData.push_back({ type, line, message, time, file, function });
+	}
+
+	void Logger::ClearLogs()
+	{
+		logData.clear();
+	}
+
+	size_t	Logger::GetLogdataSize()
 	{
 		return logData.size();
 	}

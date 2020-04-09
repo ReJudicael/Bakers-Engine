@@ -1,32 +1,31 @@
 #pragma once
 
 #include "AWindow.h"
-#include "Framebuffer.h"
-#include "EditorCamera.h"
-
-namespace Core::Renderer
-{
-	class Framebuffer;
-}
+#include "Texture.h"
 
 namespace Editor::Window
 {
 	/**
-	 * Window Scene
+	 * Window Toolbar
 	 */
-	class WindowScene final : public AWindow
+	class WindowToolbar final : public AWindow
 	{
-		Datastructure::EditorCamera* m_cam;
+	private:
+		/**
+		 * Icons in Toolbar: "Play", "Pause", "Skip"
+		 */
+		std::shared_ptr<Resources::Texture> m_icons[5];
+
 	public:
 		/**
-		 * Constructor which set title of window ("Scene")
+		 * Constructor which set title of window ("Toolbar")
 		 */
-		WindowScene(Canvas* canvas, bool visible = true);
+		WindowToolbar(Canvas* canvas, bool visible = true);
 
 		/**
 		 * Default destructor
 		 */
-		~WindowScene() = default;
+		~WindowToolbar() = default;
 
 	private:
 		/**
@@ -41,9 +40,9 @@ namespace Editor::Window
 
 	private:
 		/**
-		 * Display Scene
+		 * Display Toolbar
 		 */
-		void DisplayScene();
+		void DisplayToolbar();
 
 	private:
 		/**

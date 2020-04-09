@@ -95,17 +95,17 @@ namespace ImGui
         return ImageButton(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
     }
 
-    IMGUI_API bool ImageButtonUVWithText_HelpMarker(ImTextureID user_texture_id, const std::string& label, const char* help_marker, const ImVec2& icon_size)
+    IMGUI_API bool ImageButtonUVWithText_HelpMarker(ImTextureID user_texture_id, const char* label, const std::string& text, const char* help_marker, const ImVec2& icon_size)
     {
-        bool isClicked = ImageButtonUVWithText(user_texture_id, label, icon_size);
+        bool isClicked = ImageButtonUVWithText(user_texture_id, label, text, icon_size);
         HelpMarkerItem(help_marker);
 
         return isClicked;
     }
 
-    IMGUI_API bool ImageButtonUVWithText(ImTextureID user_texture_id, const std::string& label, const ImVec2& icon_size)
+    IMGUI_API bool ImageButtonUVWithText(ImTextureID user_texture_id, const char* label, const std::string& text, const ImVec2& icon_size)
     {
-        const char* text = label.c_str();
+        const char* button_text = text.c_str();
         ImGuiWindow* window = GetCurrentWindow();
         if (window->SkipItems)
             return false;
@@ -127,8 +127,8 @@ namespace ImGui
         ImGuiContext& g = *GImGui;
         const ImGuiStyle& style = g.Style;
 
-        const ImGuiID id = window->GetID(text);
-        const ImVec2 textSize = ImGui::CalcTextSize(text, NULL, true);
+        const ImGuiID id = window->GetID(label);
+        const ImVec2 textSize = ImGui::CalcTextSize(button_text, NULL, true);
 
         const float innerSpacing = style.ItemInnerSpacing.x;
         const ImVec2 padding = style.FramePadding;
@@ -159,7 +159,7 @@ namespace ImGui
         window->DrawList->AddImage(user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
 
         if (textSize.x > 0)
-            ImGui::RenderText(start, text);
+            ImGui::RenderText(start, button_text);
 
         return pressed;
     }

@@ -9,17 +9,20 @@ namespace Core::Debug
 {
 	enum class LogType
 	{
-		LOG = 0,
+		LOG_MESSAGE = 0,
 		LOG_WARNING,
-		LOG_ERROR
+		LOG_ERROR,
+
+		COUNT
 	};
 
 	struct LogData
 	{
 		LogType type;
-		const char* message;
-		const char* file;
 		int line;
+		const char* message;
+		const char* time;
+		const char* file;
 		const char* function;
 	};
 
@@ -27,16 +30,30 @@ namespace Core::Debug
 	{
 	public:
 		Logger() = delete;
-		Logger(const Logger&) = delete;
-		Logger& operator=(const Logger&) = delete;
 
-		static void		DebugLog(LogType type, const char* messageLog, const char* file, int line, const char* function) noexcept;
+		static void		DebugLog(LogType type, std::string messageLog, const char* file, int line, const char* function) noexcept;
+		static void		ClearLogs();
 
-		static int		GetLogdataSize();
+		static size_t	GetLogdataSize();
 		static LogData*	GetLogdata();
 	};
+
+	inline std::string ToString(const LogType log) noexcept
+	{
+		switch (log)
+		{
+		case LogType::LOG_MESSAGE:
+			return "Messages";
+		case LogType::LOG_WARNING:
+			return "Warnings";
+		case LogType::LOG_ERROR:
+			return "Errors";
+		default:
+			return "Unknow log type";
+		}
+	}
 };
 
-#define DEBUG_LOG(str) Core::Debug::Logger::DebugLog(Core::Debug::LogType::LOG, str, __FILE__, __LINE__, __FUNCTION__)
+#define DEBUG_LOG(str) Core::Debug::Logger::DebugLog(Core::Debug::LogType::LOG_MESSAGE, str, __FILE__, __LINE__, __FUNCTION__)
 #define DEBUG_LOG_WARNING(str) Core::Debug::Logger::DebugLog(Core::Debug::LogType::LOG_WARNING, str, __FILE__, __LINE__, __FUNCTION__)
 #define DEBUG_LOG_ERROR(str) Core::Debug::Logger::DebugLog(Core::Debug::LogType::LOG_ERROR, str, __FILE__, __LINE__, __FUNCTION__)
