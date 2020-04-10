@@ -59,7 +59,7 @@ namespace Resources
 			stream.close();
 		}
 		else
-			DEBUG_LOG_WARNING("Can not open: " + std::string(filePath));
+			BAKERS_LOG_WARNING("Can not open: " + std::string(filePath));
 
 		return code;
 	}

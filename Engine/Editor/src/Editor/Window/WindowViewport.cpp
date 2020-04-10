@@ -44,7 +44,7 @@ namespace Editor::Window
 			}
 
 #pragma warning(suppress : 4312)
-			ImGui::ImageUV(reinterpret_cast<ImTextureID>(fbo->ColorTexture), windowSize);
+			ImGui::ImageUV(fbo->ColorTexture, windowSize);
 		}
 	}
 

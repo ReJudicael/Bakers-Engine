@@ -27,12 +27,12 @@ namespace ImGui
 
     IMGUI_API bool RBeginCombo(const std::string& label, const char* preview_value, ImGuiComboFlags flags = 0);
 
-    IMGUI_API bool ColoredButton(const char* label, const ImVec2& size_arg, const ImVec3& color);
-    IMGUI_API void ImageUV(ImTextureID user_texture_id, const ImVec2& size);
-    IMGUI_API bool ImageButtonUV_HelpMarker(ImTextureID user_texture_id, const char* help_marker, const ImVec2& size = { 16 });
-    IMGUI_API bool ImageButtonUV(ImTextureID user_texture_id, const ImVec2& size = { 16 });
-    IMGUI_API bool ImageButtonUVWithText_HelpMarker(ImTextureID user_texture_id, const char* label, const std::string& text, const char* help_marker, const ImVec2& icon_size = { 16 });
-    IMGUI_API bool ImageButtonUVWithText(ImTextureID user_texture_id, const char* label, const std::string& text, const ImVec2& icon_size = { 16 });
+    IMGUI_API bool ColoredButton(const char* label, const ImVec2& size_arg, const ImVec3& color, int flags = 0);
+    IMGUI_API void ImageUV(unsigned int user_texture_id, const ImVec2& size = { 16 });
+    IMGUI_API bool ImageButtonUV_HelpMarker(unsigned int user_texture_id, const char* help_marker, const ImVec2& size = { 16 });
+    IMGUI_API bool ImageButtonUV(unsigned int user_texture_id, const ImVec2& size = { 16 });
+    IMGUI_API bool ImageButtonUVWithText_HelpMarker(unsigned int user_texture_id, const char* label, const std::string& text, const char* help_marker, const ImVec2& icon_size = { 16 });
+    IMGUI_API bool ImageButtonUVWithText(unsigned int user_texture_id, const char* label, const std::string& text, const ImVec2& icon_size = { 16 });
     IMGUI_API bool BeginComboButton(const char* label);
     IMGUI_API bool BeginComboColoredButton(const char* label, const ImVec3& color);
 

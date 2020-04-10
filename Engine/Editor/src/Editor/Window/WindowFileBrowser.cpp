@@ -146,7 +146,7 @@ namespace Editor::Window
 			m_contentPathSize = 65.f + m_size * 1.3f;
 	}
 
-	ImTextureID WindowFileBrowser::GetIcon(const std::string& itemPath)
+	GLuint WindowFileBrowser::GetIcon(const std::string& itemPath)
 	{
 		auto it = m_icons.find(itemPath);
 		if (it == m_icons.end())
@@ -169,7 +169,7 @@ namespace Editor::Window
 			it = m_icons.emplace(itemPath, icon).first;
 		}
 #pragma warning(suppress : 4312)
-		return reinterpret_cast<ImTextureID>(it->second->texture);
+		return it->second->texture;
 	}
 
 	void WindowFileBrowser::ShowCurrentPathOnHeader()

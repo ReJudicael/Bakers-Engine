@@ -67,35 +67,35 @@ namespace ImGui
         return BeginCombo(("##" + label).c_str(), preview_value, flags);
     }
 
-    IMGUI_API bool ColoredButton(const char* label, const ImVec2& size_arg, const ImVec3& color)
+    IMGUI_API bool ColoredButton(const char* label, const ImVec2& size_arg, const ImVec3& color, ImGuiButtonFlags flags)
     {
         PushStyleColor(ImGuiCol_Button, { color.x, color.y, color.z, 1.0f });
         PushStyleColor(ImGuiCol_ButtonHovered, { color.x, color.y, color.z, 0.7f });
-        bool isPressed = Button(label, size_arg);
+        bool isPressed = ButtonEx(label, size_arg, flags);
         PopStyleColor(2);
 
         return isPressed;
     }
 
-    IMGUI_API void ImageUV(ImTextureID user_texture_id, const ImVec2& size)
+    IMGUI_API void ImageUV(unsigned int user_texture_id, const ImVec2& size)
     {
-        return Image(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
+        return Image(reinterpret_cast<ImTextureID>(user_texture_id), size, { 0.f, 1.f }, { 1.f, 0.f });
     }
 
-    IMGUI_API bool ImageButtonUV_HelpMarker(ImTextureID user_texture_id, const char* help_marker, const ImVec2& size)
+    IMGUI_API bool ImageButtonUV_HelpMarker(unsigned int user_texture_id, const char* help_marker, const ImVec2& size)
     {
-        bool isClicked = ImageButton(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
+        bool isClicked = ImageButton(reinterpret_cast<ImTextureID>(user_texture_id), size, { 0.f, 1.f }, { 1.f, 0.f });
         HelpMarkerItem(help_marker);
 
         return isClicked;
     }
 
-    IMGUI_API bool ImageButtonUV(ImTextureID user_texture_id, const ImVec2& size)
+    IMGUI_API bool ImageButtonUV(unsigned int user_texture_id, const ImVec2& size)
     {
-        return ImageButton(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
+        return ImageButton(reinterpret_cast<ImTextureID>(user_texture_id), size, { 0.f, 1.f }, { 1.f, 0.f });
     }
 
-    IMGUI_API bool ImageButtonUVWithText_HelpMarker(ImTextureID user_texture_id, const char* label, const std::string& text, const char* help_marker, const ImVec2& icon_size)
+    IMGUI_API bool ImageButtonUVWithText_HelpMarker(unsigned int user_texture_id, const char* label, const std::string& text, const char* help_marker, const ImVec2& icon_size)
     {
         bool isClicked = ImageButtonUVWithText(user_texture_id, label, text, icon_size);
         HelpMarkerItem(help_marker);
@@ -103,7 +103,7 @@ namespace ImGui
         return isClicked;
     }
 
-    IMGUI_API bool ImageButtonUVWithText(ImTextureID user_texture_id, const char* label, const std::string& text, const ImVec2& icon_size)
+    IMGUI_API bool ImageButtonUVWithText(unsigned int user_texture_id, const char* label, const std::string& text, const ImVec2& icon_size)
     {
         const char* button_text = text.c_str();
         ImGuiWindow* window = GetCurrentWindow();
@@ -156,7 +156,7 @@ namespace ImGui
         const ImU32 col = GetColorU32((hovered && held) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
         RenderFrame(bb.Min, bb.Max, col, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, style.FrameRounding));
 
-        window->DrawList->AddImage(user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
+        window->DrawList->AddImage(reinterpret_cast<ImTextureID>(user_texture_id), image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
 
         if (textSize.x > 0)
             ImGui::RenderText(start, button_text);

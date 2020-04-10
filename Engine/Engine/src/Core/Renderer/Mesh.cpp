@@ -1,6 +1,5 @@
 #include <iostream>
 #include <glad/glad.h>
-
 #include "Mesh.h"
 #include "Mat4.hpp"
 #include "Object.hpp"

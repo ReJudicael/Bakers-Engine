@@ -469,7 +469,7 @@ namespace Core::Maths
 			// y-axis rotation
 			float sinPitch = 2 * (w * y - z * x);
 			if (abs(sinPitch) >= 1)
-				eulerAngles.y = copysign(M_PI_2, sinPitch);
+				eulerAngles.y = static_cast<float>(copysign(M_PI_2, sinPitch));
 			else
 				eulerAngles.y = asin(sinPitch);
 

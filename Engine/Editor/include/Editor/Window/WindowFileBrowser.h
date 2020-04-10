@@ -131,7 +131,7 @@ namespace Editor::Window
 		 * Get the texture of the icon of the chosen file / folder
 		 * @param itemPath: Path of the chosen file / folder
 		 */
-		ImTextureID GetIcon(const std::string& itemPath);
+		GLuint GetIcon(const std::string& itemPath);
 
 	private:
 		/**

@@ -1,13 +1,21 @@
 #pragma once
 
-#include <string>
-#include <iostream>
-#include <vector>
+#include "EventSystem.hpp"
 #include "EngineDefines.h"
+
+#include <string>
+#include <vector>
+
+#define BAKERS_LOG_MESSAGE(str)	Core::Debug::Logger::AddLog(Core::Debug::ELogType::LOG_MESSAGE, str, __FILE__, __FUNCTION__, __LINE__)
+#define BAKERS_LOG_WARNING(str)	Core::Debug::Logger::AddLog(Core::Debug::ELogType::LOG_WARNING, str, __FILE__, __FUNCTION__, __LINE__)
+#define BAKERS_LOG_ERROR(str)	Core::Debug::Logger::AddLog(Core::Debug::ELogType::LOG_ERROR, str, __FILE__, __FUNCTION__, __LINE__)
 
 namespace Core::Debug
 {
-	enum class LogType
+	/**
+	 * Log type
+	 */
+	enum class ELogType
 	{
 		LOG_MESSAGE = 0,
 		LOG_WARNING,
@@ -16,44 +24,99 @@ namespace Core::Debug
 		COUNT
 	};
 
+	/**
+	 * Log data
+	 */
 	struct LogData
 	{
-		LogType type;
-		int line;
+		/**
+		 * Log type
+		 */
+		ELogType type;
+
+		/**
+		 * Log message
+		 */
 		const char* message;
+
+		/**
+		 * The time when the log was displayed 
+		 */
 		const char* time;
+
+		/**
+		 * File where the log is called
+		 */
 		const char* file;
+
+		/**
+		 * Function where the log is called
+		 */
 		const char* function;
+
+		/**
+		 * File line where the log is called
+		 */
+		int line;
 	};
 
+	/**
+	 * Log handler
+	 */
 	BAKERS_API_CLASS Logger
 	{
 	public:
+		/**
+		 * Event called when a log is added
+		 */
+		static Core::SystemManagement::EventSystem<const LogData&> OnLogAdded;
+
+	public:
+		/**
+		 * Delete constructor
+		 */
 		Logger() = delete;
 
-		static void		DebugLog(LogType type, std::string messageLog, const char* file, int line, const char* function) noexcept;
-		static void		ClearLogs();
+		/**
+		 * Add log in container
+		 * @param type: Type log
+		 * @param messageLog: messageLog
+		 * @param file: File where the log is called
+		 * @param function: Function where the log is called
+		 * @param line: File line where the log is called
+		 */
+		static void		AddLog(ELogType type, std::string messageLog, const char* file, const char* function, int line) noexcept;
 
-		static size_t	GetLogdataSize();
-		static LogData*	GetLogdata();
+		/**
+		 * Clear logs
+		 */
+		static void		ClearLogs() noexcept;
+
+		/**
+		 * Get size of logs data
+		 * @return Size of logs data
+		 */
+		static size_t	GetLogsDataSize() noexcept;
+
+		/**
+		 * Get Logs data
+		 * @return Logs data
+		 */
+		static LogData*	GetLogsData() noexcept;
 	};
 
-	inline std::string ToString(const LogType log) noexcept
+	inline std::string	ToString(const ELogType log) noexcept
 	{
 		switch (log)
 		{
-		case LogType::LOG_MESSAGE:
+		case ELogType::LOG_MESSAGE:
 			return "Messages";
-		case LogType::LOG_WARNING:
+		case ELogType::LOG_WARNING:
 			return "Warnings";
-		case LogType::LOG_ERROR:
+		case ELogType::LOG_ERROR:
 			return "Errors";
 		default:
 			return "Unknow log type";
 		}
 	}
 };
-
-#define DEBUG_LOG(str) Core::Debug::Logger::DebugLog(Core::Debug::LogType::LOG_MESSAGE, str, __FILE__, __LINE__, __FUNCTION__)
-#define DEBUG_LOG_WARNING(str) Core::Debug::Logger::DebugLog(Core::Debug::LogType::LOG_WARNING, str, __FILE__, __LINE__, __FUNCTION__)
-#define DEBUG_LOG_ERROR(str) Core::Debug::Logger::DebugLog(Core::Debug::LogType::LOG_ERROR, str, __FILE__, __LINE__, __FUNCTION__)

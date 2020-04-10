@@ -25,15 +25,15 @@ namespace Editor::Window
 
 	void WindowToolbar::DisplayToolbar()
 	{
-		ImGui::ImageButtonUV(reinterpret_cast<ImTextureID>(m_icons[0]->texture), { 32.f });
+		ImGui::ImageButtonUV(m_icons[0]->texture, { 32.f });
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(reinterpret_cast<ImTextureID>(m_icons[1]->texture), { 32.f });
+		ImGui::ImageButtonUV(m_icons[1]->texture, { 32.f });
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(reinterpret_cast<ImTextureID>(m_icons[2]->texture), { 32.f });
+		ImGui::ImageButtonUV(m_icons[2]->texture, { 32.f });
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(reinterpret_cast<ImTextureID>(m_icons[3]->texture), { 32.f });
+		ImGui::ImageButtonUV(m_icons[3]->texture, { 32.f });
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(reinterpret_cast<ImTextureID>(m_icons[4]->texture), { 32.f });
+		ImGui::ImageButtonUV(m_icons[4]->texture, { 32.f });
 	}
 
 	void WindowToolbar::Tick()

@@ -62,7 +62,7 @@ namespace Core::Renderer
 	{
 		Core::Maths::Mat4 persp;
 
-		float top = near * tanf((M_PI * fov / 180) / 2);
+		float top = near * tanf((static_cast<float>(M_PI) * fov / 180.f) / 2.f);
 		float bot = -top;
 		float right = top * ratio;
 		float left = -right;

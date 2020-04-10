@@ -331,6 +331,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.inl" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -20,7 +20,7 @@ namespace Resources
 		stateTexture = EOpenGLLinkState::CANLINK;
 		if (!data)
 		{
-			DEBUG_LOG_WARNING("Failed to load: " + filename);
+			BAKERS_LOG_WARNING("Failed to load: " + filename);
 			stbi_image_free(data);
 			stateTexture = EOpenGLLinkState::LOADPROBLEM;
 			textureptr->stateTexture = EOpenGLLinkState::LOADPROBLEM;

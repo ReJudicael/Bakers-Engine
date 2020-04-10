@@ -34,14 +34,29 @@ namespace Editor::Window
 	{
 	private:
 		/**
+		 * Icon for settings
+		 */
+		std::shared_ptr<Resources::Texture> m_settingsIcon;
+
+		/**
 		 * Contains each type of log (Message, Warning, Error)
 		 */
-		ConsoleLogDataType m_log[static_cast<int>(Core::Debug::LogType::COUNT)];
+		ConsoleLogDataType m_log[3];
 
 		/**
 		 * Text Filter
 		 */
 		ImGuiTextFilter m_textFilter;
+
+		/**
+		 * Whether the scrollbar may be at the bottom or not
+		 */
+		bool m_canScrollBottom{ false };
+
+		/**
+		 * Wheter the autoScroll is activated or not
+		 */
+		bool m_autoScroll{ true };
 
 	public:
 		/**
@@ -65,7 +80,6 @@ namespace Editor::Window
 		 */
 		void PopWindowStyle() override;
 
-
 	private:
 		/**
 		 * Add log button
@@ -76,16 +90,31 @@ namespace Editor::Window
 		void AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled);
 
 		/**
-		 * Console header that contains the log buttons and the filter
+		 * Settings button
+		 */
+		void SettingsButton();
+
+		/**
+		 * Console header that contains the log buttons, the settings button and the filter
 		 */
 		void ConsoleHeader();
 
-		void LogPrint(Core::Debug::LogData log);
+		/**
+		 * Print a log
+		 * @param log: Log to print
+		 */
+		void PrintLog(Core::Debug::LogData log);
+
+		/**
+		 * Callback called when adding a log
+		 * @param log: Log being added
+		 */
+		void LogCallback(const Core::Debug::LogData& log);
 
 		/**
 		 * Draws the console messages
 		 */
-		void	ConsolePrint();
+		void ConsolePrint();
 
 	private:
 		/**

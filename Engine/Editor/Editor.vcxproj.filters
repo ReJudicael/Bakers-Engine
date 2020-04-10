@@ -229,5 +229,6 @@
     <None Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.inl">
       <Filter>Internal Dependencies\imgui\src</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
