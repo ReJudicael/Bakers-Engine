@@ -43,6 +43,7 @@ namespace Core::Datastructure
 	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo{ nullptr }, m_window{ nullptr }, m_manager{ nullptr }, m_physicsScene{ nullptr }
 	{
 		m_inputSystem = new Core::SystemManagement::InputSystem(this);
+		m_navMesh = new Core::Navigation::NavMeshBuilder();
 		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem, this);
 	}
 
@@ -219,6 +220,8 @@ namespace Core::Datastructure
 			m_manager->LinkAllTextureToOpenGl();
 			m_manager->LinkAllModelToOpenGl();
 			m_manager->ShaderUpdate();
+			if (!m_navMesh->IsNavmeshUpdated())
+				m_navMesh->Build();
 	}
 
 	void		EngineCore::Render()
@@ -333,5 +336,24 @@ namespace Core::Datastructure
 			}
 		};
 		return glfwSetWindowSizeCallback(m_window, window_size_callback);
+	}
+
+	void EngineCore::AddMeshToNav(Vertex* verts, int nverts, GLuint* tris, int ntris, const Core::Datastructure::Transform& position)
+	{
+		std::vector<float>	vertices;
+		vertices.reserve(nverts * 3);
+		for (int i{ 0 }; i < nverts; ++i)
+		{
+			vertices.push_back(verts[i].Position.x);
+			vertices.push_back(verts[i].Position.y);
+			vertices.push_back(verts[i].Position.z);
+		}
+		std::vector<int>	indices;
+		indices.reserve(ntris);
+		for (int i{ 0 }; i < ntris; ++i)
+		{
+			indices.push_back(tris[i]);
+		}
+		m_navMesh->AddMesh(vertices.data(), nverts * 3, indices.data(), ntris, position);
 	}
 }

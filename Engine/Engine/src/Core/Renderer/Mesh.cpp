@@ -87,6 +87,9 @@ bool Mesh::IsModelLoaded()
 void Mesh::CreateAABBMesh()
 {
 	Core::Datastructure::Object* object = GetParent();
+	
+	GetScene()->GetEngine()->AddMeshToNav(m_model->vertices.data(), m_model->vertices.size(), m_model->indices.data(), m_model->indices.size(), object->GetUpdatedTransform());
+	
 	Core::Datastructure::IComponent* component = dynamic_cast<Core::Datastructure::IComponent*>(this);
 	void* testCast = object->GetScene()
 							->GetEngine()

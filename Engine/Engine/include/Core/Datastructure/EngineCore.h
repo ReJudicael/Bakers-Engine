@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Framebuffer.h"
 #include "LoadResources.h"
+#include "NavMesh.h"
 
 namespace Core
 {
@@ -26,6 +27,8 @@ namespace Core
 			GLFWwindow* m_window;
 			Resources::Loader::ResourcesManager* m_manager;
 			Core::Physics::PhysicsScene* m_physicsScene;
+
+			Core::Navigation::NavMeshBuilder* m_navMesh;
 
 
 			double m_time{ 0 };
@@ -77,7 +80,9 @@ namespace Core
 			Core::Renderer::Framebuffer*	CreateFBO(int width, int height, Core::Renderer::FBOType t = Core::Renderer::FBOType::CUSTOM);
 			void							DeleteFBO(Core::Renderer::Framebuffer* fbo);
 
-			virtual Core::Maths::Vec2	GetMousePos() noexcept = 0;
+			virtual Core::Maths::Vec2		GetMousePos() noexcept = 0;
+
+			void							AddMeshToNav(Vertex* verts, int nverts, GLuint* tris, int ntris, const Core::Datastructure::Transform& position);
 
 		private:
 			void				SetCallbackToGLFW();

@@ -30,7 +30,6 @@ namespace Core::Datastructure
 		std::list<ComponentBase*>	m_components;
 		Core::SystemManagement::EventSystem<>	m_EventTransformChange;
 
-
 		/**
 		 * Set own transform plus childs to require an update to position
 		 */
@@ -58,6 +57,12 @@ namespace Core::Datastructure
 		 */
 		Object(const std::string& name, const Transform& localPos, Object* parent, RootObject* scene) noexcept;
 	public:
+		/**
+		 * Returns the transform, updates it if needed.
+		 * @return Updated transform
+		 */
+		const Transform&	GetUpdatedTransform() noexcept;
+
 		/**
 		 * Destructor of the object. Destroys all of its children and components.
 		 */
@@ -143,13 +148,6 @@ namespace Core::Datastructure
 		{
 			m_EventTransformChange.RemoveAllListeners();
 		}
-
-		/**
-		 * Returns the transform, updates it if needed.
-		 * @return Updated transform
-		 */
-		const Transform&	GetUpdatedTransform() noexcept;
-
 
 		/**
 		 * Translates the object in local space by given vector

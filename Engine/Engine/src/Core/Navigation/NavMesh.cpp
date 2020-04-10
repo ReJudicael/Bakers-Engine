@@ -21,14 +21,15 @@ namespace Core::Navigation
 		m_cfg.detailSampleDist = 6.0f < 0.9f ? 0 : m_cfg.cs * 6.0f;
 		m_cfg.detailSampleMaxError = m_cfg.ch * 1.0f;
 
-		m_cfg.bmin[0] = -1.f;
-		m_cfg.bmin[1] = -1.f;
-		m_cfg.bmin[2] = -1.f;
-		m_cfg.bmax[0] = 1.f;
-		m_cfg.bmax[1] = 1.f;
-		m_cfg.bmax[2] = 1.f;
+		m_cfg.bmin[0] = -100.f;
+		m_cfg.bmin[1] = -100.f;
+		m_cfg.bmin[2] = -100.f;
+		m_cfg.bmax[0] = 100.f;
+		m_cfg.bmax[1] = 100.f;
+		m_cfg.bmax[2] = 100.f;
 
 		m_navQuery = dtAllocNavMeshQuery();
+		m_ctx = new BuildContext();
 	}
 	NavMeshBuilder::~NavMeshBuilder()
 	{
@@ -43,8 +44,13 @@ namespace Core::Navigation
 
 	bool NavMeshBuilder::Build()
 	{
-		rcFreePolyMesh(m_pmesh);
+		if (m_mesh.size() == 0 || m_maxTris == 0)
+			return false;
+
 		rcCalcGridSize(m_cfg.bmin, m_cfg.bmax, m_cfg.cs, &m_cfg.width, &m_cfg.height);
+
+		m_ctx->resetTimers();
+		m_ctx->startTimer(RC_TIMER_TOTAL);
 
 		rcHeightfield* solid{ rcAllocHeightfield() };
 		if (!solid)
@@ -134,6 +140,7 @@ namespace Core::Navigation
 			return false;
 		}
 
+		rcFreePolyMesh(m_pmesh);
 		m_pmesh = rcAllocPolyMesh();
 		if (!m_pmesh)
 		{
@@ -238,12 +245,53 @@ namespace Core::Navigation
 			}
 		}
 
+		m_ctx->stopTimer(RC_TIMER_TOTAL);
+		int ns{ m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) % 1000 };
+		int us{ (m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) / 1000) % 1000 };
+		int ms{ (m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) / 1000000) % 1000 };
+		int s{ (m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) / 1000000000) % 1000 };
+		std::string time{ "Total build time for Navmesh: " };
+		bool comma{ false }; //Put comma before text
+		if (s > 0)
+		{
+			if (comma)
+				time += ", ";
+			time += std::to_string(s) + " seconds";
+			comma = true;
+		}
+		if (ms > 0) 
+		{
+			if (comma)
+				time += ", ";
+			time += std::to_string(ms) + " miliseconds";
+			comma = true;
+		}
+		if (us > 0)
+		{
+			if (comma)
+				time += ", ";
+			time += std::to_string(us) + " microseconds";
+			comma = true;
+		}
+		if (ns > 0)
+		{
+			if (comma)
+				time += ", ";
+			time += std::to_string(ns) + " nanoseconds";
+			comma = true;
+		}
+
+		DEBUG_LOG(time);
+		std::chrono::high_resolution_clock::duration d;
+		
+		m_isUpdated = true;
 		return true;
 	}
 
 	NavMesh* NavMeshBuilder::AddMesh(float* verts, int nverts, int* tris, int ntris, const Core::Datastructure::Transform& position)
 	{
 		float* newVerts{ (float*)malloc(nverts * sizeof(float*)) };
+
 		Core::Maths::Quat	rot{ position.GetGlobalRot() };
 		Core::Maths::Quat	rotInv{ rot.Inversed() };
 		Core::Maths::Vec3	pos{ position.GetGlobalPos() };
@@ -260,16 +308,51 @@ namespace Core::Navigation
 		}
 
 		int* newTris{ (int*)malloc(ntris * sizeof(int*)) };
+		int max = 0;
 		for (unsigned i{ 0 }; i < ntris; ++i)
 		{
+			if (tris[i] > max)
+				max = tris[i];
 			newTris[i] = tris[i];
 		}
 
-		m_mesh.push_back({ newVerts, newTris, nverts, ntris });
+		m_isUpdated = false;
+		m_mesh.push_back({ newVerts, newTris, nverts, ntris / 3 });
 
 		if (m_maxTris < ntris)
 			m_maxTris = ntris;
 
 		return &m_mesh.back();
+	}
+
+	void BuildContext::doResetLog()
+	{
+	}
+
+	void BuildContext::doLog(const rcLogCategory, const char*, const int)
+	{
+	}
+
+	void BuildContext::doResetTimers()
+	{
+		for (int i = 0; i < RC_MAX_TIMERS; ++i)
+			m_accTime[i] = std::chrono::high_resolution_clock::duration(0);
+	}
+
+	void BuildContext::doStartTimer(const rcTimerLabel label)
+	{
+		m_startTime[label] = std::chrono::high_resolution_clock::now();
+	}
+
+	void BuildContext::doStopTimer(const rcTimerLabel label)
+	{
+		const std::chrono::high_resolution_clock::time_point end{ std::chrono::high_resolution_clock::now() };
+		auto delta{ end - m_startTime[label] };
+		m_accTime[label] += delta;
+	}
+
+	int BuildContext::doGetAccumulatedTime(const rcTimerLabel label) const
+	{
+		return m_accTime[label].count();
 	}
 }
