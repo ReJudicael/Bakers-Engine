@@ -71,6 +71,11 @@ namespace Resources::Loader
 
 		Shader normalMapShader("./Resources/Shaders/DefaultShader.vert", "./Resources/Shaders/DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		m_shaders.emplace("NormalMapDefault", std::make_shared<Shader>(normalMapShader));
+
+		Shader wireframeShader("./Resources/Shaders/WireframeShader.vert", "./Resources/Shaders/WireframeShader.frag");
+		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
+
+		LoadObjInModel("Cube","Resources/Models/cube.obj");
 	}
 
 	ResourcesManager::~ResourcesManager()
@@ -245,6 +250,46 @@ namespace Resources::Loader
 				LoadaiMeshMaterial(scene, mesh, directory);
 			}
 		}
+		modelData->stateVAO = EOpenGLLinkState::CANLINK;
+	}
+
+	void ResourcesManager::LoadObjInModel(const std::string& name, const char* fileName)
+	{
+		std::string Name = fileName;
+
+		Assimp::Importer importer;
+
+		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
+
+		//aiImportFile
+		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
+			| aiProcess_GenSmoothNormals
+			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
+			| aiProcess_SplitLargeMeshes
+			| aiProcess_SortByPType
+			| aiProcess_ValidateDataStructure // validate the scene data
+			| aiProcess_CalcTangentSpace // calculate the tangent
+			| aiProcess_GenBoundingBoxes // generate the AABB of the meshs
+		);
+		if (!scene)
+		{
+			return;
+		}
+
+		std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
+		std::shared_ptr<Model> model = std::make_shared<Model>();
+
+		if (m_models.count(name) > 0)
+			return;
+		modelData->model = model;
+		m_models.emplace(name, model);
+		m_modelsToLink.push_back(modelData);
+			
+		aiMesh* mesh = scene->mMeshes[0];
+
+
+		modelData->LoadaiMeshModel(mesh);
+
 		modelData->stateVAO = EOpenGLLinkState::CANLINK;
 	}
 

@@ -159,13 +159,16 @@ namespace Core::Physics
 		physx::PxTransform shapeTransform{ shape->getLocalPose() };
 		//pos *= transform.GetGlobalScale();
 		pos /= 2;
-		pos = maxG + pos;
+		float dist = pos.Length();
+		pos = maxG + pos.Normalized() * dist;   
+		//pos /= transform.GetGlobalScale();
+
 		shapeTransform.p = { pos.x, pos.y, pos.z };
 		shape->setLocalPose(shapeTransform);
 		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
 		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
 
-		physx::PxVec3 globalPos { transform.GetGlobalPos().x,transform.GetGlobalPos().y, transform.GetGlobalPos().z };
+		physx::PxVec3 globalPos { transform.GetGlobalPos().x,transform.GetGlobalPos().y, transform.GetGlobalPos().z};
 		physx::PxQuat globalRot { transform.GetGlobalRot().x,transform.GetGlobalRot().y, transform.GetGlobalRot().z, transform.GetGlobalRot().w };
 		physx::PxTransform pxTransform{ globalPos, globalRot};
 		physx::PxRigidStatic* rigidStatic =  m_pxPhysics->createRigidStatic(pxTransform);

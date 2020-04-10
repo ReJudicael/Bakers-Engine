@@ -3,6 +3,7 @@
 #include "Collider.h"
 #include "CoreMinimal.h"
 #include "EventSystem.hpp"
+#include "IRenderable.hpp"
 
 namespace physx
 {
@@ -18,7 +19,7 @@ namespace Core
 		 * give acces to the collider of the physics and
 		 * the event OnTriggerEnter/End and OnContact.
 		 */
-		BAKERS_API_CLASS IPhysics : public virtual IComponent
+		BAKERS_API_CLASS IPhysics : public virtual IComponent, public virtual IRenderable
 		{
 		protected:
 			Physics::Collider*		m_collider;
@@ -65,6 +66,8 @@ namespace Core
 			 */
 			virtual void OnDestroy() override;
 
+			virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
+
 			/**
 			 * Create a physics mesh from the PhysicsScene, call in the OnStart
 			 * @param physics: the PhysX physics from the PhysicsScene
@@ -78,7 +81,7 @@ namespace Core
 			 */
 			virtual void SetPhysicsTransformParent() = 0;
 
-			REGISTER_CLASS(IComponent)
+			REGISTER_CLASS(IComponent, IRenderable)
 		};
 	}
 }

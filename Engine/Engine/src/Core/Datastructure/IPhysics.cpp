@@ -1,9 +1,9 @@
+#include <functional>
 #include "IPhysics.h"
 #include "RootObject.hpp"
 #include "EngineCore.h"
 #include "BoxCollider.h"
 #include "PhysicsScene.h"
-#include <functional>
 
 
 namespace Core
@@ -29,6 +29,11 @@ namespace Core
 			RootObject* root = GetScene();
 			root->GetEngine()->GetPhysicsScene()->CreatePhysicsShape(*m_collider);
 			root->GetEngine()->GetPhysicsScene()->AttachActor(this);
+			m_collider->InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
+			m_collider->InitModel(root->GetEngine()->GetResourcesManager()->GetModel("Cube"));
+			//m_collider->InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Default"));
+			IComponent::OnStart();
+			IRenderable::OnStart();
 		}
 
 		void IPhysics::OnCopy(IComponent* copyTo) const
@@ -42,6 +47,11 @@ namespace Core
 			phy->OnTriggerEnterEvent = OnTriggerEnterEvent;
 			phy->OnTriggerExitEvent = OnTriggerExitEvent;
 			phy->OnContactEvent = OnContactEvent;
+		}
+
+		void IPhysics::OnDraw(Core::Datastructure::ICamera* cam)
+		{
+			m_collider->DrawCollider(cam, GetParent()->GetGlobalPos(), GetParent()->GetGlobalRot());
 		}
 
 		void IPhysics::OnDestroy()
