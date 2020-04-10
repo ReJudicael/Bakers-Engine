@@ -55,6 +55,12 @@ namespace Core::Debug
 		SetConsoleTextAttribute(hConsole, 0x0F);
 	}
 
+	void Logger::ClearLogs() noexcept
+	{
+		nbLogs[0] = nbLogs[1] = nbLogs[2] = 0;
+		logs.clear();
+	}
+
 	void Logger::AddLog(ELogType type, std::string messageLog, const char* file, const char* function, int line) noexcept
 	{
 		if (messageLog.size() <= 0)
@@ -64,9 +70,11 @@ namespace Core::Debug
 
 		const std::string _time{ GetCurrentTimeAsTring() };
 		char* time = (char*)malloc(sizeof(char) * 9);
+#pragma warning(suppress : 6387)
 		memcpy(time, _time.c_str(), 9);
 
 		char* message = (char*)malloc(sizeof(char) * (messageLog.size() + 1));
+#pragma warning(suppress : 6387)
 		memcpy(message, messageLog.c_str(), messageLog.size() + 1);
 
 		LogData log_data{ type, message, time, file, function, line };
@@ -81,15 +89,9 @@ namespace Core::Debug
 		return OnLogAdding += call;
 	}
 
-	bool Logger::RemoveListener(Core::SystemManagement::ID listenerID) noexcept
+	bool Logger::RemoveEvent(Core::SystemManagement::ID listenerID) noexcept
 	{
 		return OnLogAdding -= listenerID;
-	}
-
-	void Logger::ClearLogs() noexcept
-	{
-		nbLogs[0] = nbLogs[1] = nbLogs[2] = 0;
-		logs.clear();
 	}
 
 	size_t	Logger::GetLogsDataSize() noexcept

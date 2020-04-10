@@ -43,12 +43,12 @@ namespace Editor::Window
 			m_isLocal = !m_isLocal;
 
 		Core::Maths::Vec3 pos{ object->GetPos() };
-		if (ImGui::RDragFloat3("Position", pos.xyz))
+		if (ImGui::RDragFloat3("Position", pos.xyz, 0.01f))
 			object->SetPos(pos);
 
 		Core::Maths::Vec3 rot{ object->GetRot().ToEulerAngles() };
 		rot *= static_cast<float>(RAD2DEG);
-		if (ImGui::RDragFloat3("Rotation", rot.xyz))
+		if (ImGui::RDragFloat3("Rotation", rot.xyz, 0.01f))
 			object->SetRot(rot * static_cast<float>(DEG2RAD));
 
 		Core::Maths::Vec3 scale{ object->GetScale() };
@@ -62,12 +62,12 @@ namespace Editor::Window
 			m_isLocal = !m_isLocal;
 
 		Core::Maths::Vec3 pos{ object->GetGlobalPos() };
-		if (ImGui::RDragFloat3("Position", pos.xyz))
+		if (ImGui::RDragFloat3("Position", pos.xyz, 0.01f))
 			object->SetGlobalPos(pos);
 
 		Core::Maths::Vec3 rot{ object->GetGlobalRot().ToEulerAngles() };
 		rot *= static_cast<float>(RAD2DEG);
-		if (ImGui::RDragFloat3("Rotation", rot.xyz))
+		if (ImGui::RDragFloat3("Rotation", rot.xyz, 0.01f))
 			object->SetGlobalRot(rot * static_cast<float>(DEG2RAD));
 
 		Core::Maths::Vec3 scale{ object->GetGlobalScale() };
@@ -143,7 +143,7 @@ namespace Editor::Window
 		else if (prop.get_type() == type::get<float>())
 		{
 			float f{ prop.get_value(component).get_value<float>() };
-			if (ImGui::RDragFloat(prop.get_name().to_string().c_str(), &f))
+			if (ImGui::RDragFloat(prop.get_name().to_string().c_str(), &f, 0.01f))
 				prop.set_value(component, f);
 		}
 		else if (prop.get_type() == type::get<Core::Maths::Vec2>())

@@ -30,7 +30,6 @@ namespace Editor
 		m_view->Add<Widget::Separator>();
 	}
 
-
 	void Canvas::OpenAllWindows(bool opened)
 	{
 		for (auto& widget : m_contents)

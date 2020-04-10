@@ -82,6 +82,11 @@ namespace Core::Debug
 		static void AddLog(ELogType type, std::string messageLog, const char* file, const char* function, int line) noexcept;
 
 		/**
+		 * Clear logs
+		 */
+		static void ClearLogs() noexcept;
+
+		/**
 		 * Add an event
 		 * @param call: Callback function
 		 * @return The ID of created listener
@@ -93,12 +98,7 @@ namespace Core::Debug
 		 * @param listenerID: ID of listener to remove
 		 * @return Whether the deletion work or not
 		 */
-		static bool RemoveListener(Core::SystemManagement::ID listenerID) noexcept;
-
-		/**
-		 * Clear logs
-		 */
-		static void ClearLogs() noexcept;
+		static bool RemoveEvent(Core::SystemManagement::ID listenerID) noexcept;
 
 		/**
 		 * Get size of logs data

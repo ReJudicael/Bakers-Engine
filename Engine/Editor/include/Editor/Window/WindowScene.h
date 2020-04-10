@@ -4,7 +4,7 @@
 
 namespace Core::Renderer
 {
-	class Framebuffer;
+	struct Framebuffer;
 }
 
 namespace Editor::Window
