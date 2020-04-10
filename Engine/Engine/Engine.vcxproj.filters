@@ -189,6 +189,9 @@
     <ClCompile Include="src\Core\Navigation\NavMesh.cpp">
       <Filter>Source Files\Core\Navigation</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\TriggeredEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Navigation\NavMesh.h">
       <Filter>Header Files\Core\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\TriggeredEvent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

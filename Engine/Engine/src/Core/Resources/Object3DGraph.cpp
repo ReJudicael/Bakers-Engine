@@ -1,8 +1,14 @@
 #include "Assimp/scene.h"
 #include "Object3DGraph.h"
 #include "LoadResources.h"
+#include "RootObject.hpp"
 #include "Object.hpp"
-#include "StaticMesh.h"
+#include "EngineCore.h"
+#include "PhysicsScene.h"
+#include "PxRigidStatic.h"
+//#include "StaticMesh.h"
+#include "TriggeredEvent.h"
+#include "Transform.hpp"
 
 namespace Resources
 {
@@ -70,6 +76,11 @@ namespace Resources
 	void Node::CreateObjectScene(Core::Datastructure::Object* Object, Loader::ResourcesManager& resources)
 	{
 		Object->SetName(nameObject);
+
+		Object->SetScale(scale);
+		Object->SetPos(position);
+		Object->SetRot(rotation);
+
 		if (nameMesh.find("nothing") == std::string::npos)
 		{
 			Mesh* mesh = { new Mesh() };
@@ -86,15 +97,19 @@ namespace Resources
 				mesh->AddModel(resources.GetModel(nameMesh));
 				mesh->AddMaterials(resources, namesMaterial);
 				Object->AddComponent(mesh);
+
+				Core::Datastructure::TriggeredEvent* newEvent{ new Core::Datastructure::TriggeredEvent() };
+
+				newEvent->SetTriggeredEvent(std::bind(&Mesh::IsModelLoaded, mesh), std::bind(&Mesh::CreateAABBMesh, mesh));
+
+				Object->AddComponent(newEvent);
+
 				/*For Test*/
 				//Core::Physics::StaticMesh* staticMesh{ new Core::Physics::StaticMesh() };
 				//Object->AddComponent(staticMesh);
 			}
 		}
 
-		Object->SetScale(scale);
-		Object->SetPos(position);
-		Object->SetRot(rotation);
 
 		for (auto i{ 0 }; i < children.size(); i++)
 		{

@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "OpenGlLinkState.h"
+#include "Vertex.h"
 
 namespace Resources
 {

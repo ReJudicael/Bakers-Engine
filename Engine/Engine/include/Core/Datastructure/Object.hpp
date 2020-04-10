@@ -30,11 +30,6 @@ namespace Core::Datastructure
 		std::list<ComponentBase*>	m_components;
 		Core::SystemManagement::EventSystem<>	m_EventTransformChange;
 
-		/**
-		 * Returns the transform, updates it if needed.
-		 * @return Updated transform
-		 */
-		const Transform&	GetUpdatedTransform() noexcept;
 
 		/**
 		 * Set own transform plus childs to require an update to position
@@ -148,6 +143,13 @@ namespace Core::Datastructure
 		{
 			m_EventTransformChange.RemoveAllListeners();
 		}
+
+		/**
+		 * Returns the transform, updates it if needed.
+		 * @return Updated transform
+		 */
+		const Transform&	GetUpdatedTransform() noexcept;
+
 
 		/**
 		 * Translates the object in local space by given vector
