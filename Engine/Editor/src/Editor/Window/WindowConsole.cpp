@@ -6,15 +6,15 @@ namespace Editor::Window
 	WindowConsole::WindowConsole(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Console", visible }
 	{
-		for (ConsoleLogDataType& log : m_log)
-			log.isEnabled = true;
+		for (auto& [icon, isEnabled] : m_logsIcon)
+			isEnabled = true;
 
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\message.png", m_log[0].icon);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\warning.png", m_log[1].icon);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\error.png", m_log[2].icon);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\message.png", m_logsIcon[0].first);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\warning.png", m_logsIcon[1].first);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\error.png", m_logsIcon[2].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\settings.png", m_settingsIcon);
 
-		Core::Debug::Logger::OnLogAdded += BIND_EVENT(WindowConsole::LogCallback);
+		Core::Debug::Logger::AddEvent(BIND_EVENT(WindowConsole::LogCallback));
 	}
 
 	void WindowConsole::PushWindowStyle()
@@ -25,10 +25,15 @@ namespace Editor::Window
 	{
 	}
 
+	void WindowConsole::LogCallback(const Core::Debug::LogData& log_data)
+	{
+		if (m_autoScroll)
+			m_canScrollBottom = true;
+	}
+
 	void WindowConsole::AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled)
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, isEnabled ? ImVec4(0.18f, 0.32f, 0.45f, 1.0f) : ImVec4(0.18f, 0.18f, 0.25f, 1.0f));
-#pragma warning(suppress : 4312)
 		if (ImGui::ImageButtonUVWithText_HelpMarker(icon->texture, "## LogButton", label, help_marker.c_str()))
 			isEnabled = !isEnabled;
 		ImGui::PopStyleColor();
@@ -54,60 +59,49 @@ namespace Editor::Window
 	void WindowConsole::ConsoleHeader()
 	{
 		if (ImGui::ColoredButton("Clear", { 50.f, 0.f }, { 0.75f, 0.22f, 0.17f }))
-		{
 			Core::Debug::Logger::ClearLogs();
-			for (auto& log : m_log) { log.nbLogs = 0; };
-		}
 
 		std::string label, nbLogs, typeLog;
 		for (int i{ 2 }; i >= 0; --i)
 		{
-			nbLogs	= std::to_string(m_log[i].nbLogs);
-			label	= m_log[i].isEnabled ? nbLogs : "0 of " + nbLogs;
-			typeLog	= ToString(static_cast<Core::Debug::ELogType>(i));
+			nbLogs = std::to_string(Core::Debug::Logger::GetNbLogs(static_cast<Core::Debug::ELogType>(i)));
+			label	= m_logsIcon[i].second ? nbLogs : "0 of " + nbLogs;
+			typeLog	= Core::Debug::ToString(static_cast<Core::Debug::ELogType>(i));
 
 			ImGui::SameLine();
 			ImGui::PushID(i);
-			AddLogButton(m_log[i].icon, label, typeLog, m_log[i].isEnabled);
+			AddLogButton(m_logsIcon[i].first, label, typeLog, m_logsIcon[i].second);
 			ImGui::PopID();
 		}
 
 		ImGui::SameLine();
 		SettingsButton();
 
-		ImGui::SameLine();
-		m_textFilter.Draw("Filter", ImGui::GetContentRegionAvail().x - 37.f);
+		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 200.f);
+		m_logFilter.Draw("Filter", ImGui::GetContentRegionAvail().x - 37.f);
 	}
 
 	void WindowConsole::PrintLog(Core::Debug::LogData log)
 	{
-		if (m_log[(size_t)log.type].isEnabled && m_textFilter.PassFilter(log.message))
+		if (m_logsIcon[(size_t)log.type].second && m_logFilter.PassFilter(log.message))
 		{
-			ImGui::ImageUV(m_log[(size_t)log.type].icon->texture);
+			ImGui::ImageUV(m_logsIcon[(size_t)log.type].first->texture);
 			ImGui::SameLine();
 			ImGui::Text("%s\t-\t%s", log.time, log.message);
 			ImGui::Separator();
 		}
 	}
 
-	void WindowConsole::LogCallback(const Core::Debug::LogData& log_data)
-	{
-		++m_log[static_cast<size_t>(log_data.type)].nbLogs;
-
-		if (m_autoScroll)
-			m_canScrollBottom = true;
-	}
-
 	void WindowConsole::ConsolePrint()
 	{
 		Core::Debug::LogData* logs = Core::Debug::Logger::GetLogsData();
-		int logSize = Core::Debug::Logger::GetLogsDataSize();
+		size_t logSize = Core::Debug::Logger::GetLogsDataSize();
 
-		if (ImGui::BeginChild("## ConsolePrint", { 0.f }, false, ImGuiWindowFlags_HorizontalScrollbar))
+		ImGui::BeginChild("## ConsolePrint", { 0.f }, false, ImGuiWindowFlags_HorizontalScrollbar);
 		{
 			ImGui::Spacing();
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 8.f, 8.f });
-			for (int i{ 0 }; i < logSize; ++i)
+			for (size_t i{ 0 }; i < logSize; ++i)
 				PrintLog(logs[i]);
 			ImGui::PopStyleVar();
 

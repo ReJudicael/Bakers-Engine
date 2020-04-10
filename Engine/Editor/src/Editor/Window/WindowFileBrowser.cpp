@@ -168,7 +168,7 @@ namespace Editor::Window
 
 			it = m_icons.emplace(itemPath, icon).first;
 		}
-#pragma warning(suppress : 4312)
+
 		return it->second->texture;
 	}
 
@@ -198,6 +198,9 @@ namespace Editor::Window
 				ImGui::Text(">");
 			}
 		}
+
+		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 200.f);
+		m_pathFilter.Draw("Filter", ImGui::GetContentRegionAvail().x - 37.f);
 	}
 
 	void WindowFileBrowser::ShowItem(const std::string& itemName)
@@ -244,7 +247,8 @@ namespace Editor::Window
 				}
 
 				itemName = contents[i].filename().string();
-				if (fs.FileHasExcludedExtension(itemName, excludedExtensions))
+				if (itemName != ".." && (fs.FileHasExcludedExtension(itemName, excludedExtensions) 
+					|| !m_pathFilter.PassFilter(itemName.c_str())))
 					continue;
 
 				ImGui::PushID(static_cast<int>(i));

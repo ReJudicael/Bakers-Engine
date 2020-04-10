@@ -79,11 +79,13 @@ namespace ImGui
 
     IMGUI_API void ImageUV(unsigned int user_texture_id, const ImVec2& size)
     {
+#pragma warning(suppress : 4312)
         return Image(reinterpret_cast<ImTextureID>(user_texture_id), size, { 0.f, 1.f }, { 1.f, 0.f });
     }
 
     IMGUI_API bool ImageButtonUV_HelpMarker(unsigned int user_texture_id, const char* help_marker, const ImVec2& size)
     {
+#pragma warning(suppress : 4312)
         bool isClicked = ImageButton(reinterpret_cast<ImTextureID>(user_texture_id), size, { 0.f, 1.f }, { 1.f, 0.f });
         HelpMarkerItem(help_marker);
 
@@ -92,6 +94,7 @@ namespace ImGui
 
     IMGUI_API bool ImageButtonUV(unsigned int user_texture_id, const ImVec2& size)
     {
+#pragma warning(suppress : 4312)
         return ImageButton(reinterpret_cast<ImTextureID>(user_texture_id), size, { 0.f, 1.f }, { 1.f, 0.f });
     }
 
@@ -156,6 +159,7 @@ namespace ImGui
         const ImU32 col = GetColorU32((hovered && held) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
         RenderFrame(bb.Min, bb.Max, col, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, style.FrameRounding));
 
+#pragma warning(suppress : 4312)
         window->DrawList->AddImage(reinterpret_cast<ImTextureID>(user_texture_id), image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
 
         if (textSize.x > 0)

@@ -7,8 +7,8 @@
 namespace Core::Debug
 {
 	std::vector<LogData> logs;
-	Core::SystemManagement::EventSystem<const LogData&> Logger::OnLogAdded;
-	int nbMessages	= 0;
+	Core::SystemManagement::EventSystem<const LogData&> OnLogAdding;
+	int nbLogs[3]{ 0 };
 
 	static std::string GetCurrentTimeAsTring()
 	{
@@ -71,13 +71,24 @@ namespace Core::Debug
 
 		LogData log_data{ type, message, time, file, function, line };
 		logs.push_back(log_data);
-		Logger::OnLogAdded(log_data);
+		OnLogAdding(log_data);
 
-		++nbMessages;
+		++nbLogs[static_cast<int>(type)];
+	}
+
+	Core::SystemManagement::ID Logger::AddEvent(const std::function<void(const LogData&)>& call) noexcept
+	{
+		return OnLogAdding += call;
+	}
+
+	bool Logger::RemoveListener(Core::SystemManagement::ID listenerID) noexcept
+	{
+		return OnLogAdding -= listenerID;
 	}
 
 	void Logger::ClearLogs() noexcept
 	{
+		nbLogs[0] = nbLogs[1] = nbLogs[2] = 0;
 		logs.clear();
 	}
 
@@ -91,8 +102,15 @@ namespace Core::Debug
 		return logs.data();
 	}
 
-	int GetMessages() noexcept
+	int Logger::GetNbLogs(ELogType type) noexcept
 	{
-		return nbMessages;
+		switch (type)
+		{
+		case ELogType::LOG_MESSAGE: return nbLogs[0];
+		case ELogType::LOG_WARNING: return nbLogs[1];
+		case ELogType::LOG_ERROR: return nbLogs[2];
+		}
+
+		return 0;
 	}
 }

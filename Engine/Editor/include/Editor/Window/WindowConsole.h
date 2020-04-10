@@ -6,47 +6,25 @@
 namespace Editor::Window
 {
 	/**
-	 * Structure for each type of log
-	 * to handle the console
-	 */
-	struct ConsoleLogDataType
-	{
-		/**
-		 * Icon to display the type of log
-		 */
-		std::shared_ptr<Resources::Texture> icon;
-
-		/**
-		 * Number of logs (by type)
-		 */
-		unsigned int nbLogs{ 0 };
-
-		/**
-		 * Wheter the icon is enabled or not
-		 */
-		bool isEnabled{ true };
-	};
-
-	/**
 	 * Window Console
 	 */
 	class WindowConsole final : public AWindow
 	{
 	private:
 		/**
+		 * Icon for logs and button state, for each log type (Message, Warning, Error)
+		 */
+		std::pair<std::shared_ptr<Resources::Texture>, bool> m_logsIcon[3];
+
+		/**
 		 * Icon for settings
 		 */
 		std::shared_ptr<Resources::Texture> m_settingsIcon;
 
 		/**
-		 * Contains each type of log (Message, Warning, Error)
+		 * Log Filter
 		 */
-		ConsoleLogDataType m_log[3];
-
-		/**
-		 * Text Filter
-		 */
-		ImGuiTextFilter m_textFilter;
+		ImGuiTextFilter m_logFilter;
 
 		/**
 		 * Whether the scrollbar may be at the bottom or not
@@ -82,6 +60,12 @@ namespace Editor::Window
 
 	private:
 		/**
+		 * Callback called when adding a log
+		 * @param log: Log being added
+		 */
+		void LogCallback(const Core::Debug::LogData& log);
+
+		/**
 		 * Add log button
 		 * @param icon: Icon  of button
 		 * @param label: Label of button
@@ -104,12 +88,6 @@ namespace Editor::Window
 		 * @param log: Log to print
 		 */
 		void PrintLog(Core::Debug::LogData log);
-
-		/**
-		 * Callback called when adding a log
-		 * @param log: Log being added
-		 */
-		void LogCallback(const Core::Debug::LogData& log);
 
 		/**
 		 * Draws the console messages

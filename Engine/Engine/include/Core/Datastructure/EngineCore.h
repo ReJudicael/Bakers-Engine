@@ -45,7 +45,7 @@ namespace Core
 			Core::SystemManagement::EventSystem<EMouseButton> OnPressMouseButton;
 			Core::SystemManagement::EventSystem<EMouseButton> OnReleaseMouseButton;
 			Core::SystemManagement::EventSystem<double> OnScrollYAxis;
-			Core::SystemManagement::EventSystem<double, double> OnResizeWindow;
+			Core::SystemManagement::EventSystem<int, int> OnResizeWindow;
 
 			inline Resources::Loader::ResourcesManager* GetResourcesManager()
 			{

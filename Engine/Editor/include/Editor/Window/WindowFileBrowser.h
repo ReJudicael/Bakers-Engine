@@ -19,6 +19,11 @@ namespace Editor::Window
 		 */
 		ImGuiInputTextFlags m_inputTextFlags;
 
+		/**
+		 * Path Filter
+		 */
+		ImGuiTextFilter m_pathFilter;
+
 	private:
 		/**
 		 * FileSystem to handle path navigation

@@ -13,7 +13,7 @@ namespace Editor
 
 		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
 
-		 InitMenuBar();
+		InitMenuBar();
 	}
 
 	Canvas::~Canvas()

@@ -81,7 +81,7 @@ namespace Editor::Window
 
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
-#pragma warning(suppress : 4312)
+
 		bool isClickedReset = ImGui::ImageButtonUV_HelpMarker(m_resetIcon->texture, "Reset");
 		ImGui::PopStyleColor(1);
 
@@ -196,10 +196,10 @@ namespace Editor::Window
 
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
-#pragma warning(suppress : 4312)
+
 			bool isClickedDelete = ImGui::ImageButtonUV_HelpMarker(m_deleteIcon->texture, "Delete");
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
-#pragma warning(suppress : 4312)
+
 			bool isClickedReset = ImGui::ImageButtonUV_HelpMarker(m_resetIcon->texture, "Reset");
 			ImGui::PopStyleColor(1);
 

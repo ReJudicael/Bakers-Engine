@@ -46,7 +46,6 @@ namespace Editor::Window
 					m_fbo->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
 			}
 
-#pragma warning(suppress : 4312)
 			ImGui::ImageUV(m_fbo->ColorTexture, windowSize);
 		}
 	}

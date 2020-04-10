@@ -67,12 +67,6 @@ namespace Core::Debug
 	{
 	public:
 		/**
-		 * Event called when a log is added
-		 */
-		static Core::SystemManagement::EventSystem<const LogData&> OnLogAdded;
-
-	public:
-		/**
 		 * Delete constructor
 		 */
 		Logger() = delete;
@@ -85,24 +79,45 @@ namespace Core::Debug
 		 * @param function: Function where the log is called
 		 * @param line: File line where the log is called
 		 */
-		static void		AddLog(ELogType type, std::string messageLog, const char* file, const char* function, int line) noexcept;
+		static void AddLog(ELogType type, std::string messageLog, const char* file, const char* function, int line) noexcept;
+
+		/**
+		 * Add an event
+		 * @param call: Callback function
+		 * @return The ID of created listener
+		 */
+		static Core::SystemManagement::ID AddEvent(const std::function<void(const LogData&)>& call) noexcept;
+
+		/**
+		 * Remove an event through its ID
+		 * @param listenerID: ID of listener to remove
+		 * @return Whether the deletion work or not
+		 */
+		static bool RemoveListener(Core::SystemManagement::ID listenerID) noexcept;
 
 		/**
 		 * Clear logs
 		 */
-		static void		ClearLogs() noexcept;
+		static void ClearLogs() noexcept;
 
 		/**
 		 * Get size of logs data
 		 * @return Size of logs data
 		 */
-		static size_t	GetLogsDataSize() noexcept;
+		static size_t GetLogsDataSize() noexcept;
 
 		/**
 		 * Get Logs data
 		 * @return Logs data
 		 */
-		static LogData*	GetLogsData() noexcept;
+		static LogData* GetLogsData() noexcept;
+
+		/**
+		 * Get the number of logs of the given type
+		 * @param type: The log type
+		 * @return The number of logs of this type
+		 */
+		static int GetNbLogs(ELogType type) noexcept;
 	};
 
 	inline std::string	ToString(const ELogType log) noexcept

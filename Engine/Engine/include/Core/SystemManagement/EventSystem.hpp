@@ -14,6 +14,9 @@ namespace Core
 	 */
 	namespace SystemManagement
 	{
+		/**
+		 * ID to identify its callback
+		 */
 		typedef unsigned int ID;
 
 		/**
