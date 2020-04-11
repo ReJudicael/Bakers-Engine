@@ -14,7 +14,7 @@ RTTR_PLUGIN_REGISTRATION
 	registration::class_<Core::Renderer::Camera>("Camera")
 		.constructor()
 		.constructor<const float, const float, const float, const float>()
-		.property("Perspective", &Core::Renderer::Camera::m_persp);
+		.property("Perspective", &Core::Renderer::Camera::GetPerspData, &Core::Renderer::Camera::SetPerspData);
 }
 
 namespace Core::Renderer
@@ -35,21 +35,15 @@ namespace Core::Renderer
 
 	Camera::Camera(const float ratio, const float fov, const float near, const float far) : ComponentBase(), ICamera(), IUpdatable()
 	{
-		m_persp.ratio = m_prevPersp.ratio = ratio;
-		m_persp.fov = m_prevPersp.ratio = fov;
-		m_persp.near = m_prevPersp.ratio = near;
-		m_persp.far = m_prevPersp.ratio = far;
+		m_persp.ratio = ratio;
+		m_persp.fov = fov;
+		m_persp.near = near;
+		m_persp.far = far;
 	}
 
 	void Camera::OnUpdate(float deltaTime)
 	{
 		m_isCamUpdated = false;
-
-		if (PerspectiveNeedUpdate())
-		{
-			m_isPerspectiveUpdated = false;
-			m_prevPersp = m_persp;
-		}
 	}
 
 	void Camera::OnStart()
@@ -81,18 +75,7 @@ namespace Core::Renderer
 	void Camera::SetRatio(const float newRatio)
 	{
 		m_persp.ratio = newRatio;
-		m_prevPersp.ratio = newRatio;
 		m_isPerspectiveUpdated = false;
-	}
-
-	bool Camera::PerspectiveNeedUpdate() const noexcept
-	{
-		bool result = m_prevPersp.ratio != m_persp.ratio;
-		result |= m_prevPersp.fov != m_persp.fov;
-		result |= m_prevPersp.near != m_persp.near;
-		result |= m_prevPersp.far != m_persp.far;
-
-		return result;
 	}
 
 	void Camera::OnCopy(IComponent* toCopy) const
@@ -104,7 +87,6 @@ namespace Core::Renderer
 		Camera* copy = dynamic_cast<Camera*>(toCopy);
 
 		copy->m_persp = m_persp;
-		copy->m_prevPersp = m_prevPersp;
 	}
 
 	void	Camera::StartCopy(IComponent*& copyTo) const

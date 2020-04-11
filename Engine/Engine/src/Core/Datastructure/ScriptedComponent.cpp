@@ -1,11 +1,12 @@
 #include "ScriptedComponent.h"
+#include "Vec3.hpp"
+
 
 RTTR_PLUGIN_REGISTRATION
 {
-	registration::class_<Core::Datastructure::ScriptedComponent>("ScriptedComponent")
-		.constructor()
-		.constructor<const char*>()
-		.property("Script", &Core::Datastructure::ScriptedComponent::m_script);
+	using namespace Core::Datastructure;
+	RegisterDefaultClassConstructor<ScriptedComponent>("ScriptedComponent");
+	RegisterClassProperty<ScriptedComponent>("ScriptedComponent", "Script", &ScriptedComponent::m_script);
 }
 
 namespace Core::Datastructure
@@ -21,45 +22,36 @@ namespace Core::Datastructure
 
 	ScriptedComponent::~ScriptedComponent()
 	{
-		if (m_script && m_lState)
-			lua_close(m_lState);
 	}
 
 	void ScriptedComponent::OnStart()
-	{
+	{	
 		ComponentUpdatable::OnStart();
 
 		if (!m_script)
 			return;
 
-		m_lState = luaL_newstate();
-		luaL_openlibs(m_lState);
-		if (luaL_dofile(m_lState, m_script) != LUA_OK)
+		Core::Datastructure::lua.open_libraries(sol::lib::base);
+		
+		if (Core::Datastructure::lua.script_file(m_script).valid())
 		{
-			BAKERS_LOG_WARNING("Failed to load: " + std::string(m_script));
-			lua_close(m_lState);
-			m_lState = nullptr;
+			std::cout << "Failed to load " << m_script << std::endl;
 			m_script = nullptr;
 			return;
 		}
 
-		lua_getglobal(m_lState, "Start");
-		if (lua_isfunction(m_lState, -1))
-			lua_pcall(m_lState, 0, 0, 0);
+		m_start = Core::Datastructure::lua["Start"];
+		m_update = Core::Datastructure::lua["Update"];
+
+		m_start();
 	}
 
 	void ScriptedComponent::OnUpdate(float deltaTime)
 	{
-		if (!m_lState)
+		if (!m_script)
 			return;
 
-		lua_getglobal(m_lState, "Update");
-		if (lua_isfunction(m_lState, -1))
-		{
-			lua_pushnumber(m_lState, deltaTime);
-
-			lua_pcall(m_lState, 1, 0, 0);
-		}
+		m_update(deltaTime);
 	}
 
 	void ScriptedComponent::OnCopy(IComponent* copyTo) const
@@ -68,7 +60,6 @@ namespace Core::Datastructure
 		ScriptedComponent* copy{ dynamic_cast<ScriptedComponent*>(copyTo) };
 
 		copy->m_script = m_script;
-		copy->m_lState = m_lState;
 	}
 
 	void ScriptedComponent::StartCopy(IComponent*& copyTo) const

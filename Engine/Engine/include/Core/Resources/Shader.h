@@ -16,7 +16,7 @@ namespace Resources
 	class Shader
 	{
 	public:
-		const char* version = "#version 330 core\n";
+		const char* version = "#version 400 core\n";
 		const char* lightShaderSource = "./Resources/Shaders/LightHeader.shader";
 
 		/**
@@ -44,6 +44,9 @@ namespace Resources
 
 		GLuint m_programID = UINT_MAX;
 		std::unordered_map<std::string, GLint> m_locations;
+
+		std::string m_vertexFile{ "" };
+		std::string m_fragmentFile{ "" };
 
 		std::string m_vertex{ "" };
 		std::string m_fragment{ "" };
@@ -101,6 +104,16 @@ namespace Resources
 		 * Store uniforms of both vertex shader and fragment shader
 		 */
 		void	StoreAllUniforms();
+
+		/**
+		 * Load vertex and fragment shader to create program
+		 */
+		void Load();
+
+		/**
+		 * Destroy current program and locations and reload vertex and fragment shaders
+		 */
+		void Reload();
 
 		/**
 		 * Use glProgram

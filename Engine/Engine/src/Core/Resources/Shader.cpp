@@ -12,11 +12,10 @@ namespace Resources
 	{
 		m_shaderHeader = header;
 
-		LoadFromFile(vertexFilePath, EShaderType::VERTEX);
-		LoadFromFile(fragmentFilePath, EShaderType::FRAGMENT);
+		m_vertexFile = vertexFilePath;
+		m_fragmentFile = fragmentFilePath;
 
-		Compile();
-		StoreAllUniforms();
+		Load();
 	}
 
 	Shader::~Shader()
@@ -117,7 +116,6 @@ namespace Resources
 
 		glLinkProgram(m_programID);
 
-
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 	}
@@ -149,6 +147,23 @@ namespace Resources
 		// Reset vertex and fragment strings that are no longer needed
 		m_vertex = "";
 		m_fragment = "";
+	}
+
+	void	Shader::Load()
+	{
+		LoadFromFile(m_vertexFile.c_str(), EShaderType::VERTEX);
+		LoadFromFile(m_fragmentFile.c_str(), EShaderType::FRAGMENT);
+
+		Compile();
+		StoreAllUniforms();
+	}
+
+	void	Shader::Reload()
+	{
+		Delete();
+		m_locations.clear();
+
+		Load();
 	}
 
 	void Shader::UseProgram()

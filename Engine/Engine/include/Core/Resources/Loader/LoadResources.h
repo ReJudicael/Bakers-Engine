@@ -269,7 +269,15 @@ namespace Resources
 			 */
 			void LinkAllModelToOpenGl();
 
+			/**
+			 * Use each shader program and send lights components to shaders
+			 */
 			void ShaderUpdate();
+
+			/**
+			 * Reload each shader with current vertex and fragment shaders
+			 */
+			void ReloadShaders();
 		};
 	}
 }

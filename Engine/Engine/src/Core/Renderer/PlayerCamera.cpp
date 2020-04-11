@@ -33,12 +33,13 @@ namespace Core::Renderer
 			Input()->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
 			m_mousePos = Input()->GetMousePos();
 			m_isMouseSet = false;
-			return;
 		}
-
-		Input()->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::INVISIBLE);
-		ComputeTranslation();
-		ComputeRotation();
+		else
+		{
+			Input()->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::INVISIBLE);
+			ComputeTranslation();
+			ComputeRotation();
+		}
 	}
 
 	void PlayerCamera::ComputeTranslation()
