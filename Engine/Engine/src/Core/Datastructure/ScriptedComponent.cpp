@@ -1,11 +1,12 @@
 #include "ScriptedComponent.h"
+#include "Vec3.hpp"
+
 
 RTTR_PLUGIN_REGISTRATION
 {
-	registration::class_<Core::Datastructure::ScriptedComponent>("ScriptedComponent")
-		.constructor()
-		.constructor<const char*>()
-		.property("Script", &Core::Datastructure::ScriptedComponent::m_script);
+	using namespace Core::Datastructure;
+	RegisterDefaultClassConstructor<ScriptedComponent>("ScriptedComponent");
+	RegisterClassProperty<ScriptedComponent>("ScriptedComponent", "Script", &ScriptedComponent::m_script);
 }
 
 namespace Core::Datastructure
@@ -30,15 +31,19 @@ namespace Core::Datastructure
 		if (!m_script)
 			return;
 
-		m_lua.open_libraries(sol::lib::base);
-		if (!m_lua.script_file(m_script).valid())
+		Core::Datastructure::lua.open_libraries(sol::lib::base);
+		
+		if (Core::Datastructure::lua.script_file(m_script).valid())
 		{
 			std::cout << "Failed to load " << m_script << std::endl;
 			m_script = nullptr;
 			return;
 		}
 
-		m_lua["Start"]();
+		m_start = Core::Datastructure::lua["Start"];
+		m_update = Core::Datastructure::lua["Update"];
+
+		m_start();
 	}
 
 	void ScriptedComponent::OnUpdate(float deltaTime)
@@ -46,7 +51,7 @@ namespace Core::Datastructure
 		if (!m_script)
 			return;
 
-		m_lua["Update"](deltaTime);
+		m_update(deltaTime);
 	}
 
 	void ScriptedComponent::OnCopy(IComponent* copyTo) const
@@ -55,7 +60,6 @@ namespace Core::Datastructure
 		ScriptedComponent* copy{ dynamic_cast<ScriptedComponent*>(copyTo) };
 
 		copy->m_script = m_script;
-		copy->m_lua.script_file(copy->m_script);
 	}
 
 	void ScriptedComponent::StartCopy(IComponent*& copyTo) const

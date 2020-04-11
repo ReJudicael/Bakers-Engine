@@ -3,19 +3,6 @@
 #include "ComponentUpdatable.h"
 #include "CoreMinimal.h"
 
-extern "C"
-{
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
-
-#include "sol.hpp"
-
-#ifdef _WIN64
-#pragma comment(lib, "lua53.lib")
-#endif
-
 namespace Core::Datastructure
 {
 	/**
@@ -25,7 +12,8 @@ namespace Core::Datastructure
 	{
 	private:
 		const char* m_script = nullptr;
-		sol::state m_lua;
+		sol::function m_start;
+		sol::function m_update;
 
 		/**
 		 * Copy event for editor component handling
@@ -99,7 +87,7 @@ namespace Core::Datastructure
 		if (!m_script)
 			return T();
 
-		return m_lua[name];
+		return Core::Datastructure::lua[name];
 	}
 
 	template<class T>
@@ -108,7 +96,7 @@ namespace Core::Datastructure
 		if (!m_script)
 			return;
 
-		m_lua[name] = value;
+		Core::Datastructure::lua[name] = value;
 	}
 }
 
