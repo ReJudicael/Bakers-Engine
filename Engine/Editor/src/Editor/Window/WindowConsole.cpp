@@ -33,7 +33,7 @@ namespace Editor::Window
 
 	void WindowConsole::AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, isEnabled ? ImVec4(0.18f, 0.32f, 0.45f, 1.0f) : ImVec4(0.18f, 0.18f, 0.25f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_Button, isEnabled ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
 		if (ImGui::ImageButtonUVWithText_HelpMarker(icon->texture, "## LogButton", label, help_marker.c_str()))
 			isEnabled = !isEnabled;
 		ImGui::PopStyleColor();

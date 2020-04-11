@@ -8,9 +8,9 @@ namespace Editor::Window
 	{
 		m_flags |= ImGuiWindowFlags_NoScrollbar;
 
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\pause.png", m_icons[0]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\play.png", m_icons[1]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\skip.png", m_icons[2]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\play.png", m_icons[0]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\pause.png", m_icons[1]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\next.png", m_icons[2]);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\reload.png", m_icons[3]);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\compilation.png", m_icons[4]);
 	}
@@ -25,15 +25,15 @@ namespace Editor::Window
 
 	void WindowToolbar::DisplayToolbar()
 	{
-		ImGui::ImageButtonUV(m_icons[0]->texture, { 32.f });
+		ImGui::ImageButtonUV_HelpMarker(m_icons[0]->texture, "Play", { 32.f });
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_icons[1]->texture, { 32.f });
+		ImGui::ImageButtonUV_HelpMarker(m_icons[1]->texture, "Pause", { 32.f });
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_icons[2]->texture, { 32.f });
+		ImGui::ImageButtonUV_HelpMarker(m_icons[2]->texture, "Next", { 32.f });
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_icons[3]->texture, { 32.f });
+		ImGui::ImageButtonUV_HelpMarker(m_icons[3]->texture, "Reload", { 32.f });
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_icons[4]->texture, { 32.f });
+		ImGui::ImageButtonUV_HelpMarker(m_icons[4]->texture, "Compilation", { 32.f });
 	}
 
 	void WindowToolbar::Tick()
