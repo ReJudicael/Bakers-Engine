@@ -86,11 +86,12 @@ namespace Resources
 		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compileStatus);
 		if (compileStatus == GL_FALSE)
 		{
-			std::cout << "Vertex shader didn't load" << std::endl;
 			GLsizei l = 200;
 			GLchar* info = new GLchar;
 			glGetShaderInfoLog(vertexShader, l, &l, info);
-			std::cout << "error is: " << info << std::endl;
+			std::string compileMsg = "Vertex shader " + m_vertexFile + " didn't load: ";
+			compileMsg += info;
+			BAKERS_LOG_WARNING(compileMsg);
 			return;
 		}
 		
@@ -103,11 +104,12 @@ namespace Resources
 		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &compileStatus);
 		if (compileStatus == GL_FALSE)
 		{
-			std::cout << "Fragment shader didn't load" << std::endl;
+			std::string compileMsg = "Fragment shader " + m_fragmentFile + " didn't load: ";
 			GLsizei l = 200;
 			GLchar* info = new GLchar;
 			glGetShaderInfoLog(fragmentShader, l, &l, info);
-			std::cout << "error is: " << info << std::endl;
+			compileMsg += info;
+			BAKERS_LOG_WARNING(compileMsg);
 			return;
 		}
 

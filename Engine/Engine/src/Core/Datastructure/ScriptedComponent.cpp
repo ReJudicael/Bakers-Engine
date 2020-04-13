@@ -33,9 +33,10 @@ namespace Core::Datastructure
 
 		Core::Datastructure::lua.open_libraries(sol::lib::base);
 		
-		if (Core::Datastructure::lua.script_file(m_script).valid())
+		if (Core::Datastructure::lua.safe_script_file(m_script))
 		{
-			std::cout << "Failed to load " << m_script << std::endl;
+			std::string loadingMsg = std::string(m_script) + " didn't load";
+			BAKERS_LOG_ERROR(loadingMsg);
 			m_script = nullptr;
 			return;
 		}
