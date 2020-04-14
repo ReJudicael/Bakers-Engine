@@ -9,6 +9,8 @@ namespace Editor::Window
 		for (auto& [icon, isEnabled] : m_logsIcon)
 			isEnabled = true;
 
+		m_tableFlags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_ScrollFreezeTopRow | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\message.png", m_logsIcon[0].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\warning.png", m_logsIcon[1].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\error.png", m_logsIcon[2].first);
@@ -85,25 +87,34 @@ namespace Editor::Window
 	{
 		if (m_logsIcon[(size_t)log.type].second && m_logFilter.PassFilter(log.message))
 		{
+			ImGui::TableNextRow();
+			ImGui::TableSetColumnIndex(0);
 			ImGui::ImageUV(m_logsIcon[(size_t)log.type].first->texture);
-			ImGui::SameLine();
-			ImGui::Text("%s\t-\t%s", log.time, log.message);
-			ImGui::Separator();
+			ImGui::TableSetColumnIndex(1);
+			ImGui::Text(log.time);
+			ImGui::TableSetColumnIndex(2);
+			ImGui::TextWrapped(log.message);
 		}
 	}
 
 	void WindowConsole::ConsolePrint()
 	{
-		Core::Debug::LogData* logs = Core::Debug::Logger::GetLogsData();
-		size_t logSize = Core::Debug::Logger::GetLogsDataSize();
+		Core::Debug::LogData* logs{ Core::Debug::Logger::GetLogsData() };
+		size_t logSize{ Core::Debug::Logger::GetLogsDataSize() };
 
-		ImGui::BeginChild("## ConsolePrint", { 0.f }, false, ImGuiWindowFlags_HorizontalScrollbar);
+		if (ImGui::BeginTable("## ConsolePrint", 3, m_tableFlags, ImGui::GetContentRegionAvail()))
 		{
-			ImGui::Spacing();
-			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 8.f, 8.f });
-			for (size_t i{ 0 }; i < logSize; ++i)
+			ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 3);
+			ImGui::TableSetupColumn("Time", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 4);
+			ImGui::TableSetupColumn("Description");
+			ImGui::TableAutoHeaders();
+
+			for (int i{ 0 }; i < logSize; ++i)
+			{
+				ImGui::PushID(i);
 				PrintLog(logs[i]);
-			ImGui::PopStyleVar();
+				ImGui::PopID();
+			}
 
 			if (m_canScrollBottom)
 			{
@@ -111,7 +122,7 @@ namespace Editor::Window
 				m_canScrollBottom = false;
 			}
 
-			ImGui::EndChild();
+			ImGui::EndTable();
 		}
 	}
 

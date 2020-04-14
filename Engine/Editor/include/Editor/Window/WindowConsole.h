@@ -22,6 +22,11 @@ namespace Editor::Window
 		std::shared_ptr<Resources::Texture> m_settingsIcon;
 
 		/**
+		 * Table flags
+		 */
+		ImGuiTableFlags m_tableFlags;
+
+		/**
 		 * Log Filter
 		 */
 		ImGuiTextFilter m_logFilter;
