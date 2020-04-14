@@ -5,7 +5,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
-	RegisterDefaultClassConstructor<ScriptedComponent>("ScriptedComponent");
+	RegisterDefaultClassConstructor<ScriptedComponent>("ScriptedComponent", ComponentUpdatable(), ComponentBase());
 	RegisterClassProperty<ScriptedComponent>("ScriptedComponent", "Script", &ScriptedComponent::m_script);
 }
 
