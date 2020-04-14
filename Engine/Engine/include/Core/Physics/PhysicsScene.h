@@ -4,7 +4,6 @@
 #include "PxDefaultErrorCallback.h"
 #include "PxSimulationEventCallback.h"
 #include "IPhysics.h"
-#include "PxRigidStatic.h"
 
 namespace physx
 {
@@ -18,6 +17,7 @@ namespace physx
 	class PxErrorCallback;
 	//class PxRigidStatic;
 	struct PxRaycastHit;
+	struct PxRigidActor;
 }
 
 #define NEED_PVD
@@ -32,6 +32,7 @@ namespace Core
 	namespace Datastructure
 	{
 		class Transform;
+		class IComponent;
 	}
 
 	namespace Physics
@@ -46,8 +47,11 @@ namespace Core
 			Core::Maths::Vec3					hitPoint;
 			float								distance;
 
-
-			void initHitResult(physx::PxRaycastHit raycastHit);
+			/**
+			 * Init the value of the HitResult
+			 * @param raycastHit: the raycastHit of a raycast
+			 */
+			void initHitResult(const physx::PxRaycastHit raycastHit);
 		};
 
 
@@ -84,7 +88,7 @@ namespace Core
 			 */
 			void AttachActor(Core::Datastructure::IPhysics* physics);
 
-			physx::PxRigidStatic* CreateEditorPhysicsActor(void* useDataPtr,
+			physx::PxRigidActor* CreateEditorPhysicsActor(void* useDataPtr,
 															const Core::Datastructure::Transform& transform,
 														std::shared_ptr<Resources::Model> model);
 
@@ -100,10 +104,30 @@ namespace Core
 			 */
 			void CreatePhysicsShape(Collider& collider);
 
+			/*
+			 * Do a raycast in the physics scene and return one hit result the nearest
+			 * @param OriginPos: the position of the begin of the raycast
+			 * @param Direction: the direction of the raycast
+			 * @param result: the hit result of the raycast
+			 * @param Distance: the distance of the raycast
+			 * by default = FLT_MAX
+			 * @return true if the raycast hit something
+			 */
 			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResult& result, const float Distance = FLT_MAX);
 
+			/*
+			 * Do a raycast in the physics scene and return all the hit result find
+			 * @param OriginPos: the position of the begin of the raycast
+			 * @param Direction: the direction of the raycast
+			 * @param results: all the hit result of the raycast
+			 * @param Distance: the distance of the raycast
+			 * by default = FLT_MAX
+			 * @return true if the raycast hit something
+			 */
+			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResult>& results, const float Distance = FLT_MAX);
 
-			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResult>& result, const float Distance = FLT_MAX);
+
+			void UpdatePoseOfActor(physx::PxRigidActor* actor);
 
 			/**
 			 * simulate the physics of the scene
@@ -122,6 +146,10 @@ namespace Core
 			 */
 			void ReleasePhysXSDK();
 
+			/*
+			 * Remove an Actor from the physics Scene
+			 * @param actor: the actor wich will be destroyed
+			 */
 			void RemoveActorFromPhysicsScene(physx::PxRigidActor* actor);
 
 			/*

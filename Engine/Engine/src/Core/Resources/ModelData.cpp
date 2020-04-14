@@ -8,7 +8,9 @@ namespace Resources
 {
 	void ModelData::LoadaiMeshModel(aiMesh* mesh, const int increaseIndices)
 	{
-		LoadaiMeshAABB(mesh);
+		if (increaseIndices == 0)
+			LoadaiMeshAABB(mesh);
+
 		LoadVertices(mesh);
 		LoadIndices(mesh, increaseIndices);
 	}

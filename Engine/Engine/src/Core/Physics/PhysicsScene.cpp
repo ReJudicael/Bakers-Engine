@@ -10,6 +10,8 @@
 #include "Transform.hpp"
 #include "Model.h"
 #include "Vec3.hpp"
+#include "PxRigidActor.h"
+#include "Object.hpp"
 
 
 #define PVD_HOST "127.0.0.1"
@@ -92,7 +94,7 @@ namespace Core::Physics
 		collider.CreateShape(m_pxPhysics);
 	}
 
-	void HitResult::initHitResult(physx::PxRaycastHit raycastHit)
+	void HitResult::initHitResult(const physx::PxRaycastHit raycastHit)
 	{
 		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(raycastHit.actor->userData) };
 		objectHit = physicsMesh->GetParent();
@@ -136,33 +138,43 @@ namespace Core::Physics
 		return status;
 	}
 
+	void PhysicsScene::UpdatePoseOfActor(physx::PxRigidActor* actor)
+	{
+		Core::Datastructure::IComponent* comp = static_cast<Core::Datastructure::IComponent*>(actor->userData);
+		Maths::Vec3 vec = comp->GetParent()->GetGlobalPos();
+		physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
+		Maths::Quat quat = comp->GetParent()->GetGlobalRot();
+		physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
+
+		actor->setGlobalPose(physx::PxTransform(position, rotation));
+	}
+
 	void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)
 	{
 		physics->CreateActor(m_pxPhysics, m_pxScene);
 	}
 
-	physx::PxRigidStatic* PhysicsScene::CreateEditorPhysicsActor(void* useDataPtr,
+	physx::PxRigidActor* PhysicsScene::CreateEditorPhysicsActor(void* useDataPtr,
 																const Core::Datastructure::Transform& transform,
 																std::shared_ptr<Resources::Model> model)
 	{
 		physx::PxMaterial* material = m_pxPhysics->createMaterial(0.f, 0.f, 0.f);
+		
 		Core::Maths::Vec3 minG{ model->min * transform.GetGlobalScale() };
 		Core::Maths::Vec3 maxG{ model->max * transform.GetGlobalScale() };
-		//Core::Maths::Vec3 pos{ (model->min * transform.GetGlobalScale() - model->max * transform.GetGlobalScale()) };
+
 		Core::Maths::Vec3 pos{ (minG - maxG) };
-		Core::Maths::Vec3 extent{ abs(model->min.x) + abs(model->max.x), abs(model->min.y) + abs(model->max.y), abs(model->min.z) + abs(model->max.z) };
-		extent *= transform.GetGlobalScale();
+		pos = maxG + pos / 2;   
+
+		//Core::Maths::Vec3 extent{ abs(model->min.x) + abs(model->max.x), abs(model->min.y) + abs(model->max.y), abs(model->min.z) + abs(model->max.z) };
+		Core::Maths::Vec3 extent{ abs(minG.x) + abs(maxG.x), abs(minG.y) + abs(maxG.y), abs(minG.z) + abs(maxG.z) };
+		//extent *= transform.GetGlobalScale();
 		extent /= 2;
 		if (extent.x == 0 || extent.y == 0 || extent.x == 0)
 			return nullptr;
+
 		physx::PxShape* shape = m_pxPhysics->createShape(physx::PxBoxGeometry(physx::PxVec3{ extent.x, extent.y, extent.z }), *material, true);
 		physx::PxTransform shapeTransform{ shape->getLocalPose() };
-		//pos *= transform.GetGlobalScale();
-		pos /= 2;
-		float dist = pos.Length();
-		pos = maxG + pos.Normalized() * dist;   
-		//pos /= transform.GetGlobalScale();
-
 		shapeTransform.p = { pos.x, pos.y, pos.z };
 		shape->setLocalPose(shapeTransform);
 		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
@@ -171,6 +183,7 @@ namespace Core::Physics
 		physx::PxVec3 globalPos { transform.GetGlobalPos().x,transform.GetGlobalPos().y, transform.GetGlobalPos().z};
 		physx::PxQuat globalRot { transform.GetGlobalRot().x,transform.GetGlobalRot().y, transform.GetGlobalRot().z, transform.GetGlobalRot().w };
 		physx::PxTransform pxTransform{ globalPos, globalRot};
+
 		physx::PxRigidStatic* rigidStatic =  m_pxPhysics->createRigidStatic(pxTransform);
 		rigidStatic->attachShape(*shape);
 		shape->release();

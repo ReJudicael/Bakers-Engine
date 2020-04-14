@@ -18,15 +18,16 @@ namespace Core::Datastructure
 	BAKERS_API_CLASS Object
 	{
 	private:
-		bool						m_isDestroyed = false;
-		RootObject*					m_root{ nullptr };
+		bool									m_isDestroyed = false;
+		RootObject*								m_root{ nullptr };
 		
 	protected:
-		std::string					m_name;
-		Transform					m_transform;
+		std::string								m_name;
+		Transform								m_transform;
 		Object* m_parent;
-		std::list<Object*>			m_childs;
-		std::list<ComponentBase*>	m_components;
+		std::list<Object*>						m_childs;
+		std::list<ComponentBase*>				m_components;
+
 		Core::SystemManagement::EventSystem<>	m_EventTransformChange;
 
 
@@ -38,6 +39,7 @@ namespace Core::Datastructure
 			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 				(*it)->RequireUpdate();
 			m_transform.RequireUpdate();
+			m_EventTransformChange.Invoke();
 		}
 
 		/**

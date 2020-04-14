@@ -9,16 +9,16 @@ namespace Core::Physics
 	void PhysicsSceneSimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHeader, 
 														const physx::PxContactPair* pairs, physx::PxU32 nbPairs)
 	{	
-		Core::Datastructure::IPhysics* contact1 = static_cast<Core::Datastructure::IPhysics*>(pairHeader.actors[0]->userData);
-		Core::Datastructure::IPhysics* contact2 = static_cast<Core::Datastructure::IPhysics*>(pairHeader.actors[1]->userData);
+		Core::Datastructure::IPhysics* contact1 = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[0]->userData));
+		Core::Datastructure::IPhysics* contact2 = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[1]->userData));
 		
 		contact1->OnContactEvent(contact2);
 		contact2->OnContactEvent(contact1);
 	}
 	void PhysicsSceneSimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
 	{
-		Core::Datastructure::IPhysics* triggered = static_cast<Core::Datastructure::IPhysics*>(pairs->triggerActor->userData);
-		Core::Datastructure::IPhysics* triggerWith = static_cast<Core::Datastructure::IPhysics*>(pairs->otherActor->userData);
+		Core::Datastructure::IPhysics* triggered = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairs->triggerActor->userData));
+		Core::Datastructure::IPhysics* triggerWith = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairs->otherActor->userData));
 		if (pairs->status == physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{
 			triggered->OnTriggerEnterEvent.Invoke(triggerWith);

@@ -11,7 +11,7 @@
 #include "LoadResources.h"
 #include "PhysicsScene.h"
 #include "EngineCore.h"
-#include "PxRigidStatic.h"
+#include "PxRigidActor.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -88,12 +88,13 @@ void Mesh::CreateAABBMesh()
 {
 	Core::Datastructure::Object* object = GetParent();
 	Core::Datastructure::IComponent* component = dynamic_cast<Core::Datastructure::IComponent*>(this);
-	void* testCast = object->GetScene()
+	physx::PxRigidActor* actor = object->GetScene()
 							->GetEngine()
 							->GetPhysicsScene()
-							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(),m_model)->userData;
-	component = static_cast<Core::Datastructure::IComponent*>(testCast);
-	Mesh* meshComp = static_cast<Mesh*>(testCast);
+							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(),m_model);
+	
+	GetParent()->SetAnEventTransformChange(std::bind(&Core::Physics::PhysicsScene::UpdatePoseOfActor, object->GetScene()
+											->GetEngine()->GetPhysicsScene(), actor));
 }
 
 void Mesh::OnDraw(Core::Datastructure::ICamera* cam)

@@ -109,7 +109,7 @@ namespace Core::Datastructure
 
 		TracyGpuContext
 
-		m_physicsScene = new Core::Physics::PhysicsScene();
+			m_physicsScene = new Core::Physics::PhysicsScene();
 
 		if (!m_physicsScene->InitPhysX())
 			return -1;
@@ -153,6 +153,7 @@ namespace Core::Datastructure
 
 		m_manager->Load3DObject("Resources/Models/DiningRoom/dining_room.fbx");
 		Resources::Object3DGraph::CreateScene("Resources/Models/DiningRoom/dining_room.fbx", *m_manager, dining_room);
+
 		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
 
 		umbreon->SetPos({ 0.f,3.f, 0.f });

@@ -104,7 +104,7 @@ namespace Core
 			
 			//setupFiltering(m_dynamicMesh, EFilterCollision::T1, EFilterCollision::T2, EFilterCollision::T3);
 
-			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));
+			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(dynamic_cast<Core::Datastructure::IPhysics*>(this)));
 
 			scene->addActor(*m_dynamicMesh);
 			PhysicsLockRotation(true, false, true);
