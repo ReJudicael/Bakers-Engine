@@ -333,6 +333,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClCompile Include="src\Core\Datastructure\EngineCore.cpp" />
     <ClCompile Include="src\Core\Datastructure\ICollidable.cpp" />
     <ClCompile Include="src\Core\Datastructure\IPhysics.cpp" />
+    <ClCompile Include="src\Core\Datastructure\Reflection.cpp" />
     <ClCompile Include="src\Core\Datastructure\ScriptedComponent.cpp" />
     <ClCompile Include="src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Core\Debug\Logger.cpp" />

@@ -177,6 +177,9 @@
     <ClCompile Include="src\Core\Datastructure\ICollidable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\Reflection.cpp">
+      <Filter>Source Files\Core\Datastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">

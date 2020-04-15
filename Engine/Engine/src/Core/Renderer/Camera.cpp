@@ -11,10 +11,11 @@ RTTR_PLUGIN_REGISTRATION
 		.property("Near", &Core::Renderer::CameraPerspective::near)
 		.property("Far", &Core::Renderer::CameraPerspective::far);
 
+	Core::Datastructure::RegisterDefaultClassConstructor<Core::Renderer::Camera>("Camera");
 	registration::class_<Core::Renderer::Camera>("Camera")
-		.constructor()
-		.constructor<const float, const float, const float, const float>()
-		.property("Perspective", &Core::Renderer::Camera::GetPerspData, &Core::Renderer::Camera::SetPerspData);
+		.constructor<const float, const float, const float, const float>();
+
+	Core::Datastructure::RegisterClassPropertyGS<Core::Renderer::Camera>("Camera", "Perspective", &Core::Renderer::Camera::GetPerspData, &Core::Renderer::Camera::SetPerspData);
 }
 
 namespace Core::Renderer
