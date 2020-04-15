@@ -157,7 +157,7 @@ namespace Editor::Window
 			if (ImGui::BeginDragDropSource())
 			{
 				ImGui::Text(object->GetName().c_str());
-				ImGui::SetDragDropPayload("DRAGDROP_GAMEOBJECT", object, sizeof(void*), ImGuiCond_Once);
+				ImGui::SetDragDropPayload("DRAGDROP_GAMEOBJECT", &object, sizeof(Core::Datastructure::Object*), ImGuiCond_Once);
 				ImGui::EndDragDropSource();
 			}
 
@@ -165,9 +165,10 @@ namespace Editor::Window
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_GAMEOBJECT"))
 				{
-					Core::Datastructure::Object* data = static_cast<Core::Datastructure::Object*>(payload->Data);
+					Core::Datastructure::Object* data = *reinterpret_cast<Core::Datastructure::Object**>(payload->Data);
 					std::string log = "Hierarchy - Drag'n'Drop: " + data->GetName() +" -> " + object->GetName();
 					BAKERS_LOG_MESSAGE(log.c_str());
+					data->SetParent(object);
 					ImGui::EndDragDropTarget();
 				}
 			}

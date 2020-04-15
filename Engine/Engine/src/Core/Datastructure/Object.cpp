@@ -103,6 +103,11 @@ namespace Core::Datastructure
 		m_childs.remove(object);
 	}
 
+	void	Object::AddChild(Object* object) noexcept
+	{
+		m_childs.push_back(object);
+	}
+
 	bool			Object::HasChild(Object* o) const noexcept
 	{
 		for (auto c : m_childs)
@@ -111,5 +116,13 @@ namespace Core::Datastructure
 				return true;
 		}
 		return false;
+	}
+
+	void Datastructure::Object::SetParent(Object* parent) noexcept
+	{
+		if (m_parent != nullptr)
+			m_parent->RemoveChild(this);
+		m_parent = parent;
+		parent->AddChild(this);
 	}
 }
