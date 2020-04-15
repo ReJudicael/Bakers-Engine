@@ -368,6 +368,9 @@
     <ClInclude Include="include\Core\Datastructure\TriggeredEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Physics\HitResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\DefaultShader.vert">

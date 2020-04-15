@@ -2,6 +2,7 @@
 #include "Collider.h"
 #include "Vec3.hpp"
 #include "PxPhysicsAPI.h"
+#include "PhysicsScene.h"
 
 
 namespace Core::Physics
@@ -92,6 +93,24 @@ namespace Core::Physics
 	{
 		m_pxShape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
 		m_pxShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+	}
+
+	void Collider::SetRaycastFilter(const EFilterRaycast& filter)
+	{
+		if (m_pxShape == nullptr)
+			return;
+		physx::PxFilterData filterData;
+		filterData.word0 = static_cast<physx::PxU32>(filter);
+		m_pxShape->setQueryFilterData(filterData);
+	}
+
+	EFilterRaycast Collider::GetRaycastFilter()
+	{
+		if (m_pxShape == nullptr)
+			return EFilterRaycast::GROUPE1;
+		physx::PxFilterData filterData{ m_pxShape->getQueryFilterData()};
+
+		return static_cast<EFilterRaycast>(filterData.word0);
 	}
 
 	void Collider::DestroyShape()

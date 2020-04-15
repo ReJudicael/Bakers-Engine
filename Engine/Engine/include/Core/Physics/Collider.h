@@ -30,6 +30,9 @@ namespace Core
 	}
 	namespace Physics
 	{
+		enum EFilterRaycast;
+
+
 		/**
 		 * Contains the shape and the material of the physics mesh 
 		 * with wich he is attached
@@ -37,10 +40,10 @@ namespace Core
 		BAKERS_API_CLASS Collider
 		{
 		protected:
-			physx::PxShape*						m_pxShape;
-			physx::PxMaterial*					m_pxMaterial;
-			std::shared_ptr<Resources::Shader>	m_shader;
-			std::shared_ptr<Resources::Model>	m_model;
+			physx::PxShape*						m_pxShape{};
+			physx::PxMaterial*					m_pxMaterial{};
+			std::shared_ptr<Resources::Shader>	m_shader{};
+			std::shared_ptr<Resources::Model>	m_model{};
 		public:
 
 			/**
@@ -140,10 +143,15 @@ namespace Core
 			{
 				m_shader = shader;
 			}
+
 			virtual void InitModel(std::shared_ptr<Resources::Model> model)
 			{
 				m_model = model;
 			}
+
+			virtual void SetRaycastFilter(const EFilterRaycast& filter);
+
+			virtual EFilterRaycast GetRaycastFilter();
 
 			virtual void DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot) = 0;
 

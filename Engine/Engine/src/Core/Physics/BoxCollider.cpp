@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "Mat4.hpp"
 #include "Transform.hpp"
+#include "PhysicsScene.h"
 #include "OffsetMesh.h"
 
 namespace Core::Physics
@@ -27,67 +28,7 @@ namespace Core::Physics
 		m_pxShape = physics->createShape(physx::PxBoxGeometry(extent), *m_pxMaterial, true);
 		m_pxShape->setLocalPose(physx::PxTransform(localPosition));
 
-		/*float centerPosX = 0.f;
-		float centerPosY = 0.f;
-		float centerPosZ = 0.f;
-		physx::PxBoxGeometry box;
-		m_pxShape->getBoxGeometry(box);
-
-		float halfSideLengthX = 0.5;
-		float halfSideLengthY = 0.5;
-		float halfSideLengthZ = 0.5;
-
-		GLfloat vertices[] =
-		{
-			// front face
-			centerPosX - halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ + halfSideLengthZ, // top left
-			centerPosX + halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ + halfSideLengthZ, // top right
-			centerPosX + halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ + halfSideLengthZ, // bottom right
-			centerPosX - halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ + halfSideLengthZ, // bottom left
-
-			// back face
-			centerPosX - halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ - halfSideLengthZ, // top left
-			centerPosX + halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ - halfSideLengthZ, // top right
-			centerPosX + halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ - halfSideLengthZ, // bottom right
-			centerPosX - halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ - halfSideLengthZ, // bottom left
-
-			// left face
-			centerPosX - halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ + halfSideLengthZ, // top left
-			centerPosX - halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ - halfSideLengthZ, // top right
-			centerPosX - halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ - halfSideLengthZ, // bottom right
-			centerPosX - halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ + halfSideLengthZ, // bottom left
-
-			// right face
-			centerPosX + halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ + halfSideLengthZ, // top left
-			centerPosX + halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ - halfSideLengthZ, // top right
-			centerPosX + halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ - halfSideLengthZ, // bottom right
-			centerPosX + halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ + halfSideLengthZ, // bottom left
-
-			// top face
-			centerPosX - halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ + halfSideLengthZ, // top left
-			centerPosX - halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ - halfSideLengthZ, // top right
-			centerPosX + halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ - halfSideLengthZ, // bottom right
-			centerPosX + halfSideLengthX, centerPosY + halfSideLengthY, centerPosZ + halfSideLengthZ, // bottom left
-
-			// top face
-			centerPosX - halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ + halfSideLengthZ, // top left
-			centerPosX - halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ - halfSideLengthZ, // top right
-			centerPosX + halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ - halfSideLengthZ, // bottom right
-			centerPosX + halfSideLengthX, centerPosY - halfSideLengthY, centerPosZ + halfSideLengthZ  // bottom left
-		};
-
-		GLuint VAO;
-		glGenVertexArrays(1, &VAO);
-		glBindVertexArray(VAO);
-		GLuint VBO{ 0 };
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * GL_FLOAT, (void*)0);
-
-		m_VAO = VAO;
-		glBindVertexArray(0);*/
+		SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
 	}
 
 	void BoxCollider::SetBoxHalfExtent(Core::Maths::Vec3 halfExtent)
@@ -107,6 +48,7 @@ namespace Core::Physics
 
 			return Core::Maths::Vec3();
 		}
+		return Core::Maths::Vec3();
 
 	}
 

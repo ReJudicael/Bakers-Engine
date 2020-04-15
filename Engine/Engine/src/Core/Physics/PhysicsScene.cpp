@@ -18,6 +18,19 @@
 
 namespace Core::Physics
 {
+
+	/*const EFilterRaycast& GetFilterRaycast(const physx::PxFilterData& filter)
+	{
+		if (filter.word0 & static_cast<physx::PxU32>(EFilterRaycast::GROUPE1))
+			return EFilterRaycast::GROUPE1;
+		if (filter.word0 & static_cast<physx::PxU32>(EFilterRaycast::GROUPE2))
+			return EFilterRaycast::GROUPE2;
+		if (filter.word0 & static_cast<physx::PxU32>(EFilterRaycast::GROUPE3))
+			return EFilterRaycast::GROUPE3;
+		else
+			return EFilterRaycast::GROUPE4;
+	}*/
+
 	bool PhysicsScene::InitPhysX()
 	{
 		m_pxFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_pxDefaultAllocatorCallback,
@@ -94,7 +107,7 @@ namespace Core::Physics
 		collider.CreateShape(m_pxPhysics);
 	}
 
-	void HitResult::initHitResult(const physx::PxRaycastHit raycastHit)
+	void HitResultQuery::initHitResult(const physx::PxRaycastHit raycastHit)
 	{
 		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(raycastHit.actor->userData) };
 		objectHit = physicsMesh->GetParent();
@@ -105,7 +118,16 @@ namespace Core::Physics
 		distance = raycastHit.distance;
 	}
 
-	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResult& result, const float Distance)
+	void HitResultQuery::initHitResult(const physx::PxOverlapHit overlapHit)
+	{
+		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(overlapHit.actor->userData) };
+		objectHit = physicsMesh->GetParent();
+		physicsMeshHit = dynamic_cast<Core::Datastructure::IPhysics*>(physicsMesh);
+
+		physx::PxU32 face{ overlapHit.faceIndex };
+	}
+
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResultQuery& result, const float Distance)
 	{
 		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
 		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
@@ -119,7 +141,7 @@ namespace Core::Physics
 		return status;
 	}
 
-	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResult>& results, const float Distance)
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResultQuery>& results, const float Distance)
 	{
 		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
 		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
@@ -130,7 +152,7 @@ namespace Core::Physics
 		{
 			for (physx::PxU32 i{ 0 }; i < hit.nbTouches; i++)
 			{
-				HitResult result;
+				HitResultQuery result;
 				result.initHitResult(hit.touches[i]);
 				results.push_back(result);
 			}
@@ -138,6 +160,88 @@ namespace Core::Physics
 		return status;
 	}
 
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResultQuery& result, physx::PxU32 filterRaycast, const float Distance)
+	{
+		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
+		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
+
+		physx::PxQueryFilterData filterData{};
+		for (int i = 0; i < 4; i++)
+			filterData.data.word0 |= 1 << i;
+		filterData.data.word0 &= ~filterRaycast;
+
+		physx::PxRaycastBuffer hit;
+		bool status = m_pxScene->raycast(origin, dir, static_cast<physx::PxReal>(Distance), hit, physx::PxHitFlag::eDEFAULT, filterData);
+		if (status)
+		{
+			result.initHitResult(hit.block);
+		}
+		return status;
+	}
+
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResultQuery>& results, physx::PxU32 filterRaycast, const float Distance = FLT_MAX)
+	{
+		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
+		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
+
+		physx::PxRaycastBuffer hit;
+		physx::PxQueryFilterData filterData{};
+		for (int i = 0; i < 4; i++)
+			filterData.data.word0 |= 1 << i;
+		filterData.data.word0 &= ~filterRaycast;
+
+		bool status = m_pxScene->raycast(origin, dir, static_cast<physx::PxReal>(Distance), hit, physx::PxHitFlag::eDEFAULT, filterData);
+		if (status)
+		{
+			for (physx::PxU32 i{ 0 }; i < hit.nbTouches; i++)
+			{
+				HitResultQuery result;
+				result.initHitResult(hit.touches[i]);
+				results.push_back(result);
+			}
+		}
+		return status;
+	}
+
+	bool PhysicsScene::CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& transform, HitResultQuery& overlapResult)
+	{
+
+		physx::PxTransform pose;
+		Core::Maths::Vec3 globalPos{ transform.GetGlobalPos() };
+		pose.p = { globalPos.x, globalPos.y, globalPos.z };
+		Core::Maths::Quat globalRot{ transform.GetGlobalRot() };
+		pose.q = { globalRot.x, globalRot.y, globalRot.z, globalRot.w };
+
+		physx::PxOverlapCallback* result{};
+		bool status = m_pxScene->overlap(overlapGeometry, pose, *result);
+		if (status)
+			overlapResult.initHitResult(result->block);
+
+		return status;
+	}
+	
+	bool PhysicsScene::CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& transform, std::vector<HitResultQuery>& overlapResults)
+	{
+		physx::PxTransform pose;
+		Core::Maths::Vec3 globalPos{ transform.GetGlobalPos() };
+		pose.p = { globalPos.x, globalPos.y, globalPos.z };
+		Core::Maths::Quat globalRot{ transform.GetGlobalRot() };
+		pose.q = { globalRot.x, globalRot.y, globalRot.z, globalRot.w };
+
+		physx::PxOverlapCallback* overlapCallback{};
+		bool status = m_pxScene->overlap(overlapGeometry, pose, *overlapCallback);
+		if (status)
+		{
+			for (physx::PxU32 i{ 0 }; i < overlapCallback->nbTouches; i++)
+			{
+				HitResultQuery result;
+				result.initHitResult(overlapCallback->touches[i]);
+				overlapResults.push_back(result);
+			}
+		}
+		return status;
+	}
+	
 	void PhysicsScene::UpdatePoseOfActor(physx::PxRigidActor* actor)
 	{
 		Core::Datastructure::IComponent* comp = static_cast<Core::Datastructure::IComponent*>(actor->userData);

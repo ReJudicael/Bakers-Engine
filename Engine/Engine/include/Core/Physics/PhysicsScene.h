@@ -4,6 +4,7 @@
 #include "PxDefaultErrorCallback.h"
 #include "PxSimulationEventCallback.h"
 #include "IPhysics.h"
+#include "PxSimpleTypes.h"
 
 namespace physx
 {
@@ -17,7 +18,10 @@ namespace physx
 	class PxErrorCallback;
 	//class PxRigidStatic;
 	struct PxRaycastHit;
-	struct PxRigidActor;
+	struct PxOverlapHit;
+	class PxGeometry;
+	class PxRigidActor;
+
 }
 
 #define NEED_PVD
@@ -40,10 +44,22 @@ namespace Core
 		class StaticMesh;
 		class Collider;
 
-		struct HitResult
+
+		enum EFilterRaycast
 		{
-			Core::Datastructure::Object* objectHit;
-			Core::Datastructure::IPhysics* physicsMeshHit;
+			GROUPE1 = (1<<0),
+			GROUPE2 = (1<<1),
+			GROUPE3 = (1<<2),
+			GROUPE4 = (1<<3),
+		};
+
+		
+		//const EFilterRaycast& GetFilterRaycast(const physx::PxFilterData& filter);
+
+		struct HitResultQuery
+		{
+			Core::Datastructure::Object*		objectHit;
+			Core::Datastructure::IPhysics*		physicsMeshHit;
 			Core::Maths::Vec3					hitPoint;
 			float								distance;
 
@@ -52,6 +68,8 @@ namespace Core
 			 * @param raycastHit: the raycastHit of a raycast
 			 */
 			void initHitResult(const physx::PxRaycastHit raycastHit);
+
+			void initHitResult(const physx::PxOverlapHit overlapHit);
 		};
 
 
@@ -113,7 +131,7 @@ namespace Core
 			 * by default = FLT_MAX
 			 * @return true if the raycast hit something
 			 */
-			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResult& result, const float Distance = FLT_MAX);
+			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResultQuery& result, const float Distance = FLT_MAX);
 
 			/*
 			 * Do a raycast in the physics scene and return all the hit result find
@@ -124,9 +142,43 @@ namespace Core
 			 * by default = FLT_MAX
 			 * @return true if the raycast hit something
 			 */
-			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResult>& results, const float Distance = FLT_MAX);
+			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResultQuery>& results, const float Distance = FLT_MAX);
+
+			/*
+			 * Do a raycast in the physics scene with filter and return one hit result the nearest
+			 * @param OriginPos: the position of the begin of the raycast
+			 * @param Direction: the direction of the raycast
+			 * @param result: the hit result of the raycast
+			 * @param Distance: the distance of the raycast
+			 * @param filterRaycast: the filters of the raycast, 
+			 * the objects who have this filters are not going to be test
+			 * by default = FLT_MAX
+			 * @return true if the raycast hit something
+			 */
+			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResultQuery& result, physx::PxU32 filterRaycast, const float Distance = FLT_MAX);
+
+			/*
+			 * Do a raycast in the physics scene with filter and return all the hit result find
+			 * @param OriginPos: the position of the begin of the raycast
+			 * @param Direction: the direction of the raycast
+			 * @param results: all the hit result of the raycast
+			 * @param Distance: the distance of the raycast
+			 * @param filterRaycast: the filters of the raycast,
+			 * the objects who have this filters are not going to be test
+			 * by default = FLT_MAX
+			 * @return true if the raycast hit something
+			 */
+			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResultQuery>& results, physx::PxU32 filterRaycast, const float Distance = FLT_MAX);
 
 
+			bool CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& position, HitResultQuery& overlapResult);
+
+			bool CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& position, std::vector<HitResultQuery>& overlapResults);
+			/*
+			 * Update the transform of a physics actor, call as an event, use mostly with 
+			 * the editor physics
+			 * @param actor: the actor we want to change
+			 */
 			void UpdatePoseOfActor(physx::PxRigidActor* actor);
 
 			/**

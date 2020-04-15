@@ -24,7 +24,7 @@ namespace Core
 		{
 
 		protected:
-			physx::PxRigidStatic*	m_staticMesh;
+			physx::PxRigidStatic* m_staticMesh{};
 
 			/*
 			 * Release the PxRigidStatic,

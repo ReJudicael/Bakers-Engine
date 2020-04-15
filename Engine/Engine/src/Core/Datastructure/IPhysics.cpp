@@ -10,10 +10,20 @@ namespace Core
 {
 	namespace Datastructure
 	{
-		/*RTTR_PLUGIN_REGISTRATION
+		RTTR_PLUGIN_REGISTRATION
 		{
-			registration::class_<IPhysics>("Collider")
-		}*/
+			registration::class_<IPhysics>("IPhysics")
+			.enumeration<Core::Physics::EFilterRaycast>("Layout")
+			(
+			value("GROUPE1", Core::Physics::EFilterRaycast::GROUPE1),
+			value("GROUPE2", Core::Physics::EFilterRaycast::GROUPE2),
+			value("GROUPE3", Core::Physics::EFilterRaycast::GROUPE3),
+			value("GROUPE4", Core::Physics::EFilterRaycast::GROUPE4)
+			)
+			.property("LayerMask", &Core::Datastructure::IPhysics::GetRaycastFilter,
+						&Core::Datastructure::IPhysics::SetRaycastFilter)
+			;
+		}
 
 		IPhysics::IPhysics():
 			m_collider{new Core::Physics::BoxCollider()}
@@ -31,7 +41,6 @@ namespace Core
 			root->GetEngine()->GetPhysicsScene()->AttachActor(this);
 			m_collider->InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
 			m_collider->InitModel(root->GetEngine()->GetResourcesManager()->GetModel("Cube"));
-			//m_collider->InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Default"));
 			IComponent::OnStart();
 			IRenderable::OnStart();
 		}

@@ -402,6 +402,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
     <ClInclude Include="include\Core\Physics\BoxCollider.h" />
     <ClInclude Include="include\Core\Physics\DynamicMesh.h" />
+    <ClInclude Include="include\Core\Physics\HitResult.h" />
     <ClInclude Include="include\Core\Physics\PhysicsScene.h" />
     <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h" />
     <ClInclude Include="include\Core\Physics\StaticMesh.h" />

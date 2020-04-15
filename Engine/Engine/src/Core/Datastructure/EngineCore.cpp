@@ -11,7 +11,7 @@
 #include "Collider.h"
 #include "BoxCollider.h"
 #include "StaticMesh.h"
-#include "Physics/PhysicsScene.h"
+#include "PhysicsScene.h"
 #include "DynamicMesh.h"
 
 RTTR_PLUGIN_REGISTRATION
@@ -170,6 +170,13 @@ namespace Core::Datastructure
 		StartFrame();
 
 		Update(deltaTime);
+
+		Physics::HitResultQuery query;
+
+		physx::PxU32 u;
+		u |= Core::Physics::EFilterRaycast::GROUPE1;
+
+		m_physicsScene->Raycast({ 0.f,0.f,0.f }, { 1.f,0.f,0.f }, query, u);
 
 		Render();
 

@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "EventSystem.hpp"
 #include "IRenderable.hpp"
+#include "HitResult.h"
 
 namespace physx
 {
@@ -12,6 +13,7 @@ namespace physx
 }
 namespace Core
 {
+	
 	namespace Datastructure
 	{
 		/**
@@ -29,7 +31,7 @@ namespace Core
 		public:
 			Core::SystemManagement::EventSystem<IPhysics*>	OnTriggerEnterEvent;
 			Core::SystemManagement::EventSystem<IPhysics*>	OnTriggerExitEvent;
-			Core::SystemManagement::EventSystem<IPhysics*>	OnContactEvent;
+			Core::SystemManagement::EventSystem<IPhysics*, Core::Maths::Vec3, Core::Physics::HitResult>	OnContactEvent;
 
 
 			/**
@@ -80,6 +82,15 @@ namespace Core
 			 * Function call as an event whne the Transform of the Object change	 
 			 */
 			virtual void SetPhysicsTransformParent() = 0;
+
+			virtual void SetRaycastFilter(Core::Physics::EFilterRaycast filter)
+			{
+				m_collider->SetRaycastFilter(filter);
+			}
+			virtual Core::Physics::EFilterRaycast GetRaycastFilter()
+			{
+				return m_collider->GetRaycastFilter();
+			}
 
 			REGISTER_CLASS(IComponent, IRenderable)
 		};

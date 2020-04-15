@@ -8,7 +8,7 @@ namespace Core::Physics
 	BAKERS_API_CLASS BoxCollider : public Collider
 	{
 		Core::Maths::Vec3	m_extent{ 0.5f,0.5f,0.5f };
-		GLuint m_VAO;
+		GLuint m_VAO{0};
 	public :
 		BoxCollider() = default;
 		/**

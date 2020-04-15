@@ -6,6 +6,8 @@
 
 #define BIND_EVENT(x) std::bind(&x, this, std::placeholders::_1)
 #define BIND_EVENT_2(x) std::bind(&x, this, std::placeholders::_1, std::placeholders::_2)
+#define BIND_EVENT_3(x) std::bind(&x, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+#define BIND_EVENT_4(x) std::bind(&x, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
 
 namespace Core
 {
