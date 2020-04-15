@@ -1,4 +1,4 @@
-// dear imgui, v1.76
+// dear imgui, v1.77 WIP
 // (internal structures/api)
 
 // You may use this file to debug, understand or extend ImGui features but we don't provide any guarantee of forward compatibility!
@@ -459,7 +459,7 @@ struct ImSpanAllocator
     inline void  SetArenaBasePtr(void* base_ptr)    { BasePtr = (char*)base_ptr; }
     inline void* GetSpanPtrBegin(int n)             { IM_ASSERT(n >= 0 && n < CHUNKS && CurrSpan == CHUNKS); return (void*)(BasePtr + Offsets[n]); }
     inline void* GetSpanPtrEnd(int n)               { IM_ASSERT(n >= 0 && n < CHUNKS && CurrSpan == CHUNKS); return (n + 1 < CHUNKS) ? BasePtr + Offsets[n + 1] : (void*)(BasePtr + TotalSize); }
-    template<typename T> 
+    template<typename T>
     inline void  GetSpan(int n, ImSpan<T>* span)    { span->set((T*)GetSpanPtrBegin(n), (T*)GetSpanPtrEnd(n)); }
 };
 
@@ -1395,6 +1395,7 @@ struct ImGuiContext
     ImGuiID                 DragDropAcceptIdCurr;               // Target item id (set at the time of accepting the payload)
     ImGuiID                 DragDropAcceptIdPrev;               // Target item id from previous frame (we need to store this to allow for overlapping drag and drop targets)
     int                     DragDropAcceptFrameCount;           // Last time a target expressed a desire to accept the source
+    ImGuiID                 DragDropHoldJustPressedId;          // Set when holding a payload just made ButtonBehavior() return a press.
     ImVector<unsigned char> DragDropPayloadBufHeap;             // We don't expose the ImVector<> directly, ImGuiPayload only holds pointer+size
     unsigned char           DragDropPayloadBufLocal[16];        // Local buffer for small payloads
 
@@ -1568,6 +1569,7 @@ struct ImGuiContext
         DragDropAcceptIdCurrRectSurface = 0.0f;
         DragDropAcceptIdPrev = DragDropAcceptIdCurr = 0;
         DragDropAcceptFrameCount = -1;
+        DragDropHoldJustPressedId = 0;
         memset(DragDropPayloadBufLocal, 0, sizeof(DragDropPayloadBufLocal));
 
         CurrentTable = NULL;
@@ -2151,7 +2153,7 @@ struct ImGuiTableColumn
     float                   WidthRequested;                 // Master width data when !(Flags & _WidthStretch)
     float                   WidthGiven;                     // == (MaxX - MinX). FIXME-TABLE: Store all persistent width in multiple of FontSize?
     float                   StartXRows;                     // Start position for the frame, currently ~(MinX + CellPaddingX)
-    float                   StartXHeaders;                  
+    float                   StartXHeaders;
     float                   ContentMaxPosRowsFrozen;        // Submitted contents absolute maximum position, from which we can infer width.
     float                   ContentMaxPosRowsUnfrozen;      // (kept as float because we need to manipulate those between each cell change)
     float                   ContentMaxPosHeadersUsed;
@@ -2253,7 +2255,7 @@ struct ImGuiTable
     ImS8                        HoveredColumnBorder;        // Index of column whose right-border is being hovered (for resizing).
     ImS8                        ResizedColumn;              // Index of column being resized. Reset when InstanceCurrent==0.
     ImS8                        LastResizedColumn;          // Index of column being resized from previous frame.
-    ImS8                        HeldHeaderColumn;           // Index of column header being held. 
+    ImS8                        HeldHeaderColumn;           // Index of column header being held.
     ImS8                        ReorderColumn;              // Index of column being reordered. (not cleared)
     ImS8                        ReorderColumnDir;           // -1 or +1
     ImS8                        RightMostActiveColumn;      // Index of right-most non-hidden column.
@@ -2327,6 +2329,7 @@ struct ImGuiTableSettings
 namespace ImGui
 {
     // [Internal]
+    IMGUI_API ImGuiTable*   FindTableByID(ImGuiID id);
     IMGUI_API bool          BeginTableEx(const char* name, ImGuiID id, int columns_count, ImGuiTableFlags flags = 0, const ImVec2& outer_size = ImVec2(0, 0), float inner_width = 0.0f);
     IMGUI_API void          TableBeginUpdateColumns(ImGuiTable* table);
     IMGUI_API void          TableUpdateDrawChannels(ImGuiTable* table);
