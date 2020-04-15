@@ -145,6 +145,19 @@ namespace Editor::Window
 		void ShowCurrentPathOnHeader();
 
 		/**
+		 * Drag an item
+		 * @param itemName: Name of the dragged file / folder
+		 * @param itemPath: Path of the dragged file / folder
+		 */
+		void DragDropSourceItem(const std::string& itemName, const std::string& itemPath);
+
+		/**
+		 * Drop an item in a folder
+		 * @param itemPath: Path of the dropped file / folder
+		 */
+		void DragDropTargetItem(const std::string& itemPath);
+
+		/**
 		 * Show the chosen file / folder
 		 * @param itemName: Name of the chosen file / folder
 		 */

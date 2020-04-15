@@ -145,30 +145,46 @@ namespace Editor::Window
 			if (object->IsDestroyed())
 				continue;
 
+			bool isOpen = DrawTreeNodeOfObject(object);
+
 			ImGui::PushID(object);
+			PopupMenuOnItem(object);
+			ImGui::PopID();
+
+			if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+				GetEngine()->objectSelected = object;
+
+			if (ImGui::BeginDragDropSource())
 			{
-				bool isOpen = DrawTreeNodeOfObject(object);
+				ImGui::Text(object->GetName().c_str());
+				ImGui::SetDragDropPayload("DRAGDROP_GAMEOBJECT", object, sizeof(void*), ImGuiCond_Once);
+				ImGui::EndDragDropSource();
+			}
 
-				PopupMenuOnItem(object);
-				if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-					GetEngine()->objectSelected = object;
-
-				if (m_destroyObject)
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_GAMEOBJECT"))
 				{
-					if (isOpen)
-						ImGui::TreePop();
-					ImGui::PopID();
-					m_destroyObject = false;
-					continue;
-				}
-
-				if (isOpen)
-				{
-					ShowChildrenOfObject(object);
-					ImGui::TreePop();
+					Core::Datastructure::Object* data = static_cast<Core::Datastructure::Object*>(payload->Data);
+					std::string log = "Hierarchy - Drag'n'Drop: " + data->GetName() +" -> " + object->GetName();
+					BAKERS_LOG_MESSAGE(log.c_str());
+					ImGui::EndDragDropTarget();
 				}
 			}
-			ImGui::PopID();
+
+			if (m_destroyObject)
+			{
+				if (isOpen)
+					ImGui::TreePop();
+				m_destroyObject = false;
+				continue;
+			}
+
+			if (isOpen)
+			{
+				ShowChildrenOfObject(object);
+				ImGui::TreePop();
+			}
 		}
 	}
 

@@ -203,6 +203,30 @@ namespace Editor::Window
 		m_pathFilter.Draw("Filter", ImGui::GetContentRegionAvail().x - 37.f);
 	}
 
+	void WindowFileBrowser::DragDropSourceItem(const std::string& itemName, const std::string& itemPath)
+	{
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+		{
+			ImGui::Text(itemName.c_str());
+			ImGui::SetDragDropPayload("DRAGDROP_PATH", itemPath.c_str(), itemPath.size() + 1, ImGuiCond_Once);
+			ImGui::EndDragDropSource();
+		}
+	}
+
+	void WindowFileBrowser::DragDropTargetItem(const std::string& itemPath)
+	{
+		if (ImGui::BeginDragDropTarget() && fs.IsDirectory(itemPath))
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH"))
+			{
+				const char* path = (const char*)(payload->Data);
+				std::string log = "FileBrowser - Drag'n'Drop: " + std::string(path) + " -> " + itemPath;
+				BAKERS_LOG_MESSAGE(log.c_str());
+				ImGui::EndDragDropTarget();
+			}
+		}
+	}
+
 	void WindowFileBrowser::ShowItem(const std::string& itemName)
 	{
 		const std::string& itemPath = fs.GetLocalAbsolute(itemName);
@@ -216,6 +240,9 @@ namespace Editor::Window
 				ImGui::TextWrapped(itemName.c_str());
 		}
 		ImGui::EndGroup();
+
+		DragDropSourceItem(itemName, itemPath);
+		DragDropTargetItem(itemPath);
 
 		PopupMenuOnItem(itemPath);
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
