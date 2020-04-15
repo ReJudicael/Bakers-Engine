@@ -219,9 +219,8 @@ namespace Editor::Window
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH"))
 			{
-				const char* path = (const char*)(payload->Data);
-				std::string log = "FileBrowser - Drag'n'Drop: " + std::string(path) + " -> " + itemPath;
-				BAKERS_LOG_MESSAGE(log.c_str());
+				const char* path = reinterpret_cast<const char*>(payload->Data);
+				BAKERS_LOG_MESSAGE("FileBrowser:\t" + std::string(path) + " >> " + ((itemPath == "..") ? fs.GetParentPath(fs.GetCurrentDirectory()) : itemPath));
 				ImGui::EndDragDropTarget();
 			}
 		}

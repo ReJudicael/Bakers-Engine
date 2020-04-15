@@ -135,7 +135,43 @@ namespace Editor::Window
 			isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
 		}
 
+		DragDropSourceItem(object);
+		DragDropTargetItem(object);
+		PopupMenuOnItem(object);
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+			GetEngine()->objectSelected = object;
+
 		return isOpen;
+	}
+
+	void WindowHierarchy::DragDropSourceItem(Core::Datastructure::Object* object)
+	{
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::Text(object->GetName().c_str());
+			ImGui::SetDragDropPayload("DRAGDROP_GAMEOBJECT", &object, sizeof(Core::Datastructure::Object*), ImGuiCond_Once);
+			ImGui::EndDragDropSource();
+		}
+	}
+	void WindowHierarchy::DragDropTargetItem(Core::Datastructure::Object* object)
+	{
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_GAMEOBJECT"))
+			{
+				Core::Datastructure::Object* data = *reinterpret_cast<Core::Datastructure::Object**>(payload->Data);
+
+				if (!data->HasChild(object))
+				{
+					BAKERS_LOG_MESSAGE("Hierarchy:\t" + data->GetName() + " >> " + object->GetName());
+					data->SetParent(object);
+				}
+				else
+					BAKERS_LOG_WARNING("Hierarchy:\tCan't set a parent in child of child");
+
+				ImGui::EndDragDropTarget();
+			}
+		}
 	}
 
 	void WindowHierarchy::ShowChildrenOfObject(Core::Datastructure::Object* parent)
@@ -145,33 +181,9 @@ namespace Editor::Window
 			if (object->IsDestroyed())
 				continue;
 
-			bool isOpen = DrawTreeNodeOfObject(object);
-
 			ImGui::PushID(object);
-			PopupMenuOnItem(object);
+			bool isOpen = DrawTreeNodeOfObject(object);
 			ImGui::PopID();
-
-			if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-				GetEngine()->objectSelected = object;
-
-			if (ImGui::BeginDragDropSource())
-			{
-				ImGui::Text(object->GetName().c_str());
-				ImGui::SetDragDropPayload("DRAGDROP_GAMEOBJECT", &object, sizeof(Core::Datastructure::Object*), ImGuiCond_Once);
-				ImGui::EndDragDropSource();
-			}
-
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_GAMEOBJECT"))
-				{
-					Core::Datastructure::Object* data = *reinterpret_cast<Core::Datastructure::Object**>(payload->Data);
-					std::string log = "Hierarchy - Drag'n'Drop: " + data->GetName() +" -> " + object->GetName();
-					BAKERS_LOG_MESSAGE(log.c_str());
-					data->SetParent(object);
-					ImGui::EndDragDropTarget();
-				}
-			}
 
 			if (m_destroyObject)
 			{
@@ -191,7 +203,10 @@ namespace Editor::Window
 
 	void WindowHierarchy::DisplaySceneHierarchy(Core::Datastructure::RootObject* scene)
 	{
-		if (ImGui::CollapsingHeader(scene->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+		bool isOpen = ImGui::CollapsingHeader(scene->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+		DragDropTargetItem(scene);
+
+		if (isOpen)
 		{
 			PopupMenuOnWindow(scene);
 			ShowChildrenOfObject(scene);
