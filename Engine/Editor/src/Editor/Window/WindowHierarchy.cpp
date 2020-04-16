@@ -162,10 +162,7 @@ namespace Editor::Window
 				Core::Datastructure::Object* data = *reinterpret_cast<Core::Datastructure::Object**>(payload->Data);
 
 				if (!data->HasChild(object))
-				{
-					BAKERS_LOG_MESSAGE("Hierarchy:\t" + data->GetName() + " >> " + object->GetName());
 					data->SetParent(object);
-				}
 				else
 					BAKERS_LOG_WARNING("Hierarchy:\tCan't set a parent in child of child");
 

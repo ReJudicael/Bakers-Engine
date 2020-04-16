@@ -25,12 +25,12 @@ namespace Editor
 	{
 		m_menuBar = new MenuBar();
 		m_view = &m_menuBar->Add<Widget::MenuGroup>("View");
-		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::OpenAllWindows, this, true);
-		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::OpenAllWindows, this, false);
+		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, true);
+		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, false);
 		m_view->Add<Widget::Separator>();
 	}
 
-	void Canvas::OpenAllWindows(bool opened)
+	void Canvas::SetAllWindowVisibility(bool opened)
 	{
 		for (auto& widget : m_contents)
 			widget->isVisible = opened;
@@ -64,21 +64,20 @@ namespace Editor
 		Core::SystemManagement::InputSystem* inputSystem = GetEngine()->GetInputSystem();
 
 		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::P))
-			OpenAllWindows(true);
+			SetAllWindowVisibility(true);
 		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::M))
-			OpenAllWindows(false);
+			SetAllWindowVisibility(false);
 	}
 
 	void Canvas::PushDockStyle()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
 	}
 
 	void Canvas::PopDockStyle()
 	{
-		ImGui::PopStyleVar(3);
+		ImGui::PopStyleVar(2);
 	}
 
 	void Canvas::SetViewport()

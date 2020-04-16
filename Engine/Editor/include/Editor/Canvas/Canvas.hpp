@@ -79,7 +79,7 @@ namespace Editor
 		 * Open or close all windows
 		 * @param opened: If true, open all windows, otherwise it will close them all.
 		 */
-		void OpenAllWindows(bool opened);
+		void SetAllWindowVisibility(bool opened);
 
 		/**
 		 * Indicate whether the given window is focused or not

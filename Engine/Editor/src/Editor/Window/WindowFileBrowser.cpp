@@ -176,22 +176,24 @@ namespace Editor::Window
 	{
 		if (ImGui::ImageButtonUV(GetIcon("."), { 16.f }))
 			fs.SetCurrentDirectory(".");
+		DragDropTargetItem(".");
 
 		const std::vector<std::string>& foldersPath{ fs.GetExplodedCurrentPath() };
 		for (int i = 0; i < foldersPath.size() && fs.GetCurrentDirectory() != "."; ++i)
 		{
+			// TODO: Optimize (184-189)
+			std::size_t found{ 0 };
+			for (int j{ 0 }; j < i; ++j)
+				found += foldersPath[j].size() + 1;	// + 1 for slash between each folders
+			found += foldersPath[i].size();			// Remove trailing slash, if existing
+
 			ImGui::SameLine();
 			ImGui::PushID(i);
 			if (ImGui::Button(foldersPath[i].c_str()))
-			{
-				std::size_t found{ 0 };
-				for (int j{ 0 }; j < i; ++j)
-					found += foldersPath[j].size() + 1;	// + 1 for slash between each folders
-				found += foldersPath[i].size();			// Remove trailing slash, if existing
 				fs.CutCurrentPathAtPos(found);
-			}
 			ImGui::PopID();
 
+			DragDropTargetItem(fs.GetCurrentDirectory().substr(0, found));
 			if (i < foldersPath.size() - 1)
 			{
 				ImGui::SameLine();
@@ -205,7 +207,7 @@ namespace Editor::Window
 
 	void WindowFileBrowser::DragDropSourceItem(const std::string& itemName, const std::string& itemPath)
 	{
-		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+		if (itemName != ".." && ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 		{
 			ImGui::Text(itemName.c_str());
 			ImGui::SetDragDropPayload("DRAGDROP_PATH", itemPath.c_str(), itemPath.size() + 1, ImGuiCond_Once);
@@ -217,10 +219,11 @@ namespace Editor::Window
 	{
 		if (ImGui::BeginDragDropTarget() && fs.IsDirectory(itemPath))
 		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH"))
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
 			{
 				const char* path = reinterpret_cast<const char*>(payload->Data);
-				BAKERS_LOG_MESSAGE("FileBrowser:\t" + std::string(path) + " >> " + ((itemPath == "..") ? fs.GetParentPath(fs.GetCurrentDirectory()) : itemPath));
+
+				fs.MovePath(path, itemPath.c_str());
 				ImGui::EndDragDropTarget();
 			}
 		}

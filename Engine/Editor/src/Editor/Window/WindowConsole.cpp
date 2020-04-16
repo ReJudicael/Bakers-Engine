@@ -9,7 +9,7 @@ namespace Editor::Window
 		for (auto& [icon, isEnabled] : m_logsIcon)
 			isEnabled = true;
 
-		m_tableFlags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_ScrollFreezeTopRow | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+		m_tableFlags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_ScrollFreezeTopRow | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_BordersVFullHeight | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
 
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\message.png", m_logsIcon[0].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\warning.png", m_logsIcon[1].first);
@@ -44,10 +44,10 @@ namespace Editor::Window
 	void WindowConsole::SettingsButton()
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.18f, 0.18f, 0.25f, 1.0f });
-		ImGui::ImageButtonUV_HelpMarker(m_settingsIcon->texture, "Settings");
+		bool isClicked = ImGui::ImageButtonUV_HelpMarker(m_settingsIcon->texture, "Settings");
 		ImGui::PopStyleColor();
 
-		if (ImGui::IsItemClicked())
+		if (isClicked)
 			ImGui::OpenPopup("## Settings");
 
 		if (ImGui::BeginPopup("## Settings"))
@@ -85,11 +85,11 @@ namespace Editor::Window
 
 	void WindowConsole::PrintLog(Core::Debug::LogData log)
 	{
-		if (m_logsIcon[(size_t)log.type].second && m_logFilter.PassFilter(log.message))
+		if (m_logsIcon[static_cast<size_t>(log.type)].second && m_logFilter.PassFilter(log.message))
 		{
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
-			ImGui::ImageUV(m_logsIcon[(size_t)log.type].first->texture);
+			ImGui::ImageUV(m_logsIcon[static_cast<size_t>(log.type)].first->texture);
 			ImGui::TableSetColumnIndex(1);
 			ImGui::Text(log.time);
 			ImGui::TableSetColumnIndex(2);

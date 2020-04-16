@@ -261,6 +261,13 @@ namespace Core::SystemManagement
 		 * @return vector storing each files and directories inside current directory
 		 */
 		std::vector<Path> GetContentsInCurrentPath() noexcept;
+
+		/**
+		 * Move path
+		 * @param oldPath: Old path
+		 * @param newPath: New path
+		 */
+		void MovePath(const std::string& oldPath, std::string newPath) noexcept;
 	};
 
 	inline std::string FileSystem::GetCurrentDirectory() const noexcept
@@ -360,7 +367,8 @@ namespace Core::SystemManagement
 
 	inline std::string FileSystem::GetParentPath(const Path& path) const noexcept
 	{
-		return path.parent_path().string();
+		const std::string& parent_path = path.parent_path().string();
+		return parent_path != "" ? parent_path : ".";
 	}
 
 	inline std::string FileSystem::GetParentCurrentPath() const noexcept
@@ -550,5 +558,23 @@ namespace Core::SystemManagement
 			m_actualizeContentsInCurrentPath = false;
 		}
 		return m_contentsInCurrentPath;
+	}
+
+	inline void FileSystem::MovePath(const std::string& oldPath, std::string newPath) noexcept
+	{
+		if (newPath == "..")
+			newPath = GetParentCurrentPath().c_str();
+
+		newPath += '\\' + GetFilename(oldPath);
+
+		if (!Exists(newPath))
+		{
+			std::filesystem::rename(oldPath, newPath);
+			m_actualizeContentsInCurrentPath = true;
+		}
+		else
+		{
+			BAKERS_LOG_WARNING("The path to the destination already exists");
+		}
 	}
 }
