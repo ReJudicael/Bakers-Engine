@@ -3,6 +3,7 @@
 #include "Vec3.hpp"
 #include "PxPhysicsAPI.h"
 #include "PhysicsScene.h"
+#include "LoadResources.h"
 
 
 namespace Core::Physics
@@ -16,6 +17,10 @@ namespace Core::Physics
 		.property("Trigger", &Core::Physics::Collider::IsTrigger ,&Core::Physics::Collider::Trigger)
 		;
 	}
+
+	Collider::Collider(Resources::Loader::ResourcesManager* resources):
+		m_shader{resources->GetShader("Wireframe")}
+	{}
 
 	void Collider::SetLocalPosition(Core::Maths::Vec3 pos)
 	{
@@ -115,6 +120,8 @@ namespace Core::Physics
 
 	void Collider::DestroyShape()
 	{
+		if (m_pxShape == nullptr)
+			return;
 		m_pxShape->release();
 		m_pxMaterial->release();
 	}

@@ -42,34 +42,58 @@ public:
 
 	float*	m_projection;
 
-	int		AddTriangle(int v1, int v2, int v3);
-	int		AddVertex(float x, float y, float z);	
-
 public:
 	Mesh();
 	~Mesh();
 
+	/**
+	 * Function inheritated from IRenderable,
+	 */
 	virtual void OnDestroy() override {};
 
-	void Initialize();
-
+	/**
+	 * Send the projection matrix to m_projection of the mesh
+	 * @param data: the projection matrix
+	 */
 	void SendProjectionMatrix(Core::Maths::Mat4 data);
 
+	/**
+	 * Check if the model is load
+	 */
 	bool IsModelLoaded();
 
+	/**
+	 * Create the AABB box of the mesh in the physics scene
+	 */
 	void CreateAABBMesh();
 
+	/**
+	 * Function inheritated from IRenderable,
+	 * override for draw the mesh with the material and the model
+	 * @param cam: the camera to render to
+	 */
 	virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
 
-	Core::Maths::Mat4 projectionMatrix(float FovY, float Aspect, float Near, float Far);
-
+	/**
+	 * get the number total of the vertex in the mesh
+	 * @return the count of vertex
+	 */
 	int					GetVertexCount();
 
+	/**
+	 * set the model of the mesh
+	 * @param model: the model we want to link to the mesh
+	 */
 	inline void AddModel(std::shared_ptr<Resources::Model> model)
 	{
 		m_model = model;
 	}
 
+	/**
+	 * add all the materials of the mesh
+	 * @param resources: the resourcesmanager of the scene
+	 * @param namesMaterial: all the names of material we want to link to the mesh
+	 */
 	void AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial);
 
 	REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IRenderable)

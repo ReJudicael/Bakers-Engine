@@ -19,18 +19,6 @@
 namespace Core::Physics
 {
 
-	/*const EFilterRaycast& GetFilterRaycast(const physx::PxFilterData& filter)
-	{
-		if (filter.word0 & static_cast<physx::PxU32>(EFilterRaycast::GROUPE1))
-			return EFilterRaycast::GROUPE1;
-		if (filter.word0 & static_cast<physx::PxU32>(EFilterRaycast::GROUPE2))
-			return EFilterRaycast::GROUPE2;
-		if (filter.word0 & static_cast<physx::PxU32>(EFilterRaycast::GROUPE3))
-			return EFilterRaycast::GROUPE3;
-		else
-			return EFilterRaycast::GROUPE4;
-	}*/
-
 	bool PhysicsScene::InitPhysX()
 	{
 		m_pxFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_pxDefaultAllocatorCallback,
@@ -74,15 +62,14 @@ namespace Core::Physics
 		return true;
 	}
 
-
 	void PhysicsScene::CreateScene()
 	{
 		physx::PxSceneDesc sceneDesc(m_pxPhysics->getTolerancesScale());
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
 		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(4);
 		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
-		PhysicsSceneSimulationEventCallback* eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
+		PhysicsSceneSimulationEventCallback* eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.filterShader = &Core::Physics::PhysicsSceneSimulationEventCallback::filterShader;
 		//sceneDesc.filterShader = &physx::PxDefaultSimulationFilterShader;
 
@@ -179,7 +166,7 @@ namespace Core::Physics
 		return status;
 	}
 
-	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResultQuery>& results, physx::PxU32 filterRaycast, const float Distance = FLT_MAX)
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResultQuery>& results, physx::PxU32 filterRaycast, const float Distance)
 	{
 		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
 		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
@@ -262,27 +249,10 @@ namespace Core::Physics
 																const Core::Datastructure::Transform& transform,
 																std::shared_ptr<Resources::Model> model)
 	{
-		physx::PxMaterial* material = m_pxPhysics->createMaterial(0.f, 0.f, 0.f);
-		
-		Core::Maths::Vec3 minG{ model->min * transform.GetGlobalScale() };
-		Core::Maths::Vec3 maxG{ model->max * transform.GetGlobalScale() };
+		physx::PxShape* shape{ CreateEditorBoxShape(transform, model) };
 
-		Core::Maths::Vec3 pos{ (minG - maxG) };
-		pos = maxG + pos / 2;   
-
-		//Core::Maths::Vec3 extent{ abs(model->min.x) + abs(model->max.x), abs(model->min.y) + abs(model->max.y), abs(model->min.z) + abs(model->max.z) };
-		Core::Maths::Vec3 extent{ abs(minG.x) + abs(maxG.x), abs(minG.y) + abs(maxG.y), abs(minG.z) + abs(maxG.z) };
-		//extent *= transform.GetGlobalScale();
-		extent /= 2;
-		if (extent.x == 0 || extent.y == 0 || extent.x == 0)
+		if (shape == nullptr)
 			return nullptr;
-
-		physx::PxShape* shape = m_pxPhysics->createShape(physx::PxBoxGeometry(physx::PxVec3{ extent.x, extent.y, extent.z }), *material, true);
-		physx::PxTransform shapeTransform{ shape->getLocalPose() };
-		shapeTransform.p = { pos.x, pos.y, pos.z };
-		shape->setLocalPose(shapeTransform);
-		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
-		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
 
 		physx::PxVec3 globalPos { transform.GetGlobalPos().x,transform.GetGlobalPos().y, transform.GetGlobalPos().z};
 		physx::PxQuat globalRot { transform.GetGlobalRot().x,transform.GetGlobalRot().y, transform.GetGlobalRot().z, transform.GetGlobalRot().w };
@@ -296,6 +266,32 @@ namespace Core::Physics
 		m_pxScene->addActor(*rigidStatic);
 
 		return rigidStatic;
+	}
+
+	physx::PxShape* PhysicsScene::CreateEditorBoxShape(const Core::Datastructure::Transform& transform, std::shared_ptr<Resources::Model> model)
+	{
+		physx::PxMaterial* material = m_pxPhysics->createMaterial(0.f, 0.f, 0.f);
+
+		Core::Maths::Vec3 minG{ model->min * transform.GetGlobalScale() };
+		Core::Maths::Vec3 maxG{ model->max * transform.GetGlobalScale() };
+
+		Core::Maths::Vec3 pos{ (minG - maxG) };
+		pos = maxG + pos / 2;
+
+		Core::Maths::Vec3 extent{ abs(minG.x) + abs(maxG.x), abs(minG.y) + abs(maxG.y), abs(minG.z) + abs(maxG.z) };
+		extent /= 2;
+
+		if (extent.x == 0 || extent.y == 0 || extent.x == 0)
+			return nullptr;
+
+		physx::PxShape* shape = m_pxPhysics->createShape(physx::PxBoxGeometry(physx::PxVec3{ extent.x, extent.y, extent.z }), *material, true);
+		physx::PxTransform shapeTransform{ shape->getLocalPose() };
+		shapeTransform.p = { pos.x, pos.y, pos.z };
+		shape->setLocalPose(shapeTransform);
+		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
+
+		return shape;
 	}
 
 	void PhysicsScene::BeginSimulate(const float deltaTime)

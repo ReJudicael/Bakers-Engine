@@ -26,12 +26,22 @@ namespace Core
 		protected:
 			physx::PxRigidStatic* m_staticMesh{};
 
-			/*
+			/**
 			 * Release the PxRigidStatic,
 			 * and release him from the PhysicsScene
 			 */
 			virtual void DestroyStaticMesh();
+
+			/**
+			 * Function inheritated from IPhysics and IUpdatable,
+			 * override for delete the collider and release the PxRigidStatic
+			 */
 			virtual void OnDestroy() override;
+
+			/**
+			 * Function inheritated from IPhysics and IUpdatable,
+			 * override for reset the PxRigidStatic
+			 */
 			virtual void OnReset() override;
 
 		public:

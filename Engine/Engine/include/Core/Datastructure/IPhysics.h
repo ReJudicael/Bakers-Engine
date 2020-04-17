@@ -83,10 +83,13 @@ namespace Core
 			 */
 			virtual void SetPhysicsTransformParent() = 0;
 
+
 			virtual void SetRaycastFilter(Core::Physics::EFilterRaycast filter)
 			{
 				m_collider->SetRaycastFilter(filter);
 			}
+
+
 			virtual Core::Physics::EFilterRaycast GetRaycastFilter()
 			{
 				return m_collider->GetRaycastFilter();

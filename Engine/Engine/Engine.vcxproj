@@ -338,11 +338,13 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClCompile Include="src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Core\Debug\Logger.cpp" />
     <ClCompile Include="src\Core\Physics\BoxCollider.cpp" />
+    <ClCompile Include="src\Core\Physics\CapsuleCollider.cpp" />
     <ClCompile Include="src\Core\Physics\Collider.cpp" />
     <ClCompile Include="src\Core\Physics\DynamicMesh.cpp" />
     <ClCompile Include="src\Core\Physics\Maths.cpp" />
     <ClCompile Include="src\Core\Physics\PhysicsScene.cpp" />
     <ClCompile Include="src\Core\Physics\PhysicsSceneSimulationEventCallback.cpp" />
+    <ClCompile Include="src\Core\Physics\SphereCollider.cpp" />
     <ClCompile Include="src\Core\Physics\StaticMesh.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
     <ClCompile Include="src\Core\Renderer\Framebuffer.cpp" />
@@ -401,10 +403,12 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClInclude Include="include\Core\Maths\Vec3.hpp" />
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
     <ClInclude Include="include\Core\Physics\BoxCollider.h" />
+    <ClInclude Include="include\Core\Physics\CapsuleCollider.h" />
     <ClInclude Include="include\Core\Physics\DynamicMesh.h" />
     <ClInclude Include="include\Core\Physics\HitResult.h" />
     <ClInclude Include="include\Core\Physics\PhysicsScene.h" />
     <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h" />
+    <ClInclude Include="include\Core\Physics\SphereCollider.h" />
     <ClInclude Include="include\Core\Physics\StaticMesh.h" />
     <ClInclude Include="include\Core\Renderer\Framebuffer.h" />
     <ClInclude Include="include\Core\Renderer\Light.h" />

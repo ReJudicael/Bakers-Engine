@@ -142,7 +142,7 @@ namespace Core::Datastructure
 
 		umbreon->AddComponent(new Core::Physics::DynamicMesh());
 
-		staticMesh->SetPos({ 0.f,-2.f,0.f });
+		staticMesh->SetPos({ 0.f,-5.f,0.f });
 		staticMesh->SetScale({ 5.f,1.f,5.f });
 		Core::Physics::StaticMesh* staticmesh1 = new Core::Physics::StaticMesh();
 		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f, 1.f, 500.f });

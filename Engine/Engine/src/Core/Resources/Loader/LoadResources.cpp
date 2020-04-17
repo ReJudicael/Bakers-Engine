@@ -76,6 +76,7 @@ namespace Resources::Loader
 		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
 
 		LoadObjInModel("Cube","Resources/Models/cube.obj");
+		LoadObjInModel("Capsule","Resources/Models/capsule.obj");
 	}
 
 	ResourcesManager::~ResourcesManager()
@@ -281,6 +282,7 @@ namespace Resources::Loader
 
 		if (m_models.count(name) > 0)
 			return;
+
 		modelData->model = model;
 		m_models.emplace(name, model);
 		m_modelsToLink.push_back(modelData);

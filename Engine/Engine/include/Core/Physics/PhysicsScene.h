@@ -53,9 +53,6 @@ namespace Core
 			GROUPE4 = (1<<3),
 		};
 
-		
-		//const EFilterRaycast& GetFilterRaycast(const physx::PxFilterData& filter);
-
 		struct HitResultQuery
 		{
 			Core::Datastructure::Object*		objectHit;
@@ -74,7 +71,7 @@ namespace Core
 
 
 		/**
-		 * Contains all the PhysX properties for create a PhysXScene
+		 * Contains all the PhysX properties for create a PhysXScene and simulate the physics
 		 */
 		class PhysicsScene
 		{
@@ -110,6 +107,8 @@ namespace Core
 															const Core::Datastructure::Transform& transform,
 														std::shared_ptr<Resources::Model> model);
 
+			physx::PxShape* CreateEditorBoxShape(const Core::Datastructure::Transform& transform, std::shared_ptr<Resources::Model> model);
+
 			/**
 			 * Create the PhysX scene
 			 */
@@ -126,7 +125,7 @@ namespace Core
 			 * Do a raycast in the physics scene and return one hit result the nearest
 			 * @param OriginPos: the position of the begin of the raycast
 			 * @param Direction: the direction of the raycast
-			 * @param result: the hit result of the raycast
+			 * @param result: the nearest hit result of the raycast
 			 * @param Distance: the distance of the raycast
 			 * by default = FLT_MAX
 			 * @return true if the raycast hit something
@@ -148,7 +147,7 @@ namespace Core
 			 * Do a raycast in the physics scene with filter and return one hit result the nearest
 			 * @param OriginPos: the position of the begin of the raycast
 			 * @param Direction: the direction of the raycast
-			 * @param result: the hit result of the raycast
+			 * @param result: the nearest hit result of the raycast
 			 * @param Distance: the distance of the raycast
 			 * @param filterRaycast: the filters of the raycast, 
 			 * the objects who have this filters are not going to be test
@@ -170,10 +169,21 @@ namespace Core
 			 */
 			bool Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResultQuery>& results, physx::PxU32 filterRaycast, const float Distance = FLT_MAX);
 
+			/**
+			 * Do an overlap check in the physics scene with a gemotry gived
+			 * @param overlapGeometry: the geomtry of object to check for overlap
+			 * @param transform: the global position of the geometry
+			 * @param overlapResult: the nearest hit result of the overlap
+			 */
+			bool CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& transform, HitResultQuery& overlapResult);
 
-			bool CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& position, HitResultQuery& overlapResult);
-
-			bool CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& position, std::vector<HitResultQuery>& overlapResults);
+			/**
+			 * Do an overlap check in the physics scene with a gemotry gived
+			 * @param overlapGeometry: the geomtry of object to check for overlap
+			 * @param transform: the global position of the geometry
+			 * @param overlapResult: all the hit result of the overlap
+			 */
+			bool CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& transform, std::vector<HitResultQuery>& overlapResults);
 			/*
 			 * Update the transform of a physics actor, call as an event, use mostly with 
 			 * the editor physics

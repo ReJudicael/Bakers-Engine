@@ -26,7 +26,7 @@ namespace Core
 		}
 
 		IPhysics::IPhysics():
-			m_collider{new Core::Physics::BoxCollider()}
+			m_collider{ new Core::Physics::BoxCollider() }
 		{
 		}
 		IPhysics::IPhysics(Core::Physics::Collider* collider):
@@ -37,6 +37,7 @@ namespace Core
 		void IPhysics::OnStart()
 		{
 			RootObject* root = GetScene();
+			//m_collider = new Core::Physics::BoxCollider(GetScene()->GetEngine()->GetResourcesManager());
 			root->GetEngine()->GetPhysicsScene()->CreatePhysicsShape(*m_collider);
 			root->GetEngine()->GetPhysicsScene()->AttachActor(this);
 			m_collider->InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
@@ -44,7 +45,7 @@ namespace Core
 			IComponent::OnStart();
 			IRenderable::OnStart();
 		}
-
+		
 		void IPhysics::OnCopy(IComponent* copyTo) const
 		{
 			IComponent::OnCopy(copyTo);
@@ -72,7 +73,7 @@ namespace Core
 		{
 			IComponent::OnReset();
 			delete m_collider;
-			m_collider = new Core::Physics::BoxCollider();
+			m_collider = new Core::Physics::BoxCollider(GetScene()->GetEngine()->GetResourcesManager());
 		}
 	}
 }

@@ -4,6 +4,9 @@
 
 namespace Core::Physics
 {
+	/**
+	 * Contains values extract from the PxContactPairPoint
+	 */
 	struct HitResult
 	{
 		Core::Maths::Vec3	impactPoint{};

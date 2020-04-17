@@ -16,6 +16,10 @@ namespace physx
 namespace Resources
 {
 	class Shader;
+	namespace Loader
+	{
+		class ResourcesManager;
+	}
 }
 namespace Core
 {
@@ -45,6 +49,8 @@ namespace Core
 			std::shared_ptr<Resources::Shader>	m_shader{};
 			std::shared_ptr<Resources::Model>	m_model{};
 		public:
+			Collider() = default;
+			Collider(Resources::Loader::ResourcesManager* resources);
 
 			/**
 			 * Get the PhysX shape of the collider

@@ -7,6 +7,7 @@
 #include "PhysicsScene.h"
 #include "EngineCore.h"
 #include "Maths.hpp"
+#include "CapsuleCollider.h"
 
 namespace Core
 {
@@ -29,6 +30,11 @@ namespace Core
 
 		}
 
+		DynamicMesh::DynamicMesh() :
+			Core::Datastructure::IPhysics(),
+			m_dynamicMesh{ nullptr }
+		{
+		}
 
 		DynamicMesh::DynamicMesh(Collider* collider) :
 			Core::Datastructure::IPhysics(collider),
@@ -179,6 +185,8 @@ namespace Core
 
 		void DynamicMesh::ClearForces()
 		{
+			if (m_dynamicMesh == nullptr)
+				return;
 			m_dynamicMesh->clearForce();
 			m_dynamicMesh->clearTorque();
 		}

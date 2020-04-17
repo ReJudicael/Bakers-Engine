@@ -36,14 +36,13 @@ namespace Core::Physics
 					hitResult.isPenetrate = (contacts[0].separation < 0 ? false : true);
 					physx::PxVec3 impulse = contacts[0].impulse;
 					impulseVector = { impulse.x,impulse.y, impulse.z };
+
+					Core::Datastructure::IPhysics* contact1 = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[0]->userData));
+					Core::Datastructure::IPhysics* contact2 = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[1]->userData));
+
+					contact1->OnContactEvent(contact2, impulseVector, hitResult);
+					contact2->OnContactEvent(contact1, impulseVector, hitResult);
 				}
-
-				Core::Datastructure::IPhysics* contact1 = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[0]->userData));
-				Core::Datastructure::IPhysics* contact2 = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[1]->userData));
-
-				contact1->OnContactEvent(contact2, impulseVector, hitResult);
-				contact2->OnContactEvent(contact1, impulseVector, hitResult);
-
 				break;
 			}
 
