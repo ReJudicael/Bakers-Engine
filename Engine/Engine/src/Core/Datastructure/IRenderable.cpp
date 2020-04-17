@@ -6,7 +6,7 @@ RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
 	registration::class_<IRenderable>("IRenderable")
-		.property_readonly("VAO", &IRenderable::m_VAO);
+		.property_readonly("VAO", &IRenderable::m_VAO, rttr::detail::protected_access());
 }
 
 namespace Core::Datastructure

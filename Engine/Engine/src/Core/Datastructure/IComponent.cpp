@@ -12,8 +12,8 @@ RTTR_PLUGIN_REGISTRATION
 		.property_readonly("InputManager", &IComponent::Input, detail::protected_access())
 		.method("Start", &IComponent::Start)
 		.method("Destroy", &IComponent::Destroy)
-		.property_readonly("IsDestroyed", &IComponent::IsDestroyed)
-		.property_readonly("IsInit", &IComponent::IsInit)
+		.property_readonly("IsDestroyed", &IComponent::IsDestroyed, detail::protected_access())
+		.property_readonly("IsInit", &IComponent::IsInit, detail::protected_access())
 		.property("IsActive", &IComponent::m_isActive, detail::protected_access());
 }
 

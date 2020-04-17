@@ -411,6 +411,82 @@ namespace Core::Datastructure
 		 */
 		bool				HasChild(Object* o) const noexcept;
 
+		/**
+		 * Returns all components of the type Component contained
+		 * in this object and its childs. 
+		 */
+		template <class Component>
+		void	GetComponentsOfType(std::list<Component*>& components) const noexcept
+		{
+			GetComponentsOfTypeInObject<Component>(components);
+			GetComponentsOfTypeInChilds<Component>(components);
+		}
+
+		/**
+		 * Returns all components of the type Component contained
+		 * in the childs of this object
+		 */
+		template <class Component>
+		void	GetComponentsOfTypeInChilds(std::list<Component*>& components) const noexcept
+		{
+			for (auto it : m_childs)
+			{
+				it->GetComponentsOfType(components);
+			}
+		}
+
+		/**
+		 * Returns all components of the type Component contained
+		 * in this object. Will not get them from children
+		 */
+		template <class Component>
+		void	GetComponentsOfTypeInObject(std::list<Component*>& components) const noexcept
+		{
+			for (auto it : m_components)
+			{
+				if (rttr::type::get<Component>() == it->get_type())
+					components.push_back(dynamic_cast<Component*>(it));
+			}
+		}
+
+		/**
+		 * Returns all components of the base type Component contained
+		 * in this object and its childs.
+		 */
+		template <class Component>
+		void	GetComponentsOfBaseType(std::list<Component*>& components) const noexcept
+		{
+			GetComponentsOfBaseTypeInObject<Component>(components);
+			GetComponentsOfBaseTypeInChilds<Component>(components);
+		}
+
+		/**
+		 * Returns all components of the base type Component contained
+		 * in the childs of this object
+		 */
+		template <class Component>
+		void	GetComponentsOfBaseTypeInChilds(std::list<Component*>& components) const noexcept
+		{
+			for (auto it : m_childs)
+			{
+				it->GetComponentsOfBaseType(components);
+			}
+		}
+
+		/**
+		 * Returns all components of the base type Component contained
+		 * in this object. Will not get them from children
+		 */
+		template <class Component>
+		void	GetComponentsOfBaseTypeInObject(std::list<Component*>& components) const noexcept
+		{
+			for (auto it : m_components)
+			{
+				if (rttr::type::get<Component>().is_base_of(it->get_type()))
+					components.push_back(dynamic_cast<Component*>(it));
+			}
+		}
+
 		REGISTER_CLASS()
 	};
 

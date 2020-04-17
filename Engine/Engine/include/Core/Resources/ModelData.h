@@ -24,14 +24,20 @@ namespace Resources
 	struct ModelData
 	{
 		GLuint VAOModel{0};
-		bool				haveTangent;
-		std::vector<Vertex> vertices;
-		std::vector<GLuint> indices;
-		std::vector<OffsetMesh> offsetsMesh;
-		std::shared_ptr<Model> model;
+		bool						haveTangent;
+		std::vector<Vertex>			vertices;
+		std::vector<GLuint>			indices;
+		std::vector<OffsetMesh>		offsetsMesh;
+		Core::Maths::Vec3			min;
+		Core::Maths::Vec3			max;
+		std::shared_ptr<Model>		model;
 
 		std::string ModelName;
 		EOpenGLLinkState stateVAO;
+
+		void LoadaiMeshModel(aiMesh* mesh, const int increaseIndices = 0);
+
+		void LoadaiMeshAABB(aiMesh* mesh);
 
 		/**
 		 * Load all the vertices of one aiMesh

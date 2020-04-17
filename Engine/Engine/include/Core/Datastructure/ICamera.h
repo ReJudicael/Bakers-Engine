@@ -19,9 +19,6 @@ namespace Core::Datastructure
 		Core::Maths::Mat4	m_perspective;
 		Core::Maths::Mat4	m_cameraMatrix;
 	protected:
-		Core::Maths::Vec3	m_front;
-		Core::Maths::Vec3	m_right;
-
 		unsigned			m_cameraWidth{1280};
 		unsigned			m_cameraHeight{800};
 
@@ -87,24 +84,6 @@ namespace Core::Datastructure
 		 * It will resize the draw FBO and change its aspect ratio.
 		 */
 		virtual void				Resize(unsigned width, unsigned height);
-
-		/**
-		 * Get Forward vector of camera
-		 * @return Front variable of camera
-		 */
-		inline Core::Maths::Vec3			GetFront() const noexcept
-		{
-			return m_front;
-		}
-
-		/**
-		 * Get side vector of camera
-		 * @return Right variable of camera
-		 */
-		inline Core::Maths::Vec3			GetRight() const noexcept
-		{
-			return m_right;
-		}
 
 		/**
 		 * Function called by the engine to draw the objects

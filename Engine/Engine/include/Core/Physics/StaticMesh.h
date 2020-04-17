@@ -65,6 +65,10 @@ namespace Core
 			 */
 			virtual void OnStart() override;
 
+			virtual void StartCopy(IComponent*& copyTo) const override;
+
+			virtual void OnCopy(IComponent* copyTo) const;
+
 			/**
 			 * Function inheritated from IPhysics,
 			 * override for create a specific physX actor a PxRigidStatic

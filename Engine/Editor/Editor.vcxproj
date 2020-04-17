@@ -281,6 +281,7 @@
     <ClCompile Include="src\Editor\Canvas\Canvas.cpp" />
     <ClCompile Include="src\Editor\Canvas\MenuBar.cpp" />
     <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp" />
+    <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp" />
     <ClCompile Include="src\Editor\EditorEngine.cpp" />
     <ClCompile Include="src\Editor\GUIManager.cpp" />
     <ClCompile Include="src\Editor\Widgets\AWidget.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="include\Editor\Canvas\MenuBar.h" />
     <ClInclude Include="include\Editor\Datastructure\Container.hpp" />
     <ClInclude Include="include\Editor\Datastructure\DrawableComponent.h" />
+    <ClInclude Include="include\Editor\Datastructure\EditorCamera.h" />
     <ClInclude Include="include\Editor\Datastructure\IDrawable.h" />
     <ClInclude Include="include\Editor\EditorEngine.h" />
     <ClInclude Include="include\Editor\GUIManager.h" />

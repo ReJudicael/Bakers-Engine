@@ -12,6 +12,13 @@ namespace Core
 {
 	namespace Physics
 	{
+		RTTR_PLUGIN_REGISTRATION
+		{
+			registration::class_<Core::Physics::StaticMesh>("StaticMesh")
+			.constructor()
+			.constructor<Collider*>()
+			;
+		}
 		StaticMesh::StaticMesh(Collider* collider):
 			IPhysics(collider)
 		{
@@ -22,6 +29,24 @@ namespace Core
 			GetParent()->SetAnEventTransformChange(std::bind(&StaticMesh::SetPhysicsTransformParent, this));
 			IPhysics::OnStart();
 			IUpdatable::OnStart();
+
+		}
+
+		void StaticMesh::StartCopy(IComponent*& copyTo) const
+		{
+			copyTo = new StaticMesh();
+			OnCopy(copyTo);
+		}
+
+		void StaticMesh::OnCopy(IComponent* copyTo) const
+		{
+			ComponentBase::OnCopy(copyTo);
+			IPhysics::OnCopy(copyTo);
+			IUpdatable::OnCopy(copyTo);
+
+			StaticMesh* phy = dynamic_cast<StaticMesh*>(copyTo);
+
+			phy->m_staticMesh = m_staticMesh;
 
 		}
 
@@ -64,7 +89,8 @@ namespace Core
 			//setupFiltering(myActor3, EFilterCollision::JUDICAEL, EFilterCollision::VALENTIN, EFilterCollision::LAVIE | EFilterCollision::NATHAN);
 			//setupFiltering(myActor, EFilterCollision::JUDICAEL, EFilterCollision::NATHAN, EFilterCollision::LAVIE | EFilterCollision::VALENTIN);
 
-			m_staticMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));;
+			m_staticMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));
+			
 
 			scene->addActor(*m_staticMesh);
 			//m_collider->GetShape()->release();

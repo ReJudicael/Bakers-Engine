@@ -9,9 +9,7 @@ RTTR_PLUGIN_REGISTRATION
 	registration::class_<ICamera>("ICamera")
 		.method("GetCameraPerspective", &ICamera::GetPerspectiveMatrix)
 		.method("GetCameraMatrix", &ICamera::GetCameraMatrix)
-		.method("SetRatio", &ICamera::SetRatio)
-		.property_readonly("front", &ICamera::m_front)
-		.property_readonly("right", &ICamera::m_right);
+		.method("SetRatio", &ICamera::SetRatio);
 }
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
@@ -33,8 +31,6 @@ const Core::Maths::Mat4& Core::Datastructure::ICamera::GetCameraMatrix()
 		ZoneScoped
 			ZoneText("Generating camera matrix", 25)
 		m_cameraMatrix = OnGenerateCamera();
-		m_front = Core::Maths::Vec3(m_parent->GetGlobalTRS() * Core::Maths::Vec4{ 0, 0, 1, 0 });
-		m_right = Core::Maths::Vec3(m_parent->GetGlobalTRS() * Core::Maths::Vec4{ 1, 0, 0, 0 });
 		m_isCamUpdated = true;
 	}
 	return m_cameraMatrix;
@@ -76,8 +72,6 @@ void Core::Datastructure::ICamera::OnCopy(IComponent* copyTo) const
 	IComponent::OnCopy(copyTo);
 	ICamera* copy{ dynamic_cast<Core::Datastructure::ICamera*>(copyTo) };
 
-	copy->m_front = m_front;
-	copy->m_right = m_right;
 	copy->m_cameraHeight = m_cameraHeight;
 	copy->m_cameraWidth = m_cameraWidth;
 }
@@ -102,8 +96,6 @@ void	Core::Datastructure::ICamera::OnReset()
 {
 	IComponent::OnReset();
 	GetScene()->RemoveCamera(this);
-	m_front = {};
-	m_right = {};
 	m_cameraHeight = 800;
 	m_cameraWidth = 1280;
 

@@ -6,6 +6,22 @@
 
 namespace Resources
 {
+	void ModelData::LoadaiMeshModel(aiMesh* mesh, const int increaseIndices)
+	{
+		LoadaiMeshAABB(mesh);
+		LoadVertices(mesh);
+		LoadIndices(mesh, increaseIndices);
+	}
+
+	void  ModelData::LoadaiMeshAABB(aiMesh* mesh)
+	{
+		aiVector3D AABBBox{ mesh->mAABB.mMin };
+		min = { AABBBox.x, AABBBox.y, AABBBox.z };
+
+		AABBBox = mesh->mAABB.mMax;
+		max = { AABBBox.x, AABBBox.y, AABBBox.z };
+	}
+
 	void ModelData::LoadIndices(aiMesh* mesh, const int increaseIndices)
 	{
 		unsigned int lastNumIndices = static_cast<unsigned int>(indices.size());
@@ -97,6 +113,10 @@ namespace Resources
 
 	void ModelData::EmplaceInModel()
 	{
+		model->indices = indices;
+		model->vertices = vertices;
+		model->max = max;
+		model->min = min;
 		model->stateVAO = stateVAO;
 		model->VAOModel = VAOModel;
 	}

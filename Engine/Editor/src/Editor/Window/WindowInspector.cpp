@@ -87,7 +87,9 @@ namespace Editor::Window
 
 		if (isClickedReset)
 		{
-			// Reset Transform
+			object->SetPos({});
+			object->SetRot({});
+			object->SetScale({ 1, 1, 1 });
 		}
 
 		if (isOpen)
@@ -131,50 +133,51 @@ namespace Editor::Window
 		else if (prop.get_type() == type::get<bool>())
 		{
 			bool b{ prop.get_value(component).get_value<bool>() };
-			if (ImGui::RCheckbox(prop.get_name().to_string().c_str(), &b))
+			if (ImGui::RCheckbox(prop.get_name().to_string().c_str(), &b) && !prop.is_readonly())
 				prop.set_value(component, b);
 		}
 		else if (prop.get_type() == type::get<int>())
 		{
 			int i{ prop.get_value(component).get_value<int>() };
-			if (ImGui::RDragInt(prop.get_name().to_string().c_str(), &i))
+			if (ImGui::RDragInt(prop.get_name().to_string().c_str(), &i, 1.0f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, i);
 		}
 		else if (prop.get_type() == type::get<float>())
 		{
 			float f{ prop.get_value(component).get_value<float>() };
-			if (ImGui::RDragFloat(prop.get_name().to_string().c_str(), &f, 0.01f))
+			if (ImGui::RDragFloat(prop.get_name().to_string().c_str(), &f, 0.01f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, f);
 		}
 		else if (prop.get_type() == type::get<Core::Maths::Vec2>())
 		{
 			Core::Maths::Vec2 v{ prop.get_value(component).get_value<Core::Maths::Vec2>() };
-			if (ImGui::RDragFloat2(prop.get_name().to_string().c_str(), v.xy, 0.01f))
+			if (ImGui::RDragFloat2(prop.get_name().to_string().c_str(), v.xy, 0.01f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, v);
 		}
 		else if (prop.get_type() == type::get<Core::Maths::Vec3>())
 		{
 			Core::Maths::Vec3 v{ prop.get_value(component).get_value<Core::Maths::Vec3>() };
-			if (ImGui::RDragFloat3(prop.get_name().to_string().c_str(), v.xyz, 0.01f))
+			if (ImGui::RDragFloat3(prop.get_name().to_string().c_str(), v.xyz, 0.01f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, v);
 		}
 		else if (prop.get_type() == type::get<Core::Maths::Vec4>())
 		{
 			Core::Maths::Vec4 v{ prop.get_value(component).get_value<Core::Maths::Vec4>() };
-			if (ImGui::RDragFloat4(prop.get_name().to_string().c_str(), v.xyzw, 0.01f))
+			if (ImGui::RDragFloat4(prop.get_name().to_string().c_str(), v.xyzw, 0.01f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, v);
 		}
 		else if (prop.get_type() == type::get<Core::Maths::Color>())
 		{
 			Core::Maths::Color c{ prop.get_value(component).get_value<Core::Maths::Color>() };
-			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba))
+			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba, 1.0f *!prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, c);
 		}
 		else if (prop.get_type().is_class())
 		{
 			auto temp{ prop.get_value(component) };
 			DisplayInstance(prop.get_type(), temp);
-			prop.set_value(component, temp);
+			if (!prop.is_readonly())
+				prop.set_value(component, temp);
 		}
 		else
 		{
@@ -225,7 +228,7 @@ namespace Editor::Window
 		ImGui::Spacing();
 		for (const auto& prop : t.get_properties())
 		{
-			if (!prop.is_readonly())
+			if (prop.get_access_level() == rttr::access_levels::public_access)
 				DrawProperty(prop, inst);
 		}
 		ImGui::Spacing();

@@ -76,6 +76,13 @@ namespace Resources
 
 			if (resources.GetCountModel(nameMesh) > 0)
 			{
+				// THEO C ici que tu dois tout faire !!!!!!!!!!!
+				// l'itérateur contient toute les valeurs 
+				// vertices; 
+				// indices;
+				// offsetsMesh;
+				// min; AABB min
+				// max; AAB max
 				mesh->AddModel(resources.GetModel(nameMesh));
 				mesh->AddMaterials(resources, namesMaterial);
 				Object->AddComponent(mesh);

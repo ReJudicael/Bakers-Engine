@@ -30,7 +30,7 @@ namespace Core::Datastructure
 
 		SystemManagement::InputSystem* m_inputSystem{ nullptr };
 
-		EngineCore*				m_engine;
+		EngineCore* m_engine;
 		/**
 		 * Default constructor (requires input system)
 		 * @param inputSystem: Pointer to Input handling system to link inputs with each objects of hierarchy
@@ -59,7 +59,7 @@ namespace Core::Datastructure
 		 */
 		void		Render(std::list<Core::Renderer::Framebuffer*>& fboList) const noexcept;
 		/**
-		 * Deletes every destroyed components. 
+		 * Deletes every destroyed components.
 		 */
 		void		RemoveDestroyed() noexcept;
 
@@ -140,6 +140,31 @@ namespace Core::Datastructure
 		 * effectively making it the root node.
 		 */
 		static RootObject* CreateRootNode(SystemManagement::InputSystem* inputSystem, EngineCore* engine) noexcept;
+
+
+		/**
+		 * Returns all components of the given type stored in the
+		 * scene graph. Does not take into account the components stored in the root node
+		 */
+		template <class Component>
+		std::list<Component*> GetComponentsOfType() const noexcept
+		{
+			std::list<Component*> components;
+			GetComponentsOfTypeInChilds(components);
+			return components;
+		}
+
+		/**
+		 * Returns all components of the given base type stored in the
+		 * scene graph. Does not take into account the components stored in the root node
+		 */
+		template <class Component>
+		std::list<Component*> GetComponentsOfBaseType() const noexcept
+		{
+			std::list<Component*> components;
+			GetComponentsOfBaseTypeInChilds(components);
+			return components;
+		}
 
 		REGISTER_CLASS(Object)
 	};

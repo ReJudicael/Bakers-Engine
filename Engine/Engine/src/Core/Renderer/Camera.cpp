@@ -29,7 +29,7 @@ namespace Core::Renderer
 		return CreatePerspectiveMatrix(m_persp.ratio, m_persp.fov, m_persp.near, m_persp.far);
 	}
 
-	Camera::Camera()
+	Camera::Camera() : ComponentBase(), ICamera(), IUpdatable()
 	{
 	}
 

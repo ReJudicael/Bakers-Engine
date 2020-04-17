@@ -97,6 +97,8 @@ namespace Core
 		{
 			return angle * RAD2DEG;
 		}
+
+		physx::PxVec3 operator+(physx::PxVec3, Core::Maths::Vec3);
 	}
 }
 

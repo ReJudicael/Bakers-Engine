@@ -57,6 +57,8 @@ namespace Core
 			 */
 			virtual void OnStart() override;
 
+			virtual void OnCopy(IComponent* copyTo) const;
+
 			/**
 			 * Function inheritated from IComponent,
 			 * override for delete the collider

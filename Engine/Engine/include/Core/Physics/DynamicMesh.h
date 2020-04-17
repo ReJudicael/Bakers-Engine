@@ -5,6 +5,7 @@
 #include "ICollidable.h"
 #include "IPhysics.h"
 #include "IUpdatable.hpp"
+#include "PxRigidDynamic.h"
 
 namespace physx
 {
@@ -26,6 +27,7 @@ namespace Core
 			physx::PxRigidDynamic* m_dynamicMesh;
 
 		protected:
+
 			/*
 			 * Release the PxRigidDynamic, 
 			 * and release him from the PhysicsScene
@@ -52,6 +54,11 @@ namespace Core
 			 */
 			virtual void OnStart() override;
 
+			virtual void StartCopy(IComponent*& copyTo) const override;
+
+			virtual void OnCopy(IComponent* copyTo) const override;
+
+
 			/**
 			 * Function inheritated from IPhysics,
 			 * override for create a specific physX actor a PxRigidDynamic
@@ -72,6 +79,27 @@ namespace Core
 			 * @param deltaTime: Time since previous frame
 			 */
 			virtual void OnUpdate(float deltaTime) override;
+
+			inline virtual void SetLinearVelocity(Core::Maths::Vec3 newVelocity);
+
+			virtual Core::Maths::Vec3 GetVelocity();
+
+			inline virtual void AddVelocity(const Core::Maths::Vec3 vector);
+
+			float GetMass();
+
+			void SetMass(const float mass);
+
+			virtual void ClearForces();
+
+			virtual void PhysicsLockRotation(bool Axisx, bool Axisy, bool Axisz);
+
+			virtual void SetPhysicsLockXRotation(bool Axisx);
+			virtual bool GetPhysicsLockXRotation();
+			virtual void SetPhysicsLockYRotation(bool Axisy);
+			virtual bool GetPhysicsLockYRotation();
+			virtual void SetPhysicsLockZRotation(bool Axisz);
+			virtual bool GetPhysicsLockZRotation();
 
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IPhysics, Core::Datastructure::IUpdatable)
 		};
