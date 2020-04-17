@@ -32,6 +32,8 @@ namespace Core::Datastructure
 		 * Default constructor
 		 */
 		ScriptedComponent();
+		 
+		ScriptedComponent(int i) {};
 
 		/**
 		 * Constructor by value

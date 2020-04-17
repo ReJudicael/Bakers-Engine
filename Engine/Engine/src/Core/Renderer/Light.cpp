@@ -4,28 +4,36 @@
 #include "Shader.h"
 #include "Object.hpp"
 #include "Quaternion.hpp"
-#include "CoreMinimal.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
     using namespace Core::Renderer;
+    using namespace Core::Datastructure;
+
+    RegisterDefaultClassConstructor<Light>("Light" , ComponentBase());
+
     registration::class_<Light>("Light")
-        .constructor()
         .enumeration<Light::ELightType>("LightType")
         (
             value("Directional", Light::ELightType::DIRECTION),
             value("Point", Light::ELightType::POINT),
             value("Spot", Light::ELightType::SPOT)
-        )
-        .property("Active", &Light::m_isActive)
-        .property("Type", &Light::m_type)
-        .property("Range", &Light::m_range)
-        .property("Angle", &Light::m_angle)
-        .property("Angle smoothness", &Light::m_angleSmoothness)
-        .property("Ambient", &Light::m_ambient)
-        .property("Diffuse", &Light::m_diffuse)
-        .property("Specular", &Light::m_specular)
-        .property("Attenuation", &Light::m_attenuation);
+        );
+
+    RegisterLuaEnumeration<Light>("Light", "LightType",
+        "DIRECTION", Light::ELightType::DIRECTION, 
+        "POINT", Light::ELightType::POINT,
+        "SPOT", Light::ELightType::SPOT);
+
+    RegisterClassProperty<Light>("Light", "Active", &Light::m_isActive);
+    RegisterClassProperty<Light>("Light", "Type", &Light::m_type);
+    RegisterClassProperty<Light>("Light", "Range", &Light::m_range);
+    RegisterClassProperty<Light>("Light", "Angle", &Light::m_angle);
+    RegisterClassProperty<Light>("Light", "AngleSmoothness", &Light::m_angleSmoothness);
+    RegisterClassProperty<Light>("Light", "Ambient", &Light::m_ambient);
+    RegisterClassProperty<Light>("Light", "Diffuse", &Light::m_diffuse);
+    RegisterClassProperty<Light>("Light", "Specular", &Light::m_specular);
+    RegisterClassProperty<Light>("Light", "Attenuation", &Light::m_attenuation);
 }
 
 namespace Core::Renderer
