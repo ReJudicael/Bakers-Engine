@@ -85,22 +85,34 @@ namespace Core::Datastructure
 		 * @return: Value of given variable is it exists, default value of given type otherwise
 		 */
 		template<class T>
-		T get(const char* name);
+		T Get(const char* name);
 
 		/**
-		 * Set value of given variable
+		 * Set access to c++ variable in lua script
 		 * @param name: Name of the desired variable in Lua script
-		 * @param value: New value for given variable
+		 * @param value: pointer to the variable
 		 */
 		template<class T>
-		void set(const char* name, const T& value);
+		void Set(const char* name, const T* value);
 
+		/**
+		 * Log system message wrapper for lua
+		 * @param msg: Message to display in editor console as log
+		 */
+		static inline void LogWrapper(std::string msg) { BAKERS_LOG_MESSAGE(msg); }
+
+		/**
+		 * Log system error wrapper for lua
+		 * @param msg: Message to display in editor console as log
+		 */
+		static inline void ErrorWrapper(std::string msg) { BAKERS_LOG_ERROR(msg); }
+		static inline void WarningWrapper(std::string msg) { BAKERS_LOG_WARNING(msg); }
 
 		REGISTER_CLASS(ComponentUpdatable);
 	};
 
 	template<class T>
-	T ScriptedComponent::get(const char* name)
+	T ScriptedComponent::Get(const char* name)
 	{
 		if (!m_script)
 			return T();
@@ -109,7 +121,7 @@ namespace Core::Datastructure
 	}
 
 	template<class T>
-	void ScriptedComponent::set(const char* name, const T& value)
+	void ScriptedComponent::Set(const char* name, const T* value)
 	{
 		if (!m_script)
 			return;
