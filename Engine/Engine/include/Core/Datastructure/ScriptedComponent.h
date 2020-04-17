@@ -12,6 +12,8 @@ namespace Core::Datastructure
 	{
 	private:
 		const char* m_script = nullptr;
+		bool		m_hasStarted = false;
+
 		sol::function m_start;
 		sol::function m_update;
 
@@ -32,8 +34,6 @@ namespace Core::Datastructure
 		 * Default constructor
 		 */
 		ScriptedComponent();
-		 
-		ScriptedComponent(int i) {};
 
 		/**
 		 * Constructor by value
@@ -53,9 +53,25 @@ namespace Core::Datastructure
 		inline void	SetFile(const char* fileName) noexcept { m_script = fileName; };
 
 		/**
-		 * Call Start function in Lua script
+		 * Set start variable to false so that the script gets loaded and started again
+		 */
+		inline void Restart() noexcept { m_hasStarted = false; };
+
+		/**
+		 * Set Lua script and call Start function in script
 		 */
 		virtual void OnStart() override;
+
+		/**
+		 * Load Start and Update functions of lua script
+		 * @return True if the script has loaded successfully, false otherwise
+		 */
+		bool LoadLuaScript();
+
+		/**
+		 * Check and call start function in lua script
+		 */
+		void StartLuaScript();
 
 		/**
 		 * Call Update function in Lua script

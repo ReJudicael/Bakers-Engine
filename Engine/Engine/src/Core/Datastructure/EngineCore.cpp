@@ -115,6 +115,7 @@ namespace Core::Datastructure
 			return -1;
 
 		m_manager = new Resources::Loader::ResourcesManager();
+		m_manager->SetRootNode(m_root);
 
 		Core::Datastructure::Object* camNode{ m_root->CreateChild("Camera", {}) };
 		camNode->SetPos({ 0.f, 2.f, 5.f });
