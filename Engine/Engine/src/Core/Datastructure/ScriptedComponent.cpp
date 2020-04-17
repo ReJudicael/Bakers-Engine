@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "ScriptedComponent.h"
 #include "Vec3.hpp"
 
@@ -116,5 +118,29 @@ namespace Core::Datastructure
 		ComponentUpdatable::OnReset();
 
 		m_script = nullptr;
+	}
+
+	void ScriptedComponent::CreateScript(std::string scriptName)
+	{
+		std::string path = "Resources/Scripts/" + scriptName + ".lua";
+
+		// Check if script already exists
+		if (FILE* file = fopen(path.c_str(), "r"))
+		{
+			fclose(file);
+			BAKERS_LOG_ERROR(scriptName + " already exists");
+			return;
+		}
+		
+		// Create file
+		std::ofstream file(path);
+
+		// Create default content (empty Start and Update functions) for new script
+		std::string defaultContent = "-- " + scriptName + " script\n\n";
+		defaultContent += "function Start()\n\nend\n\n";
+		defaultContent += "function Update()\n\nend";
+
+		// Write content in file
+		file << defaultContent;
 	}
 }

@@ -97,16 +97,28 @@ namespace Core::Datastructure
 
 		/**
 		 * Log system message wrapper for lua
-		 * @param msg: Message to display in editor console as log
+		 * @param msg: Message to display in editor console as a log
 		 */
 		static inline void LogWrapper(std::string msg) { BAKERS_LOG_MESSAGE(msg); }
 
 		/**
 		 * Log system error wrapper for lua
-		 * @param msg: Message to display in editor console as log
+		 * @param msg: Message to display in editor console as an error
 		 */
 		static inline void ErrorWrapper(std::string msg) { BAKERS_LOG_ERROR(msg); }
+
+		/**
+		 * Log system warning wrapper for lua
+		 * @param msg: Message to display in editor console as a warning
+		 */
 		static inline void WarningWrapper(std::string msg) { BAKERS_LOG_WARNING(msg); }
+
+		/**
+		 * Create a lua file with default script content
+		 * @param scriptName: Name of the file to create.
+		 * @warning Will not work if a script with the same name already exists.
+		 */
+		static void CreateScript(std::string scriptName);
 
 		REGISTER_CLASS(ComponentUpdatable);
 	};
