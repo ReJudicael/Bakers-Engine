@@ -11,7 +11,7 @@ namespace Core::Datastructure
 	BAKERS_API_CLASS ScriptedComponent : public ComponentUpdatable
 	{
 	private:
-		const char* m_script = nullptr;
+		std::string m_script;
 		sol::function m_start;
 		sol::function m_update;
 
@@ -39,7 +39,7 @@ namespace Core::Datastructure
 		 * Constructor by value
 		 * @param fileName: Path to the Lua script file
 		 */
-		ScriptedComponent(const char* fileName);
+		ScriptedComponent(const std::string& fileName);
 
 		/**
 		 * Destructor
@@ -50,7 +50,7 @@ namespace Core::Datastructure
 		 * Set Lua script file
 		 * @param fileName: Path to the Lua script file
 		 */
-		inline void	SetFile(const char* fileName) noexcept { m_script = fileName; };
+		inline void	SetFile(const std::string& fileName) noexcept { m_script = fileName; };
 
 		/**
 		 * Call Start function in Lua script
@@ -69,7 +69,7 @@ namespace Core::Datastructure
 		 * @return: Value of given variable is it exists, default value of given type otherwise
 		 */
 		template<class T>
-		T get(const char* name);
+		T get(const std::string& name);
 
 		/**
 		 * Set value of given variable
@@ -77,25 +77,25 @@ namespace Core::Datastructure
 		 * @param value: New value for given variable
 		 */
 		template<class T>
-		void set(const char* name, const T& value);
+		void set(const std::string& name, const T& value);
 
 
 		REGISTER_CLASS(ComponentUpdatable);
 	};
 
 	template<class T>
-	T ScriptedComponent::get(const char* name)
+	T ScriptedComponent::get(const std::string& name)
 	{
-		if (!m_script)
+		if (m_script.empty())
 			return T();
 
 		return Core::Datastructure::lua[name];
 	}
 
 	template<class T>
-	void ScriptedComponent::set(const char* name, const T& value)
+	void ScriptedComponent::set(const std::string& name, const T& value)
 	{
-		if (!m_script)
+		if (m_script.empty())
 			return;
 
 		Core::Datastructure::lua[name] = value;

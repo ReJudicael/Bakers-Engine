@@ -15,7 +15,7 @@ namespace Core::Datastructure
 	{
 	}
 
-	ScriptedComponent::ScriptedComponent(const char* filename) : ComponentUpdatable()
+	ScriptedComponent::ScriptedComponent(const std::string& filename) : ComponentUpdatable()
 	{
 		m_script = filename;
 	}
@@ -28,7 +28,7 @@ namespace Core::Datastructure
 	{	
 		ComponentUpdatable::OnStart();
 
-		if (!m_script)
+		if (m_script.empty())
 			return;
 
 		Core::Datastructure::lua.open_libraries(sol::lib::base);
@@ -37,7 +37,7 @@ namespace Core::Datastructure
 		{
 			std::string loadingMsg = std::string(m_script) + " didn't load";
 			BAKERS_LOG_ERROR(loadingMsg);
-			m_script = nullptr;
+			m_script.clear();
 			return;
 		}
 
@@ -50,7 +50,7 @@ namespace Core::Datastructure
 
 	void ScriptedComponent::OnUpdate(float deltaTime)
 	{
-		if (!m_script)
+		if (m_script.empty())
 			return;
 
 		if (m_update.valid())
@@ -75,6 +75,6 @@ namespace Core::Datastructure
 	{
 		ComponentUpdatable::OnReset();
 
-		m_script = nullptr;
+		m_script.clear();
 	}
 }

@@ -1,9 +1,12 @@
+#include <iostream>
+#include <filesystem>
+
 #include "WindowInspector.h"
 #include "Reflection.h"
 #include "EditorEngine.h"
 #include "RootObject.hpp"
 #include "Maths.hpp"
-#include <iostream>
+#include "ScriptedComponent.h"
 
 namespace Editor::Window
 {
@@ -172,6 +175,23 @@ namespace Editor::Window
 			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba, 1.0f *!prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, c);
 		}
+		else if (prop.get_type() == type::get<std::string>())
+		{
+			std::string str = prop.get_value(component).get_value<std::string>();
+			ImGui::PushItemToRight(prop.get_name().to_string().c_str());
+			ImGui::PushStyleColor(ImGuiCol_Button, GImGui->Style.Colors[ImGuiCol_FrameBg]);
+			ImGui::ButtonEx(std::filesystem::path(str).filename().string().c_str(), { ImGui::GetContentRegionAvail().x, 0.f }, ImGuiButtonFlags_Disabled);
+			ImGui::PopStyleColor();
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
+				{
+					const char* path = reinterpret_cast<const char*>(payload->Data);
+					prop.set_value(component, std::string(path));
+					ImGui::EndDragDropTarget();
+				}
+			}
+		}
 		else if (prop.get_type().is_class())
 		{
 			auto temp{ prop.get_value(component) };
@@ -241,7 +261,7 @@ namespace Editor::Window
 			array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
 			for (auto it : possibleComponents)
 			{
-				if (ImGui::Selectable(it.get_name().to_string().c_str()))
+				if (ImGui::MenuItem(it.get_name().to_string().c_str()))
 					object->AddComponent(it.invoke("GetCopy", it.create(), {}).get_value<Core::Datastructure::ComponentBase*>());
 			}
 			ImGui::EndCombo();
