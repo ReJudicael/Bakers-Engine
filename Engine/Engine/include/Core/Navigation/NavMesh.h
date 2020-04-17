@@ -6,12 +6,17 @@
 
 #include "Recast.h"
 #include "DetourNavMesh.h"
+#include "DetourNavMeshQuery.h"
+#include "NavQuery.h"
+//#include "DetourCrowd.h"
 #include <chrono>
+#include <queue>
 
+#define MAX_AGENTS 256
 
 namespace Core::Navigation
 {
-	struct NavMesh
+	struct Mesh
 	{
 		float*		verts;
 		int*		tris;
@@ -45,20 +50,39 @@ namespace Core::Navigation
 		bool				m_isUpdated{ false };
 
 		rcConfig			m_cfg;
-		BuildContext* m_ctx;
-		rcPolyMesh* m_pmesh;
-		rcPolyMeshDetail* m_dmesh;
-		dtNavMesh* m_navMesh;
-		dtNavMeshQuery* m_navQuery;
+		BuildContext*		m_ctx;
+		rcPolyMesh*			m_pmesh;
+		rcPolyMeshDetail*	m_dmesh;
+		dtNavMesh*			m_navMesh;
+		NavQuery			m_navQuery;
+		dtQueryFilter		m_queryFilter;
+		//dtCrowd*			m_crowd;
 
-		std::list<NavMesh>	m_mesh;
+		std::list<Mesh>	m_mesh;
+		/*
+		dtStatus		FindNearestPoly(const Core::Maths::Vec3& targetPos, const dtQueryFilter* filter, dtPolyRef* outRef, Core::Maths::Vec3& outPoint) const noexcept;
+		dtStatus		FindPath(dtPolyRef startRef, dtPolyRef endRef, const Core::Maths::Vec3& startPos, const Core::Maths::Vec3& endPos, const dtQueryFilter* filter, NavPath& path) const noexcept;
+		*/
 	public:
 		NavMeshBuilder();
+		NavMeshBuilder(const NavMeshBuilder&) = delete;
+		NavMeshBuilder(NavMeshBuilder&&) = delete;
 		~NavMeshBuilder();
 
-		bool		Build();
-		NavMesh* AddMesh(float* verts, int nverts, int* tris, int ntris, const Core::Datastructure::Transform& position);
+		bool			Build();
+		Mesh*			AddMesh(float* verts, int nverts, int* tris, int ntris, const Core::Datastructure::Transform& position);
 
-		bool		IsNavmeshUpdated() const { return m_isUpdated; };
+		bool			IsNavmeshUpdated() const { return m_isUpdated; }
+
+		//dtCrowd*		GetCrowd() const noexcept { return m_crowd; }
+
+		NavQuery::QueryResult*	FindPath(const Core::Maths::Vec3& start, const Core::Maths::Vec3& end, unsigned short excludedAreaFlags = 0) noexcept;
+
+		const rcConfig& GetConfig() { return m_cfg; };
+
+		/**
+		 * Allocates new nav querry
+		 */
+		//NavQuery*	GetNavQuery() const noexcept;
 	};
 }

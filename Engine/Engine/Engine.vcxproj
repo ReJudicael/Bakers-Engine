@@ -332,12 +332,14 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClCompile Include="include\Core\Datastructure\ICamera.cpp" />
     <ClCompile Include="src\Core\Datastructure\EngineCore.cpp" />
     <ClCompile Include="src\Core\Datastructure\ICollidable.cpp" />
+    <ClCompile Include="src\Core\Datastructure\INavAgent.cpp" />
     <ClCompile Include="src\Core\Datastructure\IPhysics.cpp" />
     <ClCompile Include="src\Core\Datastructure\ScriptedComponent.cpp" />
     <ClCompile Include="src\Core\Datastructure\TriggeredEvent.cpp" />
     <ClCompile Include="src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Core\Debug\Logger.cpp" />
     <ClCompile Include="src\Core\Navigation\NavMesh.cpp" />
+    <ClCompile Include="src\Core\Navigation\NavQuery.cpp" />
     <ClCompile Include="src\Core\Physics\BoxCollider.cpp" />
     <ClCompile Include="src\Core\Physics\Collider.cpp" />
     <ClCompile Include="src\Core\Physics\DynamicMesh.cpp" />
@@ -375,6 +377,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClInclude Include="include\Core\Datastructure\ICamera.h" />
     <ClInclude Include="include\Core\Datastructure\ICollidable.h" />
     <ClInclude Include="include\Core\Datastructure\IComponent.hpp" />
+    <ClInclude Include="include\Core\Datastructure\INavAgent.h" />
     <ClInclude Include="include\Core\Datastructure\IPhysics.h" />
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp" />
     <ClInclude Include="include\Core\Datastructure\IUpdatable.hpp" />
@@ -402,6 +405,8 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClInclude Include="include\Core\Maths\Vec3.hpp" />
     <ClInclude Include="include\Core\Maths\Vec4.hpp" />
     <ClInclude Include="include\Core\Navigation\NavMesh.h" />
+    <ClInclude Include="include\Core\Navigation\NavPath.h" />
+    <ClInclude Include="include\Core\Navigation\NavQuery.h" />
     <ClInclude Include="include\Core\Physics\BoxCollider.h" />
     <ClInclude Include="include\Core\Physics\DynamicMesh.h" />
     <ClInclude Include="include\Core\Physics\PhysicsScene.h" />
