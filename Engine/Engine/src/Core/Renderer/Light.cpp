@@ -28,7 +28,7 @@ RTTR_PLUGIN_REGISTRATION
     RegisterClassProperty<Light>("Light", "Active", &Light::m_isActive);
     RegisterClassProperty<Light>("Light", "Type", &Light::m_type);
     RegisterClassProperty<Light>("Light", "Range", &Light::m_range);
-    RegisterClassProperty<Light>("Light", "Angle", &Light::m_range);
+    RegisterClassProperty<Light>("Light", "Angle", &Light::m_angle);
     RegisterClassProperty<Light>("Light", "AngleSmoothness", &Light::m_angleSmoothness);
     RegisterClassProperty<Light>("Light", "Ambient", &Light::m_ambient);
     RegisterClassProperty<Light>("Light", "Diffuse", &Light::m_diffuse);

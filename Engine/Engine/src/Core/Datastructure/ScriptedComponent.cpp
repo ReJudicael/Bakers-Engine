@@ -1,13 +1,13 @@
 #include "ScriptedComponent.h"
 #include "Vec3.hpp"
 
-
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
-	RegisterDefaultClassConstructor<ScriptedComponent>("ScriptedComponent", ComponentUpdatable(), ComponentBase());
+
+	RegisterDefaultClassConstructor<ScriptedComponent>("ScriptedComponent" , ComponentUpdatable(), ComponentBase());
 	RegisterClassProperty<ScriptedComponent>("ScriptedComponent", "Script", &ScriptedComponent::m_script);
-}
+}	
 
 namespace Core::Datastructure
 {
@@ -32,7 +32,7 @@ namespace Core::Datastructure
 			return;
 
 		Core::Datastructure::lua.open_libraries(sol::lib::base);
-		
+
 		if (Core::Datastructure::lua.safe_script_file(m_script))
 		{
 			std::string loadingMsg = std::string(m_script) + " didn't load";
@@ -44,7 +44,8 @@ namespace Core::Datastructure
 		m_start = Core::Datastructure::lua["Start"];
 		m_update = Core::Datastructure::lua["Update"];
 
-		m_start();
+		if (m_start.valid())
+			m_start();
 	}
 
 	void ScriptedComponent::OnUpdate(float deltaTime)
@@ -52,7 +53,8 @@ namespace Core::Datastructure
 		if (!m_script)
 			return;
 
-		m_update(deltaTime);
+		if (m_update.valid())
+			m_update(deltaTime);
 	}
 
 	void ScriptedComponent::OnCopy(IComponent* copyTo) const
