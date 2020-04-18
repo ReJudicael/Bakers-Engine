@@ -312,7 +312,7 @@
     <ClInclude Include="include\Editor\Canvas\Canvas.hpp" />
     <ClInclude Include="include\Editor\Canvas\MenuBar.h" />
     <ClInclude Include="include\Editor\Datastructure\Container.hpp" />
-    <ClInclude Include="include\Editor\Datastructure\DrawableComponent.h" />
+    <ClInclude Include="include\Editor\Datastructure\DrawableUIComponent.h" />
     <ClInclude Include="include\Editor\Datastructure\EditorCamera.h" />
     <ClInclude Include="include\Editor\Datastructure\IDrawable.h" />
     <ClInclude Include="include\Editor\EditorEngine.h" />

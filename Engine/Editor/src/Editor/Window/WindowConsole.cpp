@@ -9,7 +9,9 @@ namespace Editor::Window
 		for (auto& [icon, isEnabled] : m_logsIcon)
 			isEnabled = true;
 
-		m_tableFlags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_ScrollFreezeTopRow | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_BordersVFullHeight | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+		m_tableFlags =	ImGuiTableFlags_ScrollY		| ImGuiTableFlags_ScrollFreezeTopRow	| ImGuiTableFlags_RowBg		|
+						ImGuiTableFlags_Borders		| ImGuiTableFlags_BordersVFullHeight	| ImGuiTableFlags_Resizable	|
+						ImGuiTableFlags_Reorderable	| ImGuiTableFlags_Hideable;
 
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\message.png", m_logsIcon[0].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\warning.png", m_logsIcon[1].first);
@@ -35,55 +37,66 @@ namespace Editor::Window
 
 	void WindowConsole::AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, isEnabled ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
-		if (ImGui::ImageButtonUVWithText_HelpMarker(icon->texture, "## LogButton", label, help_marker.c_str()))
+		ImGui::PushStyleColor(ImGuiCol_Button, isEnabled ?
+			ImGui::GetStyle().Colors[ImGuiCol_Button] :
+			ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
+
+		if (ImGui::ImageButtonUVWithText(icon->texture, "## LogButton", label))
 			isEnabled = !isEnabled;
+		ImGui::HelpMarkerItem(help_marker.c_str());
+
 		ImGui::PopStyleColor();
+	}
+
+	void WindowConsole::ClearButton()
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.75f, 0.22f, 0.17f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.75f, 0.22f, 0.17f, 0.7f });
+
+		if (ImGui::Button("Clear", { 50.f, 0.f }))
+			Core::Debug::Logger::ClearLogs();
+
+		ImGui::PopStyleColor(2);
 	}
 
 	void WindowConsole::SettingsButton()
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.18f, 0.18f, 0.25f, 1.0f });
-		bool isClicked = ImGui::ImageButtonUV_HelpMarker(m_settingsIcon->texture, "Settings");
+		bool isClicked = ImGui::BeginComboImageButtonUV(m_settingsIcon->texture, { 16, 16 });
+		ImGui::HelpMarkerItem("Settings");
 		ImGui::PopStyleColor();
 
 		if (isClicked)
-			ImGui::OpenPopup("## Settings");
-
-		if (ImGui::BeginPopup("## Settings"))
 		{
 			ImGui::MenuItem("Auto-scroll", (const char*)0, &m_autoScroll);
 			ImGui::MenuItem("Clear on Play", (const char*)0, nullptr);
-			ImGui::EndPopup();
+			ImGui::EndCombo();
 		}
 	}
 
 	void WindowConsole::ConsoleHeader()
 	{
-		if (ImGui::ColoredButton("Clear", { 50.f, 0.f }, { 0.75f, 0.22f, 0.17f }))
-			Core::Debug::Logger::ClearLogs();
+		ClearButton();
 
-		std::string label, nbLogs, typeLog;
 		for (int i{ 2 }; i >= 0; --i)
 		{
-			nbLogs = std::to_string(Core::Debug::Logger::GetNbLogs(static_cast<Core::Debug::ELogType>(i)));
-			label	= m_logsIcon[i].second ? nbLogs : "0 of " + nbLogs;
-			typeLog	= Core::Debug::ToString(static_cast<Core::Debug::ELogType>(i));
+			const std::string& typeLog	= Core::Debug::ToString(static_cast<Core::Debug::ELogType>(i));
+			const std::string& nbLogs	= std::to_string(Core::Debug::Logger::GetNbLogs(static_cast<Core::Debug::ELogType>(i)));
+			const std::string& label	= m_logsIcon[i].second ? nbLogs : "0 of " + nbLogs;
 
 			ImGui::SameLine();
 			ImGui::PushID(i);
 			AddLogButton(m_logsIcon[i].first, label, typeLog, m_logsIcon[i].second);
 			ImGui::PopID();
 		}
-
 		ImGui::SameLine();
 		SettingsButton();
 
-		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 200.f);
+		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 175.f);
 		m_logFilter.Draw("Filter", ImGui::GetContentRegionAvail().x - 37.f);
 	}
 
-	void WindowConsole::PrintLog(Core::Debug::LogData log)
+	void WindowConsole::PrintLog(const Core::Debug::LogData& log)
 	{
 		if (m_logsIcon[static_cast<size_t>(log.type)].second && m_logFilter.PassFilter(log.message))
 		{
@@ -99,8 +112,8 @@ namespace Editor::Window
 
 	void WindowConsole::ConsolePrint()
 	{
-		Core::Debug::LogData* logs{ Core::Debug::Logger::GetLogsData() };
-		size_t logSize{ Core::Debug::Logger::GetLogsDataSize() };
+		const Core::Debug::LogData* logs{ Core::Debug::Logger::GetLogsData() };
+		const size_t& logSize{ Core::Debug::Logger::GetLogsDataSize() };
 
 		if (ImGui::BeginTable("## ConsolePrint", 3, m_tableFlags, ImGui::GetContentRegionAvail()))
 		{

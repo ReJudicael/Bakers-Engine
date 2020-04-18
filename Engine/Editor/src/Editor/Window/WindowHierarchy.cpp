@@ -7,11 +7,11 @@ namespace Editor::Window
 	WindowHierarchy::WindowHierarchy(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Hierarchy", visible }
 	{
-		m_treeNodeFlags	=	ImGuiTreeNodeFlags_OpenOnDoubleClick |
-							ImGuiTreeNodeFlags_SpanAvailWidth	 |
+		m_treeNodeFlags =	ImGuiTreeNodeFlags_OpenOnDoubleClick	|
+							ImGuiTreeNodeFlags_SpanAvailWidth		| 
 							ImGuiTreeNodeFlags_AllowItemOverlap;
 
-		m_inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
+		m_inputTextFlags =	ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
 	}
 
 	void WindowHierarchy::PushWindowStyle()
@@ -36,6 +36,7 @@ namespace Editor::Window
 			ImGui::SetKeyboardFocusHere();
 			m_canRename = true;
 		}
+
 		return m_canRename;
 	}
 
@@ -61,9 +62,7 @@ namespace Editor::Window
 
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 3.f, 0.f });
 		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.f);
-
-		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name), m_inputTextFlags);
-
+		bool apply = ImGui::InputText("## RenameObject", m_name, IM_ARRAYSIZE(m_name), m_inputTextFlags);
 		ImGui::PopStyleVar(2);
 
 		if (apply || ImGui::IsItemDeactivated())
@@ -83,7 +82,7 @@ namespace Editor::Window
 
 	void WindowHierarchy::PopupMenuOnWindow(Core::Datastructure::Object* root)
 	{
-		if (ImGui::BeginPopupContextWindow("## PopupOnWindow", ImGuiMouseButton_Right, false))
+		if (ImGui::BeginPopupContextWindow("## PopupMenuOnWindow", ImGuiMouseButton_Right, false))
 		{
 			MenuItemCreate(root);
 			ImGui::EndPopup();
@@ -95,9 +94,7 @@ namespace Editor::Window
 		if (ImGui::BeginPopupContextItem("## PopupMenuOnItem"))
 		{
 			if (ImGui::MenuItem("Rename"))
-			{
 				m_objectToRename = object;
-			}
 
 			if (ImGui::MenuItem("Delete"))
 			{
@@ -107,7 +104,6 @@ namespace Editor::Window
 					GetEngine()->objectSelected = nullptr;
 			}
 			ImGui::Separator();
-
 			MenuItemCreate(object);
 
 			ImGui::EndPopup();
@@ -117,6 +113,7 @@ namespace Editor::Window
 	bool WindowHierarchy::DrawTreeNodeOfObject(Core::Datastructure::Object* object)
 	{
 		ImGuiTreeNodeFlags flags{ m_treeNodeFlags };
+#pragma warning(suppress : 26812)
 		flags |= object->GetChildren().empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
 		if (GetEngine()->objectSelected == object)
 			flags |= ImGuiTreeNodeFlags_Selected;
@@ -130,13 +127,14 @@ namespace Editor::Window
 		}
 		else
 		{
-			if (m_objectToRename != nullptr && object->HasChild(m_objectToRename))
+			if (m_objectToRename && object->HasChild(m_objectToRename))
 				ImGui::SetNextItemOpen(true);
 			isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
 		}
 
 		DragDropSourceItem(object);
 		DragDropTargetItem(object);
+
 		PopupMenuOnItem(object);
 		if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 			GetEngine()->objectSelected = object;
@@ -159,12 +157,12 @@ namespace Editor::Window
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_GAMEOBJECT"))
 			{
-				Core::Datastructure::Object* data = *reinterpret_cast<Core::Datastructure::Object**>(payload->Data);
+				Core::Datastructure::Object* dObject = *reinterpret_cast<Core::Datastructure::Object**>(payload->Data);
 
-				if (!data->HasChild(object))
-					data->SetParent(object);
+				if (!dObject->HasChild(object))
+					dObject->SetParent(object);
 				else
-					BAKERS_LOG_WARNING("Hierarchy:\tCan't set a parent in child of child");
+					BAKERS_LOG_WARNING("Hierarchy: Can't set a GameObject in child of child");
 
 				ImGui::EndDragDropTarget();
 			}

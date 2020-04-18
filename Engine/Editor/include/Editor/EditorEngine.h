@@ -3,6 +3,7 @@
 #include "EngineCore.h"
 #include "GuiManager.h"
 #include "CoreMinimal.h"
+#include "FileSystem.hpp"
 
 namespace Editor
 {
@@ -10,7 +11,6 @@ namespace Editor
 	{
 	protected:
 		Editor::GUIManager* m_man{ nullptr };
-
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
 

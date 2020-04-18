@@ -1,11 +1,10 @@
 #include "AWindow.h"
 #include "Canvas.hpp"
-#include <iostream>
 
 namespace Editor::Window
 {
 	AWindow::AWindow(Canvas* canvas, const std::string& name, bool visible) :
-		DrawableComponent{ name },
+		DrawableUIComponent{ name },
 		m_canvas{ canvas },
 		isVisible{ visible }
 	{

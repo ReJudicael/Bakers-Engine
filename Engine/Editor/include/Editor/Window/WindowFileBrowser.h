@@ -1,10 +1,10 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "AWindow.h"
 #include "FileSystem.hpp"
 #include "Texture.h"
-
-#include <unordered_map>
 
 namespace Editor::Window
 {
@@ -28,7 +28,7 @@ namespace Editor::Window
 		/**
 		 * FileSystem to handle path navigation
 		 */
-		Core::SystemManagement::FileSystem fs;
+		Core::SystemManagement::FileSystem* m_fs;
 
 		/**
 		 * Name of the path to be renamed
@@ -72,9 +72,9 @@ namespace Editor::Window
 		WindowFileBrowser(Canvas* canvas, bool visible = true);
 
 		/**
-		 * Default destructor
+		 * Destructor
 		 */
-		~WindowFileBrowser() = default;
+		~WindowFileBrowser();
 
 	private:
 		/**
@@ -169,15 +169,10 @@ namespace Editor::Window
 		 */
 		void ShowDirectoryContent(std::vector<std::filesystem::path> contents);
 
-		/**
-		 * Display the current local path and the contents of the current directory
-		 * @param contents: Contents of the current directory
-		 */
-		void ShowFileBrowser(const std::vector<std::filesystem::path>& content);
-
 	private:
 		/**
 		 * Draw elements in window
+		 * Display the current local path and the contents of the current directory
 		 */
 		void Tick() override;
 	};

@@ -14,7 +14,6 @@
 #include "Shader.h"
 #include "CoreMinimal.h"
 
-
 struct aiScene;
 struct aiNode;
 struct aiMesh;

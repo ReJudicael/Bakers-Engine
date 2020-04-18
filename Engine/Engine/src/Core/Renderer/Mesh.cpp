@@ -12,7 +12,7 @@ RTTR_PLUGIN_REGISTRATION
 {
 	registration::class_<Mesh>("Mesh")
 		.constructor()
-		.property_readonly("vertex count", &Mesh::GetVertexCount);
+		.property_readonly("Vertex Count", &Mesh::GetVertexCount);
 }
 
 Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }

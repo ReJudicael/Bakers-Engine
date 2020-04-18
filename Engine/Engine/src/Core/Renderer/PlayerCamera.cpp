@@ -6,7 +6,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	registration::class_<Core::Renderer::PlayerCamera>("PlayerCamera")
+	registration::class_<Core::Renderer::PlayerCamera>("Player Camera")
 		.constructor()
 		.constructor<const float, const float, const float, const float>()
 		.property("Is running", &Core::Renderer::PlayerCamera::m_isRunning)

@@ -25,7 +25,7 @@ namespace Core::SystemManagement
 		/**
 		 * Actualize the contents in current path
 		 */
-		bool m_actualizeContentsInCurrentPath{ true };
+		bool m_refreshContentsInCurrentPath{ true };
 
 		/**
 		 * Last directory saved to get the current path separated by directories
@@ -68,13 +68,13 @@ namespace Core::SystemManagement
 		/**
 		 * Actualize contents in current path
 		 */
-		void ActualizeContentsInCurrentPath() noexcept;
+		void RefreshCurrentPath() noexcept;
 
 		/**
 		 * Whether it is necessary to update the content in the current path or not
 		 * @return True if it is necessary to update the content in the current path, false otherwise
 		 */
-		bool NeedToActualizeContentsInCurrentPath() const noexcept;
+		bool IsRefreshedCurrentPath() const noexcept;
 
 		/**
 		 * Check if the given path leads to a file
@@ -159,7 +159,7 @@ namespace Core::SystemManagement
 		 * @param itemPath: Path to the file from which the extension is get
 		 * @return Extension of the given file without a dot
 		 */
-		std::string GetExtensionWithoutDot_str(const std::string& itemPath) const noexcept;
+		std::string GetExtensionWithoutDot(const std::string& itemPath) const noexcept;
 
 		/**
 		 * Get the parent directory of the given path
@@ -188,10 +188,11 @@ namespace Core::SystemManagement
 		std::vector<std::string> GetExplodedCurrentPath() noexcept;
 
 		/**
-		 * Cut substring from beginning of current path to given pos
+		 * Get substring from beginning of current path to given pos
 		 * @param pos: Index of the character used to separate current Path
+		 * @return Current path at pos
 		 */
-		void CutCurrentPathAtPos(size_t pos) noexcept;
+		std::string GetCurrentPathAtPos(size_t pos) const noexcept;
 
 		/**
 		 * Open given folder
@@ -218,7 +219,7 @@ namespace Core::SystemManagement
 		 * Create a folder
 		 * @return path of the new folder
 		 */
-		std::string CreateFolder() noexcept;
+		std::string CreateFolder(const std::string& folderName = "New Folder") noexcept;
 
 		/**
 		 * Create a file with a windows command
@@ -230,7 +231,7 @@ namespace Core::SystemManagement
 		 * Create a file
 		 * @return path of the new file
 		 */
-		std::string CreateFile() noexcept;
+		std::string CreateFile(const std::string& fileName = "New File") noexcept;
 
 		/**
 		 * Rename file or directory
@@ -277,22 +278,20 @@ namespace Core::SystemManagement
 
 	inline void FileSystem::SetCurrentDirectory(const std::string& dir) noexcept
 	{
-		if (dir == "")
-			m_currentDirectory = ".";
-		else if (IsDirectory(dir))
+		if (IsDirectory(dir))
 			m_currentDirectory = dir;
 
-		m_actualizeContentsInCurrentPath = true;
+		m_refreshContentsInCurrentPath = true;
 	}
 
-	inline void FileSystem::ActualizeContentsInCurrentPath() noexcept
+	inline void FileSystem::RefreshCurrentPath() noexcept
 	{
-		m_actualizeContentsInCurrentPath = true;
+		m_refreshContentsInCurrentPath = true;
 	}
 
-	inline bool FileSystem::NeedToActualizeContentsInCurrentPath() const noexcept
+	inline bool FileSystem::IsRefreshedCurrentPath() const noexcept
 	{
-		return m_actualizeContentsInCurrentPath;
+		return m_refreshContentsInCurrentPath;
 	}
 
 	inline bool FileSystem::IsRegularFile(const Path& path) const noexcept
@@ -359,7 +358,7 @@ namespace Core::SystemManagement
 		return path.extension().string();
 	}
 
-	inline std::string FileSystem::GetExtensionWithoutDot_str(const std::string& itemPath) const noexcept
+	inline std::string FileSystem::GetExtensionWithoutDot(const std::string& itemPath) const noexcept
 	{
 		size_t offset{ itemPath.find_last_of(".") };
 		return itemPath.substr(offset + 1, itemPath.size() - offset);
@@ -392,9 +391,9 @@ namespace Core::SystemManagement
 		return m_explodedCurrentPath;
 	}
 
-	inline void FileSystem::CutCurrentPathAtPos(size_t pos) noexcept
+	inline std::string FileSystem::GetCurrentPathAtPos(size_t pos) const noexcept
 	{
-		SetCurrentDirectory(m_currentDirectory.substr(0, pos));
+		return m_currentDirectory.substr(0, pos);
 	}
 
 	inline bool FileSystem::OpenFolder(const std::string& itemPath) noexcept
@@ -426,19 +425,18 @@ namespace Core::SystemManagement
 			return true;
 	}
 
-	inline std::string FileSystem::CreateFolder() noexcept
+	inline std::string FileSystem::CreateFolder(const std::string& folderName) noexcept
 	{
-		const std::string defaultNameNewFolder = "New Folder";
-		std::string folderPath = GetLocalAbsolute(defaultNameNewFolder);
+		std::string folderPath = GetLocalAbsolute(folderName);
 		if (!Exists(folderPath))
 		{
 			std::filesystem::create_directory(folderPath);
 		}
 		else
 		{
-			for (int i = 0; true; ++i)
+			for (int i{ 0 }; true; ++i)
 			{
-				std::string nameNewFolder = defaultNameNewFolder + " (" + std::to_string(i) + ")";
+				std::string nameNewFolder = folderName + " (" + std::to_string(i) + ")";
 				folderPath = GetLocalAbsolute(nameNewFolder);
 				if (!Exists(folderPath))
 				{
@@ -447,30 +445,29 @@ namespace Core::SystemManagement
 				}
 			}
 		}
-		m_actualizeContentsInCurrentPath = true;
+		m_refreshContentsInCurrentPath = true;
 
 		return folderPath;
 	}
 
 	inline void FileSystem::CreateFileCMD(const std::string& filePath) noexcept
 	{
-		std::string cmd = "echo off >" + GetAbsoluteWithQuote(filePath);
+		const std::string& cmd = "echo off >" + GetAbsoluteWithQuote(filePath);
 		system(cmd.c_str());
 	}
 
-	inline std::string FileSystem::CreateFile() noexcept
+	inline std::string FileSystem::CreateFile(const std::string& fileName) noexcept
 	{
-		const std::string defaultNameNewFile = "New File";
-		std::string filePath = GetLocalAbsolute(defaultNameNewFile);
+		std::string filePath = GetLocalAbsolute(fileName);
 		if (!Exists(filePath))
 		{
 			CreateFileCMD(filePath);
 		}
 		else
 		{
-			for (int i = 0; true; ++i)
+			for (int i{ 0 }; true; ++i)
 			{
-				std::string nameNewFile = defaultNameNewFile + " (" + std::to_string(i) + ")";
+				std::string nameNewFile = fileName + " (" + std::to_string(i) + ")";
 				filePath = GetLocalAbsolute(nameNewFile);
 
 				if (!Exists(filePath))
@@ -480,7 +477,7 @@ namespace Core::SystemManagement
 				}
 			}
 		}
-		m_actualizeContentsInCurrentPath = true;
+		m_refreshContentsInCurrentPath = true;
 
 		return filePath;
 	}
@@ -501,11 +498,11 @@ namespace Core::SystemManagement
 				}
 			}
 		}
-		std::string newNamePath = GetLocalAbsolute(newName);
+		const std::string& newNamePath = GetLocalAbsolute(newName);
 		if (isValidName && !Exists(newNamePath))
 		{
 			std::filesystem::rename(itemPath, newNamePath);
-			m_actualizeContentsInCurrentPath = true;
+			m_refreshContentsInCurrentPath = true;
 		}
 	}
 
@@ -514,7 +511,7 @@ namespace Core::SystemManagement
 		if (Exists(itemPath))
 		{
 			std::filesystem::remove_all(itemPath);
-			m_actualizeContentsInCurrentPath = true;
+			m_refreshContentsInCurrentPath = true;
 		}
 	}
 
@@ -527,7 +524,7 @@ namespace Core::SystemManagement
 			if (pos == std::string::npos)
 				SetCurrentDirectory(".");
 
-			CutCurrentPathAtPos(pos);
+			SetCurrentDirectory(GetCurrentPathAtPos(pos));
 		}
 	}
 
@@ -552,10 +549,10 @@ namespace Core::SystemManagement
 
 	inline std::vector<Path> FileSystem::GetContentsInCurrentPath() noexcept
 	{
-		if (m_actualizeContentsInCurrentPath)
+		if (m_refreshContentsInCurrentPath)
 		{
 			m_contentsInCurrentPath = GetContentsInPath(m_currentDirectory);
-			m_actualizeContentsInCurrentPath = false;
+			m_refreshContentsInCurrentPath = false;
 		}
 		return m_contentsInCurrentPath;
 	}
@@ -570,7 +567,7 @@ namespace Core::SystemManagement
 		if (!Exists(newPath))
 		{
 			std::filesystem::rename(oldPath, newPath);
-			m_actualizeContentsInCurrentPath = true;
+			m_refreshContentsInCurrentPath = true;
 		}
 		else
 		{

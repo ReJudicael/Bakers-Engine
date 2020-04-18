@@ -146,9 +146,6 @@
     <ClInclude Include="include\Editor\Datastructure\IDrawable.h">
       <Filter>Header Files\Editor\Datastructure</Filter>
     </ClInclude>
-    <ClInclude Include="include\Editor\Datastructure\DrawableComponent.h">
-      <Filter>Header Files\Editor\Datastructure</Filter>
-    </ClInclude>
     <ClInclude Include="include\Editor\Canvas\Canvas.hpp">
       <Filter>Header Files\Editor\Canvas</Filter>
     </ClInclude>
@@ -229,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="include\Editor\Datastructure\EditorCamera.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Datastructure\DrawableUIComponent.h">
+      <Filter>Header Files\Editor\Datastructure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

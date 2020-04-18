@@ -1,7 +1,8 @@
 #include "Canvas.hpp"
+
+#include "EditorEngine.h"
 #include "GUIManager.h"
 #include "Separator.h"
-#include "EditorEngine.h"
 
 namespace Editor
 {
@@ -36,12 +37,12 @@ namespace Editor
 			widget->isVisible = opened;
 	}
 
-	bool Canvas::IsWindowFocused(const size_t id)
+	bool Canvas::IsWindowFocused(const size_t id) const
 	{
 		return (GetFocusedWindow() == id) ? true : false;
 	}
 
-	size_t Canvas::GetFocusedWindow()
+	size_t Canvas::GetFocusedWindow() const
 	{
 		int idFrame{ -1 };
 		size_t id{ 0 };
@@ -117,7 +118,10 @@ namespace Editor
 		{
 			widget->Draw();
 		}
+
+#ifdef _DEBUG
 		ImGui::ShowDemoWindow();
+#endif
 	}
 
 	GUIManager* Canvas::GetManager() noexcept

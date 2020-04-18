@@ -5,8 +5,8 @@ RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
 
-	RegisterDefaultClassConstructor<ScriptedComponent>("ScriptedComponent" , ComponentUpdatable(), ComponentBase());
-	RegisterClassProperty<ScriptedComponent>("ScriptedComponent", "Script", &ScriptedComponent::m_script);
+	RegisterDefaultClassConstructor<ScriptedComponent>("Script" , ComponentUpdatable(), ComponentBase());
+	RegisterClassProperty<ScriptedComponent>("Script", "Script", &ScriptedComponent::m_script);
 }	
 
 namespace Core::Datastructure
@@ -35,7 +35,7 @@ namespace Core::Datastructure
 
 		if (Core::Datastructure::lua.safe_script_file(m_script))
 		{
-			std::string loadingMsg = std::string(m_script) + " didn't load";
+			std::string loadingMsg = m_script + " didn't load";
 			BAKERS_LOG_ERROR(loadingMsg);
 			m_script.clear();
 			return;

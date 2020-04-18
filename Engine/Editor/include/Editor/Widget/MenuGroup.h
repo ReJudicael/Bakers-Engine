@@ -42,7 +42,7 @@ namespace Editor::Widget
 		bool Begin();
 
 		/**
-		 * End MenuGroup
+		 * End menu group
 		 */
 		void End();
 

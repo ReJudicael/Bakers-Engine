@@ -12,7 +12,7 @@ namespace Editor::Window
 	{
 	private:
 		/**
-		 * Icons in Toolbar: "Play", "Pause", "Skip"
+		 * Icons in Toolbar: "Play", "Pause", "Skip", "Reload", "Compilation"
 		 */
 		std::shared_ptr<Resources::Texture> m_icons[5];
 

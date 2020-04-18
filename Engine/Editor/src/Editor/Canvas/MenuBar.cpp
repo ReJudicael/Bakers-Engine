@@ -1,7 +1,5 @@
-#include "MenuBar.h"
 #include <imgui\imgui.h>
-
-#include <iostream>
+#include "MenuBar.h"
 
 namespace Editor
 {

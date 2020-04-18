@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+
 #include <stb_image.h>
 
 #include "TextureData.h"
@@ -14,7 +15,7 @@ namespace Resources
 	{
 		// load and generate the texture
 		int nrChannels;
-		stbi_set_flip_vertically_on_load(shouldFlip);
+		stbi_set_flip_vertically_on_load(shouldFlip); // Thread unfriendly
 		data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 4);
 
 		stateTexture = EOpenGLLinkState::CANLINK;

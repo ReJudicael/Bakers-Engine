@@ -12,16 +12,6 @@ namespace Editor::Window
 	{
 	private:
 		/**
-		 * Icon for logs and button state, for each log type (Message, Warning, Error)
-		 */
-		std::pair<std::shared_ptr<Resources::Texture>, bool> m_logsIcon[3];
-
-		/**
-		 * Icon for settings
-		 */
-		std::shared_ptr<Resources::Texture> m_settingsIcon;
-
-		/**
 		 * Table flags
 		 */
 		ImGuiTableFlags m_tableFlags;
@@ -30,6 +20,17 @@ namespace Editor::Window
 		 * Log Filter
 		 */
 		ImGuiTextFilter m_logFilter;
+
+	private:
+		/**
+		 * Icon for logs and button state, for each log type (Message, Warning, Error)
+		 */
+		std::pair<std::shared_ptr<Resources::Texture>, bool> m_logsIcon[3];
+
+		/**
+		 * Icon for settings
+		 */
+		std::shared_ptr<Resources::Texture> m_settingsIcon;
 
 		/**
 		 * Whether the scrollbar may be at the bottom or not
@@ -79,6 +80,11 @@ namespace Editor::Window
 		void AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled);
 
 		/**
+		 * Clear button
+		 */
+		void ClearButton();
+
+		/**
 		 * Settings button
 		 */
 		void SettingsButton();
@@ -92,7 +98,7 @@ namespace Editor::Window
 		 * Print a log
 		 * @param log: Log to print
 		 */
-		void PrintLog(Core::Debug::LogData log);
+		void PrintLog(const Core::Debug::LogData& log);
 
 		/**
 		 * Draws the console messages

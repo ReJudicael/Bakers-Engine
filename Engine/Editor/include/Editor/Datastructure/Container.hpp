@@ -1,7 +1,5 @@
 #pragma once
 
-#include "DrawableComponent.h"
-
 #include <vector>
 #include <memory>
 

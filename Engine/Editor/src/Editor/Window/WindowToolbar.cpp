@@ -25,15 +25,27 @@ namespace Editor::Window
 
 	void WindowToolbar::DisplayToolbar()
 	{
-		ImGui::ImageButtonUV_HelpMarker(m_icons[0]->texture, "Play", { 32.f });
+		ImGui::ImageButtonUV(m_icons[0]->texture, { 32.f });
+		ImGui::HelpMarkerItem("Play");
+
 		ImGui::SameLine();
-		ImGui::ImageButtonUV_HelpMarker(m_icons[1]->texture, "Pause", { 32.f });
+		ImGui::ImageButtonUV(m_icons[1]->texture, { 32.f });
+		ImGui::HelpMarkerItem("Pause");
+
 		ImGui::SameLine();
-		ImGui::ImageButtonUV_HelpMarker(m_icons[2]->texture, "Next", { 32.f });
+		ImGui::ImageButtonUV(m_icons[2]->texture, { 32.f });
+		ImGui::HelpMarkerItem("Next");
+
 		ImGui::SameLine();
-		ImGui::ImageButtonUV_HelpMarker(m_icons[3]->texture, "Reload", { 32.f });
+		ImGui::ImageButtonUV(m_icons[3]->texture, { 32.f });
+		ImGui::HelpMarkerItem("Reload");
+
 		ImGui::SameLine();
-		ImGui::ImageButtonUV_HelpMarker(m_icons[4]->texture, "Compilation", { 32.f });
+		if (ImGui::ImageButtonUV(m_icons[4]->texture, { 32.f }))
+		{
+			GetEngine()->GetResourcesManager()->ReloadShaders();
+		}
+		ImGui::HelpMarkerItem("Compilation");
 	}
 
 	void WindowToolbar::Tick()
