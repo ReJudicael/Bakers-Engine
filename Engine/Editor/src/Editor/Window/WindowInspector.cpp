@@ -285,7 +285,7 @@ namespace Editor::Window
 
 	void WindowInspector::ObjectInspector(Core::Datastructure::Object* object)
 	{
-		if (object == nullptr)
+		if (!object)
 			return;
 
 		DisplayObjectName(object);

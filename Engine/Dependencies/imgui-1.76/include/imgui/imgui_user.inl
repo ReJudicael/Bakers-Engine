@@ -70,14 +70,14 @@ namespace ImGui
 
     IMGUI_API void RButtonDD(const char* label, const char* value)
     {
-        ImGui::PushItemToRight(label);
-        ImGui::PushStyleColor(ImGuiCol_Button, GImGui->Style.Colors[ImGuiCol_FrameBg]);
-        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
+        PushItemToRight(label);
+        PushStyleColor(ImGuiCol_Button, GImGui->Style.Colors[ImGuiCol_FrameBg]);
+        PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
 
-        ImGui::ButtonEx(value, { ImGui::GetContentRegionAvail().x, 0.f }, ImGuiButtonFlags_Disabled);
+        ButtonEx(value, { ImGui::GetContentRegionAvail().x, 0.f }, ImGuiButtonFlags_Disabled);
 
-        ImGui::PopStyleVar();
-        ImGui::PopStyleColor();
+        PopStyleVar();
+        PopStyleColor();
     }
 
     IMGUI_API void ImageUV(unsigned int user_texture_id, const ImVec2& size)

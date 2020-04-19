@@ -43,6 +43,7 @@ namespace Editor::Window
 		ImGui::SameLine();
 		if (ImGui::ImageButtonUV(m_icons[4]->texture, { 32.f }))
 		{
+			GetEngine()->GetResourcesManager()->ReloadScripts();
 			GetEngine()->GetResourcesManager()->ReloadShaders();
 		}
 		ImGui::HelpMarkerItem("Compilation");

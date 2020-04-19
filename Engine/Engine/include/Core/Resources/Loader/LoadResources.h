@@ -51,6 +51,8 @@ namespace Resources
 			unorderedmapModel				m_models;
 			unorderedmapObject3DGraph		m_scenes;
 
+			Core::Datastructure::RootObject* m_rootNode;
+
 
 		public:
 			/* Used for stocked the different value which allow to bind different resources to OpengGL (for the multiThread)*/
@@ -188,6 +190,14 @@ namespace Resources
 				return m_scenes[keyName];
 			}
 
+			/**
+			 * Set access to Root Object of Scene
+			 * @param r: Pointer to RootObject
+			 */
+			inline void SetRootNode(Core::Datastructure::RootObject* r)
+			{
+				m_rootNode = r;
+			}
 
 			inline void PushTextureToLink(std::shared_ptr<TextureData> textureData)
 			{
@@ -277,6 +287,11 @@ namespace Resources
 			 * Reload each shader with current vertex and fragment shaders
 			 */
 			void ReloadShaders();
+
+			/**
+			 * Reload lua scripts linked to each scripted component
+			 */
+			void ReloadScripts();
 		};
 	}
 }

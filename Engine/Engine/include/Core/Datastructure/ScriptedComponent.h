@@ -11,9 +11,10 @@ namespace Core::Datastructure
 	BAKERS_API_CLASS ScriptedComponent : public ComponentUpdatable
 	{
 	private:
-		std::string m_script;
-		sol::function m_start;
-		sol::function m_update;
+		std::string     m_script;
+		bool            m_hasStarted{ false };
+		sol::function   m_start;
+		sol::function   m_update;
 
 		/**
 		 * Copy event for editor component handling
@@ -32,8 +33,6 @@ namespace Core::Datastructure
 		 * Default constructor
 		 */
 		ScriptedComponent();
-		 
-		ScriptedComponent(int i) {};
 
 		/**
 		 * Constructor by value
@@ -53,9 +52,25 @@ namespace Core::Datastructure
 		inline void	SetFile(const std::string& fileName) noexcept { m_script = fileName; };
 
 		/**
-		 * Call Start function in Lua script
+		 * Set start variable to false so that the script gets loaded and started again
+		 */
+		inline void Restart() noexcept { m_hasStarted = false; };
+
+		/**
+		 * Set Lua script and call Start function in script
 		 */
 		virtual void OnStart() override;
+
+		/**
+		 * Load Start and Update functions of lua script
+		 * @return True if the script has loaded successfully, false otherwise
+		 */
+		bool LoadLuaScript();
+
+		/**
+		 * Check and call start function in lua script
+		 */
+		void StartLuaScript();
 
 		/**
 		 * Call Update function in Lua script
@@ -69,22 +84,46 @@ namespace Core::Datastructure
 		 * @return: Value of given variable is it exists, default value of given type otherwise
 		 */
 		template<class T>
-		T get(const std::string& name);
+		T Get(const std::string& name);
 
 		/**
-		 * Set value of given variable
+		 * Set access to c++ variable in lua script
 		 * @param name: Name of the desired variable in Lua script
-		 * @param value: New value for given variable
+		 * @param value: pointer to the variable
 		 */
 		template<class T>
-		void set(const std::string& name, const T& value);
+		void Set(const std::string& name, const T* value);
 
+		/**
+		 * Log system message wrapper for lua
+		 * @param msg: Message to display in editor console as a log
+		 */
+		static inline void LogWrapper(std::string msg) { BAKERS_LOG_MESSAGE(msg); }
+
+		/**
+		 * Log system error wrapper for lua
+		 * @param msg: Message to display in editor console as an error
+		 */
+		static inline void ErrorWrapper(std::string msg) { BAKERS_LOG_ERROR(msg); }
+
+		/**
+		 * Log system warning wrapper for lua
+		 * @param msg: Message to display in editor console as a warning
+		 */
+		static inline void WarningWrapper(std::string msg) { BAKERS_LOG_WARNING(msg); }
+
+		/**
+		 * Create a lua file with default script content
+		 * @param scriptName: Name of the file to create.
+		 * @warning Will not work if a script with the same name already exists.
+		 */
+		static void CreateScript(std::string scriptName);
 
 		REGISTER_CLASS(ComponentUpdatable);
 	};
 
 	template<class T>
-	T ScriptedComponent::get(const std::string& name)
+	T ScriptedComponent::Get(const std::string& name)
 	{
 		if (m_script.empty())
 			return T();
@@ -93,7 +132,7 @@ namespace Core::Datastructure
 	}
 
 	template<class T>
-	void ScriptedComponent::set(const std::string& name, const T& value)
+	void ScriptedComponent::Set(const std::string& name, const T* value)
 	{
 		if (m_script.empty())
 			return;
