@@ -117,7 +117,7 @@ namespace Core::Datastructure
 		 * @param scriptName: Name of the file to create.
 		 * @warning Will not work if a script with the same name already exists.
 		 */
-		static void CreateScript(std::string scriptName);
+		static void CreateScript(const std::string& scriptName);
 
 		REGISTER_CLASS(ComponentUpdatable);
 	};

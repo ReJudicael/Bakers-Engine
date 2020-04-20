@@ -157,7 +157,7 @@ namespace Editor::Window
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_GAMEOBJECT"))
 			{
-				Core::Datastructure::Object* dObject = *reinterpret_cast<Core::Datastructure::Object**>(payload->Data);
+				Core::Datastructure::Object* dObject{ *reinterpret_cast<Core::Datastructure::Object**>(payload->Data) };
 
 				if (!dObject->HasChild(object))
 					dObject->SetParent(object);

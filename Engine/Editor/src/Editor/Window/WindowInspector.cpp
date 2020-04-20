@@ -181,7 +181,7 @@ namespace Editor::Window
 		else if (propType == rttr::type::get<Core::Maths::Color>())
 		{
 			Core::Maths::Color c{ prop.get_value(component).get_value<Core::Maths::Color>() };
-			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba, 1.0f *!prop.is_readonly()) && !prop.is_readonly())
+			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba) && !prop.is_readonly())
 				prop.set_value(component, c);
 		}
 		else if (propType == rttr::type::get<std::string>())
@@ -193,7 +193,7 @@ namespace Editor::Window
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
 				{
-					const std::string& path = reinterpret_cast<const char*>(payload->Data);
+					const std::string& path{ reinterpret_cast<const char*>(payload->Data) };
 					prop.set_value(component, path);
 					ImGui::EndDragDropTarget();
 				}
@@ -271,7 +271,7 @@ namespace Editor::Window
 
 		if (ImGui::BeginComboButton("Add component"))
 		{
-			rttr::array_range possibleComponents = rttr::type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
+			rttr::array_range possibleComponents{ rttr::type::get<Core::Datastructure::ComponentBase>().get_derived_classes() };
 			for (auto it : possibleComponents)
 			{
 				if (ImGui::MenuItem(it.get_name().to_string().c_str()))
