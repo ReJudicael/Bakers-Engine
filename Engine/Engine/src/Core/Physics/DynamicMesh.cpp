@@ -7,6 +7,7 @@
 #include "PhysicsScene.h"
 #include "EngineCore.h"
 #include "Maths.hpp"
+#include "CapsuleCollider.h"
 
 namespace Core
 {
@@ -28,6 +29,11 @@ namespace Core
 			;
 		}
 
+		DynamicMesh::DynamicMesh() :
+			Core::Datastructure::IPhysics(),
+			m_dynamicMesh{ nullptr }
+		{
+		}
 
 		DynamicMesh::DynamicMesh(Collider* collider) :
 			Core::Datastructure::IPhysics(collider),
@@ -66,6 +72,7 @@ namespace Core
 		{
 			GetScene()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_dynamicMesh);
 			m_dynamicMesh->release();
+			m_dynamicMesh = nullptr;
 		}
 
 		void DynamicMesh::OnDestroy()
@@ -103,7 +110,7 @@ namespace Core
 			
 			//setupFiltering(m_dynamicMesh, EFilterCollision::T1, EFilterCollision::T2, EFilterCollision::T3);
 
-			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IPhysics*>(this));
+			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(dynamic_cast<Core::Datastructure::IPhysics*>(this)));
 
 			scene->addActor(*m_dynamicMesh);
 			PhysicsLockRotation(true, false, true);
@@ -143,11 +150,15 @@ namespace Core
 
 		void DynamicMesh::SetLinearVelocity(Core::Maths::Vec3 newVelocity)
 		{
+			if (m_dynamicMesh == nullptr)
+				return;
 			m_dynamicMesh->setLinearVelocity({ newVelocity.x, newVelocity.y, newVelocity.z });
 		}
 
 		Core::Maths::Vec3 DynamicMesh::GetVelocity()
 		{
+			if (m_dynamicMesh == nullptr)
+				return { 0.f, 0.f, 0.f };
 			physx::PxVec3 vec{ m_dynamicMesh->getLinearVelocity() };
 			return { vec.x, vec.y, vec.z };
 		}
@@ -159,16 +170,22 @@ namespace Core
 
 		void DynamicMesh::SetMass(const float mass)
 		{
+			if (m_dynamicMesh == nullptr)
+				return;
 			m_dynamicMesh->setMass(static_cast<physx::PxReal>(mass));
 		}
 
 		float DynamicMesh::GetMass()
 		{
+			if (m_dynamicMesh == nullptr)
+				return 0;
 			return m_dynamicMesh->getMass();
 		}
 
 		void DynamicMesh::ClearForces()
 		{
+			if (m_dynamicMesh == nullptr)
+				return;
 			m_dynamicMesh->clearForce();
 			m_dynamicMesh->clearTorque();
 		}
@@ -183,31 +200,43 @@ namespace Core
 
 		void DynamicMesh::SetPhysicsLockXRotation(bool Axisx)
 		{
+			if (m_dynamicMesh == nullptr)
+				return;
 			m_dynamicMesh->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, Axisx);
 		}
 
 		bool DynamicMesh::GetPhysicsLockXRotation()
 		{
+			if (m_dynamicMesh == nullptr)
+				return false;
 			return m_dynamicMesh->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X);
 		}
 
 		void DynamicMesh::SetPhysicsLockYRotation(bool Axisy)
 		{
+			if (m_dynamicMesh == nullptr)
+				return;
 			m_dynamicMesh->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, Axisy);
 		}
 
 		bool DynamicMesh::GetPhysicsLockYRotation()
 		{
+			if (m_dynamicMesh == nullptr)
+				return false;
 			return m_dynamicMesh->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y);
 		}
 
 		void DynamicMesh::SetPhysicsLockZRotation(bool Axisz)
 		{
+			if (m_dynamicMesh == nullptr)
+				return;
 			m_dynamicMesh->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, Axisz);
 		}
 
 		bool DynamicMesh::GetPhysicsLockZRotation()
 		{
+			if (m_dynamicMesh == nullptr)
+				return false;
 			return m_dynamicMesh->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
 		}
 	}

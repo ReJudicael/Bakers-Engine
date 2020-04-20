@@ -237,7 +237,7 @@ namespace Resources
 			void LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory);
 
 
-			// TO DO: doc des fonction suivante !!!!!!
+			void LoadObjInModel(const std::string& name, const char* fileName);
 
 			/**
 			 * Load the Material of an aiMesh

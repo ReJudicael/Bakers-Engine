@@ -2,6 +2,8 @@
 #include "Collider.h"
 #include "Vec3.hpp"
 #include "PxPhysicsAPI.h"
+#include "PhysicsScene.h"
+#include "LoadResources.h"
 
 
 namespace Core::Physics
@@ -15,6 +17,10 @@ namespace Core::Physics
 		.property("Trigger", &Core::Physics::Collider::IsTrigger ,&Core::Physics::Collider::Trigger)
 		;
 	}
+
+	Collider::Collider(Resources::Loader::ResourcesManager* resources):
+		m_shader{resources->GetShader("Wireframe")}
+	{}
 
 	void Collider::SetLocalPosition(Core::Maths::Vec3 pos)
 	{
@@ -94,8 +100,28 @@ namespace Core::Physics
 		m_pxShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
 	}
 
+	void Collider::SetRaycastFilter(const EFilterRaycast& filter)
+	{
+		if (m_pxShape == nullptr)
+			return;
+		physx::PxFilterData filterData;
+		filterData.word0 = static_cast<physx::PxU32>(filter);
+		m_pxShape->setQueryFilterData(filterData);
+	}
+
+	EFilterRaycast Collider::GetRaycastFilter()
+	{
+		if (m_pxShape == nullptr)
+			return EFilterRaycast::GROUPE1;
+		physx::PxFilterData filterData{ m_pxShape->getQueryFilterData()};
+
+		return static_cast<EFilterRaycast>(filterData.word0);
+	}
+
 	void Collider::DestroyShape()
 	{
+		if (m_pxShape == nullptr)
+			return;
 		m_pxShape->release();
 		m_pxMaterial->release();
 	}

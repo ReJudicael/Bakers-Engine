@@ -1,7 +1,10 @@
 #pragma once
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "Vec3.hpp"
 #include "Quaternion.hpp"
 #include "CoreMinimal.h"
+#include "Model.h"
 
 
 namespace physx
@@ -10,11 +13,30 @@ namespace physx
 	class PxPhysics;
 	class PxMaterial;
 }
-
+namespace Resources
+{
+	class Shader;
+	namespace Loader
+	{
+		class ResourcesManager;
+	}
+}
 namespace Core
 {
+	namespace Maths
+	{
+		struct Mat4;
+	}
+	namespace Datastructure
+	{
+		class ICamera;
+		class Transform;
+	}
 	namespace Physics
 	{
+		enum EFilterRaycast;
+
+
 		/**
 		 * Contains the shape and the material of the physics mesh 
 		 * with wich he is attached
@@ -22,9 +44,13 @@ namespace Core
 		BAKERS_API_CLASS Collider
 		{
 		protected:
-			physx::PxShape*		m_pxShape;
-			physx::PxMaterial*	m_pxMaterial;
+			physx::PxShape*						m_pxShape{};
+			physx::PxMaterial*					m_pxMaterial{};
+			std::shared_ptr<Resources::Shader>	m_shader{};
+			std::shared_ptr<Resources::Model>	m_model{};
 		public:
+			Collider() = default;
+			Collider(Resources::Loader::ResourcesManager* resources);
 
 			/**
 			 * Get the PhysX shape of the collider
@@ -118,6 +144,22 @@ namespace Core
 			 * Set the state simulation of the shape
 			 */
 			virtual void SimulationCollider();
+
+			virtual void InitShader(std::shared_ptr<Resources::Shader> shader)
+			{
+				m_shader = shader;
+			}
+
+			virtual void InitModel(std::shared_ptr<Resources::Model> model)
+			{
+				m_model = model;
+			}
+
+			virtual void SetRaycastFilter(const EFilterRaycast& filter);
+
+			virtual EFilterRaycast GetRaycastFilter();
+
+			virtual void DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot) = 0;
 
 			/*
 			 * Destroy the shape and his pxMaterial

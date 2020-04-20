@@ -64,4 +64,11 @@
   <ItemGroup>
     <None Include="..\Dependencies\imgui-1.76\include\imgui\imgui_user.inl" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.inl">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </None>
+    <None Include="Resources\Shaders\WireframeShader.vert" />
+    <None Include="Resources\Shaders\WireframeShader.frag" />
+  </ItemGroup>
 </Project>

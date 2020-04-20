@@ -1,5 +1,4 @@
-//#include <GLFW/glfw3.h>
-#include "BoxCollider.h"
+#include "SphereCollider.h"
 #include "Collider.h"
 #include "Vec3.hpp"
 #include "PxPhysics.h"
@@ -13,55 +12,56 @@
 
 namespace Core::Physics
 {
+
 	RTTR_PLUGIN_REGISTRATION
 	{
-		registration::class_<Core::Physics::BoxCollider>("Collider")
-		.property("Box Half Extent", &Core::Physics::BoxCollider::GetBoxHalfExtent ,&Core::Physics::BoxCollider::SetBoxHalfExtent)
+		registration::class_<Core::Physics::SphereCollider>("Collider")
+		.property("Radius", &Core::Physics::SphereCollider::GetSphereHalfExtent ,&Core::Physics::SphereCollider::SetSphereHalfExtent)
 		;
 	}
 
-	BoxCollider::BoxCollider(Resources::Loader::ResourcesManager* resources) :
-	Collider(resources)
+	SphereCollider::SphereCollider(Resources::Loader::ResourcesManager* resources) :
+		Collider(resources)
 	{
-		InitModel(resources->GetModel("Cube"));
+		InitModel(resources->GetModel("Sphere"));
 	}
 
-	void BoxCollider::CreateShape(physx::PxPhysics* physics)
+	void SphereCollider::CreateShape(physx::PxPhysics* physics)
 	{
-		physx::PxVec3 extent = physx::PxVec3(m_extent.x, m_extent.y, m_extent.z);
+		//physx::PxVec2 extent = physx::PxVec3(m_extent.x, m_extent.y);
 		physx::PxVec3 localPosition = physx::PxVec3(0.f, 0.f, 0.f);
 
 		m_pxMaterial = physics->createMaterial(1.5f, 1.5f, 0.0f);
-		m_pxShape = physics->createShape(physx::PxBoxGeometry(extent), *m_pxMaterial, true);
+		m_pxShape = physics->createShape(physx::PxSphereGeometry(0.5f), *m_pxMaterial, true);
 		m_pxShape->setLocalPose(physx::PxTransform(localPosition));
 
 		SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
 	}
 
-	void BoxCollider::SetBoxHalfExtent(Core::Maths::Vec3 halfExtent)
+	void SphereCollider::SetSphereHalfExtent(float halfExtent)
 	{
 		m_extent = halfExtent;
-		if(m_pxShape != nullptr)
-			m_pxShape->setGeometry(physx::PxBoxGeometry(physx::PxVec3{ halfExtent.x, halfExtent.y, halfExtent.z }));
+		if (m_pxShape != nullptr)
+			m_pxShape->setGeometry(physx::PxSphereGeometry(halfExtent));
 	}
-	
-	Core::Maths::Vec3 BoxCollider::GetBoxHalfExtent()
+
+	float SphereCollider::GetSphereHalfExtent()
 	{
 		if (m_pxShape != nullptr)
 		{
-			physx::PxBoxGeometry box;
-			if (m_pxShape->getBoxGeometry(box))
-				return { box.halfExtents.x, box.halfExtents.y, box.halfExtents.z };
+			physx::PxSphereGeometry sphere;
+			if (m_pxShape->getSphereGeometry(sphere))
+				return sphere.radius;
 
-			return Core::Maths::Vec3();
+			return 0.f;
 		}
-		return Core::Maths::Vec3();
+		return 0.f;
 
 	}
 
-	void BoxCollider::DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot)
+	void SphereCollider::DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot)
 	{
-		
+
 		glEnable(GL_DEPTH_TEST);
 
 		if (m_model == nullptr || m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
@@ -76,7 +76,7 @@ namespace Core::Physics
 		Core::Datastructure::Transform Ltrs;
 		Ltrs.SetLocalPos(localPos);
 		Ltrs.SetLocalRot(localRot);
-		Ltrs.SetLocalScale(GetBoxHalfExtent() * 2);
+		Ltrs.SetLocalScale({ GetSphereHalfExtent(), GetSphereHalfExtent(), GetSphereHalfExtent() });
 
 		Core::Datastructure::Transform Gtrs;
 		Gtrs.SetLocalPos(pos);
@@ -92,8 +92,8 @@ namespace Core::Physics
 		glDrawElements(GL_TRIANGLES, m_model->offsetsMesh[0].count, GL_UNSIGNED_INT,
 			(GLvoid*)(m_model->offsetsMesh[0].beginIndices * sizeof(GLuint)));
 
-
 		glBindVertexArray(0);
+
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 }

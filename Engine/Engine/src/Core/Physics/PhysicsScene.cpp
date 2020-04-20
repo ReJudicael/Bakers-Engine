@@ -10,12 +10,15 @@
 #include "Transform.hpp"
 #include "Model.h"
 #include "Vec3.hpp"
+#include "PxRigidActor.h"
+#include "Object.hpp"
 
 
 #define PVD_HOST "127.0.0.1"
 
 namespace Core::Physics
 {
+
 	bool PhysicsScene::InitPhysX()
 	{
 		m_pxFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_pxDefaultAllocatorCallback,
@@ -59,15 +62,14 @@ namespace Core::Physics
 		return true;
 	}
 
-
 	void PhysicsScene::CreateScene()
 	{
 		physx::PxSceneDesc sceneDesc(m_pxPhysics->getTolerancesScale());
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
 		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(4);
 		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
-		PhysicsSceneSimulationEventCallback* eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
+		PhysicsSceneSimulationEventCallback* eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.filterShader = &Core::Physics::PhysicsSceneSimulationEventCallback::filterShader;
 		//sceneDesc.filterShader = &physx::PxDefaultSimulationFilterShader;
 
@@ -92,7 +94,7 @@ namespace Core::Physics
 		collider.CreateShape(m_pxPhysics);
 	}
 
-	void HitResult::initHitResult(physx::PxRaycastHit raycastHit)
+	void HitResultQuery::initHitResult(const physx::PxRaycastHit raycastHit)
 	{
 		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(raycastHit.actor->userData) };
 		objectHit = physicsMesh->GetParent();
@@ -103,7 +105,16 @@ namespace Core::Physics
 		distance = raycastHit.distance;
 	}
 
-	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResult& result, const float Distance)
+	void HitResultQuery::initHitResult(const physx::PxOverlapHit overlapHit)
+	{
+		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(overlapHit.actor->userData) };
+		objectHit = physicsMesh->GetParent();
+		physicsMeshHit = dynamic_cast<Core::Datastructure::IPhysics*>(physicsMesh);
+
+		physx::PxU32 face{ overlapHit.faceIndex };
+	}
+
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResultQuery& result, const float Distance)
 	{
 		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
 		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
@@ -117,7 +128,7 @@ namespace Core::Physics
 		return status;
 	}
 
-	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResult>& results, const float Distance)
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResultQuery>& results, const float Distance)
 	{
 		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
 		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
@@ -128,7 +139,7 @@ namespace Core::Physics
 		{
 			for (physx::PxU32 i{ 0 }; i < hit.nbTouches; i++)
 			{
-				HitResult result;
+				HitResultQuery result;
 				result.initHitResult(hit.touches[i]);
 				results.push_back(result);
 			}
@@ -136,38 +147,117 @@ namespace Core::Physics
 		return status;
 	}
 
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResultQuery& result, physx::PxU32 filterRaycast, const float Distance)
+	{
+		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
+		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
+
+		physx::PxQueryFilterData filterData{};
+		for (int i = 0; i < 4; i++)
+			filterData.data.word0 |= 1 << i;
+		filterData.data.word0 &= ~filterRaycast;
+
+		physx::PxRaycastBuffer hit;
+		bool status = m_pxScene->raycast(origin, dir, static_cast<physx::PxReal>(Distance), hit, physx::PxHitFlag::eDEFAULT, filterData);
+		if (status)
+		{
+			result.initHitResult(hit.block);
+		}
+		return status;
+	}
+
+	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, std::vector<HitResultQuery>& results, physx::PxU32 filterRaycast, const float Distance)
+	{
+		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
+		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
+
+		physx::PxRaycastBuffer hit;
+		physx::PxQueryFilterData filterData{};
+		for (int i = 0; i < 4; i++)
+			filterData.data.word0 |= 1 << i;
+		filterData.data.word0 &= ~filterRaycast;
+
+		bool status = m_pxScene->raycast(origin, dir, static_cast<physx::PxReal>(Distance), hit, physx::PxHitFlag::eDEFAULT, filterData);
+		if (status)
+		{
+			for (physx::PxU32 i{ 0 }; i < hit.nbTouches; i++)
+			{
+				HitResultQuery result;
+				result.initHitResult(hit.touches[i]);
+				results.push_back(result);
+			}
+		}
+		return status;
+	}
+
+	bool PhysicsScene::CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& transform, HitResultQuery& overlapResult)
+	{
+
+		physx::PxTransform pose;
+		Core::Maths::Vec3 globalPos{ transform.GetGlobalPos() };
+		pose.p = { globalPos.x, globalPos.y, globalPos.z };
+		Core::Maths::Quat globalRot{ transform.GetGlobalRot() };
+		pose.q = { globalRot.x, globalRot.y, globalRot.z, globalRot.w };
+
+		physx::PxOverlapCallback* result{};
+		bool status = m_pxScene->overlap(overlapGeometry, pose, *result);
+		if (status)
+			overlapResult.initHitResult(result->block);
+
+		return status;
+	}
+	
+	bool PhysicsScene::CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& transform, std::vector<HitResultQuery>& overlapResults)
+	{
+		physx::PxTransform pose;
+		Core::Maths::Vec3 globalPos{ transform.GetGlobalPos() };
+		pose.p = { globalPos.x, globalPos.y, globalPos.z };
+		Core::Maths::Quat globalRot{ transform.GetGlobalRot() };
+		pose.q = { globalRot.x, globalRot.y, globalRot.z, globalRot.w };
+
+		physx::PxOverlapCallback* overlapCallback{};
+		bool status = m_pxScene->overlap(overlapGeometry, pose, *overlapCallback);
+		if (status)
+		{
+			for (physx::PxU32 i{ 0 }; i < overlapCallback->nbTouches; i++)
+			{
+				HitResultQuery result;
+				result.initHitResult(overlapCallback->touches[i]);
+				overlapResults.push_back(result);
+			}
+		}
+		return status;
+	}
+	
+	void PhysicsScene::UpdatePoseOfActor(physx::PxRigidActor* actor)
+	{
+		Core::Datastructure::IComponent* comp = static_cast<Core::Datastructure::IComponent*>(actor->userData);
+		Maths::Vec3 vec = comp->GetParent()->GetGlobalPos();
+		physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
+		Maths::Quat quat = comp->GetParent()->GetGlobalRot();
+		physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
+
+		actor->setGlobalPose(physx::PxTransform(position, rotation));
+	}
+
 	void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)
 	{
 		physics->CreateActor(m_pxPhysics, m_pxScene);
 	}
 
-	physx::PxRigidStatic* PhysicsScene::CreateEditorPhysicsActor(void* useDataPtr,
+	physx::PxRigidActor* PhysicsScene::CreateEditorPhysicsActor(void* useDataPtr,
 																const Core::Datastructure::Transform& transform,
 																std::shared_ptr<Resources::Model> model)
 	{
-		physx::PxMaterial* material = m_pxPhysics->createMaterial(0.f, 0.f, 0.f);
-		Core::Maths::Vec3 minG{ model->min * transform.GetGlobalScale() };
-		Core::Maths::Vec3 maxG{ model->max * transform.GetGlobalScale() };
-		//Core::Maths::Vec3 pos{ (model->min * transform.GetGlobalScale() - model->max * transform.GetGlobalScale()) };
-		Core::Maths::Vec3 pos{ (minG - maxG) };
-		Core::Maths::Vec3 extent{ abs(model->min.x) + abs(model->max.x), abs(model->min.y) + abs(model->max.y), abs(model->min.z) + abs(model->max.z) };
-		extent *= transform.GetGlobalScale();
-		extent /= 2;
-		if (extent.x == 0 || extent.y == 0 || extent.x == 0)
-			return nullptr;
-		physx::PxShape* shape = m_pxPhysics->createShape(physx::PxBoxGeometry(physx::PxVec3{ extent.x, extent.y, extent.z }), *material, true);
-		physx::PxTransform shapeTransform{ shape->getLocalPose() };
-		//pos *= transform.GetGlobalScale();
-		pos /= 2;
-		pos = maxG + pos;
-		shapeTransform.p = { pos.x, pos.y, pos.z };
-		shape->setLocalPose(shapeTransform);
-		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
-		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
+		physx::PxShape* shape{ CreateEditorBoxShape(transform, model) };
 
-		physx::PxVec3 globalPos { transform.GetGlobalPos().x,transform.GetGlobalPos().y, transform.GetGlobalPos().z };
+		if (shape == nullptr)
+			return nullptr;
+
+		physx::PxVec3 globalPos { transform.GetGlobalPos().x,transform.GetGlobalPos().y, transform.GetGlobalPos().z};
 		physx::PxQuat globalRot { transform.GetGlobalRot().x,transform.GetGlobalRot().y, transform.GetGlobalRot().z, transform.GetGlobalRot().w };
 		physx::PxTransform pxTransform{ globalPos, globalRot};
+
 		physx::PxRigidStatic* rigidStatic =  m_pxPhysics->createRigidStatic(pxTransform);
 		rigidStatic->attachShape(*shape);
 		shape->release();
@@ -176,6 +266,32 @@ namespace Core::Physics
 		m_pxScene->addActor(*rigidStatic);
 
 		return rigidStatic;
+	}
+
+	physx::PxShape* PhysicsScene::CreateEditorBoxShape(const Core::Datastructure::Transform& transform, std::shared_ptr<Resources::Model> model)
+	{
+		physx::PxMaterial* material = m_pxPhysics->createMaterial(0.f, 0.f, 0.f);
+
+		Core::Maths::Vec3 minG{ model->min * transform.GetGlobalScale() };
+		Core::Maths::Vec3 maxG{ model->max * transform.GetGlobalScale() };
+
+		Core::Maths::Vec3 pos{ (minG - maxG) };
+		pos = maxG + pos / 2;
+
+		Core::Maths::Vec3 extent{ abs(minG.x) + abs(maxG.x), abs(minG.y) + abs(maxG.y), abs(minG.z) + abs(maxG.z) };
+		extent /= 2;
+
+		if (extent.x == 0 || extent.y == 0 || extent.x == 0)
+			return nullptr;
+
+		physx::PxShape* shape = m_pxPhysics->createShape(physx::PxBoxGeometry(physx::PxVec3{ extent.x, extent.y, extent.z }), *material, true);
+		physx::PxTransform shapeTransform{ shape->getLocalPose() };
+		shapeTransform.p = { pos.x, pos.y, pos.z };
+		shape->setLocalPose(shapeTransform);
+		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
+
+		return shape;
 	}
 
 	void PhysicsScene::BeginSimulate(const float deltaTime)

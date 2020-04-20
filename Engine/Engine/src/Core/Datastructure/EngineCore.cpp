@@ -11,7 +11,7 @@
 #include "Collider.h"
 #include "BoxCollider.h"
 #include "StaticMesh.h"
-#include "Physics/PhysicsScene.h"
+#include "PhysicsScene.h"
 #include "DynamicMesh.h"
 
 RTTR_PLUGIN_REGISTRATION
@@ -110,7 +110,7 @@ namespace Core::Datastructure
 
 		TracyGpuContext
 
-		m_physicsScene = new Core::Physics::PhysicsScene();
+			m_physicsScene = new Core::Physics::PhysicsScene();
 
 		if (!m_physicsScene->InitPhysX())
 			return -1;
@@ -144,8 +144,8 @@ namespace Core::Datastructure
 
 		umbreon->AddComponent(new Core::Physics::DynamicMesh());
 
-		staticMesh->SetPos({ 0.f,-2.f,0.f });
-		staticMesh->SetScale({ 50.f,1.f,50.f });
+		staticMesh->SetPos({ 0.f,-5.f,0.f });
+		staticMesh->SetScale({ 5.f,1.f,5.f });
 		Core::Physics::StaticMesh* staticmesh1 = new Core::Physics::StaticMesh();
 		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f, 1.f, 500.f });
 		staticMesh->AddComponent(staticmesh1);
@@ -155,6 +155,7 @@ namespace Core::Datastructure
 
 		m_manager->Load3DObject("Resources/Models/DiningRoom/dining_room.fbx");
 		Resources::Object3DGraph::CreateScene("Resources/Models/DiningRoom/dining_room.fbx", *m_manager, dining_room);
+
 		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
 
 		umbreon->SetPos({ 0.f,3.f, 0.f });
@@ -171,6 +172,13 @@ namespace Core::Datastructure
 		StartFrame();
 
 		Update(deltaTime);
+
+		Physics::HitResultQuery query;
+
+		physx::PxU32 u;
+		u |= Core::Physics::EFilterRaycast::GROUPE1;
+
+		m_physicsScene->Raycast({ 0.f,0.f,0.f }, { 1.f,0.f,0.f }, query, u);
 
 		Render();
 

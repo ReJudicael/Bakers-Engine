@@ -195,6 +195,12 @@
     <ClCompile Include="src\Core\Datastructure\TriggeredEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Physics\CapsuleCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\SphereCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\Datastructure\INavAgent.cpp">
       <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
@@ -387,6 +393,15 @@
       <Filter>Header Files\Core\Navigation</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\TriggeredEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\HitResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\CapsuleCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\SphereCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\INavAgent.h">

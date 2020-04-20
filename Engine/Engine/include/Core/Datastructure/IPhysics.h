@@ -3,6 +3,8 @@
 #include "Collider.h"
 #include "CoreMinimal.h"
 #include "EventSystem.hpp"
+#include "IRenderable.hpp"
+#include "HitResult.h"
 
 namespace physx
 {
@@ -11,6 +13,7 @@ namespace physx
 }
 namespace Core
 {
+	
 	namespace Datastructure
 	{
 		/**
@@ -18,7 +21,7 @@ namespace Core
 		 * give acces to the collider of the physics and
 		 * the event OnTriggerEnter/End and OnContact.
 		 */
-		BAKERS_API_CLASS IPhysics : public virtual IComponent
+		BAKERS_API_CLASS IPhysics : public virtual IComponent, public virtual IRenderable
 		{
 		protected:
 			Physics::Collider*		m_collider;
@@ -28,7 +31,7 @@ namespace Core
 		public:
 			Core::SystemManagement::EventSystem<IPhysics*>	OnTriggerEnterEvent;
 			Core::SystemManagement::EventSystem<IPhysics*>	OnTriggerExitEvent;
-			Core::SystemManagement::EventSystem<IPhysics*>	OnContactEvent;
+			Core::SystemManagement::EventSystem<IPhysics*, Core::Maths::Vec3, Core::Physics::HitResult>	OnContactEvent;
 
 
 			/**
@@ -65,6 +68,8 @@ namespace Core
 			 */
 			virtual void OnDestroy() override;
 
+			virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
+
 			/**
 			 * Create a physics mesh from the PhysicsScene, call in the OnStart
 			 * @param physics: the PhysX physics from the PhysicsScene
@@ -78,7 +83,19 @@ namespace Core
 			 */
 			virtual void SetPhysicsTransformParent() = 0;
 
-			REGISTER_CLASS(IComponent)
+
+			virtual void SetRaycastFilter(Core::Physics::EFilterRaycast filter)
+			{
+				m_collider->SetRaycastFilter(filter);
+			}
+
+
+			virtual Core::Physics::EFilterRaycast GetRaycastFilter()
+			{
+				return m_collider->GetRaycastFilter();
+			}
+
+			REGISTER_CLASS(IComponent, IRenderable)
 		};
 	}
 }
