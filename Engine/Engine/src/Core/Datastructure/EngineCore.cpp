@@ -135,7 +135,7 @@ namespace Core::Datastructure
 		l->SetAngleSmoothness(0.01f);
 		camNode->AddComponent(l);
 
-		Core::Datastructure::ScriptedComponent* s = new Core::Datastructure::ScriptedComponent("Resources/Scripts/DefaultScript.lua");
+		Core::Datastructure::ScriptedComponent* s = new Core::Datastructure::ScriptedComponent("Resources\\Scripts\\DefaultScript.lua");
 		camNode->AddComponent(s);
 		Core::Datastructure::Object* dining_room{ m_root->CreateChild("DiningRoom", {}) };
 		Core::Datastructure::Object* staticMesh{ dining_room->CreateChild("Static Mesh", {}) };

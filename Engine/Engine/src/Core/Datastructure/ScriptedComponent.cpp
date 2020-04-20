@@ -42,13 +42,15 @@ namespace Core::Datastructure
 
 		LoadLuaScript();
 		StartLuaScript();
+
+		m_hasStarted = true;
 	}
 
 	bool ScriptedComponent::LoadLuaScript()
 	{
 		if (Core::Datastructure::lua.safe_script_file(m_script))
 		{
-			std::string loadingMsg = m_script + " didn't load";
+			std::string loadingMsg = "Script: " + m_script + " didn't load";
 			BAKERS_LOG_ERROR(loadingMsg);
 			m_script.clear();
 			return false;
@@ -56,6 +58,9 @@ namespace Core::Datastructure
 
 		m_start = Core::Datastructure::lua["Start"];
 		m_update = Core::Datastructure::lua["Update"];
+		
+		std::string loadingMsg = "Script: " + m_script + " loaded successfully";
+		BAKERS_LOG_MESSAGE(loadingMsg);
 
 		return true;
 	}
@@ -69,10 +74,6 @@ namespace Core::Datastructure
 			std::string msg = std::string(m_script) + " has no Start function";
 			BAKERS_LOG_WARNING(msg);
 		}
-
-		// Start only need to be checked and called at first frame
-		// So will not check again even if m_start was not valid
-		m_hasStarted = true;
 
 		// Update is checked in Start method so that warning only appears once
 		if (!m_update.valid())
@@ -90,6 +91,7 @@ namespace Core::Datastructure
 		// First frame the script is valid
 		if (!m_hasStarted)
 		{
+			m_hasStarted = true;
 			if (LoadLuaScript())
 				StartLuaScript();
 			return; // First lua Update will be called next frame

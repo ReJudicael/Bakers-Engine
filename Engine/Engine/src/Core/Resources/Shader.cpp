@@ -121,7 +121,7 @@ namespace Resources
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 
-		std::string successMsg = "Program made with " + m_vertexFile;
+		std::string successMsg = "Shaders: " + m_vertexFile;
 		successMsg += " and " + m_fragmentFile + " loaded successfully";
 		BAKERS_LOG_MESSAGE(successMsg);
 	}
