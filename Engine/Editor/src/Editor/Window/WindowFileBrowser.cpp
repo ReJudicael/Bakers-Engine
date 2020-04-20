@@ -1,6 +1,7 @@
 #include "WindowFileBrowser.h"
 #include "EditorEngine.h"
 #include "LoadResources.h"
+#include "ScriptedComponent.h"
 
 namespace Editor::Window
 {
@@ -98,6 +99,13 @@ namespace Editor::Window
 
 			if (ImGui::MenuItem("File"))
 				m_renamePath = m_fs->CreateFile();
+
+			if (ImGui::MenuItem("Script"))
+			{
+				const std::string& path = m_fs->CreateFile("Script", ".lua");
+				Core::Datastructure::ScriptedComponent::CreateScript(path);
+				m_renamePath = path;
+			}
 
 			ImGui::EndMenu();
 		}
@@ -220,7 +228,7 @@ namespace Editor::Window
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
 			{
-				const char* path = reinterpret_cast<const char*>(payload->Data);
+				const char* path{ reinterpret_cast<const char*>(payload->Data) };
 
 				m_fs->MovePath(path, itemPath.c_str());
 				ImGui::EndDragDropTarget();

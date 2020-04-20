@@ -120,23 +120,12 @@ namespace Core::Datastructure
 		m_script.clear();
 	}
 
-	void ScriptedComponent::CreateScript(std::string scriptName)
+	void ScriptedComponent::CreateScript(const std::string& scriptPath)
 	{
-		std::string path = "Resources/Scripts/" + scriptName + ".lua";
-
-		// Check if script already exists
-		if (FILE* file = fopen(path.c_str(), "r"))
-		{
-			fclose(file);
-			BAKERS_LOG_ERROR(scriptName + " already exists");
-			return;
-		}
-		
-		// Create file
-		std::ofstream file(path);
+		std::ofstream file(scriptPath);
 
 		// Create default content (empty Start and Update functions) for new script
-		std::string defaultContent = "-- " + scriptName + " script\n\n";
+		std::string defaultContent = "-- " + scriptPath + " script\n\n";
 		defaultContent += "function Start()\n\nend\n\n";
 		defaultContent += "function Update()\n\nend";
 

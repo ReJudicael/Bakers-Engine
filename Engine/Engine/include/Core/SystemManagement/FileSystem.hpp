@@ -229,9 +229,11 @@ namespace Core::SystemManagement
 
 		/**
 		 * Create a file
-		 * @return path of the new file
+		 * @param fileNameWithoutExt: File name without extension
+		 * @param extWithDot: File extension with dot
+		 * @return Path of the new file
 		 */
-		std::string CreateFile(const std::string& fileName = "New File") noexcept;
+		std::string CreateFile(const std::string& fileNameWithoutExt = "New File", const std::string& extWithDot = "") noexcept;
 
 		/**
 		 * Rename file or directory
@@ -456,9 +458,9 @@ namespace Core::SystemManagement
 		system(cmd.c_str());
 	}
 
-	inline std::string FileSystem::CreateFile(const std::string& fileName) noexcept
+	inline std::string FileSystem::CreateFile(const std::string& fileNameWithoutExt, const std::string& extWithDot) noexcept
 	{
-		std::string filePath = GetLocalAbsolute(fileName);
+		std::string filePath{ GetLocalAbsolute(fileNameWithoutExt + extWithDot) };
 		if (!Exists(filePath))
 		{
 			CreateFileCMD(filePath);
@@ -467,7 +469,7 @@ namespace Core::SystemManagement
 		{
 			for (int i{ 0 }; true; ++i)
 			{
-				std::string nameNewFile = fileName + " (" + std::to_string(i) + ")";
+				std::string nameNewFile = fileNameWithoutExt + " (" + std::to_string(i) + ")" + extWithDot;
 				filePath = GetLocalAbsolute(nameNewFile);
 
 				if (!Exists(filePath))
