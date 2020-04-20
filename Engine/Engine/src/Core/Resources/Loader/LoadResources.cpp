@@ -68,10 +68,10 @@ namespace Resources::Loader
 
 	ResourcesManager::ResourcesManager()
 	{
-		Shader defaultShader("./Resources/Shaders/DefaultShader.vert", "./Resources/Shaders/DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		Shader defaultShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		m_shaders.emplace("Default", std::make_shared<Shader>(defaultShader));
 
-		Shader normalMapShader("./Resources/Shaders/DefaultShader.vert", "./Resources/Shaders/DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		Shader normalMapShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		m_shaders.emplace("NormalMapDefault", std::make_shared<Shader>(normalMapShader));
 
 		Shader wireframeShader("./Resources/Shaders/WireframeShader.vert", "./Resources/Shaders/WireframeShader.frag");
@@ -431,7 +431,7 @@ namespace Resources::Loader
 		std::list<Core::Datastructure::ScriptedComponent*> scripts; 
 		scripts = m_rootNode->GetComponentsOfType<Core::Datastructure::ScriptedComponent>();
 
-		for (const auto& component : scripts)
-			component->Restart();
+		for (const auto& script : scripts)
+			script->Restart();
 	}
 }
