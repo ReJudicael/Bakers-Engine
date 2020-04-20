@@ -1,74 +1,239 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c" />
-    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui.cpp" />
-    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\Editor\Canvas\Canvas.cpp" />
-    <ClCompile Include="src\Editor\Canvas\MenuBar.cpp" />
-    <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp" />
-    <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp" />
-    <ClCompile Include="src\Editor\EditorEngine.cpp" />
-    <ClCompile Include="src\Editor\GUIManager.cpp" />
-    <ClCompile Include="src\Editor\Widgets\AWidget.cpp" />
-    <ClCompile Include="src\Editor\Widgets\MenuGroup.cpp" />
-    <ClCompile Include="src\Editor\Widgets\MenuItem.cpp" />
-    <ClCompile Include="src\Editor\Widgets\Separator.cpp" />
-    <ClCompile Include="src\Editor\Window\AWindow.cpp" />
-    <ClCompile Include="src\Editor\Window\WindowConsole.cpp" />
-    <ClCompile Include="src\Editor\Window\WindowFileBrowser.cpp" />
-    <ClCompile Include="src\Editor\Window\WindowHierarchy.cpp" />
-    <ClCompile Include="src\Editor\Window\WindowInspector.cpp" />
-    <ClCompile Include="src\Editor\Window\WindowProfiler.cpp" />
-    <ClCompile Include="src\Editor\Window\WindowScene.cpp" />
-    <ClCompile Include="src\Editor\Window\WindowToolbar.cpp" />
-    <ClCompile Include="src\Editor\Window\WindowViewport.cpp" />
-    <ClCompile Include="src\Main.cpp" />
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Internal Dependencies">
+      <UniqueIdentifier>{868d10ff-5b90-4e66-9e6d-baf178a50c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Editor">
+      <UniqueIdentifier>{e874e364-9b9b-4028-858d-01136d9a0a58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor">
+      <UniqueIdentifier>{b9f4dbb4-06c6-4f11-b5eb-bb34a2e0d143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Editor\Datastructure">
+      <UniqueIdentifier>{21dabc33-002f-48e2-b8bf-6a072deeaa84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor\Datastructure">
+      <UniqueIdentifier>{17a6bf17-4089-499e-b13b-afec5c71278c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Editor\Canvas">
+      <UniqueIdentifier>{2e1c0004-5bdf-43a0-97ef-71fbcab46f20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor\Canvas">
+      <UniqueIdentifier>{76d6752e-1009-4dab-b8a5-79f5e9b35a75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Editor\Window">
+      <UniqueIdentifier>{7e63eed2-8c94-41f6-a063-b87124496da0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor\Window">
+      <UniqueIdentifier>{464d6c4f-4883-485e-b6f9-b1182a0ca529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Editor\Widget">
+      <UniqueIdentifier>{eeeb1af6-cd5c-4d07-8120-df6cafd555bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor\Widget">
+      <UniqueIdentifier>{c220081e-84bd-4218-a5ef-6ba2d4e565c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internal Dependencies\imgui">
+      <UniqueIdentifier>{05c9f060-0687-46be-a745-cd05813d7d1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internal Dependencies\imgui\src">
+      <UniqueIdentifier>{9629e790-7f2f-4108-8001-9bc8de2fa6a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internal Dependencies\imgui\include">
+      <UniqueIdentifier>{86cfdc8b-0ff2-4075-b190-eca1317b33b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imconfig.h" />
-    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui.h" />
-    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui_impl_glfw.h" />
-    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui_internal.h" />
-    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui_user.h" />
-    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imstb_textedit.h" />
-    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imstb_truetype.h" />
-    <ClInclude Include="include\Editor\Canvas\Canvas.hpp" />
-    <ClInclude Include="include\Editor\Canvas\MenuBar.h" />
-    <ClInclude Include="include\Editor\Datastructure\Container.hpp" />
-    <ClInclude Include="include\Editor\Datastructure\DrawableUIComponent.h" />
-    <ClInclude Include="include\Editor\Datastructure\EditorCamera.h" />
-    <ClInclude Include="include\Editor\Datastructure\IDrawable.h" />
-    <ClInclude Include="include\Editor\EditorEngine.h" />
-    <ClInclude Include="include\Editor\GUIManager.h" />
-    <ClInclude Include="include\Editor\Widget\AWidget.h" />
-    <ClInclude Include="include\Editor\Widget\MenuGroup.h" />
-    <ClInclude Include="include\Editor\Widget\MenuItem.h" />
-    <ClInclude Include="include\Editor\Widget\Separator.h" />
-    <ClInclude Include="include\Editor\Window\AWindow.h" />
-    <ClInclude Include="include\Editor\Window\WindowConsole.h" />
-    <ClInclude Include="include\Editor\Window\WindowFileBrowser.h" />
-    <ClInclude Include="include\Editor\Window\WindowHierarchy.h" />
-    <ClInclude Include="include\Editor\Window\WindowInspector.h" />
-    <ClInclude Include="include\Editor\Window\WindowProfiler.h" />
-    <ClInclude Include="include\Editor\Window\WindowScene.h" />
-    <ClInclude Include="include\Editor\Window\WindowToolbar.h" />
-    <ClInclude Include="include\Editor\Window\WindowViewport.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Dependencies\imgui-1.76\include\imgui\imgui_user.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.inl">
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\GUIManager.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp">
+      <Filter>Source Files\Editor\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Canvas\Canvas.cpp">
+      <Filter>Source Files\Editor\Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowFileBrowser.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowHierarchy.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowInspector.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowProfiler.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\AWindow.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowConsole.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Canvas\MenuBar.cpp">
+      <Filter>Source Files\Editor\Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Widgets\MenuGroup.cpp">
+      <Filter>Source Files\Editor\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Widgets\MenuItem.cpp">
+      <Filter>Source Files\Editor\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Widgets\Separator.cpp">
+      <Filter>Source Files\Editor\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Widgets\AWidget.cpp">
+      <Filter>Source Files\Editor\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\EditorEngine.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowViewport.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowScene.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowToolbar.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui.cpp">
       <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_demo.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_draw.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_impl_glfw.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_widgets.cpp">
+      <Filter>Internal Dependencies\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Editor\GUIManager.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Datastructure\IDrawable.h">
+      <Filter>Header Files\Editor\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Canvas\Canvas.hpp">
+      <Filter>Header Files\Editor\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowFileBrowser.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowHierarchy.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowInspector.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowProfiler.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\AWindow.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowConsole.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Datastructure\Container.hpp">
+      <Filter>Header Files\Editor\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Canvas\MenuBar.h">
+      <Filter>Header Files\Editor\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Widget\MenuItem.h">
+      <Filter>Header Files\Editor\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Widget\Separator.h">
+      <Filter>Header Files\Editor\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Widget\AWidget.h">
+      <Filter>Header Files\Editor\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Widget\MenuGroup.h">
+      <Filter>Header Files\Editor\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\EditorEngine.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowViewport.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowScene.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowToolbar.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imconfig.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui_impl_glfw.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui_impl_opengl3.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui_internal.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imgui_user.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imstb_rectpack.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imstb_textedit.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imstb_truetype.h">
+      <Filter>Internal Dependencies\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Datastructure\EditorCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Datastructure\DrawableUIComponent.h">
+      <Filter>Header Files\Editor\Datastructure</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dependencies\imgui-1.76\include\imgui\imgui_user.inl">
+      <Filter>Internal Dependencies\imgui\include</Filter>
     </None>
-    <None Include="Resources\Shaders\WireframeShader.vert" />
-    <None Include="Resources\Shaders\WireframeShader.frag" />
   </ItemGroup>
 </Project>
