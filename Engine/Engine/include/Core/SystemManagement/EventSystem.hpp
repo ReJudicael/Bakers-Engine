@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <functional>
-#include "CoreMinimal.h"
+#include <EngineDefines.h>
 
 #define BIND_EVENT(x) std::bind(&x, this, std::placeholders::_1)
 #define BIND_EVENT_2(x) std::bind(&x, this, std::placeholders::_1, std::placeholders::_2)
@@ -14,6 +14,9 @@ namespace Core
 	 */
 	namespace SystemManagement
 	{
+		/**
+		 * ID to identify its callback
+		 */
 		typedef unsigned int ID;
 
 		/**

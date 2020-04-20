@@ -2,36 +2,39 @@
 #include "EditorEngine.h"
 #include "LoadResources.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
 namespace Editor::Window
 {
 	/**
 	 * Excluded extensions
 	 */
-	std::vector<std::string> excludedExtensions = {
-	".exe",
-	".dll",
-	".bat",
-	".ini",
-	".layout",
-	".ilk",
-	".lib",
-	".pdb"
+	std::vector<std::string> excludedExtensions =
+	{
+		".exe",
+		".dll",
+		".bat",
+		".ini",
+		".lib",
+		".pdb"
+		".vcxproj",
 	};
 
 	WindowFileBrowser::WindowFileBrowser(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "File Browser", visible }
 	{
+		m_fs = new Core::SystemManagement::FileSystem();
 		m_inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
+	}
+
+	WindowFileBrowser::~WindowFileBrowser()
+	{
+		delete m_fs;
 	}
 
 	void WindowFileBrowser::PushWindowStyle()
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.259f, 0.588f, 0.980f, 0.f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.259f, 0.588f, 0.980f, 0.392f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, { 0.059f, 0.529f, 0.980f, 0.392f });
+		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.f, 0.f, 0.f, 0.f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.259f, 0.588f, 0.980f, 0.392f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive,	{ 0.059f, 0.529f, 0.980f, 0.392f });
 	}
 
 	void WindowFileBrowser::PopWindowStyle()
@@ -53,15 +56,16 @@ namespace Editor::Window
 			ImGui::SetKeyboardFocusHere();
 			m_canRename = true;
 		}
+
 		return m_canRename;
 	}
 
 	void WindowFileBrowser::ApplyNameToItem(const std::string& itemName)
 	{
-		fs.RenameContent(fs.GetLocalAbsolute(itemName), m_name);
+		m_fs->RenameContent(m_fs->GetLocalAbsolute(itemName), m_name);
 		m_renamePath.clear();
-		m_scrollSetted = false;
-		m_canRename = false;
+		m_scrollSetted	= false;
+		m_canRename		= false;
 	}
 
 	void WindowFileBrowser::RenameContent(const std::string& itemName)
@@ -73,8 +77,7 @@ namespace Editor::Window
 			memcpy(m_name, itemName.c_str(), itemName.size() + 1);
 
 		ImGui::SetNextItemWidth(m_contentPathSize - 10.f);
-
-		bool apply = ImGui::InputText("## InputText", m_name, IM_ARRAYSIZE(m_name), m_inputTextFlags);
+		bool apply = ImGui::InputText("## RenameContent", m_name, IM_ARRAYSIZE(m_name), m_inputTextFlags);
 
 		if (apply || ImGui::IsItemDeactivated())
 			ApplyNameToItem(itemName);
@@ -83,7 +86,7 @@ namespace Editor::Window
 	void WindowFileBrowser::MenuItemRefresh()
 	{
 		if (ImGui::MenuItem("Refresh"))
-			fs.ActualizeContentsInCurrentPath();
+			m_fs->RefreshCurrentPath();
 	}
 
 	void WindowFileBrowser::MenuItemNew()
@@ -91,10 +94,10 @@ namespace Editor::Window
 		if (ImGui::BeginMenu("New"))
 		{
 			if (ImGui::MenuItem("Folder"))
-				m_renamePath = fs.CreateFolder();
+				m_renamePath = m_fs->CreateFolder();
 
 			if (ImGui::MenuItem("File"))
-				m_renamePath = fs.CreateFile();
+				m_renamePath = m_fs->CreateFile();
 
 			ImGui::EndMenu();
 		}
@@ -102,7 +105,7 @@ namespace Editor::Window
 
 	void WindowFileBrowser::PopupMenuOnWindow()
 	{
-		if (ImGui::BeginPopupContextWindow("## PopupOnWindow", ImGuiMouseButton_Right, false))
+		if (ImGui::BeginPopupContextWindow("## PopupMenuOnWindow", ImGuiMouseButton_Right, false))
 		{
 			MenuItemRefresh();
 			ImGui::Separator();
@@ -113,10 +116,10 @@ namespace Editor::Window
 
 	void WindowFileBrowser::PopupMenuOnItem(const std::string& itemPath)
 	{
-		if (ImGui::BeginPopupContextItem("## PopupOnItem", ImGuiMouseButton_Right))
+		if (ImGui::BeginPopupContextItem("## PopupMenuOnItem", ImGuiMouseButton_Right))
 		{
 			if (ImGui::MenuItem("Open"))
-				fs.OpenContent(itemPath);
+				m_fs->OpenContent(itemPath);
 
 			if (itemPath != "..")
 			{
@@ -125,13 +128,10 @@ namespace Editor::Window
 					m_renamePath = itemPath;
 
 				if (ImGui::MenuItem("Delete"))
-					fs.DeleteContent(itemPath);
+					m_fs->DeleteContent(itemPath);
 			}
-
 			ImGui::Separator();
 			MenuItemRefresh();
-			ImGui::Separator();
-			MenuItemNew();
 
 			ImGui::EndPopup();
 		}
@@ -139,56 +139,57 @@ namespace Editor::Window
 
 	void WindowFileBrowser::ZoomPathContents()
 	{
-		ImGui::Indent(ImGui::GetWindowWidth() - 150.f);
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 150.f);
 		ImGui::SetNextItemWidth(100.f);
 
 		if (ImGui::SliderInt("Size", &m_size, 1, 100))
 			m_contentPathSize = 65.f + m_size * 1.3f;
 	}
 
-	ImTextureID WindowFileBrowser::GetIcon(const std::string& itemPath)
+	GLuint WindowFileBrowser::GetIcon(const std::string& itemPath)
 	{
-		auto it = m_icons.find(itemPath);
+		auto it{ m_icons.find(itemPath) };
 		if (it == m_icons.end())
 		{
 			std::string ext;
 			if (itemPath == "..")
 				ext = "backFolder";
-			else if (fs.IsDirectory(itemPath))
+			else if (m_fs->IsDirectory(itemPath))
 				ext = "folder";
 			else
-				ext = fs.GetExtensionWithoutDot_str(itemPath);
+				ext = m_fs->GetExtensionWithoutDot(itemPath);
 
 			std::string iconsPath{ "Resources\\Images\\FileBrowserIcons\\icon_" + ext + ".png" };
 			std::shared_ptr<Resources::Texture> icon;
-			if (fs.Exists(iconsPath))
+			if (m_fs->Exists(iconsPath))
 				GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
 			else
 				GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\FileBrowserIcons\\icon_default.png", icon);
 
 			it = m_icons.emplace(itemPath, icon).first;
 		}
-#pragma warning(suppress : 4312)
-		return reinterpret_cast<ImTextureID>(it->second->texture);
+
+		return it->second->texture;
 	}
 
 	void WindowFileBrowser::ShowCurrentPathOnHeader()
 	{
-		if (ImGui::ImageButtonUV(GetIcon("."), { 16.f }))
-			fs.SetCurrentDirectory(".");
+		const std::string rootDirectory{ "." };
+		if (ImGui::ImageButtonUV(GetIcon(rootDirectory)))
+			m_fs->SetCurrentDirectory(rootDirectory);
+		DragDropTargetItem(rootDirectory);
 
-		const std::vector<std::string>& foldersPath{ fs.GetExplodedCurrentPath() };
-		for (int i = 0; i < foldersPath.size() && fs.GetCurrentDirectory() != "."; ++i)
+		const std::vector<std::string>& foldersPath{ m_fs->GetExplodedCurrentPath() };
+		for (int i{ 0 }; i < foldersPath.size() && m_fs->GetCurrentDirectory() != "."; ++i)
 		{
+			const size_t& pos{ m_fs->GetCurrentDirectory().find(foldersPath[i]) + foldersPath[i].size() };
+
 			ImGui::SameLine();
 			ImGui::PushID(i);
-			if (ImGui::Button(foldersPath[i].c_str()))
 			{
-				std::size_t found{ 0 };
-				for (int j{ 0 }; j < i; ++j)
-					found += foldersPath[j].size() + 1;	// + 1 for slash between each folders
-				found += foldersPath[i].size();			// Remove trailing slash, if existing
-				fs.CutCurrentPathAtPos(found);
+				if (ImGui::Button(foldersPath[i].c_str()))
+					m_fs->SetCurrentDirectory(m_fs->GetCurrentPathAtPos(pos));
+				DragDropTargetItem(m_fs->GetCurrentPathAtPos(pos));
 			}
 			ImGui::PopID();
 
@@ -198,12 +199,38 @@ namespace Editor::Window
 				ImGui::Text(">");
 			}
 		}
+
+		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 175.f);
+		m_pathFilter.Draw("Filter", ImGui::GetContentRegionAvail().x - 37.f);
+	}
+
+	void WindowFileBrowser::DragDropSourceItem(const std::string& itemName, const std::string& itemPath)
+	{
+		if (itemName != ".." && ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+		{
+			ImGui::Text(itemName.c_str());
+			ImGui::SetDragDropPayload("DRAGDROP_PATH", itemPath.c_str(), itemPath.size() + 1, ImGuiCond_Once);
+			ImGui::EndDragDropSource();
+		}
+	}
+
+	void WindowFileBrowser::DragDropTargetItem(const std::string& itemPath)
+	{
+		if (ImGui::BeginDragDropTarget() && m_fs->IsDirectory(itemPath))
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
+			{
+				const char* path = reinterpret_cast<const char*>(payload->Data);
+
+				m_fs->MovePath(path, itemPath.c_str());
+				ImGui::EndDragDropTarget();
+			}
+		}
 	}
 
 	void WindowFileBrowser::ShowItem(const std::string& itemName)
 	{
-		const std::string& itemPath = fs.GetLocalAbsolute(itemName);
-
+		const std::string& itemPath = m_fs->GetLocalAbsolute(itemName);
 		ImGui::BeginGroup();
 		{
 			ImGui::ImageButtonUV(GetIcon(itemPath), { m_contentPathSize - 20.f });
@@ -214,37 +241,40 @@ namespace Editor::Window
 		}
 		ImGui::EndGroup();
 
+		DragDropSourceItem(itemName, itemPath);
+		DragDropTargetItem(itemPath);
+
 		PopupMenuOnItem(itemPath);
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-			fs.OpenContent(itemPath);
+			m_fs->OpenContent(itemPath);
 	}
 
 	void WindowFileBrowser::ShowDirectoryContent(std::vector<std::filesystem::path> contents)
 	{
 		ImVec2 regionSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 30.f };
-		ImGui::BeginChild("## WindowFileBrowser", regionSize);
+		ImGui::BeginChild("## ShowDirectoryContent", regionSize);
 		{
 			PopupMenuOnWindow();
 
 			int columns{ static_cast<int>(regionSize.x / m_contentPathSize) };
-			if (columns < 1)
-				columns = 1;
-			ImGui::Columns(columns, (const char*)0, false);
+			if (columns < 1) columns = 1;
+			ImGui::Columns(columns, "## ShowDirectoryContentColumns", false);
 
-			if (fs.GetCurrentDirectory() != ".")
+			if (m_fs->GetCurrentDirectory() != ".")
 				contents.insert(contents.begin(), "..");
 
 			std::string itemName;
 			for (size_t i{ 0 }; i < contents.size(); ++i)
 			{
-				if (fs.NeedToActualizeContentsInCurrentPath())
+				if (m_fs->IsRefreshedCurrentPath())
 				{
 					m_icons.clear();
 					break;
 				}
 
 				itemName = contents[i].filename().string();
-				if (fs.FileHasExcludedExtension(itemName, excludedExtensions))
+				if (itemName != ".." && (m_fs->FileHasExcludedExtension(itemName, excludedExtensions) ||
+					!m_pathFilter.PassFilter(itemName.c_str())))
 					continue;
 
 				ImGui::PushID(static_cast<int>(i));
@@ -255,19 +285,15 @@ namespace Editor::Window
 			}
 			ImGui::EndChild();
 		}
-		ZoomPathContents();
-	}
 
-	void WindowFileBrowser::ShowFileBrowser(const std::vector<std::filesystem::path>& content)
-	{
-		ShowCurrentPathOnHeader();
-		ImGui::Separator();
-		ShowDirectoryContent(content);
+		ZoomPathContents();
 	}
 
 	void WindowFileBrowser::Tick()
 	{
-		fs.MoveCurrentToClosestDirectory();
-		ShowFileBrowser(fs.GetContentsInCurrentPath());
+		m_fs->MoveCurrentToClosestDirectory();
+		ShowCurrentPathOnHeader();
+		ImGui::Separator();
+		ShowDirectoryContent(m_fs->GetContentsInCurrentPath());
 	}
 }

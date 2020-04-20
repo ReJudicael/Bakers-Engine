@@ -57,19 +57,19 @@ namespace Core::Navigation
 		rcHeightfield* solid{ rcAllocHeightfield() };
 		if (!solid)
 		{
-			DEBUG_LOG_ERROR("Failed to allocate solid heightfield");
+			BAKERS_LOG_ERROR("Failed to allocate solid heightfield");
 			return false;
 		}
 		if (!rcCreateHeightfield(m_ctx, *solid, m_cfg.width, m_cfg.height, m_cfg.bmin, m_cfg.bmax, m_cfg.cs, m_cfg.ch))
 		{
-			DEBUG_LOG_ERROR("Failed to create solid heightfield");
+			BAKERS_LOG_ERROR("Failed to create solid heightfield");
 			return false;
 		}
 
 		unsigned char* triareas{ new unsigned char[m_maxTris] };
 		if (!triareas)
 		{
-			DEBUG_LOG_ERROR(std::string("Failed to allocate ") + std::to_string(m_maxTris) + std::string(" bytes for triarea"));
+			BAKERS_LOG_ERROR(std::string("Failed to allocate ") + std::to_string(m_maxTris) + std::string(" bytes for triarea"));
 			return false;
 		}
 		for (auto it{ m_mesh.begin() }; it != m_mesh.end(); ++it)
@@ -84,7 +84,7 @@ namespace Core::Navigation
 			rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, it->verts, it->nverts, it->tris, it->ntris, triareas);
 			if (!rcRasterizeTriangles(m_ctx, it->verts, it->nverts, it->tris, triareas, it->ntris, *solid, m_cfg.walkableClimb))
 			{
-				DEBUG_LOG_ERROR("Could not rasterize triangles");
+				BAKERS_LOG_ERROR("Could not rasterize triangles");
 				return false;
 			}
 		}
@@ -101,31 +101,31 @@ namespace Core::Navigation
 		rcCompactHeightfield* chf{ rcAllocCompactHeightfield() };
 		if (!chf)
 		{
-			DEBUG_LOG_ERROR("Failed to allocate compact height field");
+			BAKERS_LOG_ERROR("Failed to allocate compact height field");
 			return false;
 		}
 		if (!rcBuildCompactHeightfield(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *solid, *chf))
 		{
-			DEBUG_LOG_ERROR("Could not build compact height field data");
+			BAKERS_LOG_ERROR("Could not build compact height field data");
 			return false;
 		}
 		rcFreeHeightField(solid);
 
 		if (!rcErodeWalkableArea(m_ctx, m_cfg.walkableRadius, *chf))
 		{
-			DEBUG_LOG_ERROR("Failed to erode navigation data");
+			BAKERS_LOG_ERROR("Failed to erode navigation data");
 			return false;
 		}
 
 		//Watershed partitioning
 		if (!rcBuildDistanceField(m_ctx, *chf))
 		{
-			DEBUG_LOG_ERROR("Could not build distance field");
+			BAKERS_LOG_ERROR("Could not build distance field");
 			return false;
 		}
 		if (!rcBuildRegions(m_ctx, *chf, 0, m_cfg.minRegionArea, m_cfg.mergeRegionArea))
 		{
-			DEBUG_LOG_ERROR("Could not build watershed regions");
+			BAKERS_LOG_ERROR("Could not build watershed regions");
 			return false;
 		}
 
@@ -133,12 +133,12 @@ namespace Core::Navigation
 
 		if (!cset)
 		{
-			DEBUG_LOG_ERROR("Failed to allocate contour set");
+			BAKERS_LOG_ERROR("Failed to allocate contour set");
 			return false;
 		}
 		if (!rcBuildContours(m_ctx, *chf, m_cfg.maxSimplificationError, m_cfg.maxEdgeLen, *cset))
 		{
-			DEBUG_LOG_ERROR("Could not create contours");
+			BAKERS_LOG_ERROR("Could not create contours");
 			return false;
 		}
 
@@ -146,25 +146,25 @@ namespace Core::Navigation
 		m_pmesh = rcAllocPolyMesh();
 		if (!m_pmesh)
 		{
-			DEBUG_LOG_ERROR("Failed to allocate poly mesh");
+			BAKERS_LOG_ERROR("Failed to allocate poly mesh");
 			return false;
 		}
 		if (!rcBuildPolyMesh(m_ctx, *cset, m_cfg.maxVertsPerPoly, *m_pmesh))
 		{
-			DEBUG_LOG_ERROR("Could not triangulate contours");
+			BAKERS_LOG_ERROR("Could not triangulate contours");
 			return false;
 		}
 
 		m_dmesh = rcAllocPolyMeshDetail();
 		if (!m_dmesh)
 		{
-			DEBUG_LOG_ERROR("Failed to allocate poly mesh detail");
+			BAKERS_LOG_ERROR("Failed to allocate poly mesh detail");
 			return false;
 		}
 
 		if (!rcBuildPolyMeshDetail(m_ctx, *m_pmesh, *chf, m_cfg.detailSampleDist, m_cfg.detailSampleMaxError, *m_dmesh))
 		{
-			DEBUG_LOG_ERROR("Could not build detail mesh");
+			BAKERS_LOG_ERROR("Could not build detail mesh");
 			return false;
 		}
 		rcFreeCompactHeightfield(chf);
@@ -217,7 +217,7 @@ namespace Core::Navigation
 
 			if (!dtCreateNavMeshData(&params, &navData, &navDataSize))
 			{
-				DEBUG_LOG_ERROR("Could not build Detour navmesh");
+				BAKERS_LOG_ERROR("Could not build Detour navmesh");
 				return false;
 			}
 
@@ -225,7 +225,7 @@ namespace Core::Navigation
 			if (!m_navMesh)
 			{
 				dtFree(navData);
-				DEBUG_LOG_ERROR("Could not create Detour navmesh");
+				BAKERS_LOG_ERROR("Could not create Detour navmesh");
 				return false;
 			}
 
@@ -235,7 +235,7 @@ namespace Core::Navigation
 			if (dtStatusFailed(status))
 			{
 				dtFree(navData);
-				DEBUG_LOG_ERROR("Could not init Detour navmesh");
+				BAKERS_LOG_ERROR("Could not init Detour navmesh");
 				return false;
 			}
 
@@ -279,9 +279,9 @@ namespace Core::Navigation
 
 				m_crowd->setObstacleAvoidanceParams(3, &params);
 			}*/
-			if (m_navQuery.Init(m_navMesh))
+			if (!m_navQuery.Init(m_navMesh))
 			{
-				DEBUG_LOG_ERROR("Could not init Detour navmesh query");
+				BAKERS_LOG_ERROR("Could not init Detour navmesh query");
 				return false;
 			}
 		}
@@ -322,7 +322,7 @@ namespace Core::Navigation
 			comma = true;
 		}
 
-		DEBUG_LOG(time);
+		BAKERS_LOG_MESSAGE(time);
 		std::chrono::high_resolution_clock::duration d;
 		
 		m_isUpdated = true;

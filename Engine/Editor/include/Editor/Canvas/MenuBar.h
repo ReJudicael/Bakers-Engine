@@ -1,11 +1,11 @@
 #pragma once
 
-#include "DrawableComponent.h"
-#include "AWidget.h"
-#include "Container.hpp"
 #include <vector>
 #include <memory>
-#include <MenuGroup.h>
+
+#include "DrawableUIComponent.h"
+#include "Container.hpp"
+#include "AWidget.h"
 
 namespace Editor
 {

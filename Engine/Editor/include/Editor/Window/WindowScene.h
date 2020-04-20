@@ -1,12 +1,11 @@
 #pragma once
 
 #include "AWindow.h"
-#include "Framebuffer.h"
 #include "EditorCamera.h"
 
 namespace Core::Renderer
 {
-	class Framebuffer;
+	struct Framebuffer;
 }
 
 namespace Editor::Window

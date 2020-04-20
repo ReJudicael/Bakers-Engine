@@ -1,9 +1,9 @@
 #pragma once
 
-#include "DrawableComponent.h"
-
 #include <imgui\imgui.h>
 #include <string>
+
+#include "DrawableUIComponent.h"
 
 namespace Editor
 {
@@ -18,7 +18,7 @@ namespace Editor
 		/**
 		 * Base class for windows
 		 */
-		class AWindow : public Datastructure::DrawableComponent
+		class AWindow : public Datastructure::DrawableUIComponent
 		{
 		protected:
 			/**

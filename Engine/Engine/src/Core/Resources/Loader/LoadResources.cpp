@@ -14,7 +14,9 @@
 #include "Assimp/texture.h"
 #include "Assimp/RemoveComments.h"
 
+#include "RootObject.hpp"
 #include "Object.hpp"
+#include "ScriptedComponent.h"
 #include "Model.h"
 #include "Texture.h"
 #include "TextureData.h"
@@ -363,5 +365,26 @@ namespace Resources::Loader
 			itshader->second->UseProgram();
 			itshader->second->SendLights();
 		}
+	}
+
+	void ResourcesManager::ReloadShaders()
+	{
+		for (unorderedmapShader::iterator itshader = m_shaders.begin();
+			itshader != m_shaders.end(); ++itshader)
+		{
+			itshader->second->Reload();
+		}
+	}
+
+	void ResourcesManager::ReloadScripts()
+	{
+		if (!m_rootNode)
+			BAKERS_LOG_ERROR("Can not reload scripts: no root node found from Resources Manager");
+
+		std::list<Core::Datastructure::ScriptedComponent*> scripts; 
+		scripts = m_rootNode->GetComponentsOfType<Core::Datastructure::ScriptedComponent>();
+
+		for (const auto& component : scripts)
+			component->Restart();
 	}
 }

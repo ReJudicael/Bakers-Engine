@@ -1,10 +1,10 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "AWindow.h"
 #include "FileSystem.hpp"
 #include "Texture.h"
-
-#include <unordered_map>
 
 namespace Editor::Window
 {
@@ -19,11 +19,16 @@ namespace Editor::Window
 		 */
 		ImGuiInputTextFlags m_inputTextFlags;
 
+		/**
+		 * Path Filter
+		 */
+		ImGuiTextFilter m_pathFilter;
+
 	private:
 		/**
 		 * FileSystem to handle path navigation
 		 */
-		Core::SystemManagement::FileSystem fs;
+		Core::SystemManagement::FileSystem* m_fs;
 
 		/**
 		 * Name of the path to be renamed
@@ -67,9 +72,9 @@ namespace Editor::Window
 		WindowFileBrowser(Canvas* canvas, bool visible = true);
 
 		/**
-		 * Default destructor
+		 * Destructor
 		 */
-		~WindowFileBrowser() = default;
+		~WindowFileBrowser();
 
 	private:
 		/**
@@ -131,13 +136,26 @@ namespace Editor::Window
 		 * Get the texture of the icon of the chosen file / folder
 		 * @param itemPath: Path of the chosen file / folder
 		 */
-		ImTextureID GetIcon(const std::string& itemPath);
+		GLuint GetIcon(const std::string& itemPath);
 
 	private:
 		/**
 		 * Show current local path on header
 		 */
 		void ShowCurrentPathOnHeader();
+
+		/**
+		 * Drag an item
+		 * @param itemName: Name of the dragged file / folder
+		 * @param itemPath: Path of the dragged file / folder
+		 */
+		void DragDropSourceItem(const std::string& itemName, const std::string& itemPath);
+
+		/**
+		 * Drop an item in a folder
+		 * @param itemPath: Path of the dropped file / folder
+		 */
+		void DragDropTargetItem(const std::string& itemPath);
 
 		/**
 		 * Show the chosen file / folder
@@ -151,15 +169,10 @@ namespace Editor::Window
 		 */
 		void ShowDirectoryContent(std::vector<std::filesystem::path> contents);
 
-		/**
-		 * Display the current local path and the contents of the current directory
-		 * @param contents: Contents of the current directory
-		 */
-		void ShowFileBrowser(const std::vector<std::filesystem::path>& content);
-
 	private:
 		/**
 		 * Draw elements in window
+		 * Display the current local path and the contents of the current directory
 		 */
 		void Tick() override;
 	};

@@ -1,3 +1,6 @@
+#include <string>
+#include <filesystem>
+
 #include "imgui_user.h"
 #include "Maths/Vec3.hpp"
 
@@ -14,96 +17,82 @@ namespace ImGui
         if (label)
             Text(label);
         SameLine(offset);
-        PushItemWidth(GetContentRegionAvail().x);
+        PushItemWidth(-FLT_MIN);
     }
 
-    IMGUI_API bool RCheckbox(const std::string& label, bool* v)
+    IMGUI_API bool RCheckbox(const char* label, bool* v)
     {
-        PushItemToRight(label.c_str());
-        return Checkbox(("##" + label).c_str(), v);
+        PushItemToRight(label);
+        return Checkbox(("##" + std::string(label)).c_str(), v);
     }
 
-    IMGUI_API bool RDragInt(const std::string& label, int* v, float v_speed, int v_min, int v_max, const char* format)
+    IMGUI_API bool RDragInt(const char* label, int* v, float v_speed, int v_min, int v_max, const char* format)
     {
-        Text(label.c_str());
-        SameLine(GetContentRegionAvail().x / 3);
-        PushItemWidth(GetContentRegionAvail().x);
-        return DragInt(("##" + label).c_str(), v, v_speed, v_min, v_max, format);
+        PushItemToRight(label);
+        return DragInt(("##" + std::string(label)).c_str(), v, v_speed, v_min, v_max, format);
     }
 
-    IMGUI_API bool RDragFloat(const std::string& label, float* v, float v_speed, float v_min, float v_max, const char* format, float power)
+    IMGUI_API bool RDragFloat(const char* label, float* v, float v_speed, float v_min, float v_max, const char* format, float power)
     {
-        PushItemToRight(label.c_str());
-        return DragFloat(("##" + label).c_str(), v, v_speed, v_min, v_max, format, power);
+        PushItemToRight(label);
+        return DragFloat(("##" + std::string(label)).c_str(), v, v_speed, v_min, v_max, format, power);
     }
 
-    IMGUI_API bool RDragFloat2(const std::string& label, float v[2], float v_speed, float v_min, float v_max, const char* format, float power)
+    IMGUI_API bool RDragFloat2(const char* label, float v[2], float v_speed, float v_min, float v_max, const char* format, float power)
     {
-        PushItemToRight(label.c_str());
-        return DragFloat2(("##" + label).c_str(), v, v_speed, v_min, v_max, format, power);
+        PushItemToRight(label);
+        return DragFloat2(("##" + std::string(label)).c_str(), v, v_speed, v_min, v_max, format, power);
     }
 
-    IMGUI_API bool RDragFloat3(const std::string& label, float v[3], float v_speed, float v_min,float v_max, const char* format, float power)
+    IMGUI_API bool RDragFloat3(const char* label, float v[3], float v_speed, float v_min,float v_max, const char* format, float power)
     {
-        PushItemToRight(label.c_str());
-        return DragFloat3(("##" + label).c_str(), v, v_speed, v_min, v_max, format, power);
+        PushItemToRight(label);
+        return DragFloat3(("##" + std::string(label)).c_str(), v, v_speed, v_min, v_max, format, power);
     }
 
-    IMGUI_API bool RDragFloat4(const std::string& label, float v[4], float v_speed, float v_min, float v_max, const char* format, float power)
+    IMGUI_API bool RDragFloat4(const char* label, float v[4], float v_speed, float v_min, float v_max, const char* format, float power)
     {
-        PushItemToRight(label.c_str());
-        return DragFloat4(("##" + label).c_str(), v, v_speed, v_min, v_max, format, power);
+        PushItemToRight(label);
+        return DragFloat4(("##" + std::string(label)).c_str(), v, v_speed, v_min, v_max, format, power);
     }
 
-    IMGUI_API bool RColorEdit4(const std::string& label, float col[4], ImGuiColorEditFlags flags)
+    IMGUI_API bool RColorEdit4(const char* label, float col[4], ImGuiColorEditFlags flags)
     {
-        PushItemToRight(label.c_str());
-        return ColorEdit4(("##" + label).c_str(), col, flags);
+        PushItemToRight(label);
+        return ColorEdit4(("##" + std::string(label)).c_str(), col, flags);
     }
 
-    IMGUI_API bool RBeginCombo(const std::string& label, const char* preview_value, ImGuiComboFlags flags)
+    IMGUI_API bool RBeginCombo(const char* label, const char* preview_value, ImGuiComboFlags flags)
     {
-        PushItemToRight(label.c_str());
-        return BeginCombo(("##" + label).c_str(), preview_value, flags);
+        PushItemToRight(label);
+        return BeginCombo(("##" + std::string(label)).c_str(), preview_value, flags);
     }
 
-    IMGUI_API bool ColoredButton(const char* label, const ImVec2& size_arg, const ImVec3& color)
+    IMGUI_API void RButtonDD(const char* label, const char* value)
     {
-        PushStyleColor(ImGuiCol_Button, { color.x, color.y, color.z, 1.0f });
-        PushStyleColor(ImGuiCol_ButtonHovered, { color.x, color.y, color.z, 0.7f });
-        bool isPressed = Button(label, size_arg);
-        PopStyleColor(2);
+        PushItemToRight(label);
+        PushStyleColor(ImGuiCol_Button, GImGui->Style.Colors[ImGuiCol_FrameBg]);
+        PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
 
-        return isPressed;
+        ButtonEx(value, { ImGui::GetContentRegionAvail().x, 0.f }, ImGuiButtonFlags_Disabled);
+
+        PopStyleVar();
+        PopStyleColor();
     }
 
-    IMGUI_API void ImageUV(ImTextureID user_texture_id, const ImVec2& size)
+    IMGUI_API void ImageUV(unsigned int user_texture_id, const ImVec2& size)
     {
-        return Image(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
+#pragma warning(suppress : 4312)
+        return Image((ImTextureID)user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
     }
 
-    IMGUI_API bool ImageButtonUV_HelpMarker(ImTextureID user_texture_id, const char* help_marker, const ImVec2& size)
+    IMGUI_API bool ImageButtonUV(unsigned int user_texture_id, const ImVec2& size)
     {
-        bool isClicked = ImageButton(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
-        HelpMarkerItem(help_marker);
-
-        return isClicked;
+#pragma warning(suppress : 4312)
+        return ImageButton((ImTextureID)user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
     }
 
-    IMGUI_API bool ImageButtonUV(ImTextureID user_texture_id, const ImVec2& size)
-    {
-        return ImageButton(user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
-    }
-
-    IMGUI_API bool ImageButtonUVWithText_HelpMarker(ImTextureID user_texture_id, const char* label, const std::string& text, const char* help_marker, const ImVec2& icon_size)
-    {
-        bool isClicked = ImageButtonUVWithText(user_texture_id, label, text, icon_size);
-        HelpMarkerItem(help_marker);
-
-        return isClicked;
-    }
-
-    IMGUI_API bool ImageButtonUVWithText(ImTextureID user_texture_id, const char* label, const std::string& text, const ImVec2& icon_size)
+    IMGUI_API bool ImageButtonUVWithText(unsigned int user_texture_id, const char* label, const std::string& text, const ImVec2& icon_size)
     {
         const char* button_text = text.c_str();
         ImGuiWindow* window = GetCurrentWindow();
@@ -156,7 +145,8 @@ namespace ImGui
         const ImU32 col = GetColorU32((hovered && held) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
         RenderFrame(bb.Min, bb.Max, col, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, style.FrameRounding));
 
-        window->DrawList->AddImage(user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
+#pragma warning(suppress : 4312)
+        window->DrawList->AddImage((ImTextureID)user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
 
         if (textSize.x > 0)
             ImGui::RenderText(start, button_text);
@@ -223,7 +213,7 @@ namespace ImGui
             if (popup_window->WasActive)
             {
                 ImVec2 size_expected = CalcWindowExpectedSize(popup_window);
-                popup_window->AutoPosLastDirection = ImGuiDir_Left;
+                popup_window->AutoPosLastDirection = ImGuiDir_Right | ImGuiDir_Down;
                 ImRect r_outer = GetWindowAllowedExtentRect(popup_window);
                 ImVec2 pos = FindBestWindowPosForPopupEx(frame_bb.GetBL(), size_expected, &popup_window->AutoPosLastDirection, r_outer, frame_bb, ImGuiPopupPositionPolicy_ComboBox);
                 SetNextWindowPos(pos);
@@ -246,14 +236,81 @@ namespace ImGui
         return true;
     }
 
-    IMGUI_API bool BeginComboColoredButton(const char* label, const ImVec3& color)
+    IMGUI_API bool BeginComboImageButtonUV(unsigned int user_texture_id, const ImVec2& size)
     {
-        PushStyleColor(ImGuiCol_Button, { color.x, color.y, color.z, 1.0f });
-        PushStyleColor(ImGuiCol_ButtonHovered, { color.x, color.y, color.z, 0.7f });
-        bool isOpen = BeginComboButton(label);
-        PopStyleColor(2);
+        int frame_padding = -1;
+        ImGuiWindow* window = GetCurrentWindow();
+        if (window->SkipItems)
+            return false;
 
-        return isOpen;
+        ImGuiContext& g = *GImGui;
+        const ImGuiStyle& style = g.Style;
+        PushID((void*)(intptr_t)user_texture_id);
+        const ImGuiID id = window->GetID("#image");
+        PopID();
+
+        const ImVec2 padding = (frame_padding >= 0) ? ImVec2((float)frame_padding, (float)frame_padding) : style.FramePadding;
+        const ImRect frame_bb(window->DC.CursorPos, window->DC.CursorPos + size + padding * 2);
+        const ImRect image_bb(window->DC.CursorPos + padding, window->DC.CursorPos + padding + size);
+        ItemSize(frame_bb);
+        if (!ItemAdd(frame_bb, id))
+            return false;
+
+        bool hovered, held;
+        bool pressed = ButtonBehavior(frame_bb, id, &hovered, &held);
+
+        const ImU32 frame_col = GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
+
+        RenderNavHighlight(frame_bb, id);
+        RenderFrame(frame_bb.Min, frame_bb.Max, frame_col, true, style.FrameRounding);
+
+#pragma warning(suppress : 4312)
+        window->DrawList->AddImage((ImTextureID)user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
+
+        bool popup_open = IsPopupOpen(id);
+        if ((pressed || g.NavActivateId == id) && !popup_open)
+        {
+            if (window->DC.NavLayerCurrent == 0)
+                window->NavLastIds[0] = id;
+            OpenPopupEx(id);
+            popup_open = true;
+        }
+
+        if (!popup_open)
+            return false;
+
+        int popup_max_height_in_items = 4;
+        SetNextWindowSizeConstraints(ImVec2(size.x, 0.0f), ImVec2(FLT_MAX, CalcMaxPopupHeightFromItemCount(popup_max_height_in_items)));
+
+        char name[16];
+        ImFormatString(name, IM_ARRAYSIZE(name), "##Combo_%02d", g.BeginPopupStack.Size); // Recycle windows based on depth
+
+        // Peak into expected window size so we can position it
+        if (ImGuiWindow* popup_window = FindWindowByName(name))
+            if (popup_window->WasActive)
+            {
+                ImVec2 size_expected = CalcWindowExpectedSize(popup_window);
+                popup_window->AutoPosLastDirection = ImGuiDir_Right | ImGuiDir_Down;
+                ImRect r_outer = GetWindowAllowedExtentRect(popup_window);
+                ImVec2 pos = FindBestWindowPosForPopupEx(frame_bb.GetBL(), size_expected, &popup_window->AutoPosLastDirection, r_outer, frame_bb, ImGuiPopupPositionPolicy_ComboBox);
+                SetNextWindowPos(pos);
+            }
+
+        // We don't use BeginPopupEx() solely because we have a custom name string, which we could make an argument to BeginPopupEx()
+        ImGuiWindowFlags window_flags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_Popup | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove;
+
+        // Horizontally align ourselves with the framed text
+        PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(style.FramePadding.x, style.WindowPadding.y));
+        bool ret = Begin(name, NULL, window_flags);
+        PopStyleVar();
+
+        if (!ret)
+        {
+            EndPopup();
+            IM_ASSERT(0);   // This should never happen as we tested for IsPopupOpen() above
+            return false;
+        }
+        return true;
     }
 
     IMGUI_API void HelpMarkerItem(const char* help_marker)

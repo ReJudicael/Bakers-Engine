@@ -2,6 +2,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	// TODO: Hide it in Editor
 	registration::class_<Core::Datastructure::ComponentUpdatable>("ComponentUpdatable")
 		.constructor();
 }

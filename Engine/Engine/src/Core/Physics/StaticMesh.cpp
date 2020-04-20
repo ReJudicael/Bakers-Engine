@@ -14,7 +14,7 @@ namespace Core
 	{
 		RTTR_PLUGIN_REGISTRATION
 		{
-			registration::class_<Core::Physics::StaticMesh>("StaticMesh")
+			registration::class_<Core::Physics::StaticMesh>("Static Mesh")
 			.constructor()
 			.constructor<Collider*>()
 			;

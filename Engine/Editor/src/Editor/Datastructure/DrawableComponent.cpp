@@ -1,26 +1,26 @@
-#include "DrawableComponent.h"
+#include "DrawableUIComponent.h"
 
 namespace Editor::Datastructure
 {
-	unsigned int DrawableComponent::_NB_COMPONENTS = 0;
+	unsigned int DrawableUIComponent::_NB_COMPONENTS = 0;
 
-	DrawableComponent::DrawableComponent(const std::string& name) :
+	DrawableUIComponent::DrawableUIComponent(const std::string& name) :
 		m_name{ name }
 	{
 		m_ID = "##" + std::to_string(_NB_COMPONENTS++);
 	}
 
-	const std::string& DrawableComponent::GetID() const
+	const std::string& DrawableUIComponent::GetID() const
 	{
 		return m_ID;
 	}
 
-	const std::string& DrawableComponent::GetName() const
+	const std::string& DrawableUIComponent::GetName() const
 	{
 		return m_name;
 	}
 
-	std::string DrawableComponent::GetNameID() const
+	std::string DrawableUIComponent::GetNameID() const
 	{
 		return m_name + m_ID;
 	}

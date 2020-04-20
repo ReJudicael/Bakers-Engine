@@ -22,6 +22,11 @@ namespace physx
 	class PxQuat;
 }
 
+namespace sol
+{
+	class state;
+}
+
 /**
  * Contains the core of the engine
  */
@@ -99,6 +104,8 @@ namespace Core
 		}
 
 		physx::PxVec3 operator+(physx::PxVec3, Core::Maths::Vec3);
+
+		void RegisterMathsForLua(sol::state& lua);
 	}
 }
 

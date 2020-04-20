@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IDrawable.h"
 #include <string>
+#include "IDrawable.h"
 
 namespace Editor
 {
@@ -13,7 +13,7 @@ namespace Editor
 		/**
 		 * Component drawable of a canvas
 		 */
-		class DrawableComponent : public virtual IDrawable
+		class DrawableUIComponent : public virtual IDrawable
 		{
 		private:
 			/**
@@ -37,12 +37,12 @@ namespace Editor
 			 * Explicit constructor
 			 * @param name: Name of component
 			 */
-			DrawableComponent(const std::string& name = "");
+			DrawableUIComponent(const std::string& name = "");
 
 			/**
 			 * Default destructor
 			 */
-			~DrawableComponent() = default;
+			~DrawableUIComponent() = default;
 
 			/**
 			 * Get ID of component

@@ -1,7 +1,8 @@
 #include "Canvas.hpp"
+
+#include "EditorEngine.h"
 #include "GUIManager.h"
 #include "Separator.h"
-#include "EditorEngine.h"
 
 namespace Editor
 {
@@ -11,9 +12,9 @@ namespace Editor
 		m_dockWindowFlags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		m_dockWindowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
-		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
+		m_dockNodeFlags |= ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
 
-		 InitMenuBar();
+		InitMenuBar();
 	}
 
 	Canvas::~Canvas()
@@ -25,24 +26,23 @@ namespace Editor
 	{
 		m_menuBar = new MenuBar();
 		m_view = &m_menuBar->Add<Widget::MenuGroup>("View");
-		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::OpenAllWindows, this, true);
-		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::OpenAllWindows, this, false);
+		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, true);
+		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, false);
 		m_view->Add<Widget::Separator>();
 	}
 
-
-	void Canvas::OpenAllWindows(bool opened)
+	void Canvas::SetAllWindowVisibility(bool opened)
 	{
 		for (auto& widget : m_contents)
 			widget->isVisible = opened;
 	}
 
-	bool Canvas::IsWindowFocused(const size_t id)
+	bool Canvas::IsWindowFocused(const size_t id) const
 	{
 		return (GetFocusedWindow() == id) ? true : false;
 	}
 
-	size_t Canvas::GetFocusedWindow()
+	size_t Canvas::GetFocusedWindow() const
 	{
 		int idFrame{ -1 };
 		size_t id{ 0 };
@@ -65,21 +65,20 @@ namespace Editor
 		Core::SystemManagement::InputSystem* inputSystem = GetEngine()->GetInputSystem();
 
 		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::P))
-			OpenAllWindows(true);
+			SetAllWindowVisibility(true);
 		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::M))
-			OpenAllWindows(false);
+			SetAllWindowVisibility(false);
 	}
 
 	void Canvas::PushDockStyle()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
 	}
 
 	void Canvas::PopDockStyle()
 	{
-		ImGui::PopStyleVar(3);
+		ImGui::PopStyleVar(2);
 	}
 
 	void Canvas::SetViewport()
@@ -119,7 +118,10 @@ namespace Editor
 		{
 			widget->Draw();
 		}
+
+#ifdef _DEBUG
 		ImGui::ShowDemoWindow();
+#endif
 	}
 
 	GUIManager* Canvas::GetManager() noexcept

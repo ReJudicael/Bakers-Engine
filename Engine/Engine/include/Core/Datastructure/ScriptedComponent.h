@@ -3,17 +3,6 @@
 #include "ComponentUpdatable.h"
 #include "CoreMinimal.h"
 
-extern "C"
-{
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
-
-#ifdef _WIN64
-#pragma comment(lib, "lua53.lib")
-#endif
-
 namespace Core::Datastructure
 {
 	/**
@@ -22,8 +11,10 @@ namespace Core::Datastructure
 	BAKERS_API_CLASS ScriptedComponent : public ComponentUpdatable
 	{
 	private:
-		const char* m_script = nullptr;
-		lua_State* m_lState;
+		std::string     m_script;
+		bool            m_hasStarted{ false };
+		sol::function   m_start;
+		sol::function   m_update;
 
 		/**
 		 * Copy event for editor component handling
@@ -47,7 +38,7 @@ namespace Core::Datastructure
 		 * Constructor by value
 		 * @param fileName: Path to the Lua script file
 		 */
-		ScriptedComponent(const char* fileName);
+		ScriptedComponent(const std::string& fileName);
 
 		/**
 		 * Destructor
@@ -58,12 +49,28 @@ namespace Core::Datastructure
 		 * Set Lua script file
 		 * @param fileName: Path to the Lua script file
 		 */
-		inline void	SetFile(const char* fileName) noexcept { m_script = fileName; };
+		inline void	SetFile(const std::string& fileName) noexcept { m_script = fileName; };
 
 		/**
-		 * Call Start function in Lua script
+		 * Set start variable to false so that the script gets loaded and started again
+		 */
+		inline void Restart() noexcept { m_hasStarted = false; };
+
+		/**
+		 * Set Lua script and call Start function in script
 		 */
 		virtual void OnStart() override;
+
+		/**
+		 * Load Start and Update functions of lua script
+		 * @return True if the script has loaded successfully, false otherwise
+		 */
+		bool LoadLuaScript();
+
+		/**
+		 * Check and call start function in lua script
+		 */
+		void StartLuaScript();
 
 		/**
 		 * Call Update function in Lua script
@@ -77,45 +84,60 @@ namespace Core::Datastructure
 		 * @return: Value of given variable is it exists, default value of given type otherwise
 		 */
 		template<class T>
-		T get(const char* name);
+		T Get(const std::string& name);
 
 		/**
-		 * Template specialization for get method
+		 * Set access to c++ variable in lua script
 		 * @param name: Name of the desired variable in Lua script
-		 * @return: Value of given variable is it exists, default string otherwise
+		 * @param value: pointer to the variable
 		 */
-		template<>
-		std::string get(const char* name);
+		template<class T>
+		void Set(const std::string& name, const T* value);
+
+		/**
+		 * Log system message wrapper for lua
+		 * @param msg: Message to display in editor console as a log
+		 */
+		static inline void LogWrapper(std::string msg) { BAKERS_LOG_MESSAGE(msg); }
+
+		/**
+		 * Log system error wrapper for lua
+		 * @param msg: Message to display in editor console as an error
+		 */
+		static inline void ErrorWrapper(std::string msg) { BAKERS_LOG_ERROR(msg); }
+
+		/**
+		 * Log system warning wrapper for lua
+		 * @param msg: Message to display in editor console as a warning
+		 */
+		static inline void WarningWrapper(std::string msg) { BAKERS_LOG_WARNING(msg); }
+
+		/**
+		 * Create a lua file with default script content
+		 * @param scriptName: Name of the file to create.
+		 * @warning Will not work if a script with the same name already exists.
+		 */
+		static void CreateScript(std::string scriptName);
 
 		REGISTER_CLASS(ComponentUpdatable);
 	};
 
 	template<class T>
-	T ScriptedComponent::get(const char* name)
+	T ScriptedComponent::Get(const std::string& name)
 	{
-		T none = T();
+		if (m_script.empty())
+			return T();
 
-		if (!m_lState)
-			return none;
-
-		lua_getglobal(m_lState, name);
-		if (lua_isnumber(m_lState, -1))
-			return lua_tonumber(m_lState, -1);
-
-		return none;
+		return Core::Datastructure::lua[name];
 	}
 
-	template<>
-	std::string ScriptedComponent::get(const char* name)
+	template<class T>
+	void ScriptedComponent::Set(const std::string& name, const T* value)
 	{
-		if (!m_lState)
-			return "";
+		if (m_script.empty())
+			return;
 
-		lua_getglobal(m_lState, name);
-		if (lua_isstring(m_lState, -1))
-			return lua_tostring(m_lState, -1);
-
-		return "";
+		Core::Datastructure::lua[name] = value;
 	}
 }
 

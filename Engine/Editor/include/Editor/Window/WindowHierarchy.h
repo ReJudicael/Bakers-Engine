@@ -120,6 +120,18 @@ namespace Editor::Window
 		bool DrawTreeNodeOfObject(Core::Datastructure::Object* object);
 
 		/**
+		 * Drag an item
+		 * @param object: Dragged object
+		 */
+		void DragDropSourceItem(Core::Datastructure::Object * object);
+
+		/**
+		 * Drop an item
+		 * @param object: Dropped object
+		 */
+		void DragDropTargetItem(Core::Datastructure::Object * object);
+
+		/**
 		 * Show children of object
 		 * @param parent: Object from which the children are displayed
 		 */

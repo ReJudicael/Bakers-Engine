@@ -120,6 +120,12 @@ namespace Core::Datastructure
 		 * @param object: Pointer to object to remove
 		 */
 		void				RemoveChild(Object* object) noexcept;
+		
+		/**
+		 * Adds given object to children
+		 * @param object: Pointer to object to add
+		 */
+		void				AddChild(Object* object) noexcept;
 
 		/**
 		 * Returns a pointer to the parent of the object
@@ -127,6 +133,11 @@ namespace Core::Datastructure
 		 * @return Pointer to the parent
 		 */
 		inline Object*		GetParent() const noexcept;
+
+		/**
+		 * Sets parent to given object. Removes itself from previous parent if needed
+		 */
+		void				SetParent(Object* parent) noexcept;
 
 		/**
 		 * Get children of the object

@@ -14,7 +14,6 @@
 #include "Shader.h"
 #include "CoreMinimal.h"
 
-
 struct aiScene;
 struct aiNode;
 struct aiMesh;
@@ -51,6 +50,8 @@ namespace Resources
 			unorderedmapMaterial			m_materials;
 			unorderedmapModel				m_models;
 			unorderedmapObject3DGraph		m_scenes;
+
+			Core::Datastructure::RootObject* m_rootNode;
 
 
 		public:
@@ -189,6 +190,14 @@ namespace Resources
 				return m_scenes[keyName];
 			}
 
+			/**
+			 * Set access to Root Object of Scene
+			 * @param r: Pointer to RootObject
+			 */
+			inline void SetRootNode(Core::Datastructure::RootObject* r)
+			{
+				m_rootNode = r;
+			}
 
 			inline void PushTextureToLink(std::shared_ptr<TextureData> textureData)
 			{
@@ -269,7 +278,20 @@ namespace Resources
 			 */
 			void LinkAllModelToOpenGl();
 
+			/**
+			 * Use each shader program and send lights components to shaders
+			 */
 			void ShaderUpdate();
+
+			/**
+			 * Reload each shader with current vertex and fragment shaders
+			 */
+			void ReloadShaders();
+
+			/**
+			 * Reload lua scripts linked to each scripted component
+			 */
+			void ReloadScripts();
 		};
 	}
 }

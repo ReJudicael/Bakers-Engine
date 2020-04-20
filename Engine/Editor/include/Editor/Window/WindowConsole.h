@@ -6,42 +6,41 @@
 namespace Editor::Window
 {
 	/**
-	 * Structure for each type of log
-	 * to handle the console
-	 */
-	struct ConsoleLogDataType
-	{
-		/**
-		 * Icon to display the type of log
-		 */
-		std::shared_ptr<Resources::Texture> icon;
-
-		/**
-		 * Number of logs (by type)
-		 */
-		unsigned int nbLogs{ 0 };
-
-		/**
-		 * Wheter the icon is enabled or not
-		 */
-		bool isEnabled{ true };
-	};
-
-	/**
 	 * Window Console
 	 */
 	class WindowConsole final : public AWindow
 	{
 	private:
 		/**
-		 * Contains each type of log (Message, Warning, Error)
+		 * Table flags
 		 */
-		ConsoleLogDataType m_log[static_cast<int>(Core::Debug::LogType::COUNT)];
+		ImGuiTableFlags m_tableFlags;
 
 		/**
-		 * Text Filter
+		 * Log Filter
 		 */
-		ImGuiTextFilter m_textFilter;
+		ImGuiTextFilter m_logFilter;
+
+	private:
+		/**
+		 * Icon for logs and button state, for each log type (Message, Warning, Error)
+		 */
+		std::pair<std::shared_ptr<Resources::Texture>, bool> m_logsIcon[3];
+
+		/**
+		 * Icon for settings
+		 */
+		std::shared_ptr<Resources::Texture> m_settingsIcon;
+
+		/**
+		 * Whether the scrollbar may be at the bottom or not
+		 */
+		bool m_canScrollBottom{ false };
+
+		/**
+		 * Wheter the autoScroll is activated or not
+		 */
+		bool m_autoScroll{ true };
 
 	public:
 		/**
@@ -65,8 +64,13 @@ namespace Editor::Window
 		 */
 		void PopWindowStyle() override;
 
-
 	private:
+		/**
+		 * Callback called when adding a log
+		 * @param log: Log being added
+		 */
+		void LogCallback(const Core::Debug::LogData& log);
+
 		/**
 		 * Add log button
 		 * @param icon: Icon  of button
@@ -76,16 +80,30 @@ namespace Editor::Window
 		void AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled);
 
 		/**
-		 * Console header that contains the log buttons and the filter
+		 * Clear button
+		 */
+		void ClearButton();
+
+		/**
+		 * Settings button
+		 */
+		void SettingsButton();
+
+		/**
+		 * Console header that contains the log buttons, the settings button and the filter
 		 */
 		void ConsoleHeader();
 
-		void LogPrint(Core::Debug::LogData log);
+		/**
+		 * Print a log
+		 * @param log: Log to print
+		 */
+		void PrintLog(const Core::Debug::LogData& log);
 
 		/**
 		 * Draws the console messages
 		 */
-		void	ConsolePrint();
+		void ConsolePrint();
 
 	private:
 		/**

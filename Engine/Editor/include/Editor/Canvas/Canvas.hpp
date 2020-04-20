@@ -1,16 +1,16 @@
 #pragma once
 
+#include <vector>
+#include <memory>
+
+#include <imgui\imgui.h>
+#include <imgui\imgui_internal.h>
+
 #include "IDrawable.h"
 #include "AWindow.h"
 
 #include "MenuGroup.h"
 #include "MenuBar.h"
-
-#include <imgui\imgui.h>
-#include <imgui\imgui_internal.h>
-
-#include <vector>
-#include <memory>
 
 namespace Editor
 {
@@ -79,20 +79,20 @@ namespace Editor
 		 * Open or close all windows
 		 * @param opened: If true, open all windows, otherwise it will close them all.
 		 */
-		void OpenAllWindows(bool opened);
+		void SetAllWindowVisibility(bool opened);
 
 		/**
 		 * Indicate whether the given window is focused or not
 		 * @param id: The id of the window within the canvas vector
 		 * @return True if the given window is focused or false if it is not or the id is invalid
 		 */
-		bool IsWindowFocused(const size_t id);
+		bool IsWindowFocused(const size_t id) const;
 
 		/**
 		 * Get ID of last focused window
 		 * @return ID within the canvas vector of the last focused Window
 		 */
-		size_t GetFocusedWindow();
+		size_t GetFocusedWindow() const;
 
 	private:
 		/**

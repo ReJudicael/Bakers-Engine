@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DrawableComponent.h"
+#include "DrawableUIComponent.h"
 
 namespace Editor
 {
@@ -12,7 +12,7 @@ namespace Editor
 		/**
 		 * Base class for widgets
 		 */
-		class AWidget : public Datastructure::DrawableComponent
+		class AWidget : public Datastructure::DrawableUIComponent
 		{
 		public:
 			/**

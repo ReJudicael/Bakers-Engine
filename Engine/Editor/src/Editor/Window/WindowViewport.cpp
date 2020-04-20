@@ -25,12 +25,7 @@ namespace Editor::Window
 	void WindowViewport::DisplayViewport()
 	{
 		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO(0, Core::Renderer::FBOType::CAMERA) };
-		if (fbo == nullptr)
-		{
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("  No viewport available");
-		}
-		else
+		if (fbo)
 		{
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 
@@ -43,8 +38,12 @@ namespace Editor::Window
 					fbo->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
 			}
 
-#pragma warning(suppress : 4312)
-			ImGui::ImageUV(reinterpret_cast<ImTextureID>(fbo->ColorTexture), windowSize);
+			ImGui::ImageUV(fbo->ColorTexture, windowSize);
+		}
+		else
+		{
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("  No viewport available");
 		}
 	}
 

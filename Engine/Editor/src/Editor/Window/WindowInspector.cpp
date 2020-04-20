@@ -1,17 +1,20 @@
+#include <iostream>
+#include <filesystem>
+
 #include "WindowInspector.h"
-#include "Reflection.h"
-#include "EditorEngine.h"
 #include "RootObject.hpp"
 #include "Maths.hpp"
-#include <iostream>
+#include "ScriptedComponent.h"
+#include "Reflection.h"
+#include "EditorEngine.h"
 
 namespace Editor::Window
 {
 	WindowInspector::WindowInspector(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Inspector", visible }
 	{
-		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
-		m_inputTextFlags = ImGuiInputTextFlags_AutoSelectAll;
+		m_treeNodeFlags		= ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+		m_inputTextFlags	= ImGuiInputTextFlags_AutoSelectAll;
 
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\delete.png", m_deleteIcon);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\reset.png", m_resetIcon);
@@ -33,22 +36,25 @@ namespace Editor::Window
 
 		ImGui::SetNextItemWidth(-FLT_MIN);
 
-		if (ImGui::InputText("## Name", m_name, IM_ARRAYSIZE(m_name), m_inputTextFlags))
+		if (ImGui::InputText("## DisplayObjectName", m_name, IM_ARRAYSIZE(m_name), m_inputTextFlags))
 			object->SetName(m_name);
 	}
 
 	void WindowInspector::DisplayObjectLocalTransform(Core::Datastructure::Object* object)
 	{
-		if (ImGui::ColoredButton("Local", { ImGui::GetContentRegionAvail().x, 0.f }, { 0.00f, 0.58f, 0.20f }))
+		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.00f, 0.58f, 0.20f, 1.00f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.00f, 0.58f, 0.20f, 0.70f });
+		if (ImGui::Button("Local", { ImGui::GetContentRegionAvail().x, 0.f }))
 			m_isLocal = !m_isLocal;
+		ImGui::PopStyleColor(2);
 
 		Core::Maths::Vec3 pos{ object->GetPos() };
-		if (ImGui::RDragFloat3("Position", pos.xyz))
+		if (ImGui::RDragFloat3("Position", pos.xyz, 0.01f))
 			object->SetPos(pos);
 
 		Core::Maths::Vec3 rot{ object->GetRot().ToEulerAngles() };
 		rot *= static_cast<float>(RAD2DEG);
-		if (ImGui::RDragFloat3("Rotation", rot.xyz))
+		if (ImGui::RDragFloat3("Rotation", rot.xyz, 0.01f))
 			object->SetRot(rot * static_cast<float>(DEG2RAD));
 
 		Core::Maths::Vec3 scale{ object->GetScale() };
@@ -58,16 +64,19 @@ namespace Editor::Window
 
 	void WindowInspector::DisplayObjectGlobalTransform(Core::Datastructure::Object* object)
 	{
-		if (ImGui::ColoredButton("Global", { ImGui::GetContentRegionAvail().x, 0.f }, { 0.60f, 0.35f, 0.71f }))
+		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.60f, 0.35f, 0.71f, 1.00f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.60f, 0.35f, 0.71f, 0.70f });
+		if (ImGui::Button("Global", { ImGui::GetContentRegionAvail().x, 0.f }))
 			m_isLocal = !m_isLocal;
+		ImGui::PopStyleColor(2);
 
 		Core::Maths::Vec3 pos{ object->GetGlobalPos() };
-		if (ImGui::RDragFloat3("Position", pos.xyz))
+		if (ImGui::RDragFloat3("Position", pos.xyz, 0.01f))
 			object->SetGlobalPos(pos);
 
 		Core::Maths::Vec3 rot{ object->GetGlobalRot().ToEulerAngles() };
 		rot *= static_cast<float>(RAD2DEG);
-		if (ImGui::RDragFloat3("Rotation", rot.xyz))
+		if (ImGui::RDragFloat3("Rotation", rot.xyz, 0.01f))
 			object->SetGlobalRot(rot * static_cast<float>(DEG2RAD));
 
 		Core::Maths::Vec3 scale{ object->GetGlobalScale() };
@@ -79,17 +88,17 @@ namespace Editor::Window
 	{
 		bool isOpen = ImGui::CollapsingHeader("Transform", m_treeNodeFlags);
 
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
-#pragma warning(suppress : 4312)
-		bool isClickedReset = ImGui::ImageButtonUV_HelpMarker(reinterpret_cast<ImTextureID>(m_resetIcon->texture), "Reset");
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
+		bool isClickedReset = ImGui::ImageButtonUV(m_resetIcon->texture);
+		ImGui::HelpMarkerItem("Reset");
 		ImGui::PopStyleColor(1);
 
 		if (isClickedReset)
 		{
-			object->SetPos({});
-			object->SetRot({});
-			object->SetScale({ 1, 1, 1 });
+			object->SetPos({ 0.f, 0.f, 0.f });
+			object->SetRot({ 0.f, 0.f, 0.f });
+			object->SetScale({ 1.f, 1.f, 1.f });
 		}
 
 		if (isOpen)
@@ -108,9 +117,9 @@ namespace Editor::Window
 	void WindowInspector::DrawEnum(rttr::property prop, rttr::instance component)
 	{
 		rttr::enumeration e{ prop.get_enumeration() };
-		if (ImGui::RBeginCombo(prop.get_name().to_string(), e.value_to_name(prop.get_value(component)).to_string().c_str()))
+		if (ImGui::RBeginCombo(prop.get_name().to_string().c_str(), e.value_to_name(prop.get_value(component)).to_string().c_str()))
 		{
-			for (auto name : e.get_names())
+			for (const auto& name : e.get_names())
 			{
 				if (ImGui::Selectable(name.to_string().c_str()))
 					prop.set_value(component, e.name_to_value(name));
@@ -121,60 +130,78 @@ namespace Editor::Window
 
 	void WindowInspector::DrawProperty(rttr::property prop, rttr::instance component)
 	{
-		if (!prop.get_type().is_valid())
+		const rttr::type propType{ prop.get_type() };
+
+		if (!propType.is_valid())
 		{
 			ImGui::Text("Invalid type");
 			return;
 		}
-		else if (prop.is_enumeration())
+
+		if (prop.is_enumeration())
 		{
 			DrawEnum(prop, component);
 		}
-		else if (prop.get_type() == type::get<bool>())
+		else if (propType == rttr::type::get<bool>())
 		{
 			bool b{ prop.get_value(component).get_value<bool>() };
 			if (ImGui::RCheckbox(prop.get_name().to_string().c_str(), &b) && !prop.is_readonly())
 				prop.set_value(component, b);
 		}
-		else if (prop.get_type() == type::get<int>())
+		else if (propType == rttr::type::get<int>())
 		{
 			int i{ prop.get_value(component).get_value<int>() };
 			if (ImGui::RDragInt(prop.get_name().to_string().c_str(), &i, 1.0f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, i);
 		}
-		else if (prop.get_type() == type::get<float>())
+		else if (propType == rttr::type::get<float>())
 		{
 			float f{ prop.get_value(component).get_value<float>() };
-			if (ImGui::RDragFloat(prop.get_name().to_string().c_str(), &f, 1.0f * !prop.is_readonly()) && !prop.is_readonly())
+			if (ImGui::RDragFloat(prop.get_name().to_string().c_str(), &f, 0.01f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, f);
 		}
-		else if (prop.get_type() == type::get<Core::Maths::Vec2>())
+		else if (propType == rttr::type::get<Core::Maths::Vec2>())
 		{
 			Core::Maths::Vec2 v{ prop.get_value(component).get_value<Core::Maths::Vec2>() };
 			if (ImGui::RDragFloat2(prop.get_name().to_string().c_str(), v.xy, 0.01f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, v);
 		}
-		else if (prop.get_type() == type::get<Core::Maths::Vec3>())
+		else if (propType == rttr::type::get<Core::Maths::Vec3>())
 		{
 			Core::Maths::Vec3 v{ prop.get_value(component).get_value<Core::Maths::Vec3>() };
 			if (ImGui::RDragFloat3(prop.get_name().to_string().c_str(), v.xyz, 0.01f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, v);
 		}
-		else if (prop.get_type() == type::get<Core::Maths::Vec4>())
+		else if (propType == rttr::type::get<Core::Maths::Vec4>())
 		{
 			Core::Maths::Vec4 v{ prop.get_value(component).get_value<Core::Maths::Vec4>() };
 			if (ImGui::RDragFloat4(prop.get_name().to_string().c_str(), v.xyzw, 0.01f * !prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, v);
 		}
-		else if (prop.get_type() == type::get<Core::Maths::Color>())
+		else if (propType == rttr::type::get<Core::Maths::Color>())
 		{
 			Core::Maths::Color c{ prop.get_value(component).get_value<Core::Maths::Color>() };
 			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba, 1.0f *!prop.is_readonly()) && !prop.is_readonly())
 				prop.set_value(component, c);
 		}
-		else if (prop.get_type().is_class())
+		else if (propType == rttr::type::get<std::string>())
 		{
-			auto temp{ prop.get_value(component) };
+			std::string str{ prop.get_value(component).get_value<std::string>() };
+			ImGui::RButtonDD(prop.get_name().to_string().c_str(), std::filesystem::path(str).filename().string().c_str());
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
+				{
+					const std::string& path = reinterpret_cast<const char*>(payload->Data);
+					prop.set_value(component, path);
+					ImGui::EndDragDropTarget();
+				}
+			}
+		}
+		else if (propType.is_class())
+		{
+			const rttr::variant& temp{ prop.get_value(component) };
 			DisplayInstance(prop.get_type(), temp);
 			if (!prop.is_readonly())
 				prop.set_value(component, temp);
@@ -182,7 +209,7 @@ namespace Editor::Window
 		else
 		{
 			ImGui::Text("Type: %s\nName: %s\nValue: %s\n\n",
-				prop.get_type().get_name().to_string().c_str(),
+				propType.get_name().to_string().c_str(),
 				prop.get_name().to_string().c_str(),
 				prop.get_value(component).to_string().c_str());
 		}
@@ -194,17 +221,20 @@ namespace Editor::Window
 		{
 			ImGui::PushID(it);
 
-			type t = it->get_type();
+			rttr::type t{ it->get_type() };
 			bool isOpen = ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags);
 
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
+
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
-#pragma warning(suppress : 4312)
-			bool isClickedDelete = ImGui::ImageButtonUV_HelpMarker(reinterpret_cast<ImTextureID>(m_deleteIcon->texture), "Delete");
+			bool isClickedDelete = ImGui::ImageButtonUV(m_deleteIcon->texture);
+			ImGui::HelpMarkerItem("Delete");
+
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
-#pragma warning(suppress : 4312)
-			bool isClickedReset = ImGui::ImageButtonUV_HelpMarker(reinterpret_cast<ImTextureID>(m_resetIcon->texture), "Reset");
-			ImGui::PopStyleColor(1);
+			bool isClickedReset = ImGui::ImageButtonUV(m_resetIcon->texture);
+			ImGui::HelpMarkerItem("Reset");
+
+			ImGui::PopStyleColor();
 
 			if (isClickedDelete)
 			{
@@ -236,21 +266,26 @@ namespace Editor::Window
 
 	void WindowInspector::AddComponentToObjectButton(Core::Datastructure::Object* object)
 	{
-		if (ImGui::BeginComboColoredButton("Add component", { 0.88f, 0.70f, 0.17f }))
+		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.88f, 0.70f, 0.17f, 1.00f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.88f, 0.70f, 0.17f, 0.70f });
+
+		if (ImGui::BeginComboButton("Add component"))
 		{
-			array_range possibleComponents = type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
+			rttr::array_range possibleComponents = rttr::type::get<Core::Datastructure::ComponentBase>().get_derived_classes();
 			for (auto it : possibleComponents)
 			{
-				if (ImGui::Selectable(it.get_name().to_string().c_str()))
+				if (ImGui::MenuItem(it.get_name().to_string().c_str()))
 					object->AddComponent(it.invoke("GetCopy", it.create(), {}).get_value<Core::Datastructure::ComponentBase*>());
 			}
 			ImGui::EndCombo();
 		}
+
+		ImGui::PopStyleColor(2);
 	}
 
 	void WindowInspector::ObjectInspector(Core::Datastructure::Object* object)
 	{
-		if (object == nullptr)
+		if (!object)
 			return;
 
 		DisplayObjectName(object);

@@ -25,8 +25,6 @@ namespace Core::Renderer
 	 */
 	BAKERS_API_CLASS Camera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
 	{
-	private:
-		CameraPerspective m_prevPersp;
 	protected:
 		CameraPerspective m_persp;
 
@@ -92,6 +90,22 @@ namespace Core::Renderer
 		void SetRatio(const float newRatio) override;
 
 		/**
+		 * Perspective data (ratio, fov, near, far) getter
+		 * @return Current Perspective data of camera
+		 */
+		inline CameraPerspective GetPerspData() const { return m_persp; }
+
+		/**
+		 * Perspective data setter
+		 * @param p: New set of Perspective data for the camera
+		 */
+		inline void SetPerspData(const CameraPerspective p)
+		{
+			m_persp = p;
+			m_isPerspectiveUpdated = false;
+		}
+
+		/**
 		 * Create Perspective Matrix
 		 * @param ratio: Ratio (width / height) of the window
 		 * @param fov: Angle of the field of view of the camera
@@ -100,12 +114,6 @@ namespace Core::Renderer
 		 * @return Perspective matrix
 		 */
 		static Core::Maths::Mat4 CreatePerspectiveMatrix(const float ratio, const float fov, const float near, const float far);
-
-		/**
-		 * Indicate whether the perspective data has been changed or not
-		 * @return True if the perspective data was different last frame, false otherwise
-		 */
-		bool PerspectiveNeedUpdate() const noexcept;
 
 		REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera, Core::Datastructure::IUpdatable)
 	};

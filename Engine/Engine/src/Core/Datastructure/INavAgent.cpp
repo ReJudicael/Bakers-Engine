@@ -29,7 +29,7 @@ namespace Core::Datastructure
 
 	void INavAgent::OnStart()
 	{
-		Navigation::NavMeshBuilder* navMesh{ GetScene()->GetEngine()->GetNavMesh() };
+		//Navigation::NavMeshBuilder* navMesh{ GetScene()->GetEngine()->GetNavMesh() };
 
 	}
 

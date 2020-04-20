@@ -1,5 +1,5 @@
-#include "Separator.h"
 #include <imgui\imgui.h>
+#include "Separator.h"
 
 namespace Editor::Widget
 {

@@ -1,6 +1,8 @@
 #include "EditorEngine.h"
 #include "GUIManager.h"
-#include "stb_image.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 #include "WindowFileBrowser.h"
 #include "WindowConsole.h"
@@ -103,7 +105,7 @@ namespace Editor
 	{
 		while (!glfwWindowShouldClose(m_window))
 		{
-			glClearColor(0.45f, 0.55f, 0.6f, 1.f);
+			glClearColor(0.f, 0.f, 0.f, 1.f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			glfwPollEvents();

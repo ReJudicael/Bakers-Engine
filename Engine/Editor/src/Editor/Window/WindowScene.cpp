@@ -1,9 +1,8 @@
 #include "WindowScene.h"
-#include "EditorEngine.h"
 #include "ICamera.h"
+#include "Framebuffer.h"
+#include "EditorEngine.h"
 #include "RootObject.hpp"
-
-#include <string>
 
 namespace Editor::Window
 {
@@ -30,12 +29,7 @@ namespace Editor::Window
 
 	void WindowScene::DisplayScene()
 	{
-		if (m_cam == nullptr)
-		{
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("  No scene camera available");
-		}
-		else
+		if (m_cam)
 		{
 			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
@@ -46,8 +40,12 @@ namespace Editor::Window
 				m_cam->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
 			}
 
-#pragma warning(suppress : 4312)
-			ImGui::ImageUV(reinterpret_cast<ImTextureID>(fbo->ColorTexture), windowSize);
+			ImGui::ImageUV(fbo->ColorTexture, windowSize);
+		}
+		else
+		{
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("  No scene camera available");
 		}
 	}
 

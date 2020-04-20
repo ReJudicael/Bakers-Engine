@@ -14,19 +14,18 @@ namespace Core
 	{
 		RTTR_PLUGIN_REGISTRATION
 		{
-			registration::class_<Core::Physics::DynamicMesh>("DynamicMesh")
+			registration::class_<Core::Physics::DynamicMesh>("Dynamic Mesh")
 			.constructor()
 			.constructor<Collider*>()
 			.property("Velocity", &Core::Physics::DynamicMesh::GetVelocity, &Core::Physics::DynamicMesh::SetLinearVelocity)
 			.property("Mass", &Core::Physics::DynamicMesh::GetMass, &Core::Physics::DynamicMesh::SetMass)
-			.property("RotationLockX", &Core::Physics::DynamicMesh::GetPhysicsLockXRotation, 
+			.property("Rotation Lock X", &Core::Physics::DynamicMesh::GetPhysicsLockXRotation, 
 						&Core::Physics::DynamicMesh::SetPhysicsLockXRotation)
-			.property("RotationLockY", &Core::Physics::DynamicMesh::GetPhysicsLockYRotation, 
+			.property("Rotation Lock Y", &Core::Physics::DynamicMesh::GetPhysicsLockYRotation, 
 						&Core::Physics::DynamicMesh::SetPhysicsLockYRotation)
-			.property("RotationLockZ", &Core::Physics::DynamicMesh::GetPhysicsLockZRotation, 
+			.property("Rotation Lock Z", &Core::Physics::DynamicMesh::GetPhysicsLockZRotation, 
 						&Core::Physics::DynamicMesh::SetPhysicsLockZRotation)
 			;
-
 		}
 
 

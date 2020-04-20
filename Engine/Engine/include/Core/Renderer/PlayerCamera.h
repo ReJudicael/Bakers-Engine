@@ -16,8 +16,8 @@ namespace Core::Renderer
 		bool	m_isRunning{ false };
 		float	m_speed{ 5 };
 		float	m_runningSpeed{ 20 };
-		float	m_minMoveLength{ 0.001 };
-		float	m_moveLerpSpeed{ 0.5 };
+		float	m_minMoveLength{ 0.001f };
+		float	m_moveLerpSpeed{ 0.5f };
 		Core::Maths::Vec3 m_movement;
 
 		// Rotation through mouse movements
@@ -26,8 +26,8 @@ namespace Core::Renderer
 		float	m_angularSpeed{ 0.1f };
 		float	m_yaw{ 0.f };
 		float	m_pitch{ 0.f };
-		float	m_minAngularLength{ 0.001 };
-		float	m_angularLerpSpeed{ 0.5 };
+		float	m_minAngularLength{ 0.001f };
+		float	m_angularLerpSpeed{ 0.5f };
 		Core::Maths::Vec3 m_angularMovement;
 		Core::Maths::Vec2	m_mousePos;
 	protected:
