@@ -55,6 +55,9 @@
     <Filter Include="Internal Dependencies\imgui\include">
       <UniqueIdentifier>{86cfdc8b-0ff2-4075-b190-eca1317b33b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Internal Dependencies\glad">
+      <UniqueIdentifier>{c43e2a46-e6da-4a9a-a584-d1b1f7ee9b4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -62,9 +65,6 @@
     </ClCompile>
     <ClCompile Include="src\Editor\GUIManager.cpp">
       <Filter>Source Files\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
-      <Filter>Internal Dependencies</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp">
       <Filter>Source Files\Editor\Datastructure</Filter>
@@ -137,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
+      <Filter>Internal Dependencies\glad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
