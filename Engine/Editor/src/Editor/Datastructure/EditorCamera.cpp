@@ -7,7 +7,6 @@ namespace Editor::Datastructure
 {
 	EditorCamera::EditorCamera() : m_transform{ Core::Datastructure::Transform({0, 1, 0}) }
 	{
-
 	}
 
 	void EditorCamera::SetRatio(const float newRatio)

@@ -102,16 +102,6 @@ namespace Editor
 
 	private:
 		/**
-		 * Push dockspace style
-		 */
-		void PushDockStyle();
-
-		/**
-		 * Pop dockspace style
-		 */
-		void PopDockStyle();
-
-		/**
 		 * Set viewport
 		 */
 		void SetViewport();
