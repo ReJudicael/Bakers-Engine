@@ -15,27 +15,38 @@ namespace Core
 	}
 	namespace Datastructure
 	{
+		enum class EngineState
+		{
+			NONE = 0,
+			INITIALIZING,
+			INITIALIZED,
+			STARTING,
+			RUNNING,
+			CLOSING,
+			CLOSED,
+		};
+		
 		static const char* glsl_version = "#version 400";
 		class RootObject;
 		BAKERS_API_CLASS EngineCore
 		{
 		protected:
-			Core::SystemManagement::InputSystem * m_inputSystem{ nullptr };
+			EngineState								m_state {EngineState::NONE};
+			Core::SystemManagement::InputSystem *	m_inputSystem{ nullptr };
 			int m_width{ 0 };
 			int m_height{ 0 };
-			std::list<Core::Renderer::Framebuffer*> m_fbo;
+			std::list<Core::Renderer::Framebuffer*>	m_fbo;
 			GLFWwindow* m_window;
-			Resources::Loader::ResourcesManager* m_manager;
-			Core::Physics::PhysicsScene* m_physicsScene;
+			Resources::Loader::ResourcesManager*	m_manager;
+			Core::Physics::PhysicsScene*			m_physicsScene;
 
-			Core::Navigation::NavMeshBuilder* m_navMesh;
+			Core::Navigation::NavMeshBuilder*		m_navMesh;
 
-
-			double m_time{ 0 };
+			double									m_time{ 0 };
 
 			TRACY_GL_IMAGE
 
-			double			GetDeltaTime();
+			double									GetDeltaTime();
 		public:
 			EngineCore();
 			EngineCore(const int width, const int height);
@@ -61,20 +72,25 @@ namespace Core
 			}
 
 			int				Init();
-			virtual int		Init(const int width, const int height);
+			int				Init(const int width, const int height);
 			virtual void	SetSizeWindow(const int width, const int height) = 0;
 
 			virtual void	StartFrame();
 			virtual void	Render();
 			virtual void	EndFrame();
 
-			virtual void	Update(double deltaTime);
-
-			void			DoLoop();
+			void			Update(double deltaTime); 
+		protected:
+			virtual int		OnInit(const int width, const int height);
+			virtual void	OnLoop();
+			virtual void	OnStartFrame();
+			virtual void	OnUpdate(double deltaTime);
+		public:
 
 			GLFWwindow* GetWindow();
 
 			Core::SystemManagement::InputSystem* GetInputSystem();
+			int								GetFBONum(Core::Renderer::FBOType t);
 			Core::Renderer::Framebuffer*	GetFBO(int num, Core::Renderer::FBOType t = Core::Renderer::FBOType::CUSTOM);
 			Core::Renderer::Framebuffer*	CreateFBO();
 			Core::Renderer::Framebuffer*	CreateFBO(int width, int height, Core::Renderer::FBOType t = Core::Renderer::FBOType::CUSTOM);

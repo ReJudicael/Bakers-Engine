@@ -36,12 +36,16 @@ const Core::Maths::Mat4& Core::Datastructure::ICamera::GetCameraMatrix()
 	return m_cameraMatrix;
 }
 
-void Core::Datastructure::ICamera::OnStart()
+void Core::Datastructure::ICamera::OnInit()
 {
-	IComponent::OnStart();
 	GetScene()->AddCamera(this);
 	m_fbo = GetScene()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Core::Renderer::FBOType::CAMERA);
 	m_fbo->userPtr = this;
+}
+
+void Core::Datastructure::ICamera::OnStart()
+{
+	IComponent::OnStart();
 }
 
 Core::Datastructure::ICamera::~ICamera() noexcept
@@ -56,7 +60,7 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 	ZoneScoped
 		ZoneText("Render of a camera", 22)
 		TracyGpuZone("Rendering frame buffer")
-	if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
+	if (IsStarted() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 		glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);

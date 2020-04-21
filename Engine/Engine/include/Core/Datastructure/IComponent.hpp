@@ -20,11 +20,16 @@ namespace Core::Datastructure
 	{
 	private:
 		bool		m_isDestroyed = false;
-		bool		m_isInit = false;
+		bool		m_isStarted = false;
 		RootObject* m_root{ nullptr };
 	protected:
 		bool		m_isActive = true;
 		Object*		m_parent{ nullptr };
+
+		/**
+		 * Called when the component is created and is assigned to a parent
+		 */
+		virtual void	OnInit() {};
 
 		/**
 		 * Called on start of the component, on the first frame it
@@ -52,6 +57,12 @@ namespace Core::Datastructure
 		 * Destructor, declared virtual as this class is inherited
 		 */
 		virtual ~IComponent() noexcept {}
+
+		/**
+		 * Initializes component
+		 */
+		void	Init() noexcept;
+
 		/**
 		 * Sets the parent of the component
 		 * @param parent: New parent of the component
@@ -65,7 +76,10 @@ namespace Core::Datastructure
 		 * Sets the root object of the component
 		 * @param scene: Root object of the component
 		 */
-		void			SetScene(RootObject* scene);
+		void			SetScene(RootObject* scene) 
+		{
+			m_root = scene;
+		}
 
 		/**
 		 * Gets the parent of the component
@@ -116,7 +130,7 @@ namespace Core::Datastructure
 		 * Returns if the component was initialized
 		 * @return State of the component
 		 */
-		bool			IsInit() const noexcept { return m_isInit; };
+		bool			IsStarted() const noexcept { return m_isStarted; };
 		/**
 		 * Returns if the component is active
 		 * @return State of the component

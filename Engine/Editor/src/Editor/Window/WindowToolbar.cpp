@@ -25,7 +25,13 @@ namespace Editor::Window
 
 	void WindowToolbar::DisplayToolbar()
 	{
-		ImGui::ImageButtonUV(m_icons[0]->texture, { 32.f });
+		if (ImGui::ImageButtonUV(m_icons[0]->texture, { 32.f }))
+		{
+			if (!GetEngine()->IsPlaying())
+				GetEngine()->Play();
+			else
+				GetEngine()->EndPlay();
+		}
 		ImGui::HelpMarkerItem("Play");
 
 		ImGui::SameLine();

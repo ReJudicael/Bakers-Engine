@@ -444,6 +444,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\PhysX\checked\*.dll" "$(TargetDir)"</Com
     <ClInclude Include="include\Core\Physics\Collider.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Resources\Shaders\DefaultShader.frag" />
     <None Include="Resources\Shaders\DefaultShader.vert" />
   </ItemGroup>

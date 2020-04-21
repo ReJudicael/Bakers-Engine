@@ -31,6 +31,11 @@ namespace Editor::Window
 		 */
 		void PopWindowStyle() override;
 
+		/**
+		 * Current camera beeing displayed
+		 */
+		int	m_cameraNum{ 0 };
+
 	private:
 		/**
 		 * Display Viewport

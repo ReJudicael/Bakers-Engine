@@ -31,7 +31,7 @@ namespace Core::Datastructure
 		ZoneText("Rendering single component", 27)
 			TracyGpuZone("Rendering single component")
 		
-		if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
+		if (IsStarted() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 		{
 			OnDraw(cam);
 		}

@@ -19,15 +19,18 @@ namespace Editor
 		EditorEngine(int width, int height);
 		~EditorEngine();
 
-		int		Init(const int width, const int height) override;
+		int		OnInit(const int width, const int height) override;
 		void	SetSizeWindow(const int width, const int height) override;
 		void	MainLoop();
-		void	Render() override;
 		void	EndFrame() override;
+		void	OnLoop() override;
 		bool	IsSelectingEngineView();
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
 
+		void	Play() { m_state = Core::Datastructure::EngineState::STARTING; }
+		void	EndPlay() { m_state = Core::Datastructure::EngineState::CLOSING; }
+		bool	IsPlaying() { return m_state >= Core::Datastructure::EngineState::STARTING && m_state <= Core::Datastructure::EngineState::CLOSING; }
 	private:
 		void				SetCallbackToGLFW();
 		GLFWkeyfun			SetKeyCallBackToGLFW();

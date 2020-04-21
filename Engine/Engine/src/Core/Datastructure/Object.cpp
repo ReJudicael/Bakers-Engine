@@ -80,6 +80,7 @@ namespace Core::Datastructure
 	{
 		c->SetParent(this);
 		c->SetScene(m_root);
+		c->Init();
 		m_components.push_back(c);
 	}
 	void Object::RemoveComponent(ComponentBase* c) noexcept
