@@ -100,6 +100,8 @@ namespace Editor::Window
 			if (ImGui::MenuItem("File"))
 				m_renamePath = m_fs->CreateFile();
 
+			ImGui::Separator();
+
 			if (ImGui::MenuItem("Script"))
 			{
 				const std::string& path = m_fs->CreateFile("Script", ".lua");
@@ -216,6 +218,8 @@ namespace Editor::Window
 	{
 		if (itemName != ".." && ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 		{
+			ImGui::ImageUV(GetIcon(itemPath));
+			ImGui::SameLine();
 			ImGui::Text(itemName.c_str());
 			ImGui::SetDragDropPayload("DRAGDROP_PATH", itemPath.c_str(), itemPath.size() + 1, ImGuiCond_Once);
 			ImGui::EndDragDropSource();

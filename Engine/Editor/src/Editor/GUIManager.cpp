@@ -2,6 +2,8 @@
 #include "EditorEngine.h"
 #include <iostream>
 
+#include <ImGuizmo.h>
+
 namespace Editor
 {
 	GUIManager::GUIManager(EditorEngine* engine, const char* glsl_version, GUIStyle style) :
@@ -99,6 +101,7 @@ namespace Editor
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGuizmo::BeginFrame();
 	}
 
 	void GUIManager::EndFrame()

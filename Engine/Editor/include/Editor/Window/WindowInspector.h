@@ -42,7 +42,7 @@ namespace Editor::Window
 		/**
 		 * Delete icon to delete a component
 		 */
-		std::shared_ptr<Resources::Texture> m_deleteIcon;
+		std::shared_ptr<Resources::Texture> m_removeIcon;
 
 		/**
 		 * Reset icon to reset a component

@@ -16,7 +16,7 @@ namespace Editor::Window
 		m_treeNodeFlags		= ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 		m_inputTextFlags	= ImGuiInputTextFlags_AutoSelectAll;
 
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\delete.png", m_deleteIcon);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\remove.png", m_removeIcon);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\reset.png", m_resetIcon);
 	}
 
@@ -227,8 +227,8 @@ namespace Editor::Window
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
-			bool isClickedDelete = ImGui::ImageButtonUV(m_deleteIcon->texture);
-			ImGui::HelpMarkerItem("Delete");
+			bool isClickedDelete = ImGui::ImageButtonUV(m_removeIcon->texture);
+			ImGui::HelpMarkerItem("Remove");
 
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
 			bool isClickedReset = ImGui::ImageButtonUV(m_resetIcon->texture);

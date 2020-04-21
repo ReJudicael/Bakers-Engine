@@ -8,7 +8,7 @@ RTTR_PLUGIN_REGISTRATION
 	using namespace Core::Datastructure;
 
 	RegisterDefaultClassConstructor<ScriptedComponent>("Script" , ComponentUpdatable(), ComponentBase());
-	RegisterClassProperty<ScriptedComponent>("Script", "Script", &ScriptedComponent::m_script);
+	RegisterClassProperty<ScriptedComponent>("Script", "Lua Script", &ScriptedComponent::m_script);
 
 	lua.create_named_table("Debug",
 		"Log", ScriptedComponent::LogWrapper,
