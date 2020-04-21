@@ -1,6 +1,7 @@
+#include <iostream>
 #include "GUIManager.h"
 #include "EditorEngine.h"
-#include <iostream>
+#include "ImGuizmo.h"
 
 namespace Editor
 {
@@ -99,6 +100,9 @@ namespace Editor
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGuizmo::SetOrthographic(false);
+		ImGuizmo::BeginFrame();
+		ImGuizmo::Enable(true);
 	}
 
 	void GUIManager::EndFrame()
