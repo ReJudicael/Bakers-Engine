@@ -24,7 +24,19 @@ namespace Editor::Window
 
 	void WindowViewport::DisplayViewport()
 	{
-		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO(0, Core::Renderer::FBOType::CAMERA) };
+		int camNum = GetEngine()->GetFBONum(Core::Renderer::FBOType::CAMERA);
+		if (m_cameraNum >= camNum)
+			m_cameraNum = camNum - 1;
+		if (camNum > 0 && ImGui::BeginCombo("test", std::to_string(m_cameraNum).c_str()))
+		{
+			for (int i = 0; i < camNum; ++i)
+			{
+				if (ImGui::MenuItem(("Viewport " + std::to_string(i)).c_str()))
+					m_cameraNum = i;
+			}
+			ImGui::EndCombo();
+		}
+		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO(m_cameraNum, Core::Renderer::FBOType::CAMERA) };
 		if (fbo)
 		{
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };

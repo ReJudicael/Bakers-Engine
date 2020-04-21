@@ -26,7 +26,7 @@ int main()
 
 	Editor::EditorEngine* engine = new Editor::EditorEngine();
 	int temp;
-	if (temp = engine->EngineCore::Init())
+	if (temp = engine->Init())
 		return temp;
 	engine->MainLoop();
 	delete engine;

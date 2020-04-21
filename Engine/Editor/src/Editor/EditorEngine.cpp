@@ -53,11 +53,11 @@ namespace Editor
 			type, severity, message);
 	}
 
-	int EditorEngine::Init(const int width, const int height)
+	int EditorEngine::OnInit(const int width, const int height)
 	{
 		glfwSetErrorCallback(callback_error);
 		int temp;
-		if (temp = EngineCore::Init(width, height))
+		if (temp = EngineCore::OnInit(width, height))
 			return temp;
 
 		if (!glfwInit())
@@ -105,27 +105,9 @@ namespace Editor
 	{
 		while (!glfwWindowShouldClose(m_window))
 		{
-			glClearColor(0.f, 0.f, 0.f, 1.f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
-			glfwPollEvents();
-			if (m_inputSystem->IsCursorHidden())
-				ImGui::SetMouseCursor(-1);
-
-			DoLoop();
-
-			int display_w, display_h;
-			glfwGetFramebufferSize(m_window, &display_w, &display_h);
-			glViewport(0, 0, display_w, display_h);
-			
-			glfwSwapBuffers(m_window);
+			std::cout << (int)m_state << std::endl;
+			OnLoop();
 		}
-	}
-
-	void EditorEngine::Render()
-	{
-		EngineCore::Render();
-		m_man->Render();
 	}
 
 	void EditorEngine::EndFrame()
@@ -134,6 +116,30 @@ namespace Editor
 			objectSelected = nullptr;
 
 		EngineCore::EndFrame();
+	}
+
+	void EditorEngine::OnLoop()
+	{
+		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		m_manager->LinkAllTextureToOpenGl();
+		m_manager->LinkAllModelToOpenGl();
+		m_manager->ShaderUpdate();
+
+		glfwPollEvents();
+		if (m_inputSystem->IsCursorHidden())
+			ImGui::SetMouseCursor(-1);
+
+		EngineCore::OnLoop();
+
+		m_man->Render();
+
+		int display_w, display_h;
+		glfwGetFramebufferSize(m_window, &display_w, &display_h);
+		glViewport(0, 0, display_w, display_h);
+
+		glfwSwapBuffers(m_window);
 	}
 
 

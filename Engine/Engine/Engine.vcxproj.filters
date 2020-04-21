@@ -421,5 +421,6 @@
     <None Include="Resources\Shaders\DefaultShader.frag">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

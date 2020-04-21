@@ -84,6 +84,14 @@ namespace Core::Datastructure
 
 	int EngineCore::Init(int width, int height)
 	{
+		m_state = Core::Datastructure::EngineState::INITIALIZING;
+		int init{ OnInit(width, height) };
+		m_state = Core::Datastructure::EngineState::INITIALIZED;
+		return init;
+	}
+
+	int EngineCore::OnInit(int width, int height)
+	{
 		glfwSetErrorCallback(error);
 
 		if (!glfwInit())
@@ -115,6 +123,7 @@ namespace Core::Datastructure
 		if (!m_physicsScene->InitPhysX())
 			return -1;
 
+		m_fbo.clear();
 		m_manager = new Resources::Loader::ResourcesManager();
 		m_manager->SetRootNode(m_root);
 
@@ -159,32 +168,48 @@ namespace Core::Datastructure
 		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
 
 		umbreon->SetPos({ 0.f,3.f, 0.f });
-		m_fbo.clear();
+
 		return 0;
 	}
 
-	void	EngineCore::DoLoop()
+	void	EngineCore::OnLoop()
 	{
 		ZoneNamedN(updateLoop, "Main loop iteration", true)
 		
 		double deltaTime = GetDeltaTime();
 
-		StartFrame();
+		if (m_state == EngineState::RUNNING)
+		{
+			StartFrame();
 
-		Update(deltaTime);
+			Update(deltaTime);
 
-		Physics::HitResultQuery query;
+			Physics::HitResultQuery query;
 
-		physx::PxU32 u;
-		u |= Core::Physics::EFilterRaycast::GROUPE1;
+			physx::PxU32 u = Core::Physics::EFilterRaycast::GROUPE1;
 
-		m_physicsScene->Raycast({ 0.f,0.f,0.f }, { 1.f,0.f,0.f }, query, u);
+			m_physicsScene->Raycast({ 0.f,0.f,0.f }, { 1.f,0.f,0.f }, query, u);
 
-		Render();
+			Render();
+		}
+		else if (m_state == EngineState::STARTING)
+		{
+			m_state = EngineState::RUNNING;
+		}
+		else if (m_state == EngineState::CLOSING)
+		{
+			m_state = EngineState::CLOSED;
+		}
 
 		EndFrame();
 	}
+
 	void	EngineCore::Update(double deltaTime)
+	{
+		OnUpdate(deltaTime);
+	}
+
+	void	EngineCore::OnUpdate(double deltaTime)
 	{
 		m_physicsScene->BeginSimulate(static_cast<float>(deltaTime));
 		m_physicsScene->EndSimulate();
@@ -194,6 +219,19 @@ namespace Core::Datastructure
 	Core::SystemManagement::InputSystem* EngineCore::GetInputSystem()
 	{
 		return m_inputSystem;
+	}
+
+	int Core::Datastructure::EngineCore::GetFBONum(Core::Renderer::FBOType t)
+	{
+		int num{ 0 };
+		auto it{ m_fbo.begin() };
+		while (it != m_fbo.end())
+		{
+			if ((*it)->type == t)
+				++num;
+			++it;
+		}
+		return num;
 	}
 
 	Core::Renderer::Framebuffer* EngineCore::GetFBO(int num, Core::Renderer::FBOType type)
@@ -223,6 +261,11 @@ namespace Core::Datastructure
 	}
 
 	void		EngineCore::StartFrame()
+	{
+		OnStartFrame();
+	}
+
+	void		EngineCore::OnStartFrame()
 	{
 		ZoneScoped
 			m_root->StartFrame();

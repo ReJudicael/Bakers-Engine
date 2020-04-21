@@ -13,27 +13,27 @@ RTTR_PLUGIN_REGISTRATION
 		.method("Start", &IComponent::Start)
 		.method("Destroy", &IComponent::Destroy)
 		.property_readonly("IsDestroyed", &IComponent::IsDestroyed, detail::protected_access())
-		.property_readonly("IsInit", &IComponent::IsInit, detail::protected_access())
+		.property_readonly("IsStarted", &IComponent::IsStarted, detail::protected_access())
 		.property("IsActive", &IComponent::m_isActive, detail::protected_access());
 }
 
 namespace Core::Datastructure
 {
-	void	IComponent::SetScene(RootObject* scene)
+	void	IComponent::Init() noexcept
 	{
-		m_root = scene;
-		if (!m_isInit)
+		OnInit();
+		if (!m_isStarted)
 			m_root->AddStart(this);
 	}
 
 	void	IComponent::Start()
 	{
-		if (m_isInit || !m_isActive || IsDestroyed() || !m_parent->IsActive())
+		if (m_isStarted || !m_isActive || IsDestroyed() || !m_parent->IsActive())
 			return;
 		ZoneScoped
 			ZoneText("Start of a component", 21)
 		OnStart();
-		m_isInit = true;
+		m_isStarted = true;
 	}
 
 	void IComponent::Destroy()
@@ -54,7 +54,7 @@ namespace Core::Datastructure
 
 	void	IComponent::OnReset()
 	{
-		m_isInit = false;
+		m_isStarted = false;
 		m_root->AddStart(this);
 		m_isActive = true;
 	}

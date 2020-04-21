@@ -41,7 +41,7 @@ namespace Core::Datastructure
 		for (auto it{ m_componentsToStart.begin() }; it != m_componentsToStart.end();)
 		{
 			(*it)->Start();
-			if ((*it)->IsInit())
+			if ((*it)->IsStarted())
 				it = m_componentsToStart.erase(it);
 			else
 				++it;
