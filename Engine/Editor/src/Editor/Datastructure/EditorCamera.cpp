@@ -138,8 +138,6 @@ namespace Editor::Datastructure
 		if (length == 0) // Do not update transform if no movement has been made
 			return;
 
-		m_isCamUpdated = false;
-
 		m_transform.Translate(m_movement * m_speed * deltaTime);
 
 		// Decrease movement
@@ -154,7 +152,6 @@ namespace Editor::Datastructure
 	{
 		if (m_isRotating)
 		{
-			m_isCamUpdated = false;
 			// Increase current rotation with new one
 			m_pitch += 0.1f * m_angularMovement.x * deltaTime;
 			m_yaw += 0.1f * m_angularMovement.y * deltaTime;

@@ -21,9 +21,11 @@ namespace Core::Datastructure
 {
 	void	IComponent::Init() noexcept
 	{
-		OnInit();
+		if (!m_isInit)
+			OnInit();
 		if (!m_isStarted)
 			m_root->AddStart(this);
+		m_isInit = true;
 	}
 
 	void	IComponent::Start()

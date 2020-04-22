@@ -290,6 +290,7 @@ namespace Core::Datastructure
 	void		EngineCore::EndFrame()
 	{
 		m_root->RemoveDestroyed();
+		m_root->UpdateTransforms();
 		
 		m_inputSystem->ClearRegisteredInputs();
 	}

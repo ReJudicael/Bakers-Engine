@@ -24,9 +24,6 @@ namespace Core::Datastructure
 
 		Core::Renderer::Framebuffer* m_fbo{ nullptr };
 
-		bool				m_isPerspectiveUpdated{ false };
-		bool				m_isCamUpdated{ false };
-
 		/**
 		 * Generate and return camera matrix
 		 * @return Reversed transformation matrix of the camera game object
@@ -51,6 +48,15 @@ namespace Core::Datastructure
 		virtual void	OnDestroy() override;
 
 		virtual void	OnReset() override;
+
+		/**
+		 * Called after updating perspective matrix
+		 */
+		virtual void	PerspectiveMatrixUpdated() {}
+		/**
+		 * Called after updating camera matrix
+		 */
+		virtual void	CameraMatrixUpdated() {}
 	public:
 		/**
 		 * Destructor of the camera interface
@@ -63,10 +69,18 @@ namespace Core::Datastructure
 		 */
 		const Core::Maths::Mat4&	GetPerspectiveMatrix();
 		/**
+		 * Returns if perspective matrix is updated
+		 */
+		virtual bool				IsPerspectiveMatrixUpdated() = 0;
+		/**
 		 * Get reverse TRS matrix of the camera
 		 * @return Reverse TRS camera matrix
 		 */
 		const Core::Maths::Mat4&	GetCameraMatrix();
+		/**
+		 * Returns if camera matrix is updated
+		 */
+		virtual bool				IsCameraMatrixUpdated() = 0;
 
 		/**
 		 * First frame upon creation event

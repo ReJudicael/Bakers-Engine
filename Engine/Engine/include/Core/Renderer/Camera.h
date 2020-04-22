@@ -28,11 +28,16 @@ namespace Core::Renderer
 	protected:
 		CameraPerspective m_persp;
 
+		bool				m_isPerspectiveUpdated{ false };
+
 		/**
 		 * Generate and return camera matrix
 		 * @return Reversed transformation matrix of the camera game object
 		 */
 		Core::Maths::Mat4	OnGenerateCamera() override;
+		virtual bool		IsCameraMatrixUpdated() override;
+		virtual bool		IsPerspectiveMatrixUpdated() override { return m_isPerspectiveUpdated; }
+		virtual void		PerspectiveMatrixUpdated() override { m_isPerspectiveUpdated = true; }
 
 		/**
 		 * Generate and return perspective matrix

@@ -22,9 +22,10 @@ namespace Core::Datastructure
 		RootObject*								m_root{ nullptr };
 		
 	protected:
-		bool						m_isActive = true;
-		std::string					m_name;
-		Transform					m_transform;
+		bool									m_isActive = true;
+		bool									m_isTransformUpdated = true;
+		std::string								m_name;
+		Transform								m_transform;
 		Object* m_parent;
 		std::list<Object*>						m_childs;
 		std::list<ComponentBase*>				m_components;
@@ -36,6 +37,7 @@ namespace Core::Datastructure
 		 */
 		void				RequireUpdate() noexcept
 		{
+			m_isTransformUpdated = true;
 			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 				(*it)->RequireUpdate();
 			m_transform.RequireUpdate();
@@ -51,6 +53,12 @@ namespace Core::Datastructure
 		}
 
 		/**
+		 * Sets the transform updated bool to false at the end of the frame.
+		 * Will not actually update the transform
+		 */
+		void				UpdateTransform();
+
+		/**
 		 * Constructor of the object. Takes as argument the local position
 		 * and its parent. Will update the transform if the parent is not null
 		 * @param localPos: Local position of the transform
@@ -64,6 +72,10 @@ namespace Core::Datastructure
 		 * @return Updated transform
 		 */
 		const Transform&	GetUpdatedTransform() noexcept;
+		/**
+		 * Returns if the transform has been updated in the frame
+		 */
+		bool				IsTransformUpdated() noexcept { return m_isTransformUpdated; }
 
 		/**
 		 * Destructor of the object. Destroys all of its children and components.
@@ -169,6 +181,7 @@ namespace Core::Datastructure
 		 */
 		const Maths::Vec3&	Translate(const Maths::Vec3& v) noexcept
 		{
+			RequireUpdate();
 			return m_transform.Translate(v);
 		}
 		/**
@@ -178,6 +191,7 @@ namespace Core::Datastructure
 		 */
 		const Maths::Quat&	Rotate(const Maths::Quat& q) noexcept
 		{
+			RequireUpdate();
 			return m_transform.Rotate(q);
 		}
 		/**
@@ -187,6 +201,7 @@ namespace Core::Datastructure
 		 */
 		const Maths::Vec3&	Scale(const Maths::Vec3& v) noexcept
 		{
+			RequireUpdate();
 			return m_transform.Scale(v);
 		}
 
@@ -197,9 +212,7 @@ namespace Core::Datastructure
 		void				SetPos(const Maths::Vec3& pos) noexcept
 		{
 			m_transform.SetLocalPos(pos);
-			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
-				(*it)->RequireUpdate();
-			m_EventTransformChange.Invoke();
+			RequireUpdate();
 		}
 		/**
 		 * Set local rotation of object to given value
@@ -208,9 +221,7 @@ namespace Core::Datastructure
 		void				SetRot(const Maths::Quat& rot) noexcept
 		{
 			m_transform.SetLocalRot(rot);
-			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
-				(*it)->RequireUpdate();
-			m_EventTransformChange.Invoke();
+			RequireUpdate();
 		}
 		/**
 		 * Set local scale of object to given value
@@ -219,8 +230,7 @@ namespace Core::Datastructure
 		void				SetScale(const Maths::Vec3& scale) noexcept
 		{
 			m_transform.SetLocalScale(scale);
-			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
-				(*it)->RequireUpdate();
+			RequireUpdate();
 		}
 
 		/**
@@ -286,9 +296,7 @@ namespace Core::Datastructure
 		void SetGlobalPos(const Maths::Vec3& pos) noexcept
 		{
 			m_transform.SetGlobalPos(m_parent->GetUpdatedTransform(), pos);
-			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
-				(*it)->RequireUpdate();
-			m_EventTransformChange.Invoke();
+			RequireUpdate();
 		}
 		/**
 		 * Sets the global rotation of the object
@@ -297,9 +305,7 @@ namespace Core::Datastructure
 		void SetGlobalRot(const Maths::Quat& rot) noexcept
 		{
 			m_transform.SetGlobalRot(m_parent->GetUpdatedTransform(), rot);
-			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
-				(*it)->RequireUpdate();
-			m_EventTransformChange.Invoke();
+			RequireUpdate();
 		}
 		/**
 		 * Sets the global scale of the object
@@ -308,8 +314,7 @@ namespace Core::Datastructure
 		void SetGlobalScale(const Maths::Vec3& scale) noexcept
 		{
 			m_transform.SetGlobalScale(m_parent->GetUpdatedTransform(), scale);
-			for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
-				(*it)->RequireUpdate();
+			RequireUpdate();
 		}
 		
 		/**

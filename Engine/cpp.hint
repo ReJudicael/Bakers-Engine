@@ -1,0 +1,3 @@
+#define BAKERS_API
+#define BAKERS_API_CLASS class
+#define BAKERS_API_STRUCT struct

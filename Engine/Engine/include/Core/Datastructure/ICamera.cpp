@@ -14,24 +14,24 @@ RTTR_PLUGIN_REGISTRATION
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 {
-	if (!m_isPerspectiveUpdated)
+	if (!IsPerspectiveMatrixUpdated())
 	{
 		ZoneScoped
 			ZoneText("Generating perspective matrix", 30)
 		m_perspective = OnGeneratePerspective();
-		m_isPerspectiveUpdated = true;
+		PerspectiveMatrixUpdated();
 	}
 	return m_perspective;
 }
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetCameraMatrix()
 {
-	if (!m_isCamUpdated)
+	if (!IsCameraMatrixUpdated())
 	{
 		ZoneScoped
 			ZoneText("Generating camera matrix", 25)
 		m_cameraMatrix = OnGenerateCamera();
-		m_isCamUpdated = true;
+		CameraMatrixUpdated();
 	}
 	return m_cameraMatrix;
 }
@@ -60,7 +60,7 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 	ZoneScoped
 		ZoneText("Render of a camera", 22)
 		TracyGpuZone("Rendering frame buffer")
-	if (IsStarted() && m_isActive && !IsDestroyed() && m_parent->IsActive())
+	if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 		glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
@@ -103,8 +103,6 @@ void	Core::Datastructure::ICamera::OnReset()
 	m_cameraHeight = 800;
 	m_cameraWidth = 1280;
 
-	m_isPerspectiveUpdated = false;
-	m_isCamUpdated = false;
 	if (m_fbo != nullptr)
 	{
 		GetScene()->GetEngine()->DeleteFBO(m_fbo);

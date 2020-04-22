@@ -21,6 +21,7 @@ namespace Core::Datastructure
 	private:
 		bool		m_isDestroyed = false;
 		bool		m_isStarted = false;
+		bool		m_isInit = false;
 		RootObject* m_root{ nullptr };
 	protected:
 		bool		m_isActive = true;
@@ -128,6 +129,11 @@ namespace Core::Datastructure
 		bool			IsDestroyed() const noexcept { return m_isDestroyed; }
 		/**
 		 * Returns if the component was initialized
+		 * @return State of the component
+		 */
+		bool			IsInit() const noexcept { return m_isInit; };
+		/**
+		 * Returns if the component was started
 		 * @return State of the component
 		 */
 		bool			IsStarted() const noexcept { return m_isStarted; };

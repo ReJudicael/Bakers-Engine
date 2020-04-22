@@ -13,6 +13,7 @@ RTTR_PLUGIN_REGISTRATION
 
 	Core::Datastructure::RegisterDefaultClassConstructor<Core::Renderer::Camera>("Camera");
 	registration::class_<Core::Renderer::Camera>("Camera")
+		.constructor()
 		.constructor<const float, const float, const float, const float>();
 
 	Core::Datastructure::RegisterClassPropertyGS<Core::Renderer::Camera>("Camera", "Perspective", &Core::Renderer::Camera::GetPerspData, &Core::Renderer::Camera::SetPerspData);
@@ -23,6 +24,11 @@ namespace Core::Renderer
 	Core::Maths::Mat4 Camera::OnGenerateCamera()
 	{
 		return m_parent->GetGlobalTRS().Inversed();
+	}
+
+	bool Camera::IsCameraMatrixUpdated()
+	{
+		return m_parent->IsTransformUpdated();
 	}
 
 	Core::Maths::Mat4 Camera::OnGeneratePerspective()
@@ -44,7 +50,6 @@ namespace Core::Renderer
 
 	void Camera::OnUpdate(float deltaTime)
 	{
-		m_isCamUpdated = false;
 	}
 
 	void Camera::OnStart()
@@ -108,5 +113,6 @@ namespace Core::Renderer
 		ComponentBase::OnReset();
 		ICamera::OnReset();
 		IUpdatable::OnReset();
+		m_isPerspectiveUpdated = false;
 	}
 }

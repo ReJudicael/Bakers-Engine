@@ -54,7 +54,7 @@ void Mesh::CreateAABBMesh()
 	physx::PxRigidActor* actor = object->GetScene()
 							->GetEngine()
 							->GetPhysicsScene()
-							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(),m_model);
+							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(), m_model);
 	
 	GetParent()->SetAnEventTransformChange(std::bind(&Core::Physics::PhysicsScene::UpdatePoseOfActor, object->GetScene()
 											->GetEngine()->GetPhysicsScene(), actor));

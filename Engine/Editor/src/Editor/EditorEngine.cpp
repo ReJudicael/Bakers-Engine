@@ -123,17 +123,33 @@ namespace Editor
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		m_manager->LinkAllTextureToOpenGl();
-		m_manager->LinkAllModelToOpenGl();
-		m_manager->ShaderUpdate();
-
 		glfwPollEvents();
 		if (m_inputSystem->IsCursorHidden())
 			ImGui::SetMouseCursor(-1);
+		switch (m_state)
+		{
+		case (Core::Datastructure::EngineState::STARTING):
+		case (Core::Datastructure::EngineState::RUNNING):
+		case (Core::Datastructure::EngineState::CLOSING):
+			EngineCore::OnLoop();
+			break;
+		case (Core::Datastructure::EngineState::CLOSED):
+			m_state = Core::Datastructure::EngineState::INITIALIZED;
+			break;
+		case (Core::Datastructure::EngineState::INITIALIZED):
+			m_manager->LinkAllTextureToOpenGl();
+			m_manager->LinkAllModelToOpenGl();
+			m_manager->ShaderUpdate();
 
-		EngineCore::OnLoop();
+			if (!m_navMesh->IsNavmeshUpdated())
+				m_navMesh->Build();
 
-		m_man->Render();
+			Render();
+			EndFrame();
+			break;
+		default:
+			break;
+		}
 
 		int display_w, display_h;
 		glfwGetFramebufferSize(m_window, &display_w, &display_h);
@@ -142,6 +158,11 @@ namespace Editor
 		glfwSwapBuffers(m_window);
 	}
 
+	void	EditorEngine::Render()
+	{
+		EngineCore::Render();
+		m_man->Render();
+	}
 
 	bool EditorEngine::IsSelectingEngineView()
 	{

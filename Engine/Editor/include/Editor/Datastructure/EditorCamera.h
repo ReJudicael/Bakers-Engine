@@ -20,6 +20,7 @@ namespace Editor::Datastructure
 	class EditorCamera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
 	{
 		CameraPerspective	m_persp;
+		bool				m_isPerspectiveUpdated = false;
 		Core::Datastructure::Transform		m_transform;
 
 		Core::Maths::Vec3	m_angularMovement;
@@ -37,6 +38,9 @@ namespace Editor::Datastructure
 
 		Core::Maths::Mat4	OnGenerateCamera() override;
 		Core::Maths::Mat4	OnGeneratePerspective() override;
+		virtual bool		IsCameraMatrixUpdated() override { return m_transform.IsTrsUpdated(); }
+		virtual bool		IsPerspectiveMatrixUpdated() override { return m_isPerspectiveUpdated; }
+		virtual void		PerspectiveMatrixUpdated() override { m_isPerspectiveUpdated = true; }
 
 
 		virtual void StartCopy(IComponent*& copyTo) const override;
