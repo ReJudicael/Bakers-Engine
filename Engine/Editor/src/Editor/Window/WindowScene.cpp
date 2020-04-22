@@ -7,8 +7,6 @@
 
 namespace Editor::Window
 {
-	Core::Maths::Mat<4, 4> matrix{ matrix.Identity() };
-
 	WindowScene::WindowScene(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Scene", visible }
 	{
@@ -18,8 +16,6 @@ namespace Editor::Window
 		//m_fbo = GetEngine()->CreateFBO();
 		m_cam = new Datastructure::EditorCamera();
 		GetEngine()->m_root->AddComponent(m_cam);
-		
-		matrix.m_mat[14] = -2;
 	}
 
 	void WindowScene::PushWindowStyle()
@@ -36,12 +32,6 @@ namespace Editor::Window
 	{
 		if (m_cam)
 		{
-			ImGuiIO& io = ImGui::GetIO();
-			ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-			
-			if (GetEngine()->objectSelected)
-				GizmoManipulateResult(matrix.m_mat);
-
 			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 
@@ -52,6 +42,15 @@ namespace Editor::Window
 			}
 
 			ImGui::ImageUV(fbo->ColorTexture, windowSize);
+
+			if (GetEngine()->objectSelected)
+			{
+				ImGuiIO& io = ImGui::GetIO();
+				ImGuizmo::SetDrawlist();
+				ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+				ImGuizmo::ViewManipulate((float*)m_cam->GetCameraMatrix().array, 0.f, ImVec2(0, 0), ImVec2(0, 0), 0x10101010);
+				GizmoManipulateResult();
+			}
 		}
 		else
 		{
@@ -60,14 +59,16 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowScene::GizmoManipulateResult(float* matrix)
+	void WindowScene::GizmoManipulateResult()
 	{
 		Core::Maths::Mat4 transform = GetEngine()->objectSelected->GetGlobalTRS();
+		float* transformMatrix = transform.mat.Transposed().array;
+
 		float t[3], r[3], s[3], t2[3], r2[3], s2[3];
-		ImGuizmo::DecomposeMatrixToComponents(matrix, t, r, s);
-		ImGuizmo::DrawGrid(m_cam->GetCameraMatrix().m_array, m_cam->GetPerspectiveMatrix().m_array, matrix, 1);
-		ImGuizmo::Manipulate(m_cam->GetCameraMatrix().m_array, m_cam->GetPerspectiveMatrix().m_array, GetEngine()->gizmoOperation, GetEngine()->gizmoMode, matrix);
-		ImGuizmo::DecomposeMatrixToComponents(matrix, t2, r2, s2);
+		ImGuizmo::DecomposeMatrixToComponents(transformMatrix, t, r, s);
+		Core::Maths::Mat<4, 4> view = m_cam->GetCameraMatrix().mat.Transposed();
+		ImGuizmo::Manipulate(view.array, m_cam->GetPerspectiveMatrix().array, GetEngine()->gizmoOperation, GetEngine()->gizmoMode, transformMatrix);
+		ImGuizmo::DecomposeMatrixToComponents(transformMatrix, t2, r2, s2);
 		
 		switch (GetEngine()->gizmoOperation)
 		{

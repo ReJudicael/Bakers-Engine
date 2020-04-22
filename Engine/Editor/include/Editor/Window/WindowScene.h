@@ -46,9 +46,8 @@ namespace Editor::Window
 
 		/**
 		 * Manipulate gizmo and apply result to selected object
-		 * @param matrix: Matrix for gizmo transform
 		 */
-		void GizmoManipulateResult(float* matrix);
+		void GizmoManipulateResult();
 
 	private:
 		/**
