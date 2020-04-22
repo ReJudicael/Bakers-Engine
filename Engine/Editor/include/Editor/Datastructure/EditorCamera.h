@@ -33,7 +33,7 @@ namespace Editor::Datastructure
 		//Should make speed change with mousewheel
 		float				m_speed{ 5 };
 
-		virtual void		OnStart() override;
+		virtual void		OnInit() override;
 
 		Core::Maths::Mat4	OnGenerateCamera() override;
 		Core::Maths::Mat4	OnGeneratePerspective() override;
@@ -100,4 +100,3 @@ namespace Editor::Datastructure
 		REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera)
 	};
 }
-

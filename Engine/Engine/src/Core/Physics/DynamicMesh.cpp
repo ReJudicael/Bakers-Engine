@@ -77,11 +77,14 @@ namespace Core
 
 		void DynamicMesh::OnDestroy()
 		{
-			DestroyDynamicMesh();
 			ComponentBase::OnDestroy();
 			IPhysics::OnDestroy();
 			IUpdatable::OnDestroy();
-			GetParent()->RemoveEventTransformChange();
+			if (IsStarted())
+			{
+				DestroyDynamicMesh();
+				GetParent()->RemoveEventTransformChange();
+			}
 		}
 
 		void DynamicMesh::OnReset()

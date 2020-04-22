@@ -21,10 +21,10 @@ namespace Editor::Datastructure
 		return m_fbo;
 	}
 	
-	void EditorCamera::OnStart()
+	void EditorCamera::OnInit()
 	{
-		ComponentBase::OnStart();
-		ICamera::OnStart();
+		ComponentBase::OnInit();
+		ICamera::OnInit();
 		m_fbo->type = Core::Renderer::FBOType::CUSTOM;
 	}
 	
