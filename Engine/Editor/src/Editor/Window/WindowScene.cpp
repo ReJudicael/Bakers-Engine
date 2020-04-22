@@ -40,20 +40,7 @@ namespace Editor::Window
 			ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 			
 			if (GetEngine()->objectSelected)
-			{
-				Core::Maths::Mat4 transform = GetEngine()->objectSelected->GetGlobalTRS();
-				float t[3], r[3], s[3], t2[3], r2[3], s2[3];
-				ImGuizmo::DecomposeMatrixToComponents(matrix.m_mat, t, r, s);
-				ImGuizmo::DrawGrid(m_cam->GetCameraMatrix().m_array, m_cam->GetPerspectiveMatrix().m_array, matrix.m_mat, 1);
-				ImGuizmo::Manipulate(m_cam->GetCameraMatrix().m_array, m_cam->GetPerspectiveMatrix().m_array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::LOCAL, matrix.m_mat);
-				ImGuizmo::DecomposeMatrixToComponents(matrix.m_mat, t2, r2, s2);
-				Core::Maths::Vec3 translate(t2[0] - t[0], t2[1] - t[1], t2[2] - t[2]);
-				if (translate.Length() > 0)
-				{
-					translate += GetEngine()->objectSelected->GetGlobalPos();
-					GetEngine()->objectSelected->SetGlobalPos(translate);
-				}
-			}
+				GizmoManipulateResult(matrix.m_mat);
 
 			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
@@ -70,6 +57,52 @@ namespace Editor::Window
 		{
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("  No scene camera available");
+		}
+	}
+
+	void WindowScene::GizmoManipulateResult(float* matrix)
+	{
+		Core::Maths::Mat4 transform = GetEngine()->objectSelected->GetGlobalTRS();
+		float t[3], r[3], s[3], t2[3], r2[3], s2[3];
+		ImGuizmo::DecomposeMatrixToComponents(matrix, t, r, s);
+		ImGuizmo::DrawGrid(m_cam->GetCameraMatrix().m_array, m_cam->GetPerspectiveMatrix().m_array, matrix, 1);
+		ImGuizmo::Manipulate(m_cam->GetCameraMatrix().m_array, m_cam->GetPerspectiveMatrix().m_array, GetEngine()->gizmoOperation, GetEngine()->gizmoMode, matrix);
+		ImGuizmo::DecomposeMatrixToComponents(matrix, t2, r2, s2);
+		
+		switch (GetEngine()->gizmoOperation)
+		{
+		case ImGuizmo::OPERATION::TRANSLATE:
+		{
+			Core::Maths::Vec3 translate(t2[0] - t[0], t2[1] - t[1], t2[2] - t[2]);
+			if (translate.Length() > 0)
+			{
+				translate += GetEngine()->objectSelected->GetGlobalPos();
+				GetEngine()->objectSelected->SetGlobalPos(translate);
+			}
+			break;
+		}
+		case ImGuizmo::OPERATION::ROTATE:
+		{
+			Core::Maths::Vec3 eulerRotate(r2[0] - r[0], r2[1] - r[1], r2[2] - r[2]);
+			if (eulerRotate.Length() > 0)
+			{
+				Core::Maths::Quat rotate(eulerRotate);
+				rotate *= GetEngine()->objectSelected->GetGlobalRot();
+				GetEngine()->objectSelected->SetGlobalRot(rotate);
+			}
+			break;
+		}
+		case ImGuizmo::OPERATION::SCALE:
+		{
+			Core::Maths::Vec3 scale(s2[0] - s[0], s2[1] - s[1], s2[2] - s[2]);
+			if (scale.Length() > 0)
+			{
+				scale += GetEngine()->objectSelected->GetGlobalScale();
+				GetEngine()->objectSelected->SetGlobalScale(scale);
+			}
+			break;
+		}
+		default:break;
 		}
 	}
 

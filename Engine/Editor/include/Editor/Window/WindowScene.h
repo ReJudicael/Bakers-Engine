@@ -44,6 +44,12 @@ namespace Editor::Window
 		 */
 		void DisplayScene();
 
+		/**
+		 * Manipulate gizmo and apply result to selected object
+		 * @param matrix: Matrix for gizmo transform
+		 */
+		void GizmoManipulateResult(float* matrix);
+
 	private:
 		/**
 		 * Draw elements in window
