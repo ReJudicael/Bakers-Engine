@@ -2,7 +2,6 @@
 
 #include "ComponentBase.h"
 #include "ICamera.h"
-#include "IUpdatable.hpp"
 #include "Transform.hpp"
 
 #include "Vec2.hpp"
@@ -17,7 +16,7 @@ namespace Editor::Datastructure
 		float near = 0.1f;
 		float far = 100.f;
 	};
-	class EditorCamera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
+	class EditorCamera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera
 	{
 		CameraPerspective	m_persp;
 		bool				m_isPerspectiveUpdated = false;
@@ -53,6 +52,11 @@ namespace Editor::Datastructure
 		void SetRatio(const float newRatio) override;
 
 		Core::Renderer::Framebuffer* GetFBO();
+		/**
+		 * Update translation and rotation
+		 * @param deltaTime: Time elapsed between two frames
+		 */
+		virtual void Update(float deltaTime);
 	private:
 		/**
 		 * Compute keyboard and mouse interactions when right mouse button is pressed
@@ -68,12 +72,6 @@ namespace Editor::Datastructure
 		 * Compute rotation with mouse movements
 		 */
 		void	ComputeRotation();
-
-		/**
-		 * Update translation and rotation
-		 * @param deltaTime: Time elapsed between two frames
-		 */
-		virtual void OnUpdate(float deltaTime) override;
 
 		/**
 		 * Update translation with stored movement vector
@@ -99,7 +97,7 @@ namespace Editor::Datastructure
 		 */
 		void	Rotate(Core::Maths::Vec3 move);
 
-		REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera, Core::Datastructure::IUpdatable)
+		REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera)
 	};
 }
 

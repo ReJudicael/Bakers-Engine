@@ -12,7 +12,7 @@ RTTR_PLUGIN_REGISTRATION
 namespace Core::Datastructure
 {
 
-	void Core::Datastructure::IRenderable::OnStart()
+	void Core::Datastructure::IRenderable::OnInit()
 	{
 		if (GetScene() == nullptr)
 			return;

@@ -25,7 +25,6 @@ namespace Editor::Datastructure
 	{
 		ComponentBase::OnStart();
 		ICamera::OnStart();
-		IUpdatable::OnStart();
 		m_fbo->type = Core::Renderer::FBOType::CUSTOM;
 	}
 	
@@ -49,14 +48,12 @@ namespace Editor::Datastructure
 	{
 		ComponentBase::OnCopy(copyTo);
 		ICamera::OnCopy(copyTo);
-		IUpdatable::OnCopy(copyTo);
 	}
 	
 	void EditorCamera::OnDestroy()
 	{
 		ComponentBase::OnDestroy();
 		ICamera::OnDestroy();
-		IUpdatable::OnDestroy();
 
 		GetScene()->GetEngine()->DeleteFBO(m_fbo);
 	}
@@ -65,7 +62,6 @@ namespace Editor::Datastructure
 	{
 		ComponentBase::OnReset();
 		ICamera::OnReset();
-		IUpdatable::OnReset();
 
 		m_persp = CameraPerspective();
 		m_isPerspectiveUpdated = false;
@@ -123,7 +119,7 @@ namespace Editor::Datastructure
 		m_isMouseSet = true;
 	}
 
-	void EditorCamera::OnUpdate(float deltaTime)
+	void EditorCamera::Update(float deltaTime)
 	{
 		MoveWithInput();
 
