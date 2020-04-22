@@ -32,6 +32,7 @@ namespace Editor
 		void	Play() { m_state = Core::Datastructure::EngineState::STARTING; }
 		void	EndPlay() { m_state = Core::Datastructure::EngineState::CLOSING; }
 		bool	IsPlaying() { return m_state >= Core::Datastructure::EngineState::STARTING && m_state <= Core::Datastructure::EngineState::CLOSING; }
+		void	SaveScene();
 	private:
 		void				SetCallbackToGLFW();
 		GLFWkeyfun			SetKeyCallBackToGLFW();

@@ -12,6 +12,7 @@
 #include "Ref.hpp"
 #include "Ref3D.hpp"
 #include "Quaternion.hpp"
+#include "Color.hpp"
 
 constexpr double RAD2DEG = 180.f / M_PI;
 constexpr double DEG2RAD = M_PI / 180.f;

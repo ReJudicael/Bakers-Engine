@@ -1,6 +1,35 @@
 #include "Maths.hpp"
-#include "PxVec3.h"
+#include "CoreMinimal.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Core::Maths::Vec2>("Vec2")
+		.constructor()
+		.property("x", &Core::Maths::Vec2::x)
+		.property("y", &Core::Maths::Vec2::y);
+
+	rttr::registration::class_<Core::Maths::Vec3>("Vec3")
+		.constructor()
+		.property("x", &Core::Maths::Vec3::x)
+		.property("y", &Core::Maths::Vec3::y)
+		.property("z", &Core::Maths::Vec3::z);
+
+	rttr::registration::class_<Core::Maths::Vec4>("Vec4")
+		.constructor()
+		.property("x", &Core::Maths::Vec4::x)
+		.property("y", &Core::Maths::Vec4::y)
+		.property("z", &Core::Maths::Vec4::z)
+		.property("w", &Core::Maths::Vec4::w);
+
+	rttr::registration::class_<Core::Maths::Color>("Color")
+		.constructor()
+		.property("r", &Core::Maths::Color::r)
+		.property("g", &Core::Maths::Color::g)
+		.property("b", &Core::Maths::Color::b)
+		.property("a", &Core::Maths::Color::a);
+}
+
+#include "PxVec3.h"
 #include <sol.hpp>
 
 namespace Core::Maths

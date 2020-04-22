@@ -1,0 +1,358 @@
+{
+    "Childs": [
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Player Camera",
+                    "Values": {
+                        "Is running": {
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Min move length": {
+                            "Type": "float",
+                            "Value": 0.0010000000474974513
+                        },
+                        "Move lerp speed": {
+                            "Type": "float",
+                            "Value": 0.5
+                        },
+                        "Perspective": {
+                            "Type": "Perspective",
+                            "Value": "Class"
+                        },
+                        "Running speed": {
+                            "Type": "float",
+                            "Value": 20.0
+                        },
+                        "Speed": {
+                            "Type": "float",
+                            "Value": 5.0
+                        }
+                    }
+                },
+                {
+                    "Type": "Light",
+                    "Values": {
+                        "Active": {
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Ambient": {
+                            "Type": "Color",
+                            "Value": [
+                                0.30000001192092896,
+                                0.30000001192092896,
+                                0.30000001192092896,
+                                1.0
+                            ]
+                        },
+                        "Angle": {
+                            "Type": "float",
+                            "Value": 0.7850000262260437
+                        },
+                        "AngleSmoothness": {
+                            "Type": "float",
+                            "Value": 0.009999999776482582
+                        },
+                        "Attenuation": {
+                            "Type": "Vec3",
+                            "Value": [
+                                0.30000001192092896,
+                                0.019999999552965164,
+                                0.0020000000949949026
+                            ]
+                        },
+                        "Diffuse": {
+                            "Type": "Color",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5,
+                                1.0
+                            ]
+                        },
+                        "Range": {
+                            "Type": "float",
+                            "Value": 1000.0
+                        },
+                        "Specular": {
+                            "Type": "Color",
+                            "Value": [
+                                0.20000000298023224,
+                                0.20000000298023224,
+                                0.20000000298023224,
+                                1.0
+                            ]
+                        },
+                        "Type": {
+                            "Type": "LightType",
+                            "Value": 1
+                        }
+                    }
+                },
+                {
+                    "Type": "Script",
+                    "Values": {
+                        "Script": {
+                            "Type": "std::string",
+                            "Value": "Resources\\Scripts\\DefaultScript.lua"
+                        }
+                    }
+                }
+            ],
+            "Name": "Camera"
+        },
+        {
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Static Mesh",
+                            "Values": {
+                                "LayerMask": {
+                                    "Type": "Layout",
+                                    "Value": 1
+                                }
+                            }
+                        }
+                    ],
+                    "Name": "Static Mesh"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Sphere001"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Box001"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Sphere002"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Box010"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Box011"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Box012"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Sphere003"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Box013"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Box014"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Object001"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Object002"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Object003"
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        },
+                        {
+                            "Type": "classCore::Datastructure::TriggeredEvent",
+                            "Values": null
+                        }
+                    ],
+                    "Name": "Object004"
+                }
+            ],
+            "Components": [],
+            "Name": "RootNode"
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Dynamic Mesh",
+                    "Values": {
+                        "LayerMask": {
+                            "Type": "Layout",
+                            "Value": 1
+                        },
+                        "Mass": {
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Rotation Lock X": {
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Rotation Lock Y": {
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Rotation Lock Z": {
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Velocity": {
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        }
+                    }
+                },
+                {
+                    "Type": "Mesh",
+                    "Values": null
+                },
+                {
+                    "Type": "classCore::Datastructure::TriggeredEvent",
+                    "Values": null
+                }
+            ],
+            "Name": "UmbreonHighPoly.obj"
+        }
+    ]
+}

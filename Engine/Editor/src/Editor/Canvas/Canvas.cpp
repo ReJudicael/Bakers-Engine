@@ -13,8 +13,6 @@ namespace Editor
 		m_dockWindowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
 		m_dockNodeFlags |= ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
-
-		InitMenuBar();
 	}
 
 	Canvas::~Canvas()
@@ -28,6 +26,7 @@ namespace Editor
 		m_view = &m_menuBar->Add<Widget::MenuGroup>("View");
 		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, true);
 		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, false);
+		m_view->Add<Widget::MenuItem>("Save scene", "CTRL + S").OnClick += std::bind(&EditorEngine::SaveScene, GetEngine());
 		m_view->Add<Widget::Separator>();
 	}
 
@@ -68,6 +67,8 @@ namespace Editor
 			SetAllWindowVisibility(true);
 		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::M))
 			SetAllWindowVisibility(false);
+		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::S))
+			GetEngine()->SaveScene();
 	}
 
 	void Canvas::PushDockStyle()
@@ -132,6 +133,8 @@ namespace Editor
 	void Canvas::SetManager(GUIManager* manager) noexcept
 	{
 		m_manager = manager;
+
+		InitMenuBar();
 	}
 
 	EditorEngine* Canvas::GetEngine() noexcept

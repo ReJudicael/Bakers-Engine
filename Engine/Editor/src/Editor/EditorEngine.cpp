@@ -17,6 +17,11 @@
 #include "LoadResources.h"
 #include "WindowToolbar.h"
 
+#include "json.hpp"
+using nlohmann::json;
+#include <fstream>
+
+
 namespace Editor
 {
 	EditorEngine::EditorEngine() : EditorEngine(1280, 800)
@@ -174,6 +179,112 @@ namespace Editor
 		double pos[2];
 		glfwGetCursorPos(GetWindow(), &pos[0], &pos[1]);
 		return Core::Maths::Vec2(static_cast<float>(pos[0]), static_cast<float>(pos[1]));
+	}
+
+	json	PropertyToJson(rttr::property prop, rttr::instance i)
+	{
+		rttr::type propType = prop.get_type();
+		rttr:variant val = prop.get_value(i);
+		json out;
+		out["Type"] = prop.get_type().get_name().to_string();
+
+		if (prop.is_enumeration())
+		{
+			out["Value"] = val.get_value<int>();
+		}
+		else if (propType == rttr::type::get<bool>())
+		{
+			out["Value"] = val.get_value<bool>();
+		}
+		else if (propType == rttr::type::get<int>())
+		{
+			out["Value"] = val.get_value<int>();
+		}
+		else if (propType == rttr::type::get<float>())
+		{
+			out["Value"] = val.get_value<float>();
+		}
+		else if (propType == rttr::type::get<Core::Maths::Vec2>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Vec2>().xy;
+		}
+		else if (propType == rttr::type::get<Core::Maths::Vec3>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Vec3>().xyz;
+		}
+		else if (propType == rttr::type::get<Core::Maths::Vec4>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Vec4>().xyzw;
+		}
+		else if (propType == rttr::type::get<Core::Maths::Color>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Color>().rgba;
+		}
+		else if (propType == rttr::type::get<std::string>())
+		{
+			out["Value"] = val.get_value<std::string>();
+		}
+		else if (propType.is_class())
+		{
+			out["Value"] = "Class";
+		}
+		else
+		{
+			out["Value"] = "Unknown";
+		}
+
+		return out;
+	}
+
+	json	ComponentToJson(Core::Datastructure::IComponent* component)
+	{
+		json out;
+		out["Type"] = component->get_type().get_name().to_string();
+		{
+			json values;
+			for (rttr::property p : component->get_type().get_properties())
+			{
+				if (p.is_readonly() || p.is_static())
+					continue;
+				values[p.get_name().to_string()] = PropertyToJson(p, component);;
+			}
+			out["Values"] = values;
+		}
+
+		return out;
+	}
+
+	json	ObjectToJson(Core::Datastructure::Object* object)
+	{
+		json out;
+		out["Name"] = object->GetName();
+		out["Childs"] = json::array();
+		out["Components"] = json::array();
+		int i{ 0 };
+		for (auto it : object->GetChildren())
+		{
+			out["Childs"][i++] = ObjectToJson(it);
+		}
+		i = 0;
+		for (auto it : object->GetComponents())
+		{
+			out["Components"][i++] = ComponentToJson(it);
+		}
+		return out;
+	}
+
+	void EditorEngine::SaveScene()
+	{
+		json	scene;
+		int i{ 0 };
+		scene["Childs"] = json::array();
+		for (auto it : m_root->GetChildren())
+		{
+			scene["Childs"][i++] = ObjectToJson(it);
+		}
+
+		std::ofstream o("Test.json");
+		o << std::setw(4) << scene << std::endl;
 	}
 
 	void EditorEngine::SetCallbackToGLFW()
