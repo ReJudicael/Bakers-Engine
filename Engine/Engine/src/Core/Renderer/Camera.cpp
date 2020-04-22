@@ -28,7 +28,7 @@ namespace Core::Renderer
 
 	bool Camera::IsCameraMatrixUpdated()
 	{
-		return m_parent->IsTransformUpdated();
+		return !m_parent->IsTransformUpdated();
 	}
 
 	Core::Maths::Mat4 Camera::OnGeneratePerspective()
