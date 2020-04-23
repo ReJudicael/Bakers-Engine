@@ -110,7 +110,6 @@ namespace Editor
 	{
 		while (!glfwWindowShouldClose(m_window))
 		{
-			std::cout << (int)m_state << std::endl;
 			OnLoop();
 		}
 	}
@@ -140,7 +139,6 @@ namespace Editor
 			break;
 		case (Core::Datastructure::EngineState::CLOSED):
 			m_state = Core::Datastructure::EngineState::INITIALIZED;
-			break;
 		case (Core::Datastructure::EngineState::INITIALIZED):
 			m_manager->LinkAllTextureToOpenGl();
 			m_manager->LinkAllModelToOpenGl();
@@ -181,10 +179,13 @@ namespace Editor
 		return Core::Maths::Vec2(static_cast<float>(pos[0]), static_cast<float>(pos[1]));
 	}
 
+	json	ClassToJson(rttr::type t, rttr::instance i);
+
 	json	PropertyToJson(rttr::property prop, rttr::instance i)
 	{
 		rttr::type propType = prop.get_type();
 		rttr:variant val = prop.get_value(i);
+
 		json out;
 		out["Type"] = prop.get_type().get_name().to_string();
 
@@ -226,27 +227,27 @@ namespace Editor
 		}
 		else if (propType.is_class())
 		{
-			out["Value"] = "Class";
+			out["Value"] = ClassToJson(propType, val);
 		}
 		else
 		{
-			out["Value"] = "Unknown";
+			out["Value"] = "Unknown: please implement this save";
 		}
 
 		return out;
 	}
 
-	json	ComponentToJson(Core::Datastructure::IComponent* component)
+	json	ClassToJson(rttr::type t, rttr::instance i)
 	{
 		json out;
-		out["Type"] = component->get_type().get_name().to_string();
+		out["Type"] = t.get_name().to_string();
 		{
 			json values;
-			for (rttr::property p : component->get_type().get_properties())
+			for (rttr::property p : t.get_properties())
 			{
-				if (p.is_readonly() || p.is_static())
+				if (p.is_readonly() || p.is_static() || p.get_access_level() != rttr::access_levels::public_access)
 					continue;
-				values[p.get_name().to_string()] = PropertyToJson(p, component);;
+				values[p.get_name().to_string()] = PropertyToJson(p, i);
 			}
 			out["Values"] = values;
 		}
@@ -268,7 +269,7 @@ namespace Editor
 		i = 0;
 		for (auto it : object->GetComponents())
 		{
-			out["Components"][i++] = ComponentToJson(it);
+			out["Components"][i++] = ClassToJson(it->get_type(), it);
 		}
 		return out;
 	}

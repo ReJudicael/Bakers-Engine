@@ -21,14 +21,17 @@ namespace Editor
 	}
 
 	void Canvas::InitMenuBar()
-	{
-		m_menuBar = new MenuBar();
-		m_view = &m_menuBar->Add<Widget::MenuGroup>("View");
-		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, true);
-		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, false);
-		m_view->Add<Widget::MenuItem>("Save scene", "CTRL + S").OnClick += std::bind(&EditorEngine::SaveScene, GetEngine());
-		m_view->Add<Widget::Separator>();
-	}
+    {
+        m_menuBar = new MenuBar();
+
+        Widget::MenuGroup* file = &m_menuBar->Add<Widget::MenuGroup>("File");
+        file->Add<Widget::MenuItem>("Save scene", "CTRL + S").OnClick += std::bind(&EditorEngine::SaveScene, GetEngine());
+
+        m_view = &m_menuBar->Add<Widget::MenuGroup>("View");
+        m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, true);
+        m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, false);
+        m_view->Add<Widget::Separator>();
+    }
 
 	void Canvas::SetAllWindowVisibility(bool opened)
 	{

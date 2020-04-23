@@ -20,7 +20,27 @@
                         },
                         "Perspective": {
                             "Type": "Perspective",
-                            "Value": "Class"
+                            "Value": {
+                                "Type": "Perspective",
+                                "Values": {
+                                    "FOV": {
+                                        "Type": "float",
+                                        "Value": 60.0
+                                    },
+                                    "Far": {
+                                        "Type": "float",
+                                        "Value": 100.0
+                                    },
+                                    "Near": {
+                                        "Type": "float",
+                                        "Value": 0.10000000149011612
+                                    },
+                                    "Ratio": {
+                                        "Type": "float",
+                                        "Value": 1.864928960800171
+                                    }
+                                }
+                            }
                         },
                         "Running speed": {
                             "Type": "float",
