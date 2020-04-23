@@ -24,7 +24,7 @@ namespace Core::Maths
 
 		union
 		{
-			float				m_mat[Size];
+			float				array[Size];
 			float				mat[Line][Column];
 		};
 
@@ -409,36 +409,36 @@ namespace Core::Maths
 	};
 
 	template <unsigned Line, unsigned Column>
-	constexpr	Mat<Line, Column>::Mat() noexcept : m_mat()
+	constexpr	Mat<Line, Column>::Mat() noexcept : array()
 	{
 		for (unsigned i{ 0 }; i < Size; ++i)
-			m_mat[i] = 0;
+			array[i] = 0;
 	}
 
 	template <unsigned Line, unsigned Column>
-	constexpr	Mat<Line, Column>::Mat(int d) noexcept : m_mat()
+	constexpr	Mat<Line, Column>::Mat(int d) noexcept : array()
 	{
 		for (unsigned i{ 0 }; i < Size; ++i)
 		{
 			if (i % 3 != 0)
-				m_mat[i] = 0;
+				array[i] = 0;
 			else
-				m_mat[i] = (float)i * d;
+				array[i] = (float)i * d;
 		}
 	}
 
 	template <unsigned Line, unsigned Column>
-	constexpr	Mat<Line, Column>::Mat(const Mat<Line, Column>& m) noexcept : m_mat()
+	constexpr	Mat<Line, Column>::Mat(const Mat<Line, Column>& m) noexcept : array()
 	{
 		for (unsigned i{ 0 }; i < Size; ++i)
-			m_mat[i] = m(i);
+			array[i] = m(i);
 	}
 
 	template <unsigned Line, unsigned Column>
-	constexpr	Mat<Line, Column>::Mat(Mat<Line, Column>&& m) noexcept : m_mat()
+	constexpr	Mat<Line, Column>::Mat(Mat<Line, Column>&& m) noexcept : array()
 	{
 		for (unsigned i{ 0 }; i < Line * Column; ++i)
-			m_mat[i] = std::move(m(i));
+			array[i] = std::move(m(i));
 	}
 
 	template <unsigned Line, unsigned Column>
@@ -756,13 +756,13 @@ namespace Core::Maths
 	template<unsigned Line, unsigned Column>
 	inline constexpr float Maths::Mat<Line, Column>::Get(const unsigned a) const noexcept
 	{
-		return m_mat[a];
+		return array[a];
 	}
 
 	template<unsigned Line, unsigned Column>
 	inline constexpr float& Maths::Mat<Line, Column>::Get(const unsigned a) noexcept
 	{
-		return m_mat[a];
+		return array[a];
 	}
 
 
@@ -771,19 +771,19 @@ namespace Core::Maths
 	inline constexpr float Maths::Mat<Line, Column>::Get() const noexcept
 	{
 		constexpr unsigned pos{ l * Column + c };
-		return m_mat[pos];
+		return array[pos];
 	}
 
 	template<unsigned Line, unsigned Column>
 	inline constexpr float Maths::Mat<Line, Column>::Get(const unsigned line, const unsigned column) const noexcept
 	{
-		return m_mat[line * Column + column];
+		return array[line * Column + column];
 	}
 
 	template<unsigned Line, unsigned Column>
 	inline constexpr float& Maths::Mat<Line, Column>::Get(const unsigned line, const unsigned column) noexcept
 	{
-		return m_mat[line * Column + column];
+		return array[line * Column + column];
 	}
 
 	template<unsigned Line, unsigned Column>
@@ -791,43 +791,43 @@ namespace Core::Maths
 	inline constexpr void Maths::Mat<Line, Column>::Set(const float f) noexcept
 	{
 		constexpr unsigned pos{ l * Column + c };
-		m_mat[pos] = f;
+		array[pos] = f;
 	}
 
 	template<unsigned Line, unsigned Column>
 	inline constexpr void Maths::Mat<Line, Column>::Set(const unsigned line, const unsigned column, const float f) noexcept
 	{
-		m_mat[line * Column + column] = f;
+		array[line * Column + column] = f;
 	}
 
 	template<unsigned Line, unsigned Column>
 	inline constexpr void Maths::Mat<Line, Column>::Set(const unsigned a, const float f) noexcept
 	{
-		m_mat[a] = f;
+		array[a] = f;
 	}
 
 	template<unsigned Line, unsigned Column>
 	inline constexpr float Maths::Mat<Line, Column>::operator()(const unsigned a) const noexcept
 	{
-		return m_mat[a];
+		return array[a];
 	}
 
 	template<unsigned Line, unsigned Column>
 	inline constexpr float& Maths::Mat<Line, Column>::operator()(const unsigned a) noexcept
 	{
-		return m_mat[a];
+		return array[a];
 	}
 
 	template<unsigned Line, unsigned Column>
 	inline constexpr float Maths::Mat<Line, Column>::operator()(const unsigned line, const unsigned column) const noexcept
 	{
-		return m_mat[line * Column + column];
+		return array[line * Column + column];
 	}
 
 	template<unsigned Line, unsigned Column>
 	inline constexpr float& Maths::Mat<Line, Column>::operator()(const unsigned line, const unsigned column) noexcept
 	{
-		return m_mat[line * Column + column];
+		return array[line * Column + column];
 	}
 
 	template<unsigned Line, unsigned Column>
@@ -939,7 +939,7 @@ namespace Core::Maths
 	{
 		Mat<Line, Column>	m{ *this };
 		for (unsigned i{ 0 }; i < Line * Column; ++i)
-			m.m_mat[i] /= f;
+			m.array[i] /= f;
 
 		return m;
 	}
@@ -987,7 +987,7 @@ namespace Core::Maths
 	inline constexpr Mat<Line, Column> Mat<Line, Column>::operator=(Mat<Line, Column>&& m) noexcept
 	{
 		for (unsigned i{ 0 }; i < Line * Column; ++i)
-			m_mat[i] = std::move(m.m_mat[i]);
+			array[i] = std::move(m.array[i]);
 		return *this;
 	}
 }

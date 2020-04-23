@@ -105,7 +105,6 @@ namespace Editor
 	{
 		while (!glfwWindowShouldClose(m_window))
 		{
-			std::cout << (int)m_state << std::endl;
 			OnLoop();
 		}
 	}
@@ -130,6 +129,20 @@ namespace Editor
 		glfwPollEvents();
 		if (m_inputSystem->IsCursorHidden())
 			ImGui::SetMouseCursor(-1);
+
+		// Temporary gizmo setting by inputs
+		if (m_inputSystem->IsKeyPressed(EKey::T))
+			gizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+		if (m_inputSystem->IsKeyPressed(EKey::R))
+			gizmoOperation = ImGuizmo::OPERATION::ROTATE;
+		if (m_inputSystem->IsKeyPressed(EKey::S))
+			gizmoOperation = ImGuizmo::OPERATION::SCALE;
+		if (m_inputSystem->IsKeyPressed(EKey::B))
+			gizmoOperation = ImGuizmo::OPERATION::BOUNDS;
+		if (m_inputSystem->IsKeyPressed(EKey::L))
+			gizmoMode = ImGuizmo::MODE::LOCAL;
+		if (m_inputSystem->IsKeyPressed(EKey::G))
+			gizmoMode = ImGuizmo::MODE::WORLD;
 
 		EngineCore::OnLoop();
 

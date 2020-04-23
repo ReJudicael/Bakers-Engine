@@ -83,9 +83,9 @@ namespace Core::Physics
 		Gtrs.SetLocalRot(rot);
 		Gtrs.SetLocalScale({ 1.f,1.f,1.f });
 
-		glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, (Ltrs.GetLocalTrs() * Gtrs.GetLocalTrs()).m_array);
-		glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
-		glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
+		glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, (Ltrs.GetLocalTrs() * Gtrs.GetLocalTrs()).array);
+		glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
+		glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
