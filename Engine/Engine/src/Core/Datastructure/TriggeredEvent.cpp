@@ -1,8 +1,29 @@
 #include "TriggeredEvent.h"
 #include "Object.hpp"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	using namespace Core::Datastructure;
+	rttr::registration::class_<TriggeredEvent>("Triggered Event")
+		.constructor()
+		.property("AutoDestroy", &TriggeredEvent::m_autoDestroy)
+		.property("ConditionTrigger", &TriggeredEvent::m_conditionTrigger)
+		.property("FunctionAssigned", &TriggeredEvent::m_functionsAssigned);
+}
+
 namespace Core::Datastructure
 {
+	void TriggeredEvent::OnCopy(IComponent* copyTo) const
+	{
+		ComponentBase::OnCopy(copyTo);
+		IUpdatable::OnCopy(copyTo);
+	}
+
+	void TriggeredEvent::StartCopy(IComponent*& copyTo) const
+	{
+		copyTo = new TriggeredEvent();
+		OnCopy(copyTo);
+	}
 
 	void TriggeredEvent::OnReset()
 	{

@@ -11,6 +11,16 @@ namespace Core::Datastructure
 {
 	class RootObject;
 
+	enum class ObjectFlags : unsigned char
+	{
+		None = 0,
+		STATIC = 1, // Physically static object, will be used in navmesh
+		DYNAMICALLY_GENERATED = 1 << 1, // Object generated at runtime, will not be saved into a scene but parameters will be copied after loading
+	};
+
+	RTTR_DECLARE_FLAGS(ObjectFlag, ObjectFlags)
+	RTTR_DECLARE_ENUM_FLAGS_OPERATORS(ObjectFlag)
+
 	/**
 	 * Container for all components of the game. It updates its transform and holds
 	 * the components.
@@ -18,12 +28,13 @@ namespace Core::Datastructure
 	BAKERS_API_CLASS Object
 	{
 	private:
-		bool									m_isDestroyed = false;
 		RootObject*								m_root{ nullptr };
+		bool									m_isDestroyed = false;
 		
 	protected:
 		bool									m_isActive = true;
 		bool									m_isTransformUpdated = true;
+		ObjectFlag								m_flags;
 		std::string								m_name;
 		Transform								m_transform;
 		Object* m_parent;
@@ -67,6 +78,11 @@ namespace Core::Datastructure
 		 */
 		Object(const std::string& name, const Transform& localPos, Object* parent, RootObject* scene) noexcept;
 	public:
+		/**
+		 * Returns the flags of the object
+		 */
+		ObjectFlag			GetFlags() const noexcept { return m_flags; }
+
 		/**
 		 * Returns the transform, updates it if needed.
 		 * @return Updated transform

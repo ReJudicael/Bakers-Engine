@@ -42,6 +42,8 @@ namespace Core
 
 			Core::Navigation::NavMeshBuilder*		m_navMesh;
 
+			std::string								m_currScene{ "Default.json" };
+
 			double									m_time{ 0 };
 
 			TRACY_GL_IMAGE
@@ -80,11 +82,15 @@ namespace Core
 			virtual void	EndFrame();
 
 			void			Update(double deltaTime); 
+
+			bool			LoadScene(const std::string& scene);
+			bool			ReloadScene();
 		protected:
 			virtual int		OnInit(const int width, const int height);
 			virtual void	OnLoop();
 			virtual void	OnStartFrame();
 			virtual void	OnUpdate(double deltaTime);
+			bool			OnLoadScene();
 		public:
 
 			GLFWwindow* GetWindow();

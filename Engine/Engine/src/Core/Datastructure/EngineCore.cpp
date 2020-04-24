@@ -14,6 +14,10 @@
 #include "PhysicsScene.h"
 #include "DynamicMesh.h"
 
+#include "json.hpp"
+using nlohmann::json;
+#include <fstream>
+
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
@@ -86,6 +90,9 @@ namespace Core::Datastructure
 	{
 		m_state = Core::Datastructure::EngineState::INITIALIZING;
 		int init{ OnInit(width, height) };
+		if (init)
+			return init;
+		init = !ReloadScene();
 		m_state = Core::Datastructure::EngineState::INITIALIZED;
 		return init;
 	}
@@ -126,7 +133,7 @@ namespace Core::Datastructure
 		m_fbo.clear();
 		m_manager = new Resources::Loader::ResourcesManager();
 		m_manager->SetRootNode(m_root);
-
+		/*
 		Core::Datastructure::Object* camNode{ m_root->CreateChild("Camera", {}) };
 		camNode->SetPos({ 0.f, 2.f, 5.f });
 		camNode->SetRot({ 0.f, 0.f, 0.f });
@@ -168,7 +175,7 @@ namespace Core::Datastructure
 		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
 
 		umbreon->SetPos({ 0.f,3.f, 0.f });
-
+		*/
 		return 0;
 	}
 
@@ -207,6 +214,59 @@ namespace Core::Datastructure
 	void	EngineCore::Update(double deltaTime)
 	{
 		OnUpdate(deltaTime);
+	}
+
+	bool EngineCore::LoadScene(const std::string& scene)
+	{
+		m_currScene = scene;
+		return OnLoadScene();
+	}
+	bool EngineCore::ReloadScene()
+	{
+		return OnLoadScene();
+	}
+
+	void	AddComponent(json j, Object* parent)
+	{
+		std::cout << j["Type"] << std::endl;
+		rttr::type cType{ rttr::type::get_by_name(j["Type"]) };
+		ComponentBase* c{ cType.invoke("GetCopy", cType.create(), {}).get_value<Core::Datastructure::ComponentBase*>() };
+		
+		parent->AddComponent(c);
+	}
+
+	void	AddChild(json j, Object* parent)
+	{
+		if (ObjectFlag(j["Flags"]).test_flag(ObjectFlags::DYNAMICALLY_GENERATED))
+			return;
+		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"], j["Rot"]["w"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
+
+		for (auto& childs : j["Childs"])
+		{
+			AddChild(childs, o);
+		}
+
+		for (auto& components : j["Components"])
+		{
+			AddComponent(components, o);
+		}
+	}
+
+	bool	EngineCore::OnLoadScene()
+	{
+		std::ifstream inputScene(m_currScene);
+		if (!inputScene.is_open())
+			return false;
+		json data;
+		inputScene >> data;
+
+		int i = 0;
+		for (auto& childs : data["Childs"])
+		{
+			AddChild(childs, m_root);
+		}
+
+		return true;
 	}
 
 	void	EngineCore::OnUpdate(double deltaTime)

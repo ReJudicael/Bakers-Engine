@@ -14,10 +14,13 @@ namespace Core::Datastructure
 		std::function<bool()>							m_conditionTrigger;
 		Core::SystemManagement::EventSystem<>			m_triggerEvent;
 		bool											m_autoDestroy{ true };
-		bool
-			m_functionsAssigned{ false };
+		bool											m_functionsAssigned{ false };
+
+
 	protected:
 		virtual void	OnReset() override;
+		virtual void	OnCopy(IComponent* copyTo) const override;
+		virtual void	StartCopy(IComponent*& copyTo) const override;
 
 	public:
 		TriggeredEvent() = default;

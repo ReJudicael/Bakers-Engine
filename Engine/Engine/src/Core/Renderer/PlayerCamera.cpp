@@ -9,7 +9,7 @@ RTTR_PLUGIN_REGISTRATION
 	registration::class_<Core::Renderer::PlayerCamera>("Player Camera")
 		.constructor()
 		.constructor<const float, const float, const float, const float>()
-		.property("Is running", &Core::Renderer::PlayerCamera::m_isRunning)
+		.property_readonly("Is running", &Core::Renderer::PlayerCamera::m_isRunning)
 		.property("Speed", &Core::Renderer::PlayerCamera::m_speed)
 		.property("Running speed", &Core::Renderer::PlayerCamera::m_runningSpeed)
 		.property("Min move length", &Core::Renderer::PlayerCamera::m_minMoveLength)

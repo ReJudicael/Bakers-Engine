@@ -15,8 +15,8 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	registration::class_<Mesh>("Mesh")
-		.constructor()
-		.property_readonly("Vertex Count", &Mesh::GetVertexCount);
+		.constructor();
+		//.property_readonly("Vertex Count", &Mesh::GetVertexCount);
 }
 
 Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
@@ -143,4 +143,16 @@ void	Mesh::OnReset()
 {
 	ComponentBase::OnReset();
 	IRenderable::OnReset();
+}
+
+void Mesh::OnCopy(IComponent* copyTo) const
+{
+	ComponentBase::OnCopy(copyTo);
+	IRenderable::OnCopy(copyTo);
+}
+
+void Mesh::StartCopy(IComponent*& copyTo) const
+{
+	copyTo = new Mesh();
+	OnCopy(copyTo);
 }

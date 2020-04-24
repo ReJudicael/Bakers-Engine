@@ -261,16 +261,35 @@ namespace Editor
 		out["Name"] = object->GetName();
 		out["Childs"] = json::array();
 		out["Components"] = json::array();
+		out["Flags"] = (unsigned char)object->GetFlags();
+		{
+			json v3;
+			Core::Maths::Vec3 temp{ object->GetPos() };
+			v3["x"] = temp.x;
+			v3["y"] = temp.y;
+			v3["z"] = temp.z;
+			out["Pos"] = v3;
+			temp = object->GetScale();
+			v3["x"] = temp.x;
+			v3["y"] = temp.y;
+			v3["z"] = temp.z;
+			out["Scale"] = v3;
+		}
+		{
+			Core::Maths::Quat temp{ object->GetRot() };
+			json quat;
+			quat["x"] = temp.x;
+			quat["y"] = temp.y;
+			quat["z"] = temp.z;
+			quat["w"] = temp.w;
+			out["Rot"] = quat;
+		}
 		int i{ 0 };
 		for (auto it : object->GetChildren())
-		{
 			out["Childs"][i++] = ObjectToJson(it);
-		}
 		i = 0;
 		for (auto it : object->GetComponents())
-		{
 			out["Components"][i++] = ClassToJson(it->get_type(), it);
-		}
 		return out;
 	}
 
@@ -284,7 +303,7 @@ namespace Editor
 			scene["Childs"][i++] = ObjectToJson(it);
 		}
 
-		std::ofstream o("Test.json");
+		std::ofstream o(m_currScene);
 		o << std::setw(4) << scene << std::endl;
 	}
 
