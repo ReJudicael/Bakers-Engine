@@ -35,11 +35,17 @@ namespace Editor::Window
 		ImGui::HelpMarkerItem("Play");
 
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_icons[1]->texture, { 32.f });
+		if (ImGui::ImageButtonUV(m_icons[1]->texture, { 32.f }))
+		{
+			GetEngine()->TogglePause();
+		}
 		ImGui::HelpMarkerItem("Pause");
 
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_icons[2]->texture, { 32.f });
+		if (ImGui::ImageButtonUV(m_icons[2]->texture, { 32.f }))
+		{
+			GetEngine()->Step();
+		}
 		ImGui::HelpMarkerItem("Next");
 
 		ImGui::SameLine();

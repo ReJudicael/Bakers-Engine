@@ -135,9 +135,17 @@ namespace Editor
 		case (Core::Datastructure::EngineState::STARTING):
 		case (Core::Datastructure::EngineState::RUNNING):
 		case (Core::Datastructure::EngineState::CLOSING):
+			if (m_paused && !m_step)
+			{
+				Render();
+				EndFrame();
+				break;
+			}
+			m_step = false;
 			EngineCore::OnLoop();
 			break;
 		case (Core::Datastructure::EngineState::CLOSED):
+			m_paused = false;
 			m_state = Core::Datastructure::EngineState::INITIALIZED;
 		case (Core::Datastructure::EngineState::INITIALIZED):
 			m_manager->LinkAllTextureToOpenGl();

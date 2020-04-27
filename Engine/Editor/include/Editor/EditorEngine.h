@@ -11,6 +11,9 @@ namespace Editor
 	{
 	protected:
 		Editor::GUIManager* m_man{ nullptr };
+
+		bool				m_paused{ false };
+		bool				m_step{ false };
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
 
@@ -32,6 +35,11 @@ namespace Editor
 		void	Play() { m_state = Core::Datastructure::EngineState::STARTING; }
 		void	EndPlay() { m_state = Core::Datastructure::EngineState::CLOSING; }
 		bool	IsPlaying() { return m_state >= Core::Datastructure::EngineState::STARTING && m_state <= Core::Datastructure::EngineState::CLOSING; }
+		void	Pause() { m_paused = true; }
+		void	Unpause() { m_paused = false; }
+		void	TogglePause() { m_paused = !m_paused; }
+		bool	IsPaused() { return m_paused; }
+		void	Step() { m_step = true; }
 		void	SaveScene();
 	private:
 		void				SetCallbackToGLFW();

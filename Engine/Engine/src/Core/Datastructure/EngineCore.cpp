@@ -184,7 +184,6 @@ namespace Core::Datastructure
 		ZoneNamedN(updateLoop, "Main loop iteration", true)
 		
 		double deltaTime = GetDeltaTime();
-
 		if (m_state == EngineState::RUNNING)
 		{
 			StartFrame();
