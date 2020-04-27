@@ -157,6 +157,12 @@ namespace Core::Datastructure
 		}
 	}
 
+	void RootObject::Clear()
+	{
+		for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
+			(*it)->Destroy();
+	}
+
 	RootObject* RootObject::CreateRootNode(SystemManagement::InputSystem* inputSystem, EngineCore* engine) noexcept
 	{
 		return new RootObject(inputSystem, engine);

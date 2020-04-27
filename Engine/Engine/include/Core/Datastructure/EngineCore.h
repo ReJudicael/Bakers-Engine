@@ -7,6 +7,9 @@
 #include "LoadResources.h"
 #include "NavMesh.h"
 
+#include "json.hpp"
+using nlohmann::json;
+
 namespace Core
 {
 	namespace Physics
@@ -84,13 +87,13 @@ namespace Core
 			void			Update(double deltaTime); 
 
 			bool			LoadScene(const std::string& scene);
-			bool			ReloadScene();
 		protected:
 			virtual int		OnInit(const int width, const int height);
 			virtual void	OnLoop();
 			virtual void	OnStartFrame();
 			virtual void	OnUpdate(double deltaTime);
 			bool			OnLoadScene();
+			void			LoadSceneFromJson(json scene);
 		public:
 
 			GLFWwindow* GetWindow();

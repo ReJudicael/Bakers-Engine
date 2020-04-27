@@ -6,6 +6,9 @@
 #include "FileSystem.hpp"
 #include "ImGuizmo.h"
 
+#include "json.hpp"
+using nlohmann::json;
+
 namespace Editor
 {
 	class EditorEngine : public Core::Datastructure::EngineCore
@@ -15,6 +18,8 @@ namespace Editor
 
 		bool				m_paused{ false };
 		bool				m_step{ false };
+
+		json				m_savedScene;
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
 		ImGuizmo::OPERATION gizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
@@ -43,7 +48,9 @@ namespace Editor
 		void	TogglePause() { m_paused = !m_paused; }
 		bool	IsPaused() { return m_paused; }
 		void	Step() { m_step = true; }
+		void	UpdateSavedScene();
 		void	SaveScene();
+		void	ReloadScene();
 	private:
 		void				SetCallbackToGLFW();
 		GLFWkeyfun			SetKeyCallBackToGLFW();

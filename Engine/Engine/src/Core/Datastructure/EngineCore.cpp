@@ -92,7 +92,7 @@ namespace Core::Datastructure
 		int init{ OnInit(width, height) };
 		if (init)
 			return init;
-		init = !ReloadScene();
+		init = !LoadScene("Default.json");
 		m_state = Core::Datastructure::EngineState::INITIALIZED;
 		return init;
 	}
@@ -220,10 +220,6 @@ namespace Core::Datastructure
 		m_currScene = scene;
 		return OnLoadScene();
 	}
-	bool EngineCore::ReloadScene()
-	{
-		return OnLoadScene();
-	}
 
 	void	LoadProperty(rttr::property prop, rttr::instance inst, json j)
 	{
@@ -308,13 +304,15 @@ namespace Core::Datastructure
 		json data;
 		inputScene >> data;
 
-		int i = 0;
-		for (auto& childs : data["Childs"])
-		{
-			AddChild(childs, m_root);
-		}
+		LoadSceneFromJson(data);
 
 		return true;
+	}
+
+	void EngineCore::LoadSceneFromJson(json scene)
+	{
+		for (auto& childs : scene["Childs"])
+			AddChild(childs, m_root);
 	}
 
 	void	EngineCore::OnUpdate(double deltaTime)

@@ -17,8 +17,6 @@
 #include "LoadResources.h"
 #include "WindowToolbar.h"
 
-#include "json.hpp"
-using nlohmann::json;
 #include <fstream>
 
 
@@ -134,6 +132,7 @@ namespace Editor
 		switch (m_state)
 		{
 		case (Core::Datastructure::EngineState::STARTING):
+			UpdateSavedScene();
 		case (Core::Datastructure::EngineState::RUNNING):
 		case (Core::Datastructure::EngineState::CLOSING):
 			if (m_paused && !m_step)
@@ -146,6 +145,7 @@ namespace Editor
 			EngineCore::OnLoop();
 			break;
 		case (Core::Datastructure::EngineState::CLOSED):
+			ReloadScene();
 			m_paused = false;
 			m_state = Core::Datastructure::EngineState::INITIALIZED;
 		case (Core::Datastructure::EngineState::INITIALIZED):
@@ -155,19 +155,6 @@ namespace Editor
 
 			if (!m_navMesh->IsNavmeshUpdated())
 				m_navMesh->Build();
-		// Temporary gizmo setting by inputs
-		if (m_inputSystem->IsKeyPressed(EKey::T))
-			gizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
-		if (m_inputSystem->IsKeyPressed(EKey::R))
-			gizmoOperation = ImGuizmo::OPERATION::ROTATE;
-		if (m_inputSystem->IsKeyPressed(EKey::S))
-			gizmoOperation = ImGuizmo::OPERATION::SCALE;
-		if (m_inputSystem->IsKeyPressed(EKey::B))
-			gizmoOperation = ImGuizmo::OPERATION::BOUNDS;
-		if (m_inputSystem->IsKeyPressed(EKey::L))
-			gizmoMode = ImGuizmo::MODE::LOCAL;
-		if (m_inputSystem->IsKeyPressed(EKey::G))
-			gizmoMode = ImGuizmo::MODE::WORLD;
 
 			Render();
 			EndFrame();
@@ -186,6 +173,21 @@ namespace Editor
 	void	EditorEngine::Render()
 	{
 		EngineCore::Render();
+
+		// Temporary gizmo setting by inputs
+		if (m_inputSystem->IsKeyPressed(EKey::T))
+			gizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+		if (m_inputSystem->IsKeyPressed(EKey::R))
+			gizmoOperation = ImGuizmo::OPERATION::ROTATE;
+		if (m_inputSystem->IsKeyPressed(EKey::S))
+			gizmoOperation = ImGuizmo::OPERATION::SCALE;
+		if (m_inputSystem->IsKeyPressed(EKey::B))
+			gizmoOperation = ImGuizmo::OPERATION::BOUNDS;
+		if (m_inputSystem->IsKeyPressed(EKey::L))
+			gizmoMode = ImGuizmo::MODE::LOCAL;
+		if (m_inputSystem->IsKeyPressed(EKey::G))
+			gizmoMode = ImGuizmo::MODE::WORLD;
+
 		m_man->Render();
 	}
 
@@ -316,18 +318,28 @@ namespace Editor
 		return out;
 	}
 
-	void EditorEngine::SaveScene()
+	void EditorEngine::UpdateSavedScene()
 	{
-		json	scene;
+		m_savedScene.clear();
 		int i{ 0 };
-		scene["Childs"] = json::array();
+		m_savedScene["Childs"] = json::array();
 		for (auto it : m_root->GetChildren())
 		{
-			scene["Childs"][i++] = ObjectToJson(it);
+			m_savedScene["Childs"][i++] = ObjectToJson(it);
 		}
+	}
 
+	void EditorEngine::SaveScene()
+	{
+		UpdateSavedScene();
 		std::ofstream o(m_currScene);
-		o << std::setw(4) << scene << std::endl;
+		o << std::setw(4) << m_savedScene << std::endl;
+	}
+
+	void EditorEngine::ReloadScene()
+	{
+		m_root->Clear();
+		LoadSceneFromJson(m_savedScene);
 	}
 
 	void EditorEngine::SetCallbackToGLFW()
