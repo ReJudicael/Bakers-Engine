@@ -38,8 +38,8 @@ const Core::Maths::Mat4& Core::Datastructure::ICamera::GetCameraMatrix()
 
 void Core::Datastructure::ICamera::OnInit()
 {
-	GetScene()->AddCamera(this);
-	m_fbo = GetScene()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Core::Renderer::FBOType::CAMERA);
+	GetRoot()->AddCamera(this);
+	m_fbo = GetRoot()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Core::Renderer::FBOType::CAMERA);
 	m_fbo->userPtr = this;
 }
 
@@ -50,9 +50,9 @@ void Core::Datastructure::ICamera::OnStart()
 
 Core::Datastructure::ICamera::~ICamera() noexcept
 {
-	if (GetScene() == nullptr)
+	if (GetRoot() == nullptr)
 		return;
-	GetScene()->RemoveCamera(this);
+	GetRoot()->RemoveCamera(this);
 }
 
 void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRenderable*>& renderables)
@@ -92,14 +92,14 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 
 void Core::Datastructure::ICamera::OnDestroy()
 {
-	GetScene()->RemoveCamera(this);
-	GetScene()->GetEngine()->DeleteFBO(m_fbo);
+	GetRoot()->RemoveCamera(this);
+	GetRoot()->GetEngine()->DeleteFBO(m_fbo);
 }
 
 void	Core::Datastructure::ICamera::OnReset()
 {
 	IComponent::OnReset();
-	GetScene()->RemoveCamera(this);
+	GetRoot()->RemoveCamera(this);
 	m_cameraHeight = 800;
 	m_cameraWidth = 1280;
 
@@ -107,7 +107,7 @@ void	Core::Datastructure::ICamera::OnReset()
 	m_isCamUpdated = false;
 	if (m_fbo != nullptr)
 	{
-		GetScene()->GetEngine()->DeleteFBO(m_fbo);
+		GetRoot()->GetEngine()->DeleteFBO(m_fbo);
 		m_fbo = nullptr;
 	}
 }

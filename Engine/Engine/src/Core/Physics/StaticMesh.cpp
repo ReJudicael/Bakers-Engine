@@ -52,7 +52,7 @@ namespace Core
 
 		void StaticMesh::DestroyStaticMesh()
 		{
-			GetScene()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_staticMesh);
+			GetRoot()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_staticMesh);
 			m_staticMesh->release();
 			m_staticMesh = nullptr;
 		}

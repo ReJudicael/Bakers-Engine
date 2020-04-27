@@ -8,13 +8,21 @@
 
 namespace Editor
 {
+	enum class SelectionMode
+	{
+		TRANSLATION = ImGuizmo::OPERATION::TRANSLATE,
+		ROTATION = ImGuizmo::OPERATION::ROTATE,
+		SCALE = ImGuizmo::OPERATION::SCALE,
+		MOVEMENT
+	};
+
 	class EditorEngine : public Core::Datastructure::EngineCore
 	{
 	protected:
 		Editor::GUIManager* m_man{ nullptr };
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
-		ImGuizmo::OPERATION gizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+		SelectionMode operation = SelectionMode::TRANSLATION;
 		ImGuizmo::MODE gizmoMode = ImGuizmo::MODE::LOCAL;
 
 	public:

@@ -132,13 +132,13 @@ namespace Editor
 
 		// Temporary gizmo setting by inputs
 		if (m_inputSystem->IsKeyPressed(EKey::T))
-			gizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+			operation = SelectionMode::TRANSLATION;
+		if (m_inputSystem->IsKeyPressed(EKey::M))
+			operation = SelectionMode::MOVEMENT;
 		if (m_inputSystem->IsKeyPressed(EKey::R))
-			gizmoOperation = ImGuizmo::OPERATION::ROTATE;
+			operation = SelectionMode::ROTATION;
 		if (m_inputSystem->IsKeyPressed(EKey::S))
-			gizmoOperation = ImGuizmo::OPERATION::SCALE;
-		if (m_inputSystem->IsKeyPressed(EKey::B))
-			gizmoOperation = ImGuizmo::OPERATION::BOUNDS;
+			operation = SelectionMode::SCALE;
 		if (m_inputSystem->IsKeyPressed(EKey::L))
 			gizmoMode = ImGuizmo::MODE::LOCAL;
 		if (m_inputSystem->IsKeyPressed(EKey::G))

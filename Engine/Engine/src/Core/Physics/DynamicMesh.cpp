@@ -70,7 +70,7 @@ namespace Core
 
 		void DynamicMesh::DestroyDynamicMesh()
 		{
-			GetScene()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_dynamicMesh);
+			GetRoot()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_dynamicMesh);
 			m_dynamicMesh->release();
 			m_dynamicMesh = nullptr;
 		}

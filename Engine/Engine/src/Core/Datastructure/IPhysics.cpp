@@ -36,7 +36,7 @@ namespace Core
 
 		void IPhysics::OnStart()
 		{
-			RootObject* root = GetScene();
+			RootObject* root = GetRoot();
 			//m_collider = new Core::Physics::BoxCollider(GetScene()->GetEngine()->GetResourcesManager());
 			root->GetEngine()->GetPhysicsScene()->CreatePhysicsShape(*m_collider);
 			root->GetEngine()->GetPhysicsScene()->AttachActor(this);
@@ -73,7 +73,7 @@ namespace Core
 		{
 			IComponent::OnReset();
 			delete m_collider;
-			m_collider = new Core::Physics::BoxCollider(GetScene()->GetEngine()->GetResourcesManager());
+			m_collider = new Core::Physics::BoxCollider(GetRoot()->GetEngine()->GetResourcesManager());
 		}
 	}
 }

@@ -56,9 +56,20 @@ namespace Editor::Datastructure
 		void	MoveWithInput();
 
 		/**
-		 * Compute translation with WASD keys
+		 * Check the editor selection mode and the left mouse button
+		 * @ return true if the camera can be moved with current mouse movements
 		 */
-		void	ComputeTranslation();
+		bool	IsUsingMouseTranslation();
+
+		/**
+		 * Compute translation with WASDQE keys
+		 */
+		void	ComputeInputTranslation();
+
+		/**
+		 * Compute translation with mouse movements
+		 */
+		void	ComputeMouseTranslation();
 
 		/**
 		 * Compute rotation with mouse movements
