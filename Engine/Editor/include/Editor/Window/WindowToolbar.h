@@ -12,9 +12,14 @@ namespace Editor::Window
 	{
 	private:
 		/**
-		 * Icons in Toolbar: "Play", "Pause", "Skip", "Reload", "Compilation"
+		 * Icons in Toolbar: "Translate", "Rotate", "Scale"
 		 */
-		std::shared_ptr<Resources::Texture> m_icons[5];
+		std::shared_ptr<Resources::Texture> m_guizmoIcons[5];
+
+		/**
+		 * Icons in Toolbar: "Play", "Stop", "Pause", "Next", "Compile"
+		 */
+		std::shared_ptr<Resources::Texture> m_simulationIcons[5];
 
 	public:
 		/**

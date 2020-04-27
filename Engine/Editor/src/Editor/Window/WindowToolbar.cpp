@@ -6,53 +6,69 @@ namespace Editor::Window
 	WindowToolbar::WindowToolbar(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Toolbar", visible }
 	{
-		m_flags |= ImGuiWindowFlags_NoScrollbar;
+		m_flags |= ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
 
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\play.png", m_icons[0]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\pause.png", m_icons[1]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\next.png", m_icons[2]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\reload.png", m_icons[3]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\compilation.png", m_icons[4]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\hand.png", m_guizmoIcons[0]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\move.png", m_guizmoIcons[1]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\rotate.png", m_guizmoIcons[2]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\scale.png", m_guizmoIcons[3]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\bound.png", m_guizmoIcons[4]);
+
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\play.png", m_simulationIcons[0]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\stop.png", m_simulationIcons[1]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\pause.png", m_simulationIcons[2]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\next.png", m_simulationIcons[3]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\compile.png", m_simulationIcons[4]);
 	}
 
 	void WindowToolbar::PushWindowStyle()
 	{
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, { 0.f, 0.f, 0.f, 0.7f });
 	}
 
 	void WindowToolbar::PopWindowStyle()
 	{
+		ImGui::PopStyleColor();
 	}
 
 	void WindowToolbar::DisplayToolbar()
 	{
-		if (ImGui::ImageButtonUV(m_icons[0]->texture, { 32.f }))
+		ImGui::ImageButtonUV(m_guizmoIcons[0]->texture); ImGui::HelpMarkerItem("Hand");			ImGui::SameLine();
+		ImGui::ImageButtonUV(m_guizmoIcons[1]->texture); ImGui::HelpMarkerItem("Translate");	ImGui::SameLine();
+		ImGui::ImageButtonUV(m_guizmoIcons[2]->texture); ImGui::HelpMarkerItem("Rotate");		ImGui::SameLine();
+		ImGui::ImageButtonUV(m_guizmoIcons[3]->texture); ImGui::HelpMarkerItem("Scale");		ImGui::SameLine();
+		ImGui::ImageButtonUV(m_guizmoIcons[4]->texture); ImGui::HelpMarkerItem("Bound");		ImGui::SameLine();
+		ImGui::SetCursorPosX({ ImGui::GetWindowWidth() / 2 - 54.f });
+
+		if (GetEngine()->IsPlaying())
 		{
-			if (!GetEngine()->IsPlaying())
-				GetEngine()->Play();
-			else
+			if (ImGui::ImageButtonUV(m_simulationIcons[1]->texture))
 				GetEngine()->EndPlay();
+			ImGui::HelpMarkerItem("Stop");
 		}
-		ImGui::HelpMarkerItem("Play");
+		else
+		{
+			if (ImGui::ImageButtonUV(m_simulationIcons[0]->texture))
+				GetEngine()->Play();
+			ImGui::HelpMarkerItem("Play");
+		}
+
 
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_icons[1]->texture, { 32.f });
+		ImGui::ImageButtonUV(m_simulationIcons[2]->texture);
 		ImGui::HelpMarkerItem("Pause");
 
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_icons[2]->texture, { 32.f });
+		ImGui::ImageButtonUV(m_simulationIcons[3]->texture);
 		ImGui::HelpMarkerItem("Next");
 
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_icons[3]->texture, { 32.f });
-		ImGui::HelpMarkerItem("Reload");
-
-		ImGui::SameLine();
-		if (ImGui::ImageButtonUV(m_icons[4]->texture, { 32.f }))
+		if (ImGui::ImageButtonUV(m_simulationIcons[4]->texture))
 		{
 			GetEngine()->GetResourcesManager()->ReloadScripts();
 			GetEngine()->GetResourcesManager()->ReloadShaders();
 		}
-		ImGui::HelpMarkerItem("Compilation");
+		ImGui::HelpMarkerItem("Compile");
 	}
 
 	void WindowToolbar::Tick()

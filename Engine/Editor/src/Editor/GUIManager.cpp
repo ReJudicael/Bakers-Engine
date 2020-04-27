@@ -50,6 +50,7 @@ namespace Editor
 		ImGui::GetIO().Fonts->AddFontFromFileTTF("Resources\\Fonts\\Lato-Regular.ttf", 16)->DisplayOffset.y = -1;
 
 		ImGuiStyle* style = &ImGui::GetStyle();
+		style->WindowMenuButtonPosition			= ImGuiDir_Right;
 		style->WindowRounding					= 0.f;
 		style->ChildRounding					= 0.f;
 		style->FrameRounding					= 3.f;
