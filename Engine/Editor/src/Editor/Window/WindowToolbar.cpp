@@ -34,29 +34,42 @@ namespace Editor::Window
 
 	void WindowToolbar::DisplayToolbar()
 	{
+		ImGui::PushStyleColor(ImGuiCol_Button, GetEngine()->operation == SelectionMode::MOVEMENT ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
 		if (ImGui::ImageButtonUV(m_guizmoIcons[0]->texture))
 			GetEngine()->operation = SelectionMode::MOVEMENT;
 		ImGui::HelpMarkerItem("Movement");	ImGui::SameLine();
+		ImGui::PopStyleColor();
 		
+		ImGui::PushStyleColor(ImGuiCol_Button, GetEngine()->operation == SelectionMode::TRANSLATION ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
 		if (ImGui::ImageButtonUV(m_guizmoIcons[1]->texture))
 			GetEngine()->operation = SelectionMode::TRANSLATION;
 		ImGui::HelpMarkerItem("Translate");	ImGui::SameLine();
-		
+		ImGui::PopStyleColor();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, GetEngine()->operation == SelectionMode::ROTATION ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
 		if (ImGui::ImageButtonUV(m_guizmoIcons[2]->texture))
 			GetEngine()->operation = SelectionMode::ROTATION;
 		ImGui::HelpMarkerItem("Rotate");	ImGui::SameLine();
+		ImGui::PopStyleColor();
 
+		ImGui::PushStyleColor(ImGuiCol_Button, GetEngine()->operation == SelectionMode::SCALE ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
 		if (ImGui::ImageButtonUV(m_guizmoIcons[3]->texture))
 			GetEngine()->operation = SelectionMode::SCALE;
 		ImGui::HelpMarkerItem("Scale");		ImGui::SameLine(140.f);
+		ImGui::PopStyleColor();
 
+
+		ImGui::PushStyleColor(ImGuiCol_Button, GetEngine()->gizmoMode == ImGuizmo::MODE::WORLD ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
 		if (ImGui::ImageButtonUVWithText(m_guizmoIcons[4]->texture, "World"))
-			GetEngine()->gizmoMode = ImGuizmo::MODE::LOCAL;
-		ImGui::HelpMarkerItem("World");		ImGui::SameLine();
-
-		if (ImGui::ImageButtonUVWithText(m_guizmoIcons[5]->texture, "Local"))
 			GetEngine()->gizmoMode = ImGuizmo::MODE::WORLD;
+		ImGui::HelpMarkerItem("World");		ImGui::SameLine();
+		ImGui::PopStyleColor();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
+		if (ImGui::ImageButtonUVWithText(m_guizmoIcons[5]->texture, "Local"))
+			GetEngine()->gizmoMode = ImGuizmo::MODE::LOCAL;
 		ImGui::HelpMarkerItem("Local");		ImGui::SameLine();
+		ImGui::PopStyleColor();
 
 		ImGui::SetCursorPosX({ ImGui::GetWindowWidth() / 2 - 54.f });
 		if (GetEngine()->IsPlaying())

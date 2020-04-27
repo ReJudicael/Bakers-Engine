@@ -48,8 +48,8 @@ namespace Editor::Window
 			{
 				ImGuiIO& io = ImGui::GetIO();
 				ImGuizmo::SetDrawlist();
-				ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-				ImGuizmo::ViewManipulate((float*)m_cam->GetCameraMatrix().array, 0.f, ImVec2(0, 0), ImVec2(0, 0), 0x10101010);
+				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
+				ImGuizmo::ViewManipulate((float*)m_cam->GetCameraMatrix().array, 1000.f, ImGui::GetWindowPos(), ImVec2(128, 128), 0x10101010);
 				GizmoManipulateResult();
 			}
 		}
