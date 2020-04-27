@@ -226,9 +226,49 @@ namespace Core::Datastructure
 		return OnLoadScene();
 	}
 
+	void	LoadProperty(rttr::property prop, rttr::instance inst, json j)
+	{
+		rttr::type	t{ prop.get_type() };
+		if (!prop.is_valid() || !t.is_valid())
+		{
+			BAKERS_LOG_WARNING("Property is invalid, maybe the loaded object has changed?");
+			return;
+		}
+		if (t.is_enumeration())
+			prop.set_value(inst, static_cast<int>(j["Value"]));
+		else if (t == rttr::type::get<int>())
+			prop.set_value(inst, static_cast<int>(j["Value"]));
+		else if (t == rttr::type::get<float>())
+			prop.set_value(inst, static_cast<float>(j["Value"]));
+		else if (t == rttr::type::get<bool>())
+			prop.set_value(inst, static_cast<bool>(j["Value"]));
+		else if (t == rttr::type::get<Core::Maths::Vec2>())
+			prop.set_value(inst, Core::Maths::Vec2(static_cast<float>(j["Value"][0]), static_cast<float>(j["Value"][1])));
+		else if (t == rttr::type::get<Core::Maths::Vec3>())
+			prop.set_value(inst, Core::Maths::Vec3(static_cast<float>(j["Value"][0]), static_cast<float>(j["Value"][1]), static_cast<float>(j["Value"][2])));
+		else if (t == rttr::type::get<Core::Maths::Vec4>())
+			prop.set_value(inst, Core::Maths::Vec4(static_cast<float>(j["Value"][0]), static_cast<float>(j["Value"][1]), static_cast<float>(j["Value"][2]), static_cast<float>(j["Value"][3])));
+		else if (t == rttr::type::get<Core::Maths::Color>())
+			prop.set_value(inst, Core::Maths::Color(static_cast<float>(j["Value"][0]), static_cast<float>(j["Value"][1]), static_cast<float>(j["Value"][2]), static_cast<float>(j["Value"][3])));
+		else if (t == rttr::type::get<std::string>())
+			prop.set_value(inst, static_cast<std::string>(j["Value"]));
+		else if (t.is_class())
+		{
+			const rttr::variant& propVar{ prop.get_value(inst) };
+			for (auto it : j["Value"]["Values"])
+			{
+				LoadProperty(t.get_property(it["Name"]), propVar, it);
+			}
+			prop.set_value(inst, propVar);
+		}
+		else
+		{
+			BAKERS_LOG_WARNING(std::string("No operation known for type ") + t.get_name());
+		}
+	}
+
 	void	AddComponent(json j, Object* parent)
 	{
-		std::cout << j["Type"] << std::endl;
 		rttr::type cType{ rttr::type::get_by_name(j["Type"]) };
 		if (!cType.is_valid() || !cType.is_derived_from<IComponent>())
 			return;
@@ -237,35 +277,7 @@ namespace Core::Datastructure
 		for (auto it : j["Values"])
 		{
 			rttr::property prop {cType.get_property(it["Name"])};
-			rttr::type	t{ rttr::type::get_by_name(it["Type"]) };
-			if (!prop.is_valid() || !t.is_valid())
-				continue;
-			if (t.is_enumeration())
-				prop.set_value(c, static_cast<int>(it["Value"]));
-			else if (t == rttr::type::get<int>())
-				prop.set_value(c, static_cast<int>(it["Value"]));
-			else if (t == rttr::type::get<float>())
-				prop.set_value(c, static_cast<float>(it["Value"]));
-			else if (t == rttr::type::get<bool>())
-				prop.set_value(c, static_cast<bool>(it["Value"]));
-			else if (t == rttr::type::get<Core::Maths::Vec2>())
-				prop.set_value(c, Core::Maths::Vec2(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1])));
-			else if (t == rttr::type::get<Core::Maths::Vec3>())
-				prop.set_value(c, Core::Maths::Vec3(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1]), static_cast<float>(it["Value"][2])));
-			else if (t == rttr::type::get<Core::Maths::Vec4>())
-				prop.set_value(c, Core::Maths::Vec4(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1]), static_cast<float>(it["Value"][2]), static_cast<float>(it["Value"][3])));
-			else if (t == rttr::type::get<Core::Maths::Color>())
-				prop.set_value(c, Core::Maths::Color(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1]), static_cast<float>(it["Value"][2]), static_cast<float>(it["Value"][3])));
-			else if (t == rttr::type::get<std::string>())
-				prop.set_value(c, static_cast<std::string>(it["Value"]));
-			else if (t.is_class())
-			{
-				std::cout << "Class to copy: " << t.get_name() << std::endl;
-			}
-			else
-			{
-				std::cout << "No operation known for type " << t.get_name() << std::endl;
-			}
+			LoadProperty(prop, c, it);
 		}
 		
 
@@ -276,7 +288,7 @@ namespace Core::Datastructure
 	{
 		if (ObjectFlag(j["Flags"]).test_flag(ObjectFlags::DYNAMICALLY_GENERATED))
 			return;
-		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"], j["Rot"]["w"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
+		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["w"], j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
 
 		for (auto& childs : j["Childs"])
 		{
