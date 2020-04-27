@@ -16,8 +16,10 @@ namespace Editor::Window
 		m_treeNodeFlags		= ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 		m_inputTextFlags	= ImGuiInputTextFlags_AutoSelectAll;
 
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\remove.png", m_removeIcon);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\reset.png", m_resetIcon);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\remove.png", m_optionsIcon[0]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\reset.png", m_optionsIcon[1]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\lock.png", m_lockIcon[0]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\unlock.png", m_lockIcon[1]);
 	}
 
 	void WindowInspector::PushWindowStyle()
@@ -90,7 +92,7 @@ namespace Editor::Window
 
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
-		bool isClickedReset = ImGui::ImageButtonUV(m_resetIcon->texture);
+		bool isClickedReset = ImGui::ImageButtonUV(m_optionsIcon[1]->texture);
 		ImGui::HelpMarkerItem("Reset");
 		ImGui::PopStyleColor(1);
 
@@ -227,11 +229,11 @@ namespace Editor::Window
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
-			bool isClickedDelete = ImGui::ImageButtonUV(m_removeIcon->texture);
+			bool isClickedDelete = ImGui::ImageButtonUV(m_optionsIcon[0]->texture);
 			ImGui::HelpMarkerItem("Remove");
 
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
-			bool isClickedReset = ImGui::ImageButtonUV(m_resetIcon->texture);
+			bool isClickedReset = ImGui::ImageButtonUV(m_optionsIcon[1]->texture);
 			ImGui::HelpMarkerItem("Reset");
 
 			ImGui::PopStyleColor();
@@ -285,9 +287,6 @@ namespace Editor::Window
 
 	void WindowInspector::ObjectInspector(Core::Datastructure::Object* object)
 	{
-		if (!object)
-			return;
-
 		DisplayObjectName(object);
 
 		ImGui::Spacing();
@@ -306,8 +305,36 @@ namespace Editor::Window
 		ImGui::Spacing();
 	}
 
+	void WindowInspector::LockSelectedObjectButton()
+	{
+		if (m_isLocked)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
+			if (ImGui::ImageButtonUV(m_lockIcon[0]->texture))
+				m_isLocked = false;
+			ImGui::HelpMarkerItem("Locked");
+			ImGui::PopStyleColor();
+		}
+		else
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
+			if (ImGui::ImageButtonUV(m_lockIcon[1]->texture))
+				m_isLocked = true;
+			ImGui::HelpMarkerItem("Unlocked");
+			ImGui::PopStyleColor();
+		}
+	}
+
 	void WindowInspector::Tick()
 	{
-		ObjectInspector(GetEngine()->objectSelected);
+		if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
+			m_inspectorObject = GetEngine()->objectSelected;
+
+		if (m_inspectorObject)
+		{
+			LockSelectedObjectButton();
+			ImGui::SameLine();
+			ObjectInspector(m_inspectorObject);
+		}
 	}
 }

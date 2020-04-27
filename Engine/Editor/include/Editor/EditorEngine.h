@@ -23,7 +23,7 @@ namespace Editor
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
 		SelectionMode operation = SelectionMode::TRANSLATION;
-		ImGuizmo::MODE gizmoMode = ImGuizmo::MODE::LOCAL;
+		ImGuizmo::MODE gizmoMode = ImGuizmo::MODE::WORLD;
 
 	public:
 		EditorEngine();

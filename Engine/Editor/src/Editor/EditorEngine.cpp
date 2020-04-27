@@ -83,6 +83,7 @@ namespace Editor
 
 		canvas->Add<Editor::Window::WindowHierarchy>();
 		canvas->Add<Editor::Window::WindowInspector>();
+		canvas->Add<Editor::Window::WindowInspector>();
 		canvas->Add<Editor::Window::WindowViewport>();
 		canvas->Add<Editor::Window::WindowScene>();
 		canvas->Add<Editor::Window::WindowConsole>();
@@ -129,20 +130,6 @@ namespace Editor
 		glfwPollEvents();
 		if (m_inputSystem->IsCursorHidden())
 			ImGui::SetMouseCursor(-1);
-
-		// Temporary gizmo setting by inputs
-		if (m_inputSystem->IsKeyPressed(EKey::T))
-			operation = SelectionMode::TRANSLATION;
-		if (m_inputSystem->IsKeyPressed(EKey::M))
-			operation = SelectionMode::MOVEMENT;
-		if (m_inputSystem->IsKeyPressed(EKey::R))
-			operation = SelectionMode::ROTATION;
-		if (m_inputSystem->IsKeyPressed(EKey::S))
-			operation = SelectionMode::SCALE;
-		if (m_inputSystem->IsKeyPressed(EKey::L))
-			gizmoMode = ImGuizmo::MODE::LOCAL;
-		if (m_inputSystem->IsKeyPressed(EKey::G))
-			gizmoMode = ImGuizmo::MODE::WORLD;
 
 		EngineCore::OnLoop();
 
