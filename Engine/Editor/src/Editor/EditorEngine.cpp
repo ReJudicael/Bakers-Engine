@@ -187,6 +187,7 @@ namespace Editor
 		rttr:variant val = prop.get_value(i);
 
 		json out;
+		out["Name"] = prop.get_name().to_string();
 		out["Type"] = prop.get_type().get_name().to_string();
 
 		if (prop.is_enumeration())

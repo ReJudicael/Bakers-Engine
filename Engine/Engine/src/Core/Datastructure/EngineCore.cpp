@@ -230,9 +230,46 @@ namespace Core::Datastructure
 	{
 		std::cout << j["Type"] << std::endl;
 		rttr::type cType{ rttr::type::get_by_name(j["Type"]) };
-		ComponentBase* c{ cType.invoke("GetCopy", cType.create(), {}).get_value<Core::Datastructure::ComponentBase*>() };
+		if (!cType.is_valid() || !cType.is_derived_from<IComponent>())
+			return;
+		rttr::variant c{ cType.invoke("GetCopy", cType.create(), {}) };
 		
-		parent->AddComponent(c);
+		for (auto it : j["Values"])
+		{
+			rttr::property prop {cType.get_property(it["Name"])};
+			rttr::type	t{ rttr::type::get_by_name(it["Type"]) };
+			if (!prop.is_valid() || !t.is_valid())
+				continue;
+			if (t.is_enumeration())
+				prop.set_value(c, static_cast<int>(it["Value"]));
+			else if (t == rttr::type::get<int>())
+				prop.set_value(c, static_cast<int>(it["Value"]));
+			else if (t == rttr::type::get<float>())
+				prop.set_value(c, static_cast<float>(it["Value"]));
+			else if (t == rttr::type::get<bool>())
+				prop.set_value(c, static_cast<bool>(it["Value"]));
+			else if (t == rttr::type::get<Core::Maths::Vec2>())
+				prop.set_value(c, Core::Maths::Vec2(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1])));
+			else if (t == rttr::type::get<Core::Maths::Vec3>())
+				prop.set_value(c, Core::Maths::Vec3(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1]), static_cast<float>(it["Value"][2])));
+			else if (t == rttr::type::get<Core::Maths::Vec4>())
+				prop.set_value(c, Core::Maths::Vec4(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1]), static_cast<float>(it["Value"][2]), static_cast<float>(it["Value"][3])));
+			else if (t == rttr::type::get<Core::Maths::Color>())
+				prop.set_value(c, Core::Maths::Color(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1]), static_cast<float>(it["Value"][2]), static_cast<float>(it["Value"][3])));
+			else if (t == rttr::type::get<std::string>())
+				prop.set_value(c, static_cast<std::string>(it["Value"]));
+			else if (t.is_class())
+			{
+				std::cout << "Class to copy: " << t.get_name() << std::endl;
+			}
+			else
+			{
+				std::cout << "No operation known for type " << t.get_name() << std::endl;
+			}
+		}
+		
+
+		parent->AddComponent(c.get_value<ComponentBase*>());
 	}
 
 	void	AddChild(json j, Object* parent)
