@@ -12,7 +12,8 @@ namespace Editor::Window
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\move.png", m_guizmoIcons[1]);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\rotate.png", m_guizmoIcons[2]);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\scale.png", m_guizmoIcons[3]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\bound.png", m_guizmoIcons[4]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\world.png", m_guizmoIcons[4]);
+		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\local.png", m_guizmoIcons[5]);
 
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\play.png", m_simulationIcons[0]);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\stop.png", m_simulationIcons[1]);
@@ -35,30 +36,29 @@ namespace Editor::Window
 	{
 		if (ImGui::ImageButtonUV(m_guizmoIcons[0]->texture))
 			GetEngine()->operation = SelectionMode::MOVEMENT;
-		ImGui::HelpMarkerItem("Hand"); ImGui::SameLine();
+		ImGui::HelpMarkerItem("Movement");	ImGui::SameLine();
 		
 		if (ImGui::ImageButtonUV(m_guizmoIcons[1]->texture))
 			GetEngine()->operation = SelectionMode::TRANSLATION;
-		ImGui::HelpMarkerItem("Translate"); ImGui::SameLine();
+		ImGui::HelpMarkerItem("Translate");	ImGui::SameLine();
 		
 		if (ImGui::ImageButtonUV(m_guizmoIcons[2]->texture))
 			GetEngine()->operation = SelectionMode::ROTATION;
-		ImGui::HelpMarkerItem("Rotate"); ImGui::SameLine();
+		ImGui::HelpMarkerItem("Rotate");	ImGui::SameLine();
 
 		if (ImGui::ImageButtonUV(m_guizmoIcons[3]->texture))
 			GetEngine()->operation = SelectionMode::SCALE;
-		ImGui::HelpMarkerItem("Scale"); ImGui::SameLine();
+		ImGui::HelpMarkerItem("Scale");		ImGui::SameLine(140.f);
 
-		if (ImGui::ImageButtonUV(0))
-			GetEngine()->gizmoMode = ImGuizmo::MODE::WORLD;
-		ImGui::HelpMarkerItem("Global"); ImGui::SameLine();
-
-		if (ImGui::ImageButtonUV(1))
+		if (ImGui::ImageButtonUVWithText(m_guizmoIcons[4]->texture, "World"))
 			GetEngine()->gizmoMode = ImGuizmo::MODE::LOCAL;
-		ImGui::HelpMarkerItem("Local"); ImGui::SameLine();
-		
-		ImGui::SetCursorPosX({ ImGui::GetWindowWidth() / 2 - 54.f });
+		ImGui::HelpMarkerItem("World");		ImGui::SameLine();
 
+		if (ImGui::ImageButtonUVWithText(m_guizmoIcons[5]->texture, "Local"))
+			GetEngine()->gizmoMode = ImGuizmo::MODE::WORLD;
+		ImGui::HelpMarkerItem("Local");		ImGui::SameLine();
+
+		ImGui::SetCursorPosX({ ImGui::GetWindowWidth() / 2 - 54.f });
 		if (GetEngine()->IsPlaying())
 		{
 			if (ImGui::ImageButtonUV(m_simulationIcons[1]->texture))

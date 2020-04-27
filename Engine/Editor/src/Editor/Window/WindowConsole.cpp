@@ -41,7 +41,7 @@ namespace Editor::Window
 			ImGui::GetStyle().Colors[ImGuiCol_Button] :
 			ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
 
-		if (ImGui::ImageButtonUVWithText(icon->texture, "## LogButton", label))
+		if (ImGui::ImageButtonUVWithText(icon->texture, label.c_str()))
 			isEnabled = !isEnabled;
 		ImGui::HelpMarkerItem(help_marker.c_str());
 

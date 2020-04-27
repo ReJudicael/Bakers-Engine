@@ -92,9 +92,9 @@ namespace ImGui
         return ImageButton((ImTextureID)user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
     }
 
-    IMGUI_API bool ImageButtonUVWithText(unsigned int user_texture_id, const char* label, const std::string& text, const ImVec2& icon_size)
+    IMGUI_API bool ImageButtonUVWithText(unsigned int user_texture_id, const char* label, const ImVec2& icon_size)
     {
-        const char* button_text = text.c_str();
+        const char* button_text = label;
         ImGuiWindow* window = GetCurrentWindow();
         if (window->SkipItems)
             return false;

@@ -44,12 +44,6 @@ namespace Editor::Window
 
 	void WindowInspector::DisplayObjectLocalTransform(Core::Datastructure::Object* object)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.00f, 0.58f, 0.20f, 1.00f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.00f, 0.58f, 0.20f, 0.70f });
-		if (ImGui::Button("Local", { ImGui::GetContentRegionAvail().x, 0.f }))
-			m_isLocal = !m_isLocal;
-		ImGui::PopStyleColor(2);
-
 		Core::Maths::Vec3 pos{ object->GetPos() };
 		if (ImGui::RDragFloat3("Position", pos.xyz, 0.01f))
 			object->SetPos(pos);
@@ -66,12 +60,6 @@ namespace Editor::Window
 
 	void WindowInspector::DisplayObjectGlobalTransform(Core::Datastructure::Object* object)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.60f, 0.35f, 0.71f, 1.00f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.60f, 0.35f, 0.71f, 0.70f });
-		if (ImGui::Button("Global", { ImGui::GetContentRegionAvail().x, 0.f }))
-			m_isLocal = !m_isLocal;
-		ImGui::PopStyleColor(2);
-
 		Core::Maths::Vec3 pos{ object->GetGlobalPos() };
 		if (ImGui::RDragFloat3("Position", pos.xyz, 0.01f))
 			object->SetGlobalPos(pos);
@@ -107,7 +95,7 @@ namespace Editor::Window
 		{
 			ImGui::Spacing();
 
-			if (m_isLocal)
+			if (GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL)
 				DisplayObjectLocalTransform(object);
 			else
 				DisplayObjectGlobalTransform(object);
