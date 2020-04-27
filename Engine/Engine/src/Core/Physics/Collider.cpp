@@ -11,10 +11,10 @@ namespace Core::Physics
 	RTTR_PLUGIN_REGISTRATION
 	{
 		registration::class_<Core::Physics::Collider>("Collider")
-		.property("LocalPositon", &Core::Physics::Collider::GetLocalPosition ,&Core::Physics::Collider::SetLocalPosition)
-		.property("LocalRotation", &Core::Physics::Collider::GetLocalRotationEuler ,&Core::Physics::Collider::SetLocalRotationEuler)
-		.property("Mat: Static, Dynamic, Restitution", &Core::Physics::Collider::GetMaterial ,&Core::Physics::Collider::SetMaterial)
-		.property("Trigger", &Core::Physics::Collider::IsTrigger ,&Core::Physics::Collider::Trigger)
+		.property("LocalPositon", &Core::Physics::Collider::GetLocalPosition, &Core::Physics::Collider::SetLocalPosition)
+		.property("LocalRotation", &Core::Physics::Collider::GetLocalRotationEuler, &Core::Physics::Collider::SetLocalRotationEuler)
+		.property("Mat: Static, Dynamic, Restitution", &Core::Physics::Collider::GetMaterial, &Core::Physics::Collider::SetMaterial)
+		.property("Trigger", &Core::Physics::Collider::IsTrigger, &Core::Physics::Collider::Trigger)
 		;
 	}
 

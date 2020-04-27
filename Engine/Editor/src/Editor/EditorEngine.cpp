@@ -88,6 +88,7 @@ namespace Editor
 
 		canvas->Add<Editor::Window::WindowHierarchy>();
 		canvas->Add<Editor::Window::WindowInspector>();
+		canvas->Add<Editor::Window::WindowInspector>();
 		canvas->Add<Editor::Window::WindowViewport>();
 		canvas->Add<Editor::Window::WindowScene>();
 		canvas->Add<Editor::Window::WindowConsole>();
@@ -154,6 +155,19 @@ namespace Editor
 
 			if (!m_navMesh->IsNavmeshUpdated())
 				m_navMesh->Build();
+		// Temporary gizmo setting by inputs
+		if (m_inputSystem->IsKeyPressed(EKey::T))
+			gizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+		if (m_inputSystem->IsKeyPressed(EKey::R))
+			gizmoOperation = ImGuizmo::OPERATION::ROTATE;
+		if (m_inputSystem->IsKeyPressed(EKey::S))
+			gizmoOperation = ImGuizmo::OPERATION::SCALE;
+		if (m_inputSystem->IsKeyPressed(EKey::B))
+			gizmoOperation = ImGuizmo::OPERATION::BOUNDS;
+		if (m_inputSystem->IsKeyPressed(EKey::L))
+			gizmoMode = ImGuizmo::MODE::LOCAL;
+		if (m_inputSystem->IsKeyPressed(EKey::G))
+			gizmoMode = ImGuizmo::MODE::WORLD;
 
 			Render();
 			EndFrame();

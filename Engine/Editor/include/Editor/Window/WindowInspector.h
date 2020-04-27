@@ -30,6 +30,12 @@ namespace Editor::Window
 
 	private:
 		/**
+		 * Inspector object
+		 */
+		Core::Datastructure::Object* m_inspectorObject;
+
+		bool m_isLocked;
+		/**
 		 * Buffer of InputText (to rename the objectSelected)
 		 */
 		char m_name[64]{};
@@ -40,14 +46,14 @@ namespace Editor::Window
 		bool m_isLocal{ true };
 
 		/**
-		 * Delete icon to delete a component
+		 * Options icon for the components
 		 */
-		std::shared_ptr<Resources::Texture> m_deleteIcon;
+		std::shared_ptr<Resources::Texture> m_optionsIcon[2];
 
 		/**
-		 * Reset icon to reset a component
+		 * Unlock / lock icon for the selected object
 		 */
-		std::shared_ptr<Resources::Texture> m_resetIcon;
+		std::shared_ptr<Resources::Texture> m_lockIcon[2];
 
 	public:
 		/**
@@ -135,6 +141,11 @@ namespace Editor::Window
 		 * @param object: Chosen object
 		 */
 		void ObjectInspector(Core::Datastructure::Object* object);
+
+		/**
+		 * Button to lock / unlock the selected object
+		 */
+		void LockSelectedObjectButton();
 
 	private:
 		/**

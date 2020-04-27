@@ -16,7 +16,7 @@ namespace Core::Maths
 	{
 		union
 		{
-			float		m_array[16];
+			float		array[16];
 			float	    m_mat[4][4];
 			Mat<4, 4>	mat;
 		};
@@ -24,7 +24,7 @@ namespace Core::Maths
 		/**
 		 * Generates matrix zero
 		 */
-		inline constexpr			Mat4() noexcept : m_array() {};
+		inline constexpr			Mat4() noexcept : array() {};
 
 		/**
 		 * Creates a copy of given matrix
@@ -305,132 +305,132 @@ namespace Core::Maths
 		inline void							Print() const noexcept;
 	};
 
-	constexpr Core::Maths::Mat4::Mat4(const Mat4& m) noexcept : m_array()
+	constexpr Core::Maths::Mat4::Mat4(const Mat4& m) noexcept : array()
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] = m.m_array[i];
+			array[i] = m.array[i];
 	}
 	
-	constexpr Core::Maths::Mat4::Mat4(const Mat<4, 4> & m) noexcept : m_array()
+	constexpr Core::Maths::Mat4::Mat4(const Mat<4, 4> & m) noexcept : array()
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] = m.m_mat[i];
+			array[i] = m.array[i];
 	}
 
 	constexpr Mat4 Maths::Mat4::operator=(const Mat<4, 4>& m) noexcept
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] = m.m_mat[i];
+			array[i] = m.array[i];
 		return *this;
 	}
 
 	constexpr Mat4 Maths::Mat4::operator=(const Mat4& m) noexcept
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] = m.m_array[i];
+			array[i] = m.array[i];
 		return *this;
 	}
 
-	constexpr Mat4::Mat4(const Mat4&& m) noexcept : m_array()
+	constexpr Mat4::Mat4(const Mat4&& m) noexcept : array()
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] = std::move(m.m_array[i]);
+			array[i] = std::move(m.array[i]);
 	}
 
-	constexpr Mat4::Mat4(const Mat<4, 4>&& m) noexcept : m_array()
+	constexpr Mat4::Mat4(const Mat<4, 4>&& m) noexcept : array()
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] = std::move(m.m_mat[i]);
+			array[i] = std::move(m.array[i]);
 	}
 
-	Mat4::Mat4(const float m[16]) noexcept  : m_array()
+	Mat4::Mat4(const float m[16]) noexcept  : array()
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] = m[i];
+			array[i] = m[i];
 	}
 
 	inline constexpr float Maths::Mat4::Get(const unsigned a) const noexcept
 	{
-		return m_array[a];
+		return array[a];
 	}
 
 	inline constexpr float& Maths::Mat4::Get(const unsigned a) noexcept
 	{
-		return m_array[a];
+		return array[a];
 	}
 
 	inline constexpr float Maths::Mat4::Get(const unsigned line, const unsigned column) const noexcept
 	{
-		return m_array[line * 4 + column];
+		return array[line * 4 + column];
 	}
 
 	inline constexpr float& Maths::Mat4::Get(const unsigned line, const unsigned column) noexcept
 	{
-		return m_array[line * 4 + column];
+		return array[line * 4 + column];
 	}
 
 	inline constexpr void Maths::Mat4::Set(const unsigned line, const unsigned column, const float f) noexcept
 	{
-		m_array[line * 4 + column] = f;
+		array[line * 4 + column] = f;
 	}
 
 	inline constexpr void Maths::Mat4::Set(const unsigned a, const float f) noexcept
 	{
-		m_array[a] = f;
+		array[a] = f;
 	}
 
 	inline constexpr float Maths::Mat4::operator()(const unsigned a) const noexcept
 	{
-		return m_array[a];
+		return array[a];
 	}
 
 	inline constexpr float& Maths::Mat4::operator()(const unsigned a) noexcept
 	{
-		return m_array[a];
+		return array[a];
 	}
 
 	inline constexpr float Maths::Mat4::operator()(const unsigned line, const unsigned column) const noexcept
 	{
-		return m_array[line * 4 + column];
+		return array[line * 4 + column];
 	}
 
 	inline constexpr float& Maths::Mat4::operator()(const unsigned line, const unsigned column) noexcept
 	{
-		return m_array[line * 4 + column];
+		return array[line * 4 + column];
 	}
 
 	template<unsigned line, unsigned column>
 	inline constexpr float Mat4::Get() const noexcept
 	{
 		constexpr unsigned pos{ line * 4 + column };
-		return m_array[pos];
+		return array[pos];
 	}
 
 	template<unsigned line, unsigned column>
 	inline constexpr float& Mat4::Get() noexcept
 	{
 		constexpr unsigned pos{ line * 4 + column };
-		return m_array[pos];
+		return array[pos];
 	}
 
 	template<unsigned line, unsigned column>
 	constexpr void Mat4::Set(float f) noexcept
 	{
-		m_array[line * 4 + column] = f;
+		array[line * 4 + column] = f;
 	}
 
 	constexpr Mat4 Mat4::operator/(const float f) const noexcept
 	{
 		Mat4	m{ *this };
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m.m_array[i] /= f;
+			m.array[i] /= f;
 		return m;
 	}
 
 	constexpr Mat4& Mat4::operator/=(const float f) noexcept
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] /= f;
+			array[i] /= f;
 		return *this;
 	}
 
@@ -438,14 +438,14 @@ namespace Core::Maths
 	{
 		Mat4	m{ *this };
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m.m_array[i] *= f;
+			m.array[i] *= f;
 		return m;
 	}
 
 	constexpr Mat4& Mat4::operator*=(const float f) noexcept
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] /= f;
+			array[i] /= f;
 		return *this;
 	}
 
@@ -453,14 +453,14 @@ namespace Core::Maths
 	{
 		Mat4	result{ *this };
 		for (unsigned i{ 0 }; i < 16; ++i)
-			result.m_array[i] += m.m_array[i];
+			result.array[i] += m.array[i];
 		return result;
 	}
 
 	inline constexpr Mat4& Mat4::operator+=(const Mat4& m) noexcept
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] += m.m_array[i];
+			array[i] += m.array[i];
 		return *this;
 	}
 	
@@ -468,14 +468,14 @@ namespace Core::Maths
 	{
 		Mat4	result{ *this };
 		for (unsigned i{ 0 }; i < 16; ++i)
-			result.m_array[i] -= m.m_array[i];
+			result.array[i] -= m.array[i];
 		return result;
 	}
 
 	inline constexpr Mat4& Mat4::operator-=(const Mat4& m) noexcept
 	{
 		for (unsigned i{ 0 }; i < 16; ++i)
-			m_array[i] -= m.m_array[i];
+			array[i] -= m.array[i];
 		return *this;
 	}
 	constexpr Mat4 Mat4::operator*(const Mat4& m) const noexcept

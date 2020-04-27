@@ -34,7 +34,7 @@ Mesh::~Mesh()
 
 void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
 {
-	m_projection = data.m_array;
+	m_projection = data.array;
 }
 
 bool Mesh::IsModelLoaded()
@@ -91,9 +91,9 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 			//material.shader->SendLights();
 
 			material.SendMaterial();
-			glUniformMatrix4fv(material.shader->GetLocation("uModel"), 1, GL_TRUE, trs.m_array);
-			glUniformMatrix4fv(material.shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().m_array);
-			glUniformMatrix4fv(material.shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().m_array);
+			glUniformMatrix4fv(material.shader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
+			glUniformMatrix4fv(material.shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
+			glUniformMatrix4fv(material.shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
 		}
 
 		// check if the material have a texture

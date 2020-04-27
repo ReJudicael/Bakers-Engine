@@ -55,6 +55,18 @@
     <Filter Include="Internal Dependencies\imgui\include">
       <UniqueIdentifier>{86cfdc8b-0ff2-4075-b190-eca1317b33b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Internal Dependencies\glad">
+      <UniqueIdentifier>{c43e2a46-e6da-4a9a-a584-d1b1f7ee9b4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internal Dependencies\imGuizmo">
+      <UniqueIdentifier>{c7c008a0-d6c1-40ed-a04c-e1535414770d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internal Dependencies\imGuizmo\include">
+      <UniqueIdentifier>{ad1833a3-54b5-4029-9715-e659ece26a04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internal Dependencies\imGuizmo\src">
+      <UniqueIdentifier>{ad0d78b0-4326-4ee3-8ab4-7337e370cd5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -62,9 +74,6 @@
     </ClCompile>
     <ClCompile Include="src\Editor\GUIManager.cpp">
       <Filter>Source Files\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
-      <Filter>Internal Dependencies</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp">
       <Filter>Source Files\Editor\Datastructure</Filter>
@@ -137,6 +146,21 @@
     </ClCompile>
     <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
+      <Filter>Internal Dependencies\glad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imGuizmo\src\ImCurveEdit.cpp">
+      <Filter>Internal Dependencies\imGuizmo\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imGuizmo\src\ImGradient.cpp">
+      <Filter>Internal Dependencies\imGuizmo\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imGuizmo\src\ImGuizmo.cpp">
+      <Filter>Internal Dependencies\imGuizmo\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\imGuizmo\src\ImSequencer.cpp">
+      <Filter>Internal Dependencies\imGuizmo\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,12 +254,22 @@
     <ClInclude Include="include\Editor\Datastructure\DrawableUIComponent.h">
       <Filter>Header Files\Editor\Datastructure</Filter>
     </ClInclude>
+    <ClInclude Include="..\Dependencies\imGuizmo\include\ImCurveEdit.h">
+      <Filter>Internal Dependencies\imGuizmo\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imGuizmo\include\ImGradient.h">
+      <Filter>Internal Dependencies\imGuizmo\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imGuizmo\include\ImGuizmo.h">
+      <Filter>Internal Dependencies\imGuizmo\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\imGuizmo\include\ImSequencer.h">
+      <Filter>Internal Dependencies\imGuizmo\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Dependencies\imgui-1.75\include\imgui\imgui_user.inl">
+    <None Include="..\Dependencies\imgui-1.76\include\imgui\imgui_user.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Resources\Shaders\WireframeShader.frag" />
-    <None Include="Resources\Shaders\WireframeShader.vert" />
   </ItemGroup>
 </Project>

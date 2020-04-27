@@ -40,7 +40,7 @@
                                     "Ratio": {
                                         "Name": "Ratio",
                                         "Type": "float",
-                                        "Value": 1.6018956899642944
+                                        "Value": 1.5914634466171265
                                     }
                                 }
                             }
@@ -129,8 +129,8 @@
                 {
                     "Type": "Script",
                     "Values": {
-                        "Script": {
-                            "Name": "Script",
+                        "Lua Script": {
+                            "Name": "Lua Script",
                             "Type": "std::string",
                             "Value": ""
                         }

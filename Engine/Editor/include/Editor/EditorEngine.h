@@ -4,6 +4,7 @@
 #include "GuiManager.h"
 #include "CoreMinimal.h"
 #include "FileSystem.hpp"
+#include "ImGuizmo.h"
 
 namespace Editor
 {
@@ -16,6 +17,8 @@ namespace Editor
 		bool				m_step{ false };
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
+		ImGuizmo::OPERATION gizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+		ImGuizmo::MODE gizmoMode = ImGuizmo::MODE::LOCAL;
 
 	public:
 		EditorEngine();

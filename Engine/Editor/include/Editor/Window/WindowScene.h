@@ -44,6 +44,11 @@ namespace Editor::Window
 		 */
 		void DisplayScene();
 
+		/**
+		 * Manipulate gizmo and apply result to selected object
+		 */
+		void GizmoManipulateResult();
+
 	private:
 		/**
 		 * Draw elements in window

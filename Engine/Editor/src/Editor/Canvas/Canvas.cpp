@@ -12,7 +12,7 @@ namespace Editor
 		m_dockWindowFlags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		m_dockWindowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
-		m_dockNodeFlags |= ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
+		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode;
 	}
 
 	Canvas::~Canvas()
@@ -74,17 +74,6 @@ namespace Editor
 			GetEngine()->SaveScene();
 	}
 
-	void Canvas::PushDockStyle()
-	{
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
-	}
-
-	void Canvas::PopDockStyle()
-	{
-		ImGui::PopStyleVar(2);
-	}
-
 	void Canvas::SetViewport()
 	{
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -95,7 +84,11 @@ namespace Editor
 
 	void Canvas::BuildDockspace()
 	{
-		if (ImGui::Begin("## Dockspace", NULL, m_dockWindowFlags))
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.f, 0.f });
+		bool dockspace = ImGui::Begin("## Dockspace", NULL, m_dockWindowFlags);
+		ImGui::PopStyleVar();
+
+		if (dockspace)
 		{
 			ImGui::DockSpace(ImGui::GetID("Dockspace"), ImVec2(0.f, 0.f), m_dockNodeFlags);
 			ImGui::End();
@@ -104,12 +97,8 @@ namespace Editor
 
 	void Canvas::SetDockspace()
 	{
-		PushDockStyle();
-		{
-			SetViewport();
-			BuildDockspace();
-		}
-		PopDockStyle();
+		SetViewport();
+		BuildDockspace();
 	}
 
 	void Canvas::Draw()
