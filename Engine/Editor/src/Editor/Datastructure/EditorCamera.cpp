@@ -26,12 +26,12 @@ namespace Editor::Datastructure
 	{
 		constexpr Core::Maths::Quat	forQuat{ 0, 0, 0, 1 };
 		float radFOV = Core::Maths::ToRadians(m_persp.fov);
-		Core::Maths::Quat forward = (m_transform.GetGlobalRot() * forQuat * m_transform.GetGlobalRot().Inversed());
+		Core::Maths::Vec3 forward = (m_transform.GetGlobalRot() * forQuat * m_transform.GetGlobalRot().Inversed()).GetVec();
 		Core::Maths::Quat RotateY = Core::Maths::Quat::AngleAxis(radFOV * ratioX, m_parent->Up());
 		Core::Maths::Quat RotateX = Core::Maths::Quat::AngleAxis(radFOV * ratioY, m_parent->Right());
-		Core::Maths::Quat Rotate = RotateX * RotateY;
+		Core::Maths::Quat FullRotation = RotateX * RotateY;
 
-		return (Rotate * forward * Rotate.Inversed()).GetVec();
+		return FullRotation.Rotate(forward);
 	}
 
 	const Core::Maths::Vec3& EditorCamera::GetPos()

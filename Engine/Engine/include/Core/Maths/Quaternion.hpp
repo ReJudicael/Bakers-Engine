@@ -220,6 +220,16 @@ namespace Core::Maths
 		}
 
 		/**
+		 * Rotate a vector
+		 * @param v: Vector to rotate
+		 * @return Result rotated vector
+		 */
+		inline constexpr Vec3 Rotate(const Vec3& v) noexcept
+		{
+			return (*this * Quaternion(0, v) * Inversed()).GetVec();
+		}
+
+		/**
 		 * Computes the difference between current and given quaternion
 		 * @param q: Quaternion to compute difference with
 		 * @return The difference between the two quaternions

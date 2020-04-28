@@ -130,7 +130,7 @@ namespace Editor
 		glfwPollEvents();
 		if (m_inputSystem->IsCursorHidden())
 			ImGui::SetMouseCursor(-1);
-		if (m_inputSystem->IsMouseButtonDown(EMouseButton::LEFT))
+		if (m_inputSystem->IsMouseButtonPressed(EMouseButton::LEFT))
 			isTestingRay = true;
 
 		EngineCore::OnLoop();
