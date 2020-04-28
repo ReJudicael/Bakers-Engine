@@ -24,3 +24,5 @@ Engine/Doxygen/Doc/DocEngine/
 Engine/TracyClient/x64/
 
 Engine/TracyClient/TracyClient.vcxproj.user
+
+Engine/Executable/x64/
