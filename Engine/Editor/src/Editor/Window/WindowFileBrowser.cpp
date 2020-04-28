@@ -117,6 +117,10 @@ namespace Editor::Window
 	{
 		if (ImGui::BeginPopupContextWindow("## PopupMenuOnWindow", ImGuiMouseButton_Right, false))
 		{
+			if (ImGui::MenuItem("Open in Explorer"))
+				m_fs->OpenCurrentPathInExplorer();
+
+			ImGui::Separator();
 			MenuItemRefresh();
 			ImGui::Separator();
 			MenuItemNew();
@@ -130,6 +134,9 @@ namespace Editor::Window
 		{
 			if (ImGui::MenuItem("Open"))
 				m_fs->OpenContent(itemPath);
+
+			if (m_fs->IsDirectory(itemPath) && ImGui::MenuItem("Open in Explorer"))
+				m_fs->OpenPathInExplorer(itemPath);
 
 			if (itemPath != "..")
 			{
