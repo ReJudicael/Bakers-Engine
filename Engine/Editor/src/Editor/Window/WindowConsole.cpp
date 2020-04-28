@@ -85,7 +85,9 @@ namespace Editor::Window
 			const std::string& label	= m_logsIcon[i].second ? nbLogs : "0 of " + nbLogs;
 
 			ImGui::SameLine();
+			ImGui::PushID(i);
 			LogButton(m_logsIcon[i].first, label, typeLog, m_logsIcon[i].second);
+			ImGui::PopID();
 		}
 		ImGui::SameLine();
 		SettingsButton();
