@@ -77,7 +77,7 @@ namespace Editor::Window
 		 * @param label: Label of button
 		 * @param isEnabled: Whether the button is enabled or not
 		 */
-		void AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled);
+		void LogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled);
 
 		/**
 		 * Clear button

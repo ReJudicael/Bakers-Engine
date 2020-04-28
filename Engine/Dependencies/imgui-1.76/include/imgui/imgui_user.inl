@@ -143,6 +143,7 @@ namespace ImGui
 
         // Render
         const ImU32 col = GetColorU32((hovered && held) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
+        RenderNavHighlight(bb, id);
         RenderFrame(bb.Min, bb.Max, col, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, style.FrameRounding));
 
 #pragma warning(suppress : 4312)
@@ -315,7 +316,7 @@ namespace ImGui
 
     IMGUI_API void HelpMarkerItem(const char* help_marker)
     {
-        if (ImGui::IsItemHovered())
+        if (help_marker != NULL && ImGui::IsItemHovered())
         {
             ImGui::BeginTooltip();
             ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);

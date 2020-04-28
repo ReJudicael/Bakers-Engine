@@ -35,7 +35,7 @@ namespace Editor::Window
 			m_canScrollBottom = true;
 	}
 
-	void WindowConsole::AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled)
+	void WindowConsole::LogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled)
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, isEnabled ?
 			ImGui::GetStyle().Colors[ImGuiCol_Button] :
@@ -86,7 +86,7 @@ namespace Editor::Window
 
 			ImGui::SameLine();
 			ImGui::PushID(i);
-			AddLogButton(m_logsIcon[i].first, label, typeLog, m_logsIcon[i].second);
+			LogButton(m_logsIcon[i].first, label, typeLog, m_logsIcon[i].second);
 			ImGui::PopID();
 		}
 		ImGui::SameLine();

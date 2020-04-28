@@ -95,7 +95,6 @@ namespace Editor
 	void GUIManager::SetCanvas(Canvas* canvas)
 	{
 		m_canvas = canvas;
-		m_canvas->SetManager(this);
 	}
 
 	void GUIManager::NewFrame()

@@ -15,7 +15,6 @@
 #include "RootObject.hpp"
 #include "CoreMinimal.h"
 #include "LoadResources.h"
-#include "WindowToolbar.h"
 
 namespace Editor
 {
@@ -78,7 +77,7 @@ namespace Editor
 		SetCallbackToGLFW();
 
 		m_man = new Editor::GUIManager(this, Core::Datastructure::glsl_version, Editor::GUIStyle::BAKER);
-		Editor::Canvas* canvas = new Editor::Canvas();
+		Editor::Canvas* canvas = new Editor::Canvas(m_man);
 		m_man->SetCanvas(canvas);
 
 		canvas->Add<Editor::Window::WindowHierarchy>();
@@ -88,7 +87,6 @@ namespace Editor
 		canvas->Add<Editor::Window::WindowScene>();
 		canvas->Add<Editor::Window::WindowConsole>();
 		canvas->Add<Editor::Window::WindowFileBrowser>();
-		canvas->Add<Editor::Window::WindowToolbar>();
 		canvas->Add<Editor::Window::WindowProfiler>(false);
 		
 		INIT_TRACY_GL_IMAGE(320, 180)

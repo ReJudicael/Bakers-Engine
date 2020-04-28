@@ -12,11 +12,14 @@
 #include "MenuGroup.h"
 #include "MenuBar.h"
 
+namespace Resources
+{
+	struct Texture;
+}
 namespace Editor
 {
 	class EditorEngine;
 	class GUIManager;
-
 	/**
 	 * Dockspace handler
 	 */
@@ -52,9 +55,10 @@ namespace Editor
 
 	public:
 		/**
-		 * Default constructor
+		 * Value constructor
+		 * @param manager: GUIManager
 		 */
-		Canvas();
+		Canvas(Editor::GUIManager* manager);
 
 		/**
 		 * Default destructor
@@ -125,12 +129,6 @@ namespace Editor
 
 	public:
 		/**
-		 * Sets the manager of the canvas
-		 * @param manager: The manager of the canvas
-		 */
-		void SetManager(GUIManager* manager) noexcept;
-
-		/**
 		 * Returns the manager of the canvas
 		 * @return The manager of the canvas
 		 */
@@ -141,6 +139,47 @@ namespace Editor
 		 * @return The engine core
 		 */
 		EditorEngine* GetEngine() noexcept;
+
+#pragma region ToolbarRegion
+	private:
+		/**
+		 * Icons in Toolbar: "Movement", "Translate", "Rotate", "Scale"
+		 */
+		std::shared_ptr<Resources::Texture> m_guizmoIcons[6];
+
+		/**
+		 * Icons in Toolbar: "Play", "Stop", "Pause", "Next", "Compile"
+		 */
+		std::shared_ptr<Resources::Texture> m_simulationIcons[5];
+
+	private:
+		/**
+		 * Initialize Toolbar
+		 */
+		void InitToolbar();
+
+		/**
+		 * Toolbar
+		 */
+		void DrawToolbar();
+
+		/**
+		 * Add an image button for toolbar
+		 * @param texture: Texture of image
+		 * @param state: Condition (Whether the button should be active or inactive)
+		 * @param helpMarker: Text written when the mouse is over the button
+		 */
+		bool ToolbarImageButton(unsigned int texture, bool state, const char* helpMarker);
+
+		/**
+		 * Add an image button with text for toolbar
+		 * @param texture: Texture of image
+		 * @param label: Label of button
+		 * @param state: Condition (Whether the button should be active or inactive)
+		 * @param helpMarker: Text written when the mouse is over the button
+		 */
+		bool ToolbarImageButtonText(unsigned int texture, const char* label, bool state, const char* helpMarker);
+#pragma endregion
 	};
 
 	template<class T, class ...Args>
