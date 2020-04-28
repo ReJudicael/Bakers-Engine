@@ -69,7 +69,7 @@ namespace Editor::Window
 		if (isClicked)
 		{
 			ImGui::MenuItem("Auto-scroll", (const char*)0, &m_autoScroll);
-			ImGui::MenuItem("Clear on Play", (const char*)0, nullptr);
+			ImGui::MenuItem("Clear on Play", (const char*)0, &m_clearOnPlay);
 			ImGui::EndCombo();
 		}
 	}
@@ -85,9 +85,7 @@ namespace Editor::Window
 			const std::string& label	= m_logsIcon[i].second ? nbLogs : "0 of " + nbLogs;
 
 			ImGui::SameLine();
-			ImGui::PushID(i);
 			LogButton(m_logsIcon[i].first, label, typeLog, m_logsIcon[i].second);
-			ImGui::PopID();
 		}
 		ImGui::SameLine();
 		SettingsButton();
@@ -139,8 +137,21 @@ namespace Editor::Window
 		}
 	}
 
+	void WindowConsole::ClearOnPlay()
+	{
+		if (m_clearOnPlay && !m_consoleCleared && GetEngine()->IsPlaying())
+		{
+			Core::Debug::Logger::ClearLogs();
+			m_consoleCleared = true;
+		}
+		if (m_consoleCleared && !GetEngine()->IsPlaying())
+			m_consoleCleared = false;
+	}
+
 	void WindowConsole::Tick()
 	{
+		ClearOnPlay();
+
 		ConsoleHeader();
 		ImGui::Separator();
 		ConsolePrint();

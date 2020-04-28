@@ -42,6 +42,16 @@ namespace Editor::Window
 		 */
 		bool m_autoScroll{ true };
 
+		/**
+		 * Wheter the console is cleared or not
+		 */
+		bool m_consoleCleared{ false };
+
+		/**
+		 * Wheter the clear on play is activated or not
+		 */
+		bool m_clearOnPlay{ false };
+
 	public:
 		/**
 		 * Constructor which set title of window ("Console")
@@ -101,9 +111,14 @@ namespace Editor::Window
 		void PrintLog(const Core::Debug::LogData& log);
 
 		/**
-		 * Draws the console messages
+		 * Draw the console messages
 		 */
 		void ConsolePrint();
+
+		/**
+		 * Clear on play
+		 */
+		void ClearOnPlay();
 
 	private:
 		/**
