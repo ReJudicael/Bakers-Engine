@@ -49,6 +49,21 @@ namespace Editor::Datastructure
 		void SetRatio(const float newRatio) override;
 
 		Core::Renderer::Framebuffer* GetFBO();
+
+		/**
+		 * Get the camera forward rotated with given ratios
+		 * @param ratioX: Proportion of fov angle used for rotation around up axis
+		 * @param ratioY: Proportion of fov angle used for rotation around right axis
+		 * @return: Direction from camera
+		 */
+		Core::Maths::Vec3 GetPerspectiveDirection(const float ratioX, const float ratioY);
+
+		/**
+		 * Get Camera Position
+		 * @return Local position of Editor camera transform
+		 */
+		const Core::Maths::Vec3& GetPos();
+
 	private:
 		/**
 		 * Compute keyboard and mouse interactions when right mouse button is pressed

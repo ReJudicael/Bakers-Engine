@@ -49,7 +49,11 @@ namespace Editor::Window
 		 */
 		void GizmoManipulateResult();
 
-	private:
+		/**
+		 * Get direction for raycast from camera forward and mouse position
+		 */
+		Core::Maths::Vec3 GetCameraDirFromInput();
+
 		/**
 		 * Draw elements in window
 		 */

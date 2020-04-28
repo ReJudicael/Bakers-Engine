@@ -184,12 +184,6 @@ namespace Core::Datastructure
 
 			Update(deltaTime);
 
-			Physics::HitResultQuery query;
-
-			physx::PxU32 u = Core::Physics::EFilterRaycast::GROUPE1;
-
-			m_physicsScene->Raycast({ 0.f,0.f,0.f }, { 1.f,0.f,0.f }, query, u);
-
 			Render();
 		}
 		else if (m_state == EngineState::STARTING)
@@ -214,6 +208,16 @@ namespace Core::Datastructure
 		m_physicsScene->BeginSimulate(static_cast<float>(deltaTime));
 		m_physicsScene->EndSimulate();
 		m_root->Update(static_cast<float>(deltaTime));
+	}
+
+	Object* EngineCore::SearchObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& dir)
+	{
+		Core::Physics::HitResultQuery query;
+
+		if (m_physicsScene->Raycast(origin, dir, query))
+			return query.objectHit;
+
+		return nullptr;
 	}
 
 	Core::SystemManagement::InputSystem* EngineCore::GetInputSystem()

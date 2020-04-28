@@ -107,8 +107,39 @@ namespace Editor::Window
 		}
 	}
 
+	Core::Maths::Vec3 WindowScene::GetCameraDirFromInput()
+	{
+		// Compute mouse pos to values between -1 and 1
+		Core::Maths::Vec2 mouse = GetEngine()->GetMousePos();
+		mouse -= ImGui::GetWindowPos();
+		mouse.x -= ImGui::GetWindowSize().x / 2;
+		mouse.x /= (ImGui::GetWindowSize().x / 2);
+		mouse.y -= ImGui::GetWindowSize().y / 2;
+		mouse.y /= (ImGui::GetWindowSize().y / 2);
+
+		// If Mouse outside of window, return default vector
+		if (mouse.x < -1 || mouse.x > 1 || mouse.y < -1 || mouse.y > 1)
+			return Core::Maths::Vec3(0, 0, 0);
+
+		Core::Maths::Vec3 dir = m_cam->GetPerspectiveDirection(mouse.x, mouse.y);
+		dir.z *= -1; // Reverse direction for raycast use
+
+		return dir;
+	}
+
 	void WindowScene::Tick()
 	{
 		DisplayScene();
+
+		if (GetEngine()->isTestingRay)
+		{
+			GetEngine()->isTestingRay = false;
+			if (!ImGuizmo::IsOver())
+			{
+				Core::Maths::Vec3 dir = GetCameraDirFromInput();
+				if (dir.SquaredLength() != 0)
+					GetEngine()->SelectObjectInScene(m_cam->GetPos(), dir);
+			}
+		}
 	}
 }
