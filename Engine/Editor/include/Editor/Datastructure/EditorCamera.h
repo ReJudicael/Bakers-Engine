@@ -59,6 +59,18 @@ namespace Editor::Datastructure
 		Core::Maths::Vec3 GetPerspectiveDirection(const float ratioX, const float ratioY);
 
 		/**
+		 * Set Rotation of camera transform
+		 * @param v: Vector with euler angles for rotation
+		 */
+		void SetRot(const Core::Maths::Vec3& v);
+
+		/**
+		 * Set Position of camera transform
+		 * @param v: Vector with new position
+		 */
+		void SetPos(const Core::Maths::Vec3& v);
+
+		/**
 		 * Get Camera Position
 		 * @return Local position of Editor camera transform
 		 */

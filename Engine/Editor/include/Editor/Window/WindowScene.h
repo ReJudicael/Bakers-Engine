@@ -16,6 +16,8 @@ namespace Editor::Window
 	class WindowScene final : public AWindow
 	{
 		Datastructure::EditorCamera* m_cam;
+
+		Core::Maths::Mat<4, 4> m_cube{ m_cube.Identity() };
 	public:
 		/**
 		 * Constructor which set title of window ("Scene")
@@ -43,6 +45,11 @@ namespace Editor::Window
 		 * Display Scene
 		 */
 		void DisplayScene();
+
+		/**
+		 * Manipulate cube view gizmo and apply result to camera
+		 */
+		void GizmoViewManipulateResult();
 
 		/**
 		 * Manipulate gizmo and apply result to selected object

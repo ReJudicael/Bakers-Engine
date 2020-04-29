@@ -34,6 +34,18 @@ namespace Editor::Datastructure
 		return FullRotation.Rotate(forward);
 	}
 
+	void EditorCamera::SetRot(const Core::Maths::Vec3& v)
+	{
+		m_transform.SetLocalRot(v);
+		m_isCamUpdated = false;
+	}
+
+	void EditorCamera::SetPos(const Core::Maths::Vec3& v)
+	{
+		m_transform.SetLocalPos(v);
+		m_isCamUpdated = false;
+	}
+
 	const Core::Maths::Vec3& EditorCamera::GetPos()
 	{
 		return m_transform.GetLocalPos();

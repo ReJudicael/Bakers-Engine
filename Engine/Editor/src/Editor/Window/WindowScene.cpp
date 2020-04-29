@@ -5,6 +5,7 @@
 #include "RootObject.hpp"
 #include "Object.hpp"
 #include "ImGuizmo.h"
+#include "Maths.hpp"
 
 namespace Editor::Window
 {
@@ -13,10 +14,10 @@ namespace Editor::Window
 	{
 		m_flags |= ImGuiWindowFlags_NoScrollbar;
 
-		//Should be replaced by scene camera code
-		//m_fbo = GetEngine()->CreateFBO();
 		m_cam = new Datastructure::EditorCamera();
 		GetEngine()->m_root->AddComponent(m_cam);
+
+		m_cube.array[14] = 10;
 	}
 
 	void WindowScene::PushWindowStyle()
@@ -49,7 +50,8 @@ namespace Editor::Window
 				ImGuiIO& io = ImGui::GetIO();
 				ImGuizmo::SetDrawlist();
 				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
-				ImGuizmo::ViewManipulate((float*)m_cam->GetCameraMatrix().array, 1000.f, ImGui::GetWindowPos(), ImVec2(128, 128), 0x10101010);
+				
+				GizmoViewManipulateResult();
 				GizmoManipulateResult();
 			}
 		}
@@ -57,6 +59,40 @@ namespace Editor::Window
 		{
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("  No scene camera available");
+		}
+	}
+
+	void WindowScene::GizmoViewManipulateResult()
+	{
+		// Save transform values before gizmo manipulate
+		Core::Maths::Vec3 t, r, s;
+		ImGuizmo::DecomposeMatrixToComponents(m_cube.array, t.xyz, r.xyz, s.xyz);
+
+		ImGuizmo::ViewManipulate(m_cube.array, 0.1f, ImGui::GetWindowPos(), ImVec2(128, 128), 0x10101010);
+		
+		// Get new values
+		Core::Maths::Vec3 t2, r2, s2;
+		ImGuizmo::DecomposeMatrixToComponents(m_cube.array, t2.xyz, r2.xyz, s2.xyz);
+
+		// Check and apply position modification
+		t = t2 - t;
+		if (t.SquaredLength() > 0)
+		{
+			// Convert gizmo position vector into a vector usable in scene
+			t2.x *= -1;
+			t2.y *= -1;
+			m_cam->SetPos(t2);
+		}
+
+		// Check and apply rotation modification
+		r = r2 - r;
+		if (r.SquaredLength() > 0)
+		{
+			// Convert gizmo rotation euler angles into a valid rotation vector
+			r2.x = Core::Maths::ToRadians(-r2.x);
+			r2.y = Core::Maths::ToRadians(-r2.y);
+			r2.z = Core::Maths::ToRadians(r2.z);
+			m_cam->SetRot(r2);
 		}
 	}
 
