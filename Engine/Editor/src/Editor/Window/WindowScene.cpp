@@ -43,7 +43,6 @@ namespace Editor::Window
 			}
 
 			ImGui::ImageUV(fbo->ColorTexture, windowSize);
-
 			if (GetEngine()->objectSelected && GetEngine()->operation != SelectionMode::MOVEMENT)
 			{
 				ImGuiIO& io = ImGui::GetIO();

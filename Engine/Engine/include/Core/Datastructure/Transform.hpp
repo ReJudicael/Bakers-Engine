@@ -107,6 +107,18 @@ namespace Core::Datastructure
 		inline const Maths::Vec3&	GetGlobalScale() const noexcept;
 
 		/**
+		 * Return forward of transform
+		 * @return Forward of transform
+		 */
+		inline const Maths::Vec3& GetForward() const noexcept;
+
+		/**
+		 * Return up of transform
+		 * @return Up of transform
+		 */
+		inline const Maths::Vec3& GetUp() const noexcept;
+
+		/**
 		 * Returns if the global transform variables are currently up to date
 		 * @return The state of the global variables
 		 */
@@ -285,5 +297,15 @@ namespace Core::Datastructure
 	{
 		m_isGUpdated = false;
 		m_isGTrsUpdated = false;
+	}
+
+	inline const Maths::Vec3& Transform::GetForward() const noexcept
+	{
+		return GetLocalRot() * Maths::Vec3(0.0f, 0.0f, 1.0f);
+	}
+
+	inline const Maths::Vec3& Transform::GetUp() const noexcept
+	{
+		return GetLocalRot() * Maths::Vec3(0.0f, 1.0f, 0.0f);
 	}
 }

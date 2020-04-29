@@ -348,6 +348,20 @@ namespace Core::Maths
 		}
 
 		/**
+		 * Multiply a quaternion with a Vec3
+		 * @param v: Right side
+		 * @return Result of multiplication
+		 */
+		inline constexpr Vec3 operator*(const Vec3& v) const
+		{
+			const Vec3 qVec(x, y, z);
+			const Vec3 cross1(qVec.Cross(v));
+			const Vec3 cross2(qVec.Cross(cross1));
+
+			return v + (cross1 * w + cross2) * 2.0f;
+		}
+
+		/**
 		 * Computes dot product of the two quaternions. Works just like vector dot product
 		 * @param q: Quaternion to dot with
 		 * @return Result of the dot product

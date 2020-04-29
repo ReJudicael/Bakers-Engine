@@ -135,8 +135,8 @@ namespace Editor::Window
 			if (ImGui::MenuItem("Open"))
 				m_fs->OpenContent(itemPath);
 
-			if (m_fs->IsDirectory(itemPath) && ImGui::MenuItem("Open in Explorer"))
-				m_fs->OpenPathInExplorer(itemPath);
+			if (ImGui::MenuItem("Open in Explorer"))
+				m_fs->OpenPathInExplorer(m_fs->IsDirectory(itemPath) ? itemPath : m_fs->GetParentPath(itemPath));
 
 			if (itemPath != "..")
 			{
