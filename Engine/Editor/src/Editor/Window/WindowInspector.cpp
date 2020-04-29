@@ -74,15 +74,29 @@ namespace Editor::Window
 			object->SetGlobalScale(scale);
 	}
 
+	GLuint WindowInspector::GetIcon(const std::string& componentName)
+	{
+		auto it{ m_icons.find(componentName) };
+		if (it == m_icons.end())
+		{
+			std::string iconsPath{ "Resources\\Images\\InspectorIcons\\" + componentName + ".png" };
+			std::shared_ptr<Resources::Texture> icon;
+			GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
+			it = m_icons.emplace(componentName, icon).first;
+		}
+
+		return it->second->texture;
+	}
+
 	void WindowInspector::DisplayObjectTransform(Core::Datastructure::Object* object)
 	{
-		bool isOpen = ImGui::CollapsingHeader("Transform", m_treeNodeFlags);
+		bool isOpen = ImGui::CollapsingHeaderWithImageUV(GetIcon("Transform"), "Transform", m_treeNodeFlags);
+		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionWidth() - 16);
 
-		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 		bool isClickedReset = ImGui::ImageButtonUV(m_optionsIcon[1]->texture);
+		ImGui::PopStyleColor();
 		ImGui::HelpMarkerItem("Reset");
-		ImGui::PopStyleColor(1);
 
 		if (isClickedReset)
 		{
@@ -213,17 +227,20 @@ namespace Editor::Window
 			ImGui::PushID(it);
 
 			rttr::type t{ it->get_type() };
-			bool isOpen = ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags);
+			bool isOpen = ImGui::CollapsingHeaderWithImageUV(GetIcon(t.get_name().to_string().c_str()), t.get_name().to_string().c_str(), m_treeNodeFlags);
 
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 
-			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
-			bool isClickedDelete = ImGui::ImageButtonUV(m_optionsIcon[0]->texture);
-			ImGui::HelpMarkerItem("Remove");
+			float cursorPosX = ImGui::GetWindowContentRegionWidth() - 40.f;
+			ImGui::SetCursorPosX(cursorPosX);
 
-			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
 			bool isClickedReset = ImGui::ImageButtonUV(m_optionsIcon[1]->texture);
 			ImGui::HelpMarkerItem("Reset");
+
+			cursorPosX += 24.f;
+			ImGui::SameLine(cursorPosX);
+			bool isClickedDelete = ImGui::ImageButtonUV(m_optionsIcon[0]->texture);
+			ImGui::HelpMarkerItem("Remove");
 
 			ImGui::PopStyleColor();
 

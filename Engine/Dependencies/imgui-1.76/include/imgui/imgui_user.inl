@@ -155,6 +155,19 @@ namespace ImGui
         return pressed;
     }
 
+    IMGUI_API bool CollapsingHeaderWithImageUV(unsigned int user_texture_id, const char* label, ImGuiTreeNodeFlags flags)
+    {
+        float cursorPosY{ ImGui::GetCursorPosY() };
+        bool isOpen = ImGui::CollapsingHeader(("##" + std::string(label)).c_str(), flags);
+        ImGui::SetCursorPos({ 30.f + GImGui->Style.FramePadding.x, cursorPosY + GImGui->Style.FramePadding.y });
+        ImGui::ImageUV(user_texture_id);
+        ImGui::SameLine();
+        ImGui::Text(label);
+        ImGui::SetCursorPosY(cursorPosY);
+
+        return isOpen;
+    }
+
     static float CalcMaxPopupHeightFromItemCount(int items_count)
     {
         ImGuiContext& g = *GImGui;
