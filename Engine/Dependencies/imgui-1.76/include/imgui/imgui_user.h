@@ -27,6 +27,7 @@ namespace ImGui
     IMGUI_API void RButtonDD(const char* label, const char* value);
 
     IMGUI_API void ImageUV(unsigned int user_texture_id, const ImVec2& size = { 16.f, 16.f });
+    IMGUI_API void ImageUVFramePadding(unsigned int user_texture_id, const ImVec2& size = { 16.f, 16.f });
     IMGUI_API bool ImageButtonUV(unsigned int user_texture_id, const ImVec2& size = { 16.f, 16.f });
     IMGUI_API bool ImageButtonUVWithText(unsigned int user_texture_id, const char* label, const ImVec2& icon_size = { 16.f, 16.f });
 

@@ -86,6 +86,26 @@ namespace ImGui
         return Image((ImTextureID)user_texture_id, size, { 0.f, 1.f }, { 1.f, 0.f });
     }
 
+    IMGUI_API void ImageUVFramePadding(unsigned int user_texture_id, const ImVec2& size)
+    {
+        ImGuiWindow* window = GetCurrentWindow();
+        if (window->SkipItems)
+            return;
+
+        ImGuiContext& g = *GImGui;
+        const ImGuiStyle& style = g.Style;
+        const ImVec2 padding = style.FramePadding;
+        ImRect bb(window->DC.CursorPos, window->DC.CursorPos + size + padding * 2);
+        ImRect image_bb(window->DC.CursorPos + padding, window->DC.CursorPos + padding + size);
+
+        ItemSize(bb);
+        if (!ItemAdd(bb, 0))
+            return;
+
+#pragma warning(suppress : 4312)
+        window->DrawList->AddImage((ImTextureID)user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f }, GetColorU32({ 1.f, 1.f, 1.f, 1.f }));
+    }
+
     IMGUI_API bool ImageButtonUV(unsigned int user_texture_id, const ImVec2& size)
     {
 #pragma warning(suppress : 4312)
@@ -147,7 +167,7 @@ namespace ImGui
         RenderFrame(bb.Min, bb.Max, col, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, style.FrameRounding));
 
 #pragma warning(suppress : 4312)
-        window->DrawList->AddImage((ImTextureID)user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
+        window->DrawList->AddImage((ImTextureID)user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f }, GetColorU32({ 1.f, 1.f, 1.f, 1.f }));
 
         if (textSize.x > 0)
             ImGui::RenderText(start, button_text);
@@ -157,13 +177,11 @@ namespace ImGui
 
     IMGUI_API bool CollapsingHeaderWithImageUV(unsigned int user_texture_id, const char* label, ImGuiTreeNodeFlags flags)
     {
-        float cursorPosY{ ImGui::GetCursorPosY() };
         bool isOpen = ImGui::CollapsingHeader(("##" + std::string(label)).c_str(), flags);
-        ImGui::SetCursorPos({ 30.f + GImGui->Style.FramePadding.x, cursorPosY + GImGui->Style.FramePadding.y });
-        ImGui::ImageUV(user_texture_id);
+        ImGui::SameLine(25.f + GImGui->Style.FramePadding.x);
+        ImGui::ImageUVFramePadding(user_texture_id);
         ImGui::SameLine();
         ImGui::Text(label);
-        ImGui::SetCursorPosY(cursorPosY);
 
         return isOpen;
     }
@@ -237,7 +255,7 @@ namespace ImGui
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_Popup | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove;
 
         // Horizontally align ourselves with the framed text
-        PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(style.FramePadding.x, style.WindowPadding.y));
+        PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(style.FramePadding.x * 2.f, style.WindowPadding.y));
         bool ret = Begin(name, NULL, window_flags);
         PopStyleVar();
 
@@ -279,7 +297,7 @@ namespace ImGui
         RenderFrame(frame_bb.Min, frame_bb.Max, frame_col, true, style.FrameRounding);
 
 #pragma warning(suppress : 4312)
-        window->DrawList->AddImage((ImTextureID)user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f });
+        window->DrawList->AddImage((ImTextureID)user_texture_id, image_bb.Min, image_bb.Max, { 0.f, 1.f }, { 1.f, 0.f }, GetColorU32({ 1.f, 1.f, 1.f, 1.f }));
 
         bool popup_open = IsPopupOpen(id);
         if ((pressed || g.NavActivateId == id) && !popup_open)
@@ -314,7 +332,7 @@ namespace ImGui
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_Popup | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove;
 
         // Horizontally align ourselves with the framed text
-        PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(style.FramePadding.x, style.WindowPadding.y));
+        PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(style.FramePadding.x * 2.f, style.WindowPadding.y));
         bool ret = Begin(name, NULL, window_flags);
         PopStyleVar();
 

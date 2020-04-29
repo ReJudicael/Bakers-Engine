@@ -102,10 +102,12 @@ namespace Editor::Window
 		{
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
-			ImGui::ImageUV(m_logsIcon[static_cast<size_t>(log.type)].first->texture);
+			ImGui::ImageUVFramePadding(m_logsIcon[static_cast<size_t>(log.type)].first->texture);
 			ImGui::TableSetColumnIndex(1);
+			ImGui::AlignTextToFramePadding();
 			ImGui::Text(log.time);
 			ImGui::TableSetColumnIndex(2);
+			ImGui::AlignTextToFramePadding();
 			ImGui::TextWrapped(log.message);
 		}
 	}

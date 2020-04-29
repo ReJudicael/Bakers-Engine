@@ -79,7 +79,7 @@ namespace Editor::Window
 		auto it{ m_icons.find(componentName) };
 		if (it == m_icons.end())
 		{
-			std::string iconsPath{ "Resources\\Images\\InspectorIcons\\" + componentName + ".png" };
+			const std::string iconsPath{ "Resources\\Images\\InspectorIcons\\" + componentName + ".png" };
 			std::shared_ptr<Resources::Texture> icon;
 			GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
 			it = m_icons.emplace(componentName, icon).first;
@@ -91,8 +91,7 @@ namespace Editor::Window
 	void WindowInspector::DisplayObjectTransform(Core::Datastructure::Object* object)
 	{
 		bool isOpen = ImGui::CollapsingHeaderWithImageUV(GetIcon("Transform"), "Transform", m_treeNodeFlags);
-		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionWidth() - 16);
-
+		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 		bool isClickedReset = ImGui::ImageButtonUV(m_optionsIcon[1]->texture);
 		ImGui::PopStyleColor();
@@ -232,7 +231,7 @@ namespace Editor::Window
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 
 			float cursorPosX = ImGui::GetWindowContentRegionWidth() - 40.f;
-			ImGui::SetCursorPosX(cursorPosX);
+			ImGui::SameLine(cursorPosX);
 
 			bool isClickedReset = ImGui::ImageButtonUV(m_optionsIcon[1]->texture);
 			ImGui::HelpMarkerItem("Reset");

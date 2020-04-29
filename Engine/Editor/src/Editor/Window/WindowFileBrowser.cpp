@@ -176,7 +176,7 @@ namespace Editor::Window
 			else
 				ext = m_fs->GetExtensionWithoutDot(itemPath);
 
-			std::string iconsPath{ "Resources\\Images\\FileBrowserIcons\\icon_" + ext + ".png" };
+			const std::string iconsPath{ "Resources\\Images\\FileBrowserIcons\\icon_" + ext + ".png" };
 			std::shared_ptr<Resources::Texture> icon;
 			if (m_fs->Exists(iconsPath))
 				GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
