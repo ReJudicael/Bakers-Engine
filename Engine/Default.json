@@ -196,7 +196,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -223,7 +229,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -250,7 +262,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -277,7 +295,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -304,7 +328,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -331,7 +361,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -358,7 +394,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -385,7 +427,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -412,7 +460,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -439,7 +493,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -466,7 +526,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -493,7 +559,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -520,7 +592,13 @@
                     "Components": [
                         {
                             "Type": "Mesh",
-                            "Values": null
+                            "Values": {
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ""
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,
@@ -607,7 +685,13 @@
                 },
                 {
                     "Type": "Mesh",
-                    "Values": null
+                    "Values": {
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": "Resources\\Models\\Umbreon\\UmbreonHighPoly.obj"
+                        }
+                    }
                 }
             ],
             "Flags": 0,

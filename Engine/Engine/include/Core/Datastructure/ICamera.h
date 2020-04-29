@@ -85,7 +85,7 @@ namespace Core::Datastructure
 		/**
 		 * First frame upon creation event
 		 */
-		virtual void				OnStart() override;
+		virtual bool				OnStart() override;
 		virtual void				OnInit() override;
 
 		/**

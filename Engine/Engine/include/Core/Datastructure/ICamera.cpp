@@ -43,9 +43,9 @@ void Core::Datastructure::ICamera::OnInit()
 	m_fbo->userPtr = this;
 }
 
-void Core::Datastructure::ICamera::OnStart()
+bool Core::Datastructure::ICamera::OnStart()
 {
-	IComponent::OnStart();
+	return IComponent::OnStart();
 }
 
 Core::Datastructure::ICamera::~ICamera() noexcept

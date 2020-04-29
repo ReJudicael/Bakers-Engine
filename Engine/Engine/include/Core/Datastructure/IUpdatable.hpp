@@ -13,7 +13,7 @@ namespace Core::Datastructure
 	protected:
 		bool				m_isUpdating = true; 
 		
-		virtual void		OnStart() override;
+		virtual bool		OnStart() override;
 		/**
 		 * Called once per frame before rendering. DeltaTime is
 		 * passed as an argument. Must be overriden if the component

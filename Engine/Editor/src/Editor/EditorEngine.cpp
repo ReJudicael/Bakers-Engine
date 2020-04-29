@@ -148,6 +148,9 @@ namespace Editor
 			ReloadScene();
 			m_paused = false;
 			m_state = Core::Datastructure::EngineState::INITIALIZED;
+			Render();
+			EndFrame();
+			break;
 		case (Core::Datastructure::EngineState::INITIALIZED):
 			m_manager->LinkAllTextureToOpenGl();
 			m_manager->LinkAllModelToOpenGl();

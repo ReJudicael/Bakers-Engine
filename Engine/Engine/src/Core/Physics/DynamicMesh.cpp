@@ -41,11 +41,10 @@ namespace Core
 		{
 		}
 
-		void DynamicMesh::OnStart()
+		bool DynamicMesh::OnStart()
 		{
 			GetParent()->SetAnEventTransformChange(std::bind(&DynamicMesh::SetPhysicsTransformParent, this));
-			IPhysics::OnStart();
-			IUpdatable::OnStart();
+			return IPhysics::OnStart() && IUpdatable::OnStart();
 
 		}
 

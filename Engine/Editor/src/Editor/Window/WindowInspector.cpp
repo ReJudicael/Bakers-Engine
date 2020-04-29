@@ -287,6 +287,8 @@ namespace Editor::Window
 
 	void WindowInspector::ObjectInspector(Core::Datastructure::Object* object)
 	{
+		if (object->IsDestroyed())
+			return;
 		DisplayObjectName(object);
 
 		ImGui::Spacing();

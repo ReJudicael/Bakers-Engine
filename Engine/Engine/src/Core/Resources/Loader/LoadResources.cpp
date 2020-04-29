@@ -100,12 +100,9 @@ namespace Resources::Loader
 	{
 		std::string Name = fileName;
 
-		std::shared_ptr<Object3DGraph> scene;
 		if (m_scenes.count(Name) == 0)
 			if (!LoadAssimpScene(fileName))
 				return;
-		else
-			scene = m_scenes[Name];
 	}
 
 	bool ResourcesManager::LoadAssimpScene(const char* fileName)
@@ -131,8 +128,9 @@ namespace Resources::Loader
 			return false;
 		}
 
-		auto index = Name.find_last_of("/");
-
+		auto index = Name.find_last_of('/');
+		if (index == std::string::npos)
+			index = Name.find_last_of('\\');
 		std::string directoryFile;
 		directoryFile = Name.substr(0, index + 1);
 
@@ -235,6 +233,7 @@ namespace Resources::Loader
 		unsigned int indexLastMesh{ 0 };
 
 		modelData->model = model;
+		modelData->ModelName = directory + scene->mMeshes[0]->mName.data;
 		m_models.emplace(directory + scene->mMeshes[0]->mName.data, model);
 		m_modelsToLink.push_back(modelData);
 
@@ -258,6 +257,9 @@ namespace Resources::Loader
 
 	void ResourcesManager::LoadObjInModel(const std::string& name, const char* fileName)
 	{
+		if (m_models.count(name) > 0)
+			return;
+
 		std::string Name = fileName;
 
 		Assimp::Importer importer;
@@ -281,9 +283,6 @@ namespace Resources::Loader
 
 		std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
 		std::shared_ptr<Model> model = std::make_shared<Model>();
-
-		if (m_models.count(name) > 0)
-			return;
 
 		modelData->model = model;
 		m_models.emplace(name, model);

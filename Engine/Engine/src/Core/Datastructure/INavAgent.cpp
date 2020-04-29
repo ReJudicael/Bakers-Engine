@@ -27,10 +27,10 @@ namespace Core::Datastructure
 		
 	}
 
-	void INavAgent::OnStart()
+	bool INavAgent::OnStart()
 	{
 		//Navigation::NavMeshBuilder* navMesh{ GetScene()->GetEngine()->GetNavMesh() };
-
+		return true;
 	}
 
 	void	INavAgent::OnDestroy()

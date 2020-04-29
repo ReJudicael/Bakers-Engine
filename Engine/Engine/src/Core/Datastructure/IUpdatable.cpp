@@ -12,11 +12,12 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Core::Datastructure
 {
-	void IUpdatable::OnStart()
+	bool IUpdatable::OnStart()
 	{
 		if (GetScene() == nullptr)
-			return;
+			return false;
 		GetScene()->AddUpdatable(this);
+		return IComponent::OnStart();
 	}
 
 	IUpdatable::~IUpdatable()

@@ -34,8 +34,8 @@ namespace Core::Datastructure
 			return;
 		ZoneScoped
 			ZoneText("Start of a component", 21)
-		OnStart();
-		m_isStarted = true;
+		if (OnStart())
+			m_isStarted = true;
 	}
 
 	void IComponent::Destroy()

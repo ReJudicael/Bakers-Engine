@@ -36,7 +36,7 @@ namespace Core::Datastructure
 		 * Called on start of the component, on the first frame it
 		 * is active
 		 */
-		virtual void	OnStart() {};
+		virtual bool	OnStart() { return true; };
 		/**
 		 * Called when destruction is asked. Destructor will be called
 		 * at the end of the frame

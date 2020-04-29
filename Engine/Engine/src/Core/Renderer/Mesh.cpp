@@ -11,12 +11,49 @@
 #include "PhysicsScene.h"
 #include "EngineCore.h"
 #include "PxRigidActor.h"
+#include "TriggeredEvent.h"
+#include "Object3DGraph.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
 	registration::class_<Mesh>("Mesh")
-		.constructor();
-		//.property_readonly("Vertex Count", &Mesh::GetVertexCount);
+		.constructor()
+		.property("Model", &Mesh::GetModel, &Mesh::SetModel);
+}
+
+void Mesh::SetModel(std::string newModel)
+{
+	m_modelName = newModel;
+	if (!IsInit())
+		return;
+	UpdateModel();
+}
+
+void Mesh::UpdateModel()
+{
+	if (m_modelName == "")
+		return;
+	Resources::Loader::ResourcesManager* manager{ GetScene()->GetEngine()->GetResourcesManager() };
+	manager->Load3DObject(m_modelName.c_str());
+
+	if (manager->GetCountScene(m_modelName) <= 0)
+		return;
+	std::shared_ptr<Resources::Object3DGraph> scene = manager->GetScene(m_modelName);
+
+	AddModel(manager->GetModel(scene->rootNodeScene.nameMesh));
+	AddMaterials(*manager, scene->rootNodeScene.namesMaterial);
+
+	Core::Datastructure::TriggeredEvent* newEvent{ new Core::Datastructure::TriggeredEvent() };
+
+	newEvent->SetTriggeredEvent(std::bind(&Mesh::IsModelLoaded, this), std::bind(&Mesh::CreateAABBMesh, this));
+	GetParent()->AddComponent(newEvent);
+
+	for (auto i{ 0 }; i < scene->rootNodeScene.children.size(); i++)
+	{
+		Core::Datastructure::Object* childObject{ GetParent()->CreateChild("", {}) };
+		scene->rootNodeScene.children[i].CreateObjectScene(childObject, *manager);
+	}
+
 }
 
 Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
@@ -30,6 +67,12 @@ Mesh::~Mesh()
 	//glDeleteBuffers(1, &m_vertexBuffer);
 	glDeleteVertexArrays(1, &m_VAO);
 	//glDeleteProgram(m_program);
+}
+
+void Mesh::OnInit()
+{
+	IRenderable::OnInit();
+	UpdateModel();
 }
 
 void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)

@@ -24,11 +24,10 @@ namespace Core
 		{
 		}
 
-		void StaticMesh::OnStart()
+		bool StaticMesh::OnStart()
 		{
 			GetParent()->SetAnEventTransformChange(std::bind(&StaticMesh::SetPhysicsTransformParent, this));
-			IPhysics::OnStart();
-			IUpdatable::OnStart();
+			return IPhysics::OnStart() && IUpdatable::OnStart();
 
 		}
 

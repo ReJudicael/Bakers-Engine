@@ -25,7 +25,7 @@ namespace Core::Datastructure
 	public:
 		TriggeredEvent() = default;
 
-		virtual void	OnStart() override;
+		virtual bool	OnStart() override;
 
 		virtual void	SetTriggeredEvent(std::function<bool()> condition, std::function<void()> eventTrigger, bool autoDestroy = true);
 

@@ -52,10 +52,9 @@ namespace Core::Renderer
 	{
 	}
 
-	void Camera::OnStart()
+	bool Camera::OnStart()
 	{
-		ICamera::OnStart();
-		IUpdatable::OnStart();
+		return ICamera::OnStart() && IUpdatable::OnStart();
 	}
 
 	Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float ratio, const float fov, const float near, const float far)

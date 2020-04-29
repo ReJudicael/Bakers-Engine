@@ -31,12 +31,12 @@ namespace Core::Datastructure
 	{
 	}
 
-	void ScriptedComponent::OnStart()
+	bool ScriptedComponent::OnStart()
 	{	
-		ComponentUpdatable::OnStart();
+		bool temp = ComponentUpdatable::OnStart();
 
 		if (m_script.empty())
-			return;
+			return false;
 
 		Core::Datastructure::lua.open_libraries(sol::lib::base);
 
@@ -44,6 +44,8 @@ namespace Core::Datastructure
 		StartLuaScript();
 
 		m_hasStarted = true;
+
+		return temp;
 	}
 
 	bool ScriptedComponent::LoadLuaScript()

@@ -60,10 +60,10 @@ namespace Core::Renderer
         OnCopy(copyTo);
     }
 
-    void Light::OnStart()
+    bool Light::OnStart()
     {
-        ComponentBase::OnStart();
         Resources::Shader::lights.emplace_back(this);
+        return ComponentBase::OnStart();
     }
 
     Light::Light() : ComponentBase()

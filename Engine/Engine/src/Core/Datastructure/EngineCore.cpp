@@ -499,6 +499,8 @@ namespace Core::Datastructure
 
 	void EngineCore::AddMeshToNav(Vertex* verts, int nverts, GLuint* tris, int ntris, const Core::Datastructure::Transform& position)
 	{
+		if (ntris == 0 || nverts == 0)
+			return;
 		std::vector<float>	vertices;
 		vertices.reserve(nverts * 3);
 		for (int i{ 0 }; i < nverts; ++i)

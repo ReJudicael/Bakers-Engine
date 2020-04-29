@@ -49,6 +49,8 @@ namespace Core::Navigation
 		if (m_mesh.size() == 0 || m_maxTris == 0)
 			return false;
 
+		m_isUpdated = true;
+
 		rcCalcGridSize(m_cfg.bmin, m_cfg.bmax, m_cfg.cs, &m_cfg.width, &m_cfg.height);
 
 		m_ctx->resetTimers();
@@ -324,7 +326,6 @@ namespace Core::Navigation
 
 		BAKERS_LOG_MESSAGE(time);
 		
-		m_isUpdated = true;
 		return true;
 	}
 

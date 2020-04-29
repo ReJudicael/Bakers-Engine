@@ -30,12 +30,11 @@ namespace Core::Datastructure
 		ComponentBase::OnReset();
 		IUpdatable::OnReset();
 	}
-	void TriggeredEvent::OnStart()
+	bool TriggeredEvent::OnStart()
 	{
 		//m_functionsAssigned = false;
 		//m_autoDestroy = true;
-		ComponentBase::OnStart();
-		IUpdatable::OnStart();
+		return ComponentBase::OnStart() && IUpdatable::OnStart();
 	}
 
 	void TriggeredEvent::SetTriggeredEvent(std::function<bool()> condition, std::function<void()> event, bool autoDestroy)

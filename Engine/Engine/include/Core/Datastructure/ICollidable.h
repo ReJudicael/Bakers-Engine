@@ -13,7 +13,7 @@ namespace Core::Datastructure
 	{
 	public:
 		virtual void OnDestroy() override {}
-		virtual void OnStart() override;
+		virtual bool OnStart() override;
 
 		virtual void UpdatePhysics() {};
 

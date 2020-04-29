@@ -86,7 +86,7 @@ namespace Core::Renderer
 		/**
 		 * First frame upon creation event
 		 */
-		virtual void OnStart() override;
+		virtual bool OnStart() override;
 
 		/**
 		 * Set window ratio to camera perspective data

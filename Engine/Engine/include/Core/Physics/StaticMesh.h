@@ -73,7 +73,7 @@ namespace Core
 			 * Function inheritated from IPhysics and IUpdatable,
 			 * override for call the two OnStart of IPhysics and IUpdatable
 			 */
-			virtual void OnStart() override;
+			virtual bool OnStart() override;
 
 			virtual void StartCopy(IComponent*& copyTo) const override;
 

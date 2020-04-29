@@ -59,7 +59,7 @@ namespace Core::Datastructure
 		/**
 		 * Set Lua script and call Start function in script
 		 */
-		virtual void OnStart() override;
+		virtual bool OnStart() override;
 
 		/**
 		 * Load Start and Update functions of lua script

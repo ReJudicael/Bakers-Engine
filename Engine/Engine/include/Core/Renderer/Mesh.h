@@ -30,17 +30,24 @@ BAKERS_API_CLASS Mesh : public Core::Datastructure::ComponentBase, public virtua
 protected:
 	std::shared_ptr<Resources::Model> m_model;
 
+	std::string	m_modelName;
+
 	std::vector<std::shared_ptr<Resources::Material>> m_materialsModel;
 
 	virtual void	OnReset() override; 
 	virtual void	OnCopy(IComponent* copyTo) const override;
 	virtual void	StartCopy(IComponent*& copyTo) const override;
+
+	void			UpdateModel();
 public:
 
 	int		m_vertexCount = 0;
 
 	std::vector<float> m_vertices;
 	std::vector<int> m_indices;
+
+	std::string		GetModel() { return m_modelName; };
+	void			SetModel(std::string newModel);
 
 	float*	m_projection;
 
@@ -52,6 +59,8 @@ public:
 	 * Function inheritated from IRenderable,
 	 */
 	virtual void OnDestroy() override {};
+
+	virtual void OnInit() override;
 
 	/**
 	 * Send the projection matrix to m_projection of the mesh

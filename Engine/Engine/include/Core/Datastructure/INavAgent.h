@@ -34,7 +34,7 @@ namespace Core::Datastructure
 
 		NavAgentFlag	m_flags{ NavAgentFlags::NONE };
 
-		void			OnStart() override;
+		bool			OnStart() override;
 		void			OnDestroy() override;
 	public:
 		INavAgent();
