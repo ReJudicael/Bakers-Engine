@@ -28,11 +28,6 @@ namespace Editor::Window
 		std::pair<std::shared_ptr<Resources::Texture>, bool> m_logsIcon[3];
 
 		/**
-		 * Icon for settings
-		 */
-		std::shared_ptr<Resources::Texture> m_settingsIcon;
-
-		/**
 		 * Whether the scrollbar may be at the bottom or not
 		 */
 		bool m_canScrollBottom{ false };

@@ -4,6 +4,8 @@
 #include "GUIManager.h"
 #include "Separator.h"
 
+#include "IconsFontAwesome5.h"
+
 namespace Editor
 {
 	Canvas::Canvas(Editor::GUIManager* manager) :
@@ -13,10 +15,9 @@ namespace Editor
 		m_dockWindowFlags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		m_dockWindowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
-		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode;
+		m_dockNodeFlags = ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
 
 		InitMenuBar();
-		InitToolbar();
 	}
 
 	Canvas::~Canvas()
@@ -87,7 +88,7 @@ namespace Editor
 		ImGui::PopStyleVar();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 4.f, 1.f });
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, { 0.f, 0.f, 0.f, 0.5f });
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, { 0.f, 0.f, 0.f, 0.15f });
 		if (ImGui::BeginChild("Toolbar", { 0.f, 34.f }))
 		{
 			DrawToolbar();
@@ -136,69 +137,53 @@ namespace Editor
 		return m_manager->GetEngine();
 	}
 
-	void Canvas::InitToolbar()
-	{
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\hand.png", m_guizmoIcons[0]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\move.png", m_guizmoIcons[1]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\rotate.png", m_guizmoIcons[2]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\scale.png", m_guizmoIcons[3]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\local.png", m_guizmoIcons[4]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\world.png", m_guizmoIcons[5]);
-
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\play.png", m_simulationIcons[0]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\stop.png", m_simulationIcons[1]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\pause.png", m_simulationIcons[2]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\next.png", m_simulationIcons[3]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ToolbarIcons\\compile.png", m_simulationIcons[4]);
-	}
-
 	void Canvas::DrawToolbar()
 	{
 		ImGui::SetCursorPos({ 5.f, 5.f });
-		if (ToolbarImageButton(m_guizmoIcons[0]->texture, GetEngine()->operation == SelectionMode::MOVEMENT, "Movement"))
+		if (ToolbarButton(ICON_FA_HAND_PAPER, GetEngine()->operation == SelectionMode::MOVEMENT, "Movement"))
 			GetEngine()->operation = SelectionMode::MOVEMENT;
 		ImGui::SameLine();
-		if (ToolbarImageButton(m_guizmoIcons[1]->texture, GetEngine()->operation == SelectionMode::TRANSLATION, "Translate"))
+		if (ToolbarButton(ICON_FA_ARROWS_ALT, GetEngine()->operation == SelectionMode::TRANSLATION, "Translate"))
 			GetEngine()->operation = SelectionMode::TRANSLATION;
 		ImGui::SameLine();
-		if (ToolbarImageButton(m_guizmoIcons[2]->texture, GetEngine()->operation == SelectionMode::ROTATION, "Rotate"))
+		if (ToolbarButton(ICON_FA_SYNC_ALT, GetEngine()->operation == SelectionMode::ROTATION, "Rotate"))
 			GetEngine()->operation = SelectionMode::ROTATION;
 		ImGui::SameLine();
-		if (ToolbarImageButton(m_guizmoIcons[3]->texture, GetEngine()->operation == SelectionMode::SCALE, "Scale"))
+		if (ToolbarButton(ICON_FA_EXPAND, GetEngine()->operation == SelectionMode::SCALE, "Scale"))
 			GetEngine()->operation = SelectionMode::SCALE;
 		ImGui::SameLine(140.f);
 
-		if (ToolbarImageButtonText(m_guizmoIcons[4]->texture, "Local", GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL, "Local"))
+		if (ToolbarButton(ICON_FA_MAP_MARKER_ALT "  Local", GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL, "Local"))
 			GetEngine()->gizmoMode = ImGuizmo::MODE::LOCAL;
 		ImGui::SameLine();
 
-		if (ToolbarImageButtonText(m_guizmoIcons[5]->texture, "World", GetEngine()->gizmoMode == ImGuizmo::MODE::WORLD, "World"))
+		if (ToolbarButton(ICON_FA_GLOBE "  World", GetEngine()->gizmoMode == ImGuizmo::MODE::WORLD, "World"))
 			GetEngine()->gizmoMode = ImGuizmo::MODE::WORLD;
 		ImGui::SameLine({ ImGui::GetWindowWidth() / 2 - 54.f });
 
 		if (GetEngine()->IsPlaying())
 		{
-			if (ImGui::ImageButtonUV(m_simulationIcons[1]->texture))
+			if (ImGui::Button(ICON_FA_STOP))
 				GetEngine()->EndPlay();
 			ImGui::HelpMarkerItem("Stop");
 		}
 		else
 		{
-			if (ImGui::ImageButtonUV(m_simulationIcons[0]->texture))
+			if (ImGui::Button(ICON_FA_PLAY))
 				GetEngine()->Play();
 			ImGui::HelpMarkerItem("Play");
 		}
 
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_simulationIcons[2]->texture);
+		if (ImGui::Button(ICON_FA_PAUSE))
 		ImGui::HelpMarkerItem("Pause");
 
 		ImGui::SameLine();
-		ImGui::ImageButtonUV(m_simulationIcons[3]->texture);
+		ImGui::Button(ICON_FA_STEP_FORWARD);
 		ImGui::HelpMarkerItem("Next");
 
 		ImGui::SameLine();
-		if (ImGui::ImageButtonUV(m_simulationIcons[4]->texture))
+		if (ImGui::Button(ICON_FA_COG))
 		{
 			GetEngine()->GetResourcesManager()->ReloadScripts();
 			GetEngine()->GetResourcesManager()->ReloadShaders();
@@ -206,19 +191,10 @@ namespace Editor
 		ImGui::HelpMarkerItem("Compile");
 	}
 
-	bool Canvas::ToolbarImageButton(unsigned int texture, bool state, const char* helpMarker)
+	bool Canvas::ToolbarButton(const char* label, bool state, const char* helpMarker)
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, state ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
-		bool isPressed = ImGui::ImageButtonUV(texture);
-		ImGui::HelpMarkerItem(helpMarker);	ImGui::SameLine();
-		ImGui::PopStyleColor();
-		return isPressed;
-	}
-
-	bool Canvas::ToolbarImageButtonText(unsigned int texture, const char* label, bool state, const char* helpMarker)
-	{
-		ImGui::PushStyleColor(ImGuiCol_Button, state ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
-		bool isPressed = ImGui::ImageButtonUVWithText(texture, label);
+		bool isPressed = ImGui::Button(label);
 		ImGui::HelpMarkerItem(helpMarker);	ImGui::SameLine();
 		ImGui::PopStyleColor();
 		return isPressed;

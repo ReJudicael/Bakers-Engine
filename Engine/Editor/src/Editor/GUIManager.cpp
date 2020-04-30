@@ -2,6 +2,7 @@
 #include "GUIManager.h"
 #include "EditorEngine.h"
 #include "ImGuizmo.h"
+#include "IconsFontAwesome5.h"
 
 #include <ImGuizmo.h>
 
@@ -47,7 +48,16 @@ namespace Editor
 
 	void GUIManager::SetStyleBaker()
 	{
-		ImGui::GetIO().Fonts->AddFontFromFileTTF("Resources\\Fonts\\Lato-Regular.ttf", 16)->DisplayOffset.y = -1;
+		ImGuiIO& io = ImGui::GetIO();
+		io.Fonts->AddFontFromFileTTF("Resources\\Fonts\\Lato-Regular.ttf", 16.f)->DisplayOffset.y = -1;
+
+		ImFontConfig config;
+		config.MergeMode = true;
+		config.GlyphMinAdvanceX = 13.f; // Use if you want to make the icon monospaced
+		static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+		io.Fonts->AddFontFromFileTTF("Resources\\Fonts\\" FONT_ICON_FILE_NAME_FAR, 14.f, &config, icon_ranges);
+		io.Fonts->AddFontFromFileTTF("Resources\\Fonts\\" FONT_ICON_FILE_NAME_FAS, 14.f, &config, icon_ranges);
+		io.Fonts->Build();
 
 		ImGuiStyle* style = &ImGui::GetStyle();
 		style->WindowMenuButtonPosition			= ImGuiDir_Right;
@@ -61,7 +71,7 @@ namespace Editor
 		style->FramePadding						= { 4.f, 4.f };
 		style->ItemSpacing						= { 4.f, 4.f };
 		style->Colors[ImGuiCol_WindowBg]		= { 0.10f, 0.10f, 0.12f, 1.00f };
-		style->Colors[ImGuiCol_FrameBg]			= { 0.18f, 0.18f, 0.25f, 1.00f };
+		style->Colors[ImGuiCol_FrameBg]			= { 0.18f, 0.18f, 0.25f, 0.60f };
 		style->Colors[ImGuiCol_FrameBgActive]	= { 0.55f, 0.55f, 0.58f, 1.00f };
 		style->Colors[ImGuiCol_FrameBgHovered]	= { 0.25f, 0.25f, 0.30f, 1.00f };
 		style->Colors[ImGuiCol_ButtonActive]	= { 0.55f, 0.55f, 0.58f, 1.00f };

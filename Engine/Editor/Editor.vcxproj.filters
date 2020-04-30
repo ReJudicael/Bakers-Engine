@@ -260,6 +260,9 @@
     <ClInclude Include="..\Dependencies\imGuizmo\include\ImSequencer.h">
       <Filter>Internal Dependencies\imGuizmo\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Editor\IconsFontAwesome5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Dependencies\imgui-1.76\include\imgui\imgui_user.inl">

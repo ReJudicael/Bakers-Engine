@@ -141,44 +141,21 @@ namespace Editor
 		EditorEngine* GetEngine() noexcept;
 
 #pragma region ToolbarRegion
-	private:
-		/**
-		 * Icons in Toolbar: "Movement", "Translate", "Rotate", "Scale"
-		 */
-		std::shared_ptr<Resources::Texture> m_guizmoIcons[6];
-
-		/**
-		 * Icons in Toolbar: "Play", "Stop", "Pause", "Next", "Compile"
-		 */
-		std::shared_ptr<Resources::Texture> m_simulationIcons[5];
 
 	private:
 		/**
-		 * Initialize Toolbar
-		 */
-		void InitToolbar();
-
-		/**
-		 * Toolbar
+		 * Draw toolbar
 		 */
 		void DrawToolbar();
 
 		/**
-		 * Add an image button for toolbar
-		 * @param texture: Texture of image
-		 * @param state: Condition (Whether the button should be active or inactive)
-		 * @param helpMarker: Text written when the mouse is over the button
-		 */
-		bool ToolbarImageButton(unsigned int texture, bool state, const char* helpMarker);
-
-		/**
-		 * Add an image button with text for toolbar
-		 * @param texture: Texture of image
+		 * Add a button for toolbar
 		 * @param label: Label of button
 		 * @param state: Condition (Whether the button should be active or inactive)
 		 * @param helpMarker: Text written when the mouse is over the button
 		 */
-		bool ToolbarImageButtonText(unsigned int texture, const char* label, bool state, const char* helpMarker);
+		bool ToolbarButton(const char* label, bool state, const char* helpMarker);
+
 #pragma endregion
 	};
 

@@ -324,6 +324,7 @@
     <ClInclude Include="include\Editor\Datastructure\IDrawable.h" />
     <ClInclude Include="include\Editor\EditorEngine.h" />
     <ClInclude Include="include\Editor\GUIManager.h" />
+    <ClInclude Include="include\Editor\IconsFontAwesome5.h" />
     <ClInclude Include="include\Editor\Widget\AWidget.h" />
     <ClInclude Include="include\Editor\Widget\MenuGroup.h" />
     <ClInclude Include="include\Editor\Widget\MenuItem.h" />

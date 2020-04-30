@@ -17,7 +17,7 @@ namespace Resources
 	{
 	public:
 		const char* version = "#version 400 core\n";
-		const char* lightShaderSource = "./Resources/Shaders/LightHeader.shader";
+		const char* lightShaderSource = "Resources\\Shaders\\LightHeader.shader";
 
 		/**
 		 * Indicate the type of shader

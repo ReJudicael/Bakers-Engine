@@ -50,16 +50,6 @@ namespace Editor::Window
 		bool m_isLocal{ true };
 
 		/**
-		 * Options icon for the components
-		 */
-		std::shared_ptr<Resources::Texture> m_optionsIcon[2];
-
-		/**
-		 * Unlock / lock icon for the selected object
-		 */
-		std::shared_ptr<Resources::Texture> m_lockIcon[2];
-
-		/**
 		 * Icons of the extensions
 		 */
 		std::unordered_map<std::string, std::shared_ptr<Resources::Texture>> m_icons;

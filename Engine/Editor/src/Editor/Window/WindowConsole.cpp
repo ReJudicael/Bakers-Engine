@@ -1,6 +1,8 @@
 #include "WindowConsole.h"
 #include "EditorEngine.h"
 
+#include "IconsFontAwesome5.h"
+
 namespace Editor::Window
 {
 	WindowConsole::WindowConsole(Canvas* canvas, bool visible) :
@@ -16,7 +18,6 @@ namespace Editor::Window
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\message.png", m_logsIcon[0].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\warning.png", m_logsIcon[1].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\error.png", m_logsIcon[2].first);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\settings.png", m_settingsIcon);
 
 		Core::Debug::Logger::AddEvent(BIND_EVENT(WindowConsole::LogCallback));
 	}
@@ -50,8 +51,8 @@ namespace Editor::Window
 
 	void WindowConsole::ClearButton()
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.75f, 0.22f, 0.17f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.75f, 0.22f, 0.17f, 0.7f });
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.91f, 0.25f, 0.09f, 0.8f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.91f, 0.25f, 0.09f, 0.5f });
 
 		if (ImGui::Button("Clear", { 50.f, 0.f }))
 			Core::Debug::Logger::ClearLogs();
@@ -61,8 +62,9 @@ namespace Editor::Window
 
 	void WindowConsole::SettingsButton()
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.18f, 0.18f, 0.25f, 1.0f });
-		bool isClicked = ImGui::BeginComboImageButtonUV(m_settingsIcon->texture, { 16, 16 });
+		ImGui::PushStyleColor(ImGuiCol_Button, GImGui->Style.Colors[ImGuiCol_TableHeaderBg]);
+		ImGui::PushItemWidth(24.f);
+		bool isClicked = ImGui::BeginComboButton(ICON_FA_COG);
 		ImGui::HelpMarkerItem("Settings");
 		ImGui::PopStyleColor();
 
