@@ -76,7 +76,7 @@ namespace Editor
 		}
 		SetCallbackToGLFW();
 
-		m_man = new Editor::GUIManager(this, Core::Datastructure::glsl_version, Editor::GUIStyle::BAKER);
+		m_man = new Editor::GUIManager(this, Core::Datastructure::glsl_version, Editor::GUIStyle::BAKER_DARK);
 		Editor::Canvas* canvas = new Editor::Canvas(m_man);
 		m_man->SetCanvas(canvas);
 

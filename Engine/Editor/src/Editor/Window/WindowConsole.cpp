@@ -63,7 +63,6 @@ namespace Editor::Window
 	void WindowConsole::SettingsButton()
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, GImGui->Style.Colors[ImGuiCol_TableHeaderBg]);
-		ImGui::PushItemWidth(24.f);
 		bool isClicked = ImGui::BeginComboButton(ICON_FA_COG);
 		ImGui::HelpMarkerItem("Settings");
 		ImGui::PopStyleColor();

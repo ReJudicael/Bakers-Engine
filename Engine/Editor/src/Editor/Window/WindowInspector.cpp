@@ -227,14 +227,12 @@ namespace Editor::Window
 
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 
-			float cursorPosX = ImGui::GetWindowContentRegionWidth() - 40.f;
-			ImGui::SameLine(cursorPosX);
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40.f);
 
 			bool isClickedReset = ImGui::Button(ICON_FA_UNDO);
 			ImGui::HelpMarkerItem("Reset");
 
-			cursorPosX += 24.f;
-			ImGui::SameLine(cursorPosX);
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16.f);
 			bool isClickedDelete = ImGui::Button(ICON_FA_TRASH);
 			ImGui::HelpMarkerItem("Remove");
 
@@ -273,7 +271,8 @@ namespace Editor::Window
 		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.88f, 0.70f, 0.17f, 1.00f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.88f, 0.70f, 0.17f, 0.70f });
 
-		if (ImGui::BeginComboButton("Add component"))
+		ImGui::Indent(ImGui::GetWindowContentRegionWidth() * ((1 - 0.7f) / 2));
+		if (ImGui::BeginComboButton("Add component", { ImGui::GetWindowContentRegionWidth() * 0.7f, 0 }))
 		{
 			rttr::array_range possibleComponents{ rttr::type::get<Core::Datastructure::ComponentBase>().get_derived_classes() };
 			for (auto it : possibleComponents)
@@ -302,8 +301,8 @@ namespace Editor::Window
 		ImGui::Separator();
 		ImGui::Spacing();
 
-		ImGui::PushItemToCenter(0.7f);
 		AddComponentToObjectButton(object);
+		ImGui::HelpMarkerItem("test");
 		ImGui::Spacing();
 	}
 
