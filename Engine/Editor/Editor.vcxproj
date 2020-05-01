@@ -284,7 +284,7 @@
     <ClCompile Include="..\Dependencies\imGuizmo\src\ImSequencer.cpp" />
     <ClCompile Include="src\Editor\Canvas\Canvas.cpp" />
     <ClCompile Include="src\Editor\Canvas\MenuBar.cpp" />
-    <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp" />
+    <ClCompile Include="src\Editor\Datastructure\DrawableUIComponent.cpp" />
     <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp" />
     <ClCompile Include="src\Editor\EditorEngine.cpp" />
     <ClCompile Include="src\Editor\GUIManager.cpp" />

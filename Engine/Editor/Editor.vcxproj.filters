@@ -75,9 +75,6 @@
     <ClCompile Include="src\Editor\GUIManager.cpp">
       <Filter>Source Files\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp">
-      <Filter>Source Files\Editor\Datastructure</Filter>
-    </ClCompile>
     <ClCompile Include="src\Editor\Canvas\Canvas.cpp">
       <Filter>Source Files\Editor\Canvas</Filter>
     </ClCompile>
@@ -158,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="..\Dependencies\imGuizmo\src\ImSequencer.cpp">
       <Filter>Internal Dependencies\imGuizmo\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Datastructure\DrawableUIComponent.cpp">
+      <Filter>Source Files\Editor\Datastructure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

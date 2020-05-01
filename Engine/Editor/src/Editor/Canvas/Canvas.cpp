@@ -32,6 +32,9 @@ namespace Editor
 		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, true);
 		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, false);
 		m_view->Add<Widget::Separator>();
+		Widget::MenuGroup* theme = &m_menuBar->Add<Widget::MenuGroup>("Theme");
+		theme->Add<Widget::MenuItem>("Dark").OnClick += [] { ImGui::StyleColorsBakerDark(); };
+		theme->Add<Widget::MenuItem>("Light").OnClick += [] { ImGui::StyleColorsBakerLight(); };
 	}
 
 	void Canvas::SetAllWindowVisibility(bool opened)

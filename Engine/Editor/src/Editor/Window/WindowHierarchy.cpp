@@ -148,7 +148,7 @@ namespace Editor::Window
 	{
 		if (ImGui::BeginDragDropSource())
 		{
-			ImGui::Text(object->GetName().c_str());
+			ImGui::Text((ICON_FA_CUBE "  " + object->GetName()).c_str());
 			ImGui::SetDragDropPayload("DRAGDROP_GAMEOBJECT", &object, sizeof(Core::Datastructure::Object*), ImGuiCond_Once);
 			ImGui::EndDragDropSource();
 		}

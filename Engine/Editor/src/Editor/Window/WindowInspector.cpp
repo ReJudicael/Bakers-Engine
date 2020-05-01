@@ -186,9 +186,11 @@ namespace Editor::Window
 		}
 		else if (propType == rttr::type::get<std::string>())
 		{
-			std::string str{ prop.get_value(component).get_value<std::string>() };
-			ImGui::RButtonDD(prop.get_name().to_string().c_str(), std::filesystem::path(str).filename().string().c_str());
-			ImGui::HelpMarkerItem(str.c_str());
+			const std::string str{ prop.get_value(component).get_value<std::string>() };
+			ImGui::RButtonDD(prop.get_name().to_string().c_str(),
+				!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
+			if (!str.empty())
+				ImGui::HelpMarkerItem(str.c_str());
 
 			if (ImGui::BeginDragDropTarget())
 			{
@@ -302,7 +304,6 @@ namespace Editor::Window
 		ImGui::Spacing();
 
 		AddComponentToObjectButton(object);
-		ImGui::HelpMarkerItem("test");
 		ImGui::Spacing();
 	}
 
