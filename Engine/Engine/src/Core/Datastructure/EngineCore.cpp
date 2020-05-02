@@ -150,8 +150,21 @@ namespace Core::Datastructure
 		Core::Datastructure::Object* dining_room{ m_root->CreateChild("DiningRoom", {}) };
 		Core::Datastructure::Object* staticMesh{ dining_room->CreateChild("Static Mesh", {}) };
 		Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
+		Core::Datastructure::Object* skybox{ m_root->CreateChild("Skybox", {}) };
 
 		umbreon->AddComponent(new Core::Physics::DynamicMesh());
+		
+		// Create skybox cube
+		Mesh* m = new Mesh();
+		m->AddModel(GetResourcesManager()->GetModel("Skybox"));
+		std::shared_ptr<Resources::Material> mat = std::make_shared<Resources::Material>();
+		mat->shader = GetResourcesManager()->GetShader("Skybox");
+		std::shared_ptr<Resources::Texture> tex;
+		GetResourcesManager()->LoadTexture("Resources/Textures/skybox.jpg", tex);
+		mat->textures.push_back(tex);
+		m->AddMaterial(mat);
+		skybox->AddComponent(m);
+		skybox->SetScale({100.f, 100.f, 100.f});
 
 		staticMesh->SetPos({ 0.f,-5.f,0.f });
 		staticMesh->SetScale({ 5.f,1.f,5.f });
