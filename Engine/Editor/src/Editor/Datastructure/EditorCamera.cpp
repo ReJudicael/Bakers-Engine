@@ -3,6 +3,7 @@
 #include "RootObject.hpp"
 #include "EngineCore.h"
 #include "EditorEngine.h"
+#include "Maths.hpp"
 
 namespace Editor::Datastructure
 {
@@ -21,6 +22,35 @@ namespace Editor::Datastructure
 		return m_fbo;
 	}
 	
+	Core::Maths::Vec3 EditorCamera::GetPerspectiveDirection(const float ratioX, const float ratioY)
+	{
+		constexpr Core::Maths::Quat	forQuat{ 0, 0, 0, 1 };
+		float radFOV = Core::Maths::ToRadians(m_persp.fov);
+		Core::Maths::Vec3 forward = (m_transform.GetGlobalRot() * forQuat * m_transform.GetGlobalRot().Inversed()).GetVec();
+		Core::Maths::Quat RotateY = Core::Maths::Quat::AngleAxis(radFOV * ratioX, m_parent->Up());
+		Core::Maths::Quat RotateX = Core::Maths::Quat::AngleAxis(radFOV * ratioY, m_parent->Right());
+		Core::Maths::Quat FullRotation = RotateX * RotateY;
+
+		return FullRotation.Rotate(forward);
+	}
+
+	void EditorCamera::SetRot(const Core::Maths::Vec3& v)
+	{
+		m_transform.SetLocalRot(v);
+		m_isCamUpdated = false;
+	}
+
+	void EditorCamera::SetPos(const Core::Maths::Vec3& v)
+	{
+		m_transform.SetLocalPos(v);
+		m_isCamUpdated = false;
+	}
+
+	const Core::Maths::Vec3& EditorCamera::GetPos()
+	{
+		return m_transform.GetLocalPos();
+	}
+
 	void EditorCamera::OnInit()
 	{
 		ComponentBase::OnInit();

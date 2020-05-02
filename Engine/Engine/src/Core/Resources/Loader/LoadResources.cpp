@@ -432,6 +432,6 @@ namespace Resources::Loader
 		scripts = m_rootNode->GetComponentsOfType<Core::Datastructure::ScriptedComponent>();
 
 		for (const auto& script : scripts)
-			script->Restart();
+			script->LoadLuaScript();
 	}
 }

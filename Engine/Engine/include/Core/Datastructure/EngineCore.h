@@ -86,6 +86,7 @@ namespace Core
 
 			void			Update(double deltaTime); 
 
+			Object* SearchObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& dir);
 			bool			LoadScene(const std::string& scene);
 		protected:
 			virtual int		OnInit(const int width, const int height);

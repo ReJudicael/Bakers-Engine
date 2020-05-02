@@ -30,8 +30,9 @@ namespace Editor
 		json				m_savedScene;
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
-		SelectionMode operation = SelectionMode::TRANSLATION;
-		ImGuizmo::MODE gizmoMode = ImGuizmo::MODE::WORLD;
+		SelectionMode operation{ SelectionMode::TRANSLATION };
+		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::WORLD };
+		bool isTestingRay{ false };
 
 	public:
 		EditorEngine();
@@ -45,6 +46,7 @@ namespace Editor
 		void	OnLoop() override;
 		void	Render() override;
 		bool	IsSelectingEngineView();
+		void	SelectObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& direction);
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
 

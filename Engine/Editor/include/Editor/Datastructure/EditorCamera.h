@@ -20,6 +20,7 @@ namespace Editor::Datastructure
 	{
 		CameraPerspective	m_persp;
 		bool				m_isPerspectiveUpdated = false;
+		bool				m_isCamUpdated = false;
 		Core::Datastructure::Transform		m_transform;
 
 		Core::Maths::Vec3	m_angularMovement;
@@ -52,6 +53,33 @@ namespace Editor::Datastructure
 		void SetRatio(const float newRatio) override;
 
 		Core::Renderer::Framebuffer* GetFBO();
+
+		/**
+		 * Get the camera forward rotated with given ratios
+		 * @param ratioX: Proportion of fov angle used for rotation around up axis
+		 * @param ratioY: Proportion of fov angle used for rotation around right axis
+		 * @return: Direction from camera
+		 */
+		Core::Maths::Vec3 GetPerspectiveDirection(const float ratioX, const float ratioY);
+
+		/**
+		 * Set Rotation of camera transform
+		 * @param v: Vector with euler angles for rotation
+		 */
+		void SetRot(const Core::Maths::Vec3& v);
+
+		/**
+		 * Set Position of camera transform
+		 * @param v: Vector with new position
+		 */
+		void SetPos(const Core::Maths::Vec3& v);
+
+		/**
+		 * Get Camera Position
+		 * @return Local position of Editor camera transform
+		 */
+		const Core::Maths::Vec3& GetPos();
+
 		/**
 		 * Update translation and rotation
 		 * @param deltaTime: Time elapsed between two frames

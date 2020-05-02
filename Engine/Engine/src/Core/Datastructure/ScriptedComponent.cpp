@@ -25,6 +25,7 @@ namespace Core::Datastructure
 	ScriptedComponent::ScriptedComponent(const std::string& filename) : ComponentUpdatable()
 	{
 		m_script = filename;
+		LoadLuaScript();
 	}
 
 	ScriptedComponent::~ScriptedComponent()
@@ -40,29 +41,31 @@ namespace Core::Datastructure
 
 		Core::Datastructure::lua.open_libraries(sol::lib::base);
 
-		LoadLuaScript();
+		if (!m_hasLoaded)
+			LoadLuaScript();
 		StartLuaScript();
 
 		m_hasStarted = true;
 	}
 
-	bool ScriptedComponent::LoadLuaScript()
+	void ScriptedComponent::LoadLuaScript()
 	{
 		if (Core::Datastructure::lua.safe_script_file(m_script))
 		{
 			std::string loadingMsg = "Script: " + m_script + " didn't load";
 			BAKERS_LOG_ERROR(loadingMsg);
 			m_script.clear();
-			return false;
-		}
-
-		m_start = Core::Datastructure::lua["Start"];
-		m_update = Core::Datastructure::lua["Update"];
 		
-		std::string loadingMsg = "Script: " + m_script + " loaded successfully";
-		BAKERS_LOG_MESSAGE(loadingMsg);
+		}
+		else
+		{
+			m_hasLoaded = true;
+			m_start = Core::Datastructure::lua["Start"];
+			m_update = Core::Datastructure::lua["Update"];
 
-		return true;
+			std::string loadingMsg = "Script: " + m_script + " loaded successfully";
+			BAKERS_LOG_MESSAGE(loadingMsg);
+		}
 	}
 
 	void ScriptedComponent::StartLuaScript()
@@ -92,8 +95,7 @@ namespace Core::Datastructure
 		if (!m_hasStarted)
 		{
 			m_hasStarted = true;
-			if (LoadLuaScript())
-				StartLuaScript();
+			StartLuaScript();
 			return; // First lua Update will be called next frame
 		}
 

@@ -127,6 +127,8 @@ namespace Editor
 		glfwPollEvents();
 		if (m_inputSystem->IsCursorHidden())
 			ImGui::SetMouseCursor(-1);
+		if (m_inputSystem->IsMouseButtonPressed(EMouseButton::LEFT))
+			isTestingRay = true;
 		switch (m_state)
 		{
 		case (Core::Datastructure::EngineState::STARTING):
@@ -177,6 +179,14 @@ namespace Editor
 	bool EditorEngine::IsSelectingEngineView()
 	{
 		return m_man->IsWindowFocused(2);
+	}
+
+	void	EditorEngine::SelectObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& direction)
+	{
+		Core::Datastructure::Object* result = SearchObjectInScene(origin, direction);
+
+		if (result != nullptr)
+			objectSelected = result;
 	}
 
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept
