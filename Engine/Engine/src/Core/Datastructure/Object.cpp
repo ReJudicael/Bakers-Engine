@@ -49,6 +49,15 @@ namespace Core::Datastructure
 		return m_transform;
 	}
 
+	void Object::UpdateTransform()
+	{
+		m_isTransformUpdated = false;
+		for (auto it : m_childs)
+		{
+			it->UpdateTransform();
+		}
+	}
+
 	Object::Object(const std::string& name, const Transform& localPos, Object* parent, RootObject* scene) noexcept : m_name{ name }, m_root { scene }, m_transform{ localPos }, m_parent{ parent }
 	{
 		if (parent != nullptr)

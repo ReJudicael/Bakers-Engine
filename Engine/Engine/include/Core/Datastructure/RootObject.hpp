@@ -135,6 +135,16 @@ namespace Core::Datastructure
 		 */
 		void		Destroy();
 
+		/*
+		 * Calls UpdateTransform() of every transform
+		 */
+		void		UpdateTransforms() { UpdateTransform(); }
+
+		/**
+		 * Destroys the current scene and clears all childs
+		 */
+		void		Clear();
+
 		/**
 		 * Creates a root node with default transform and no parent,
 		 * effectively making it the root node.

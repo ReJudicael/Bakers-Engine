@@ -323,7 +323,6 @@ namespace Core::Navigation
 		}
 
 		BAKERS_LOG_MESSAGE(time);
-		std::chrono::high_resolution_clock::duration d;
 		
 		m_isUpdated = true;
 		return true;

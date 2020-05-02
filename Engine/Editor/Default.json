@@ -1,0 +1,633 @@
+{
+    "Childs": [
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Player Camera",
+                    "Values": {
+                        "Min move length": {
+                            "Name": "Min move length",
+                            "Type": "float",
+                            "Value": 0.0010000000474974513
+                        },
+                        "Move lerp speed": {
+                            "Name": "Move lerp speed",
+                            "Type": "float",
+                            "Value": 0.5
+                        },
+                        "Perspective": {
+                            "Name": "Perspective",
+                            "Type": "Perspective",
+                            "Value": {
+                                "Type": "Perspective",
+                                "Values": {
+                                    "FOV": {
+                                        "Name": "FOV",
+                                        "Type": "float",
+                                        "Value": 60.0
+                                    },
+                                    "Far": {
+                                        "Name": "Far",
+                                        "Type": "float",
+                                        "Value": 100.0
+                                    },
+                                    "Near": {
+                                        "Name": "Near",
+                                        "Type": "float",
+                                        "Value": 0.10000000149011612
+                                    },
+                                    "Ratio": {
+                                        "Name": "Ratio",
+                                        "Type": "float",
+                                        "Value": 1.5914634466171265
+                                    }
+                                }
+                            }
+                        },
+                        "Running speed": {
+                            "Name": "Running speed",
+                            "Type": "float",
+                            "Value": 20.0
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 5.0
+                        }
+                    }
+                },
+                {
+                    "Type": "Light",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Ambient": {
+                            "Name": "Ambient",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Angle": {
+                            "Name": "Angle",
+                            "Type": "float",
+                            "Value": 0.7850000262260437
+                        },
+                        "AngleSmoothness": {
+                            "Name": "AngleSmoothness",
+                            "Type": "float",
+                            "Value": 0.0010000000474974513
+                        },
+                        "Attenuation": {
+                            "Name": "Attenuation",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Diffuse": {
+                            "Name": "Diffuse",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Range": {
+                            "Name": "Range",
+                            "Type": "float",
+                            "Value": 100.0
+                        },
+                        "Specular": {
+                            "Name": "Specular",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "LightType",
+                            "Value": 0
+                        }
+                    }
+                },
+                {
+                    "Type": "Script",
+                    "Values": {
+                        "Lua Script": {
+                            "Name": "Lua Script",
+                            "Type": "std::string",
+                            "Value": ""
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Camera",
+            "Pos": {
+                "x": 0.0,
+                "y": 1.6799999475479126,
+                "z": 5.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Static Mesh",
+                            "Values": {
+                                "LayerMask": {
+                                    "Name": "LayerMask",
+                                    "Type": "Layout",
+                                    "Value": 1
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Static Mesh",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": -5.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 5.0,
+                        "y": 1.0,
+                        "z": 5.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Sphere001",
+                    "Pos": {
+                        "x": -28.527481079101563,
+                        "y": 0.0,
+                        "z": 159.35354614257813
+                    },
+                    "Rot": {
+                        "w": 7.549790126404332e-08,
+                        "x": 1.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Box001",
+                    "Pos": {
+                        "x": 25.676544189453125,
+                        "y": 0.0,
+                        "z": -15.072601318359375
+                    },
+                    "Rot": {
+                        "w": 0.7071067690849304,
+                        "x": -0.7071067690849304,
+                        "y": -0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Sphere002",
+                    "Pos": {
+                        "x": -214.1884765625,
+                        "y": 116.02977752685547,
+                        "z": 220.2821044921875
+                    },
+                    "Rot": {
+                        "w": 0.7071067690849304,
+                        "x": -0.7071067690849304,
+                        "y": -0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Box010",
+                    "Pos": {
+                        "x": -160.64730834960938,
+                        "y": 74.2919921875,
+                        "z": 96.47618103027344
+                    },
+                    "Rot": {
+                        "w": 0.7013903260231018,
+                        "x": -0.7013903260231018,
+                        "y": 0.0897306576371193,
+                        "z": 0.0897306427359581
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Box011",
+                    "Pos": {
+                        "x": 381.6446533203125,
+                        "y": 74.2919921875,
+                        "z": 204.2884063720703
+                    },
+                    "Rot": {
+                        "w": 0.5688373446464539,
+                        "x": -0.5688373446464539,
+                        "y": 0.4200286567211151,
+                        "z": 0.4200286567211151
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Box012",
+                    "Pos": {
+                        "x": 294.283935546875,
+                        "y": 45.83428192138672,
+                        "z": 476.10430908203125
+                    },
+                    "Rot": {
+                        "w": 0.7054281830787659,
+                        "x": -0.4939459562301636,
+                        "y": 0.29155999422073364,
+                        "z": 0.4163907766342163
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 0.9999999403953552,
+                        "z": 0.9999999403953552
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Sphere003",
+                    "Pos": {
+                        "x": 251.15707397460938,
+                        "y": 116.02977752685547,
+                        "z": 228.54150390625
+                    },
+                    "Rot": {
+                        "w": -0.26503047347068787,
+                        "x": 0.2650305926799774,
+                        "y": -0.6555598974227905,
+                        "z": -0.6555598974227905
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Box013",
+                    "Pos": {
+                        "x": 207.27626037597656,
+                        "y": 74.2919921875,
+                        "z": 88.19654846191406
+                    },
+                    "Rot": {
+                        "w": 0.7061671018600464,
+                        "x": -0.7061671018600464,
+                        "y": -0.036442048847675323,
+                        "z": -0.036442048847675323
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Box014",
+                    "Pos": {
+                        "x": -330.4478759765625,
+                        "y": 74.2919921875,
+                        "z": 143.8986053466797
+                    },
+                    "Rot": {
+                        "w": 0.6247659921646118,
+                        "x": -0.6247659921646118,
+                        "y": -0.3311607837677002,
+                        "z": -0.3311607241630554
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Object001",
+                    "Pos": {
+                        "x": 233.52252197265625,
+                        "y": 176.256591796875,
+                        "z": 265.34814453125
+                    },
+                    "Rot": {
+                        "w": -0.11608671396970749,
+                        "x": 0.11608665436506271,
+                        "y": 0.6975126266479492,
+                        "z": 0.6975126266479492
+                    },
+                    "Scale": {
+                        "x": 0.9999999403953552,
+                        "y": 0.9999999403953552,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Object002",
+                    "Pos": {
+                        "x": -202.92596435546875,
+                        "y": 176.256591796875,
+                        "z": 252.3243408203125
+                    },
+                    "Rot": {
+                        "w": -0.2881993353366852,
+                        "x": 0.28819945454597473,
+                        "y": 0.645709753036499,
+                        "z": 0.645709753036499
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Object003",
+                    "Pos": {
+                        "x": 250.40493774414063,
+                        "y": 116.02977752685547,
+                        "z": 221.25247192382813
+                    },
+                    "Rot": {
+                        "w": 0.6461939215660095,
+                        "x": -0.6461939215660095,
+                        "y": 0.2871122658252716,
+                        "z": 0.28711220622062683
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": null
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Object004",
+                    "Pos": {
+                        "x": -214.1884765625,
+                        "y": 116.02977752685547,
+                        "z": 220.2821044921875
+                    },
+                    "Rot": {
+                        "w": 0.7071067690849304,
+                        "x": -0.7071067690849304,
+                        "y": -0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            ],
+            "Components": [],
+            "Flags": 0,
+            "Name": "RootNode",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 0.009999999776482582,
+                "y": 0.009999999776482582,
+                "z": 0.009999999776482582
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Dynamic Mesh",
+                    "Values": {
+                        "LayerMask": {
+                            "Name": "LayerMask",
+                            "Type": "Layout",
+                            "Value": 1
+                        },
+                        "Mass": {
+                            "Name": "Mass",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Rotation Lock X": {
+                            "Name": "Rotation Lock X",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Rotation Lock Y": {
+                            "Name": "Rotation Lock Y",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Rotation Lock Z": {
+                            "Name": "Rotation Lock Z",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Velocity": {
+                            "Name": "Velocity",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        }
+                    }
+                },
+                {
+                    "Type": "Mesh",
+                    "Values": null
+                }
+            ],
+            "Flags": 0,
+            "Name": "UmbreonHighPoly.obj",
+            "Pos": {
+                "x": 0.0,
+                "y": 2.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        }
+    ]
+}

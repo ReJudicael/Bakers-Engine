@@ -28,14 +28,19 @@ namespace Editor
 	void Canvas::InitMenuBar()
 	{
 		m_menuBar = new MenuBar();
+        
+        Widget::MenuGroup* file = &m_menuBar->Add<Widget::MenuGroup>("File");
+        file->Add<Widget::MenuItem>("Save scene", "CTRL + S").OnClick += std::bind(&EditorEngine::SaveScene, GetEngine());
+
 		m_view = &m_menuBar->Add<Widget::MenuGroup>("View");
 		m_view->Add<Widget::MenuItem>("Open All", "CTRL + P").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, true);
 		m_view->Add<Widget::MenuItem>("Close All", "CTRL + M").OnClick += std::bind(&Canvas::SetAllWindowVisibility, this, false);
 		m_view->Add<Widget::Separator>();
+        
 		Widget::MenuGroup* theme = &m_menuBar->Add<Widget::MenuGroup>("Theme");
 		theme->Add<Widget::MenuItem>("Dark").OnClick += [] { ImGui::StyleColorsBakerDark(); };
 		theme->Add<Widget::MenuItem>("Light").OnClick += [] { ImGui::StyleColorsBakerLight(); };
-	}
+    }
 
 	void Canvas::SetAllWindowVisibility(bool opened)
 	{
@@ -74,6 +79,8 @@ namespace Editor
 			SetAllWindowVisibility(true);
 		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::M))
 			SetAllWindowVisibility(false);
+		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::S))
+			GetEngine()->SaveScene();
 	}
 
 	void Canvas::SetViewport()
@@ -179,10 +186,12 @@ namespace Editor
 
 		ImGui::SameLine();
 		if (ImGui::Button(ICON_FA_PAUSE))
+			GetEngine()->TogglePause();
 		ImGui::HelpMarkerItem("Pause");
 
 		ImGui::SameLine();
 		ImGui::Button(ICON_FA_STEP_FORWARD);
+			GetEngine()->Step();
 		ImGui::HelpMarkerItem("Next");
 
 		ImGui::SameLine();

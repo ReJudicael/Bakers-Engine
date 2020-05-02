@@ -14,6 +14,10 @@
 #include "PhysicsScene.h"
 #include "DynamicMesh.h"
 
+#include "json.hpp"
+using nlohmann::json;
+#include <fstream>
+
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Datastructure;
@@ -86,6 +90,9 @@ namespace Core::Datastructure
 	{
 		m_state = Core::Datastructure::EngineState::INITIALIZING;
 		int init{ OnInit(width, height) };
+		if (init)
+			return init;
+		init = !LoadScene("Default.json");
 		m_state = Core::Datastructure::EngineState::INITIALIZED;
 		return init;
 	}
@@ -126,7 +133,7 @@ namespace Core::Datastructure
 		m_fbo.clear();
 		m_manager = new Resources::Loader::ResourcesManager();
 		m_manager->SetRootNode(m_root);
-
+		/*
 		Core::Datastructure::Object* camNode{ m_root->CreateChild("Camera", {}) };
 		camNode->SetPos({ 0.f, 2.f, 5.f });
 		camNode->SetRot({ 0.f, 0.f, 0.f });
@@ -168,7 +175,7 @@ namespace Core::Datastructure
 		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
 
 		umbreon->SetPos({ 0.f,3.f, 0.f });
-
+		*/
 		return 0;
 	}
 
@@ -177,7 +184,6 @@ namespace Core::Datastructure
 		ZoneNamedN(updateLoop, "Main loop iteration", true)
 		
 		double deltaTime = GetDeltaTime();
-
 		if (m_state == EngineState::RUNNING)
 		{
 			StartFrame();
@@ -207,6 +213,106 @@ namespace Core::Datastructure
 	void	EngineCore::Update(double deltaTime)
 	{
 		OnUpdate(deltaTime);
+	}
+
+	bool EngineCore::LoadScene(const std::string& scene)
+	{
+		m_currScene = scene;
+		return OnLoadScene();
+	}
+
+	void	LoadProperty(rttr::property prop, rttr::instance inst, json j)
+	{
+		rttr::type	t{ prop.get_type() };
+		if (!prop.is_valid() || !t.is_valid())
+		{
+			BAKERS_LOG_WARNING("Property is invalid, maybe the loaded object has changed?");
+			return;
+		}
+		if (t.is_enumeration())
+			prop.set_value(inst, static_cast<int>(j["Value"]));
+		else if (t == rttr::type::get<int>())
+			prop.set_value(inst, static_cast<int>(j["Value"]));
+		else if (t == rttr::type::get<float>())
+			prop.set_value(inst, static_cast<float>(j["Value"]));
+		else if (t == rttr::type::get<bool>())
+			prop.set_value(inst, static_cast<bool>(j["Value"]));
+		else if (t == rttr::type::get<Core::Maths::Vec2>())
+			prop.set_value(inst, Core::Maths::Vec2(static_cast<float>(j["Value"][0]), static_cast<float>(j["Value"][1])));
+		else if (t == rttr::type::get<Core::Maths::Vec3>())
+			prop.set_value(inst, Core::Maths::Vec3(static_cast<float>(j["Value"][0]), static_cast<float>(j["Value"][1]), static_cast<float>(j["Value"][2])));
+		else if (t == rttr::type::get<Core::Maths::Vec4>())
+			prop.set_value(inst, Core::Maths::Vec4(static_cast<float>(j["Value"][0]), static_cast<float>(j["Value"][1]), static_cast<float>(j["Value"][2]), static_cast<float>(j["Value"][3])));
+		else if (t == rttr::type::get<Core::Maths::Color>())
+			prop.set_value(inst, Core::Maths::Color(static_cast<float>(j["Value"][0]), static_cast<float>(j["Value"][1]), static_cast<float>(j["Value"][2]), static_cast<float>(j["Value"][3])));
+		else if (t == rttr::type::get<std::string>())
+			prop.set_value(inst, static_cast<std::string>(j["Value"]));
+		else if (t.is_class())
+		{
+			const rttr::variant& propVar{ prop.get_value(inst) };
+			for (auto it : j["Value"]["Values"])
+			{
+				LoadProperty(t.get_property(it["Name"]), propVar, it);
+			}
+			prop.set_value(inst, propVar);
+		}
+		else
+		{
+			BAKERS_LOG_WARNING(std::string("No operation known for type ") + t.get_name());
+		}
+	}
+
+	void	AddComponent(json j, Object* parent)
+	{
+		rttr::type cType{ rttr::type::get_by_name(j["Type"]) };
+		if (!cType.is_valid() || !cType.is_derived_from<IComponent>())
+			return;
+		rttr::variant c{ cType.invoke("GetCopy", cType.create(), {}) };
+		
+		for (auto it : j["Values"])
+		{
+			rttr::property prop {cType.get_property(it["Name"])};
+			LoadProperty(prop, c, it);
+		}
+		
+
+		parent->AddComponent(c.get_value<ComponentBase*>());
+	}
+
+	void	AddChild(json j, Object* parent)
+	{
+		if (ObjectFlag(j["Flags"]).test_flag(ObjectFlags::DYNAMICALLY_GENERATED))
+			return;
+		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["w"], j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
+
+		for (auto& childs : j["Childs"])
+		{
+			AddChild(childs, o);
+		}
+
+		for (auto& components : j["Components"])
+		{
+			AddComponent(components, o);
+		}
+	}
+
+	bool	EngineCore::OnLoadScene()
+	{
+		std::ifstream inputScene(m_currScene);
+		if (!inputScene.is_open())
+			return false;
+		json data;
+		inputScene >> data;
+
+		LoadSceneFromJson(data);
+
+		return true;
+	}
+
+	void EngineCore::LoadSceneFromJson(json scene)
+	{
+		for (auto& childs : scene["Childs"])
+			AddChild(childs, m_root);
 	}
 
 	void	EngineCore::OnUpdate(double deltaTime)
@@ -290,6 +396,7 @@ namespace Core::Datastructure
 	void		EngineCore::EndFrame()
 	{
 		m_root->RemoveDestroyed();
+		m_root->UpdateTransforms();
 		
 		m_inputSystem->ClearRegisteredInputs();
 	}

@@ -31,7 +31,7 @@ namespace Core::Datastructure
 		 * Destructor of the renderable interface
 		 */
 		~IRenderable() noexcept;
-		virtual void	OnStart() override;
+		virtual void	OnInit() override;
 
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;

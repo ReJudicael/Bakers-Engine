@@ -16,6 +16,9 @@
 #include "CoreMinimal.h"
 #include "LoadResources.h"
 
+#include <fstream>
+
+
 namespace Editor
 {
 	EditorEngine::EditorEngine() : EditorEngine(1280, 800)
@@ -121,17 +124,42 @@ namespace Editor
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		m_manager->LinkAllTextureToOpenGl();
-		m_manager->LinkAllModelToOpenGl();
-		m_manager->ShaderUpdate();
-
 		glfwPollEvents();
 		if (m_inputSystem->IsCursorHidden())
 			ImGui::SetMouseCursor(-1);
+		switch (m_state)
+		{
+		case (Core::Datastructure::EngineState::STARTING):
+			UpdateSavedScene();
+		case (Core::Datastructure::EngineState::RUNNING):
+		case (Core::Datastructure::EngineState::CLOSING):
+			if (m_paused && !m_step)
+			{
+				Render();
+				EndFrame();
+				break;
+			}
+			m_step = false;
+			EngineCore::OnLoop();
+			break;
+		case (Core::Datastructure::EngineState::CLOSED):
+			ReloadScene();
+			m_paused = false;
+			m_state = Core::Datastructure::EngineState::INITIALIZED;
+		case (Core::Datastructure::EngineState::INITIALIZED):
+			m_manager->LinkAllTextureToOpenGl();
+			m_manager->LinkAllModelToOpenGl();
+			m_manager->ShaderUpdate();
 
-		EngineCore::OnLoop();
+			if (!m_navMesh->IsNavmeshUpdated())
+				m_navMesh->Build();
 
-		m_man->Render();
+			Render();
+			EndFrame();
+			break;
+		default:
+			break;
+		}
 
 		int display_w, display_h;
 		glfwGetFramebufferSize(m_window, &display_w, &display_h);
@@ -140,6 +168,11 @@ namespace Editor
 		glfwSwapBuffers(m_window);
 	}
 
+	void	EditorEngine::Render()
+	{
+		EngineCore::Render();
+		m_man->Render();
+	}
 
 	bool EditorEngine::IsSelectingEngineView()
 	{
@@ -151,6 +184,145 @@ namespace Editor
 		double pos[2];
 		glfwGetCursorPos(GetWindow(), &pos[0], &pos[1]);
 		return Core::Maths::Vec2(static_cast<float>(pos[0]), static_cast<float>(pos[1]));
+	}
+
+	json	ClassToJson(rttr::type t, rttr::instance i);
+
+	json	PropertyToJson(rttr::property prop, rttr::instance i)
+	{
+		rttr::type propType = prop.get_type();
+		rttr:variant val = prop.get_value(i);
+
+		json out;
+		out["Name"] = prop.get_name().to_string();
+		out["Type"] = prop.get_type().get_name().to_string();
+
+		if (prop.is_enumeration())
+		{
+			out["Value"] = val.get_value<int>();
+		}
+		else if (propType == rttr::type::get<bool>())
+		{
+			out["Value"] = val.get_value<bool>();
+		}
+		else if (propType == rttr::type::get<int>())
+		{
+			out["Value"] = val.get_value<int>();
+		}
+		else if (propType == rttr::type::get<float>())
+		{
+			out["Value"] = val.get_value<float>();
+		}
+		else if (propType == rttr::type::get<Core::Maths::Vec2>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Vec2>().xy;
+		}
+		else if (propType == rttr::type::get<Core::Maths::Vec3>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Vec3>().xyz;
+		}
+		else if (propType == rttr::type::get<Core::Maths::Vec4>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Vec4>().xyzw;
+		}
+		else if (propType == rttr::type::get<Core::Maths::Color>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Color>().rgba;
+		}
+		else if (propType == rttr::type::get<std::string>())
+		{
+			out["Value"] = val.get_value<std::string>();
+		}
+		else if (propType.is_class())
+		{
+			out["Value"] = ClassToJson(propType, val);
+		}
+		else
+		{
+			out["Value"] = "Unknown: please implement this save";
+		}
+
+		return out;
+	}
+
+	json	ClassToJson(rttr::type t, rttr::instance i)
+	{
+		json out;
+		out["Type"] = t.get_name().to_string();
+		{
+			json values;
+			for (rttr::property p : t.get_properties())
+			{
+				if (p.is_readonly() || p.is_static() || p.get_access_level() != rttr::access_levels::public_access)
+					continue;
+				values[p.get_name().to_string()] = PropertyToJson(p, i);
+			}
+			out["Values"] = values;
+		}
+
+		return out;
+	}
+
+	json	ObjectToJson(Core::Datastructure::Object* object)
+	{
+		json out;
+		out["Name"] = object->GetName();
+		out["Childs"] = json::array();
+		out["Components"] = json::array();
+		out["Flags"] = (unsigned char)object->GetFlags();
+		{
+			json v3;
+			Core::Maths::Vec3 temp{ object->GetPos() };
+			v3["x"] = temp.x;
+			v3["y"] = temp.y;
+			v3["z"] = temp.z;
+			out["Pos"] = v3;
+			temp = object->GetScale();
+			v3["x"] = temp.x;
+			v3["y"] = temp.y;
+			v3["z"] = temp.z;
+			out["Scale"] = v3;
+		}
+		{
+			Core::Maths::Quat temp{ object->GetRot() };
+			json quat;
+			quat["x"] = temp.x;
+			quat["y"] = temp.y;
+			quat["z"] = temp.z;
+			quat["w"] = temp.w;
+			out["Rot"] = quat;
+		}
+		int i{ 0 };
+		for (auto it : object->GetChildren())
+			out["Childs"][i++] = ObjectToJson(it);
+		i = 0;
+		for (auto it : object->GetComponents())
+			out["Components"][i++] = ClassToJson(it->get_type(), it);
+		return out;
+	}
+
+	void EditorEngine::UpdateSavedScene()
+	{
+		m_savedScene.clear();
+		int i{ 0 };
+		m_savedScene["Childs"] = json::array();
+		for (auto it : m_root->GetChildren())
+		{
+			m_savedScene["Childs"][i++] = ObjectToJson(it);
+		}
+	}
+
+	void EditorEngine::SaveScene()
+	{
+		UpdateSavedScene();
+		std::ofstream o(m_currScene);
+		o << std::setw(4) << m_savedScene << std::endl;
+	}
+
+	void EditorEngine::ReloadScene()
+	{
+		m_root->Clear();
+		LoadSceneFromJson(m_savedScene);
 	}
 
 	void EditorEngine::SetCallbackToGLFW()

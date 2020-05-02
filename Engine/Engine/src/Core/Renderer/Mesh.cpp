@@ -15,8 +15,8 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	registration::class_<Mesh>("Mesh")
-		.constructor()
-		.property_readonly("Vertex Count", &Mesh::GetVertexCount);
+		.constructor();
+		//.property_readonly("Vertex Count", &Mesh::GetVertexCount);
 }
 
 Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
@@ -54,7 +54,7 @@ void Mesh::CreateAABBMesh()
 	physx::PxRigidActor* actor = object->GetScene()
 							->GetEngine()
 							->GetPhysicsScene()
-							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(),m_model);
+							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(), m_model);
 	
 	GetParent()->SetAnEventTransformChange(std::bind(&Core::Physics::PhysicsScene::UpdatePoseOfActor, object->GetScene()
 											->GetEngine()->GetPhysicsScene(), actor));
@@ -143,4 +143,16 @@ void	Mesh::OnReset()
 {
 	ComponentBase::OnReset();
 	IRenderable::OnReset();
+}
+
+void Mesh::OnCopy(IComponent* copyTo) const
+{
+	ComponentBase::OnCopy(copyTo);
+	IRenderable::OnCopy(copyTo);
+}
+
+void Mesh::StartCopy(IComponent*& copyTo) const
+{
+	copyTo = new Mesh();
+	OnCopy(copyTo);
 }

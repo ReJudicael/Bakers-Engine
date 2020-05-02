@@ -59,11 +59,14 @@ namespace Core
 
 		void StaticMesh::OnDestroy()
 		{
-			DestroyStaticMesh();
 			ComponentBase::OnDestroy();
 			IPhysics::OnDestroy();
 			IUpdatable::OnDestroy();
-			GetParent()->RemoveEventTransformChange();
+			if (IsStarted())
+			{
+				DestroyStaticMesh();
+				GetParent()->RemoveEventTransformChange();
+			}
 		}
 
 		void StaticMesh::OnReset()

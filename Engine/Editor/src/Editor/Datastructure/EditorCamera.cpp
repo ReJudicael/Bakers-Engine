@@ -21,11 +21,10 @@ namespace Editor::Datastructure
 		return m_fbo;
 	}
 	
-	void EditorCamera::OnStart()
+	void EditorCamera::OnInit()
 	{
-		ComponentBase::OnStart();
-		ICamera::OnStart();
-		IUpdatable::OnStart();
+		ComponentBase::OnInit();
+		ICamera::OnInit();
 		m_fbo->type = Core::Renderer::FBOType::CUSTOM;
 	}
 	
@@ -49,14 +48,12 @@ namespace Editor::Datastructure
 	{
 		ComponentBase::OnCopy(copyTo);
 		ICamera::OnCopy(copyTo);
-		IUpdatable::OnCopy(copyTo);
 	}
 	
 	void EditorCamera::OnDestroy()
 	{
 		ComponentBase::OnDestroy();
 		ICamera::OnDestroy();
-		IUpdatable::OnDestroy();
 
 		GetRoot()->GetEngine()->DeleteFBO(m_fbo);
 	}
@@ -65,7 +62,6 @@ namespace Editor::Datastructure
 	{
 		ComponentBase::OnReset();
 		ICamera::OnReset();
-		IUpdatable::OnReset();
 
 		m_persp = CameraPerspective();
 		m_isPerspectiveUpdated = false;
@@ -168,7 +164,7 @@ namespace Editor::Datastructure
 		m_isMouseSet = true;
 	}
 
-	void EditorCamera::OnUpdate(float deltaTime)
+	void EditorCamera::Update(float deltaTime)
 	{
 		MoveWithInput();
 
@@ -182,8 +178,6 @@ namespace Editor::Datastructure
 
 		if (length == 0) // Do not update transform if no movement has been made
 			return;
-
-		m_isCamUpdated = false;
 
 		m_transform.Translate(m_movement * m_speed * deltaTime);
 
@@ -199,7 +193,6 @@ namespace Editor::Datastructure
 	{
 		if (m_isRotating)
 		{
-			m_isCamUpdated = false;
 			// Increase current rotation with new one
 			m_pitch += 0.5f * m_angularMovement.x * deltaTime;
 			m_yaw += 0.5f * m_angularMovement.y * deltaTime;

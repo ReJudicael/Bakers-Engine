@@ -32,7 +32,9 @@ protected:
 
 	std::vector<std::shared_ptr<Resources::Material>> m_materialsModel;
 
-	virtual void	OnReset() override;
+	virtual void	OnReset() override; 
+	virtual void	OnCopy(IComponent* copyTo) const override;
+	virtual void	StartCopy(IComponent*& copyTo) const override;
 public:
 
 	int		m_vertexCount = 0;

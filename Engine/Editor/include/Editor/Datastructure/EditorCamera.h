@@ -2,7 +2,6 @@
 
 #include "ComponentBase.h"
 #include "ICamera.h"
-#include "IUpdatable.hpp"
 #include "Transform.hpp"
 
 #include "Vec2.hpp"
@@ -17,9 +16,10 @@ namespace Editor::Datastructure
 		float near = 0.1f;
 		float far = 100.f;
 	};
-	class EditorCamera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera, public virtual Core::Datastructure::IUpdatable
+	class EditorCamera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera
 	{
 		CameraPerspective	m_persp;
+		bool				m_isPerspectiveUpdated = false;
 		Core::Datastructure::Transform		m_transform;
 
 		Core::Maths::Vec3	m_angularMovement;
@@ -33,10 +33,13 @@ namespace Editor::Datastructure
 		//Should make speed change with mousewheel
 		float				m_speed{ 5 };
 
-		virtual void		OnStart() override;
+		virtual void		OnInit() override;
 
 		Core::Maths::Mat4	OnGenerateCamera() override;
 		Core::Maths::Mat4	OnGeneratePerspective() override;
+		virtual bool		IsCameraMatrixUpdated() override { return m_transform.IsTrsUpdated(); }
+		virtual bool		IsPerspectiveMatrixUpdated() override { return m_isPerspectiveUpdated; }
+		virtual void		PerspectiveMatrixUpdated() override { m_isPerspectiveUpdated = true; }
 
 
 		virtual void StartCopy(IComponent*& copyTo) const override;
@@ -49,6 +52,11 @@ namespace Editor::Datastructure
 		void SetRatio(const float newRatio) override;
 
 		Core::Renderer::Framebuffer* GetFBO();
+		/**
+		 * Update translation and rotation
+		 * @param deltaTime: Time elapsed between two frames
+		 */
+		virtual void Update(float deltaTime);
 	private:
 		/**
 		 * Compute keyboard and mouse interactions when right mouse button is pressed
@@ -77,12 +85,6 @@ namespace Editor::Datastructure
 		void	ComputeRotation();
 
 		/**
-		 * Update translation and rotation
-		 * @param deltaTime: Time elapsed between two frames
-		 */
-		virtual void OnUpdate(float deltaTime) override;
-
-		/**
 		 * Update translation with stored movement vector
 		 * @param deltaTime: Time elapsed between two frames
 		 */
@@ -106,7 +108,6 @@ namespace Editor::Datastructure
 		 */
 		void	Rotate(Core::Maths::Vec3 move);
 
-		REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera, Core::Datastructure::IUpdatable)
+		REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera)
 	};
 }
-

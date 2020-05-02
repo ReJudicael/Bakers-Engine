@@ -12,7 +12,7 @@ RTTR_PLUGIN_REGISTRATION
 namespace Core::Datastructure
 {
 
-	void Core::Datastructure::IRenderable::OnStart()
+	void Core::Datastructure::IRenderable::OnInit()
 	{
 		if (GetRoot() == nullptr)
 			return;
@@ -31,7 +31,7 @@ namespace Core::Datastructure
 		ZoneText("Rendering single component", 27)
 			TracyGpuZone("Rendering single component")
 		
-		if (IsStarted() && m_isActive && !IsDestroyed() && m_parent->IsActive())
+		if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 		{
 			OnDraw(cam);
 		}
