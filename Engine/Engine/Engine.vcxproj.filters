@@ -210,14 +210,20 @@
     <ClCompile Include="src\Core\Navigation\NavQuery.cpp">
       <Filter>Source Files\Core\Navigation</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Audio\AudioSystem.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Maths\Maths.cpp">
       <Filter>Source Files\Core\Maths</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\TriggeredEvent.cpp">
       <Filter>Source Files\Core\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Audio\AudioSystem.cpp">
+      <Filter>Source Files\Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Audio\AudioListener.cpp">
+      <Filter>Source Files\Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Audio\AudioSource.cpp">
+      <Filter>Source Files\Core\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -427,6 +433,12 @@
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\TriggeredEvent.h">
       <Filter>Header Files\Core\Datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Audio\AudioListener.h">
+      <Filter>Header Files\Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Audio\AudioSource.h">
+      <Filter>Header Files\Core\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

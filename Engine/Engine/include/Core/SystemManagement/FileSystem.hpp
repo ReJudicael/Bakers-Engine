@@ -219,12 +219,12 @@ namespace Core::SystemManagement
 		 * Open path in explorer with a windows command
 		 * @param filePath: File path
 		 **/
-		void OpenPathInExplorer(const std::string& itemPath) noexcept;
+		void ShowPathInExplorer(const std::string& itemPath) noexcept;
 
 		/**
 		 * Open current path in explorer
 		 */
-		void OpenCurrentPathInExplorer() noexcept;
+		void ShowCurrentPathInExplorer() noexcept;
 
 		/**
 		 * Create a folder
@@ -438,14 +438,14 @@ namespace Core::SystemManagement
 			return true;
 	}
 
-	inline void FileSystem::OpenPathInExplorer(const std::string& itemPath) noexcept
+	inline void FileSystem::ShowPathInExplorer(const std::string& itemPath) noexcept
 	{
-		ShellFileAPI::OpenSpecifiedLink(GetAbsoluteWithQuote(itemPath));
+		ShellFileAPI::OpenSpecifiedLink(GetAbsoluteWithQuote(IsDirectory(itemPath) ? itemPath : GetParentPath(itemPath)));
 	}
 
-	inline void FileSystem::OpenCurrentPathInExplorer() noexcept
+	inline void FileSystem::ShowCurrentPathInExplorer() noexcept
 	{
-		OpenPathInExplorer(m_currentDirectory);
+		ShellFileAPI::OpenSpecifiedLink(m_currentDirectory);
 	}
 
 	inline std::string FileSystem::CreateFolder(const std::string& folderName) noexcept
