@@ -19,6 +19,9 @@ namespace Resources
 		LoadTextureMaterial(mat, textures[textures.size()- 1], aiTextureType_NORMALS, directory, resources);
 		// maybe load a normalMap
 
+		if(textures.size() <= 0)
+			shader = resources.GetShader("NoTexture");
+
 
 		
 		aiColor3D color;

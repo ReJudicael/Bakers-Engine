@@ -149,7 +149,16 @@ namespace Core::Datastructure
 		staticMesh->AddComponent(staticmesh1);
 
 		m_manager->Load3DObject("Resources/Models/Umbreon/UmbreonHighPoly.obj");
-		Resources::Object3DGraph::CreateScene("Resources/Models/Umbreon/UmbreonHighPoly.obj", *m_manager, umbreon);
+		//Resources::Object3DGraph::CreateScene("Resources/Models/Umbreon/UmbreonHighPoly.obj", *m_manager, umbreon);
+		//dm_manager->Load3DObject("Resources/Models/Mannequin/SK_Mannequin.fbx");
+		//m_manager->Load3DObject("Resources/Models/Mannequin/SK_Mannequin.msh");
+		//Resources::Object3DGraph::CreateScene("Resources/Models/Mannequin/SK_Mannequin.fbx", *m_manager, umbreon);
+		//m_manager->Load3DObject("Resources/Models/RiggedSimple.dae");
+		//Resources::Object3DGraph::CreateScene("Resources/Models/RiggedSimple.dae", *m_manager, umbreon);
+		m_manager->Load3DObject("Resources/Models/cavaleiro.fbx");
+		Resources::Object3DGraph::CreateScene("Resources/Models/cavaleiro.fbx", *m_manager, umbreon);
+		/*m_manager->Load3DObject("Resources/Models/E-45-Aircraft/E 45 Aircraft-sketchfab-Version.fbx");
+		Resources::Object3DGraph::CreateScene("Resources/Models/E-45-Aircraft/E 45 Aircraft-sketchfab-Version.fbx", *m_manager, umbreon);*/
 
 		m_manager->Load3DObject("Resources/Models/DiningRoom/dining_room.fbx");
 		Resources::Object3DGraph::CreateScene("Resources/Models/DiningRoom/dining_room.fbx", *m_manager, dining_room);
@@ -157,6 +166,7 @@ namespace Core::Datastructure
 		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
 
 		umbreon->SetPos({ 0.f,3.f, 0.f });
+		umbreon->SetPos({ 0.1f,0.1f, 0.1f });
 		m_fbo.clear();
 		return 0;
 	}
@@ -170,13 +180,10 @@ namespace Core::Datastructure
 		StartFrame();
 
 		Update(deltaTime);
+	
+		Core::Physics::HitResultQuery query;
 
-		Physics::HitResultQuery query;
-
-		physx::PxU32 u;
-		u |= Core::Physics::EFilterRaycast::GROUPE1;
-
-		m_physicsScene->Raycast({ 0.f,0.f,0.f }, { 1.f,0.f,0.f }, query, u);
+		//m_physicsScene->Raycast({ -1.6f,0.74f,0.96f }, { 0.f,0.f,1.f }, query);
 
 		Render();
 

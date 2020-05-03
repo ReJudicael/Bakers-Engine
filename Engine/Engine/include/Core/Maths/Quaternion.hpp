@@ -375,7 +375,7 @@ namespace Core::Maths
 			constexpr float DOT_THRESHOLD{ 0.9995f };
 			if (dot > DOT_THRESHOLD)
 			{
-				Quaternion	result{ *this + (q - *this) * progress };
+				return { *this + (q - *this) * progress };
 			}
 
 			float theta {acos(dot)};

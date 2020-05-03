@@ -19,6 +19,8 @@
 #include "Texture.h"
 #include "TextureData.h"
 #include "Object3DGraph.h"
+#include "BoneData.h"
+#include "Mat.hpp"
 
 static const char* gVertexShaderStr = R"GLSL(
 // Attributes
@@ -74,6 +76,12 @@ namespace Resources::Loader
 
 		Shader wireframeShader("./Resources/Shaders/WireframeShader.vert", "./Resources/Shaders/WireframeShader.frag");
 		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
+
+		Shader noTexture("./Resources/Shaders/NoTexture.vert", "./Resources/Shaders/NoTexture.frag");
+		m_shaders.emplace("NoTexture", std::make_shared<Shader>(noTexture));
+
+		Shader skeletal("./Resources/Shaders/SkeletalShader.vert", "./Resources/Shaders/SkeletalShader.frag");
+		m_shaders.emplace("Skeletal", std::make_shared<Shader>(skeletal));
 
 		LoadObjInModel("Cube","Resources/Models/cube.obj");
 		LoadObjInModel("Capsule","Resources/Models/capsule.obj");
@@ -137,12 +145,41 @@ namespace Resources::Loader
 		if (Name.find(".obj") != std::string::npos)
 		{
 			LoadMeshsSceneInSingleMesh(scene, directoryFile);
-			LoadSceneResources(scene, Name, directoryFile);
+			Load3DObjectGraph(scene, Name, directoryFile);
 		}
-		else if (Name.find(".fbx") != std::string::npos)
+		else //if (Name.find(".fbx") != std::string::npos)
 		{
-			LoadMeshsScene(scene, directoryFile);
-			LoadSceneResources(scene, Name, directoryFile);
+			if (scene->mNumMeshes > 0)
+			{
+				bool isSkeletal{ false };
+				int firstMeshWithBones{ 0 };
+
+				if (scene->HasAnimations())
+				{
+					LoadAnimation(scene, directoryFile);
+				}
+
+				for (unsigned int i = 0; i < scene->mNumMeshes; i++)
+				{
+					if (scene->mMeshes[i]->HasBones())
+					{
+						isSkeletal = true;
+						firstMeshWithBones = i;
+						break;
+					}
+
+				}
+				if (isSkeletal)
+				{
+					LoadMeshsSceneInSingleMesh(scene, directoryFile, isSkeletal,firstMeshWithBones);
+					Load3DObjectGraph(scene, Name, directoryFile, firstMeshWithBones, isSkeletal);
+				}
+				else
+				{
+					LoadMeshsScene(scene, directoryFile);
+					Load3DObjectGraph(scene, Name, directoryFile);
+				}
+			}
 		}
 
 		//aiReleaseImport(scene);
@@ -152,7 +189,6 @@ namespace Resources::Loader
 
 	void ResourcesManager::LoadMeshsScene(const aiScene* scene, const std::string& directory)
 	{
-
 		unsigned int indexLastMesh{ 0 };
 		unsigned int lastNumIndices{ 0 };
 
@@ -207,8 +243,6 @@ namespace Resources::Loader
 				// chage the name with the new number of same key
 				name = baseName + std::to_string(numberOfSameKey);
 			}
-
-
 			currModelData->ModelName = name;
 			m_modelsToLink.push_back(currModelData);
 			m_models.emplace(name, currModel);
@@ -222,36 +256,165 @@ namespace Resources::Loader
 		return numberOfSameKey;
 	}
 
-	void ResourcesManager::LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory)
+	void ResourcesManager::LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory, const bool& isSkeletal, const int& firstMeshWithBones)
 	{
-		if (m_models.count(directory + scene->mMeshes[0]->mName.data) > 0)
+		if (m_models.count(directory + scene->mMeshes[firstMeshWithBones]->mName.data) > 0)
 			return;
 
-		std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
+		std::shared_ptr<ModelData> skeletalModelData = std::make_shared<ModelData>();
 		std::shared_ptr<Model> model = std::make_shared<Model>();
 
 		unsigned int indexLastMesh{ 0 };
+		unsigned int numBones{ 0 };
 
-		modelData->model = model;
-		m_models.emplace(directory + scene->mMeshes[0]->mName.data, model);
-		m_modelsToLink.push_back(modelData);
+		skeletalModelData->model = model;
+		m_models.emplace(directory + scene->mMeshes[firstMeshWithBones]->mName.data, model);
+		m_modelsToLink.push_back(skeletalModelData);
+		std::shared_ptr<unorderedmapBonesIndex> bonesIndex; 
+
+		if (isSkeletal)
+		{
+			bonesIndex = std::make_shared<unorderedmapBonesIndex>();
+			m_skeletalIndex.emplace(directory + scene->mMeshes[firstMeshWithBones]->mName.data, bonesIndex);
+			skeletalModelData->SetArray(scene, isSkeletal);
+		}
 
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
 		{
 			aiMesh* mesh = scene->mMeshes[i];
-
-			modelData->LoadaiMeshModel(mesh, indexLastMesh);
-
+			if (isSkeletal)
+			{
+				if (mesh->HasBones())
+				{
+					LoadAnimationaiMesh(skeletalModelData, scene, mesh, 
+										directory + scene->mMeshes[firstMeshWithBones]->mName.data, 
+										numBones, indexLastMesh, bonesIndex);
+					skeletalModelData->LoadaiMeshModel(mesh, indexLastMesh);
+					indexLastMesh += mesh->mNumVertices;
+				}
+			}
+			else
+			{
+				skeletalModelData->LoadaiMeshModel(mesh, indexLastMesh);
+				indexLastMesh += mesh->mNumVertices;
+			}
 			//modelData->LoadVertices(mesh);
 			//modelData->LoadIndices(mesh, indexLastMesh);
 
-			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
 			{
 				LoadaiMeshMaterial(scene, mesh, directory);
 			}
 		}
-		modelData->stateVAO = EOpenGLLinkState::CANLINK;
+		skeletalModelData->stateVAO = EOpenGLLinkState::CANLINK;
+	}
+
+	void ResourcesManager::LoadAnimationaiMesh(std::shared_ptr<ModelData>& modelData, const aiScene* scene, 
+													aiMesh* mesh, const std::string& directory
+												, unsigned int& numBones,  const unsigned int& numVertices, 
+												std::shared_ptr<unorderedmapBonesIndex>& bonesIndex)
+	{
+		for (auto i{ 0 }; i < mesh->mNumBones; i++)
+		{
+			unsigned int currBoneIndex{ 0 };
+			std::string nameBone = mesh->mBones[i]->mName.data;
+			aiBone* currBone = mesh->mBones[i];
+			if (bonesIndex->count(nameBone) <= 0)
+			{
+				currBoneIndex = numBones;
+				Animation::BoneData boneData;
+				boneData.boneIndex = numBones;
+				aiVector3D pos;
+				aiQuaternion rot;
+				aiVector3D sca;
+				currBone->mOffsetMatrix.Decompose(sca, rot, pos);
+				boneData.offsetMesh = Core::Datastructure::Transform({ pos.x, pos.y, pos.z }, { rot.w, rot.x, rot.y, rot.z }, { sca.x, sca.y, sca.z }).GetLocalTrs();
+				bonesIndex->emplace(nameBone, boneData);
+				numBones++;
+			}
+			else
+				currBoneIndex = bonesIndex->operator[](nameBone).boneIndex;
+
+			modelData->LoadAnimationVertexData(mesh, currBoneIndex, currBone, numVertices);
+		}
+
+		if (modelData->modelAnimationData.size() - numVertices == mesh->mNumVertices)
+			LoadBonesHierarchy(scene, directory, numBones, bonesIndex);
+	}
+
+	void ResourcesManager::LoadBonesHierarchy(const aiScene* scene, const std::string& directory
+												, const unsigned int& numBones
+												, const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex)
+	{
+		Core::Maths::Mat4 mat4;
+		mat4(0, 0) = 1;
+		mat4(1, 1) = 1;
+		mat4(2, 2) = 1;
+		mat4(3, 3) = 1;
+		const aiNode* firstBoneNode{ FindFirstBoneNode(scene->mRootNode, bonesIndex, mat4)};
+
+		if (firstBoneNode == nullptr)
+			return;
+		
+		std::shared_ptr<Core::Animation::BoneTree> tree = std::make_shared<Core::Animation::BoneTree>();
+		aiVector3D pos;
+		aiQuaternion rot;
+		aiVector3D sca;
+		firstBoneNode->mParent->mTransformation.Decompose(sca, rot, pos);
+		//scene->mRootNode->mTransformation.Decompose(sca, rot, pos);
+		tree->inverseGlobal = /*mat4*/Core::Datastructure::Transform(
+								{ pos.x, pos.y, pos.z },
+								{ rot.w, rot.x, rot.y, rot.z },
+								{ sca.x, sca.y, sca.z }).GetLocalTrs().Inversed();
+
+		constexpr Core::Maths::Mat<4,4> i{ i.Identity() };
+
+		Core::Datastructure::Transform t{};
+		
+		tree->rootBone.InitBone(firstBoneNode->mParent, bonesIndex, t);
+		tree->numBone = numBones;
+
+		m_BoneHierarchies.emplace(directory, tree);
+	}
+
+	const aiNode* ResourcesManager::FindFirstBoneNode(const aiNode* node, const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex, 
+														Core::Maths::Mat4& mat)
+	{
+		aiVector3D pos;
+		aiQuaternion rot;
+		aiVector3D sca;
+		node->mTransformation.Decompose(sca, rot, pos);
+
+		if (bonesIndex->count(node->mName.data) > 0)
+			return node;
+		mat = mat * Core::Datastructure::Transform(
+			{ pos.x, pos.y, pos.z },
+			{ rot.w, rot.x, rot.y, rot.z },
+			{ sca.x, sca.y, sca.z }).GetLocalTrs();
+
+
+		for (unsigned int i{ 0 }; i < node->mNumChildren; i++)
+		{
+			const aiNode* child = FindFirstBoneNode(node->mChildren[i], bonesIndex, mat);
+			if (child != nullptr)
+				return child;
+		}
+
+		return nullptr;
+	}
+
+	void ResourcesManager::LoadAnimation(const aiScene* scene, const std::string& directory)
+	{
+		for (unsigned int i{ 0 }; i < scene->mNumAnimations; i++)
+		{
+			aiAnimation* anim = scene->mAnimations[i];
+
+			std::shared_ptr<Core::Animation::Animation> animation = std::make_shared<Core::Animation::Animation>();
+
+			animation->initAnimation(anim);
+
+			m_animations.emplace(directory + anim->mName.data, animation);
+		}
 	}
 
 	void ResourcesManager::LoadObjInModel(const std::string& name, const char* fileName)
@@ -331,7 +494,8 @@ namespace Resources::Loader
 		texture->LoadTexture(keyName, *this);
 	}
 
-	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)
+	void ResourcesManager::Load3DObjectGraph(const aiScene* scene, const std::string& fileName, const std::string& directory
+												, const unsigned int& indexFirstMesh ,const bool& isSkeletal)
 	{
 		std::shared_ptr<Object3DGraph> sceneData = std::make_shared<Object3DGraph>();
 
@@ -339,6 +503,11 @@ namespace Resources::Loader
 		if (fileName.find(".obj") != std::string::npos)
 		{
 			sceneData->SceneLoad(scene, rootNode, directory, true);
+		}
+		else if (isSkeletal)
+		{
+			sceneData->haveSkeletal = true;
+			sceneData->rootNodeScene.Skeletal3DObjectLoad(scene, rootNode, directory, indexFirstMesh);
 		}
 		else
 		{
@@ -373,7 +542,6 @@ namespace Resources::Loader
 			}
 		}
 	}
-
 
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{

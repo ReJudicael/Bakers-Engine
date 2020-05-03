@@ -6,7 +6,7 @@
 #include "EngineCore.h"
 #include "PhysicsScene.h"
 #include "PxRigidStatic.h"
-//#include "StaticMesh.h"
+#include "SkeletalMesh.h"
 #include "TriggeredEvent.h"
 #include "Transform.hpp"
 
@@ -73,70 +73,28 @@ namespace Resources
 		}
 	}
 
-	void Node::CreateObjectScene(Core::Datastructure::Object* Object, Loader::ResourcesManager& resources)
+
+	void Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool& isSkeletal)
 	{
-		Object->SetName(nameObject);
-
-		Object->SetScale(scale);
-		Object->SetPos(position);
-		Object->SetRot(rotation);
-
-		if (nameMesh.find("nothing") == std::string::npos)
-		{
-			Mesh* mesh = { new Mesh() };
-
-			if (resources.GetCountModel(nameMesh) > 0)
-			{
-				// THEO C ici que tu dois tout faire !!!!!!!!!!!
-				// l'itérateur contient toute les valeurs 
-				// vertices; 
-				// indices;
-				// offsetsMesh;
-				// min; AABB min
-				// max; AAB max
-				mesh->AddModel(resources.GetModel(nameMesh));
-				mesh->AddMaterials(resources, namesMaterial);
-				Object->AddComponent(mesh);
-
-				Core::Datastructure::TriggeredEvent* newEvent{ new Core::Datastructure::TriggeredEvent() };
-
-				newEvent->SetTriggeredEvent(std::bind(&Mesh::IsModelLoaded, mesh), std::bind(&Mesh::CreateAABBMesh, mesh));
-
-				Object->AddComponent(newEvent);
-
-				/*For Test*/
-				//Core::Physics::StaticMesh* staticMesh{ new Core::Physics::StaticMesh() };
-				//Object->AddComponent(staticMesh);
-			}
-		}
-
-
-		for (auto i{ 0 }; i < children.size(); i++)
-		{
-			Core::Datastructure::Object* childObject{ Object->CreateChild("", {}) };
-			children[i].CreateObjectScene(childObject, resources);
-		}
-	}
-
-	void Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory)
-	{
-		nameObject = node->mName.data;
-
 		aiVector3D pos;
 		aiVector3D rot;
 		aiVector3D sca;
 
 		node->mTransformation.Decompose(sca, rot, pos);
 
-
 		position = { pos.x, pos.y, pos.z };
 		rotation = { rot.x, rot.y, rot.z };
 		scale = { sca.x, sca.y, sca.z };
 
-		const aiNode* currNode = currNode = node->mChildren[0];
+		const aiNode* currNode = node->mChildren[0];
 		aiMaterial* mat;
 
-		nameMesh = nameMesh = directory + scene->mMeshes[currNode->mMeshes[0]]->mName.data;
+		const aiNode* nodeTest = FindNodeWithMeshes(scene, node);
+		currNode = nodeTest;
+
+		nameObject = currNode->mName.data;
+
+		nameMesh = directory + scene->mMeshes[currNode->mMeshes[0]]->mName.data;
 
 		for (unsigned int i{ 0 }; i < currNode->mNumMeshes; i++)
 		{
@@ -145,23 +103,138 @@ namespace Resources
 		}
 	}
 
-	void Object3DGraph::SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSingleMesh)
+	void Node::Skeletal3DObjectLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const unsigned int indexFirstMesh)
 	{
-		singleMesh = isSingleMesh;
+		aiVector3D pos;
+		aiVector3D rot;
+		aiVector3D sca;
+
+		node->mTransformation.Decompose(sca, rot, pos);
+
+		position = { pos.x, pos.y, pos.z };
+		rotation = { rot.x, rot.y, rot.z };
+		scale = { sca.x, sca.y, sca.z };
+
+		nameObject = scene->mMeshes[indexFirstMesh]->mName.data;
+
+		nameMesh = directory + scene->mMeshes[indexFirstMesh]->mName.data;
+
+		aiMaterial* mat;
+		for (unsigned int i{ 0 }; i < scene->mNumMeshes; i++)
+		{
+			if (scene->mMeshes[i]->HasBones())
+			{
+				mat = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
+				namesMaterial.push_back(directory + mat->GetName().data);
+			}
+		}
+	}
+
+	const aiNode* Node::FindNodeWithMeshes(const aiScene* scene, const aiNode* node)
+	{
+		if (node->mNumMeshes > 0)
+			return node;
+		for (int i{ 0 }; i < node->mNumChildren; i++)
+		{
+			const aiNode* nodeWithMesh = FindNodeWithMeshes(scene, node->mChildren[i]);
+			if (nodeWithMesh != nullptr)
+				return nodeWithMesh;
+		}
+		return nullptr;
+	}
+
+	void Node::CreateObjectScene(Core::Datastructure::Object* Object, Loader::ResourcesManager& resources, 
+									const bool isSingleMesh, const bool isSkeletal)
+	{
+		if (nameObject.find("RootNode") == std::string::npos)
+		{
+			Object->SetName(nameObject);
+			if (!isSingleMesh)
+			{
+				Object->SetScale(scale);
+				Object->SetPos(position);
+				Object->SetRot(rotation);
+			}
+		}
+
+		if (nameMesh.find("nothing") == std::string::npos)
+		{
+
+			if (resources.GetCountModel(nameMesh) > 0)
+			{
+				ChooseRenderable(Object, resources, isSkeletal);
+			}
+		}
+
+
+		for (auto i{ 0 }; i < children.size(); i++)
+		{
+			Core::Datastructure::Object* childObject{ Object->CreateChild("", {}) };
+			children[i].CreateObjectScene(childObject, resources, isSingleMesh, isSkeletal);
+		}
+	}
+
+	void Node::ChooseRenderable(Core::Datastructure::Object* Object, Loader::ResourcesManager& resources, const bool isSkeletal)
+	{
+		Mesh* mesh;
+		if (!isSkeletal)
+			mesh = new Mesh();
+		else
+		{
+			Core::Animation::SkeletalMesh* skeletal = new Core::Animation::SkeletalMesh();
+			if (resources.GetCountSkeleton(nameMesh) > 0)
+			{
+				skeletal->initBone(resources.GetSkeleton(nameMesh));
+				skeletal->m_testAnimation = resources.m_animations.begin()->second;
+			}
+
+			mesh = skeletal;
+
+		}
+
+		mesh->AddModel(resources.GetModel(nameMesh));
+		mesh->AddMaterials(resources, namesMaterial);
+		Object->AddComponent(mesh);
+
+		Core::Datastructure::TriggeredEvent* newEvent{ new Core::Datastructure::TriggeredEvent() };
+
+		newEvent->SetTriggeredEvent(std::bind(&Mesh::IsModelLoaded, mesh), std::bind(&Mesh::CreateAABBMesh, mesh));
+
+		Object->AddComponent(newEvent);
+	}
+
+	void Object3DGraph::SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSkeletal)
+	{
+		singleMesh = isSkeletal;
+		haveSkeletal = isSkeletal;
 
 		if (singleMesh)
-			rootNodeScene.SingleMeshSceneLoad(scene, node, directory);
+			rootNodeScene.SingleMeshSceneLoad(scene, node, directory, haveSkeletal);
 		else
 			rootNodeScene.RecursiveSceneLoad(scene, node, directory);
 	}
 
+
 	void Object3DGraph::CreateScene(const std::string& keyName, Loader::ResourcesManager& resources, Core::Datastructure::Object* rootObject)
 	{
-
 		if (resources.GetCountScene(keyName) <= 0)
 			return;
 		std::shared_ptr<Object3DGraph> scene = resources.GetScene(keyName);
 
-		scene->rootNodeScene.CreateObjectScene(rootObject, resources);
+		Core::Datastructure::Object* object = rootObject;
+
+		if (!scene->singleMesh)
+		{
+			auto index = keyName.find_last_of("/");
+			std::string name;
+			name = keyName.substr(index + 1, keyName.size() - 1);
+
+			index = name.find_last_of(".");
+			name = name.substr(0, index);
+
+			object = rootObject->CreateChild(name, {});
+		}
+
+		scene->rootNodeScene.CreateObjectScene(object, resources, scene->singleMesh, scene->haveSkeletal);
 	}
 }

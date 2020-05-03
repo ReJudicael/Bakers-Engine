@@ -31,20 +31,76 @@ namespace Resources
 
 		std::vector<Node> children;
 
+		/**
+		 * Load a aiNode inside a Node
+		 * @param scene: The scene of the 3D object load by assimp
+		 * @param node: The current node of the scene
+		 * @param directory: the full path of the first mesh find with bone
+		 */
 		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory);
 
-		void SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory);
+		/**
+		 * Load a assimp scene as one node
+		 * @param scene: The scene of the 3D object load by assimp
+		 * @param node: The current node of the scene
+		 * @param directory: the full path of the first mesh find with bone
+		 * @param isSkeletal: bool if the scene have a skelet
+		 */
+		void SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool& isSkeletal);
 
-		void CreateObjectScene(Core::Datastructure::Object* rootObject, Loader::ResourcesManager& resources);
+		/**
+		 * Load a assimp scene as a skeletal Object
+		 * @param scene: The scene of the 3D object load by assimp
+		 * @param node: The current node of the scene
+		 * @param directory: the full path of the first mesh find with bone
+		 * @param indexFirstMesh: the index of the first mesh who have a bone
+		 */
+		void Skeletal3DObjectLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const unsigned int indexFirstMesh);
+
+		/**
+		 * Find in the scene a node with a mesh
+		 * @param scene: The scene of the 3D object load by assimp
+		 * @param node: The current node of the scene
+		 */
+		const aiNode* FindNodeWithMeshes(const aiScene* scene, const aiNode* node);
+
+		/**
+		 * create an object with a mesh from
+		 * @param scene: The scene of the 3D object load by assimp
+		 * @param node: The current node of the scene
+		 */
+		void CreateObjectScene(Core::Datastructure::Object* rootObject, Loader::ResourcesManager& resources,
+								const bool isSingleMesh, const bool isSkeletal);
+
+		/**
+		 * create the mesh component
+		 * @param Object: The object create by the Node
+		 * @param resources: The resourcesmanager
+		 * @param isSkeletal: true if the node is skeletal
+		 */
+		void ChooseRenderable(Core::Datastructure::Object* Object, Loader::ResourcesManager& resources, const bool isSkeletal);
 	};
 
 	struct Object3DGraph
 	{
 		Node rootNodeScene;
 		bool singleMesh;
+		bool haveSkeletal;
 
-		void	SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool singleMesh);
+		/**
+		 * Find in the scene a node with a mesh
+		 * @param scene: The scene of the 3D object load by assimp
+		 * @param node: The rootNode of the assimp scene
+		 * @param directory: the full path of the first mesh find with bone
+		 */
+		void	SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSkeletal = false);
 
+		/**
+		 * Find in the scene a node with a mesh
+		 * @param keyName: the name of the 3DObject
+		 * @param resources: The resourcesmanager
+		 * @param rootObject: The rootObject to assign the 3DObject
+		 */
 		static void CreateScene(const std::string& keyName, Loader::ResourcesManager& resources, 
 									Core::Datastructure::Object* rootObject);
 	};

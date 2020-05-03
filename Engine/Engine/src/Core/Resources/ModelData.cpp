@@ -3,13 +3,32 @@
 #include "ModelData.h"
 #include "OffsetMesh.h"
 #include "Model.h"
+#include "LoadResources.h"
 
 namespace Resources
 {
+
+	void ModelData::SetArray(const aiScene* scene, const bool& isSkeletal)
+	{
+		if (isSkeletal)
+		{
+			unsigned int numVertices{ 0 };
+			for (unsigned int i = 0; i < scene->mNumMeshes; i++)
+			{
+				if(scene->mMeshes[i]->HasBones())
+					numVertices += scene->mMeshes[i]->mNumVertices;
+			}
+			haveBones = true;
+			modelAnimationData.resize(numVertices);
+		}
+	}
+
 	void ModelData::LoadaiMeshModel(aiMesh* mesh, const int increaseIndices)
 	{
 		if (increaseIndices == 0)
 			LoadaiMeshAABB(mesh);
+
+		model->haveBones = haveBones;
 
 		LoadVertices(mesh);
 		LoadIndices(mesh, increaseIndices);
@@ -61,7 +80,7 @@ namespace Resources
 			// get the UV of the current vertice
 			aiVector3D* UV = mesh->HasTextureCoords(0) ? &(mesh->mTextureCoords[0][j]) : &Zeor3D;
 			// get the Normal of the current vertice
-			aiVector3D* Normal = &(mesh->mNormals[j]);
+			aiVector3D* Normal = mesh->HasNormals() ? &(mesh->mNormals[j]): &Zeor3D;
 
 			v.Position = { Pos->x, Pos->y, Pos->z };
 			v.UV = { UV->x, UV->y };
@@ -78,14 +97,24 @@ namespace Resources
 	}
 
 
+	void ModelData::LoadAnimationVertexData(aiMesh* mesh, 
+											const unsigned int& boneIndex, aiBone* currBone, const unsigned int& numVertices)
+	{
+		for (unsigned int j{ 0 }; j < currBone->mNumWeights; j++)
+		{
+			unsigned int VertexID = numVertices + currBone->mWeights[j].mVertexId;
+			modelAnimationData[VertexID].AddBoneData(boneIndex, currBone->mWeights[j].mWeight);
+		}
+	}
+
 	void ModelData::CreateVAOModel()
 	{
-		GLuint VAO, VBO, EBO;
+		GLuint VAO, VBO1, VBO2, EBO;
 
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glGenBuffers(1, &VBO1);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO1);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
@@ -98,6 +127,21 @@ namespace Resources
 			glEnableVertexAttribArray(3);
 			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
 		}
+
+		if (haveBones)
+		{
+			glGenBuffers(1, &VBO2);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+			glBufferData(GL_ARRAY_BUFFER, modelAnimationData.size() * sizeof(Animation::AnimationVertexData), 
+											&modelAnimationData[0], GL_STATIC_DRAW);
+			glEnableVertexAttribArray(4);
+			glEnableVertexAttribArray(5);
+			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(Animation::AnimationVertexData),
+									(void*)offsetof(Animation::AnimationVertexData, boneIDs));
+			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(Animation::AnimationVertexData), 
+									(void*)offsetof(Animation::AnimationVertexData, weights));
+		}
+
 		glGenBuffers(1, &EBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);

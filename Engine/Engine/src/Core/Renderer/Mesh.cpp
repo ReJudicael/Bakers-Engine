@@ -125,7 +125,10 @@ void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const st
 {
 	for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
 	{
-		m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
+		if (i < namesMaterial.size())
+			m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
+		else
+			m_materialsModel.push_back(resources.GetMaterial(namesMaterial[0]));
 	}
 }
 
