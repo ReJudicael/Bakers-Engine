@@ -5,7 +5,6 @@
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
 
-#include "LoadResources.h"
 #include "Assimp/cimport.h"
 #include "Assimp/scene.h"
 #include "Assimp/Importer.hpp"
@@ -15,11 +14,12 @@
 #include "Assimp/RemoveComments.h"
 
 #include "RootObject.hpp"
+#include "LoadResources.h"
 #include "Object.hpp"
 #include "ScriptedComponent.h"
 #include "Model.h"
-#include "Texture.h"
-#include "TextureData.h"
+//#include "Texture.h"
+//#include "TextureData.h"
 #include "Object3DGraph.h"
 
 static const char* gVertexShaderStr = R"GLSL(
@@ -176,7 +176,8 @@ namespace Resources::Loader
 			modelData->SetArrays(scene, i);
 			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
 			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
-			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData, mesh, 0, 0);
+
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
 			//modelData->LoadaiMeshModel(mesh);
 
 			//modelData->LoadVertices(mesh);
@@ -252,7 +253,7 @@ namespace Resources::Loader
 		{
 			aiMesh* mesh = scene->mMeshes[i];
 
-			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData, mesh, i, indexLastMesh);
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, i, indexLastMesh);
 			//m_task.AddTask(&Resources::ModelData::LoadaiMeshAABB, modelData, mesh);
 			//modelData->LoadaiMeshModel(mesh, i,indexLastMesh);
 
@@ -305,9 +306,10 @@ namespace Resources::Loader
 
 		modelData->SetArrays(scene, 0);
 
-		modelData->LoadaiMeshModel(mesh);
+		m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
+		//modelData->LoadaiMeshModel(mesh);
 
-		modelData->stateVAO = EOpenGLLinkState::CANLINK;
+		//modelData->stateVAO = EOpenGLLinkState::CANLINK;
 	}
 
 	void ResourcesManager::LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh, const std::string& directory, const int numberOfSameKey)
@@ -330,7 +332,7 @@ namespace Resources::Loader
 
 		m_materials.emplace(keyMaterial, materialOut);
 
-		//m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut, mat, directory, *this);
+		//m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut.get(), mat, directory, *this);
 		materialOut->LoadMaterialFromaiMaterial(mat, directory, *this);
 
 	}

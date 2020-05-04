@@ -12,7 +12,7 @@ namespace Resources
 		textureData->nameTexture = pathTexture;
 		resources.PushTextureToLink(textureData);
 		textureData->textureptr = shared_from_this();
-		resources.m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData,pathTexture, resources);
-		//textureData->CreateTextureFromImage(pathTexture, resources);
+		//resources.m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData,pathTexture, resources);
+		textureData->CreateTextureFromImage(pathTexture, resources);
 	}
 }

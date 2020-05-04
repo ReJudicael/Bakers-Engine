@@ -8,6 +8,9 @@
 #include "Vec3.hpp"
 #include "Vec2.hpp"
 #include "ModelData.h"
+#include "TextureData.h"
+#include "Material.h"
+#include "Texture.h"
 #include "Object3DGraph.h"
 #include "Vertex.h" 
 #include "Debug.h"
@@ -26,8 +29,8 @@ class Core::Datastructure::Object;
 namespace Resources
 {
 	struct Model;
-	struct Texture;
-	struct TextureData;
+	//struct Texture;
+	//struct TextureData;
 
 	using unorderedmapTexture = std::unordered_map<std::string, std::shared_ptr<Texture>>;
 	using unorderedmapShader = std::unordered_map<std::string, std::shared_ptr<Shader>>;
@@ -56,7 +59,7 @@ namespace Resources
 
 
 		public:
-			Core::SystemManagement::TaskSystem m_task{};
+			Core::SystemManagement::TaskSystem m_task;
 			/* Used for stocked the different value which allow to bind different resources to OpengGL (for the multiThread)*/
 			std::list<std::shared_ptr<TextureData>>		m_texturesToLink;
 			std::list<std::shared_ptr<ModelData>>		m_modelsToLink;
