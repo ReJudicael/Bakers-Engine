@@ -1,6 +1,11 @@
 #pragma once
 
-#include <fmod.hpp>
+#include "CoreMinimal.h"
+
+namespace FMOD
+{
+	class System;
+}
 
 namespace Core::Datastructure
 {
@@ -17,18 +22,13 @@ namespace Core
 		/**
 		 * System handling sounds
 		 */
-		class AudioSystem
+		BAKERS_API_CLASS AudioSystem final
 		{
 		private:
 			/**
 			 * FMOD system
 			 */
 			FMOD::System* m_fmodSystem{ nullptr };
-
-			/**
-			 * State of FMOD
-			 */
-			FMOD_RESULT m_fmodResult{ FMOD_OK };
 
 			/**
 			 * Max channels
@@ -87,7 +87,7 @@ namespace Core
 			 * Display Log error of FMOD
 			 * @param error: FMOD error
 			 */
-			void LogErrorFMOD(FMOD_RESULT error) const;
+			void LogErrorFMOD(int error) const;
 		};
 	}
 }

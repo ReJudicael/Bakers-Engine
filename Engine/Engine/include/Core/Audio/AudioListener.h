@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ComponentBase.h"
+#include "ComponentUpdatable.h"
 #include "CoreMinimal.h"
 
 namespace Core::Audio
 {
-	BAKERS_API_CLASS AudioListener : public Datastructure::ComponentBase
+	BAKERS_API_CLASS AudioListener : public Datastructure::ComponentUpdatable
 	{
 	private:
 		bool m_isActive{ true };
@@ -23,6 +23,8 @@ namespace Core::Audio
 
 		virtual void	OnDestroy() override;
 
-		REGISTER_CLASS(Datastructure::ComponentBase);
+		virtual void	OnUpdate(float deltaTime) override;
+
+		REGISTER_CLASS(Datastructure::ComponentUpdatable);
 	};
 }

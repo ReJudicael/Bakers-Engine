@@ -13,6 +13,7 @@
 #include "StaticMesh.h"
 #include "PhysicsScene.h"
 #include "DynamicMesh.h"
+#include "AudioSystem.h"
 
 #include "json.hpp"
 using nlohmann::json;
@@ -47,6 +48,7 @@ namespace Core::Datastructure
 	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo{ nullptr }, m_window{ nullptr }, m_manager{ nullptr }, m_physicsScene{ nullptr }
 	{
 		m_inputSystem = new Core::SystemManagement::InputSystem(this);
+		m_audioSystem = new Audio::AudioSystem();
 		m_navMesh = new Core::Navigation::NavMeshBuilder();
 		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem, this);
 	}
@@ -55,6 +57,7 @@ namespace Core::Datastructure
 	{
 		delete m_root;
 		delete m_inputSystem;
+		delete m_audioSystem;
 		for (auto fbo : m_fbo)
 		{
 			delete fbo;
@@ -224,7 +227,7 @@ namespace Core::Datastructure
 			return;
 		}
 		if (t.is_enumeration())
-			prop.set_value(inst, static_cast<int>(j["Value"]));
+			prop.set_value(inst, t.get_enumeration().name_to_value(t.get_enumeration().value_to_name(static_cast<int>(j["Value"]))));
 		else if (t == rttr::type::get<int>())
 			prop.set_value(inst, static_cast<int>(j["Value"]));
 		else if (t == rttr::type::get<float>())
@@ -329,6 +332,11 @@ namespace Core::Datastructure
 	Core::SystemManagement::InputSystem* EngineCore::GetInputSystem()
 	{
 		return m_inputSystem;
+	}
+
+	Core::Audio::AudioSystem* EngineCore::GetAudioSystem()
+	{
+		return m_audioSystem;
 	}
 
 	int Core::Datastructure::EngineCore::GetFBONum(Core::Renderer::FBOType t)

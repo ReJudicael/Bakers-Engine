@@ -1,5 +1,7 @@
 #include "AudioListener.h"
-
+#include "EngineCore.h"
+#include "AudioSystem.h"
+#include "RootObject.hpp"
 RTTR_PLUGIN_REGISTRATION
 {
     registration::class_<Core::Audio::AudioListener>("Audio Listener")
@@ -9,7 +11,7 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Core::Audio
 {
-    AudioListener::AudioListener() : ComponentBase()
+    AudioListener::AudioListener() : ComponentUpdatable()
     {
     }
 
@@ -25,18 +27,23 @@ namespace Core::Audio
 
     void AudioListener::OnCopy(IComponent* copyTo) const
     {
-        ComponentBase::OnCopy(copyTo);
+        ComponentUpdatable::OnCopy(copyTo);
         AudioListener* copy{ dynamic_cast<AudioListener*>(copyTo) };
         copy->m_isActive = m_isActive;
     }
 
     void AudioListener::OnReset()
     {
-        ComponentBase::OnReset();
+        ComponentUpdatable::OnReset();
     }
 
     void AudioListener::OnDestroy()
     {
         m_isActive = false;
+    }
+
+    void AudioListener::OnUpdate(float deltaTime)
+    {
+        // GetRoot()->GetEngine()->GetAudioSystem()->SetListenerTransform(GetParent()->GetTransform());
     }
 }

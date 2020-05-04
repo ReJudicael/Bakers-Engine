@@ -12,6 +12,10 @@ using nlohmann::json;
 
 namespace Core
 {
+	namespace Audio
+	{
+		class AudioSystem;
+	}
 	namespace Physics
 	{
 		class PhysicsScene;
@@ -36,6 +40,7 @@ namespace Core
 		protected:
 			EngineState								m_state {EngineState::NONE};
 			Core::SystemManagement::InputSystem *	m_inputSystem{ nullptr };
+			Core::Audio::AudioSystem* m_audioSystem{ nullptr };
 			int m_width{ 0 };
 			int m_height{ 0 };
 			std::list<Core::Renderer::Framebuffer*>	m_fbo;
@@ -100,6 +105,7 @@ namespace Core
 			GLFWwindow* GetWindow();
 
 			Core::SystemManagement::InputSystem* GetInputSystem();
+			Core::Audio::AudioSystem* GetAudioSystem();
 			int								GetFBONum(Core::Renderer::FBOType t);
 			Core::Renderer::Framebuffer*	GetFBO(int num, Core::Renderer::FBOType t = Core::Renderer::FBOType::CUSTOM);
 			Core::Renderer::Framebuffer*	CreateFBO();

@@ -2,6 +2,7 @@
 #include "Transform.hpp"
 
 #include <fmod_errors.h>
+#include <fmod.hpp>
 
 namespace Core::Audio
 {
@@ -17,32 +18,32 @@ namespace Core::Audio
 
 	bool AudioSystem::Init()
 	{
-		m_fmodResult = FMOD::System_Create(&m_fmodSystem);
-		if (m_fmodResult != FMOD_OK)
+		FMOD_RESULT result = FMOD::System_Create(&m_fmodSystem);
+		if (result != FMOD_OK)
 		{
-			LogErrorFMOD(m_fmodResult);
+			LogErrorFMOD(result);
 			return false;
 		}
 
 		int numDrivers{ 0 };
-		m_fmodResult = m_fmodSystem->getNumDrivers(&numDrivers);
-		if (m_fmodResult != FMOD_OK)
+		result = m_fmodSystem->getNumDrivers(&numDrivers);
+		if (result != FMOD_OK)
 		{
-			LogErrorFMOD(m_fmodResult);
+			LogErrorFMOD(result);
 			return false;
 		}
 
-		m_fmodResult = m_fmodSystem->init(m_maxChannels, FMOD_INIT_NORMAL, nullptr);
-		if (m_fmodResult != FMOD_OK)
+		result = m_fmodSystem->init(m_maxChannels, FMOD_INIT_NORMAL, nullptr);
+		if (result != FMOD_OK)
 		{
-			LogErrorFMOD(m_fmodResult);
+			LogErrorFMOD(result);
 			return false;
 		}
 
-		m_fmodResult = m_fmodSystem->set3DSettings(1.f, m_distanceFactor, 1.f);
-		if (m_fmodResult != FMOD_OK)
+		result = m_fmodSystem->set3DSettings(1.f, 1.f, 1.f);
+		if (result != FMOD_OK)
 		{
-			LogErrorFMOD(m_fmodResult);
+			LogErrorFMOD(result);
 			return false;
 		}
 
@@ -51,26 +52,26 @@ namespace Core::Audio
 
 	void AudioSystem::Destroy()
 	{
-		m_fmodResult = m_fmodSystem->close();
-		if (m_fmodResult != FMOD_OK)
+		FMOD_RESULT result = m_fmodSystem->close();
+		if (result != FMOD_OK)
 		{
-			LogErrorFMOD(m_fmodResult);
+			LogErrorFMOD(result);
 			return;
 		}
 
-		m_fmodResult = m_fmodSystem->release();
-		if (m_fmodResult != FMOD_OK)
+		result = m_fmodSystem->release();
+		if (result != FMOD_OK)
 		{
-			LogErrorFMOD(m_fmodResult);
+			LogErrorFMOD(result);
 		}
 	}
 
 	void AudioSystem::Tick()
 	{
-		m_fmodResult = m_fmodSystem->update();
-		if (m_fmodResult != FMOD_OK)
+		FMOD_RESULT result = m_fmodSystem->update();
+		if (result != FMOD_OK)
 		{
-			LogErrorFMOD(m_fmodResult);
+			LogErrorFMOD(result);
 			return;
 		}
 
@@ -85,7 +86,7 @@ namespace Core::Audio
 			Core::Maths::Vec3 up = m_listenerTransform->GetUp();
 
 			// Set 3D attributes
-			m_fmodResult = m_fmodSystem->set3DListenerAttributes(
+			result = m_fmodSystem->set3DListenerAttributes(
 				0,
 				reinterpret_cast<FMOD_VECTOR*>(&pos),
 				reinterpret_cast<FMOD_VECTOR*>(&vel),
@@ -93,9 +94,9 @@ namespace Core::Audio
 				reinterpret_cast<FMOD_VECTOR*>(&up)
 			);
 
-			if (m_fmodResult != FMOD_OK)
+			if (result != FMOD_OK)
 			{
-				LogErrorFMOD(m_fmodResult);
+				LogErrorFMOD(result);
 				return;
 			}
 		}
@@ -111,8 +112,8 @@ namespace Core::Audio
 		return m_fmodSystem;
 	}
 
-	void AudioSystem::LogErrorFMOD(FMOD_RESULT error) const
+	void AudioSystem::LogErrorFMOD(int error) const
 	{
-		BAKERS_LOG_ERROR(FMOD_ErrorString(error));
+		BAKERS_LOG_ERROR(FMOD_ErrorString(static_cast<FMOD_RESULT>(error)));
 	}
 }

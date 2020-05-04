@@ -2,43 +2,40 @@
 #include <fmod_errors.h>
 
 #include "Object.hpp"
+#include "RootObject.hpp"
+#include "EngineCore.h"
+#include "AudioSystem.h"
 #include "AudioSource.h"
-
 
 RTTR_PLUGIN_REGISTRATION
 {
     using namespace Core::Datastructure;
 
     registration::class_<Core::Audio::AudioSource>("Audio Source")
+        .enumeration<Core::Audio::EAudioMode>("Audio Mode")
+        (
+            value("2D", Core::Audio::EAudioMode::AUDIO_2D),
+            value("3D", Core::Audio::EAudioMode::AUDIO_3D)
+        )
+
         .constructor()
-        .property("Audio Clip", &Core::Audio::AudioSource::m_audioClip)
-        .property("Mute", &Core::Audio::AudioSource::m_mute)
-        .property("Play On Awake", &Core::Audio::AudioSource::m_playOnAwake)
-        .property("Loop", &Core::Audio::AudioSource::m_loop)
-        .property("Priority", &Core::Audio::AudioSource::m_priority)
-        .property("Volume", &Core::Audio::AudioSource::m_volume)
-        .property("Pitch", &Core::Audio::AudioSource::m_pitch)
-        .property("Stereo Pan", &Core::Audio::AudioSource::m_stereoPan)
-        .property("Min Distance", &Core::Audio::AudioSource::m_minDistance)
-        .property("Max Distance", &Core::Audio::AudioSource::m_maxDistance);
+        .property("Audio Clip",     &Core::Audio::AudioSource::m_audioClip)
+        .property("Audio Mode",     &Core::Audio::AudioSource::m_audioMode)
+        .property("Mute",           &Core::Audio::AudioSource::m_mute)
+        .property("Play On Awake",  &Core::Audio::AudioSource::m_playOnAwake)
+        .property("Loop",           &Core::Audio::AudioSource::m_loop)
+        .property("Priority",       &Core::Audio::AudioSource::m_priority)
+        .property("Volume",         &Core::Audio::AudioSource::m_volume)
+        .property("Pitch",          &Core::Audio::AudioSource::m_pitch)
+        .property("Pan",            &Core::Audio::AudioSource::m_pan)
+        .property("Min Distance",   &Core::Audio::AudioSource::m_minDistance)
+        .property("Max Distance",   &Core::Audio::AudioSource::m_maxDistance);
 }
 
 namespace Core::Audio
 {
     AudioSource::AudioSource() : ComponentUpdatable()
     {
-        FMOD::System_Create(&m_fmodSystem);
-        m_fmodSystem->init(32, FMOD_INIT_NORMAL, nullptr);
-    }
-
-    AudioSource::~AudioSource()
-    {
-        if (!m_fmodSound)
-            return;
-    
-        FMOD_RESULT result = m_fmodSound->release();
-        if (result != FMOD_OK)
-            LogErrorFMOD(result);
     }
 
     void AudioSource::StartCopy(IComponent*& copyTo) const
@@ -51,17 +48,48 @@ namespace Core::Audio
     {
         ComponentUpdatable::OnCopy(copyTo);
         AudioSource* copy{ dynamic_cast<AudioSource*>(copyTo) };
-        copy->m_isActive = m_isActive;
+
+        copy->m_audioClip       = m_audioClip;
+        copy->m_audioMode       = m_audioMode;
+        copy->m_mute            = m_mute;
+        copy->m_playOnAwake     = m_playOnAwake;
+        copy->m_loop            = m_loop;
+        copy->m_priority        = m_priority;
+        copy->m_volume          = m_volume;
+        copy->m_pitch           = m_pitch;
+        copy->m_pan             = m_pan;
+        copy->m_minDistance     = m_minDistance;
+        copy->m_maxDistance     = m_maxDistance;
     }
 
     void AudioSource::OnReset()
     {
         ComponentUpdatable::OnReset();
+
+        m_audioClip     = "";
+        m_audioMode     = Core::Audio::EAudioMode::AUDIO_2D;
+        m_mute          = false;
+        m_playOnAwake   = true;
+        m_loop          = false;
+        m_priority      = 128;
+        m_volume        = 1.f;
+        m_pitch         = 1.f;
+        m_pan           = 0.f;
+        m_minDistance   = 1.f;
+        m_maxDistance   = 100.f;
     }
 
     void AudioSource::OnDestroy()
     {
-        m_isActive = false;
+        ComponentUpdatable::OnDestroy();
+
+        Stop();
+        if (!m_fmodSound)
+            return;
+
+        FMOD_RESULT result = m_fmodSound->release();
+        if (result != FMOD_OK)
+            LogErrorFMOD(result);
     }
 
     void AudioSource::OnStart()
@@ -72,7 +100,9 @@ namespace Core::Audio
             return;
 
         CreateSound(m_audioClip);
-        Play();
+
+        if (m_playOnAwake)
+            Play();
     }
 
     void AudioSource::Play()
@@ -80,7 +110,8 @@ namespace Core::Audio
         if (IsPlaying())
             return;
 
-        FMOD_RESULT result = m_fmodSystem->playSound(m_fmodSound, nullptr, false, &m_fmodChannel);
+        m_fmodSound->setMode(static_cast<FMOD_MODE>(m_audioMode) | (m_loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF));
+        FMOD_RESULT result = GetRoot()->GetEngine()->GetAudioSystem()->GetFMODSystem()->playSound(m_fmodSound, nullptr, false, &m_fmodChannel);
         if (result != FMOD_OK)
             LogErrorFMOD(result);
     }
@@ -125,18 +156,26 @@ namespace Core::Audio
         if (!IsPlaying())
             return;
 
-        const auto pos = GetParent()->GetPos();
+        m_fmodChannel->setMute(m_mute);
+        m_fmodChannel->setVolume(m_volume);
+        m_fmodChannel->setPriority(m_priority);
+        m_fmodChannel->setPitch(m_pitch);
+        m_fmodChannel->setPan(m_pan);
+        m_fmodSound->set3DMinMaxDistance(m_minDistance, m_maxDistance);
 
-        FMOD_VECTOR f_mod_pos = { pos.x, pos.y, pos.z };
-        FMOD_VECTOR f_mod_vel = { 0, 0, 0 };
-
-        // Set 3D attributes
-        FMOD_RESULT result = m_fmodChannel->set3DAttributes(&f_mod_pos, &f_mod_vel);
-        if (result != FMOD_OK)
+        if (m_audioMode == EAudioMode::AUDIO_3D)
         {
-            m_fmodChannel = nullptr;
-            LogErrorFMOD(result);
-            return;
+            const Maths::Vec3& pos = GetParent()->GetPos();
+
+            FMOD_VECTOR f_mod_pos = { pos.x, pos.y, pos.z };
+            FMOD_VECTOR f_mod_vel = { 0.f, 0.f, 0.f };
+
+            FMOD_RESULT result = m_fmodChannel->set3DAttributes(&f_mod_pos, &f_mod_vel);
+            if (result != FMOD_OK)
+            {
+                m_fmodChannel = nullptr;
+                LogErrorFMOD(result);
+            }
         }
     }
 
@@ -163,14 +202,7 @@ namespace Core::Audio
 
     void AudioSource::CreateSound(const std::string& file_path)
     {
-        FMOD_RESULT result = m_fmodSystem->createSound(file_path.c_str(), FMOD_3D | m_loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF, nullptr, &m_fmodSound);
-        if (result != FMOD_OK)
-        {
-            LogErrorFMOD(result);
-            return;
-        }
-
-        result = m_fmodSound->set3DMinMaxDistance(m_minDistance, m_maxDistance);
+        FMOD_RESULT result = GetRoot()->GetEngine()->GetAudioSystem()->GetFMODSystem()->createSound(file_path.c_str(), static_cast<FMOD_MODE>(m_audioMode), 0, &m_fmodSound);
         if (result != FMOD_OK)
             LogErrorFMOD(result);
     }

@@ -12,14 +12,21 @@ namespace FMOD
 
 namespace Core::Audio
 {
+	enum class EAudioMode
+	{
+		AUDIO_2D = 0x00000008,
+		AUDIO_3D = 0x00000010
+	};
+
 	BAKERS_API_CLASS AudioSource : public Datastructure::ComponentUpdatable
 	{
 	private:
 		std::string m_audioClip;
 
-		FMOD::System* m_fmodSystem{ nullptr };
-		FMOD::Sound* m_fmodSound{ nullptr };
-		FMOD::Channel* m_fmodChannel{ nullptr };
+		FMOD::System*	m_fmodSystem{ nullptr };
+		FMOD::Sound*	m_fmodSound{ nullptr };
+		FMOD::Channel*	m_fmodChannel{ nullptr };
+		EAudioMode		m_audioMode{ EAudioMode::AUDIO_2D };
 
 		bool m_mute{ false };
 		bool m_playOnAwake{ true };
@@ -27,13 +34,12 @@ namespace Core::Audio
 		int m_priority{ 128 };
 		float m_volume{ 1.f };
 		float m_pitch{ 1.f };
-		float m_stereoPan{ 0.f };
+		float m_pan{ 0.f };
 		float m_minDistance{ 1.f };
 		float m_maxDistance{ 100.f };
 
 	public:
 		AudioSource();
-		~AudioSource();
 
 	protected:
 		virtual void	StartCopy(IComponent*& copyTo) const override;
@@ -44,7 +50,7 @@ namespace Core::Audio
 
 		virtual void	OnDestroy() override;
 
-		virtual void OnStart() override;
+		virtual void	OnStart() override;
 
 		/**
 		 * Call Update function in Lua script
