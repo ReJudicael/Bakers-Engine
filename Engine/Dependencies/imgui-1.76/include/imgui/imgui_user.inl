@@ -9,7 +9,10 @@ namespace ImGui
     void PushItemToRight(const char* label, float offset)
     {
         if (label)
+        {
+            AlignTextToFramePadding();
             Text(label);
+        }
         SameLine(offset);
         PushItemWidth(-FLT_MIN);
     }

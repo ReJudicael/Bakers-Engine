@@ -40,7 +40,7 @@
                                     "Ratio": {
                                         "Name": "Ratio",
                                         "Type": "float",
-                                        "Value": 1.5914634466171265
+                                        "Value": 0.9119047522544861
                                     }
                                 }
                             }
@@ -133,6 +133,61 @@
                             "Name": "Lua Script",
                             "Type": "std::string",
                             "Value": ""
+                        }
+                    }
+                },
+                {
+                    "Type": "Audio Source",
+                    "Values": {
+                        "Audio Clip": {
+                            "Name": "Audio Clip",
+                            "Type": "std::string",
+                            "Value": "Resources\\01-01 Love Shot.mp3"
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Max Distance": {
+                            "Name": "Max Distance",
+                            "Type": "float",
+                            "Value": 100.0
+                        },
+                        "Min Distance": {
+                            "Name": "Min Distance",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Mute": {
+                            "Name": "Mute",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Pitch": {
+                            "Name": "Pitch",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Play On Awake": {
+                            "Name": "Play On Awake",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Priority": {
+                            "Name": "Priority",
+                            "Type": "int",
+                            "Value": 128
+                        },
+                        "Stereo Pan": {
+                            "Name": "Stereo Pan",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Volume": {
+                            "Name": "Volume",
+                            "Type": "float",
+                            "Value": 1.0
                         }
                     }
                 }

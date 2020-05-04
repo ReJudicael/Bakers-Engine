@@ -24,6 +24,7 @@ namespace Core
 			 * FMOD system
 			 */
 			FMOD::System* m_fmodSystem{ nullptr };
+
 			/**
 			 * State of FMOD
 			 */
@@ -78,6 +79,8 @@ namespace Core
 			 * @param listenerTransform: Listener transform
 			 */
 			void SetListenerTransform(Core::Datastructure::Transform* listenerTransform);
+
+			FMOD::System* GetFMODSystem() const;
 
 		private:
 			/**

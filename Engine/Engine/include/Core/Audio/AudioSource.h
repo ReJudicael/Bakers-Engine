@@ -1,14 +1,26 @@
 #pragma once
 
-#include "ComponentBase.h"
+#include "ComponentUpdatable.h"
 #include "CoreMinimal.h"
+
+namespace FMOD
+{
+	class System;
+	class Sound;
+	class Channel;
+}
 
 namespace Core::Audio
 {
-	BAKERS_API_CLASS AudioSource : public Datastructure::ComponentBase
+	BAKERS_API_CLASS AudioSource : public Datastructure::ComponentUpdatable
 	{
 	private:
 		std::string m_audioClip;
+
+		FMOD::System* m_fmodSystem{ nullptr };
+		FMOD::Sound* m_fmodSound{ nullptr };
+		FMOD::Channel* m_fmodChannel{ nullptr };
+
 		bool m_mute{ false };
 		bool m_playOnAwake{ true };
 		bool m_loop{ false };
@@ -16,6 +28,8 @@ namespace Core::Audio
 		float m_volume{ 1.f };
 		float m_pitch{ 1.f };
 		float m_stereoPan{ 0.f };
+		float m_minDistance{ 1.f };
+		float m_maxDistance{ 100.f };
 
 	public:
 		AudioSource();
@@ -30,6 +44,21 @@ namespace Core::Audio
 
 		virtual void	OnDestroy() override;
 
-		REGISTER_CLASS(Datastructure::ComponentBase);
+		virtual void OnStart() override;
+
+		/**
+		 * Call Update function in Lua script
+		 * @param deltaTime: Time elapsed between two frames, sent to Lua Update
+		 */
+		virtual void OnUpdate(float deltaTime) override;
+
+		void Play();
+		void Pause();
+		void Stop();
+		bool IsPlaying() const;
+		void LogErrorFMOD(int result) const;
+		void CreateSound(const std::string& file_path);
+
+		REGISTER_CLASS(Datastructure::ComponentUpdatable);
 	};
 }

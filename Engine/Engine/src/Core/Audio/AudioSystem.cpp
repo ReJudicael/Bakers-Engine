@@ -24,14 +24,6 @@ namespace Core::Audio
 			return false;
 		}
 
-		unsigned int version;
-		m_fmodResult = m_fmodSystem->getVersion(&version);
-		if (m_fmodResult != FMOD_OK || version < FMOD_VERSION)
-		{
-			LogErrorFMOD(m_fmodResult);
-			return false;
-		}
-
 		int numDrivers{ 0 };
 		m_fmodResult = m_fmodSystem->getNumDrivers(&numDrivers);
 		if (m_fmodResult != FMOD_OK)
@@ -85,8 +77,10 @@ namespace Core::Audio
 		if (m_listenerTransform)
 		{
 			Core::Maths::Vec3 pos = m_listenerTransform->GetLocalPos();
+
 			// TODO: (pos-lastpos) / time_taken_since_last_frame_in_seconds.
 			Core::Maths::Vec3 vel = { 0.f, 0.f, 0.f };
+
 			Core::Maths::Vec3 forward = m_listenerTransform->GetForward();
 			Core::Maths::Vec3 up = m_listenerTransform->GetUp();
 
@@ -112,6 +106,10 @@ namespace Core::Audio
 		m_listenerTransform = listenerTransform;
 	}
 
+	FMOD::System* AudioSystem::GetFMODSystem() const
+	{
+		return m_fmodSystem;
+	}
 
 	void AudioSystem::LogErrorFMOD(FMOD_RESULT error) const
 	{
