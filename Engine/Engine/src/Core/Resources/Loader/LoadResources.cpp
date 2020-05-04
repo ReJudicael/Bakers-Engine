@@ -35,7 +35,9 @@ namespace Resources::Loader
 
 		LoadObjInModel("Cube","Resources/Models/cube.obj");
 		LoadObjInModel("Capsule","Resources/Models/capsule.obj");
+		LoadObjInModel("Quad","Resources/Models/quad.obj");
 		LoadObjInModel("Skybox","Resources/Models/skybox.obj");
+		LoadObjInModel("Sphere","Resources/Models/sphere.obj");
 	}
 
 	ResourcesManager::~ResourcesManager()

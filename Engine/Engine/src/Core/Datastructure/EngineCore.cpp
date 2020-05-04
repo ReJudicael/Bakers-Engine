@@ -90,6 +90,56 @@ namespace Core::Datastructure
 		return init;
 	}
 
+	Core::Datastructure::Object* EngineCore::AddMesh(const char* name,const char* model, const char* shader, const char* tex, const Transform& trs, Object* parent)
+	{
+		Object* object;
+		if (parent)
+			object = parent->CreateChild(name, {});
+		else
+			object = m_root->CreateChild(name, {});
+
+		Mesh* m = new Mesh();
+		m->AddModel(GetResourcesManager()->GetModel(model));
+		std::shared_ptr<Resources::Material> mat = std::make_shared<Resources::Material>();
+		mat->shader = GetResourcesManager()->GetShader(shader);
+		std::shared_ptr<Resources::Texture> texture;
+		GetResourcesManager()->LoadTexture(tex, texture);
+		mat->textures.push_back(texture);
+		m->AddMaterial(mat);
+		object->AddComponent(m);
+
+		object->SetPos(trs.GetLocalPos());
+		object->SetRot(trs.GetLocalRot());
+		object->SetScale(trs.GetLocalScale());
+
+		return object;
+	}
+
+	void EngineCore::CreateSkybox(bool cube)
+	{
+		if (cube)
+		{
+			Core::Datastructure::Object* skybox{ m_root->CreateChild("Skybox", {}) };
+			AddMesh("Sky1", "Quad", "Skybox", "Resources/Textures/skybox1.jpg",
+				{ {-50.f, 0.f, 0.f}, {0.f, M_PI_2, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+			AddMesh("Sky2", "Quad", "Skybox", "Resources/Textures/skybox2.jpg",
+				{ {0.f, 49.f, 0.f}, {M_PI_2, 0.f, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+			AddMesh("Sky3", "Quad", "Skybox", "Resources/Textures/skybox3.jpg",
+				{ {0.f, 0.f, -49.f}, {0.f, 0.f, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+			AddMesh("Sky4", "Quad", "Skybox", "Resources/Textures/skybox4.jpg",
+				{ {0.f, -49.f, 0.f}, {-M_PI_2, 0.f, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+			AddMesh("Sky5", "Quad", "Skybox", "Resources/Textures/skybox5.jpg",
+				{ {50.f, 0.f, 0.f}, {0.f, -M_PI_2, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+			AddMesh("Sky6", "Quad", "Skybox", "Resources/Textures/skybox6.jpg",
+				{ {0.f, 0.f, 49.f}, {0.f, M_PI, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+		}
+		else
+		{
+			AddMesh("Skysphere", "Sphere", "Skybox", "Resources/Textures/Skysphere.png",
+				{ {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {50.f, 50.f, 50.f} });
+		}
+	}
+
 	int EngineCore::OnInit(int width, int height)
 	{
 		glfwSetErrorCallback(error);
@@ -150,22 +200,12 @@ namespace Core::Datastructure
 		Core::Datastructure::Object* dining_room{ m_root->CreateChild("DiningRoom", {}) };
 		Core::Datastructure::Object* staticMesh{ dining_room->CreateChild("Static Mesh", {}) };
 		Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
-		Core::Datastructure::Object* skybox{ m_root->CreateChild("Skybox", {}) };
 
 		umbreon->AddComponent(new Core::Physics::DynamicMesh());
 		
-		// Create skybox cube
-		Mesh* m = new Mesh();
-		m->AddModel(GetResourcesManager()->GetModel("Skybox"));
-		std::shared_ptr<Resources::Material> mat = std::make_shared<Resources::Material>();
-		mat->shader = GetResourcesManager()->GetShader("Skybox");
-		std::shared_ptr<Resources::Texture> tex;
-		GetResourcesManager()->LoadTexture("Resources/Textures/skybox.jpg", tex);
-		mat->textures.push_back(tex);
-		m->AddMaterial(mat);
-		skybox->AddComponent(m);
-		skybox->SetScale({100.f, 100.f, 100.f});
-
+		// Create skybox cube (set to false to have a sphere with other texture instead)
+		CreateSkybox(false);
+		
 		staticMesh->SetPos({ 0.f,-5.f,0.f });
 		staticMesh->SetScale({ 5.f,1.f,5.f });
 		Core::Physics::StaticMesh* staticmesh1 = new Core::Physics::StaticMesh();
