@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "OpenGLLinkState.h"
+#include "CoreMinimal.h"
 
 namespace Resources
 {

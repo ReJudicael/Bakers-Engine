@@ -28,11 +28,11 @@ namespace Resources
 	 */
 	struct Material : public std::enable_shared_from_this<Material>
 	{
-		Core::Maths::Color						diffuseColor;
-		Core::Maths::Color						ambientColor;
-		Core::Maths::Color						specularColor;
-		float									shininess;
-		float									shininessStrength;
+		Core::Maths::Color						diffuseColor{};
+		Core::Maths::Color						ambientColor{};
+		Core::Maths::Color						specularColor{};
+		float									shininess{};
+		float									shininessStrength{};
 
 		Core::Maths::Vec3						materialColor;
 

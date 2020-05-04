@@ -12,6 +12,7 @@
 #include "Vertex.h" 
 #include "Debug.h"
 #include "Shader.h"
+#include "TaskSystem.hpp"
 #include "CoreMinimal.h"
 
 struct aiScene;
@@ -55,6 +56,7 @@ namespace Resources
 
 
 		public:
+			Core::SystemManagement::TaskSystem m_task{};
 			/* Used for stocked the different value which allow to bind different resources to OpengGL (for the multiThread)*/
 			std::list<std::shared_ptr<TextureData>>		m_texturesToLink;
 			std::list<std::shared_ptr<ModelData>>		m_modelsToLink;

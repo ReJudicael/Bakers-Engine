@@ -67,6 +67,7 @@ namespace Resources::Loader
 {
 
 	ResourcesManager::ResourcesManager()
+	//m_task {new Core::SystemManagement::TaskSystem()}
 	{
 		Shader defaultShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		m_shaders.emplace("Default", std::make_shared<Shader>(defaultShader));
@@ -94,6 +95,8 @@ namespace Resources::Loader
 		for (unorderedmapShader::iterator itshader = m_shaders.begin();
 			itshader != m_shaders.end(); ++itshader)
 			itshader->second->Delete();
+
+		m_task.EndTaskSystem();
 	}
 
 	void ResourcesManager::Load3DObject(const char* fileName)
@@ -170,9 +173,11 @@ namespace Resources::Loader
 			int numberOfSameKey{ LoadMeshsSceneCheckModelIsLoaded(modelData, model, name) };
 
 			modelData->model = model;
+			modelData->SetArrays(scene, i);
 			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
 			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
-			modelData->LoadaiMeshModel(mesh);
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData, mesh, 0, 0);
+			//modelData->LoadaiMeshModel(mesh);
 
 			//modelData->LoadVertices(mesh);
 			//modelData->LoadIndices(mesh);
@@ -181,7 +186,7 @@ namespace Resources::Loader
 			{
 				LoadaiMeshMaterial(scene, mesh, directory, numberOfSameKey);
 			}
-			modelData->stateVAO = EOpenGLLinkState::CANLINK;
+			//modelData->stateVAO = EOpenGLLinkState::CANLINK;
 		}
 	}
 
@@ -240,9 +245,16 @@ namespace Resources::Loader
 
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
 		{
+			modelData->SetArrays(scene, i);
+		}
+
+		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
+		{
 			aiMesh* mesh = scene->mMeshes[i];
 
-			modelData->LoadaiMeshModel(mesh, indexLastMesh);
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData, mesh, i, indexLastMesh);
+			//m_task.AddTask(&Resources::ModelData::LoadaiMeshAABB, modelData, mesh);
+			//modelData->LoadaiMeshModel(mesh, i,indexLastMesh);
 
 			//modelData->LoadVertices(mesh);
 			//modelData->LoadIndices(mesh, indexLastMesh);
@@ -250,10 +262,10 @@ namespace Resources::Loader
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
 			{
+				//m_task->AddTask(&Resources::Loader::ResourcesManager::LoadaiMeshMaterial, this, scene, mesh, directory);
 				LoadaiMeshMaterial(scene, mesh, directory);
 			}
 		}
-		modelData->stateVAO = EOpenGLLinkState::CANLINK;
 	}
 
 	void ResourcesManager::LoadObjInModel(const std::string& name, const char* fileName)
@@ -291,6 +303,7 @@ namespace Resources::Loader
 			
 		aiMesh* mesh = scene->mMeshes[0];
 
+		modelData->SetArrays(scene, 0);
 
 		modelData->LoadaiMeshModel(mesh);
 
@@ -317,6 +330,7 @@ namespace Resources::Loader
 
 		m_materials.emplace(keyMaterial, materialOut);
 
+		//m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut, mat, directory, *this);
 		materialOut->LoadMaterialFromaiMaterial(mat, directory, *this);
 
 	}
@@ -329,8 +343,15 @@ namespace Resources::Loader
 			return;
 		}
 		texture = std::make_shared<Texture>();
-
+		//m_task.AddTask(&Resources::Texture::LoadTexture, keyName, *this);
 		texture->LoadTexture(keyName, *this);
+		/*std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
+
+		textureData->nameTexture = keyName;
+		PushTextureToLink(textureData);
+		textureData->textureptr = texture;
+		//m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData, keyName, *this);
+		textureData->CreateTextureFromImage(keyName, *this);*/
 	}
 
 	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)
@@ -340,10 +361,14 @@ namespace Resources::Loader
 		aiNode* rootNode = scene->mRootNode;
 		if (fileName.find(".obj") != std::string::npos)
 		{
+			//m_task->AddTask_t(&Resources::Object3DGraph::SceneLoad, sceneData.get(), scene, rootNode, directory, true);
+			//f.get();
 			sceneData->SceneLoad(scene, rootNode, directory, true);
+			
 		}
 		else
 		{
+			//m_task.AddTask_t(&Resources::Loader::ResourcesManager::GetCountModel, this, scene, rootNode, directory, false);
 			sceneData->SceneLoad(scene, rootNode, directory, false);
 		}
 
@@ -375,7 +400,6 @@ namespace Resources::Loader
 			}
 		}
 	}
-
 
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{
