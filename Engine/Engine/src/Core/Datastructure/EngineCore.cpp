@@ -221,8 +221,38 @@ namespace Core::Datastructure
 		return OnLoadScene();
 	}
 
+	void	LoadArray(json j, rttr::variant_sequential_view out)
+	{
+		for (auto it : j["Value"])
+		{
+			if (j["Wrapped type"] == "int")
+				out.insert(out.end(), static_cast<int>(it["Value"]));
+			else if (j["Wrapped type"] == "float")
+				out.insert(out.end(), static_cast<float>(it["Value"]));
+			else if (j["Wrapped type"] == "bool")
+				out.insert(out.end(), static_cast<bool>(it["Value"]));
+			else if (j["Wrapped type"] == "Vec2")
+				out.insert(out.end(), Core::Maths::Vec2(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1])));
+			else if (j["Wrapped type"] == "Vec3")
+				out.insert(out.end(), Core::Maths::Vec3(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1]), static_cast<float>(it["Value"][2])));
+			else if (j["Wrapped type"] == "Vec4")
+				out.insert(out.end(), Core::Maths::Vec4(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1]), static_cast<float>(it["Value"][2]), static_cast<float>(it["Value"][3])));
+			else if (j["Wrapped type"] == "Color")
+				out.insert(out.end(), Core::Maths::Color(static_cast<float>(it["Value"][0]), static_cast<float>(it["Value"][1]), static_cast<float>(it["Value"][2]), static_cast<float>(it["Value"][3])));
+			else if (j["Wrapped type"] == "std::string")
+				out.insert(out.end(), std::string(it["Value"]));
+		}
+	}
+
 	void	LoadProperty(rttr::property prop, rttr::instance inst, json j)
 	{
+		if (j["Type"] == "ArraySequential")
+		{
+			auto test = prop.get_value(inst);
+			LoadArray(j, test.create_sequential_view());
+			prop.set_value(inst, test);
+			return;
+		}
 		rttr::type	t{ prop.get_type() };
 		if (!prop.is_valid() || !t.is_valid())
 		{
@@ -285,14 +315,14 @@ namespace Core::Datastructure
 			return;
 		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["w"], j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
 
-		for (auto& childs : j["Childs"])
-		{
-			AddChild(childs, o);
-		}
-
 		for (auto& components : j["Components"])
 		{
 			AddComponent(components, o);
+		}
+
+		for (auto& childs : j["Childs"])
+		{
+			AddChild(childs, o);
 		}
 	}
 

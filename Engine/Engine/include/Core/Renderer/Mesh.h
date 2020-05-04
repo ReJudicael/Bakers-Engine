@@ -32,11 +32,16 @@ protected:
 
 	std::string	m_modelName;
 
-	std::vector<std::shared_ptr<Resources::Material>> m_materialsModel;
+	bool		m_isRoot{ false };
+	bool		m_isChild{ false };
+
+	std::vector<std::shared_ptr<Resources::Material>>	m_materialsModel;
+	std::vector<std::string>							m_materialsNames;
 
 	virtual void	OnReset() override; 
 	virtual void	OnCopy(IComponent* copyTo) const override;
 	virtual void	StartCopy(IComponent*& copyTo) const override;
+	virtual bool	OnStart() override;
 
 	void			UpdateModel();
 public:
@@ -47,7 +52,8 @@ public:
 	std::vector<int> m_indices;
 
 	std::string		GetModel() { return m_modelName; };
-	void			SetModel(std::string newModel);
+	void			SetModel(std::string newModel); 
+	void			SetChildModel(std::string newModel);
 
 	float*	m_projection;
 

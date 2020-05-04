@@ -208,59 +208,88 @@ namespace Editor
 
 	json	ClassToJson(rttr::type t, rttr::instance i);
 
+	json	ValToJson(rttr::type t, rttr::variant val)
+	{
+		json out;
+		out["Type"] = t.get_name().to_string();
+
+		if (t.is_enumeration())
+		{
+			out["Value"] = val.get_value<int>();
+		}
+		else if (t == rttr::type::get<bool>())
+		{
+			out["Value"] = val.get_value<bool>();
+		}
+		else if (t == rttr::type::get<int>())
+		{
+			out["Value"] = val.get_value<int>();
+		}
+		else if (t == rttr::type::get<float>())
+		{
+			out["Value"] = val.get_value<float>();
+		}
+		else if (t == rttr::type::get<Core::Maths::Vec2>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Vec2>().xy;
+		}
+		else if (t == rttr::type::get<Core::Maths::Vec3>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Vec3>().xyz;
+		}
+		else if (t == rttr::type::get<Core::Maths::Vec4>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Vec4>().xyzw;
+		}
+		else if (t == rttr::type::get<Core::Maths::Color>())
+		{
+			out["Value"] = val.get_value<Core::Maths::Color>().rgba;
+		}
+		else if (t == rttr::type::get<std::string>())
+		{
+			out["Value"] = val.get_value<std::string>();
+		}
+		else if (t.is_array() || val.is_sequential_container() || val.is_associative_container())
+		{
+			if (val.is_sequential_container())
+			{
+				out["Type"] = "ArraySequential";
+				out["Value"] = json::array();
+				auto view{ val.create_sequential_view() };
+				out["Wrapped type"] = view.get_value_type().get_name();
+				for (auto value : view)
+					out["Value"].push_back(ValToJson(view.get_value_type(), value.extract_wrapped_value()));
+			}
+			else if (val.is_associative_container())
+			{
+				out["Type"] = "ArrayAssociative";
+				BAKERS_LOG_WARNING("Associative array save is not yet implemented");
+			}
+			else
+			{
+				BAKERS_LOG_ERROR("Array is not working with RTTR");
+			}
+		}
+		else if (t.is_class())
+		{
+			out["Value"] = ClassToJson(t, val);
+		}
+		else
+		{
+			out["Value"] = "Unknown: " + t.get_name().to_string() + ", please implement this save";
+		}
+
+		return out;
+	}
+
 	json	PropertyToJson(rttr::property prop, rttr::instance i)
 	{
 		rttr::type propType = prop.get_type();
 		rttr:variant val = prop.get_value(i);
 
-		json out;
-		out["Name"] = prop.get_name().to_string();
-		out["Type"] = prop.get_type().get_name().to_string();
+		json out{ ValToJson(propType, val) };
 
-		if (prop.is_enumeration())
-		{
-			out["Value"] = val.get_value<int>();
-		}
-		else if (propType == rttr::type::get<bool>())
-		{
-			out["Value"] = val.get_value<bool>();
-		}
-		else if (propType == rttr::type::get<int>())
-		{
-			out["Value"] = val.get_value<int>();
-		}
-		else if (propType == rttr::type::get<float>())
-		{
-			out["Value"] = val.get_value<float>();
-		}
-		else if (propType == rttr::type::get<Core::Maths::Vec2>())
-		{
-			out["Value"] = val.get_value<Core::Maths::Vec2>().xy;
-		}
-		else if (propType == rttr::type::get<Core::Maths::Vec3>())
-		{
-			out["Value"] = val.get_value<Core::Maths::Vec3>().xyz;
-		}
-		else if (propType == rttr::type::get<Core::Maths::Vec4>())
-		{
-			out["Value"] = val.get_value<Core::Maths::Vec4>().xyzw;
-		}
-		else if (propType == rttr::type::get<Core::Maths::Color>())
-		{
-			out["Value"] = val.get_value<Core::Maths::Color>().rgba;
-		}
-		else if (propType == rttr::type::get<std::string>())
-		{
-			out["Value"] = val.get_value<std::string>();
-		}
-		else if (propType.is_class())
-		{
-			out["Value"] = ClassToJson(propType, val);
-		}
-		else
-		{
-			out["Value"] = "Unknown: please implement this save";
-		}
+		out["Name"] = prop.get_name().to_string();
 
 		return out;
 	}
@@ -271,9 +300,9 @@ namespace Editor
 		out["Type"] = t.get_name().to_string();
 		{
 			json values;
-			for (rttr::property p : t.get_properties())
+			for (rttr::property p : t.get_properties(filter_item::instance_item | filter_item::non_public_access | filter_item::public_access))
 			{
-				if (p.is_readonly() || p.is_static() || p.get_access_level() != rttr::access_levels::public_access)
+				if (p.is_readonly() || p.is_static())
 					continue;
 				values[p.get_name().to_string()] = PropertyToJson(p, i);
 			}

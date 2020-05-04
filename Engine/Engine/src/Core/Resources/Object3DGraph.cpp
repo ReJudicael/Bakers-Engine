@@ -89,22 +89,22 @@ namespace Resources
 
 			if (resources.GetCountModel(nameMesh) > 0)
 			{
-				mesh->AddModel(resources.GetModel(nameMesh));
+				//mesh->AddModel(resources.GetModel(nameMesh));
+				mesh->SetChildModel(nameMesh);
 				mesh->AddMaterials(resources, namesMaterial);
 				Object->AddComponent(mesh);
 
-				Core::Datastructure::TriggeredEvent* newEvent{ new Core::Datastructure::TriggeredEvent() };
+				/*Core::Datastructure::TriggeredEvent* newEvent{ new Core::Datastructure::TriggeredEvent() };
 
 				newEvent->SetTriggeredEvent(std::bind(&Mesh::IsModelLoaded, mesh), std::bind(&Mesh::CreateAABBMesh, mesh));
 
-				Object->AddComponent(newEvent);
+				Object->AddComponent(newEvent);*/
 
 				/*For Test*/
 				//Core::Physics::StaticMesh* staticMesh{ new Core::Physics::StaticMesh() };
 				//Object->AddComponent(staticMesh);
 			}
 		}
-
 
 		for (auto i{ 0 }; i < children.size(); i++)
 		{

@@ -17,6 +17,7 @@ namespace Core::Datastructure
 		if (GetScene() == nullptr)
 			return;
 		GetScene()->AddRenderable(this);
+		IComponent::OnInit();
 	}
 	IRenderable::~IRenderable()
 	{

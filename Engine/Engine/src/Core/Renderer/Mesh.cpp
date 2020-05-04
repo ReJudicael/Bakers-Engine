@@ -18,11 +18,29 @@ RTTR_PLUGIN_REGISTRATION
 {
 	registration::class_<Mesh>("Mesh")
 		.constructor()
-		.property("Model", &Mesh::GetModel, &Mesh::SetModel);
+		.property("Model", &Mesh::GetModel, &Mesh::SetModel)
+		.property("IsRoot", &Mesh::m_isRoot, detail::protected_access())
+		.property("MaterialsNames", &Mesh::m_materialsNames, detail::protected_access())
+		.property("IsChild", &Mesh::m_isChild, detail::protected_access());
 }
 
 void Mesh::SetModel(std::string newModel)
 {
+	if (m_modelName != "")
+	{
+		m_isRoot = false;
+		m_isChild = false;
+	}
+	m_modelName = newModel;
+	if (!IsInit())
+		return;
+	UpdateModel();
+}
+
+void Mesh::SetChildModel(std::string newModel)
+{
+	m_isRoot = false;
+	m_isChild = true;
 	m_modelName = newModel;
 	if (!IsInit())
 		return;
@@ -33,27 +51,49 @@ void Mesh::UpdateModel()
 {
 	if (m_modelName == "")
 		return;
+	
 	Resources::Loader::ResourcesManager* manager{ GetScene()->GetEngine()->GetResourcesManager() };
 	manager->Load3DObject(m_modelName.c_str());
 
-	if (manager->GetCountScene(m_modelName) <= 0)
-		return;
-	std::shared_ptr<Resources::Object3DGraph> scene = manager->GetScene(m_modelName);
-
-	AddModel(manager->GetModel(scene->rootNodeScene.nameMesh));
-	AddMaterials(*manager, scene->rootNodeScene.namesMaterial);
-
-	Core::Datastructure::TriggeredEvent* newEvent{ new Core::Datastructure::TriggeredEvent() };
-
-	newEvent->SetTriggeredEvent(std::bind(&Mesh::IsModelLoaded, this), std::bind(&Mesh::CreateAABBMesh, this));
-	GetParent()->AddComponent(newEvent);
-
-	for (auto i{ 0 }; i < scene->rootNodeScene.children.size(); i++)
+	if (m_isChild)
 	{
-		Core::Datastructure::Object* childObject{ GetParent()->CreateChild("", {}) };
-		scene->rootNodeScene.children[i].CreateObjectScene(childObject, *manager);
-	}
+		if (manager->GetCountModel(m_modelName) <= 0)
+			return;
+		AddModel(manager->GetModel(m_modelName));
 
+		AddMaterials(*manager, m_materialsNames);
+
+		//std::shared_ptr<Resources::Object3DGraph> scene{ manager->GetScene(m_modelName) };
+		//AddMaterials(*manager, scene->rootNodeScene.namesMaterial);
+	}
+	else
+	{
+		if (manager->GetCountScene(m_modelName) <= 0)
+			return;
+		std::shared_ptr<Resources::Object3DGraph> scene{ manager->GetScene(m_modelName) };
+		if (!scene)
+		{
+			BAKERS_LOG_WARNING("Scene loading failed");
+			return;
+		}
+		if (scene->singleMesh)
+		{
+			m_isRoot = false;
+			AddModel(manager->GetModel(scene->rootNodeScene.nameMesh));
+			AddMaterials(*manager, scene->rootNodeScene.namesMaterial);
+		}
+		else
+		{
+			if (m_isRoot)
+				return;
+			m_isRoot = true;
+			for (auto i{ 0 }; i < scene->rootNodeScene.children.size(); i++)
+			{
+				Core::Datastructure::Object* childObject{ GetParent()->CreateChild("", {}) };
+				scene->rootNodeScene.children[i].CreateObjectScene(childObject, *manager);
+			}
+		}
+	}
 }
 
 Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
@@ -82,9 +122,7 @@ void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
 
 bool Mesh::IsModelLoaded()
 {
-	if (m_model->stateVAO == Resources::EOpenGLLinkState::ISLINK)
-		return true;
-	return false;
+	return m_model && m_model->stateVAO == Resources::EOpenGLLinkState::ISLINK;
 }
 
 void Mesh::CreateAABBMesh()
@@ -168,9 +206,14 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 
 void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)
 {
-	for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
+	if (!m_model)
 	{
-		m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
+		m_materialsNames = namesMaterial;
+	}
+	else
+	{
+		for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
+			m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
 	}
 }
 
@@ -198,4 +241,16 @@ void Mesh::StartCopy(IComponent*& copyTo) const
 {
 	copyTo = new Mesh();
 	OnCopy(copyTo);
+}
+
+bool Mesh::OnStart()
+{
+	if (IsModelLoaded())
+	{
+		CreateAABBMesh();
+		IRenderable::OnStart();
+		ComponentBase::OnStart();
+		return true;
+	}
+	return false;
 }
