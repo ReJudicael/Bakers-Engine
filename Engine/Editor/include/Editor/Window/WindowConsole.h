@@ -28,11 +28,6 @@ namespace Editor::Window
 		std::pair<std::shared_ptr<Resources::Texture>, bool> m_logsIcon[3];
 
 		/**
-		 * Icon for settings
-		 */
-		std::shared_ptr<Resources::Texture> m_settingsIcon;
-
-		/**
 		 * Whether the scrollbar may be at the bottom or not
 		 */
 		bool m_canScrollBottom{ false };
@@ -41,6 +36,16 @@ namespace Editor::Window
 		 * Wheter the autoScroll is activated or not
 		 */
 		bool m_autoScroll{ true };
+
+		/**
+		 * Wheter the console is cleared or not
+		 */
+		bool m_consoleCleared{ false };
+
+		/**
+		 * Wheter the clear on play is activated or not
+		 */
+		bool m_clearOnPlay{ false };
 
 	public:
 		/**
@@ -77,7 +82,7 @@ namespace Editor::Window
 		 * @param label: Label of button
 		 * @param isEnabled: Whether the button is enabled or not
 		 */
-		void AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled);
+		void LogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled);
 
 		/**
 		 * Clear button
@@ -101,9 +106,14 @@ namespace Editor::Window
 		void PrintLog(const Core::Debug::LogData& log);
 
 		/**
-		 * Draws the console messages
+		 * Draw the console messages
 		 */
 		void ConsolePrint();
+
+		/**
+		 * Clear on play
+		 */
+		void ClearOnPlay();
 
 	private:
 		/**

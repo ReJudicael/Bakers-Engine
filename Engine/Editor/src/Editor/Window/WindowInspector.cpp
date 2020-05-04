@@ -8,6 +8,8 @@
 #include "Reflection.h"
 #include "EditorEngine.h"
 
+#include "IconsFontAwesome5.h"
+
 namespace Editor::Window
 {
 	WindowInspector::WindowInspector(Canvas* canvas, bool visible) :
@@ -15,11 +17,6 @@ namespace Editor::Window
 	{
 		m_treeNodeFlags		= ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 		m_inputTextFlags	= ImGuiInputTextFlags_AutoSelectAll;
-
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\remove.png", m_optionsIcon[0]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\reset.png", m_optionsIcon[1]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\lock.png", m_lockIcon[0]);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\unlock.png", m_lockIcon[1]);
 	}
 
 	void WindowInspector::PushWindowStyle()
@@ -44,12 +41,6 @@ namespace Editor::Window
 
 	void WindowInspector::DisplayObjectLocalTransform(Core::Datastructure::Object* object)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.00f, 0.58f, 0.20f, 1.00f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.00f, 0.58f, 0.20f, 0.70f });
-		if (ImGui::Button("Local", { ImGui::GetContentRegionAvail().x, 0.f }))
-			m_isLocal = !m_isLocal;
-		ImGui::PopStyleColor(2);
-
 		Core::Maths::Vec3 pos{ object->GetPos() };
 		if (ImGui::RDragFloat3("Position", pos.xyz, 0.01f))
 			object->SetPos(pos);
@@ -66,12 +57,6 @@ namespace Editor::Window
 
 	void WindowInspector::DisplayObjectGlobalTransform(Core::Datastructure::Object* object)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.60f, 0.35f, 0.71f, 1.00f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.60f, 0.35f, 0.71f, 0.70f });
-		if (ImGui::Button("Global", { ImGui::GetContentRegionAvail().x, 0.f }))
-			m_isLocal = !m_isLocal;
-		ImGui::PopStyleColor(2);
-
 		Core::Maths::Vec3 pos{ object->GetGlobalPos() };
 		if (ImGui::RDragFloat3("Position", pos.xyz, 0.01f))
 			object->SetGlobalPos(pos);
@@ -86,15 +71,28 @@ namespace Editor::Window
 			object->SetGlobalScale(scale);
 	}
 
+	GLuint WindowInspector::GetIcon(const std::string& componentName)
+	{
+		auto it{ m_icons.find(componentName) };
+		if (it == m_icons.end())
+		{
+			const std::string iconsPath{ "Resources\\Images\\InspectorIcons\\" + componentName + ".png" };
+			std::shared_ptr<Resources::Texture> icon;
+			GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
+			it = m_icons.emplace(componentName, icon).first;
+		}
+
+		return it->second->texture;
+	}
+
 	void WindowInspector::DisplayObjectTransform(Core::Datastructure::Object* object)
 	{
-		bool isOpen = ImGui::CollapsingHeader("Transform", m_treeNodeFlags);
-
+		bool isOpen = ImGui::CollapsingHeaderWithImageUV(GetIcon("Transform"), "Transform", m_treeNodeFlags);
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
-		bool isClickedReset = ImGui::ImageButtonUV(m_optionsIcon[1]->texture);
+		bool isClickedReset = ImGui::Button(ICON_FA_UNDO);
+		ImGui::PopStyleColor();
 		ImGui::HelpMarkerItem("Reset");
-		ImGui::PopStyleColor(1);
 
 		if (isClickedReset)
 		{
@@ -107,7 +105,7 @@ namespace Editor::Window
 		{
 			ImGui::Spacing();
 
-			if (m_isLocal)
+			if (GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL)
 				DisplayObjectLocalTransform(object);
 			else
 				DisplayObjectGlobalTransform(object);
@@ -188,8 +186,11 @@ namespace Editor::Window
 		}
 		else if (propType == rttr::type::get<std::string>())
 		{
-			std::string str{ prop.get_value(component).get_value<std::string>() };
-			ImGui::RButtonDD(prop.get_name().to_string().c_str(), std::filesystem::path(str).filename().string().c_str());
+			const std::string str{ prop.get_value(component).get_value<std::string>() };
+			ImGui::RButtonDD(prop.get_name().to_string().c_str(),
+				!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
+			if (!str.empty())
+				ImGui::HelpMarkerItem(str.c_str());
 
 			if (ImGui::BeginDragDropTarget())
 			{
@@ -224,17 +225,18 @@ namespace Editor::Window
 			ImGui::PushID(it);
 
 			rttr::type t{ it->get_type() };
-			bool isOpen = ImGui::CollapsingHeader(t.get_name().to_string().c_str(), m_treeNodeFlags);
+			bool isOpen = ImGui::CollapsingHeaderWithImageUV(GetIcon(t.get_name().to_string().c_str()), t.get_name().to_string().c_str(), m_treeNodeFlags);
 
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
 
-			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16);
-			bool isClickedDelete = ImGui::ImageButtonUV(m_optionsIcon[0]->texture);
-			ImGui::HelpMarkerItem("Remove");
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40.f);
 
-			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
-			bool isClickedReset = ImGui::ImageButtonUV(m_optionsIcon[1]->texture);
+			bool isClickedReset = ImGui::Button(ICON_FA_UNDO);
 			ImGui::HelpMarkerItem("Reset");
+
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 16.f);
+			bool isClickedDelete = ImGui::Button(ICON_FA_TRASH);
+			ImGui::HelpMarkerItem("Remove");
 
 			ImGui::PopStyleColor();
 
@@ -271,7 +273,8 @@ namespace Editor::Window
 		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.88f, 0.70f, 0.17f, 1.00f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.88f, 0.70f, 0.17f, 0.70f });
 
-		if (ImGui::BeginComboButton("Add component"))
+		ImGui::Indent(ImGui::GetWindowContentRegionWidth() * ((1 - 0.7f) / 2));
+		if (ImGui::BeginComboButton("Add component", { ImGui::GetWindowContentRegionWidth() * 0.7f, 0 }))
 		{
 			rttr::array_range possibleComponents{ rttr::type::get<Core::Datastructure::ComponentBase>().get_derived_classes() };
 			for (auto it : possibleComponents)
@@ -302,7 +305,6 @@ namespace Editor::Window
 		ImGui::Separator();
 		ImGui::Spacing();
 
-		ImGui::PushItemToCenter(0.7f);
 		AddComponentToObjectButton(object);
 		ImGui::Spacing();
 	}
@@ -312,7 +314,7 @@ namespace Editor::Window
 		if (m_isLocked)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
-			if (ImGui::ImageButtonUV(m_lockIcon[0]->texture))
+			if (ImGui::Button(ICON_FA_LOCK))
 				m_isLocked = false;
 			ImGui::HelpMarkerItem("Locked");
 			ImGui::PopStyleColor();
@@ -320,7 +322,7 @@ namespace Editor::Window
 		else
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
-			if (ImGui::ImageButtonUV(m_lockIcon[1]->texture))
+			if (ImGui::Button(ICON_FA_UNLOCK))
 				m_isLocked = true;
 			ImGui::HelpMarkerItem("Unlocked");
 			ImGui::PopStyleColor();

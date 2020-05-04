@@ -2,6 +2,7 @@
 #include "GUIManager.h"
 #include "EditorEngine.h"
 #include "ImGuizmo.h"
+#include "IconsFontAwesome5.h"
 
 #include <ImGuizmo.h>
 
@@ -17,6 +18,8 @@ namespace Editor
 		ImGui::CreateContext();
 		{
 			SetIOConfiguration();
+			SetFonts();
+			SetSizes();
 			SetStyle(style);
 		}
 
@@ -45,29 +48,33 @@ namespace Editor
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	}
 
-	void GUIManager::SetStyleBaker()
+	void GUIManager::SetFonts()
 	{
-		ImGui::GetIO().Fonts->AddFontFromFileTTF("Resources\\Fonts\\Lato-Regular.ttf", 16)->DisplayOffset.y = -1;
+		ImGuiIO& io = ImGui::GetIO();
+		io.Fonts->AddFontFromFileTTF("Resources\\Fonts\\Lato-Regular.ttf", 16.f)->DisplayOffset.y = -1;
 
-		ImGuiStyle* style = &ImGui::GetStyle();
-		style->WindowMenuButtonPosition			= ImGuiDir_Right;
-		style->WindowRounding					= 0.f;
-		style->ChildRounding					= 0.f;
-		style->FrameRounding					= 3.f;
-		style->PopupRounding					= 3.f;
-		style->ScrollbarRounding				= 3.f;
-		style->GrabRounding						= 3.f;
-		style->TabRounding						= 3.f;
-		style->FramePadding						= { 4.f, 4.f };
-		style->ItemSpacing						= { 4.f, 4.f };
-		style->Colors[ImGuiCol_WindowBg]		= { 0.10f, 0.10f, 0.12f, 1.00f };
-		style->Colors[ImGuiCol_FrameBg]			= { 0.18f, 0.18f, 0.25f, 1.00f };
-		style->Colors[ImGuiCol_FrameBgActive]	= { 0.55f, 0.55f, 0.58f, 1.00f };
-		style->Colors[ImGuiCol_FrameBgHovered]	= { 0.25f, 0.25f, 0.30f, 1.00f };
-		style->Colors[ImGuiCol_ButtonActive]	= { 0.55f, 0.55f, 0.58f, 1.00f };
-		style->Colors[ImGuiCol_ButtonHovered]	= { 0.25f, 0.25f, 0.30f, 1.00f };
-		style->Colors[ImGuiCol_TitleBgActive]	= { 0.00f, 0.00f, 0.00f, 1.00f };
-		style->Colors[ImGuiCol_TextSelectedBg]	= { 0.50f, 1.00f, 0.50f, 0.33f };
+		ImFontConfig config;
+		config.MergeMode = true;
+		config.GlyphMinAdvanceX = 13.f; // Use if you want to make the icon monospaced
+		static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+		io.Fonts->AddFontFromFileTTF("Resources\\Fonts\\" FONT_ICON_FILE_NAME_FAR, 14.f, &config, icon_ranges);
+		io.Fonts->AddFontFromFileTTF("Resources\\Fonts\\" FONT_ICON_FILE_NAME_FAS, 14.f, &config, icon_ranges);
+		io.Fonts->Build();
+	}
+
+	void GUIManager::SetSizes()
+	{
+		ImGuiStyle* style				= &ImGui::GetStyle();
+		style->WindowMenuButtonPosition	= ImGuiDir_Right;
+		style->WindowRounding			= 0.f;
+		style->ChildRounding			= 0.f;
+		style->FrameRounding			= 3.f;
+		style->PopupRounding			= 3.f;
+		style->ScrollbarRounding		= 3.f;
+		style->GrabRounding				= 3.f;
+		style->TabRounding				= 3.f;
+		style->FramePadding				= { 4.f, 4.f };
+		style->ItemSpacing				= { 4.f, 4.f };
 	}
 
 	bool GUIManager::SetStyle(GUIStyle style)
@@ -83,8 +90,11 @@ namespace Editor
 		case GUIStyle::LIGHT:
 			ImGui::StyleColorsLight();
 			return true;
-		case GUIStyle::BAKER:
-			SetStyleBaker();
+		case GUIStyle::BAKER_DARK:
+			ImGui::StyleColorsBakerDark();
+			return true;
+		case GUIStyle::BAKER_LIGHT:
+			ImGui::StyleColorsBakerLight();
 			return true;
 		default:
 			std::cout << "This style is not valid!" << std::endl;
@@ -95,7 +105,6 @@ namespace Editor
 	void GUIManager::SetCanvas(Canvas* canvas)
 	{
 		m_canvas = canvas;
-		m_canvas->SetManager(this);
 	}
 
 	void GUIManager::NewFrame()

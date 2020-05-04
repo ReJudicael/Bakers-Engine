@@ -220,6 +220,16 @@ namespace Core::Maths
 		}
 
 		/**
+		 * Rotate a vector
+		 * @param v: Vector to rotate
+		 * @return Result rotated vector
+		 */
+		inline constexpr Vec3 Rotate(const Vec3& v) noexcept
+		{
+			return (*this * Quaternion(0, v) * Inversed()).GetVec();
+		}
+
+		/**
 		 * Computes the difference between current and given quaternion
 		 * @param q: Quaternion to compute difference with
 		 * @return The difference between the two quaternions
@@ -345,6 +355,20 @@ namespace Core::Maths
 			z /= scalar;
 
 			return *this;
+		}
+
+		/**
+		 * Multiply a quaternion with a Vec3
+		 * @param v: Right side
+		 * @return Result of multiplication
+		 */
+		inline constexpr Vec3 operator*(const Vec3& v) const
+		{
+			const Vec3 qVec(x, y, z);
+			const Vec3 cross1(qVec.Cross(v));
+			const Vec3 cross2(qVec.Cross(cross1));
+
+			return v + (cross1 * w + cross2) * 2.0f;
 		}
 
 		/**

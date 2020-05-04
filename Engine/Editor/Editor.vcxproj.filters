@@ -75,9 +75,6 @@
     <ClCompile Include="src\Editor\GUIManager.cpp">
       <Filter>Source Files\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp">
-      <Filter>Source Files\Editor\Datastructure</Filter>
-    </ClCompile>
     <ClCompile Include="src\Editor\Canvas\Canvas.cpp">
       <Filter>Source Files\Editor\Canvas</Filter>
     </ClCompile>
@@ -123,9 +120,6 @@
     <ClCompile Include="src\Editor\Window\WindowScene.cpp">
       <Filter>Source Files\Editor\Window</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Window\WindowToolbar.cpp">
-      <Filter>Source Files\Editor\Window</Filter>
-    </ClCompile>
     <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui.cpp">
       <Filter>Internal Dependencies\imgui\src</Filter>
     </ClCompile>
@@ -161,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="..\Dependencies\imGuizmo\src\ImSequencer.cpp">
       <Filter>Internal Dependencies\imGuizmo\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Datastructure\DrawableUIComponent.cpp">
+      <Filter>Source Files\Editor\Datastructure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,9 +215,6 @@
     <ClInclude Include="include\Editor\Window\WindowScene.h">
       <Filter>Header Files\Editor\Window</Filter>
     </ClInclude>
-    <ClInclude Include="include\Editor\Window\WindowToolbar.h">
-      <Filter>Header Files\Editor\Window</Filter>
-    </ClInclude>
     <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imconfig.h">
       <Filter>Internal Dependencies\imgui\include</Filter>
     </ClInclude>
@@ -265,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="..\Dependencies\imGuizmo\include\ImSequencer.h">
       <Filter>Internal Dependencies\imGuizmo\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\IconsFontAwesome5.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

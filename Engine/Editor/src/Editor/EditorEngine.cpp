@@ -15,7 +15,6 @@
 #include "RootObject.hpp"
 #include "CoreMinimal.h"
 #include "LoadResources.h"
-#include "WindowToolbar.h"
 
 #include <fstream>
 
@@ -80,8 +79,8 @@ namespace Editor
 		}
 		SetCallbackToGLFW();
 
-		m_man = new Editor::GUIManager(this, Core::Datastructure::glsl_version, Editor::GUIStyle::BAKER);
-		Editor::Canvas* canvas = new Editor::Canvas();
+		m_man = new Editor::GUIManager(this, Core::Datastructure::glsl_version, Editor::GUIStyle::BAKER_DARK);
+		Editor::Canvas* canvas = new Editor::Canvas(m_man);
 		m_man->SetCanvas(canvas);
 
 		canvas->Add<Editor::Window::WindowHierarchy>();
@@ -91,7 +90,6 @@ namespace Editor
 		canvas->Add<Editor::Window::WindowScene>();
 		canvas->Add<Editor::Window::WindowConsole>();
 		canvas->Add<Editor::Window::WindowFileBrowser>();
-		canvas->Add<Editor::Window::WindowToolbar>();
 		canvas->Add<Editor::Window::WindowProfiler>(false);
 		
 		INIT_TRACY_GL_IMAGE(320, 180)
@@ -129,6 +127,8 @@ namespace Editor
 		glfwPollEvents();
 		if (m_inputSystem->IsCursorHidden())
 			ImGui::SetMouseCursor(-1);
+		if (m_inputSystem->IsMouseButtonPressed(EMouseButton::LEFT))
+			isTestingRay = true;
 		switch (m_state)
 		{
 		case (Core::Datastructure::EngineState::STARTING):
@@ -176,27 +176,20 @@ namespace Editor
 	void	EditorEngine::Render()
 	{
 		EngineCore::Render();
-
-		// Temporary gizmo setting by inputs
-		if (m_inputSystem->IsKeyPressed(EKey::T))
-			gizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
-		if (m_inputSystem->IsKeyPressed(EKey::R))
-			gizmoOperation = ImGuizmo::OPERATION::ROTATE;
-		if (m_inputSystem->IsKeyPressed(EKey::S))
-			gizmoOperation = ImGuizmo::OPERATION::SCALE;
-		if (m_inputSystem->IsKeyPressed(EKey::B))
-			gizmoOperation = ImGuizmo::OPERATION::BOUNDS;
-		if (m_inputSystem->IsKeyPressed(EKey::L))
-			gizmoMode = ImGuizmo::MODE::LOCAL;
-		if (m_inputSystem->IsKeyPressed(EKey::G))
-			gizmoMode = ImGuizmo::MODE::WORLD;
-
 		m_man->Render();
 	}
 
 	bool EditorEngine::IsSelectingEngineView()
 	{
 		return m_man->IsWindowFocused(2);
+	}
+
+	void	EditorEngine::SelectObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& direction)
+	{
+		Core::Datastructure::Object* result = SearchObjectInScene(origin, direction);
+
+		if (result != nullptr)
+			objectSelected = result;
 	}
 
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept

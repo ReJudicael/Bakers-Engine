@@ -107,7 +107,7 @@ namespace Editor::Window
 		void RenameContent(const std::string& itemName);
 
 		/**
-		 * Refresh contents in current path
+		 * Menu refresh contents in current path
 		 */
 		void MenuItemRefresh();
 

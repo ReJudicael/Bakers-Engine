@@ -13,6 +13,7 @@ namespace Core::Datastructure
 	private:
 		std::string     m_script;
 		bool            m_hasStarted{ false };
+		bool			m_hasLoaded{ false };
 		sol::function   m_start;
 		sol::function   m_update;
 
@@ -52,20 +53,14 @@ namespace Core::Datastructure
 		inline void	SetFile(const std::string& fileName) noexcept { m_script = fileName; };
 
 		/**
-		 * Set start variable to false so that the script gets loaded and started again
-		 */
-		inline void Restart() noexcept { m_hasStarted = false; };
-
-		/**
 		 * Set Lua script and call Start function in script
 		 */
 		virtual bool OnStart() override;
 
 		/**
 		 * Load Start and Update functions of lua script
-		 * @return True if the script has loaded successfully, false otherwise
 		 */
-		bool LoadLuaScript();
+		void LoadLuaScript();
 
 		/**
 		 * Check and call start function in lua script

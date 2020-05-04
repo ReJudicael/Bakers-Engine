@@ -52,7 +52,7 @@ void Mesh::UpdateModel()
 	if (m_modelName == "")
 		return;
 	
-	Resources::Loader::ResourcesManager* manager{ GetScene()->GetEngine()->GetResourcesManager() };
+	Resources::Loader::ResourcesManager* manager{ GetRoot()->GetEngine()->GetResourcesManager() };
 	manager->Load3DObject(m_modelName.c_str());
 
 	if (m_isChild)
@@ -129,7 +129,7 @@ void Mesh::CreateAABBMesh()
 {
 	Core::Datastructure::Object* object = GetParent();
 	
-	GetScene()->GetEngine()->AddMeshToNav(m_model->vertices.data(), m_model->vertices.size(), m_model->indices.data(), m_model->indices.size(), object->GetUpdatedTransform());
+	GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), m_model->vertices.size(), m_model->indices.data(), m_model->indices.size(), object->GetUpdatedTransform());
 	
 	Core::Datastructure::IComponent* component = dynamic_cast<Core::Datastructure::IComponent*>(this);
 	physx::PxRigidActor* actor = object->GetScene()

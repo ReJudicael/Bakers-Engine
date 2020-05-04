@@ -14,16 +14,16 @@ namespace Core::Datastructure
 
 	void Core::Datastructure::IRenderable::OnInit()
 	{
-		if (GetScene() == nullptr)
+		if (GetRoot() == nullptr)
 			return;
-		GetScene()->AddRenderable(this);
+		GetRoot()->AddRenderable(this);
 		IComponent::OnInit();
 	}
 	IRenderable::~IRenderable()
 	{
-		if (GetScene() == nullptr)
+		if (GetRoot() == nullptr)
 			return;
-		GetScene()->RemoveRenderable(this);
+		GetRoot()->RemoveRenderable(this);
 	}
 
 	void IRenderable::Draw(ICamera* cam)
@@ -50,6 +50,6 @@ namespace Core::Datastructure
 	void IRenderable::OnReset()
 	{
 		IComponent::OnReset();
-		GetScene()->RemoveRenderable(this);
+		GetRoot()->RemoveRenderable(this);
 	}
 }

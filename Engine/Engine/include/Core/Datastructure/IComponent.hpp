@@ -94,7 +94,7 @@ namespace Core::Datastructure
 		 * Returns root object of the parent
 		 * @return Root object
 		 */
-		RootObject*		GetScene() const noexcept
+		RootObject*		GetRoot() const noexcept
 		{
 			return m_root;
 		}

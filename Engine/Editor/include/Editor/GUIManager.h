@@ -23,7 +23,8 @@ namespace Editor
 		CLASSIC = 0,
 		DARK,
 		LIGHT,
-		BAKER
+		BAKER_DARK,
+		BAKER_LIGHT
 	};
 
 	/**
@@ -64,9 +65,14 @@ namespace Editor
 
 	private:
 		/**
-		 * Set Baker UI Theme
+		 * Set Fonts
 		 */
-		void SetStyleBaker();
+		void SetFonts();
+
+		/**
+		 * Set Sizes
+		 */
+		void SetSizes();
 
 	public:
 		/**

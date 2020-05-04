@@ -14,17 +14,17 @@ namespace Core::Datastructure
 {
 	bool IUpdatable::OnStart()
 	{
-		if (GetScene() == nullptr)
+		if (GetRoot() == nullptr)
 			return false;
-		GetScene()->AddUpdatable(this);
+		GetRoot()->AddUpdatable(this);
 		return IComponent::OnStart();
 	}
 
 	IUpdatable::~IUpdatable()
 	{
-		if (GetScene() == nullptr)
+		if (GetRoot() == nullptr)
 			return;
-		GetScene()->RemoveUpdatable(this);
+		GetRoot()->RemoveUpdatable(this);
 	}
 
 	void	IUpdatable::Update(float deltaTime)
@@ -42,13 +42,13 @@ namespace Core::Datastructure
 
 	void	IUpdatable::OnDestroy()
 	{
-		GetScene()->RemoveUpdatable(this);
+		GetRoot()->RemoveUpdatable(this);
 	}
 
 	void	IUpdatable::OnReset()
 	{
 		IComponent::OnReset();
 		m_isUpdating = true;
-		GetScene()->RemoveUpdatable(this);
+		GetRoot()->RemoveUpdatable(this);
 	}
 }

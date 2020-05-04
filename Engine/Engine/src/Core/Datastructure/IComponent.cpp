@@ -8,7 +8,7 @@ RTTR_PLUGIN_REGISTRATION
 	using namespace Core::Datastructure;
 	registration::class_<IComponent>("IComponent")
 		.property_readonly("parent", &IComponent::GetParent, detail::protected_access())
-		.property_readonly("Scene", &IComponent::GetScene, detail::protected_access())
+		.property_readonly("Scene", &IComponent::GetRoot, detail::protected_access())
 		.property_readonly("InputManager", &IComponent::Input, detail::protected_access())
 		.method("Start", &IComponent::Start)
 		.method("Destroy", &IComponent::Destroy)

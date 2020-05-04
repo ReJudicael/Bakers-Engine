@@ -70,6 +70,12 @@
     <Filter Include="Source Files\Core\Navigation">
       <UniqueIdentifier>{858877db-a292-48b0-897b-ab24665da2b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Audio">
+      <UniqueIdentifier>{52f69158-7720-4baf-9c80-ae96a6fe99bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Audio">
+      <UniqueIdentifier>{7ffbe5b6-0a70-4478-b30e-6cd98a6a31ce}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Core\Maths">
       <UniqueIdentifier>{68cca1cb-d8fc-42d1-a6a9-c5698cb88fcc}</UniqueIdentifier>
     </Filter>
@@ -203,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="src\Core\Navigation\NavQuery.cpp">
       <Filter>Source Files\Core\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Audio\AudioSystem.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Maths\Maths.cpp">
       <Filter>Source Files\Core\Maths</Filter>
@@ -412,6 +421,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Navigation\NavPath.h">
       <Filter>Header Files\Core\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Audio\AudioSystem.h">
+      <Filter>Header Files\Core\Audio</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\TriggeredEvent.h">
       <Filter>Header Files\Core\Datastructure</Filter>

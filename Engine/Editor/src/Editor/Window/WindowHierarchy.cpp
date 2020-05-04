@@ -2,6 +2,8 @@
 #include "EditorEngine.h"
 #include "RootObject.hpp"
 
+#include "IconsFontAwesome5.h"
+
 namespace Editor::Window
 {
 	WindowHierarchy::WindowHierarchy(Canvas* canvas, bool visible) :
@@ -129,7 +131,7 @@ namespace Editor::Window
 		{
 			if (m_objectToRename && object->HasChild(m_objectToRename))
 				ImGui::SetNextItemOpen(true);
-			isOpen = ImGui::TreeNodeEx(object, flags, object->GetName().c_str());
+			isOpen = ImGui::TreeNodeEx(object, flags, (ICON_FA_CUBE "  " + object->GetName()).c_str());
 		}
 
 		DragDropSourceItem(object);
@@ -146,7 +148,7 @@ namespace Editor::Window
 	{
 		if (ImGui::BeginDragDropSource())
 		{
-			ImGui::Text(object->GetName().c_str());
+			ImGui::Text((ICON_FA_CUBE "  " + object->GetName()).c_str());
 			ImGui::SetDragDropPayload("DRAGDROP_GAMEOBJECT", &object, sizeof(Core::Datastructure::Object*), ImGuiCond_Once);
 			ImGui::EndDragDropSource();
 		}

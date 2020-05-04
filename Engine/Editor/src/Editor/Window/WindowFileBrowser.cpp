@@ -117,6 +117,10 @@ namespace Editor::Window
 	{
 		if (ImGui::BeginPopupContextWindow("## PopupMenuOnWindow", ImGuiMouseButton_Right, false))
 		{
+			if (ImGui::MenuItem("Open in Explorer"))
+				m_fs->OpenCurrentPathInExplorer();
+
+			ImGui::Separator();
 			MenuItemRefresh();
 			ImGui::Separator();
 			MenuItemNew();
@@ -130,6 +134,9 @@ namespace Editor::Window
 		{
 			if (ImGui::MenuItem("Open"))
 				m_fs->OpenContent(itemPath);
+
+			if (ImGui::MenuItem("Open in Explorer"))
+				m_fs->OpenPathInExplorer(m_fs->IsDirectory(itemPath) ? itemPath : m_fs->GetParentPath(itemPath));
 
 			if (itemPath != "..")
 			{
@@ -169,7 +176,7 @@ namespace Editor::Window
 			else
 				ext = m_fs->GetExtensionWithoutDot(itemPath);
 
-			std::string iconsPath{ "Resources\\Images\\FileBrowserIcons\\icon_" + ext + ".png" };
+			const std::string iconsPath{ "Resources\\Images\\FileBrowserIcons\\icon_" + ext + ".png" };
 			std::shared_ptr<Resources::Texture> icon;
 			if (m_fs->Exists(iconsPath))
 				GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);

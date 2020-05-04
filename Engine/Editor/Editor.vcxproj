@@ -284,7 +284,7 @@
     <ClCompile Include="..\Dependencies\imGuizmo\src\ImSequencer.cpp" />
     <ClCompile Include="src\Editor\Canvas\Canvas.cpp" />
     <ClCompile Include="src\Editor\Canvas\MenuBar.cpp" />
-    <ClCompile Include="src\Editor\Datastructure\DrawableComponent.cpp" />
+    <ClCompile Include="src\Editor\Datastructure\DrawableUIComponent.cpp" />
     <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp" />
     <ClCompile Include="src\Editor\EditorEngine.cpp" />
     <ClCompile Include="src\Editor\GUIManager.cpp" />
@@ -299,7 +299,6 @@
     <ClCompile Include="src\Editor\Window\WindowInspector.cpp" />
     <ClCompile Include="src\Editor\Window\WindowProfiler.cpp" />
     <ClCompile Include="src\Editor\Window\WindowScene.cpp" />
-    <ClCompile Include="src\Editor\Window\WindowToolbar.cpp" />
     <ClCompile Include="src\Editor\Window\WindowViewport.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
@@ -325,6 +324,7 @@
     <ClInclude Include="include\Editor\Datastructure\IDrawable.h" />
     <ClInclude Include="include\Editor\EditorEngine.h" />
     <ClInclude Include="include\Editor\GUIManager.h" />
+    <ClInclude Include="include\Editor\IconsFontAwesome5.h" />
     <ClInclude Include="include\Editor\Widget\AWidget.h" />
     <ClInclude Include="include\Editor\Widget\MenuGroup.h" />
     <ClInclude Include="include\Editor\Widget\MenuItem.h" />
@@ -336,7 +336,6 @@
     <ClInclude Include="include\Editor\Window\WindowInspector.h" />
     <ClInclude Include="include\Editor\Window\WindowProfiler.h" />
     <ClInclude Include="include\Editor\Window\WindowScene.h" />
-    <ClInclude Include="include\Editor\Window\WindowToolbar.h" />
     <ClInclude Include="include\Editor\Window\WindowViewport.h" />
   </ItemGroup>
   <ItemGroup>

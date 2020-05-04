@@ -32,9 +32,13 @@ namespace Editor::Window
 		/**
 		 * Inspector object
 		 */
-		Core::Datastructure::Object* m_inspectorObject;
+		Core::Datastructure::Object* m_inspectorObject{ nullptr };
 
-		bool m_isLocked;
+		/**
+		 * Wheter the game object is locked or not
+		 */
+		bool m_isLocked{ false };
+
 		/**
 		 * Buffer of InputText (to rename the objectSelected)
 		 */
@@ -46,14 +50,9 @@ namespace Editor::Window
 		bool m_isLocal{ true };
 
 		/**
-		 * Options icon for the components
+		 * Icons of the extensions
 		 */
-		std::shared_ptr<Resources::Texture> m_optionsIcon[2];
-
-		/**
-		 * Unlock / lock icon for the selected object
-		 */
-		std::shared_ptr<Resources::Texture> m_lockIcon[2];
+		std::unordered_map<std::string, std::shared_ptr<Resources::Texture>> m_icons;
 
 	public:
 		/**
@@ -95,6 +94,12 @@ namespace Editor::Window
 		 * @param object: Selected object
 		 */
 		void DisplayObjectGlobalTransform(Core::Datastructure::Object* object);
+
+		/**
+		 * Get the texture of the icon of the chosen component
+		 * @param componentName: Path of the chosen component
+		 */
+		GLuint GetIcon(const std::string& componentName);
 
 		/**
 		 * Display transform of object in hierarchy

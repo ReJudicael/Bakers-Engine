@@ -74,7 +74,7 @@ namespace Resources::Loader
 		Shader normalMapShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		m_shaders.emplace("NormalMapDefault", std::make_shared<Shader>(normalMapShader));
 
-		Shader wireframeShader("./Resources/Shaders/WireframeShader.vert", "./Resources/Shaders/WireframeShader.frag");
+		Shader wireframeShader("Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
 
 		LoadObjInModel("Cube","Resources/Models/cube.obj");
@@ -431,6 +431,6 @@ namespace Resources::Loader
 		scripts = m_rootNode->GetComponentsOfType<Core::Datastructure::ScriptedComponent>();
 
 		for (const auto& script : scripts)
-			script->Restart();
+			script->LoadLuaScript();
 	}
 }

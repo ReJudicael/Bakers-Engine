@@ -12,7 +12,6 @@ struct ImVec3
 
 namespace ImGui
 {
-    IMGUI_API void PushItemToCenter(float width_percentage);
     IMGUI_API void PushItemToRight(const char* label = (const char*)0, float offset = 120.f);
 
     IMGUI_API bool RCheckbox(const char* label, bool* v);
@@ -27,11 +26,16 @@ namespace ImGui
     IMGUI_API void RButtonDD(const char* label, const char* value);
 
     IMGUI_API void ImageUV(unsigned int user_texture_id, const ImVec2& size = { 16.f, 16.f });
+    IMGUI_API void ImageUVFramePadding(unsigned int user_texture_id, const ImVec2& size = { 16.f, 16.f });
     IMGUI_API bool ImageButtonUV(unsigned int user_texture_id, const ImVec2& size = { 16.f, 16.f });
-    IMGUI_API bool ImageButtonUVWithText(unsigned int user_texture_id, const char* label, const std::string& text, const ImVec2& icon_size = { 16.f, 16.f });
+    IMGUI_API bool ImageButtonUVWithText(unsigned int user_texture_id, const char* label, const ImVec2& icon_size = { 16.f, 16.f });
 
-    IMGUI_API bool BeginComboButton(const char* label);
-    IMGUI_API bool BeginComboImageButtonUV(unsigned int user_texture_id, const ImVec2& size = { 16.f, 16.f });
+    IMGUI_API bool CollapsingHeaderWithImageUV(unsigned int user_texture_id, const char* label, ImGuiTreeNodeFlags flags);
+
+    IMGUI_API bool BeginComboButton(const char* label, const ImVec2& size_arg = { 0.f, 0.f });
 
     IMGUI_API void HelpMarkerItem(const char* help_marker);
+
+    IMGUI_API void StyleColorsBakerDark(ImGuiStyle* dst = NULL);
+    IMGUI_API void StyleColorsBakerLight(ImGuiStyle* dst = NULL);
 }

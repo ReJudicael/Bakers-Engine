@@ -1,6 +1,8 @@
 #include "WindowConsole.h"
 #include "EditorEngine.h"
 
+#include "IconsFontAwesome5.h"
+
 namespace Editor::Window
 {
 	WindowConsole::WindowConsole(Canvas* canvas, bool visible) :
@@ -16,7 +18,6 @@ namespace Editor::Window
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\message.png", m_logsIcon[0].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\warning.png", m_logsIcon[1].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\error.png", m_logsIcon[2].first);
-		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\settings.png", m_settingsIcon);
 
 		Core::Debug::Logger::AddEvent(BIND_EVENT(WindowConsole::LogCallback));
 	}
@@ -35,13 +36,13 @@ namespace Editor::Window
 			m_canScrollBottom = true;
 	}
 
-	void WindowConsole::AddLogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled)
+	void WindowConsole::LogButton(const std::shared_ptr<Resources::Texture>& icon, const std::string& label, const std::string& help_marker, bool& isEnabled)
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, isEnabled ?
 			ImGui::GetStyle().Colors[ImGuiCol_Button] :
 			ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
 
-		if (ImGui::ImageButtonUVWithText(icon->texture, "## LogButton", label))
+		if (ImGui::ImageButtonUVWithText(icon->texture, label.c_str()))
 			isEnabled = !isEnabled;
 		ImGui::HelpMarkerItem(help_marker.c_str());
 
@@ -50,8 +51,8 @@ namespace Editor::Window
 
 	void WindowConsole::ClearButton()
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.75f, 0.22f, 0.17f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.75f, 0.22f, 0.17f, 0.7f });
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.91f, 0.25f, 0.09f, 0.8f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.91f, 0.25f, 0.09f, 0.5f });
 
 		if (ImGui::Button("Clear", { 50.f, 0.f }))
 			Core::Debug::Logger::ClearLogs();
@@ -61,15 +62,15 @@ namespace Editor::Window
 
 	void WindowConsole::SettingsButton()
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.18f, 0.18f, 0.25f, 1.0f });
-		bool isClicked = ImGui::BeginComboImageButtonUV(m_settingsIcon->texture, { 16, 16 });
+		ImGui::PushStyleColor(ImGuiCol_Button, GImGui->Style.Colors[ImGuiCol_TableHeaderBg]);
+		bool isClicked = ImGui::BeginComboButton(ICON_FA_COG);
 		ImGui::HelpMarkerItem("Settings");
 		ImGui::PopStyleColor();
 
 		if (isClicked)
 		{
 			ImGui::MenuItem("Auto-scroll", (const char*)0, &m_autoScroll);
-			ImGui::MenuItem("Clear on Play", (const char*)0, nullptr);
+			ImGui::MenuItem("Clear on Play", (const char*)0, &m_clearOnPlay);
 			ImGui::EndCombo();
 		}
 	}
@@ -86,7 +87,7 @@ namespace Editor::Window
 
 			ImGui::SameLine();
 			ImGui::PushID(i);
-			AddLogButton(m_logsIcon[i].first, label, typeLog, m_logsIcon[i].second);
+			LogButton(m_logsIcon[i].first, label, typeLog, m_logsIcon[i].second);
 			ImGui::PopID();
 		}
 		ImGui::SameLine();
@@ -102,10 +103,12 @@ namespace Editor::Window
 		{
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
-			ImGui::ImageUV(m_logsIcon[static_cast<size_t>(log.type)].first->texture);
+			ImGui::ImageUVFramePadding(m_logsIcon[static_cast<size_t>(log.type)].first->texture);
 			ImGui::TableSetColumnIndex(1);
+			ImGui::AlignTextToFramePadding();
 			ImGui::Text(log.time);
 			ImGui::TableSetColumnIndex(2);
+			ImGui::AlignTextToFramePadding();
 			ImGui::TextWrapped(log.message);
 		}
 	}
@@ -139,8 +142,21 @@ namespace Editor::Window
 		}
 	}
 
+	void WindowConsole::ClearOnPlay()
+	{
+		if (m_clearOnPlay && !m_consoleCleared && GetEngine()->IsPlaying())
+		{
+			Core::Debug::Logger::ClearLogs();
+			m_consoleCleared = true;
+		}
+		if (m_consoleCleared && !GetEngine()->IsPlaying())
+			m_consoleCleared = false;
+	}
+
 	void WindowConsole::Tick()
 	{
+		ClearOnPlay();
+
 		ConsoleHeader();
 		ImGui::Separator();
 		ConsolePrint();

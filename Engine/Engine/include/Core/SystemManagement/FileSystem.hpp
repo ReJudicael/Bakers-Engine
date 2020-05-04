@@ -216,6 +216,17 @@ namespace Core::SystemManagement
 		bool OpenContent(const std::string& itemPath) noexcept;
 
 		/**
+		 * Open path in explorer with a windows command
+		 * @param filePath: File path
+		 **/
+		void OpenPathInExplorer(const std::string& itemPath) noexcept;
+
+		/**
+		 * Open current path in explorer
+		 */
+		void OpenCurrentPathInExplorer() noexcept;
+
+		/**
 		 * Create a folder
 		 * @return path of the new folder
 		 */
@@ -270,7 +281,7 @@ namespace Core::SystemManagement
 		 * @param oldPath: Old path
 		 * @param newPath: New path
 		 */
-		void MovePath(const std::string& oldPath, std::string newPath) noexcept;
+		void MovePath(const std::string& oldPath, const std::string& newPath) noexcept;
 	};
 
 	inline std::string FileSystem::GetCurrentDirectory() const noexcept
@@ -427,6 +438,16 @@ namespace Core::SystemManagement
 			return true;
 	}
 
+	inline void FileSystem::OpenPathInExplorer(const std::string& itemPath) noexcept
+	{
+		ShellFileAPI::OpenSpecifiedLink(GetAbsoluteWithQuote(itemPath));
+	}
+
+	inline void FileSystem::OpenCurrentPathInExplorer() noexcept
+	{
+		OpenPathInExplorer(m_currentDirectory);
+	}
+
 	inline std::string FileSystem::CreateFolder(const std::string& folderName) noexcept
 	{
 		std::string folderPath = GetLocalAbsolute(folderName);
@@ -559,16 +580,17 @@ namespace Core::SystemManagement
 		return m_contentsInCurrentPath;
 	}
 
-	inline void FileSystem::MovePath(const std::string& oldPath, std::string newPath) noexcept
+	inline void FileSystem::MovePath(const std::string& oldPath, const std::string& newPath) noexcept
 	{
-		if (newPath == "..")
-			newPath = GetParentCurrentPath().c_str();
+		std::string _newPath{ newPath };
+		if (_newPath == "..")
+			_newPath = GetParentCurrentPath().c_str();
 
-		newPath += '\\' + GetFilename(oldPath);
+		_newPath += '\\' + GetFilename(oldPath);
 
-		if (!Exists(newPath))
+		if (!Exists(_newPath) && oldPath != newPath)
 		{
-			std::filesystem::rename(oldPath, newPath);
+			std::filesystem::rename(oldPath, _newPath);
 			m_refreshContentsInCurrentPath = true;
 		}
 		else
