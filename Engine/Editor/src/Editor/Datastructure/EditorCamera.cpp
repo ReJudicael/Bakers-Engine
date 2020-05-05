@@ -24,11 +24,15 @@ namespace Editor::Datastructure
 	
 	Core::Maths::Vec3 EditorCamera::GetPerspectiveDirection(const float ratioX, const float ratioY)
 	{
-		constexpr Core::Maths::Quat	forQuat{ 0, 0, 0, 1 };
+		// Get camera forward and change it for camera ray use
+		Core::Maths::Vec3 forward = m_transform.GetForward();
+		forward.x *= -1;
+		forward.y *= -1;
+
+		// Rotate forward towards fov limits with given ratios
 		float radFOV = Core::Maths::ToRadiansf(m_persp.fov);
-		Core::Maths::Vec3 forward = (m_transform.GetGlobalRot() * forQuat * m_transform.GetGlobalRot().Inversed()).GetVec();
-		Core::Maths::Quat RotateY = Core::Maths::Quat::AngleAxis(radFOV * ratioX, m_parent->Up());
-		Core::Maths::Quat RotateX = Core::Maths::Quat::AngleAxis(radFOV * ratioY, m_parent->Right());
+		Core::Maths::Quat RotateY = Core::Maths::Quat::AngleAxis(radFOV * ratioX, m_transform.GetUp());
+		Core::Maths::Quat RotateX = Core::Maths::Quat::AngleAxis(radFOV * ratioY, m_transform.GetRight());
 		Core::Maths::Quat FullRotation = RotateX * RotateY;
 
 		return FullRotation.Rotate(forward);
