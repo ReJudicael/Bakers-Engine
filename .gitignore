@@ -7,22 +7,16 @@ Engine/Engine/Debug/
 
 Engine/Engine/x64/
 
-Engine/Engine/Engine.vcxproj.user
-
 Engine/x64/
 
 Engine/Engine/DoxyGen/Doc/
 
 Engine/Editor/x64/
 
-Engine/Editor/Editor.vcxproj.user
-
 Engine/Doxygen/Doc/DocEditor/
 
 Engine/Doxygen/Doc/DocEngine/
 
 Engine/TracyClient/x64/
-
-Engine/TracyClient/TracyClient.vcxproj.user
 
 Engine/Executable/x64/
