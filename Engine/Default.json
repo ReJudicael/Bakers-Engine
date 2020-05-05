@@ -215,7 +215,7 @@
                         "Type": {
                             "Name": "Type",
                             "Type": "LightType",
-                            "Value": 0
+                            "Value": 1
                         }
                     }
                 },

@@ -1,6 +1,6 @@
 # Engine_Bakers
 
-## Version pre-alpha
+## Version alpha
 
 - Enter/Use the commands
     -  git pull
@@ -8,6 +8,6 @@
     -  git submodule update
 
 - Open Engine/Engine.sln
-- Select Debug x64
+- Select Debug x64 | Release x64
 - Select the Editor project
 - Build and Run
