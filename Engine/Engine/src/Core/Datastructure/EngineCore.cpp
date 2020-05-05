@@ -189,56 +189,7 @@ namespace Core::Datastructure
 		m_fbo.clear();
 		m_manager = new Resources::Loader::ResourcesManager();
 		m_manager->SetRootNode(m_root);
-		/*
-		Core::Datastructure::Object* camNode{ m_root->CreateChild("Camera", {}) };
-		camNode->SetPos({ 0.f, 2.f, 5.f });
-		camNode->SetRot({ 0.f, 0.f, 0.f });
 
-		Renderer::PlayerCamera* c = new Renderer::PlayerCamera(1200.f / 700.f, 60.f, 0.1f, 100.f);
-		camNode->AddComponent(c);
-
-		Core::Renderer::Light* l = new Core::Renderer::Light();
-		l->SetLightType(Core::Renderer::Light::ELightType::POINT);
-		l->SetAmbient({ 0.3f, 0.3f, 0.3f });
-		l->SetDiffuse({ 0.5f, 0.5f, 0.5f });
-		l->SetSpecular({ 0.2f, 0.2f, 0.2f });
-		l->SetAttenuation({ 0.3f, 0.02f, 0.002f });
-		l->SetRange(1000.f);
-		l->SetAngle(0.785f);
-		l->SetAngleSmoothness(0.01f);
-		camNode->AddComponent(l);
-
-		Core::Datastructure::ScriptedComponent* s = new Core::Datastructure::ScriptedComponent("Resources\\Scripts\\DefaultScript.lua");
-		camNode->AddComponent(s);
-
-		umbreon->AddComponent(new Core::Physics::DynamicMesh());
-		
-		// Create skybox cube (set to false to have a sphere with other texture instead)
-		CreateSkybox(false);
-		
-		staticMesh->SetPos({ 0.f,-5.f,0.f });
-		staticMesh->SetScale({ 5.f,1.f,5.f });
-		Core::Physics::StaticMesh* staticmesh1 = new Core::Physics::StaticMesh();
-		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f, 1.f, 500.f });
-		staticMesh->AddComponent(staticmesh1);
-
-
-
-
-		umbreon->SetPos({ 0.f,3.f, 0.f });
-		//
-		Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
-		m_manager->Load3DObject("Resources/Models/Umbreon/UmbreonHighPoly.obj");
-		Resources::Object3DGraph::CreateScene("Resources/Models/Umbreon/UmbreonHighPoly.obj", *m_manager, umbreon);
-
-		Core::Datastructure::Object* dining_room{ m_root->CreateChild("DiningRoom", {}) };
-		Core::Datastructure::Object* staticMesh{ dining_room->CreateChild("Static Mesh", {}) };
-
-		m_manager->Load3DObject("Resources/Models/DiningRoom/dining_room.fbx");
-		Resources::Object3DGraph::CreateScene("Resources/Models/DiningRoom/dining_room.fbx", *m_manager, dining_room);
-
-		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
-		*/
 		return 0;
 	}
 

@@ -87,9 +87,6 @@ namespace Core
 
 			m_staticMesh = physics->createRigidStatic(physx::PxTransform(position, rotation));
 			m_staticMesh->attachShape(*m_collider->GetShape());
-			//setupFiltering(myActor3, EFilterCollision::JUDICAEL, EFilterCollision::VALENTIN, EFilterCollision::LAVIE | EFilterCollision::NATHAN);
-			//setupFiltering(myActor, EFilterCollision::JUDICAEL, EFilterCollision::NATHAN, EFilterCollision::LAVIE | EFilterCollision::VALENTIN);
-
 			m_staticMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(dynamic_cast<Core::Datastructure::IPhysics*>(this)));
 			
 

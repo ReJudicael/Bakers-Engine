@@ -107,11 +107,9 @@ namespace Core
 			
 			m_dynamicMesh->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
 			
-			// usefull if we don't want tu do the update every time if the rigid doesn't move
+			// usefull if we don't want to do the update every time if the rigid doesn't move
 			//m_dynamicMesh->setActorFlag(physx::PxActorFlag::eSEND_SLEEP_NOTIFIES);
 			
-			//setupFiltering(m_dynamicMesh, EFilterCollision::T1, EFilterCollision::T2, EFilterCollision::T3);
-
 			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(dynamic_cast<Core::Datastructure::IPhysics*>(this)));
 
 			scene->addActor(*m_dynamicMesh);

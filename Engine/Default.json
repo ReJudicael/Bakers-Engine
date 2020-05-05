@@ -4,6 +4,60 @@
             "Childs": [],
             "Components": [
                 {
+                    "Type": "Mesh",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ""
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Skysphere",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 50.0,
+                "y": 50.0,
+                "z": 50.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
                     "Type": "Player Camera",
                     "Values": {
                         "Black and White": {

@@ -115,6 +115,7 @@ namespace Core::Audio
 			return;
 
 		FMOD_RESULT result = m_fmodSystem->playSound(m_fmodSound, nullptr, false, &m_fmodChannel);
+		m_fmodChannel->setMute(true);
 		CHECK_ERR_FMOD(result);
 	}
 
