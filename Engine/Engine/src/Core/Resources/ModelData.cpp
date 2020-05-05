@@ -25,6 +25,8 @@ namespace Resources
 
 	void ModelData::LoadaiMeshModel(aiMesh* mesh, const unsigned int indexMesh, const int increaseIndices)
 	{
+		if (mesh == nullptr)
+			stateVAO = EOpenGLLinkState::LOADPROBLEM;
 		if (increaseIndices == 0)
 			LoadaiMeshAABB(mesh);
 

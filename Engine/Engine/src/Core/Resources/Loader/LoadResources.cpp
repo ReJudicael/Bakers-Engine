@@ -257,9 +257,6 @@ namespace Resources::Loader
 			//m_task.AddTask(&Resources::ModelData::LoadaiMeshAABB, modelData, mesh);
 			//modelData->LoadaiMeshModel(mesh, i,indexLastMesh);
 
-			//modelData->LoadVertices(mesh);
-			//modelData->LoadIndices(mesh, indexLastMesh);
-
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
 			{
@@ -306,10 +303,10 @@ namespace Resources::Loader
 
 		modelData->SetArrays(scene, 0);
 
-		m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
-		//modelData->LoadaiMeshModel(mesh);
+		//m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
+		modelData->LoadaiMeshModel(mesh);
 
-		//modelData->stateVAO = EOpenGLLinkState::CANLINK;
+		importer.FreeScene();
 	}
 
 	void ResourcesManager::LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh, const std::string& directory, const int numberOfSameKey)
@@ -346,14 +343,14 @@ namespace Resources::Loader
 		}
 		texture = std::make_shared<Texture>();
 		//m_task.AddTask(&Resources::Texture::LoadTexture, keyName, *this);
-		texture->LoadTexture(keyName, *this);
-		/*std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
+		//texture->LoadTexture(keyName, *this);
+		std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
 
 		textureData->nameTexture = keyName;
 		PushTextureToLink(textureData);
 		textureData->textureptr = texture;
 		//m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData, keyName, *this);
-		textureData->CreateTextureFromImage(keyName, *this);*/
+		textureData->CreateTextureFromImage(keyName, *this);
 	}
 
 	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)
