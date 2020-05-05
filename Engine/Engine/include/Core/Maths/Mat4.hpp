@@ -303,6 +303,16 @@ namespace Core::Maths
 		 * Print current matrix to the console
 		 */
 		inline void							Print() const noexcept;
+
+		/**
+		 * Create Matrix inducing no transformation
+		 * @return Identity Matrix
+		 */
+		static Core::Maths::Mat4			Identity()
+		{
+			Core::Maths::Mat<4, 4> id{ id.Identity() };
+			return id;
+		}
 	};
 
 	constexpr Core::Maths::Mat4::Mat4(const Mat4& m) noexcept : array()

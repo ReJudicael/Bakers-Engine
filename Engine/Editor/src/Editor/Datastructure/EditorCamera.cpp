@@ -224,8 +224,8 @@ namespace Editor::Datastructure
 		if (m_isRotating)
 		{
 			// Increase current rotation with new one
-			m_pitch += 0.5f * m_angularMovement.x * deltaTime;
-			m_yaw += 0.5f * m_angularMovement.y * deltaTime;
+			m_pitch += 0.1f * m_angularMovement.x * deltaTime;
+			m_yaw += 0.1f * m_angularMovement.y * deltaTime;
 
 			// Create euler angles vector3 with pitch and yaw rotation
 			Core::Maths::Vec3 newRotation(m_pitch, m_yaw, 0);
@@ -246,7 +246,7 @@ namespace Editor::Datastructure
 
 	void EditorCamera::Move(Core::Maths::Vec3 move)
 	{
-		m_movement = move.Normalized();
+		m_movement = move.Normalized() * (Input()->IsKeyDown(EKey::LEFT_SHIFT) ? m_runSpeed : 1);
 	}
 
 	void EditorCamera::Rotate(Core::Maths::Vec3 move)

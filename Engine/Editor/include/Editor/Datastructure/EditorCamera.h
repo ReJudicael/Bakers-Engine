@@ -26,6 +26,7 @@ namespace Editor::Datastructure
 		Core::Maths::Vec3	m_angularMovement;
 		Core::Maths::Vec3	m_movement;
 		Core::Maths::Vec2	m_mousePos;
+		float	m_runSpeed{ 5.f };
 		float	m_yaw{ 0.f };
 		float	m_pitch{ 0.f };
 		bool	m_isRotating{ false };
