@@ -6,13 +6,43 @@
 
 namespace Resources
 {
-	void ModelData::LoadaiMeshModel(aiMesh* mesh, const int increaseIndices)
+	void ModelData::SetArrays(const aiScene* scene, const unsigned int& index)
 	{
+		aiMesh* mesh = scene->mMeshes[index];
+		auto indiceBegin = indices.size();
+		vertices.resize(vertices.size() + mesh->mNumVertices);
+		indices.resize(indices.size() + mesh->mNumFaces * static_cast<unsigned int>(3));
+
+		OffsetMesh offset;
+		offset.count = static_cast<unsigned int>(indices.size()) - indiceBegin;
+		offset.beginIndices = indiceBegin;
+		offset.materialIndices = static_cast<unsigned int>(offsetsMesh.size());
+
+		offsetsMesh.push_back(offset);
+		offsetMeshState.push_back(EOpenGLLinkState::CANTLINK);
+		model->offsetsMesh = offsetsMesh;
+	}
+
+	void ModelData::LoadaiMeshModel(aiMesh* mesh, const unsigned int indexMesh, const int increaseIndices)
+	{
+		if (mesh == nullptr)
+			stateVAO = EOpenGLLinkState::LOADPROBLEM;
 		if (increaseIndices == 0)
 			LoadaiMeshAABB(mesh);
 
-		LoadVertices(mesh);
-		LoadIndices(mesh, increaseIndices);
+		LoadVertices(mesh, increaseIndices);
+		LoadIndices(mesh, increaseIndices, indexMesh);
+
+		unsigned int sVertices = static_cast<unsigned int>(vertices.size() - increaseIndices);
+
+		offsetMeshState[indexMesh] = EOpenGLLinkState::CANLINK;
+
+		for (auto i{ 0 }; i < offsetMeshState.size(); i++)
+		{
+			if (offsetMeshState[i] != EOpenGLLinkState::CANLINK)
+				return;
+		}
+		stateVAO = EOpenGLLinkState::CANLINK;
 	}
 
 	void  ModelData::LoadaiMeshAABB(aiMesh* mesh)
@@ -24,9 +54,11 @@ namespace Resources
 		max = { AABBBox.x, AABBBox.y, AABBBox.z };
 	}
 
-	void ModelData::LoadIndices(aiMesh* mesh, const int increaseIndices)
+	void ModelData::LoadIndices(aiMesh* mesh, const int increaseIndices, const unsigned int indexMesh)
 	{
 		unsigned int lastNumIndices = static_cast<unsigned int>(indices.size());
+
+		unsigned int index{ offsetsMesh[indexMesh].beginIndices };
 
 		for (unsigned int fid{ 0 }; fid < mesh->mNumFaces; fid++)
 		{
@@ -34,20 +66,14 @@ namespace Resources
 			for (int iid = 0; iid < 3; iid++)
 			{
 				// get the indices of the face who is cut in triangle
-				indices.push_back(face.mIndices[iid] + increaseIndices);
+				//indices.push_back(face.mIndices[iid] + increaseIndices);
+				indices[index] = face.mIndices[iid] + increaseIndices;
+				index++;
 			}
 		}
-
-		OffsetMesh offset;
-		offset.count = static_cast<unsigned int>(indices.size()) - lastNumIndices;
-		offset.beginIndices = lastNumIndices;
-		offset.materialIndices = static_cast<unsigned int>(offsetsMesh.size());
-
-		offsetsMesh.push_back(offset);
-		model->offsetsMesh = offsetsMesh;
 	}
 
-	void ModelData::LoadVertices(aiMesh* mesh)
+	void ModelData::LoadVertices(aiMesh* mesh, const int increaseIndices)
 	{
 		Vertex v;
 		aiVector3D Zeor3D{ 0.f,0.f,0.f };
@@ -73,7 +99,7 @@ namespace Resources
 				v.Tangent = { Tangent->x, Tangent->y, Tangent->z };
 			}
 
-			vertices.push_back(v);
+			vertices[increaseIndices + j] = v;
 		}
 	}
 

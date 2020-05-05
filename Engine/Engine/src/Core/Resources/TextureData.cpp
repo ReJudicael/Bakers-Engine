@@ -3,9 +3,10 @@
 
 #include <stb_image.h>
 
-#include "TextureData.h"
 #include "Assimp/texture.h"
 #include "Assimp/material.h"
+
+#include "TextureData.h"
 #include "LoadResources.h"
 #include "Texture.h"
 

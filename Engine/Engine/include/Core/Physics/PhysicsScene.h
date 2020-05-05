@@ -103,11 +103,40 @@ namespace Core
 			 */
 			void AttachActor(Core::Datastructure::IPhysics* physics);
 
+
+			/*
+			 * Create a PxRigidStatic as a bax with the AABB value of the mesh model
+			 * @param useDataPtr: the userData for the userData of the PxRigidStatic
+			 * @param transform: the object transform of the mesh
+			 * @param model: the mesh model
+			 * @return the actor wich is create
+			 */
 			physx::PxRigidActor* CreateEditorPhysicsActor(void* useDataPtr,
 															const Core::Datastructure::Transform& transform,
 														std::shared_ptr<Resources::Model> model);
+			/*
+			 * Create a the box shape of the PxRigidStatic for the Editor
+			 * @param transform: the object transform of the mesh
+			 * @param model: the mesh model
+			 * @return the shape wich is create
+			 */
+			physx::PxShape* CreateEditorBoxShape(const Core::Datastructure::Transform& transform, 
+													std::shared_ptr<Resources::Model> model);
 
-			physx::PxShape* CreateEditorBoxShape(const Core::Datastructure::Transform& transform, std::shared_ptr<Resources::Model> model);
+			/*
+			 * Create a the box shape of the PxRigidStatic for the Editor
+			 * @param scale: the scale of the object
+			 * @param min: the min of the model AABB
+			 * @param max: the max of the model AABB
+			 * @return the extent calculate
+			 */
+			Core::Maths::Vec3 InitExtentOfEditorBoxShape(const Core::Maths::Vec3& scale,
+														const Core::Maths::Vec3& min, const Core::Maths::Vec3& max);
+			/*
+			 * Destroy a PxRigidActor and his shape
+			 * @param actor: the physic actor we want to destroy
+			 */
+			void DestroyEditorPhysicActor(physx::PxRigidActor* actor);
 
 			/**
 			 * Create the PhysX scene

@@ -8,10 +8,14 @@
 #include "Vec3.hpp"
 #include "Vec2.hpp"
 #include "ModelData.h"
+#include "TextureData.h"
+#include "Material.h"
+#include "Texture.h"
 #include "Object3DGraph.h"
 #include "Vertex.h" 
 #include "Debug.h"
 #include "Shader.h"
+#include "TaskSystem.hpp"
 #include "CoreMinimal.h"
 
 struct aiScene;
@@ -21,12 +25,17 @@ struct aiMaterial;
 enum aiTextureType : int;
 class Core::Datastructure::Object;
 
+namespace Assimp
+{
+	class Importer;
+}
+
 
 namespace Resources
 {
 	struct Model;
-	struct Texture;
-	struct TextureData;
+	//struct Texture;
+	//struct TextureData;
 
 	using unorderedmapTexture = std::unordered_map<std::string, std::shared_ptr<Texture>>;
 	using unorderedmapShader = std::unordered_map<std::string, std::shared_ptr<Shader>>;
@@ -55,10 +64,54 @@ namespace Resources
 
 
 		public:
+			Core::SystemManagement::TaskSystem m_task;
 			/* Used for stocked the different value which allow to bind different resources to OpengGL (for the multiThread)*/
 			std::list<std::shared_ptr<TextureData>>		m_texturesToLink;
 			std::list<std::shared_ptr<ModelData>>		m_modelsToLink;
+		private:
+			/**
+			 * Load the 3D object in a single mesh for the obj and multiple mesh for the FBX, with the API assimp
+			 * @param fileName: the name of the 3D object we want to load
+			 */
+			bool LoadAssimpScene(const char* fileName);
 
+			const aiScene* LoadSceneFromImporter(Assimp::Importer& importer, const char* fileName);
+
+			/**
+			 * Load all the mesh in the 3D object and put the materials, 
+			 * the models and the textures in the ResourcesManager
+			 * @param scene: The scene of the 3D object load by assimp
+			 * @param directory: the folder path of the 3D Object
+			 */
+			void LoadMeshsScene(const aiScene* scene, const std::string& directory);
+			
+
+			int LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, std::shared_ptr<Model>& currModel, const std::string& nameMesh);
+
+			/**
+			 * Load all the meshs in the 3D object, 
+			 * group them together inside one model 
+			 * and put the materials, the model and the textures in the ResourcesManager
+			 * @param scene: The scene of the 3D object load by assimp
+			 * @param directory: the folder path of the 3D Object
+			 */
+			void LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory);
+
+
+			void LoadObjInModel(const std::string& name, const char* fileName);
+
+			/**
+			 * Load the Material of an aiMesh
+			 * Check if the material hasn't been already load (or try), don't load if not
+			 * @param scene: the aiScene of the mesh
+			 * @param mesh: the mesh of the material that we want load
+			 * @param directory: the folder path of the 3D Object
+			 * @param numberOfSameKey: an int default 0, 
+			 * (just use in the function LoadMeshsScene) the number of time that the name of the mesh is used
+			 */
+			void LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh,
+				const std::string& directory, const int numberOfSameKey = 0);
+		public:
 			/**
 			 * Construct the ResourcesManager and create defaults shaders
 			 */
@@ -210,46 +263,6 @@ namespace Resources
 			 */
 			void Load3DObject(const char* fileName);
 
-			/**
-			 * Load the 3D object in a single mesh for the obj and multiple mesh for the FBX, with the API assimp
-			 * @param fileName: the name of the 3D object we want to load
-			 */
-			bool LoadAssimpScene(const char* fileName);
-
-			/**
-			 * Load all the mesh in the 3D object and put the materials, 
-			 * the models and the textures in the ResourcesManager
-			 * @param scene: The scene of the 3D object load by assimp
-			 * @param directory: the folder path of the 3D Object
-			 */
-			void LoadMeshsScene(const aiScene* scene, const std::string& directory);
-			
-
-			int LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, std::shared_ptr<Model>& currModel, const std::string& nameMesh);
-
-			/**
-			 * Load all the meshs in the 3D object, 
-			 * group them together inside one model 
-			 * and put the materials, the model and the textures in the ResourcesManager
-			 * @param scene: The scene of the 3D object load by assimp
-			 * @param directory: the folder path of the 3D Object
-			 */
-			void LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory);
-
-
-			void LoadObjInModel(const std::string& name, const char* fileName);
-
-			/**
-			 * Load the Material of an aiMesh
-			 * Check if the material hasn't been already load (or try), don't load if not
-			 * @param scene: the aiScene of the mesh
-			 * @param mesh: the mesh of the material that we want load
-			 * @param directory: the folder path of the 3D Object
-			 * @param numberOfSameKey: an int default 0, 
-			 * (just use in the function LoadMeshsScene) the number of time that the name of the mesh is used
-			 */
-			void LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh,
-				const std::string& directory, const int numberOfSameKey = 0);
 
 			/**
 			 * Load a texture

@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
-#include <memory>
+//#include <memory>
 
 #include "OpenGLLinkState.h"
 #include "CoreMinimal.h"

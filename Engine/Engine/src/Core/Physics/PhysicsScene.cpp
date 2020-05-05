@@ -12,6 +12,7 @@
 #include "Vec3.hpp"
 #include "PxRigidActor.h"
 #include "Object.hpp"
+#include "Mesh.h"
 
 
 #define PVD_HOST "127.0.0.1"
@@ -236,8 +237,23 @@ namespace Core::Physics
 		physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
 		Maths::Quat quat = comp->GetParent()->GetGlobalRot();
 		physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
+		// TO DO Update the scale of the min and the max of the AABB
+		Mesh* mesh = dynamic_cast<Mesh*>(comp);
 
 		actor->setGlobalPose(physx::PxTransform(position, rotation));
+
+		if (mesh != nullptr)
+		{
+			Core::Maths::Vec3 extent = InitExtentOfEditorBoxShape(mesh->GetParent()->GetGlobalScale(),
+				mesh->GetAABBMinModel(),
+				mesh->GetAABBMaxModel());
+
+			std::vector<physx::PxShape*> shapes = std::vector<physx::PxShape*>(1);
+			actor->getShapes(shapes.data(), 1);
+			physx::PxShape* shape = shapes[0];
+
+			shape->setGeometry(physx::PxBoxGeometry(extent.x, extent.y, extent.z ));
+		}
 	}
 
 	void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)
@@ -281,9 +297,6 @@ namespace Core::Physics
 		Core::Maths::Vec3 extent{ abs(minG.x) + abs(maxG.x), abs(minG.y) + abs(maxG.y), abs(minG.z) + abs(maxG.z) };
 		extent /= 2;
 
-		if (extent.x == 0 || extent.y == 0 || extent.x == 0)
-			return nullptr;
-
 		physx::PxShape* shape = m_pxPhysics->createShape(physx::PxBoxGeometry(physx::PxVec3{ extent.x, extent.y, extent.z }), *material, true);
 		physx::PxTransform shapeTransform{ shape->getLocalPose() };
 		shapeTransform.p = { pos.x, pos.y, pos.z };
@@ -292,6 +305,40 @@ namespace Core::Physics
 		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false);
 
 		return shape;
+	}
+
+	Core::Maths::Vec3 PhysicsScene::InitExtentOfEditorBoxShape(const Core::Maths::Vec3& scale,
+																const Core::Maths::Vec3& min, const Core::Maths::Vec3& max)
+	{
+		Core::Maths::Vec3 minG{ min * scale };
+		Core::Maths::Vec3 maxG{ max * scale };
+
+		Core::Maths::Vec3 extent{ abs(minG.x) + abs(maxG.x), abs(minG.y) + abs(maxG.y), abs(minG.z) + abs(maxG.z) };
+		extent /= 2;
+
+		if(extent.x == 0)
+			extent.x = 0.001f;
+		if(extent.y == 0)
+			extent.y = 0.001f;
+		if(extent.z == 0)
+			extent.z = 0.001f;
+
+		return extent;
+	}
+
+	void PhysicsScene::DestroyEditorPhysicActor(physx::PxRigidActor* actor)
+	{
+		if (actor == nullptr)
+			return;
+		const physx::PxU32 numShapes = actor->getNbShapes();
+		std::vector<physx::PxShape*> shapes = std::vector<physx::PxShape*>(numShapes);
+		actor->getShapes(shapes.data(), numShapes);
+		for (physx::PxU32 i = 0; i < numShapes; i++)
+		{
+			shapes[i]->release();
+		}
+
+		actor->release();
 	}
 
 	void PhysicsScene::BeginSimulate(const float deltaTime)
