@@ -58,7 +58,7 @@ namespace Core
 			 * Function inheritated from IComponent,
 			 * override for create the collider from the PhysicsScene
 			 */
-			virtual bool OnStart() override;
+			virtual void OnInit() override;
 
 			virtual void OnCopy(IComponent* copyTo) const;
 

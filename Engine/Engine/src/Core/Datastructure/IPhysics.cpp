@@ -34,7 +34,7 @@ namespace Core
 		{
 		}
 
-		bool IPhysics::OnStart()
+		void IPhysics::OnInit()
 		{
 			RootObject* root = GetRoot();
 			//m_collider = new Core::Physics::BoxCollider(GetScene()->GetEngine()->GetResourcesManager());
@@ -42,7 +42,8 @@ namespace Core
 			root->GetEngine()->GetPhysicsScene()->AttachActor(this);
 			m_collider->InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
 			m_collider->InitModel(root->GetEngine()->GetResourcesManager()->GetModel("Cube"));
-			return IComponent::OnStart() && IRenderable::OnStart();
+			IComponent::OnInit();
+			IRenderable::OnInit();
 		}
 		
 		void IPhysics::OnCopy(IComponent* copyTo) const
