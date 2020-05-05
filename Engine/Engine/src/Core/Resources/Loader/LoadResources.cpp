@@ -111,24 +111,32 @@ namespace Resources::Loader
 			scene = m_scenes[Name];
 	}
 
+	const aiScene* ResourcesManager::LoadSceneFromImporter(Assimp::Importer& importer,const char* fileName)
+	{
+		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
+
+		//aiImportFile
+		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
+			| aiProcess_GenSmoothNormals
+			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
+			| aiProcess_SplitLargeMeshes
+			| aiProcess_SortByPType
+			| aiProcess_ValidateDataStructure // validate the scene data
+			| aiProcess_CalcTangentSpace // calculate the tangent
+			| aiProcess_GenBoundingBoxes // generate the AABB of the meshs aiProcess_Gen
+			//| aiProcess_FlipUVs
+		);
+
+		return scene;
+	}
+
 	bool ResourcesManager::LoadAssimpScene(const char* fileName)
 	{
 		std::string Name = fileName;
 
 		Assimp::Importer importer;
+		const aiScene* scene = LoadSceneFromImporter(importer, fileName);
 
-		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
-
-		//aiImportFile
-		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
-											| aiProcess_GenSmoothNormals 
-											| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
-											| aiProcess_SplitLargeMeshes 
-											| aiProcess_SortByPType 
-											| aiProcess_ValidateDataStructure // validate the scene data
-											| aiProcess_CalcTangentSpace // calculate the tangent
-											| aiProcess_GenBoundingBoxes // generate the AABB of the meshs
-											);
 		if (!scene)
 		{
 			return false;
@@ -179,9 +187,6 @@ namespace Resources::Loader
 
 			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
 			//modelData->LoadaiMeshModel(mesh);
-
-			//modelData->LoadVertices(mesh);
-			//modelData->LoadIndices(mesh);
 
 			if (scene->HasMaterials())
 			{
@@ -254,13 +259,11 @@ namespace Resources::Loader
 			aiMesh* mesh = scene->mMeshes[i];
 
 			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, i, indexLastMesh);
-			//m_task.AddTask(&Resources::ModelData::LoadaiMeshAABB, modelData, mesh);
 			//modelData->LoadaiMeshModel(mesh, i,indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
 			{
-				//m_task->AddTask(&Resources::Loader::ResourcesManager::LoadaiMeshMaterial, this, scene, mesh, directory);
 				LoadaiMeshMaterial(scene, mesh, directory);
 			}
 		}
@@ -271,19 +274,8 @@ namespace Resources::Loader
 		std::string Name = fileName;
 
 		Assimp::Importer importer;
+		const aiScene* scene = LoadSceneFromImporter(importer, fileName);
 
-		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
-
-		//aiImportFile
-		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
-			| aiProcess_GenSmoothNormals
-			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
-			| aiProcess_SplitLargeMeshes
-			| aiProcess_SortByPType
-			| aiProcess_ValidateDataStructure // validate the scene data
-			| aiProcess_CalcTangentSpace // calculate the tangent
-			| aiProcess_GenBoundingBoxes // generate the AABB of the meshs
-		);
 		if (!scene)
 		{
 			return;
@@ -348,6 +340,7 @@ namespace Resources::Loader
 
 		textureData->nameTexture = keyName;
 		PushTextureToLink(textureData);
+		glGenTextures(1, &texture->texture);
 		textureData->textureptr = texture;
 		//m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData, keyName, *this);
 		textureData->CreateTextureFromImage(keyName, *this);
@@ -361,7 +354,6 @@ namespace Resources::Loader
 		if (fileName.find(".obj") != std::string::npos)
 		{
 			//m_task->AddTask_t(&Resources::Object3DGraph::SceneLoad, sceneData.get(), scene, rootNode, directory, true);
-			//f.get();
 			sceneData->SceneLoad(scene, rootNode, directory, true);
 			
 		}

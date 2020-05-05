@@ -1,11 +1,13 @@
 #include "Assimp/scene.h"
+
+#include "PxRigidStatic.h"
+
 #include "Object3DGraph.h"
 #include "LoadResources.h"
 #include "RootObject.hpp"
 #include "Object.hpp"
 #include "EngineCore.h"
 #include "PhysicsScene.h"
-#include "PxRigidStatic.h"
 #include "TriggeredEvent.h"
 #include "Transform.hpp"
 #include "RootObject.hpp"
@@ -29,29 +31,7 @@ namespace Resources
 			mat = scene->mMaterials[scene->mMeshes[node->mMeshes[0]]->mMaterialIndex];
 			namesMaterial.push_back(directory + mat->GetName().data);
 
-			int sameKey{ 0 };
-
-			for (unsigned int i{ 1 }; i < node->mNumMeshes; i++)
-			{
-				Node child;
-				child.position = { 0.0f,  0.0f,  0.0f };
-				child.rotation = { 0.0f,  0.0f,  0.0f };
-				child.scale = { 1.f, 1.f, 1.f };
-				child.nameMesh = directory + scene->mMeshes[node->mMeshes[i]]->mName.data;
-				child.nameObject = node->mName.data;
-				mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
-				std::string nameMaterial = directory + mat->GetName().data;
-				if (static_cast<std::string>(scene->mMeshes[node->mMeshes[0]]->mName.data) == static_cast<std::string>(scene->mMeshes[node->mMeshes[i]]->mName.data))
-				{
-					sameKey++;
-					child.nameMesh += std::to_string(sameKey);
-					child.nameObject += std::to_string(sameKey);
-					nameMaterial += std::to_string(sameKey);
-				}
-
-				child.namesMaterial.push_back(nameMaterial);
-				children.push_back(child);
-			}
+			LoadMeshsAsChild(scene, node, mat, directory);
 		}
 		else
 		{
@@ -72,6 +52,33 @@ namespace Resources
 		for (int i{ numCurrentChildren }; i < numChildren; i++)
 		{
 			children[i].RecursiveSceneLoad(scene, node->mChildren[i - numCurrentChildren], directory);
+		}
+	}
+
+	void Node::LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory)
+	{
+		int sameKey{ 0 };
+
+		for (unsigned int i{ 1 }; i < node->mNumMeshes; i++)
+		{
+			Node child;
+			child.position = { 0.0f,  0.0f,  0.0f };
+			child.rotation = { 0.0f,  0.0f,  0.0f };
+			child.scale = { 1.f, 1.f, 1.f };
+			child.nameMesh = directory + scene->mMeshes[node->mMeshes[i]]->mName.data;
+			child.nameObject = node->mName.data;
+			mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
+			std::string nameMaterial = directory + mat->GetName().data;
+			if (static_cast<std::string>(scene->mMeshes[node->mMeshes[0]]->mName.data) == static_cast<std::string>(scene->mMeshes[node->mMeshes[i]]->mName.data))
+			{
+				sameKey++;
+				child.nameMesh += std::to_string(sameKey);
+				child.nameObject += std::to_string(sameKey);
+				nameMaterial += std::to_string(sameKey);
+			}
+
+			child.namesMaterial.push_back(nameMaterial);
+			children.push_back(child);
 		}
 	}
 
@@ -98,10 +105,6 @@ namespace Resources
 				newEvent->SetTriggeredEvent(std::bind(&Mesh::IsModelLoaded, mesh), std::bind(&Mesh::CreateAABBMesh, mesh));
 
 				Object->AddComponent(newEvent);
-
-				/*For Test*/
-				//Core::Physics::StaticMesh* staticMesh{ new Core::Physics::StaticMesh() };
-				//Object->AddComponent(staticMesh);
 			}
 		}
 

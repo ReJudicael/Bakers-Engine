@@ -1,16 +1,17 @@
 #include <iostream>
 #include <glad/glad.h>
+
+#include "PxRigidActor.h"
+
 #include "Mesh.h"
 #include "Mat4.hpp"
 #include "Object.hpp"
 #include "RootObject.hpp"
 #include "OpenGLLinkState.h"
-#include "Model.h"
 #include "Texture.h"
 #include "LoadResources.h"
 #include "PhysicsScene.h"
 #include "EngineCore.h"
-#include "PxRigidActor.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -30,6 +31,11 @@ Mesh::~Mesh()
 	//glDeleteBuffers(1, &m_vertexBuffer);
 	glDeleteVertexArrays(1, &m_VAO);
 	//glDeleteProgram(m_program);
+}
+
+void Mesh::OnDestroy()
+{
+	m_destroyActorEvent.Invoke();
 }
 
 void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
@@ -56,6 +62,9 @@ void Mesh::CreateAABBMesh()
 							->GetPhysicsScene()
 							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(), m_model);
 	
+	m_destroyActorEvent += std::bind(&Core::Physics::PhysicsScene::DestroyEditorPhysicActor , object->GetScene()
+		->GetEngine()->GetPhysicsScene(), actor);
+
 	GetParent()->SetAnEventTransformChange(std::bind(&Core::Physics::PhysicsScene::UpdatePoseOfActor, object->GetScene()
 											->GetEngine()->GetPhysicsScene(), actor));
 }

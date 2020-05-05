@@ -18,17 +18,10 @@ namespace Resources
 	 * Contains the ID of the texture, inherit of enable_shared_from_this
 	 * for have the function shared_from_this()
 	 */
-	struct Texture /*: public std::enable_shared_from_this<Texture>*/
+	struct Texture
 	{
 		GLuint texture;
 		EOpenGLLinkState stateTexture{EOpenGLLinkState::CANTLINK};
-
-		/*
-		 * Load a Texture, and create an TextureData
-		 * @param pathTexture: The path of the texture we want to load
-		 * @param resources: The resourcesManager
-		 */
-		void LoadTexture(const std::string& pathTexture, Loader::ResourcesManager& resources);
 
 		~Texture() = default;
 	};
