@@ -1,7 +1,9 @@
 #include "AudioListener.h"
+#include "RootObject.hpp"
 #include "EngineCore.h"
 #include "AudioSystem.h"
-#include "RootObject.hpp"
+#include <fmod.hpp>
+
 RTTR_PLUGIN_REGISTRATION
 {
     registration::class_<Core::Audio::AudioListener>("Audio Listener")
@@ -15,14 +17,15 @@ namespace Core::Audio
     {
     }
 
-    AudioListener::~AudioListener()
-    {
-    }
-
     void AudioListener::StartCopy(IComponent*& copyTo) const
     {
         copyTo = new AudioListener();
         OnCopy(copyTo);
+    }
+
+    void AudioListener::OnStart()
+    {
+        ComponentUpdatable::OnStart();
     }
 
     void AudioListener::OnCopy(IComponent* copyTo) const
@@ -35,15 +38,37 @@ namespace Core::Audio
     void AudioListener::OnReset()
     {
         ComponentUpdatable::OnReset();
+        m_isActive = true;
     }
 
     void AudioListener::OnDestroy()
     {
+        ComponentUpdatable::OnDestroy();
         m_isActive = false;
     }
 
     void AudioListener::OnUpdate(float deltaTime)
     {
-        // GetRoot()->GetEngine()->GetAudioSystem()->SetListenerTransform(GetParent()->GetTransform());
+        ComponentUpdatable::OnUpdate(deltaTime);
+
+        Core::Datastructure::Object* parent = GetParent();
+        Core::Maths::Vec3 pos = parent->GetGlobalPos();
+        Core::Maths::Quat rot = parent->GetGlobalRot();
+
+        // TODO: (pos-lastpos) / time_taken_since_last_frame_in_seconds.
+        Core::Maths::Vec3 vel = { 0.f, 0.f, 0.f };
+
+        Core::Maths::Vec3 forward = rot * Maths::Vec3(0.0f, 0.0f, 1.0f);
+        Core::Maths::Vec3 up = rot * Maths::Vec3(0.0f, 1.0f, 0.0f);
+
+        // Set 3D attributes
+        FMOD_RESULT result = GetRoot()->GetEngine()->GetAudioSystem()->GetFMODSystem()->set3DListenerAttributes(
+            0,
+            reinterpret_cast<FMOD_VECTOR*>(&pos),
+            reinterpret_cast<FMOD_VECTOR*>(&vel),
+            reinterpret_cast<FMOD_VECTOR*>(&forward),
+            reinterpret_cast<FMOD_VECTOR*>(&up));
+
+        CHECK_ERR_FMOD(result);
     }
 }

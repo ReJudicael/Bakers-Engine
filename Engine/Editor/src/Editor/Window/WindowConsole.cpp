@@ -110,6 +110,10 @@ namespace Editor::Window
 			ImGui::TableSetColumnIndex(2);
 			ImGui::AlignTextToFramePadding();
 			ImGui::TextWrapped(log.message);
+			ImGui::TableSetColumnIndex(3);
+			if (ImGui::SmallButton(ICON_FA_COPY))
+				ImGui::SetClipboardText(log.message);
+			ImGui::HelpMarkerItem("Copy to Clipboard");
 		}
 	}
 
@@ -118,11 +122,12 @@ namespace Editor::Window
 		const Core::Debug::LogData* logs{ Core::Debug::Logger::GetLogsData() };
 		const size_t& logSize{ Core::Debug::Logger::GetLogsDataSize() };
 
-		if (ImGui::BeginTable("## ConsolePrint", 3, m_tableFlags, ImGui::GetContentRegionAvail()))
+		if (ImGui::BeginTable("## ConsolePrint", 4, m_tableFlags, ImGui::GetContentRegionAvail()))
 		{
 			ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 3);
 			ImGui::TableSetupColumn("Time", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 4);
 			ImGui::TableSetupColumn("Description");
+			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 2.f);
 			ImGui::TableAutoHeaders();
 
 			for (int i{ 0 }; i < logSize; ++i)

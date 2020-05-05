@@ -109,6 +109,7 @@ namespace Core::Datastructure
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 		m_window = glfwCreateWindow(width, height, "Bakers Engine", nullptr, nullptr);
 		if (m_window == nullptr)
@@ -409,7 +410,7 @@ namespace Core::Datastructure
 	{
 		m_root->RemoveDestroyed();
 		m_root->UpdateTransforms();
-		
+		m_audioSystem->Tick();
 		m_inputSystem->ClearRegisteredInputs();
 	}
 

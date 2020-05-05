@@ -221,11 +221,6 @@ namespace Core::Datastructure
 			return m_transform.Scale(v);
 		}
 
-		const Transform& GetTransform() noexcept
-		{
-			return m_transform;
-		}
-
 		/**
 		 * Set local position of object to given value
 		 * @param pos: New local position
