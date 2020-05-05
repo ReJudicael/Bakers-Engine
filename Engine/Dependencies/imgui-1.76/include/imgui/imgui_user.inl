@@ -133,7 +133,9 @@ namespace ImGui
         ImGuiContext& g = *GImGui;
         const ImGuiStyle& style = g.Style;
 
-        const ImGuiID id = window->GetID(label);
+        PushID((void*)(intptr_t)user_texture_id);
+        const ImGuiID id = window->GetID("#imagebutton");
+        PopID();
         const ImVec2 textSize = ImGui::CalcTextSize(button_text, NULL, true);
 
         const float innerSpacing = style.ItemInnerSpacing.x;

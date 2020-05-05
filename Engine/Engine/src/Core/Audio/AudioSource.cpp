@@ -92,7 +92,6 @@ namespace Core::Audio
 
 	bool AudioSource::OnStart()
 	{
-
 		if (m_audioClip.empty())
 			return false;
 
@@ -157,7 +156,6 @@ namespace Core::Audio
 		m_fmodChannel->setPriority(m_priority);
 		m_fmodChannel->setPitch(m_pitch);
 		m_fmodChannel->setPan(m_pan);
-		m_fmodChannel->setMode(static_cast<FMOD_MODE>(m_audioMode) | (m_loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF));
 		m_fmodChannel->set3DMinMaxDistance(m_minDistance, m_maxDistance);
 
 		if (m_audioMode == EAudioMode::AUDIO_3D)
@@ -201,7 +199,7 @@ namespace Core::Audio
 
 	void AudioSource::CreateSound(const std::string& soundPath)
 	{
-		FMOD_RESULT result = m_fmodSystem->createSound(soundPath.c_str(), FMOD_DEFAULT, 0, &m_fmodSound);
+		FMOD_RESULT result = m_fmodSystem->createSound(soundPath.c_str(), static_cast<FMOD_MODE>(m_audioMode) | (m_loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF), 0, &m_fmodSound);
 		CHECK_ERR_FMOD(result);
 	}
 }

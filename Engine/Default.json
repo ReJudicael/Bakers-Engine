@@ -65,7 +65,7 @@
                                     "Ratio": {
                                         "Name": "Ratio",
                                         "Type": "float",
-                                        "Value": 1.52173912525177
+                                        "Value": 0.9742268323898315
                                     }
                                 }
                             }
@@ -1241,6 +1241,119 @@
                 "x": 0.009999999776482582,
                 "y": 0.009999999776482582,
                 "z": 0.009999999776482582
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Audio Source",
+                    "Values": {
+                        "Audio Clip": {
+                            "Name": "Audio Clip",
+                            "Type": "std::string",
+                            "Value": "Resources\\veh_lawnmower_0879_on_exh.ogg"
+                        },
+                        "Audio Mode": {
+                            "Name": "Audio Mode",
+                            "Type": "Audio Mode",
+                            "Value": 16
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Max Distance": {
+                            "Name": "Max Distance",
+                            "Type": "float",
+                            "Value": 10000.0
+                        },
+                        "Min Distance": {
+                            "Name": "Min Distance",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Mute": {
+                            "Name": "Mute",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Pan": {
+                            "Name": "Pan",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Pitch": {
+                            "Name": "Pitch",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Play On Awake": {
+                            "Name": "Play On Awake",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Priority": {
+                            "Name": "Priority",
+                            "Type": "int",
+                            "Value": 128
+                        },
+                        "Volume": {
+                            "Name": "Volume",
+                            "Type": "float",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                {
+                    "Type": "Static Mesh",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "LayerMask": {
+                            "Name": "LayerMask",
+                            "Type": "Layout",
+                            "Value": 1
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "GameObject",
+            "Pos": {
+                "x": 9.377946853637695,
+                "y": 7.138454437255859,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
             }
         }
     ]

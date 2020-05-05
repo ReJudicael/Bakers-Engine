@@ -64,7 +64,7 @@ namespace Core::Audio
 	{
 		if (result != FMOD_OK)
 		{
-			BAKERS_LOG_ERROR((std::string("Audio: ") + FMOD_ErrorString(static_cast<FMOD_RESULT>(result))).c_str());
+			BAKERS_LOG_WARNING( (std::string(" Audio: ") + FMOD_ErrorString(static_cast<FMOD_RESULT>(result))).c_str());
 			return true;
 		}
 
