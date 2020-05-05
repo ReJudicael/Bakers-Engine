@@ -210,9 +210,6 @@ namespace Core::Datastructure
 
 		Core::Datastructure::ScriptedComponent* s = new Core::Datastructure::ScriptedComponent("Resources\\Scripts\\DefaultScript.lua");
 		camNode->AddComponent(s);
-		Core::Datastructure::Object* dining_room{ m_root->CreateChild("DiningRoom", {}) };
-		Core::Datastructure::Object* staticMesh{ dining_room->CreateChild("Static Mesh", {}) };
-		Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
 
 		umbreon->AddComponent(new Core::Physics::DynamicMesh());
 		
@@ -225,15 +222,22 @@ namespace Core::Datastructure
 		((Core::Physics::BoxCollider*)staticmesh1->GetCollider())->SetBoxHalfExtent({ 500.f, 1.f, 500.f });
 		staticMesh->AddComponent(staticmesh1);
 
+
+
+
+		umbreon->SetPos({ 0.f,3.f, 0.f });
+		//
+		Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
 		m_manager->Load3DObject("Resources/Models/Umbreon/UmbreonHighPoly.obj");
 		Resources::Object3DGraph::CreateScene("Resources/Models/Umbreon/UmbreonHighPoly.obj", *m_manager, umbreon);
+
+		Core::Datastructure::Object* dining_room{ m_root->CreateChild("DiningRoom", {}) };
+		Core::Datastructure::Object* staticMesh{ dining_room->CreateChild("Static Mesh", {}) };
 
 		m_manager->Load3DObject("Resources/Models/DiningRoom/dining_room.fbx");
 		Resources::Object3DGraph::CreateScene("Resources/Models/DiningRoom/dining_room.fbx", *m_manager, dining_room);
 
 		dining_room->SetScale({ 0.01f, 0.01f, 0.01f });
-
-		umbreon->SetPos({ 0.f,3.f, 0.f });
 		*/
 		return 0;
 	}

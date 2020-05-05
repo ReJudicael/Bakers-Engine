@@ -119,6 +119,12 @@ namespace Core::Datastructure
 		inline const Maths::Vec3 GetUp() const noexcept;
 
 		/**
+		 * Return right of transform
+		 * @return Right of transform
+		 */
+		inline const Maths::Vec3 GetRight() const noexcept;
+
+		/**
 		 * Returns if the global transform variables are currently up to date
 		 * @return The state of the global variables
 		 */
@@ -307,5 +313,10 @@ namespace Core::Datastructure
 	inline const Maths::Vec3 Transform::GetUp() const noexcept
 	{
 		return GetLocalRot() * Maths::Vec3(0.0f, 1.0f, 0.0f);
+	}
+
+	inline const Maths::Vec3 Transform::GetRight() const noexcept
+	{
+		return GetLocalRot() * Maths::Vec3(1.0f, 0.0f, 0.0f);
 	}
 }

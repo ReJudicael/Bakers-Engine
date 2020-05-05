@@ -5,7 +5,6 @@
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
 
-#include "LoadResources.h"
 #include "Assimp/cimport.h"
 #include "Assimp/scene.h"
 #include "Assimp/Importer.hpp"
@@ -15,11 +14,12 @@
 #include "Assimp/RemoveComments.h"
 
 #include "RootObject.hpp"
+#include "LoadResources.h"
 #include "Object.hpp"
 #include "ScriptedComponent.h"
 #include "Model.h"
-#include "Texture.h"
-#include "TextureData.h"
+//#include "Texture.h"
+//#include "TextureData.h"
 #include "Object3DGraph.h"
 
 
@@ -27,6 +27,7 @@ namespace Resources::Loader
 {
 
 	ResourcesManager::ResourcesManager()
+	//m_task {new Core::SystemManagement::TaskSystem()}
 	{
 		CreateShader("Default", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("NormalMapDefault", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
@@ -59,6 +60,8 @@ namespace Resources::Loader
 		for (unorderedmapShader::iterator itshader = m_shaders.begin();
 			itshader != m_shaders.end(); ++itshader)
 			itshader->second->Delete();
+
+		m_task.EndTaskSystem();
 	}
 
 	void ResourcesManager::Load3DObject(const char* fileName)
@@ -70,24 +73,32 @@ namespace Resources::Loader
 				return;
 	}
 
+	const aiScene* ResourcesManager::LoadSceneFromImporter(Assimp::Importer& importer,const char* fileName)
+	{
+		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
+
+		//aiImportFile
+		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
+			| aiProcess_GenSmoothNormals
+			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
+			| aiProcess_SplitLargeMeshes
+			| aiProcess_SortByPType
+			| aiProcess_ValidateDataStructure // validate the scene data
+			| aiProcess_CalcTangentSpace // calculate the tangent
+			| aiProcess_GenBoundingBoxes // generate the AABB of the meshs aiProcess_Gen
+			//| aiProcess_FlipUVs
+		);
+
+		return scene;
+	}
+
 	bool ResourcesManager::LoadAssimpScene(const char* fileName)
 	{
 		std::string Name = fileName;
 
 		Assimp::Importer importer;
+		const aiScene* scene = LoadSceneFromImporter(importer, fileName);
 
-		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
-
-		//aiImportFile
-		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
-											| aiProcess_GenSmoothNormals 
-											| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
-											| aiProcess_SplitLargeMeshes 
-											| aiProcess_SortByPType 
-											| aiProcess_ValidateDataStructure // validate the scene data
-											| aiProcess_CalcTangentSpace // calculate the tangent
-											| aiProcess_GenBoundingBoxes // generate the AABB of the meshs
-											);
 		if (!scene)
 		{
 			return false;
@@ -133,18 +144,18 @@ namespace Resources::Loader
 			int numberOfSameKey{ LoadMeshsSceneCheckModelIsLoaded(modelData, model, name) };
 
 			modelData->model = model;
+			modelData->SetArrays(scene, i);
 			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
 			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
-			modelData->LoadaiMeshModel(mesh);
 
-			//modelData->LoadVertices(mesh);
-			//modelData->LoadIndices(mesh);
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
+			//modelData->LoadaiMeshModel(mesh);
 
 			if (scene->HasMaterials())
 			{
 				LoadaiMeshMaterial(scene, mesh, directory, numberOfSameKey);
 			}
-			modelData->stateVAO = EOpenGLLinkState::CANLINK;
+			//modelData->stateVAO = EOpenGLLinkState::CANLINK;
 		}
 	}
 
@@ -204,12 +215,15 @@ namespace Resources::Loader
 
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
 		{
+			modelData->SetArrays(scene, i);
+		}
+
+		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
+		{
 			aiMesh* mesh = scene->mMeshes[i];
 
-			modelData->LoadaiMeshModel(mesh, indexLastMesh);
-
-			//modelData->LoadVertices(mesh);
-			//modelData->LoadIndices(mesh, indexLastMesh);
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, i, indexLastMesh);
+			//modelData->LoadaiMeshModel(mesh, i,indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
@@ -217,7 +231,6 @@ namespace Resources::Loader
 				LoadaiMeshMaterial(scene, mesh, directory);
 			}
 		}
-		modelData->stateVAO = EOpenGLLinkState::CANLINK;
 	}
 
 	void ResourcesManager::LoadObjInModel(const std::string& name, const char* fileName)
@@ -228,19 +241,8 @@ namespace Resources::Loader
 		std::string Name = fileName;
 
 		Assimp::Importer importer;
+		const aiScene* scene = LoadSceneFromImporter(importer, fileName);
 
-		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
-
-		//aiImportFile
-		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
-			| aiProcess_GenSmoothNormals
-			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
-			| aiProcess_SplitLargeMeshes
-			| aiProcess_SortByPType
-			| aiProcess_ValidateDataStructure // validate the scene data
-			| aiProcess_CalcTangentSpace // calculate the tangent
-			| aiProcess_GenBoundingBoxes // generate the AABB of the meshs
-		);
 		if (!scene)
 		{
 			return;
@@ -255,10 +257,12 @@ namespace Resources::Loader
 			
 		aiMesh* mesh = scene->mMeshes[0];
 
+		modelData->SetArrays(scene, 0);
 
+		//m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
 		modelData->LoadaiMeshModel(mesh);
 
-		modelData->stateVAO = EOpenGLLinkState::CANLINK;
+		importer.FreeScene();
 	}
 
 	void ResourcesManager::LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh, const std::string& directory, const int numberOfSameKey)
@@ -281,6 +285,7 @@ namespace Resources::Loader
 
 		m_materials.emplace(keyMaterial, materialOut);
 
+		//m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut.get(), mat, directory, *this);
 		materialOut->LoadMaterialFromaiMaterial(mat, directory, *this);
 
 	}
@@ -293,8 +298,16 @@ namespace Resources::Loader
 			return;
 		}
 		texture = std::make_shared<Texture>();
+		//m_task.AddTask(&Resources::Texture::LoadTexture, keyName, *this);
+		//texture->LoadTexture(keyName, *this);
+		std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
 
-		texture->LoadTexture(keyName, *this);
+		textureData->nameTexture = keyName;
+		PushTextureToLink(textureData);
+		glGenTextures(1, &texture->texture);
+		textureData->textureptr = texture;
+		//m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData, keyName, *this);
+		textureData->CreateTextureFromImage(keyName, *this);
 	}
 
 	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)
@@ -304,10 +317,13 @@ namespace Resources::Loader
 		aiNode* rootNode = scene->mRootNode;
 		if (fileName.find(".obj") != std::string::npos)
 		{
+			//m_task->AddTask_t(&Resources::Object3DGraph::SceneLoad, sceneData.get(), scene, rootNode, directory, true);
 			sceneData->SceneLoad(scene, rootNode, directory, true);
+			
 		}
 		else
 		{
+			//m_task.AddTask_t(&Resources::Loader::ResourcesManager::GetCountModel, this, scene, rootNode, directory, false);
 			sceneData->SceneLoad(scene, rootNode, directory, false);
 		}
 
@@ -339,7 +355,6 @@ namespace Resources::Loader
 			}
 		}
 	}
-
 
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{

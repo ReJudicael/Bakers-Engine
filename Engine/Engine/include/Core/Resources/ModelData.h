@@ -28,6 +28,7 @@ namespace Resources
 		std::vector<Vertex>			vertices;
 		std::vector<GLuint>			indices;
 		std::vector<OffsetMesh>		offsetsMesh;
+		std::vector<EOpenGLLinkState> offsetMeshState;
 		Core::Maths::Vec3			min;
 		Core::Maths::Vec3			max;
 		std::shared_ptr<Model>		model;
@@ -35,7 +36,9 @@ namespace Resources
 		std::string ModelName;
 		EOpenGLLinkState stateVAO;
 
-		void LoadaiMeshModel(aiMesh* mesh, const int increaseIndices = 0);
+		void SetArrays(const aiScene* scene, const unsigned int& index);
+
+		void LoadaiMeshModel(aiMesh* mesh, const unsigned int indexMesh = 0, const int increaseIndices = 0);
 
 		void LoadaiMeshAABB(aiMesh* mesh);
 
@@ -43,7 +46,7 @@ namespace Resources
 		 * Load all the vertices of one aiMesh
 		 * @param mesh: The aiMesh with wich we want to load his vertices
 		 */
-		void LoadVertices(aiMesh* mesh);
+		void LoadVertices(aiMesh* mesh, const int increaseIndices);
 
 		/**
 		 * Load all the indices of one aiMesh
@@ -51,7 +54,7 @@ namespace Resources
 		 * @param increaseIndices: The number of with wich we want increase the value of the indices of the mesh
 		 * use when multiple mesh are load for one Model
 		 */
-		void LoadIndices(aiMesh* mesh, const int increaseIndices = 0);
+		void LoadIndices(aiMesh* mesh, const int increaseIndices, const unsigned int indexMesh);
 
 		/**
 		 * Link the Model to OpenGL

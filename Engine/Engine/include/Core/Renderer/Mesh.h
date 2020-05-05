@@ -12,11 +12,11 @@
 #include "OffsetMesh.h"
 #include "Vertex.h"
 #include "ModelData.h"
+#include "Model.h"
 #include "CoreMinimal.h"
 
 namespace Resources
 {
-	struct Model;
 	struct Material;
 	namespace Loader
 	{
@@ -37,6 +37,8 @@ protected:
 
 	std::vector<std::shared_ptr<Resources::Material>>	m_materialsModel;
 	std::vector<std::string>							m_materialsNames;
+
+	Core::SystemManagement::EventSystem<>				m_destroyActorEvent;
 
 	virtual void	OnReset() override; 
 	virtual void	OnCopy(IComponent* copyTo) const override;
@@ -64,7 +66,7 @@ public:
 	/**
 	 * Function inheritated from IRenderable,
 	 */
-	virtual void OnDestroy() override {};
+	virtual void OnDestroy() override;
 
 	virtual void OnInit() override;
 
@@ -83,6 +85,15 @@ public:
 	 * Create the AABB box of the mesh in the physics scene
 	 */
 	void CreateAABBMesh();
+
+	inline Core::Maths::Vec3 GetAABBMaxModel()
+	{
+		return m_model->max;
+	}
+	inline Core::Maths::Vec3 GetAABBMinModel()
+	{
+		return m_model->min;
+	}
 
 	/**
 	 * Function inheritated from IRenderable,

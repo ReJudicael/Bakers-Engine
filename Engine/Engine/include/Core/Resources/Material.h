@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <vector>
-#include <memory>
+//#include <memory>
 #include <string>
 
 #include "Vec3.hpp"
@@ -26,13 +26,13 @@ namespace Resources
 	/**
 	 * Contains the values with which we can draw the color of the mesh
 	 */
-	struct Material : public std::enable_shared_from_this<Material>
+	struct Material /*: public std::enable_shared_from_this<Material>*/
 	{
-		Core::Maths::Color						diffuseColor;
-		Core::Maths::Color						ambientColor;
-		Core::Maths::Color						specularColor;
-		float									shininess;
-		float									shininessStrength;
+		Core::Maths::Color						diffuseColor{};
+		Core::Maths::Color						ambientColor{};
+		Core::Maths::Color						specularColor{};
+		float									shininess{};
+		float									shininessStrength{};
 
 		Core::Maths::Vec3						materialColor;
 
