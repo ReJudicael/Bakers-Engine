@@ -36,7 +36,7 @@ namespace Core::Navigation
 		float	straightPath[NavPath::MAX_PATH_POLY];
 		m_query->findStraightPath(m_current.start.xyz, endPos.xyz, m_current.result->path.polyRefPath.data(), 
 			m_current.result->path.numPolys, straightPath, m_straightPathFlags, m_current.result->path.polyRefStraightPath.data(), 
-			&m_current.result->path.straightPathSize, m_current.result->path.polyRefPath.size(), DT_STRAIGHTPATH_ALL_CROSSINGS);
+			&m_current.result->path.straightPathSize, static_cast<int>(m_current.result->path.polyRefPath.size()), DT_STRAIGHTPATH_ALL_CROSSINGS);
 		for (int i = 0; i < NavPath::MAX_PATH_POLY; ++i)
 			m_current.result->path.straightPath[i] = Core::Maths::Vec3(straightPath[i * 3], straightPath[i * 3 + 1], straightPath[i * 3 + 2]);
 	}
@@ -77,7 +77,7 @@ namespace Core::Navigation
 		if (dtStatusSucceed(status))
 		{
 			int max;
-			m_current.result->status = m_query->finalizeSlicedFindPath(m_current.result->path.polyRefPath.data(), &max, m_current.result->path.polyRefPath.size());
+			m_current.result->status = m_query->finalizeSlicedFindPath(m_current.result->path.polyRefPath.data(), &max, static_cast<int>(m_current.result->path.polyRefPath.size()));
 			m_current.result->path.numPolys = max;
 			if (max)
 				InitCurrPath();

@@ -278,7 +278,7 @@ namespace Editor
 	json	PropertyToJson(rttr::property prop, rttr::instance i)
 	{
 		rttr::type propType = prop.get_type();
-		rttr:variant val = prop.get_value(i);
+		rttr::variant val = prop.get_value(i);
 
 		json out{ ValToJson(propType, val) };
 

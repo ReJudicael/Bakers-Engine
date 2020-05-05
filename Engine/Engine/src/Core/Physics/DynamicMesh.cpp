@@ -146,7 +146,7 @@ namespace Core
 			GetParent()->SetGlobalPos({ pos.x, pos.y, pos.z });
 			m_MeshChangeGlobalPos = true;
 			GetParent()->SetGlobalRot({ rot.w, rot.x, rot.y, rot.z });
-			float y = m_dynamicMesh->getLinearVelocity().y;
+			//float y = m_dynamicMesh->getLinearVelocity().y;
 
 		}
 

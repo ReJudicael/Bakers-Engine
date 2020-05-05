@@ -129,7 +129,7 @@ void Mesh::CreateAABBMesh()
 {
 	Core::Datastructure::Object* object = GetParent();
 	
-	GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), m_model->vertices.size(), m_model->indices.data(), m_model->indices.size(), object->GetUpdatedTransform());
+	GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()), m_model->indices.data(), static_cast<int>(m_model->indices.size()), object->GetUpdatedTransform());
 	
 	Core::Datastructure::IComponent* component = dynamic_cast<Core::Datastructure::IComponent*>(this);
 	physx::PxRigidActor* actor = object->GetScene()

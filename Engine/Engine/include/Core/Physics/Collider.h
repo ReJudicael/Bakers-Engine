@@ -34,7 +34,7 @@ namespace Core
 	}
 	namespace Physics
 	{
-		enum EFilterRaycast;
+		enum class EFilterRaycast : int;
 
 
 		/**
@@ -167,7 +167,7 @@ namespace Core
 			virtual void DestroyShape();
 
 
-			~Collider();
+			virtual ~Collider();
 			REGISTER_CLASS()
 		};
 	}

@@ -46,7 +46,7 @@ namespace Core::Navigation
 	BAKERS_API_CLASS NavMeshBuilder
 	{
 	protected:
-		unsigned long		m_maxTris{ 0 };
+		size_t		m_maxTris{ 0 };
 		bool				m_isUpdated{ false };
 
 		rcConfig			m_cfg;

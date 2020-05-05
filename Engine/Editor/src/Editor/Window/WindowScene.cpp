@@ -104,9 +104,9 @@ namespace Editor::Window
 		if (r.SquaredLength() > 0)
 		{
 			// Convert gizmo rotation euler angles into a valid rotation vector
-			r2.x = Core::Maths::ToRadians(-r2.x);
-			r2.y = Core::Maths::ToRadians(-r2.y);
-			r2.z = Core::Maths::ToRadians(r2.z);
+			r2.x = Core::Maths::ToRadiansf(-r2.x);
+			r2.y = Core::Maths::ToRadiansf(-r2.y);
+			r2.z = Core::Maths::ToRadiansf(r2.z);
 			m_cam->SetRot(r2);
 		}
 	}

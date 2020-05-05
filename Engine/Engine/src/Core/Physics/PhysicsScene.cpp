@@ -111,7 +111,7 @@ namespace Core::Physics
 		objectHit = physicsMesh->GetParent();
 		physicsMeshHit = dynamic_cast<Core::Datastructure::IPhysics*>(physicsMesh);
 
-		physx::PxU32 face{ overlapHit.faceIndex };
+		//physx::PxU32 face{ overlapHit.faceIndex };
 	}
 
 	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResultQuery& result, const float Distance)

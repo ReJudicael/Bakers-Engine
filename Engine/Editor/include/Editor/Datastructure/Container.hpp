@@ -31,13 +31,13 @@ namespace Editor::Datastructure
 		/**
 		 * Remove content
 		 * @param content: Content to remove
-		 * @warning Don't call it when content is drawing/used
+		 * @warning Don't call when the content is drawing/used
 		 */
 		void Remove(const C& content);
 
 		/**
 		 * Remove all content
-		 * @warning Don't call it content widget is drawing/used
+		 * @warning Don't call when the content widget is drawing/used
 		 */
 		void RemoveAll();
 	};

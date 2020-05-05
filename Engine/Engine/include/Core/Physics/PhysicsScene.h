@@ -45,7 +45,7 @@ namespace Core
 		class Collider;
 
 
-		enum EFilterRaycast
+		enum class EFilterRaycast : int
 		{
 			GROUPE1 = (1<<0),
 			GROUPE2 = (1<<1),

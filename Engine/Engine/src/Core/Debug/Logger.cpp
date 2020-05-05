@@ -58,6 +58,11 @@ namespace Core::Debug
 	void Logger::ClearLogs() noexcept
 	{
 		nbLogs[0] = nbLogs[1] = nbLogs[2] = 0;
+		for (auto it : logs)
+		{
+			delete it.time;
+			delete it.message;
+		}
 		logs.clear();
 	}
 

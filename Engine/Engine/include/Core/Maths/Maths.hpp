@@ -104,6 +104,24 @@ namespace Core
 			return angle * RAD2DEG;
 		}
 
+		/**
+		 * Return given angle in radians
+		 * @param angle: Angle in degrees
+		 */
+		inline constexpr float ToRadiansf(const float angle)
+		{
+			return angle * static_cast<float>(DEG2RAD);
+		}
+
+		/**
+		 * Return given angle in degrees
+		 * @param angle: Angle in radians
+		 */
+		inline constexpr float ToDegreesf(const float angle)
+		{
+			return angle * static_cast<float>(RAD2DEG);
+		}
+
 		physx::PxVec3 operator+(physx::PxVec3, Core::Maths::Vec3);
 
 		void RegisterMathsForLua(sol::state& lua);

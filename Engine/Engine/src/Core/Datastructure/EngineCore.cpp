@@ -60,6 +60,8 @@ namespace Core::Datastructure
 			delete fbo;
 		}
 		delete m_manager;
+
+		Core::Debug::Logger::ClearLogs();
 	}
 
 	int EngineCore::Init()
@@ -128,17 +130,17 @@ namespace Core::Datastructure
 		{
 			Core::Datastructure::Object* skybox{ m_root->CreateChild("Skybox", {}) };
 			AddMesh("Sky1", "Quad", "Skybox", "Resources/Textures/skybox1.jpg",
-				{ {-50.f, 0.f, 0.f}, {0.f, M_PI_2, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+				{ {-50.f, 0.f, 0.f}, {0.f, static_cast<float>(M_PI_2), 0.f}, {100.f, 100.f, 0.f} }, skybox);
 			AddMesh("Sky2", "Quad", "Skybox", "Resources/Textures/skybox2.jpg",
-				{ {0.f, 49.f, 0.f}, {M_PI_2, 0.f, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+				{ {0.f, 49.f, 0.f}, {static_cast<float>(M_PI_2), 0.f, 0.f}, {100.f, 100.f, 0.f} }, skybox);
 			AddMesh("Sky3", "Quad", "Skybox", "Resources/Textures/skybox3.jpg",
 				{ {0.f, 0.f, -49.f}, {0.f, 0.f, 0.f}, {100.f, 100.f, 0.f} }, skybox);
 			AddMesh("Sky4", "Quad", "Skybox", "Resources/Textures/skybox4.jpg",
-				{ {0.f, -49.f, 0.f}, {-M_PI_2, 0.f, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+				{ {0.f, -49.f, 0.f}, {-static_cast<float>(M_PI_2), 0.f, 0.f}, {100.f, 100.f, 0.f} }, skybox);
 			AddMesh("Sky5", "Quad", "Skybox", "Resources/Textures/skybox5.jpg",
-				{ {50.f, 0.f, 0.f}, {0.f, -M_PI_2, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+				{ {50.f, 0.f, 0.f}, {0.f, -static_cast<float>(M_PI_2), 0.f}, {100.f, 100.f, 0.f} }, skybox);
 			AddMesh("Sky6", "Quad", "Skybox", "Resources/Textures/skybox6.jpg",
-				{ {0.f, 0.f, 49.f}, {0.f, M_PI, 0.f}, {100.f, 100.f, 0.f} }, skybox);
+				{ {0.f, 0.f, 49.f}, {0.f, static_cast<float>(M_PI_2), 0.f}, {100.f, 100.f, 0.f} }, skybox);
 		}
 		else
 		{

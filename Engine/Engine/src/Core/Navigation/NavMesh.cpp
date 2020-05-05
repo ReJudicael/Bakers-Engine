@@ -287,7 +287,7 @@ namespace Core::Navigation
 				return false;
 			}
 		}
-
+		
 		m_ctx->stopTimer(RC_TIMER_TOTAL);
 		int ns{ m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) % 1000 };
 		int us{ (m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) / 1000) % 1000 };
@@ -339,7 +339,7 @@ namespace Core::Navigation
 
 		Core::Maths::Vec3 vert;
 
-		for (unsigned i{ 0 }; i < nverts / 3; ++i)
+		for (int i{ 0 }; i < nverts / 3; ++i)
 		{
 			vert = { verts[i * 3], verts[i * 3 + 1], verts[i * 3 + 2] };
 			vert = pos + (rot * Core::Maths::Quat(0, vert) * rotInv).GetVec();
@@ -350,7 +350,7 @@ namespace Core::Navigation
 
 		int* newTris{ (int*)malloc(ntris * sizeof(int*)) };
 		int max = 0;
-		for (unsigned i{ 0 }; i < ntris; ++i)
+		for (int i{ 0 }; i < ntris; ++i)
 		{
 			if (tris[i] > max)
 				max = tris[i];

@@ -25,7 +25,7 @@ namespace Editor::Datastructure
 	Core::Maths::Vec3 EditorCamera::GetPerspectiveDirection(const float ratioX, const float ratioY)
 	{
 		constexpr Core::Maths::Quat	forQuat{ 0, 0, 0, 1 };
-		float radFOV = Core::Maths::ToRadians(m_persp.fov);
+		float radFOV = Core::Maths::ToRadiansf(m_persp.fov);
 		Core::Maths::Vec3 forward = (m_transform.GetGlobalRot() * forQuat * m_transform.GetGlobalRot().Inversed()).GetVec();
 		Core::Maths::Quat RotateY = Core::Maths::Quat::AngleAxis(radFOV * ratioX, m_parent->Up());
 		Core::Maths::Quat RotateX = Core::Maths::Quat::AngleAxis(radFOV * ratioY, m_parent->Right());

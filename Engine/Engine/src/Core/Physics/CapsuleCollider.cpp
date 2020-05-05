@@ -31,7 +31,7 @@ namespace Core::Physics
 		//physx::PxVec2 extent = physx::PxVec3(m_extent.x, m_extent.y);
 		physx::PxVec3 localPosition = physx::PxVec3(0.f, 0.f, 0.f);
 		// rotation 90 on z axis
-		physx::PxQuat localRot = physx::PxQuat(1.57, physx::PxVec3{0.f, 0.f, 1.f});
+		physx::PxQuat localRot = physx::PxQuat(1.57f, physx::PxVec3{0.f, 0.f, 1.f});
 
 		m_pxMaterial = physics->createMaterial(1.f, 1.f, 0.0f);
 		m_pxShape = physics->createShape(physx::PxCapsuleGeometry(0.5f,0.5f), *m_pxMaterial, true);
@@ -77,7 +77,7 @@ namespace Core::Physics
 		Core::Maths::Quat localRot{ m_pxShape->getLocalPose().q.w, m_pxShape->getLocalPose().q.x, m_pxShape->getLocalPose().q.y, m_pxShape->getLocalPose().q.z };
 		Core::Datastructure::Transform Ltrs;
 		Ltrs.SetLocalPos(localPos + Core::Maths::Vec3{0.f,-0.5f,0.f});
-		Ltrs.SetLocalRot(localRot * Core::Maths::Quat(0.7071068, 0, 0, -0.7071068));
+		Ltrs.SetLocalRot(localRot * Core::Maths::Quat(0.7071068f, 0, 0, -0.7071068f));
 		Ltrs.SetLocalScale({ GetCapsuleHalfExtent().x, GetCapsuleHalfExtent().y, GetCapsuleHalfExtent().x });
 
 		Core::Datastructure::Transform Gtrs;
