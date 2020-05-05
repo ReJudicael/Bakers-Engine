@@ -56,6 +56,7 @@ namespace Resources
 		 * Value constructor
 		 * @param vertexFilePath: Path to the vertex shader file
 		 * @param fragmentFilePath: Path to the fragment shader file
+		 * @param header: Header type to add content to shader
 		 */
 		Shader(const char* vertexFilePath, const char* fragmentFilePath, EShaderHeaderType header = EShaderHeaderType::NONE);
 

@@ -51,6 +51,7 @@ namespace Editor::Window
 				ImGuizmo::SetDrawlist();
 				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
 				
+				CheckGizmoUse();
 				GizmoViewManipulateResult();
 				GizmoManipulateResult();
 			}
@@ -60,6 +61,20 @@ namespace Editor::Window
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("  No scene camera available");
 		}
+	}
+
+	void WindowScene::CheckGizmoUse()
+	{
+		if (ImGuizmo::IsUsing())
+			return;
+
+		Core::Maths::Vec2 mouse = GetEngine()->GetMousePos();
+
+		if (mouse.x < ImGui::GetWindowPos().x || mouse.x > ImGui::GetWindowPos().x + ImGui::GetWindowSize().x
+			|| mouse.y < ImGui::GetWindowPos().y || mouse.y > ImGui::GetWindowPos().y + ImGui::GetWindowSize().y)
+			ImGuizmo::Enable(false);
+		else
+			ImGuizmo::Enable(true);
 	}
 
 	void WindowScene::GizmoViewManipulateResult()

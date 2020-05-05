@@ -2,6 +2,8 @@
 
 #include "PlayerCamera.h"
 #include "Object.hpp"
+#include "RootObject.hpp"
+#include "EngineCore.h"
 #include "InputSystem.hpp"
 
 RTTR_PLUGIN_REGISTRATION
@@ -13,7 +15,11 @@ RTTR_PLUGIN_REGISTRATION
 		.property("Speed", &Core::Renderer::PlayerCamera::m_speed)
 		.property("Running speed", &Core::Renderer::PlayerCamera::m_runningSpeed)
 		.property("Min move length", &Core::Renderer::PlayerCamera::m_minMoveLength)
-		.property("Move lerp speed", &Core::Renderer::PlayerCamera::m_moveLerpSpeed);
+		.property("Move lerp speed", &Core::Renderer::PlayerCamera::m_moveLerpSpeed)
+		.property("Blur", &Core::Renderer::PlayerCamera::m_blurActivated)
+		.property("Black and White", &Core::Renderer::PlayerCamera::m_bwActivated)
+		.property("Color custom", &Core::Renderer::PlayerCamera::m_colorActivated)
+		.property("Postprocess Color", &Core::Renderer::PlayerCamera::m_color);
 }
 
 namespace Core::Renderer
@@ -24,6 +30,34 @@ namespace Core::Renderer
 
 	PlayerCamera::PlayerCamera(const float ratio, const float fov, const float near, const float far) : Camera(ratio, fov, near, far)
 	{
+	}
+
+	void PlayerCamera::OnInit()
+	{
+		Core::Datastructure::ICamera::OnInit();
+
+		for (int i{ 0 }; i < 3; ++i)
+		{
+			m_postProcessFBO.push_back(GetRoot()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Core::Renderer::FBOType::POSTPROCESSING));
+			m_postProcessFBO[i]->userPtr = this;
+		}
+
+		m_postProcessFBO[0]->InitPostProcess(GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcess", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessShader.frag"));
+		m_postProcessFBO[1]->InitPostProcess(GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessBlur", "Resources\\Shaders\\PostprocessBlurShader.vert", "Resources\\Shaders\\PostprocessBlurShader.frag"));
+		m_postProcessFBO[2]->InitPostProcess(GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessBW", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessBlackWhiteShader.frag"));
+	}
+
+	std::vector<Core::Renderer::Framebuffer*> PlayerCamera::GetActiveFramebuffers()
+	{
+		std::vector<Core::Renderer::Framebuffer*> activeFBOs;
+
+		for (int i{ 0 }; i < m_postProcessFBO.size(); ++i)
+		{
+			if (m_postProcessFBO[i]->data.active)
+				activeFBOs.push_back(m_postProcessFBO[i]);
+		}
+
+		return activeFBOs;
 	}
 
 	void PlayerCamera::MoveWithInput()
@@ -81,6 +115,10 @@ namespace Core::Renderer
 
 	void PlayerCamera::OnUpdate(float deltaTime)
 	{
+		m_postProcessFBO[0]->data.active = m_colorActivated;
+		m_postProcessFBO[1]->data.active = m_blurActivated;
+		m_postProcessFBO[2]->data.active = m_bwActivated;
+
 		MoveWithInput();
 
 		Camera::OnUpdate(deltaTime);
@@ -145,6 +183,54 @@ namespace Core::Renderer
 		m_isRotating = true;
 	}
 
+	void PlayerCamera::Resize(unsigned width, unsigned height)
+	{
+		Core::Datastructure::ICamera::Resize(width, height);
+
+		for (int i{0}; i < m_postProcessFBO.size(); ++i)
+			m_postProcessFBO[i]->Resize(width, height);
+	}
+
+	void PlayerCamera::Draw(const std::list<Core::Datastructure::IRenderable*>& renderables)
+	{
+		ZoneScoped
+			ZoneText("Render of a camera", 22)
+			TracyGpuZone("Rendering frame buffer")
+			if (IsStarted() && m_isActive && !IsDestroyed() && m_parent->IsActive())
+			{
+				std::vector<Core::Renderer::Framebuffer*> FBO = GetActiveFramebuffers();
+				if (FBO.size() > 0)
+					glBindFramebuffer(GL_FRAMEBUFFER, FBO[0]->FBO);
+				else
+					glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
+
+				glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+				for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
+					(*it)->Draw(this);
+
+				for (int i{ 0 }; i < FBO.size(); ++i)
+				{
+					if (i == FBO.size() - 1)
+						glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
+					else
+						glBindFramebuffer(GL_FRAMEBUFFER, FBO[i+1]->FBO);
+
+					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+					FBO[i]->data.s->UseProgram();
+					glUniform3fv(FBO[i]->data.s->GetLocation("uColor"), 1, m_color.xyz);
+					glBindTexture(GL_TEXTURE_2D, FBO[i]->ColorTexture);
+					glBindVertexArray(FBO[i]->data.VAO);
+
+					glDrawArrays(GL_TRIANGLES, 0, 6);
+
+					glBindTexture(GL_TEXTURE_2D, 0);
+					glBindVertexArray(0);
+				}
+			}
+	}
+
 	void PlayerCamera::OnCopy(IComponent* copyTo) const
 	{
 		Camera::OnCopy(copyTo);
@@ -190,5 +276,13 @@ namespace Core::Renderer
 		m_pitch = 0.f;
 		m_minAngularLength = 0.001f;
 		m_angularLerpSpeed = 0.5;
+	}
+
+	void PlayerCamera::OnDestroy()
+	{
+		Core::Datastructure::ICamera::OnDestroy();
+
+		for (int i{0}; i < m_postProcessFBO.size(); ++i)
+			GetRoot()->GetEngine()->DeleteFBO(m_postProcessFBO[0]);
 	}
 }

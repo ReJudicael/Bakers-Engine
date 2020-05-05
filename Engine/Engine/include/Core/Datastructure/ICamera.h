@@ -104,7 +104,7 @@ namespace Core::Datastructure
 		 * Function called by the engine to draw the objects
 		 * @param renderables: Objects of the scene
 		 */
-		void Draw(const std::list<IRenderable*>& renderables);
+		virtual void Draw(const std::list<IRenderable*>& renderables);
 		
 		REGISTER_CLASS(IComponent)
 	};

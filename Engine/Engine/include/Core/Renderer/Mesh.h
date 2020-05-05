@@ -107,11 +107,20 @@ public:
 	}
 
 	/**
-	 * add all the materials of the mesh
+	 * Add all the materials of the mesh
 	 * @param resources: the resourcesmanager of the scene
 	 * @param namesMaterial: all the names of material we want to link to the mesh
 	 */
 	void AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial);
+
+	/**
+	 * Add material to mesh
+	 * @param material: Material to add
+	 */
+	inline void AddMaterial(std::shared_ptr<Resources::Material> material)
+	{
+		m_materialsModel.push_back(material);
+	}
 
 	REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IRenderable)
 };

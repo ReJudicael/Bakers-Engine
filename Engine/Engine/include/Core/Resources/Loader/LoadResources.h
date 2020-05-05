@@ -279,6 +279,16 @@ namespace Resources
 			void LinkAllModelToOpenGl();
 
 			/**
+			 * Create Shader and add it to the shader map
+			 * @param shaderName: Name of the shader stored in ResourcesManager
+			 * @param vertexFilePath: Path to the vertex shader file
+			 * @param fragmentFilePath: Path to the fragment shader file
+			 * @param header: Header type to add content to shader
+			 * @return Pointer to create shader
+			 */
+			std::shared_ptr<Shader> CreateShader(const char* shaderName, const char* vertexFilePath, const char* fragmentFilePath, Shader::EShaderHeaderType header = Shader::EShaderHeaderType::NONE);
+
+			/**
 			 * Use each shader program and send lights components to shaders
 			 */
 			void ShaderUpdate();

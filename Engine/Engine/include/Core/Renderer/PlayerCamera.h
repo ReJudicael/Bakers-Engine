@@ -12,6 +12,13 @@ namespace Core::Renderer
 	BAKERS_API_CLASS PlayerCamera : public virtual Camera
 	{
 	private:
+		// Post process demonstration data
+		std::vector<Core::Renderer::Framebuffer*> m_postProcessFBO;
+		Core::Maths::Vec3 m_color{ 0.5f, 0.5f, 0.5 };
+		bool m_colorActivated{ false };
+		bool m_blurActivated{ false };
+		bool m_bwActivated{ false };
+
 		// Movement through WASD keys
 		bool	m_isRunning{ false };
 		float	m_speed{ 5 };
@@ -43,6 +50,18 @@ namespace Core::Renderer
 		 */
 		virtual void	StartCopy(IComponent*& copyTo) const override;
 		virtual void	OnReset() override;
+
+		/**
+		 * Destroy event
+		 */
+		virtual void	OnDestroy() override;
+
+		/**
+		 * Create a vector with all postprocess framebuffers that are activated
+		 * @return Vector with active postprocess framebuffers
+		 */
+		std::vector<Core::Renderer::Framebuffer*> GetActiveFramebuffers();
+
 	public:
 		/**
 		 * Default Constructor
@@ -53,6 +72,11 @@ namespace Core::Renderer
 		 * Constructor initializing camera variables
 		 */
 		PlayerCamera(const float ratio, const float fov, const float near, const float far);
+
+		/**
+		 * First frame upon creation event
+		 */
+		virtual void				OnInit() override;
 
 		/**
 		 * Compute keyboard and mouse interactions when right mouse button is pressed
@@ -98,6 +122,18 @@ namespace Core::Renderer
 		 * @param move: New value for stored angular movement vector
 		 */
 		void	Rotate(Core::Maths::Vec3 move);
+
+		/**
+		 * Call when viewport of the camera must be resized.
+		 * It will resize the draw FBO and change its aspect ratio.
+		 */
+		virtual void				Resize(unsigned width, unsigned height);
+		
+		/**
+		 * Function called by the engine to draw the objects
+		 * @param renderables: Objects of the scene
+		 */
+		virtual void Draw(const std::list<Core::Datastructure::IRenderable*>& renderables);
 
 		REGISTER_CLASS(Camera);
 	};

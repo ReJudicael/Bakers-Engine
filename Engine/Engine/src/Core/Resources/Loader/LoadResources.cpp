@@ -22,54 +22,16 @@
 #include "TextureData.h"
 #include "Object3DGraph.h"
 
-static const char* gVertexShaderStr = R"GLSL(
-// Attributes
-layout(location = 0) in vec3 aPosition;
-layout(location = 1) in vec2 aUV;
-layout(location = 2) in vec3 aNormal;
-
-// Uniforms
-uniform mat4 uModel;
-uniform mat4 uProj;
-uniform mat4 uCam;
-
-// Varyings (variables that are passed to fragment shader with perspective interpolation)
-out vec2 vUV;
-out vec3 Normal;
-
-void main()
-{
-	vUV = aUV;
-    gl_Position = uProj * uCam * uModel * vec4(aPosition, 1.0);
-})GLSL";
-
-static const char* gFragmentShaderStr = R"GLSL(
-// Varyings
-in vec2 vUV;
-
-
-// Uniforms
-uniform sampler2D uColorTexture;
-uniform sampler2D uNormalMap;
-
-// Shader outputs
-out vec4 oColor;
-
-void main()
-{
-    oColor = texture(uColorTexture, vUV);
-    //oColor = texture(uNormalMap, vUV);
-	//oColor = vec4(vUV,1.0f,0.0f);
-})GLSL";
-
 
 namespace Resources::Loader
 {
 
 	ResourcesManager::ResourcesManager()
 	{
-		Shader defaultShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		m_shaders.emplace("Default", std::make_shared<Shader>(defaultShader));
+		CreateShader("Default", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("NormalMapDefault", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("Wireframe", "Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
+		CreateShader("Skybox", "Resources\\Shaders\\SkyboxShader.vert", "Resources\\Shaders\\SkyboxShader.frag");
 
 		Shader normalMapShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		m_shaders.emplace("NormalMapDefault", std::make_shared<Shader>(normalMapShader));
@@ -79,6 +41,9 @@ namespace Resources::Loader
 
 		LoadObjInModel("Cube","Resources/Models/cube.obj");
 		LoadObjInModel("Capsule","Resources/Models/capsule.obj");
+		LoadObjInModel("Quad","Resources/Models/quad.obj");
+		LoadObjInModel("Skybox","Resources/Models/skybox.obj");
+		LoadObjInModel("Sphere","Resources/Models/sphere.obj");
 	}
 
 	ResourcesManager::~ResourcesManager()
@@ -401,6 +366,18 @@ namespace Resources::Loader
 				
 			}
 		}
+	}
+
+	std::shared_ptr<Shader> ResourcesManager::CreateShader(const char* shaderName, const char* vertexFilePath, const char* fragmentFilePath, Shader::EShaderHeaderType header)
+	{
+		if (m_shaders.find(shaderName) != m_shaders.end())
+			return m_shaders[shaderName];
+
+		Shader newShader(vertexFilePath, fragmentFilePath, header);
+		std::shared_ptr<Shader> newPtr = std::make_shared<Shader>(newShader);
+		m_shaders.emplace(shaderName, newPtr);
+
+		return newPtr;
 	}
 
 	void ResourcesManager::ShaderUpdate()

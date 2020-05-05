@@ -78,6 +78,30 @@ namespace Core
 
 			int				Init();
 			int				Init(const int width, const int height);
+			
+			/**
+			 * Create object with mesh and add it to hierarchy
+			 * @param name: Name of the object to create
+			 * @param model: Name of the model taken from Resources Manager
+			 * @param shader: Name of the shader taken from Resources Manager
+			 * @param tex: Path to the texture to load
+			 * @param trs: Store position, rotation and scale to give to new object
+			 * @param parent: Parent of the mesh object (default is root)
+			 * @return Pointer to the created object
+			 */
+			Object* 	AddMesh(const char* name, 
+								const char* model, 
+								const char* shader, 
+								const char* tex, 
+								const Transform& trs,
+								Object* parent = nullptr);
+
+			/**
+			 * Create skybox with a cube or a sphere
+			 * @param cube: If true, create 6 quad to display sky, else, create one sphere with different texture
+			 */
+			void CreateSkybox(bool cube = true);
+
 			virtual void	SetSizeWindow(const int width, const int height) = 0;
 
 			virtual void	StartFrame();

@@ -40,11 +40,15 @@ namespace Editor::Window
 		 */
 		void PopWindowStyle() override;
 
-	private:
 		/**
 		 * Display Scene
 		 */
 		void DisplayScene();
+
+		/**
+		 * Check if Gizmos can be used depending on mouse pos
+		 */
+		void CheckGizmoUse();
 
 		/**
 		 * Manipulate cube view gizmo and apply result to camera
