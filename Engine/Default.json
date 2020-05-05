@@ -6,6 +6,21 @@
                 {
                     "Type": "Player Camera",
                     "Values": {
+                        "Black and White": {
+                            "Name": "Black and White",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Blur": {
+                            "Name": "Blur",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Color custom": {
+                            "Name": "Color custom",
+                            "Type": "bool",
+                            "Value": false
+                        },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
@@ -50,10 +65,19 @@
                                     "Ratio": {
                                         "Name": "Ratio",
                                         "Type": "float",
-                                        "Value": 1.489837408065796
+                                        "Value": 1.52173912525177
                                     }
                                 }
                             }
+                        },
+                        "Postprocess Color": {
+                            "Name": "Postprocess Color",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
                         },
                         "Running speed": {
                             "Name": "Running speed",
@@ -142,8 +166,13 @@
                     }
                 },
                 {
-                    "Type": "Script",
+                    "Type": "Audio Listener",
                     "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
@@ -153,11 +182,6 @@
                             "Name": "IsUpdating",
                             "Type": "bool",
                             "Value": true
-                        },
-                        "Lua Script": {
-                            "Name": "Lua Script",
-                            "Type": "std::string",
-                            "Value": ""
                         }
                     }
                 }
@@ -205,12 +229,12 @@
                         "Mass": {
                             "Name": "Mass",
                             "Type": "float",
-                            "Value": 0.0
+                            "Value": 1.0
                         },
                         "Rotation Lock X": {
                             "Name": "Rotation Lock X",
                             "Type": "bool",
-                            "Value": false
+                            "Value": true
                         },
                         "Rotation Lock Y": {
                             "Name": "Rotation Lock Y",
@@ -220,7 +244,7 @@
                         "Rotation Lock Z": {
                             "Name": "Rotation Lock Z",
                             "Type": "bool",
-                            "Value": false
+                            "Value": true
                         },
                         "Velocity": {
                             "Name": "Velocity",
@@ -261,6 +285,76 @@
                             "Name": "Model",
                             "Type": "std::string",
                             "Value": "Resources\\Models\\Umbreon\\UmbreonHighPoly.obj"
+                        }
+                    }
+                },
+                {
+                    "Type": "Audio Source",
+                    "Values": {
+                        "Audio Clip": {
+                            "Name": "Audio Clip",
+                            "Type": "std::string",
+                            "Value": "Resources\\amb_bird_call_01.ogg"
+                        },
+                        "Audio Mode": {
+                            "Name": "Audio Mode",
+                            "Type": "Audio Mode",
+                            "Value": 16
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Max Distance": {
+                            "Name": "Max Distance",
+                            "Type": "float",
+                            "Value": 10000.0
+                        },
+                        "Min Distance": {
+                            "Name": "Min Distance",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Mute": {
+                            "Name": "Mute",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Pan": {
+                            "Name": "Pan",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Pitch": {
+                            "Name": "Pitch",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Play On Awake": {
+                            "Name": "Play On Awake",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Priority": {
+                            "Name": "Priority",
+                            "Type": "int",
+                            "Value": 128
+                        },
+                        "Volume": {
+                            "Name": "Volume",
+                            "Type": "float",
+                            "Value": 1.0
                         }
                     }
                 }

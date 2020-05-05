@@ -1,10 +1,17 @@
 #pragma once
 
-#include <fmod.hpp>
+#include "CoreMinimal.h"
+
+#define CHECK_ERR_FMOD(err) Core::Audio::AudioSystem::CheckErrorFMOD(err)
+
+namespace FMOD
+{
+	class System;
+}
 
 namespace Core::Datastructure
 {
-	class Transform;
+	class Object;
 }
 
 namespace Core
@@ -17,17 +24,13 @@ namespace Core
 		/**
 		 * System handling sounds
 		 */
-		class AudioSystem
+		BAKERS_API_CLASS AudioSystem final
 		{
 		private:
 			/**
 			 * FMOD system
 			 */
 			FMOD::System* m_fmodSystem{ nullptr };
-			/**
-			 * State of FMOD
-			 */
-			FMOD_RESULT m_fmodResult{ FMOD_OK };
 
 			/**
 			 * Max channels
@@ -40,9 +43,9 @@ namespace Core
 			float m_distanceFactor{ 1.f };
 
 			/**
-			 * Listener transform
+			 * Listener object
 			 */
-			Core::Datastructure::Transform* m_listenerTransform{ nullptr };
+			Core::Datastructure::Object* m_listener{ nullptr };
 
 		public:
 			/**
@@ -74,17 +77,17 @@ namespace Core
 			void Tick();
 
 			/**
-			 * Set listener transform
-			 * @param listenerTransform: Listener transform
+			 * Get FMOD system
+			 * @return FMOD system
 			 */
-			void SetListenerTransform(Core::Datastructure::Transform* listenerTransform);
+			FMOD::System* GetFMODSystem() const;
 
-		private:
 			/**
-			 * Display Log error of FMOD
-			 * @param error: FMOD error
+			 * Check Error FMOD
+			 * @param result: Error
+			 * @return True if there is an any error, false otherwise
 			 */
-			void LogErrorFMOD(FMOD_RESULT error) const;
+			static bool CheckErrorFMOD(int result);
 		};
 	}
 }
