@@ -49,7 +49,7 @@ namespace Editor::Window
 			{
 				ImGuiIO& io = ImGui::GetIO();
 				ImGuizmo::SetDrawlist();
-				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
+				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowSize.x, windowSize.y);
 				
 				CheckGizmoUse();
 				GizmoViewManipulateResult();
@@ -115,17 +115,18 @@ namespace Editor::Window
 	{
 		Core::Maths::Mat4 transform = GetEngine()->objectSelected->GetGlobalTRS();
 		float* transformMatrix = transform.mat.Transposed().array;
-		float t[3], r[3], s[3], t2[3], r2[3], s2[3];
-		ImGuizmo::DecomposeMatrixToComponents(transformMatrix, t, r, s);
+		Core::Maths::Vec3 t, r, s, t2, r2, s2;
+		ImGuizmo::DecomposeMatrixToComponents(transformMatrix, t.xyz, r.xyz, s.xyz);
+
 		Core::Maths::Mat<4, 4> view = m_cam->GetCameraMatrix().mat.Transposed();
 		ImGuizmo::Manipulate(view.array, m_cam->GetPerspectiveMatrix().array, (ImGuizmo::OPERATION)GetEngine()->operation, GetEngine()->gizmoMode, transformMatrix);
-		ImGuizmo::DecomposeMatrixToComponents(transformMatrix, t2, r2, s2);
+		ImGuizmo::DecomposeMatrixToComponents(transformMatrix, t2.xyz, r2.xyz, s2.xyz);
 		
 		switch (GetEngine()->operation)
 		{
 		case SelectionMode::TRANSLATION:
 		{
-			Core::Maths::Vec3 translate(t2[0] - t[0], t2[1] - t[1], t2[2] - t[2]);
+			Core::Maths::Vec3 translate = t2 - t;
 			if (translate.Length() > 0)
 			{
 				translate += GetEngine()->objectSelected->GetGlobalPos();
@@ -135,18 +136,18 @@ namespace Editor::Window
 		}
 		case SelectionMode::ROTATION:
 		{
-			Core::Maths::Vec3 eulerRotate(r2[0] - r[0], r2[1] - r[1], r2[2] - r[2]);
-			if (eulerRotate.Length() > 0)
-			{
-				Core::Maths::Quat rotate(eulerRotate);
-				rotate *= GetEngine()->objectSelected->GetGlobalRot();
-				GetEngine()->objectSelected->SetGlobalRot(rotate);
-			}
+			Core::Maths::Vec3 eulerRotate = r2 - r;
+			eulerRotate.x = Core::Maths::ToRadians(eulerRotate.x);
+			eulerRotate.y = Core::Maths::ToRadians(eulerRotate.y);
+			eulerRotate.z = Core::Maths::ToRadians(eulerRotate.z);
+			Core::Maths::Vec3 current = GetEngine()->objectSelected->GetRot().ToEulerAngles();
+			current += eulerRotate;
+			GetEngine()->objectSelected->SetRot(current);
 			break;
 		}
 		case SelectionMode::SCALE:
 		{
-			Core::Maths::Vec3 scale(s2[0] - s[0], s2[1] - s[1], s2[2] - s[2]);
+			Core::Maths::Vec3 scale = s2 - s;
 			if (scale.Length() > 0)
 			{
 				scale += GetEngine()->objectSelected->GetGlobalScale();
@@ -161,12 +162,13 @@ namespace Editor::Window
 	Core::Maths::Vec3 WindowScene::GetCameraDirFromInput()
 	{
 		// Compute mouse pos to values between -1 and 1
-		Core::Maths::Vec2 mouse = GetEngine()->GetMousePos();
+		ImVec2 windowSize{ ImGui::GetContentRegionMax() };
+		Core::Maths::Vec2 mouse = ImGui::GetMousePos();
 		mouse -= ImGui::GetWindowPos();
-		mouse.x -= ImGui::GetWindowSize().x / 2;
-		mouse.x /= (ImGui::GetWindowSize().x / 2);
-		mouse.y -= ImGui::GetWindowSize().y / 2;
-		mouse.y /= (ImGui::GetWindowSize().y / 2);
+		mouse.x -= windowSize.x / 2;
+		mouse.x /= (windowSize.x / 2);
+		mouse.y -= windowSize.y / 2;
+		mouse.y /= (windowSize.y / 2);
 
 		// If Mouse outside of window, return default vector
 		if (mouse.x < -1 || mouse.x > 1 || mouse.y < -1 || mouse.y > 1)

@@ -82,6 +82,7 @@ namespace Core::Renderer
 
     void    Light::OnDestroy()
     {
+        ComponentBase::OnDestroy();
         m_isActive = false;
         for (auto it{ Resources::Shader::lights.begin() }; it != Resources::Shader::lights.end(); ++it)
         {
