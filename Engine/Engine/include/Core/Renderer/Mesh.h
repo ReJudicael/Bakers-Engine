@@ -133,6 +133,25 @@ public:
 		m_materialsModel.push_back(material);
 	}
 
+	/**
+	 * Get first material of materials list
+	 * @return Shared ptr to material or nullptr if list is empty
+	 */
+	std::shared_ptr<Resources::Material> GetMainMaterial();
+
+	/**
+	 * Set new value for first material of materials list
+	 * @param material: Material to set
+	 */
+	void SetMainMaterial(std::shared_ptr<Resources::Material> material);
+
+	/**
+	 * Set texture to given material
+	 * @param texture: New texture to set
+	 * @parem material: Id of the material that will be updated
+	 */
+	void SetMainTexture(std::shared_ptr<Resources::Texture> texture, int material = 0);
+
 	REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IRenderable)
 };
 
