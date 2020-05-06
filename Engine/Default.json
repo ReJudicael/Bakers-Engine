@@ -119,7 +119,7 @@
                                     "Ratio": {
                                         "Name": "Ratio",
                                         "Type": "float",
-                                        "Value": 0.9742268323898315
+                                        "Value": 1.0032310485839844
                                     }
                                 }
                             }
@@ -260,7 +260,67 @@
             }
         },
         {
-            "Childs": [],
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsChild": {
+                                    "Name": "IsChild",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsRoot": {
+                                    "Name": "IsRoot",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "MaterialsNames": {
+                                    "Name": "MaterialsNames",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": "Resources\\Models\\DiningRoom\\Material #45"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": "Resources\\Models\\DiningRoom\\Box001"
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Box001",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": -2.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 0.7071067690849304,
+                        "x": -0.7071067690849304,
+                        "y": -0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 0.009999999776482582,
+                        "y": 0.009999999776482582,
+                        "z": 0.009999999776482582
+                    }
+                }
+            ],
             "Components": [
                 {
                     "Type": "Dynamic Mesh",
@@ -485,65 +545,6 @@
                         "w": 7.549790126404332e-08,
                         "x": 1.0,
                         "y": 0.0,
-                        "z": 0.0
-                    },
-                    "Scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    }
-                },
-                {
-                    "Childs": [],
-                    "Components": [
-                        {
-                            "Type": "Mesh",
-                            "Values": {
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsChild": {
-                                    "Name": "IsChild",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsRoot": {
-                                    "Name": "IsRoot",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "MaterialsNames": {
-                                    "Name": "MaterialsNames",
-                                    "Type": "ArraySequential",
-                                    "Value": [
-                                        {
-                                            "Type": "std::string",
-                                            "Value": "Resources\\Models\\DiningRoom\\Material #45"
-                                        }
-                                    ],
-                                    "Wrapped type": "std::string"
-                                },
-                                "Model": {
-                                    "Name": "Model",
-                                    "Type": "std::string",
-                                    "Value": "Resources\\Models\\DiningRoom\\Box001"
-                                }
-                            }
-                        }
-                    ],
-                    "Flags": 0,
-                    "Name": "Box001",
-                    "Pos": {
-                        "x": 25.676544189453125,
-                        "y": 0.0,
-                        "z": -15.072601318359375
-                    },
-                    "Rot": {
-                        "w": 0.7071067690849304,
-                        "x": -0.7071067690849304,
-                        "y": -0.0,
                         "z": 0.0
                     },
                     "Scale": {

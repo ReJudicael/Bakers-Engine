@@ -40,7 +40,7 @@ namespace Resources
 		 * @param shouldFlip: Default value = true.
 		 * if true flip the texture
 		 */
-		void CreateTextureFromImage(const std::string& pathTexture, Loader::ResourcesManager& resources, bool shouldFlip = true);
+		void CreateTextureFromImage(const std::string& pathTexture, Loader::ResourcesManager* resources, bool shouldFlip = true);
 
 		/**
 		 * Link the Texture to OpenGL

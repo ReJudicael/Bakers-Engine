@@ -3,13 +3,14 @@
 #include <list>
 #include <unordered_map>
 #include <memory>
+#include "Assimp/Importer.hpp"
 
 #include "Mesh.h"
 #include "Vec3.hpp"
 #include "Vec2.hpp"
 #include "ModelData.h"
 #include "TextureData.h"
-#include "Material.h"
+//#include "Material.h"
 #include "Texture.h"
 #include "Object3DGraph.h"
 #include "Vertex.h" 
@@ -25,10 +26,10 @@ struct aiMaterial;
 enum aiTextureType : int;
 class Core::Datastructure::Object;
 
-namespace Assimp
+/*namespace Assimp
 {
 	class Importer;
-}
+}*/
 
 
 namespace Resources
@@ -36,6 +37,7 @@ namespace Resources
 	struct Model;
 	//struct Texture;
 	//struct TextureData;
+	struct Material;
 
 	using unorderedmapTexture = std::unordered_map<std::string, std::shared_ptr<Texture>>;
 	using unorderedmapShader = std::unordered_map<std::string, std::shared_ptr<Shader>>;
@@ -45,6 +47,8 @@ namespace Resources
 
 	namespace Loader
 	{
+
+
 		/**
 		  * Manage/Handle the resources loaded and storage.
 		  * 
@@ -68,6 +72,7 @@ namespace Resources
 			/* Used for stocked the different value which allow to bind different resources to OpengGL (for the multiThread)*/
 			std::list<std::shared_ptr<TextureData>>		m_texturesToLink;
 			std::list<std::shared_ptr<ModelData>>		m_modelsToLink;
+			std::list< std::shared_ptr<ImporterData>>	m_importerToDelete;
 		private:
 			/**
 			 * Load the 3D object in a single mesh for the obj and multiple mesh for the FBX, with the API assimp
@@ -83,7 +88,7 @@ namespace Resources
 			 * @param scene: The scene of the 3D object load by assimp
 			 * @param directory: the folder path of the 3D Object
 			 */
-			void LoadMeshsScene(const aiScene* scene, const std::string& directory);
+			void LoadMeshsScene(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory);
 			
 
 			int LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, std::shared_ptr<Model>& currModel, const std::string& nameMesh);
@@ -95,7 +100,7 @@ namespace Resources
 			 * @param scene: The scene of the 3D object load by assimp
 			 * @param directory: the folder path of the 3D Object
 			 */
-			void LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory);
+			void LoadMeshsSceneInSingleMesh(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory);
 
 
 			void LoadObjInModel(const std::string& name, const char* fileName);
@@ -109,7 +114,7 @@ namespace Resources
 			 * @param numberOfSameKey: an int default 0, 
 			 * (just use in the function LoadMeshsScene) the number of time that the name of the mesh is used
 			 */
-			void LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh,
+			void LoadaiMeshMaterial(std::shared_ptr<Loader::ImporterData> importer, const aiScene* scene, aiMesh* mesh,
 				const std::string& directory, const int numberOfSameKey = 0);
 		public:
 			/**
@@ -291,6 +296,8 @@ namespace Resources
 			 */
 			void LinkAllModelToOpenGl();
 
+			void CheckDeleteAssimpImporter();
+
 			/**
 			 * Create Shader and add it to the shader map
 			 * @param shaderName: Name of the shader stored in ResourcesManager
@@ -315,6 +322,24 @@ namespace Resources
 			 * Reload lua scripts linked to each scripted component
 			 */
 			void ReloadScripts();
+
+			void LOLTESTTODELETE()
+			{
+				std::cout << "ba marche" << std::endl;
+			}
+		};
+
+		struct ImporterData
+		{
+			Assimp::Importer importer;
+			unsigned int maxUseOfImporter{ 0 };
+			unsigned int currNbOfUse;
+			std::string name;
+
+			void TEST(ResourcesManager* resources)
+			{
+				std::cout << "LOL" << std::endl;
+			}
 		};
 	}
 }

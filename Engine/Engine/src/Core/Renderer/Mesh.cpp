@@ -199,7 +199,7 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 				glBindTexture(GL_TEXTURE_2D, material.textures[0]->texture);
 			}
 			// check if the texture2 link to OpenGL
-			if (material.textures.size() >= 2 && material.textures[1]->stateTexture ==
+			if (material.textures.size() >= 2 && material.textures[1] && material.textures[1]->stateTexture ==
 				Resources::EOpenGLLinkState::ISLINK)
 			{
 				glActiveTexture(GL_TEXTURE1);

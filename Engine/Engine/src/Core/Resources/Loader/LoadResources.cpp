@@ -7,7 +7,7 @@
 
 #include "Assimp/cimport.h"
 #include "Assimp/scene.h"
-#include "Assimp/Importer.hpp"
+//#include "Assimp/Importer.hpp"
 #include "Assimp/postprocess.h"
 #include "Assimp/material.h"
 #include "Assimp/texture.h"
@@ -18,6 +18,7 @@
 #include "Object.hpp"
 #include "ScriptedComponent.h"
 #include "Model.h"
+#include "Material.h"
 //#include "Texture.h"
 //#include "TextureData.h"
 #include "Object3DGraph.h"
@@ -96,13 +97,16 @@ namespace Resources::Loader
 	{
 		std::string Name = fileName;
 
-		Assimp::Importer importer;
-		const aiScene* scene = LoadSceneFromImporter(importer, fileName);
+		std::shared_ptr<ImporterData> importer = std::make_shared<ImporterData>();
+		//Assimp::Importer importer;
+		const aiScene* scene = LoadSceneFromImporter(importer->importer, fileName);
 
 		if (!scene)
 		{
 			return false;
 		}
+		importer->name = Name;
+		m_importerToDelete.push_back(importer);
 
 		auto index = Name.find_last_of('/');
 		if (index == std::string::npos)
@@ -112,21 +116,19 @@ namespace Resources::Loader
 
 		if (Name.find(".obj") != std::string::npos)
 		{
-			LoadMeshsSceneInSingleMesh(scene, directoryFile);
+			LoadMeshsSceneInSingleMesh(importer, scene, directoryFile);
 			LoadSceneResources(scene, Name, directoryFile);
 		}
 		else if (Name.find(".fbx") != std::string::npos)
 		{
-			LoadMeshsScene(scene, directoryFile);
+			LoadMeshsScene(importer, scene, directoryFile);
 			LoadSceneResources(scene, Name, directoryFile);
 		}
 
-		//aiReleaseImport(scene);
-		importer.FreeScene();
 		return true;
 	}
 
-	void ResourcesManager::LoadMeshsScene(const aiScene* scene, const std::string& directory)
+	void ResourcesManager::LoadMeshsScene(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory)
 	{
 
 		unsigned int indexLastMesh{ 0 };
@@ -148,12 +150,12 @@ namespace Resources::Loader
 			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
 			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
 
-			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
 			//modelData->LoadaiMeshModel(mesh);
 
 			if (scene->HasMaterials())
 			{
-				LoadaiMeshMaterial(scene, mesh, directory, numberOfSameKey);
+				LoadaiMeshMaterial(importer, scene, mesh, directory, numberOfSameKey);
 			}
 			//modelData->stateVAO = EOpenGLLinkState::CANLINK;
 		}
@@ -198,7 +200,7 @@ namespace Resources::Loader
 		return numberOfSameKey;
 	}
 
-	void ResourcesManager::LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory)
+	void ResourcesManager::LoadMeshsSceneInSingleMesh(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory)
 	{
 		if (m_models.count(directory + scene->mMeshes[0]->mName.data) > 0)
 			return;
@@ -222,13 +224,13 @@ namespace Resources::Loader
 		{
 			aiMesh* mesh = scene->mMeshes[i];
 
-			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, i, indexLastMesh);
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, i, indexLastMesh);
 			//modelData->LoadaiMeshModel(mesh, i,indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
 			{
-				LoadaiMeshMaterial(scene, mesh, directory);
+				LoadaiMeshMaterial(importer, scene, mesh, directory);
 			}
 		}
 	}
@@ -240,13 +242,15 @@ namespace Resources::Loader
 
 		std::string Name = fileName;
 
-		Assimp::Importer importer;
-		const aiScene* scene = LoadSceneFromImporter(importer, fileName);
+		std::shared_ptr<ImporterData> importer = std::make_shared<ImporterData>();
+		const aiScene* scene = LoadSceneFromImporter(importer->importer, fileName);
 
 		if (!scene)
 		{
 			return;
 		}
+		
+		m_importerToDelete.push_back(importer);
 
 		std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
 		std::shared_ptr<Model> model = std::make_shared<Model>();
@@ -259,13 +263,13 @@ namespace Resources::Loader
 
 		modelData->SetArrays(scene, 0);
 
-		//m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
-		modelData->LoadaiMeshModel(mesh);
-
-		importer.FreeScene();
+		m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
+		//modelData->LoadaiMeshModel(mesh, importer);
 	}
 
-	void ResourcesManager::LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh, const std::string& directory, const int numberOfSameKey)
+	void ResourcesManager::LoadaiMeshMaterial(std::shared_ptr<Loader::ImporterData> importer, 
+												const aiScene* scene, aiMesh* mesh, 
+												const std::string& directory, const int numberOfSameKey)
 	{	
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 		Material material;
@@ -285,8 +289,9 @@ namespace Resources::Loader
 
 		m_materials.emplace(keyMaterial, materialOut);
 
-		//m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut.get(), mat, directory, *this);
-		materialOut->LoadMaterialFromaiMaterial(mat, directory, *this);
+		m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut.get(), mat, directory, this, importer);
+		//m_task.AddTask(&Resources::Loader::ImporterData::TEST, importer, this);
+		//materialOut->LoadMaterialFromaiMaterial(mat, directory, *this, importer);
 
 	}
 
@@ -306,8 +311,11 @@ namespace Resources::Loader
 		PushTextureToLink(textureData);
 		glGenTextures(1, &texture->texture);
 		textureData->textureptr = texture;
-		//m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData, keyName, *this);
-		textureData->CreateTextureFromImage(keyName, *this);
+		m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData, keyName, this, true);
+		//m_task.AddTask(std::bind(&Resources::TextureData::CreateTextureFromImage, textureData.get(), keyName, *this, true));
+		//m_task.AddTask(&Resources::Loader::ResourcesManager::LOLTESTTODELETE, this);
+		//textureData->CreateTextureFromImage(keyName, this);
+
 	}
 
 	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)
@@ -380,6 +388,21 @@ namespace Resources::Loader
 					break;
 				
 			}
+		}
+	}
+
+	void ResourcesManager::CheckDeleteAssimpImporter()
+	{
+		for (auto it = m_importerToDelete.begin();
+			it != m_importerToDelete.end();)
+		{
+			if ((*it)->maxUseOfImporter == 0)
+			{
+				std::cout << (*it)->maxUseOfImporter << std::endl;
+				it = m_importerToDelete.erase(it);
+			}
+			else
+				it++;
 		}
 	}
 
