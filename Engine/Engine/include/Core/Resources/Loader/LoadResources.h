@@ -91,7 +91,15 @@ namespace Resources
 			 */
 			void LoadMeshsScene(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory);
 			
-
+			/**
+			 * Check if the mesh who is loading hasn't the same name (with path)
+			 * as an other, and add number if it's the case
+			 * @param currModelData: the current ModelData who will load the model
+			 * @param currModel: the current Model who will be loaded
+			 * @param nameMesh: the name of the mesh
+			 * @return the number who is add to the path of the model = number of same name find
+			 * (use after for the load of the aiMesh aiMaterial)
+			 */
 			int LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, 
 												std::shared_ptr<Model>& currModel, const std::string& nameMesh);
 
@@ -106,7 +114,12 @@ namespace Resources
 			void LoadMeshsSceneInSingleMesh(std::shared_ptr<Loader::ImporterData>& importer, 
 											const aiScene* scene, const std::string& directory);
 
-
+			/**
+			 * Load the first Mesh of an obj, 
+			 * and put the materials, the model and the textures in the ResourcesManager
+			 * @param name: the name for find the object
+			 * @param fileName: the name of the 3D object we want to load
+			 */
 			void LoadObjInModel(const std::string& name, const char* fileName);
 
 			/**
@@ -334,6 +347,10 @@ namespace Resources
 			void ReloadScripts();
 		};
 
+		/**
+		  * cointains an assimp importer for the multiThread
+		  * and a value for kill or let him be
+		  */
 		struct ImporterData
 		{
 			Assimp::Importer importer;
