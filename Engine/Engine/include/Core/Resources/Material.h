@@ -2,7 +2,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <vector>
-//#include <memory>
 #include <string>
 
 #include "Vec3.hpp"
@@ -19,6 +18,7 @@ namespace Resources
 	namespace Loader
 	{
 		class ResourcesManager;
+		struct ImporterData;
 	}
 	struct Texture;
 	class Shader;
@@ -47,7 +47,8 @@ namespace Resources
 		 * @param resources: the ResouresManager
 		 */
 		void LoadMaterialFromaiMaterial(aiMaterial* mat, const std::string& directory, 
-										Loader::ResourcesManager& resources);
+										Loader::ResourcesManager* resources, 
+										std::shared_ptr<Resources::Loader::ImporterData>& importer);
 
 		/**
 		 * Ask for load a texture from an aiMaterial
@@ -58,7 +59,7 @@ namespace Resources
 		 * @param resources: the ResouresManager
 		 */
 		void LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& texture, 
-									const aiTextureType& textureType, const std::string& directory, Loader::ResourcesManager& resources);
+									const aiTextureType& textureType, const std::string& directory, Loader::ResourcesManager* resources);
 
 		void SendMaterial();
 	};

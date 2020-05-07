@@ -7,7 +7,7 @@
 
 #include "Assimp/cimport.h"
 #include "Assimp/scene.h"
-#include "Assimp/Importer.hpp"
+//#include "Assimp/Importer.hpp"
 #include "Assimp/postprocess.h"
 #include "Assimp/material.h"
 #include "Assimp/texture.h"
@@ -18,6 +18,7 @@
 #include "Object.hpp"
 #include "ScriptedComponent.h"
 #include "Model.h"
+#include "Material.h"
 //#include "Texture.h"
 //#include "TextureData.h"
 #include "Object3DGraph.h"
@@ -49,6 +50,8 @@ namespace Resources::Loader
 
 	ResourcesManager::~ResourcesManager()
 	{
+		m_task.EndTaskSystem();
+
 		for (unorderedmapModel::iterator itmodel = m_models.begin();
 			itmodel != m_models.end(); ++itmodel)
 			glDeleteBuffers(1, &itmodel->second->VAOModel);
@@ -60,16 +63,14 @@ namespace Resources::Loader
 		for (unorderedmapShader::iterator itshader = m_shaders.begin();
 			itshader != m_shaders.end(); ++itshader)
 			itshader->second->Delete();
-
-		m_task.EndTaskSystem();
 	}
 
-	void ResourcesManager::Load3DObject(const char* fileName)
+	void ResourcesManager::Load3DObject(const char* fileName, const bool graphInMulti)
 	{
 		std::string Name = fileName;
 
 		if (m_scenes.count(Name) == 0)
-			if (!LoadAssimpScene(fileName))
+			if (!LoadAssimpScene(fileName, graphInMulti))
 				return;
 	}
 
@@ -79,7 +80,7 @@ namespace Resources::Loader
 
 		//aiImportFile
 		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
-			| aiProcess_GenSmoothNormals
+			//| aiProcess_GenSmoothNormals
 			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
 			| aiProcess_SplitLargeMeshes
 			| aiProcess_SortByPType
@@ -92,17 +93,18 @@ namespace Resources::Loader
 		return scene;
 	}
 
-	bool ResourcesManager::LoadAssimpScene(const char* fileName)
+	bool ResourcesManager::LoadAssimpScene(const char* fileName, const bool graphInMulti)
 	{
 		std::string Name = fileName;
 
-		Assimp::Importer importer;
-		const aiScene* scene = LoadSceneFromImporter(importer, fileName);
+		std::shared_ptr<ImporterData> importer = std::make_shared<ImporterData>();
+		const aiScene* scene = LoadSceneFromImporter(importer->importer, fileName);
 
 		if (!scene)
 		{
 			return false;
 		}
+		m_importerToDelete.push_back(importer);
 
 		auto index = Name.find_last_of('/');
 		if (index == std::string::npos)
@@ -112,21 +114,19 @@ namespace Resources::Loader
 
 		if (Name.find(".obj") != std::string::npos)
 		{
-			LoadMeshsSceneInSingleMesh(scene, directoryFile);
-			LoadSceneResources(scene, Name, directoryFile);
+			LoadMeshsSceneInSingleMesh(importer, scene, directoryFile);
+			LoadSceneResources(importer, scene, Name, directoryFile, graphInMulti);
 		}
 		else if (Name.find(".fbx") != std::string::npos)
 		{
-			LoadMeshsScene(scene, directoryFile);
-			LoadSceneResources(scene, Name, directoryFile);
+			LoadMeshsScene(importer, scene, directoryFile);
+			LoadSceneResources(importer, scene, Name, directoryFile, graphInMulti);
 		}
 
-		//aiReleaseImport(scene);
-		importer.FreeScene();
 		return true;
 	}
 
-	void ResourcesManager::LoadMeshsScene(const aiScene* scene, const std::string& directory)
+	void ResourcesManager::LoadMeshsScene(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory)
 	{
 
 		unsigned int indexLastMesh{ 0 };
@@ -148,14 +148,13 @@ namespace Resources::Loader
 			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
 			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
 
-			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
 			//modelData->LoadaiMeshModel(mesh);
 
 			if (scene->HasMaterials())
 			{
-				LoadaiMeshMaterial(scene, mesh, directory, numberOfSameKey);
+				LoadaiMeshMaterial(importer, scene, mesh, directory, numberOfSameKey);
 			}
-			//modelData->stateVAO = EOpenGLLinkState::CANLINK;
 		}
 	}
 
@@ -198,7 +197,7 @@ namespace Resources::Loader
 		return numberOfSameKey;
 	}
 
-	void ResourcesManager::LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory)
+	void ResourcesManager::LoadMeshsSceneInSingleMesh(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory)
 	{
 		if (m_models.count(directory + scene->mMeshes[0]->mName.data) > 0)
 			return;
@@ -222,13 +221,13 @@ namespace Resources::Loader
 		{
 			aiMesh* mesh = scene->mMeshes[i];
 
-			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, i, indexLastMesh);
+			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, i, indexLastMesh);
 			//modelData->LoadaiMeshModel(mesh, i,indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
 			if (scene->HasMaterials())
 			{
-				LoadaiMeshMaterial(scene, mesh, directory);
+				LoadaiMeshMaterial(importer, scene, mesh, directory);
 			}
 		}
 	}
@@ -240,13 +239,15 @@ namespace Resources::Loader
 
 		std::string Name = fileName;
 
-		Assimp::Importer importer;
-		const aiScene* scene = LoadSceneFromImporter(importer, fileName);
+		std::shared_ptr<ImporterData> importer = std::make_shared<ImporterData>();
+		const aiScene* scene = LoadSceneFromImporter(importer->importer, fileName);
 
 		if (!scene)
 		{
 			return;
 		}
+		
+		m_importerToDelete.push_back(importer);
 
 		std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
 		std::shared_ptr<Model> model = std::make_shared<Model>();
@@ -259,13 +260,13 @@ namespace Resources::Loader
 
 		modelData->SetArrays(scene, 0);
 
-		//m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, 0, 0);
-		modelData->LoadaiMeshModel(mesh);
-
-		importer.FreeScene();
+		m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
+		//modelData->LoadaiMeshModel(mesh, importer);
 	}
 
-	void ResourcesManager::LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh, const std::string& directory, const int numberOfSameKey)
+	void ResourcesManager::LoadaiMeshMaterial(std::shared_ptr<Loader::ImporterData> importer, 
+												const aiScene* scene, aiMesh* mesh, 
+												const std::string& directory, const int numberOfSameKey)
 	{	
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 		Material material;
@@ -285,8 +286,7 @@ namespace Resources::Loader
 
 		m_materials.emplace(keyMaterial, materialOut);
 
-		//m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut.get(), mat, directory, *this);
-		materialOut->LoadMaterialFromaiMaterial(mat, directory, *this);
+		m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut.get(), mat, directory, this, importer);
 
 	}
 
@@ -297,34 +297,43 @@ namespace Resources::Loader
 			texture = m_textures[keyName];
 			return;
 		}
-		texture = std::make_shared<Texture>();
+		if (!texture)
+			texture = std::make_shared<Texture>();
+
+		m_textures.emplace(keyName, texture);
 		//m_task.AddTask(&Resources::Texture::LoadTexture, keyName, *this);
 		//texture->LoadTexture(keyName, *this);
 		std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
 
 		textureData->nameTexture = keyName;
 		PushTextureToLink(textureData);
-		glGenTextures(1, &texture->texture);
 		textureData->textureptr = texture;
-		//m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData, keyName, *this);
-		textureData->CreateTextureFromImage(keyName, *this);
+		//m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData, keyName, this, true);	
+		//textureData->CreateTextureFromImage(keyName, this);
+
 	}
 
-	void ResourcesManager::LoadSceneResources(const aiScene* scene, const std::string& fileName, const std::string& directory)
+	void ResourcesManager::LoadSceneResources(std::shared_ptr<Loader::ImporterData>& importer, 
+												const aiScene* scene, const std::string& fileName, 
+												const std::string& directory, const bool inMultiThread)
 	{
 		std::shared_ptr<Object3DGraph> sceneData = std::make_shared<Object3DGraph>();
 
 		aiNode* rootNode = scene->mRootNode;
 		if (fileName.find(".obj") != std::string::npos)
 		{
-			//m_task->AddTask_t(&Resources::Object3DGraph::SceneLoad, sceneData.get(), scene, rootNode, directory, true);
-			sceneData->SceneLoad(scene, rootNode, directory, true);
+			if(inMultiThread)
+				m_task.AddTask(&Resources::Object3DGraph::SceneLoad, sceneData.get(), importer,scene, rootNode, directory, true);
+			else
+				sceneData->SceneLoad(importer, scene, rootNode, directory, true);
 			
 		}
 		else
 		{
-			//m_task.AddTask_t(&Resources::Loader::ResourcesManager::GetCountModel, this, scene, rootNode, directory, false);
-			sceneData->SceneLoad(scene, rootNode, directory, false);
+			if (inMultiThread)
+				m_task.AddTask(&Resources::Object3DGraph::SceneLoad, sceneData.get(), importer, scene, rootNode, directory, false);
+			else
+				sceneData->SceneLoad(importer, scene, rootNode, directory, false);
 		}
 
 		m_scenes.emplace(fileName, sceneData);
@@ -339,10 +348,16 @@ namespace Resources::Loader
 			switch ((*it)->stateTexture)
 			{
 				case EOpenGLLinkState::LOADPROBLEM:
+					m_textures.erase((*it)->nameTexture);
 					it = m_texturesToLink.erase(it);
-					//it++;
 					break;
 				case EOpenGLLinkState::CANTLINK:
+					if ((*it)->ID == 0)
+					{
+						glGenTextures(1, &(*it)->textureptr->texture);
+						(*it)->ID = (*it)->textureptr->texture;
+						m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, (*it), (*it)->nameTexture.c_str(), this, true);
+					}
 					it++;
 					break;
 				case EOpenGLLinkState::ISLINK:
@@ -380,6 +395,21 @@ namespace Resources::Loader
 					break;
 				
 			}
+		}
+	}
+
+	void ResourcesManager::CheckDeleteAssimpImporter()
+	{
+		for (auto it = m_importerToDelete.begin();
+			it != m_importerToDelete.end();)
+		{
+			if ((*it)->maxUseOfImporter == 0)
+			{
+				std::cout << (*it)->maxUseOfImporter << std::endl;
+				it = m_importerToDelete.erase(it);
+			}
+			else
+				it++;
 		}
 	}
 

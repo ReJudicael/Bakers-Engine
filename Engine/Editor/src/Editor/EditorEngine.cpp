@@ -155,6 +155,7 @@ namespace Editor
 			break;
 		case (Core::Datastructure::EngineState::INITIALIZED):
 			m_manager->LinkAllTextureToOpenGl();
+			m_manager->CheckDeleteAssimpImporter();
 			m_manager->LinkAllModelToOpenGl();
 			m_manager->ShaderUpdate();
 

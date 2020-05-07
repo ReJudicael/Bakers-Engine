@@ -17,6 +17,7 @@ namespace Resources
 	namespace Loader
 	{
 		class ResourcesManager;
+		struct ImporterData;
 	}
 
 	struct Node
@@ -70,7 +71,7 @@ namespace Resources
 		 * @param directory: the full path of the first mesh find with bone
 		 * @param singleMesh: true if the 3D Object is consider as a single Mesh
 		 */
-		void	SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool singleMesh);
+		void	SceneLoad(std::shared_ptr<Resources::Loader::ImporterData>& importer, const aiScene* scene, const aiNode* node, const std::string& directory, const bool singleMesh);
 
 		/**
 		 * Find in the scene a node with a mesh
