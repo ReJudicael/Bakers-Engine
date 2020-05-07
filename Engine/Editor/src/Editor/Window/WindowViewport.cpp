@@ -80,5 +80,6 @@ namespace Editor::Window
 	void WindowViewport::Tick()
 	{
 		DisplayViewport();
+		GetEngine()->SetGameInputState(ImGui::IsWindowHovered());
 	}
 }

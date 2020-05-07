@@ -85,33 +85,33 @@ namespace Editor::Datastructure
 		 * Update translation and rotation
 		 * @param deltaTime: Time elapsed between two frames
 		 */
-		virtual void Update(float deltaTime);
+		virtual void Update(float deltaTime, Core::SystemManagement::InputSystem* inupt);
 	private:
 		/**
 		 * Compute keyboard and mouse interactions when right mouse button is pressed
 		 */
-		void	MoveWithInput();
+		void	MoveWithInput(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Check the editor selection mode and the left mouse button
 		 * @ return true if the camera can be moved with current mouse movements
 		 */
-		bool	IsUsingMouseTranslation();
+		bool	IsUsingMouseTranslation(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Compute translation with WASDQE keys
 		 */
-		void	ComputeInputTranslation();
+		void	ComputeInputTranslation(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Compute translation with mouse movements
 		 */
-		void	ComputeMouseTranslation();
+		void	ComputeMouseTranslation(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Compute rotation with mouse movements
 		 */
-		void	ComputeRotation();
+		void	ComputeRotation(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Update translation with stored movement vector
@@ -129,7 +129,7 @@ namespace Editor::Datastructure
 		 * Update movement vector (change applied by OnUpdate)
 		 * @param move: New value for stored movement vector
 		 */
-		void	Move(Core::Maths::Vec3 move);
+		void	Move(Core::Maths::Vec3 move, Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Update rotation vector (change applied by OnUpdate)
