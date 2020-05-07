@@ -180,31 +180,10 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 			// init the value of the texture2
 			glUniform1i(material.shader->GetLocation("uNormalMap"), 1);
 
-			//material.shader->SendLights();
-
 			material.SendMaterial();
 			glUniformMatrix4fv(material.shader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
 			glUniformMatrix4fv(material.shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
 			glUniformMatrix4fv(material.shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
-		}
-
-		// check if the material have a texture
-		if (material.textures.size() > 0)
-		{
-			// check if the texture1 link to OpenGL
-			if (material.textures[0]->stateTexture ==
-				Resources::EOpenGLLinkState::ISLINK)
-			{
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, material.textures[0]->texture);
-			}
-			// check if the texture2 link to OpenGL
-			if (material.textures.size() >= 2 && material.textures[1] && material.textures[1]->stateTexture ==
-				Resources::EOpenGLLinkState::ISLINK)
-			{
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, material.textures[1]->texture);
-			}
 		}
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,

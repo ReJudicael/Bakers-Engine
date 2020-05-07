@@ -78,29 +78,33 @@ namespace Resources
 			 * Load the 3D object in a single mesh for the obj and multiple mesh for the FBX, with the API assimp
 			 * @param fileName: the name of the 3D object we want to load
 			 */
-			bool LoadAssimpScene(const char* fileName);
+			bool LoadAssimpScene(const char* fileName, const bool graphInMulti);
 
 			const aiScene* LoadSceneFromImporter(Assimp::Importer& importer, const char* fileName);
 
 			/**
 			 * Load all the mesh in the 3D object and put the materials, 
 			 * the models and the textures in the ResourcesManager
+			 * @param importer: the importer who load the scene
 			 * @param scene: The scene of the 3D object load by assimp
 			 * @param directory: the folder path of the 3D Object
 			 */
 			void LoadMeshsScene(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory);
 			
 
-			int LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, std::shared_ptr<Model>& currModel, const std::string& nameMesh);
+			int LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, 
+												std::shared_ptr<Model>& currModel, const std::string& nameMesh);
 
 			/**
 			 * Load all the meshs in the 3D object, 
 			 * group them together inside one model 
 			 * and put the materials, the model and the textures in the ResourcesManager
+			 * @param importer: the importer who load the scene
 			 * @param scene: The scene of the 3D object load by assimp
 			 * @param directory: the folder path of the 3D Object
 			 */
-			void LoadMeshsSceneInSingleMesh(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory);
+			void LoadMeshsSceneInSingleMesh(std::shared_ptr<Loader::ImporterData>& importer, 
+											const aiScene* scene, const std::string& directory);
 
 
 			void LoadObjInModel(const std::string& name, const char* fileName);
@@ -108,6 +112,7 @@ namespace Resources
 			/**
 			 * Load the Material of an aiMesh
 			 * Check if the material hasn't been already load (or try), don't load if not
+			 * @param importer: the importer who load the scene
 			 * @param scene: the aiScene of the mesh
 			 * @param mesh: the mesh of the material that we want load
 			 * @param directory: the folder path of the 3D Object
@@ -266,7 +271,7 @@ namespace Resources
 			 * Check if the 3D object hasn't been already load (or try), and load it if not.
 			 * @param fileName: the name of the 3D object we want to load
 			 */
-			void Load3DObject(const char* fileName);
+			void Load3DObject(const char* fileName, const bool graphInMulti = false);
 
 
 			/**
@@ -280,16 +285,21 @@ namespace Resources
 			/**
 			 * Load a scene from an aiScene
 			 * Check if the scene hasn't been already load (or try to load), don't load if not
+			 * @param importer: the importer who load the scene
 			 * @param scene: the aiScene we want to load
 			 * @param keyName: the name of the scene it's the full folder path of the 3D object 
-			 * param directory: the folder path of the 3D Object
+			 * @param directory: the folder path of the 3D Object
 			 */
-			void LoadSceneResources(const aiScene* scene, const std::string& keyName, const std::string& directory);
+			void LoadSceneResources(std::shared_ptr<Loader::ImporterData>& importer, 
+									const aiScene* scene, const std::string& keyName, 
+									const std::string& directory, const bool inMultiThread);
 
 			/**
 			 * Link to OpenGL the textures
 			 */
 			void LinkAllTextureToOpenGl();
+
+			
 
 			/**
 			 * Link to OpenGL the models
@@ -322,24 +332,12 @@ namespace Resources
 			 * Reload lua scripts linked to each scripted component
 			 */
 			void ReloadScripts();
-
-			void LOLTESTTODELETE()
-			{
-				std::cout << "ba marche" << std::endl;
-			}
 		};
 
 		struct ImporterData
 		{
 			Assimp::Importer importer;
 			unsigned int maxUseOfImporter{ 0 };
-			unsigned int currNbOfUse;
-			std::string name;
-
-			void TEST(ResourcesManager* resources)
-			{
-				std::cout << "LOL" << std::endl;
-			}
 		};
 	}
 }

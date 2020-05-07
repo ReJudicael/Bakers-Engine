@@ -45,6 +45,7 @@ namespace Resources
 			if (mat->GetTexture(textureType, 0, &path) == AI_SUCCESS)
 			{
 				std::string fullPath = directory + path.data;
+				texture = std::make_shared<Texture>();
 				resources->LoadTexture(fullPath, texture);
 				if (textureType == aiTextureType_NORMALS)
 					shader = resources->GetShader("NormalMapDefault");
@@ -64,5 +65,21 @@ namespace Resources
 		glUniform3fv(shader->GetLocation("mat.specularColor"), 1, specularColor.rgb);
 		glUniform1f(shader->GetLocation("mat.shininess"), shininess);
 		glUniform1f(shader->GetLocation("mat.shininessStrength"), shininessStrength);
+
+		// send all the texture
+		for (auto i{ 0 }; i < textures.size(); i++)
+		{
+			switch (i)
+			{
+			case 0:
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, textures[0]->texture);
+				break;
+			case 1:
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, textures[1]->texture);
+				break;
+			}
+		}
 	}
 }
