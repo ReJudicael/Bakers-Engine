@@ -4,31 +4,55 @@
             "Childs": [],
             "Components": [
                 {
-                    "Type": "Mesh",
+                    "Type": "Environment",
                     "Values": {
+                        "Back Quad Tex": {
+                            "Name": "Back Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Box Tex": {
+                            "Name": "Box Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Down Quad Tex": {
+                            "Name": "Down Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Front Quad Tex": {
+                            "Name": "Front Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
                             "Value": true
                         },
-                        "IsChild": {
-                            "Name": "IsChild",
-                            "Type": "bool",
-                            "Value": false
+                        "Left Quad Tex": {
+                            "Name": "Left Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
                         },
-                        "IsRoot": {
-                            "Name": "IsRoot",
-                            "Type": "bool",
-                            "Value": false
+                        "Right Quad Tex": {
+                            "Name": "Right Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
                         },
-                        "MaterialsNames": {
-                            "Name": "MaterialsNames",
-                            "Type": "ArraySequential",
-                            "Value": [],
-                            "Wrapped type": "std::string"
+                        "Sphere Tex": {
+                            "Name": "Sphere Tex",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Skysphere.png"
                         },
-                        "Model": {
-                            "Name": "Model",
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "Skybox type",
+                            "Value": 1
+                        },
+                        "Up Quad Tex": {
+                            "Name": "Up Quad Tex",
                             "Type": "std::string",
                             "Value": ""
                         }
@@ -119,7 +143,7 @@
                                     "Ratio": {
                                         "Name": "Ratio",
                                         "Type": "float",
-                                        "Value": 0.9742268323898315
+                                        "Value": 1.077186942100525
                                     }
                                 }
                             }
@@ -243,15 +267,15 @@
             "Flags": 0,
             "Name": "Camera",
             "Pos": {
-                "x": 0.0,
-                "y": 1.6799999475479126,
-                "z": 5.0
+                "x": 3.0970704555511475,
+                "y": 10.98732852935791,
+                "z": 37.4427375793457
             },
             "Rot": {
-                "w": 1.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
+                "w": 0.9902049899101257,
+                "x": -0.1391541212797165,
+                "y": -0.011304828338325024,
+                "z": -0.001588674494996667
             },
             "Scale": {
                 "x": 1.0,
@@ -348,7 +372,7 @@
                         "Audio Clip": {
                             "Name": "Audio Clip",
                             "Type": "std::string",
-                            "Value": "Resources\\amb_bird_call_01.ogg"
+                            "Value": ".\\Resources\\Sound\\amb_bird_call_01.ogg"
                         },
                         "Audio Mode": {
                             "Name": "Audio Mode",
@@ -416,14 +440,14 @@
             "Flags": 0,
             "Name": "UmbreonHighPoly.obj",
             "Pos": {
-                "x": 0.0,
-                "y": 2.0,
-                "z": 0.0
+                "x": 0.00023810997663531452,
+                "y": 1.0000033378601074,
+                "z": 3.173835648340173e-05
             },
             "Rot": {
                 "w": 1.0,
                 "x": 0.0,
-                "y": 0.0,
+                "y": 1.4606391232518945e-05,
                 "z": 0.0
             },
             "Scale": {
@@ -1306,7 +1330,7 @@
                         "Audio Clip": {
                             "Name": "Audio Clip",
                             "Type": "std::string",
-                            "Value": "Resources\\veh_lawnmower_0879_on_exh.ogg"
+                            "Value": ".\\Resources\\Sound\\veh_lawnmower_0879_on_exh.ogg"
                         },
                         "Audio Mode": {
                             "Name": "Audio Mode",

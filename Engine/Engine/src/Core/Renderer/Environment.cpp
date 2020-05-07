@@ -13,14 +13,14 @@ RTTR_PLUGIN_REGISTRATION
 			value("Quads", Core::Renderer::Environment::ESkyboxType::QUAD)
 		)
 		.property("Type", &Core::Renderer::Environment::m_type)
-		.property("Box Texture", &Core::Renderer::Environment::m_boxTexture)
-		.property("Sphere Texture", &Core::Renderer::Environment::m_sphereTexture)
-		.property("Front Quad Texture", &Core::Renderer::Environment::m_frontQuadTexture)
-		.property("Right Quad Texture", &Core::Renderer::Environment::m_rightQuadTexture)
-		.property("Back Quad Texture", &Core::Renderer::Environment::m_backQuadTexture)
-		.property("Left Quad Texture", &Core::Renderer::Environment::m_leftQuadTexture)
-		.property("Up Quad Texture", &Core::Renderer::Environment::m_upQuadTexture)
-		.property("Down Quad Texture", &Core::Renderer::Environment::m_downQuadTexture);
+		.property("Box Tex", &Core::Renderer::Environment::m_boxTexture)
+		.property("Sphere Tex", &Core::Renderer::Environment::m_sphereTexture)
+		.property("Front Quad Tex", &Core::Renderer::Environment::m_frontQuadTexture)
+		.property("Right Quad Tex", &Core::Renderer::Environment::m_rightQuadTexture)
+		.property("Back Quad Tex", &Core::Renderer::Environment::m_backQuadTexture)
+		.property("Left Quad Tex", &Core::Renderer::Environment::m_leftQuadTexture)
+		.property("Up Quad Tex", &Core::Renderer::Environment::m_upQuadTexture)
+		.property("Down Quad Tex", &Core::Renderer::Environment::m_downQuadTexture);
 
 }
 
@@ -49,33 +49,36 @@ namespace Core::Renderer
 		Core::Maths::Vec3 s = m_parent->GetScale() * 0.5f;
 		Core::Maths::Quat rot = m_parent->GetRot();
 
+		const float halfpi = static_cast<float>(M_PI_2);
+		const float pi = static_cast<float>(M_PI);
+
 		// Front quad
 		m_parent->SetRot({ 0, 0, 0 });
 		m_parent->Translate({ 0, 0, -s.z });
 		m_quads[0]->OnDraw(cam);
 
 		// Right quad
-		m_parent->SetRot({ 0, -M_PI_2, 0 });
+		m_parent->SetRot({ 0, -halfpi, 0 });
 		m_parent->Translate({ s.x, 0, s.z });
 		m_quads[1]->OnDraw(cam);
 
 		// Back quad
-		m_parent->SetRot({ 0, M_PI, 0 });
+		m_parent->SetRot({ 0, pi, 0 });
 		m_parent->Translate({ -s.x, 0, s.z });
 		m_quads[2]->OnDraw(cam);
 
 		// Left quad
-		m_parent->SetRot({ 0, M_PI_2, 0 });
+		m_parent->SetRot({ 0, halfpi, 0 });
 		m_parent->Translate({ -s.x, 0, -s.y });
 		m_quads[3]->OnDraw(cam);
 
 		// Up quad
-		m_parent->SetRot({ M_PI_2, 0, 0 });
+		m_parent->SetRot({ halfpi, 0, 0 });
 		m_parent->Translate({ s.x, s.y, 0 });
 		m_quads[4]->OnDraw(cam);
 
 		// Down quad
-		m_parent->SetRot({ -M_PI_2, 0, 0 });
+		m_parent->SetRot({ -halfpi, 0, 0 });
 		m_parent->Translate({ 0, -s.y * 2.f, 0 });
 		m_quads[5]->OnDraw(cam);
 
