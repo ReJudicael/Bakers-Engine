@@ -44,6 +44,7 @@ namespace Core::Navigation
 		~NavQuery();
 
 		void	AddQuery(const Core::Maths::Vec3& start, const Core::Maths::Vec3& end, const dtQueryFilter& filter, QueryResult* result);
+		void	RemoveQuery(QueryResult* toRemove);
 
 		void	Update(int maxIters = 128);
 	};

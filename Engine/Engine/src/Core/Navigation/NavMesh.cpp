@@ -427,6 +427,16 @@ namespace Core::Navigation
 
 		return query;
 	}
+
+	void NavMeshBuilder::RemovePathQuery(NavQuery::QueryResult* toRemove)
+	{
+		m_navQuery.RemoveQuery(toRemove);
+	}
+
+	void NavMeshBuilder::UpdateQuery()
+	{
+		m_navQuery.Update();
+	}
 	
 	/*
 	NavQuery*		NavMeshBuilder::GetNavQuery() const noexcept

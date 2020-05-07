@@ -222,6 +222,37 @@ namespace Core::Datastructure
 		}
 
 		/**
+		 * Translates the object in global space by given vector
+		 * @param v: Vector to translate by
+		 * @return Const reference to position of the object
+		 */
+		void TranslateGlobal(const Maths::Vec3& v) noexcept
+		{
+			RequireUpdate();
+			m_transform.TranslateGlobal(m_parent->GetUpdatedTransform(), v);
+		}
+		/**
+		 * Rotates the object in global space by given vector
+		 * @param q: Quaternion to rotate by
+		 * @return Const reference to rotation of the object
+		 */
+		void RotateGlobal(const Maths::Quat& q) noexcept
+		{
+			RequireUpdate();
+			m_transform.RotateGlobal(m_parent->GetUpdatedTransform(), q);
+		}
+		/**
+		 * Scales the object in global space by given vector
+		 * @param v: Vector to scale by
+		 * @return Const reference to scale of the object
+		 */
+		void ScaleGlobal(const Maths::Vec3& v) noexcept
+		{
+			RequireUpdate();
+			m_transform.ScaleGlobal(m_parent->GetUpdatedTransform(), v);
+		}
+
+		/**
 		 * Set local position of object to given value
 		 * @param pos: New local position
 		 */

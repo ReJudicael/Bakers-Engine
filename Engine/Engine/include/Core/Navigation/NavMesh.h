@@ -77,7 +77,8 @@ namespace Core::Navigation
 		//dtCrowd*		GetCrowd() const noexcept { return m_crowd; }
 
 		NavQuery::QueryResult*	FindPath(const Core::Maths::Vec3& start, const Core::Maths::Vec3& end, unsigned short excludedAreaFlags = 0) noexcept;
-
+		void					RemovePathQuery(NavQuery::QueryResult* toRemove);
+		void					UpdateQuery();
 		const rcConfig& GetConfig() { return m_cfg; };
 
 		/**

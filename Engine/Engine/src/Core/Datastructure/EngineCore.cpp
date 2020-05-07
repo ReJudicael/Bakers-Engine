@@ -357,6 +357,7 @@ namespace Core::Datastructure
 	{
 		m_physicsScene->BeginSimulate(static_cast<float>(deltaTime));
 		m_physicsScene->EndSimulate();
+		m_navMesh->UpdateQuery();
 		m_root->Update(static_cast<float>(deltaTime));
 	}
 

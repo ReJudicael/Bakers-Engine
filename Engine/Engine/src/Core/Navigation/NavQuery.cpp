@@ -33,7 +33,7 @@ namespace Core::Navigation
 		if (m_current.result->path.polyRefPath[(size_t)m_current.result->path.numPolys - 1] != m_current.endRef)
 			m_query->closestPointOnPoly(m_current.result->path.polyRefPath[(size_t)m_current.result->path.numPolys - 1], m_current.end.xyz, endPos.xyz, 0);
 		
-		float	straightPath[NavPath::MAX_PATH_POLY];
+		float	straightPath[NavPath::MAX_PATH_POLY * 3];
 		m_query->findStraightPath(m_current.start.xyz, endPos.xyz, m_current.result->path.polyRefPath.data(), 
 			m_current.result->path.numPolys, straightPath, m_straightPathFlags, m_current.result->path.polyRefStraightPath.data(), 
 			&m_current.result->path.straightPathSize, static_cast<int>(m_current.result->path.polyRefPath.size()), DT_STRAIGHTPATH_ALL_CROSSINGS);
@@ -63,6 +63,24 @@ namespace Core::Navigation
 			return;
 		m_queriesQueue.push({ start, end, dtPolyRef(-1), result, filter });
 		result->status = DT_IN_PROGRESS;
+	}
+
+	void NavQuery::RemoveQuery(QueryResult* toRemove)
+	{
+		for (int i = m_queriesQueue.size(); i > 0; --i)
+		{
+			Core::Navigation::NavQuery::Query q{ m_queriesQueue.front() };
+			m_queriesQueue.pop();
+			if (q.result != toRemove)
+				m_queriesQueue.push(q);
+		}
+		if (m_current.result == toRemove)
+		{
+			m_current.result->status = DT_FAILURE;
+			if (!InitNextQuery())
+				m_status = DT_SUCCESS;
+		}
+
 	}
 
 	void NavQuery::Update(int maxIters)
