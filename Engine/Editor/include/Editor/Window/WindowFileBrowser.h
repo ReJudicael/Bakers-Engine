@@ -20,6 +20,11 @@ namespace Editor::Window
 		ImGuiInputTextFlags m_inputTextFlags;
 
 		/**
+		 * TreeNode flags
+		 */
+		ImGuiTreeNodeFlags m_treeNodeFlags;
+
+		/**
 		 * Path Filter
 		 */
 		ImGuiTextFilter m_pathFilter;
@@ -168,6 +173,18 @@ namespace Editor::Window
 		 * @param contents: Contents of the current directory
 		 */
 		void ShowDirectoryContent(std::vector<std::filesystem::path> contents);
+
+		/**
+		 * Show all folders of a path in recursive
+		 * @param path: Folder path 
+		 */
+		void ShowAllFoldersRecursive(std::filesystem::path path);
+
+		/**
+		 * Show directory tree
+		 * @param path: Path where recursive starts for display
+		 */
+		void ShowDirectoryTree(const std::string& path);
 
 	private:
 		/**
