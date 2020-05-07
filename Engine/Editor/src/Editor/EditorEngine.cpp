@@ -27,6 +27,7 @@ namespace Editor
 
 	EditorEngine::EditorEngine(int width, int height) : EngineCore(width, height)
 	{
+		m_editorInput = new Core::SystemManagement::InputSystem(this);
 	}
 
 	EditorEngine::~EditorEngine()

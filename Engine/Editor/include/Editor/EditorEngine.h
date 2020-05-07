@@ -4,6 +4,7 @@
 #include "GuiManager.h"
 #include "CoreMinimal.h"
 #include "FileSystem.hpp"
+#include "InputSystem.hpp"
 #include "ImGuizmo.h"
 
 #include "json.hpp"
@@ -34,6 +35,9 @@ namespace Editor
 		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::WORLD };
 		bool isTestingRay{ false };
 
+
+		Core::SystemManagement::InputSystem* m_editorInput{ nullptr };
+
 	public:
 		EditorEngine();
 		EditorEngine(int width, int height);
@@ -61,6 +65,8 @@ namespace Editor
 		void	UpdateSavedScene();
 		void	SaveScene();
 		void	ReloadScene();
+
+		void	SetGameInputState(bool state) { m_inputSystem->SetActive(state); };
 	private:
 		void				SetCallbackToGLFW();
 		GLFWkeyfun			SetKeyCallBackToGLFW();

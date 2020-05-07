@@ -34,7 +34,8 @@ namespace Editor::Window
 	{
 		if (m_cam)
 		{
-			m_cam->Update(ImGui::GetIO().DeltaTime);
+			if (ImGui::IsWindowHovered())
+				m_cam->Update(ImGui::GetIO().DeltaTime, GetEngine()->m_editorInput);
 			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 
