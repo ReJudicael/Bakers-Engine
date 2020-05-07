@@ -73,7 +73,7 @@ namespace Editor
 
 	void Canvas::CheckShortcuts()
 	{
-		Core::SystemManagement::InputSystem* inputSystem = GetEngine()->GetInputSystem();
+		Core::SystemManagement::InputSystem* inputSystem = GetEngine()->m_editorInput;
 
 		if (inputSystem->IsKeyDown(EKey::LEFT_CONTROL) && inputSystem->IsKeyPressed(EKey::P))
 			SetAllWindowVisibility(true);
