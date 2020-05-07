@@ -75,11 +75,11 @@ namespace Core::Datastructure
 
 		/**
 		 * Sets the root object of the component
-		 * @param scene: Root object of the component
+		 * @param root: Root object of the component
 		 */
-		void			SetScene(RootObject* scene) 
+		void			SetRoot(RootObject* root) 
 		{
-			m_root = scene;
+			m_root = root;
 		}
 
 		/**

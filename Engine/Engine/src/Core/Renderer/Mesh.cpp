@@ -265,3 +265,30 @@ bool Mesh::OnStart()
 	}
 	return false;
 }
+
+std::shared_ptr<Resources::Material> Mesh::GetMainMaterial()
+{
+	if (m_materialsModel.size() == 0)
+		return nullptr;
+	else
+		return m_materialsModel[0];
+}
+
+void Mesh::SetMainMaterial(std::shared_ptr<Resources::Material> material)
+{
+	if (m_materialsModel.size() == 0)
+		m_materialsModel.push_back(material);
+	else
+		m_materialsModel[0] = material;
+}
+
+void Mesh::SetMainTexture(std::shared_ptr<Resources::Texture> texture, int material)
+{
+	if (m_materialsModel.size() <= material)
+		return;
+
+	if (m_materialsModel[material]->textures.size() == 0)
+		m_materialsModel[material]->textures.push_back(texture);
+	else
+		m_materialsModel[material]->textures[0] = texture;
+}

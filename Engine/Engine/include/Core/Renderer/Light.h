@@ -54,6 +54,10 @@ namespace Core::Renderer
 		 * Destroy event
 		 */
 		virtual void	OnDestroy() override;
+
+		/**
+		 * Reset event
+		 */
 		virtual void	OnReset() override;
 	public:
 		/**
@@ -86,11 +90,7 @@ namespace Core::Renderer
 		 * @return Current light angle smoothness
 		 */
 		inline float GetAngleSmoothness() const { return m_angleSmoothness; };
-		/**
-		 * Color getter
-		 * @return Current light color
-		 */
-		//inline Core::Maths::Color GetColor() const { return m_color; };
+
 		/**
 		 * Ambiant getter
 		 * @return Current light ambiant component
@@ -132,11 +132,7 @@ namespace Core::Renderer
 		 * @param value: New angle smoothness for the light
 		 */
 		inline void SetAngleSmoothness(const float value) { m_angleSmoothness = value; };
-		/**
-		 * Light color setter
-		 * @param value: New color for the light
-		 */
-		//inline void SetColor(const Core::Maths::Color& value) { m_color = value; };
+
 		/**
 		 * Light ambiant setter
 		 * @param value: New ambiant component for the light

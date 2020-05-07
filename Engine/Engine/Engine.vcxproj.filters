@@ -225,6 +225,9 @@
     <ClCompile Include="src\Core\Audio\AudioSource.cpp">
       <Filter>Source Files\Core\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Environment.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -439,6 +442,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Audio\AudioSource.h">
       <Filter>Header Files\Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Environment.h">
+      <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
