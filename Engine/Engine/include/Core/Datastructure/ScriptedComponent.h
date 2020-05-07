@@ -17,6 +17,8 @@ namespace Core::Datastructure
 		sol::function   m_start;
 		sol::function   m_update;
 
+		sol::environment m_env;
+
 		/**
 		 * Copy event for editor component handling
 		 * @param copyTo: Store the copy
