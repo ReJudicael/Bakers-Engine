@@ -98,9 +98,24 @@ public:
 	/**
 	 * Function inheritated from IRenderable,
 	 * override for draw the mesh with the material and the model
-	 * @param cam: the camera to render to
+	 * @param cam: The camera to render to
 	 */
 	virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
+
+	/**
+	 * Handle OpenGL drawing of mesh
+	 * @param cam: The camera to render to
+	 * @param trs: Model matrix array to send to shader
+	 */
+	void Display(Core::Datastructure::ICamera* cam, float* trs);
+
+	/**
+	 * Draw mesh with given transform instead of parent transform
+	 * Used to draw environment meshes for skybox
+	 * @param cam: The camera to render to
+	 * @param trs: Model matrix used for shader instead of parent transform
+	 */
+	void DrawFixedMesh(Core::Datastructure::ICamera* cam, Core::Maths::Mat4 trs);
 
 	/**
 	 * get the number total of the vertex in the mesh

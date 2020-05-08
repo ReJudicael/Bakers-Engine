@@ -165,12 +165,17 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 
 	glEnable(GL_DEPTH_TEST);
 
+	Display(cam, trs.array);
+}
+
+void Mesh::Display(Core::Datastructure::ICamera* cam, float* trs)
+{
 	glBindVertexArray(m_model->VAOModel);
 
 	for (int i = 0; i < m_model->offsetsMesh.size(); i++)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
-		
+
 		Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
 		material.shader->UseProgram();
 		{
@@ -181,7 +186,7 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 			glUniform1i(material.shader->GetLocation("uNormalMap"), 1);
 
 			material.SendMaterial();
-			glUniformMatrix4fv(material.shader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
+			glUniformMatrix4fv(material.shader->GetLocation("uModel"), 1, GL_TRUE, trs);
 			glUniformMatrix4fv(material.shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
 			glUniformMatrix4fv(material.shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
 		}
@@ -192,6 +197,18 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
+}
+
+void Mesh::DrawFixedMesh(Core::Datastructure::ICamera* cam, Core::Maths::Mat4 trs)
+{
+	// check if the mesh have a modelMesh
+	if (m_model == nullptr)
+		return;
+	// check if the VAO of the model is link to OpenGL
+	if (m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+		return;
+
+	Display(cam, trs.array);
 }
 
 void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)

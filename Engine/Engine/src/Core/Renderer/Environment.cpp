@@ -45,45 +45,38 @@ namespace Core::Renderer
 
 	void	Environment::DrawQuads(Datastructure::ICamera* cam)
 	{
-		Core::Maths::Vec3 pos = m_parent->GetPos();
-		Core::Maths::Vec3 s = m_parent->GetScale() * 0.5f;
-		Core::Maths::Quat rot = m_parent->GetRot();
-
+		Datastructure::Transform drawTransform = { {0.f, 0.f, -0.5f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f} };
+		
 		const float halfpi = static_cast<float>(M_PI_2);
 		const float pi = static_cast<float>(M_PI);
 
 		// Front quad
-		m_parent->SetRot({ 0, 0, 0 });
-		m_parent->Translate({ 0, 0, -s.z });
-		m_quads[0]->OnDraw(cam);
+		m_quads[0]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
 
 		// Right quad
-		m_parent->SetRot({ 0, -halfpi, 0 });
-		m_parent->Translate({ s.x, 0, s.z });
-		m_quads[1]->OnDraw(cam);
+		drawTransform.SetLocalPos({ 0.5f, 0.f, 0.f });
+		drawTransform.SetLocalRot({ 0.f, -halfpi, 0.f });
+		m_quads[1]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
 
 		// Back quad
-		m_parent->SetRot({ 0, pi, 0 });
-		m_parent->Translate({ -s.x, 0, s.z });
-		m_quads[2]->OnDraw(cam);
+		drawTransform.SetLocalPos({ 0.f, 0.f, 0.5f });
+		drawTransform.SetLocalRot({ 0.f, pi, 0.f });
+		m_quads[2]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
 
 		// Left quad
-		m_parent->SetRot({ 0, halfpi, 0 });
-		m_parent->Translate({ -s.x, 0, -s.y });
-		m_quads[3]->OnDraw(cam);
+		drawTransform.SetLocalPos({ -0.5f, 0.f, 0.f });
+		drawTransform.SetLocalRot({ 0.f, halfpi, 0.f });
+		m_quads[3]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
 
 		// Up quad
-		m_parent->SetRot({ halfpi, 0, 0 });
-		m_parent->Translate({ s.x, s.y, 0 });
-		m_quads[4]->OnDraw(cam);
+		drawTransform.SetLocalPos({ 0.f, 0.5f, 0.f });
+		drawTransform.SetLocalRot({ halfpi, 0.f, 0.f });
+		m_quads[4]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
 
 		// Down quad
-		m_parent->SetRot({ -halfpi, 0, 0 });
-		m_parent->Translate({ 0, -s.y * 2.f, 0 });
-		m_quads[5]->OnDraw(cam);
-
-		m_parent->SetPos(pos);
-		m_parent->SetRot(rot);
+		drawTransform.SetLocalPos({ 0.f, -0.5f, 0.f });
+		drawTransform.SetLocalRot({ -halfpi, 0.f, 0.f });
+		m_quads[5]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
 	}
 
 	void	Environment::SetTexturesToQuads()
@@ -118,7 +111,7 @@ namespace Core::Renderer
 		case ESkyboxType::BOX: 
 			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_boxTexture, texture);
 			m_box->SetMainTexture(texture);
-			m_box->OnDraw(cam); 
+			m_box->DrawFixedMesh(cam, Core::Maths::Mat4::Identity()); 
 			break;
 		case ESkyboxType::QUAD: 
 			SetTexturesToQuads();
@@ -127,7 +120,8 @@ namespace Core::Renderer
 		case ESkyboxType::SPHERE: 
 			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_sphereTexture, texture);
 			m_sphere->SetMainTexture(texture);
-			m_sphere->OnDraw(cam); break;
+			m_sphere->DrawFixedMesh(cam, Core::Maths::Mat4::Identity()); 
+			break;
 		}
 	}
 

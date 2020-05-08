@@ -27,4 +27,5 @@ void main()
 	
 	vec4 pos = uModel * vec4(aPosition, 1.0);
 	gl_Position = uProj * usedCam * pos;
+	gl_Position.z = gl_Position.w - 0.000001;
 }
