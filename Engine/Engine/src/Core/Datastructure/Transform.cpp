@@ -20,6 +20,21 @@ RTTR_PLUGIN_REGISTRATION
 		.property_readonly("IsGposUpdated", &Transform::m_isGUpdated)
 		.property_readonly("IsGTrsUpdated", &Transform::m_isGTrsUpdated)
 		.property_readonly("IsLTrsUpdated", &Transform::m_isTrsUpdated);
+
+	lua.new_usertype<Transform>("Transform",
+		sol::constructors<Transform()>(),
+		"Position", &Transform::m_pos,
+		"Rotation", & Transform::m_rot,
+		"Scale", &Transform::m_scale,
+		"GlobalPos", &Transform::m_gpos,
+		"GlobalRot", &Transform::m_grot,
+		"GlobalScale", &Transform::m_gscale,
+		"Translate", &Transform::Translate,
+		"Rotate", &Transform::Rotate,
+		"Scale", &Transform::Scale,
+		"Right", &Transform::GetRight,
+		"Up", &Transform::GetUp,
+		"Forward", &Transform::GetForward);
 }
 
 namespace Core::Datastructure

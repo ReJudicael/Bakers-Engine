@@ -2,6 +2,7 @@
 
 #include "ScriptedComponent.h"
 #include "Maths.hpp"
+#include "Object.hpp"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -75,6 +76,8 @@ namespace Core::Datastructure
 
 	void ScriptedComponent::StartLuaScript()
 	{
+		m_env["object"] = m_parent;
+
 		if (m_start.valid())
 			m_start();
 		else

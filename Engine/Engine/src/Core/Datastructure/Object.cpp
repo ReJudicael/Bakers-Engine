@@ -31,6 +31,12 @@ RTTR_PLUGIN_REGISTRATION
 		.property_readonly("Forward", &Object::Forward)
 		.property_readonly("Up", &Object::Up)
 		.property_readonly("Right", &Object::Right);
+
+	lua.new_usertype<Object>("Object",
+		"Transform", &Object::m_transform,
+		"Translate", &Object::Translate,
+		"Rotate", &Object::Rotate,
+		"Scale", &Object::Scale);
 }
 
 namespace Core::Datastructure
