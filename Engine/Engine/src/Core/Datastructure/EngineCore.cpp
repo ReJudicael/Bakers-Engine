@@ -49,7 +49,7 @@ namespace Core::Datastructure
 	{
 		m_inputSystem = new Core::SystemManagement::InputSystem(this);
 		m_audioSystem = new Audio::AudioSystem();
-		m_navMesh = new Core::Navigation::NavMeshBuilder();
+		m_navMesh = new Core::Navigation::NavMeshBuilder(this);
 		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem, this);
 	}
 

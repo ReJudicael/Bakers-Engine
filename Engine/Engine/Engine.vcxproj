@@ -333,7 +333,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c" />
     <ClCompile Include="..\Dependencies\stb\stb_image.cpp" />
     <ClCompile Include="include\Core\Datastructure\ICamera.cpp" />
-    <ClCompile Include="include\Core\Navigation\PathFollowingComponent.cpp" />
     <ClCompile Include="src\Core\Audio\AudioListener.cpp" />
     <ClCompile Include="src\Core\Audio\AudioSource.cpp" />
     <ClCompile Include="src\Core\Audio\AudioSystem.cpp" />
@@ -458,7 +457,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClInclude Include="include\Core\Physics\Collider.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="Resources\Shaders\DefaultShader.frag" />
     <None Include="Resources\Shaders\DefaultShader.vert" />
   </ItemGroup>

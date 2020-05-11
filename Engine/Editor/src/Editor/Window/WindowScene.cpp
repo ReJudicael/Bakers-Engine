@@ -34,10 +34,11 @@ namespace Editor::Window
 	{
 		if (m_cam)
 		{
+			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
+			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
+			ImGui::ImageUV(fbo->ColorTexture, windowSize);
 			if (ImGui::IsWindowHovered())
 				m_cam->Update(ImGui::GetIO().DeltaTime, GetEngine()->m_editorInput);
-			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
-			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 
 			if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
 			{
@@ -45,7 +46,6 @@ namespace Editor::Window
 				m_cam->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
 			}
 
-			ImGui::ImageUV(fbo->ColorTexture, windowSize);
 			if (GetEngine()->objectSelected && GetEngine()->operation != SelectionMode::MOVEMENT)
 			{
 				ImGuiIO& io = ImGui::GetIO();

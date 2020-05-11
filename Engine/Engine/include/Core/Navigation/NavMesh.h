@@ -14,6 +14,17 @@
 
 #define MAX_AGENTS 256
 
+namespace Core::Datastructure
+{
+	class ICamera;
+	class EngineCore;
+}
+
+namespace Resources
+{
+	class Shader;
+}
+
 namespace Core::Navigation
 {
 	struct Mesh
@@ -22,6 +33,12 @@ namespace Core::Navigation
 		int*		tris;
 		int			nverts;
 		int			ntris;
+	};
+
+	struct NavVertex
+	{
+		Core::Maths::Vec3	pos;
+		unsigned			color;
 	};
 
 	class BuildContext : public rcContext
@@ -46,6 +63,7 @@ namespace Core::Navigation
 	BAKERS_API_CLASS NavMeshBuilder
 	{
 	protected:
+		Core::Datastructure::EngineCore* m_engine;
 		size_t		m_maxTris{ 0 };
 		bool				m_isUpdated{ false };
 
@@ -59,12 +77,20 @@ namespace Core::Navigation
 		//dtCrowd*			m_crowd;
 
 		std::list<Mesh>	m_mesh;
+
+		unsigned			m_VAO;
+		unsigned			m_VAOSize{ 0 }; 
+		std::shared_ptr<Resources::Shader>	m_shader;
 		/*
-		dtStatus		FindNearestPoly(const Core::Maths::Vec3& targetPos, const dtQueryFilter* filter, dtPolyRef* outRef, Core::Maths::Vec3& outPoint) const noexcept;
-		dtStatus		FindPath(dtPolyRef startRef, dtPolyRef endRef, const Core::Maths::Vec3& startPos, const Core::Maths::Vec3& endPos, const dtQueryFilter* filter, NavPath& path) const noexcept;
+		dtStatus			FindNearestPoly(const Core::Maths::Vec3& targetPos, const dtQueryFilter* filter, dtPolyRef* outRef, Core::Maths::Vec3& outPoint) const noexcept;
+		dtStatus			FindPath(dtPolyRef startRef, dtPolyRef endRef, const Core::Maths::Vec3& startPos, const Core::Maths::Vec3& endPos, const dtQueryFilter* filter, NavPath& path) const noexcept;
 		*/
+
+		void				BuildNavMeshRenderer();
+		void				DrawNavMesh(const Core::Maths::Mat4& cam, const Core::Maths::Mat4& perspective);
 	public:
-		NavMeshBuilder();
+		NavMeshBuilder(Core::Datastructure::EngineCore* engine);
+		NavMeshBuilder() = delete;
 		NavMeshBuilder(const NavMeshBuilder&) = delete;
 		NavMeshBuilder(NavMeshBuilder&&) = delete;
 		~NavMeshBuilder();
@@ -81,6 +107,7 @@ namespace Core::Navigation
 		void					UpdateQuery();
 		const rcConfig& GetConfig() { return m_cfg; };
 
+		void					DrawNavMesh(Core::Datastructure::ICamera* cam);
 		/**
 		 * Allocates new nav querry
 		 */

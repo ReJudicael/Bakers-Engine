@@ -68,6 +68,7 @@ namespace Core::Datastructure
 		for (auto it{ m_cameras.begin() }; it != m_cameras.end(); ++it)
 		{
 			(*it)->Draw(m_renderables);
+			GetEngine()->GetNavMesh()->DrawNavMesh(*it);
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
 	}

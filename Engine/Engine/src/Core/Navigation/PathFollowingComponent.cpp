@@ -6,7 +6,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Navigation;
-	rttr::registration::class_<PathFollowingComponent>("PathFollowingComponent")
+	rttr::registration::class_<PathFollowingComponent>("PathFollowing")
 		.constructor()
 		.property("Target", &PathFollowingComponent::GetTarget, &PathFollowingComponent::SetTarget)
 		.property("Speed", &PathFollowingComponent::m_moveSpeed);
@@ -43,8 +43,8 @@ namespace Core::Navigation
 			++m_pathIndex;
 			UpdatePos();
 		}
-
-		GetParent()->TranslateGlobal(toDest.Normalized() * m_moveSpeed);
+		else
+			GetParent()->TranslateGlobal(toDest.Normalized() * m_moveSpeed);
 	}
 
 	PathFollowingComponent::PathFollowingComponent() : ComponentBase(), INavAgent()

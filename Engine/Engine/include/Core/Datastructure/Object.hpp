@@ -197,8 +197,9 @@ namespace Core::Datastructure
 		 */
 		const Maths::Vec3&	Translate(const Maths::Vec3& v) noexcept
 		{
+			const Maths::Vec3& temp = m_transform.Translate(v);
 			RequireUpdate();
-			return m_transform.Translate(v);
+			return temp;
 		}
 		/**
 		 * Rotates the object in local space by given vector
@@ -207,8 +208,9 @@ namespace Core::Datastructure
 		 */
 		const Maths::Quat&	Rotate(const Maths::Quat& q) noexcept
 		{
+			const Maths::Quat& temp = m_transform.Rotate(q);
 			RequireUpdate();
-			return m_transform.Rotate(q);
+			return temp;
 		}
 		/**
 		 * Scales the object in local space by given vector
@@ -217,8 +219,9 @@ namespace Core::Datastructure
 		 */
 		const Maths::Vec3&	Scale(const Maths::Vec3& v) noexcept
 		{
+			const Maths::Vec3& temp = m_transform.Scale(v);
 			RequireUpdate();
-			return m_transform.Scale(v);
+			return temp;
 		}
 
 		/**
@@ -228,8 +231,8 @@ namespace Core::Datastructure
 		 */
 		void TranslateGlobal(const Maths::Vec3& v) noexcept
 		{
-			RequireUpdate();
 			m_transform.TranslateGlobal(m_parent->GetUpdatedTransform(), v);
+			RequireUpdate();
 		}
 		/**
 		 * Rotates the object in global space by given vector
@@ -238,8 +241,8 @@ namespace Core::Datastructure
 		 */
 		void RotateGlobal(const Maths::Quat& q) noexcept
 		{
-			RequireUpdate();
 			m_transform.RotateGlobal(m_parent->GetUpdatedTransform(), q);
+			RequireUpdate();
 		}
 		/**
 		 * Scales the object in global space by given vector
@@ -248,8 +251,8 @@ namespace Core::Datastructure
 		 */
 		void ScaleGlobal(const Maths::Vec3& v) noexcept
 		{
-			RequireUpdate();
 			m_transform.ScaleGlobal(m_parent->GetUpdatedTransform(), v);
+			RequireUpdate();
 		}
 
 		/**
