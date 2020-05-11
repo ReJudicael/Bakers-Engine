@@ -176,19 +176,11 @@ namespace ImGui
 
     bool CollapsingHeaderWithImageUV(unsigned int user_texture_id, const char* label, ImGuiTreeNodeFlags flags)
     {
-        bool isOpen;
-        if (user_texture_id)
-        {
-            isOpen = ImGui::CollapsingHeader(("##" + std::string(label)).c_str(), flags);
-            ImGui::SameLine(25.f + GImGui->Style.FramePadding.x);
-            ImGui::ImageUVFramePadding(user_texture_id);
-            ImGui::SameLine();
-            ImGui::Text(label);
-        }
-        else
-        {
-            isOpen = ImGui::CollapsingHeader(label, flags);
-        }
+        bool isOpen = ImGui::CollapsingHeader(("##" + std::string(label)).c_str(), flags);
+        ImGui::SameLine(25.f + GImGui->Style.FramePadding.x);
+        ImGui::ImageUVFramePadding(user_texture_id);
+        ImGui::SameLine();
+        ImGui::Text(label);
 
         return isOpen;
     }

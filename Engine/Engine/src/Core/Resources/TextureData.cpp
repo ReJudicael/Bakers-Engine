@@ -12,7 +12,7 @@
 
 namespace Resources
 {
-	void TextureData::CreateTextureFromImage(const std::string& filename, Loader::ResourcesManager& resources, bool shouldFlip)
+	void TextureData::CreateTextureFromImage(const std::string& filename, Loader::ResourcesManager* resources, bool shouldFlip)
 	{
 		// load and generate the texture
 		int nrChannels;
@@ -26,8 +26,9 @@ namespace Resources
 			stbi_image_free(data);
 			stateTexture = EOpenGLLinkState::LOADPROBLEM;
 			textureptr->stateTexture = EOpenGLLinkState::LOADPROBLEM;
+			//textureptr.~shared_ptr();
 		}
-		resources.EmplaceTextures(filename, textureptr);
+		resources->EmplaceTextures(filename, textureptr);
 	}
 
 	void TextureData::CreateOpenGLTexture()

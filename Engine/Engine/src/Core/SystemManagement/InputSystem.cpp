@@ -24,11 +24,15 @@ namespace Core::SystemManagement
 
 	Core::Maths::Vec2 SystemManagement::InputSystem::GetMousePos() const noexcept
 	{
+		if (!m_isActive)
+			return { 0, 0 };
 		return m_core->GetMousePos();
 	}
 
 	void SystemManagement::InputSystem::SetMousePos(Core::Maths::Vec2 pos) const noexcept
 	{
+		if (!m_isActive)
+			return;
 		glfwSetCursorPos(m_core->GetWindow(), pos.x, pos.y);
 	}
 }

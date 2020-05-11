@@ -2,6 +2,7 @@
 #include "Assimp/scene.h"
 #include "ModelData.h"
 #include "OffsetMesh.h"
+#include "LoadResources.h"
 #include "Model.h"
 
 namespace Resources
@@ -23,10 +24,11 @@ namespace Resources
 		model->offsetsMesh = offsetsMesh;
 	}
 
-	void ModelData::LoadaiMeshModel(aiMesh* mesh, const unsigned int indexMesh, const int increaseIndices)
+	void ModelData::LoadaiMeshModel(aiMesh* mesh, std::shared_ptr<Loader::ImporterData>& importer, const unsigned int indexMesh, const int increaseIndices)
 	{
 		if (mesh == nullptr)
 			stateVAO = EOpenGLLinkState::LOADPROBLEM;
+		importer->maxUseOfImporter++;
 		if (increaseIndices == 0)
 			LoadaiMeshAABB(mesh);
 
@@ -36,7 +38,8 @@ namespace Resources
 		unsigned int sVertices = static_cast<unsigned int>(vertices.size() - increaseIndices);
 
 		offsetMeshState[indexMesh] = EOpenGLLinkState::CANLINK;
-
+		importer->maxUseOfImporter--;
+		
 		for (auto i{ 0 }; i < offsetMeshState.size(); i++)
 		{
 			if (offsetMeshState[i] != EOpenGLLinkState::CANLINK)

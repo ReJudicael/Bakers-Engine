@@ -147,14 +147,17 @@ namespace Resources
 		}
 	}
 
-	void Object3DGraph::SceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSingleMesh)
+	void Object3DGraph::SceneLoad(std::shared_ptr<Resources::Loader::ImporterData>& importer, const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSingleMesh)
 	{
 		singleMesh = isSingleMesh;
+
+		importer->maxUseOfImporter++;
 
 		if (singleMesh)
 			rootNodeScene.SingleMeshSceneLoad(scene, node, directory);
 		else
 			rootNodeScene.RecursiveSceneLoad(scene, node, directory);
+		importer->maxUseOfImporter--;
 	}
 
 	void Object3DGraph::CreateScene(const std::string& keyName, Loader::ResourcesManager& resources, Core::Datastructure::Object* rootObject)

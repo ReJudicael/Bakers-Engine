@@ -88,7 +88,7 @@ namespace Core::Datastructure
 	void Object::AddComponent(ComponentBase* c) noexcept
 	{
 		c->SetParent(this);
-		c->SetScene(m_root);
+		c->SetRoot(m_root);
 		c->Init();
 		m_components.push_back(c);
 	}

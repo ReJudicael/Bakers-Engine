@@ -10,8 +10,7 @@ namespace Editor::Window
 		AWindow{ canvas, "Hierarchy", visible }
 	{
 		m_treeNodeFlags =	ImGuiTreeNodeFlags_OpenOnDoubleClick	|
-							ImGuiTreeNodeFlags_SpanAvailWidth		| 
-							ImGuiTreeNodeFlags_AllowItemOverlap;
+							ImGuiTreeNodeFlags_SpanAvailWidth;
 
 		m_inputTextFlags =	ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
 	}
@@ -138,7 +137,7 @@ namespace Editor::Window
 		DragDropTargetItem(object);
 
 		PopupMenuOnItem(object);
-		if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 			GetEngine()->objectSelected = object;
 
 		return isOpen;

@@ -102,39 +102,39 @@ namespace Editor::Datastructure
 		m_transform = Core::Datastructure::Transform({0, 1, 0});
 	}
 
-	void EditorCamera::MoveWithInput()
+	void EditorCamera::MoveWithInput(Core::SystemManagement::InputSystem* input)
 	{
-		if (Input()->IsMouseButtonDown(EMouseButton::RIGHT))
+		if (input->IsMouseButtonDown(EMouseButton::RIGHT))
 		{ 
-			Input()->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::INVISIBLE);
-			ComputeInputTranslation();
-			ComputeRotation();
+			input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::INVISIBLE);
+			ComputeInputTranslation(input);
+			ComputeRotation(input);
 			
 		}
-		else if (IsUsingMouseTranslation())
+		else if (IsUsingMouseTranslation(input))
 		{
-			ComputeMouseTranslation();
+			ComputeMouseTranslation(input);
 		}
 		else
 		{
-			Input()->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
-			m_mousePos = Input()->GetMousePos();
+			input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
+			m_mousePos = input->GetMousePos();
 			m_isMouseSet = false;
 			return;
 		}
 	}
 
-	bool EditorCamera::IsUsingMouseTranslation()
+	bool EditorCamera::IsUsingMouseTranslation(Core::SystemManagement::InputSystem* input)
 	{
-		if (Input()->IsMouseButtonDown(EMouseButton::MIDDLE))
+		if (input->IsMouseButtonDown(EMouseButton::MIDDLE))
 			return true;
 
 		Editor::EditorEngine* e = dynamic_cast<Editor::EditorEngine*>(GetRoot()->GetEngine());
 		bool result = (e->operation == SelectionMode::MOVEMENT);
-		return (result && Input()->IsMouseButtonDown(EMouseButton::LEFT));
+		return (result && input->IsMouseButtonDown(EMouseButton::LEFT));
 	}
 
-	void EditorCamera::ComputeInputTranslation()
+	void EditorCamera::ComputeInputTranslation(Core::SystemManagement::InputSystem* input)
 	{
 		Core::Maths::Vec3 move = { 0, 0, 0 };
 		constexpr Core::Maths::Vec3 forward{ 0, 0, 1 };
@@ -144,26 +144,26 @@ namespace Editor::Datastructure
 		constexpr Core::Maths::Vec3 up{ 0, 1, 0 };
 		constexpr Core::Maths::Quat upQuat{ 0, up };
 		
-		if (Input()->IsKeyDown(EKey::W))
+		if (input->IsKeyDown(EKey::W))
 			move += (m_transform.GetLocalRot() * forQuat * m_transform.GetLocalRot().Inversed()).GetVec() * -1;
-		if (Input()->IsKeyDown(EKey::A))
+		if (input->IsKeyDown(EKey::A))
 			move += (m_transform.GetLocalRot() * rightQuat * m_transform.GetLocalRot().Inversed()).GetVec() * -1;
-		if (Input()->IsKeyDown(EKey::D))
+		if (input->IsKeyDown(EKey::D))
 			move += (m_transform.GetLocalRot() * rightQuat * m_transform.GetLocalRot().Inversed()).GetVec();
-		if (Input()->IsKeyDown(EKey::S))
+		if (input->IsKeyDown(EKey::S))
 			move += (m_transform.GetLocalRot() * forQuat * m_transform.GetLocalRot().Inversed()).GetVec();
-		if (Input()->IsKeyDown(EKey::Q))
+		if (input->IsKeyDown(EKey::Q))
 			move += (m_transform.GetLocalRot() * upQuat * m_transform.GetLocalRot().Inversed()).GetVec() * -1;
-		if (Input()->IsKeyDown(EKey::E))
+		if (input->IsKeyDown(EKey::E))
 			move += (m_transform.GetLocalRot() * upQuat * m_transform.GetLocalRot().Inversed()).GetVec();
 
 		if (move.SquaredLength() > 0)
-			Move(move);
+			Move(move, input);
 	}
 
-	void EditorCamera::ComputeMouseTranslation()
+	void EditorCamera::ComputeMouseTranslation(Core::SystemManagement::InputSystem* input)
 	{
-		Core::Maths::Vec2 newPos = Input()->GetMousePos();
+		Core::Maths::Vec2 newPos = input->GetMousePos();
 		Core::Maths::Vec2 mouseMove = m_mousePos - newPos;
 
 		Core::Maths::Vec3 move = { 0, 0, 0 };
@@ -178,14 +178,14 @@ namespace Editor::Datastructure
 		move = rightMovement * mouseMove.x + upMovement * mouseMove.y * -1;
 
 		if (move.SquaredLength() > 0)
-			Move(move);
+			Move(move, input);
 
 		m_mousePos = newPos;
 	}
 
-	void EditorCamera::ComputeRotation()
+	void EditorCamera::ComputeRotation(Core::SystemManagement::InputSystem* input)
 	{
-		Core::Maths::Vec2 newPos = Input()->GetMousePos();
+		Core::Maths::Vec2 newPos = input->GetMousePos();
 		Core::Maths::Vec2 mouseMove = m_mousePos - newPos;
 
 		if (mouseMove.SquaredLength() > 0)
@@ -194,13 +194,13 @@ namespace Editor::Datastructure
 				Rotate({ mouseMove.y, mouseMove.x, 0 });
 		}
 
-		Input()->SetMousePos(m_mousePos);
+		input->SetMousePos(m_mousePos);
 		m_isMouseSet = true;
 	}
 
-	void EditorCamera::Update(float deltaTime)
+	void EditorCamera::Update(float deltaTime, Core::SystemManagement::InputSystem* input)
 	{
-		MoveWithInput();
+		MoveWithInput(input);
 
 		UpdatePosition(deltaTime);
 		UpdateRotation(deltaTime);
@@ -248,9 +248,9 @@ namespace Editor::Datastructure
 		}
 	}
 
-	void EditorCamera::Move(Core::Maths::Vec3 move)
+	void EditorCamera::Move(Core::Maths::Vec3 move, Core::SystemManagement::InputSystem* input)
 	{
-		m_movement = move.Normalized() * (Input()->IsKeyDown(EKey::LEFT_SHIFT) ? m_runSpeed : 1);
+		m_movement = move.Normalized() * (input->IsKeyDown(EKey::LEFT_SHIFT) ? m_runSpeed : 1);
 	}
 
 	void EditorCamera::Rotate(Core::Maths::Vec3 move)

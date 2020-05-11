@@ -27,6 +27,7 @@ namespace Editor
 
 	EditorEngine::EditorEngine(int width, int height) : EngineCore(width, height)
 	{
+		m_editorInput = new Core::SystemManagement::InputSystem(this);
 	}
 
 	EditorEngine::~EditorEngine()
@@ -117,6 +118,7 @@ namespace Editor
 			objectSelected = nullptr;
 
 		EngineCore::EndFrame();
+		m_editorInput->ClearRegisteredInputs();
 	}
 
 	void EditorEngine::OnLoop()
@@ -125,9 +127,9 @@ namespace Editor
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glfwPollEvents();
-		if (m_inputSystem->IsCursorHidden())
+		if (m_inputSystem->IsCursorHidden() || m_editorInput->IsCursorHidden())
 			ImGui::SetMouseCursor(-1);
-		if (m_inputSystem->IsMouseButtonPressed(EMouseButton::LEFT))
+		if (m_editorInput->IsMouseButtonPressed(EMouseButton::LEFT))
 			isTestingRay = true;
 		switch (m_state)
 		{
@@ -153,6 +155,7 @@ namespace Editor
 			break;
 		case (Core::Datastructure::EngineState::INITIALIZED):
 			m_manager->LinkAllTextureToOpenGl();
+			m_manager->CheckDeleteAssimpImporter();
 			m_manager->LinkAllModelToOpenGl();
 			m_manager->ShaderUpdate();
 

@@ -9,12 +9,13 @@
 
 namespace Resources
 {
-	void Material::LoadMaterialFromaiMaterial(aiMaterial* mat, const std::string& directory, 
-												Loader::ResourcesManager& resources)
+	void Material::LoadMaterialFromaiMaterial(aiMaterial* mat, const std::string& directory,
+		Loader::ResourcesManager* resources, std::shared_ptr<Resources::Loader::ImporterData>& importer)
 	{
+		importer->maxUseOfImporter++;
 		textures.resize(2);
 
-		shader = resources.GetShader("Default");
+		shader = resources->GetShader("Default");
 		LoadTextureMaterial(mat, textures[0], aiTextureType_DIFFUSE, directory, resources);
 		LoadTextureMaterial(mat, textures[textures.size()- 1], aiTextureType_NORMALS, directory, resources);
 		// maybe load a normalMap
@@ -31,10 +32,12 @@ namespace Resources
 		mat->Get(AI_MATKEY_SHININESS, shininess);
 		mat->Get(AI_MATKEY_SHININESS_STRENGTH, shininessStrength);
 		materialColor = { 1.0f, 1.0f, 1.0f };
+
+		importer->maxUseOfImporter--;
 	}
 
 	void Material::LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& texture,
-					const aiTextureType& textureType, const std::string& directory, Loader::ResourcesManager& resources)
+					const aiTextureType& textureType, const std::string& directory, Loader::ResourcesManager* resources)
 	{
 		if (mat->GetTextureCount(textureType) > 0)
 		{
@@ -42,9 +45,10 @@ namespace Resources
 			if (mat->GetTexture(textureType, 0, &path) == AI_SUCCESS)
 			{
 				std::string fullPath = directory + path.data;
-				resources.LoadTexture(fullPath, texture);
+				texture = std::make_shared<Texture>();
+				resources->LoadTexture(fullPath, texture);
 				if (textureType == aiTextureType_NORMALS)
-					shader = resources.GetShader("NormalMapDefault");
+					shader = resources->GetShader("NormalMapDefault");
 			}
 		}
 		else
@@ -61,5 +65,21 @@ namespace Resources
 		glUniform3fv(shader->GetLocation("mat.specularColor"), 1, specularColor.rgb);
 		glUniform1f(shader->GetLocation("mat.shininess"), shininess);
 		glUniform1f(shader->GetLocation("mat.shininessStrength"), shininessStrength);
+
+		// send all the texture
+		for (auto i{ 0 }; i < textures.size(); i++)
+		{
+			switch (i)
+			{
+			case 0:
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, textures[0]->texture);
+				break;
+			case 1:
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, textures[1]->texture);
+				break;
+			}
+		}
 	}
 }

@@ -10,12 +10,17 @@
 
 struct aiMesh;
 
+ 
+
 namespace Resources
 {
 	struct Material;
 	struct OffsetMesh;
 	struct Model;
-
+	namespace Loader
+	{
+		struct ImporterData;
+	}
 
 	/** 
 	 * Class use for create a Model, 
@@ -38,7 +43,7 @@ namespace Resources
 
 		void SetArrays(const aiScene* scene, const unsigned int& index);
 
-		void LoadaiMeshModel(aiMesh* mesh, const unsigned int indexMesh = 0, const int increaseIndices = 0);
+		void LoadaiMeshModel(aiMesh* mesh, std::shared_ptr<Loader::ImporterData>& importer, const unsigned int indexMesh = 0, const int increaseIndices = 0);
 
 		void LoadaiMeshAABB(aiMesh* mesh);
 

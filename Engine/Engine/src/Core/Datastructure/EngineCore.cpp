@@ -347,8 +347,13 @@ namespace Core::Datastructure
 		return true;
 	}
 
+
 	void EngineCore::LoadSceneFromJson(json scene)
 	{
+		for (auto& resources : scene["Resource"])
+			m_manager->Load3DObject(static_cast<std::string>(resources["Name"]).c_str());
+
+
 		for (auto& childs : scene["Childs"])
 			AddChild(childs, m_root);
 	}
@@ -429,6 +434,7 @@ namespace Core::Datastructure
 	{
 		ZoneScoped
 			m_root->StartFrame();
+			m_manager->CheckDeleteAssimpImporter();
 			m_manager->LinkAllTextureToOpenGl();
 			m_manager->LinkAllModelToOpenGl();
 			m_manager->ShaderUpdate();

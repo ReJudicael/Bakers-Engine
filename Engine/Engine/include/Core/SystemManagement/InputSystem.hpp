@@ -42,6 +42,7 @@ namespace Core::SystemManagement
 		std::chrono::time_point<std::chrono::system_clock> m_beforeClock;
 		EMouseButton m_lastClickedButton{ EMouseButton::LEFT };
 		bool m_isTimeSet = false;
+		bool m_isActive = true;
 
 		/* Events */
 		ID m_keyPressedListenerID{ 0 };
@@ -83,6 +84,11 @@ namespace Core::SystemManagement
 		 * @return State of the scroll
 		 */
 		EStateScroll GetScrollState() const noexcept;
+
+		/**
+		 * Set activity of input manager
+		 */
+		void	SetActive(bool activity) noexcept { m_isActive = activity; };
 
 	private:
 		/**
@@ -397,45 +403,51 @@ namespace Core::SystemManagement
 
 	inline bool InputSystem::IsKeyPressed(EKey key) const noexcept
 	{
-		return IsKeyRegistered(key) && GetKeyState(key) == EStateKey::PRESS;
+		return m_isActive && IsKeyRegistered(key) && GetKeyState(key) == EStateKey::PRESS;
 	}
 
 	inline bool InputSystem::IsKeyDown(EKey key) const noexcept
 	{
-		return IsKeyRegistered(key) && (GetKeyState(key) == EStateKey::DOWN ||
+		return m_isActive && IsKeyRegistered(key) && (GetKeyState(key) == EStateKey::DOWN ||
 			GetKeyState(key) == EStateKey::PRESS);
 	}
 
 	inline bool InputSystem::IsKeyUp(EKey key) const noexcept
 	{
+		if (!m_isActive)
+			return true;
 		return IsKeyRegistered(key) && GetKeyState(key) == EStateKey::UP;
 	}
 
 	inline bool InputSystem::IsKeyUnused(EKey key) const noexcept
 	{
+		if (!m_isActive)
+			return true;
 		return !IsKeyRegistered(key);
 	}
 
 	inline bool InputSystem::IsMouseButtonPressed(EMouseButton button) const noexcept
 	{
-		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateMouseButton::PRESS;
+		return m_isActive && IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateMouseButton::PRESS;
 	}
 
 	inline bool InputSystem::IsMouseButtonDown(EMouseButton button) const noexcept
 	{
-		return IsMouseButtonRegistered(button) && (GetMouseButtonState(button) == EStateMouseButton::DOWN || 
+		return m_isActive && IsMouseButtonRegistered(button) && (GetMouseButtonState(button) == EStateMouseButton::DOWN ||
 			GetMouseButtonState(button) == EStateMouseButton::PRESS);
 	}
 
 	inline bool InputSystem::IsMouseButtonUp(EMouseButton button) const noexcept
 	{
+		if (!m_isActive)
+			return true;
 		return IsMouseButtonRegistered(button) && (GetMouseButtonState(button) == EStateMouseButton::UP ||
 			GetMouseButtonState(button) == EStateMouseButton::DOUBLECLICK);
 	}
 
 	inline bool InputSystem::IsMouseDoubleClicked(EMouseButton button) const noexcept
 	{
-		return IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateMouseButton::DOUBLECLICK;
+		return m_isActive && IsMouseButtonRegistered(button) && GetMouseButtonState(button) == EStateMouseButton::DOUBLECLICK;
 	}
 
 	inline bool InputSystem::IsMouseButtonUnused(EMouseButton button) const noexcept
@@ -445,16 +457,18 @@ namespace Core::SystemManagement
 
 	inline bool InputSystem::IsScrollDown() const noexcept
 	{
-		return  GetScrollState() == EStateScroll::DOWN;
+		return  m_isActive && GetScrollState() == EStateScroll::DOWN;
 	}
 
 	inline bool InputSystem::IsScrollUp() const noexcept
 	{
-		return  GetScrollState() == EStateScroll::UP;
+		return m_isActive && GetScrollState() == EStateScroll::UP;
 	}
 
 	inline bool InputSystem::IsScrollUnused() const noexcept
 	{
+		if (!m_isActive)
+			return true;
 		return GetScrollState() == EStateScroll::UNUSED;
 	}
 
@@ -465,6 +479,6 @@ namespace Core::SystemManagement
 
 	inline bool InputSystem::IsCursorHidden() const noexcept
 	{
-		return m_cursorAppearance == ECursorAppearance::INVISIBLE;
+		return m_isActive && m_cursorAppearance == ECursorAppearance::INVISIBLE;
 	}
 }

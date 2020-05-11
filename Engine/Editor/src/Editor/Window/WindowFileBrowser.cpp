@@ -3,6 +3,8 @@
 #include "LoadResources.h"
 #include "ScriptedComponent.h"
 
+#include "IconsFontAwesome5.h"
+
 namespace Editor::Window
 {
 	/**
@@ -24,6 +26,7 @@ namespace Editor::Window
 	{
 		m_fs = new Core::SystemManagement::FileSystem();
 		m_inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
+		m_treeNodeFlags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 	}
 
 	WindowFileBrowser::~WindowFileBrowser()
@@ -197,8 +200,11 @@ namespace Editor::Window
 		DragDropTargetItem(rootDirectory);
 
 		const std::vector<std::string>& foldersPath{ m_fs->GetExplodedCurrentPath() };
-		for (int i{ 0 }; i < foldersPath.size() && m_fs->GetCurrentDirectory() != "."; ++i)
+		for (int i{ 0 }; i < foldersPath.size(); ++i)
 		{
+			if (foldersPath[i] == ".")
+				continue;
+
 			const size_t& pos{ m_fs->GetCurrentDirectory().find(foldersPath[i]) + foldersPath[i].size() };
 
 			ImGui::SameLine();
@@ -217,7 +223,7 @@ namespace Editor::Window
 			}
 		}
 
-		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 175.f);
+		ImGui::SameLine(ImGui::GetContentRegionAvail().x - 175.f);
 		m_pathFilter.Draw("Filter", ImGui::GetContentRegionAvail().x - 37.f);
 	}
 
@@ -264,48 +270,93 @@ namespace Editor::Window
 		DragDropTargetItem(itemPath);
 
 		PopupMenuOnItem(itemPath);
+
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			m_fs->OpenContent(itemPath);
 	}
 
 	void WindowFileBrowser::ShowDirectoryContent(std::vector<std::filesystem::path> contents)
 	{
+		size_t nbItems{ 0 };
 		ImVec2 regionSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 30.f };
-		ImGui::BeginChild("## ShowDirectoryContent", regionSize);
+		ImGui::BeginChild("## ShowDirectoryContent", regionSize, false);
 		{
+			if (m_fs->GetCurrentDirectory() != ".")
+				contents.insert(contents.begin(), "..");
+
 			PopupMenuOnWindow();
 
 			int columns{ static_cast<int>(regionSize.x / m_contentPathSize) };
 			if (columns < 1) columns = 1;
-			ImGui::Columns(columns, "## ShowDirectoryContentColumns", false);
 
-			if (m_fs->GetCurrentDirectory() != ".")
-				contents.insert(contents.begin(), "..");
-
-			std::string itemName;
-			for (size_t i{ 0 }; i < contents.size(); ++i)
+			if (ImGui::BeginTable("## ShowDirectoryContentColumns", columns))
 			{
-				if (m_fs->IsRefreshedCurrentPath())
+				std::string itemName;
+				nbItems = 0;
+				for (size_t i{ 0 }; i < contents.size(); ++i)
 				{
-					m_icons.clear();
-					break;
+					if (m_fs->IsRefreshedCurrentPath())
+					{
+						m_icons.clear();
+						break;
+					}
+
+					itemName = contents[i].filename().string();
+					if (itemName != ".." && (m_fs->FileHasExcludedExtension(itemName, excludedExtensions) ||
+						!m_pathFilter.PassFilter(itemName.c_str())))
+						continue;
+
+					ImGui::TableNextCell();
+					ImGui::PushID(static_cast<int>(i));
+					ShowItem(itemName);
+					ImGui::PopID();
+					if (itemName != "..")
+						++nbItems;
 				}
-
-				itemName = contents[i].filename().string();
-				if (itemName != ".." && (m_fs->FileHasExcludedExtension(itemName, excludedExtensions) ||
-					!m_pathFilter.PassFilter(itemName.c_str())))
-					continue;
-
-				ImGui::PushID(static_cast<int>(i));
-				ShowItem(itemName);
-				ImGui::PopID();
-
-				ImGui::NextColumn();
+				ImGui::EndTable();
 			}
 			ImGui::EndChild();
 		}
 
+		ImGui::AlignTextToFramePadding();
+		ImGui::Text("%d Items", nbItems);
+		ImGui::SameLine();
 		ZoomPathContents();
+	}
+
+	void WindowFileBrowser::ShowAllFoldersRecursive(std::filesystem::path path)
+	{
+		for (auto& p : std::filesystem::directory_iterator(path))
+		{
+			if (m_fs->IsDirectory(p))
+			{
+				ImGuiTreeNodeFlags flags{ m_treeNodeFlags };
+
+				if (m_fs->GetCurrentDirectory() == p.path().string())
+					flags |= ImGuiTreeNodeFlags_Selected;
+
+				bool isOpen = ImGui::TreeNodeEx((ICON_FA_FOLDER "  " + p.path().filename().string()).c_str(), flags);
+
+				if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+					m_fs->SetCurrentDirectory(p.path().string());
+
+				if (isOpen)
+				{
+					ShowAllFoldersRecursive(p.path());
+					ImGui::TreePop();
+				}
+			}
+		}
+	}
+
+	void WindowFileBrowser::ShowDirectoryTree(const std::string& path)
+	{
+			ImVec2 regionSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 2 };
+			ImGui::BeginChild("## ShowDirectoryTree", regionSize);
+			{
+				ShowAllFoldersRecursive(path);
+			}
+			ImGui::EndChild();
 	}
 
 	void WindowFileBrowser::Tick()
@@ -313,6 +364,17 @@ namespace Editor::Window
 		m_fs->MoveCurrentToClosestDirectory();
 		ShowCurrentPathOnHeader();
 		ImGui::Separator();
-		ShowDirectoryContent(m_fs->GetContentsInCurrentPath());
+
+		if (ImGui::BeginTable("## FileBrowser", 2, ImGuiTableFlags_BordersVInner | ImGuiTableFlags_BordersVFullHeight | ImGuiTableFlags_Resizable))
+		{
+			ImGui::TableSetupColumn("## FileBrowserTree", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 10);
+
+			ImGui::TableNextRow();
+			ImGui::TableSetColumnIndex(0);
+			ShowDirectoryTree(".");
+			ImGui::TableSetColumnIndex(1);
+			ShowDirectoryContent(m_fs->GetContentsInCurrentPath());
+			ImGui::EndTable();
+		}
 	}
 }

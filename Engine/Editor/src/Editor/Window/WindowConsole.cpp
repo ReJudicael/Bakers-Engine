@@ -93,7 +93,7 @@ namespace Editor::Window
 		ImGui::SameLine();
 		SettingsButton();
 
-		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 175.f);
+		ImGui::SameLine(ImGui::GetContentRegionAvail().x - 175.f);
 		m_logFilter.Draw("Filter", ImGui::GetContentRegionAvail().x - 37.f);
 	}
 
@@ -127,7 +127,7 @@ namespace Editor::Window
 			ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 3);
 			ImGui::TableSetupColumn("Time", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 4);
 			ImGui::TableSetupColumn("Description");
-			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 2.f);
+			ImGui::TableSetupColumn("Action", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 2.f);
 			ImGui::TableAutoHeaders();
 
 			for (int i{ 0 }; i < logSize; ++i)

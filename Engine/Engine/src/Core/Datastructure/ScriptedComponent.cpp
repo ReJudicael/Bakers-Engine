@@ -1,7 +1,7 @@
 #include <fstream>
 
 #include "ScriptedComponent.h"
-#include "Vec3.hpp"
+#include "Maths.hpp"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -14,12 +14,15 @@ RTTR_PLUGIN_REGISTRATION
 		"Log", ScriptedComponent::LogWrapper,
 		"Warning", ScriptedComponent::WarningWrapper,
 		"Error", ScriptedComponent::ErrorWrapper);
+
+	Core::Maths::RegisterMathsForLua(lua);
 }	
 
 namespace Core::Datastructure
 {
 	ScriptedComponent::ScriptedComponent() : ComponentUpdatable()
 	{
+		m_env = sol::environment(lua, sol::create, lua.globals());
 	}
 
 	ScriptedComponent::ScriptedComponent(const std::string& filename) : ComponentUpdatable()
@@ -52,7 +55,7 @@ namespace Core::Datastructure
 
 	void ScriptedComponent::LoadLuaScript()
 	{
-		if (Core::Datastructure::lua.safe_script_file(m_script))
+		if (Core::Datastructure::lua.safe_script_file(m_script, m_env))
 		{
 			std::string loadingMsg = "Script: " + m_script + " didn't load";
 			BAKERS_LOG_ERROR(loadingMsg);
@@ -62,8 +65,8 @@ namespace Core::Datastructure
 		else
 		{
 			m_hasLoaded = true;
-			m_start = Core::Datastructure::lua["Start"];
-			m_update = Core::Datastructure::lua["Update"];
+			m_start = m_env["Start"];
+			m_update = m_env["Update"];
 
 			std::string loadingMsg = "Script: " + m_script + " loaded successfully";
 			BAKERS_LOG_MESSAGE(loadingMsg);
@@ -111,6 +114,7 @@ namespace Core::Datastructure
 		ScriptedComponent* copy{ dynamic_cast<ScriptedComponent*>(copyTo) };
 
 		copy->m_script = m_script;
+		copy->m_env = m_env;
 	}
 
 	void ScriptedComponent::StartCopy(IComponent*& copyTo) const
