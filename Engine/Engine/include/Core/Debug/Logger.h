@@ -79,7 +79,7 @@ namespace Core::Debug
 		 * @param function: Function where the log is called
 		 * @param line: File line where the log is called
 		 */
-		static void AddLog(ELogType type, std::string messageLog, const char* file, const char* function, int line) noexcept;
+		static void AddLog(ELogType type, const std::string& messageLog, const char* file, const char* function, int line) noexcept;
 
 		/**
 		 * Clear logs

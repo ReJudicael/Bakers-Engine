@@ -15,7 +15,7 @@ namespace Ext
 		std::string buff{ "" };
 		std::vector<std::string> v;
 
-		for (auto n : s)
+		for (char n : s)
 		{
 			if (n != c)
 				buff += n;

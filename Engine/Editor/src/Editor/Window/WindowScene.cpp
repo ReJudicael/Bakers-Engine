@@ -36,6 +36,9 @@ namespace Editor::Window
 		{
 			if (ImGui::IsWindowHovered())
 				m_cam->Update(ImGui::GetIO().DeltaTime, GetEngine()->m_editorInput);
+			else if (GetEngine()->m_editorInput->IsCursorHidden())
+				GetEngine()->m_editorInput->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
+
 			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 
@@ -184,7 +187,6 @@ namespace Editor::Window
 	void WindowScene::Tick()
 	{
 		DisplayScene();
-
 		if (GetEngine()->isTestingRay)
 		{
 			GetEngine()->isTestingRay = false;

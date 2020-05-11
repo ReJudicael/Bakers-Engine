@@ -66,7 +66,7 @@ namespace Core::Debug
 		logs.clear();
 	}
 
-	void Logger::AddLog(ELogType type, std::string messageLog, const char* file, const char* function, int line) noexcept
+	void Logger::AddLog(ELogType type, const std::string& messageLog, const char* file, const char* function, int line) noexcept
 	{
 		if (messageLog.size() <= 0)
 			return;
