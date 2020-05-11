@@ -92,7 +92,7 @@ namespace Core::Datastructure
 		 * Set window ratio to camera perspective data
 		 * @param newRatio: New ratio to be applied
 		 */
-		virtual void				SetRatio(float ratio) = 0;
+		virtual void				SetRatio(const float width, const float height) = 0;
 
 		/**
 		 * Call when viewport of the camera must be resized. 

@@ -12,7 +12,8 @@ namespace Core::Renderer
 	 */
 	struct CameraPerspective
 	{
-		float ratio = 1.714f;
+		float width = 1024.0f;
+		float height = 780.0f;
 		float fov = 60.0f;
 		float near = 0.1f;
 		float far = 100.f;
@@ -70,12 +71,13 @@ namespace Core::Renderer
 
 		/**
 		 * Constructor initializing camera variables
-		 * @param ratio: Ratio (width / height) of the window
+		 * @param width: Width of the window
+		 * @param height: Height of the window
 		 * @param fov: Angle of the field of view of the camera
 		 * @param near: Distance where objects start to be rendered
 		 * @param far: Distance where objects are no longer rendered
 		 */
-		Camera(const float ratio, const float fov, const float near, const float far);
+		Camera(const float width, const float height, const float fov, const float near, const float far);
 
 		/**
 		 * Update event
@@ -90,9 +92,10 @@ namespace Core::Renderer
 
 		/**
 		 * Set window ratio to camera perspective data
-		 * @param newRatio: New ratio to be applied
+		 * @param width: New window width for camera ratio
+		 * @param height: New window height for camera ratio
 		 */
-		void SetRatio(const float newRatio) override;
+		void SetRatio(const float width, const float height) override;
 
 		/**
 		 * Perspective data (ratio, fov, near, far) getter
@@ -111,14 +114,25 @@ namespace Core::Renderer
 		}
 
 		/**
-		 * Create Perspective Matrix
-		 * @param ratio: Ratio (width / height) of the window
+		 * Create Perspective projection Matrix
+		 * @param width: Width of the window
+		 * @param height: Height of the window
 		 * @param fov: Angle of the field of view of the camera
 		 * @param near: Distance where objects start to be rendered
 		 * @param far: Distance where objects are no longer rendered
 		 * @return Perspective matrix
 		 */
-		static Core::Maths::Mat4 CreatePerspectiveMatrix(const float ratio, const float fov, const float near, const float far);
+		static Core::Maths::Mat4 CreatePerspectiveMatrix(const float width, const float height, const float fov, const float near, const float far);
+
+		/**
+		 * Create Orthographic projection Matrix
+		 * @param width: Width of the window
+		 * @param height: Height of the window
+		 * @param near: Distance where objects start to be rendered
+		 * @param far: Distance where objects are no longer rendered
+		 * @return Perspective matrix
+		 */
+		static Core::Maths::Mat4 CreateOrthographicMatrix(const float width, const float height, const float near, const float far);
 
 		REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera, Core::Datastructure::IUpdatable)
 	};

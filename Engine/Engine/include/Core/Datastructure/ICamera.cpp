@@ -85,7 +85,7 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 	m_cameraWidth = width;
 	m_cameraHeight = height;
 
-	SetRatio(width / (float)height);
+	SetRatio(width, height);
 	
 	m_fbo->Resize(width, height);
 }

@@ -11,7 +11,8 @@ namespace Editor::Datastructure
 {
 	struct CameraPerspective
 	{
-		float ratio = 1.714f;
+		float width = 1024.0f;
+		float height = 780.0f;
 		float fov = 60.0f;
 		float near = 0.1f;
 		float far = 100.f;
@@ -51,7 +52,7 @@ namespace Editor::Datastructure
 		virtual void OnReset() override;
 	public:
 		EditorCamera();
-		void SetRatio(const float newRatio) override;
+		void SetRatio(const float width, const float height) override;
 
 		Core::Renderer::Framebuffer* GetFBO();
 

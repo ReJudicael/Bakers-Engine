@@ -70,8 +70,13 @@ namespace Core::Renderer
 
 		/**
 		 * Constructor initializing camera variables
+		 * @param width: Width of the window
+		 * @param height: Height of the window
+		 * @param fov: Angle of the field of view of the camera
+		 * @param near: Distance where objects start to be rendered
+		 * @param far: Distance where objects are no longer rendered
 		 */
-		PlayerCamera(const float ratio, const float fov, const float near, const float far);
+		PlayerCamera(const float width, const float height, const float fov, const float near, const float far);
 
 		/**
 		 * First frame upon creation event

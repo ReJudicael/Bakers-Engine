@@ -10,7 +10,7 @@ RTTR_PLUGIN_REGISTRATION
 {
 	registration::class_<Core::Renderer::PlayerCamera>("Player Camera")
 		.constructor()
-		.constructor<const float, const float, const float, const float>()
+		.constructor<const float, const float, const float, const float, const float>()
 		.property_readonly("Is running", &Core::Renderer::PlayerCamera::m_isRunning)
 		.property("Speed", &Core::Renderer::PlayerCamera::m_speed)
 		.property("Running speed", &Core::Renderer::PlayerCamera::m_runningSpeed)
@@ -28,7 +28,7 @@ namespace Core::Renderer
 	{
 	}
 
-	PlayerCamera::PlayerCamera(const float ratio, const float fov, const float near, const float far) : Camera(ratio, fov, near, far)
+	PlayerCamera::PlayerCamera(const float width, const float height, const float fov, const float near, const float far) : Camera(width, height, fov, near, far)
 	{
 	}
 
