@@ -90,6 +90,11 @@ namespace Resources
 		 */
 		GLint	GetLocation(std::string uniformName);
 
+		inline GLuint	GetProgram()
+		{
+			return m_programID;
+		}
+
 		/**
 		 * Compile vertex and fragment shader to create glProgram
 		 */

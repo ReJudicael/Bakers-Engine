@@ -31,7 +31,9 @@ namespace Resources
 		int width;
 		EOpenGLLinkState stateTexture;
 		std::string nameTexture;
+		//Texture* textureptr;
 		std::shared_ptr<Texture> textureptr;
+		std::shared_ptr<Texture> oldTextureptr;
 
 		/**
 		 * Create a texture from an image (.png, .jpg, etc...)

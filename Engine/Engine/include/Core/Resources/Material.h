@@ -37,6 +37,7 @@ namespace Resources
 		Core::Maths::Vec3						materialColor;
 
 		std::vector<std::shared_ptr<Texture>>	textures;
+		std::vector<rttr::variant>				variants;
 
 		std::shared_ptr<Shader>					shader;
 

@@ -297,14 +297,28 @@ namespace Resources::Loader
 			texture = m_textures[keyName];
 			return;
 		}
-		if (!texture)
-			texture = std::make_shared<Texture>();
 
-		m_textures.emplace(keyName, texture);
-		//m_task.AddTask(&Resources::Texture::LoadTexture, keyName, *this);
-		//texture->LoadTexture(keyName, *this);
 		std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
 
+		/*if (!texture)
+			texture = std::make_shared<Texture>();*/
+
+		if (!texture)
+		{
+			// just create a simple texture
+			texture = std::make_shared<Texture>();
+			textureData->oldTextureptr = texture;
+		}
+		else
+		{
+			// link the current texture we want to change
+			textureData->oldTextureptr = texture;
+			// texture is make_skared for create a new one
+			texture = std::make_shared<Texture>();
+		}
+		m_textures.emplace(keyName, texture);
+
+		texture->name = keyName;
 		textureData->nameTexture = keyName;
 		PushTextureToLink(textureData);
 		textureData->textureptr = texture;
@@ -349,6 +363,7 @@ namespace Resources::Loader
 			{
 				case EOpenGLLinkState::LOADPROBLEM:
 					m_textures.erase((*it)->nameTexture);
+					//(*it)->textureptr.reset((*it)->oldTextureptr.get());
 					it = m_texturesToLink.erase(it);
 					break;
 				case EOpenGLLinkState::CANTLINK:

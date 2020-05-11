@@ -45,7 +45,7 @@ namespace Resources
 			if (mat->GetTexture(textureType, 0, &path) == AI_SUCCESS)
 			{
 				std::string fullPath = directory + path.data;
-				texture = std::make_shared<Texture>();
+				//texture = std::make_shared<Texture>();
 				resources->LoadTexture(fullPath, texture);
 				if (textureType == aiTextureType_NORMALS)
 					shader = resources->GetShader("NormalMapDefault");
@@ -60,6 +60,34 @@ namespace Resources
 
 	void Material::SendMaterial()
 	{
+		GLint count;
+		GLsizei length;
+		GLchar name[50];
+		GLint size;
+		GLenum type;
+
+		glGetProgramiv(shader->GetProgram(), GL_ACTIVE_UNIFORMS, &count);
+		printf("Active Attributes: %d\n", count);
+
+		for (auto i{ 0 }; i < count; i++)
+		{
+			glGetActiveUniform(shader->GetProgram(), (GLuint)i, 50, &length, &size, &type, name);
+
+			if (name[0] != 'u')
+			{
+				rttr::variant var;
+				switch (type)
+				{
+				case GL_FLOAT:
+					float f{ 0.f };
+					var = f;
+					variants.push_back(var);
+					break;
+				}
+				
+			}
+		}
+
 		glUniform3fv(shader->GetLocation("mat.ambientColor"), 1, ambientColor.rgb);
 		glUniform3fv(shader->GetLocation("mat.diffuseColor"), 1, diffuseColor.rgb);
 		glUniform3fv(shader->GetLocation("mat.specularColor"), 1, specularColor.rgb);

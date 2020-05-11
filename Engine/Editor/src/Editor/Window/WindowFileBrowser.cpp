@@ -2,6 +2,7 @@
 #include "EditorEngine.h"
 #include "LoadResources.h"
 #include "ScriptedComponent.h"
+#include "Object3DGraph.h"
 
 #include "IconsFontAwesome5.h"
 
@@ -302,6 +303,7 @@ namespace Editor::Window
 					}
 
 					itemName = contents[i].filename().string();
+
 					if (itemName != ".." && (m_fs->FileHasExcludedExtension(itemName, excludedExtensions) ||
 						!m_pathFilter.PassFilter(itemName.c_str())))
 						continue;
@@ -309,6 +311,24 @@ namespace Editor::Window
 					ImGui::TableNextCell();
 					ImGui::PushID(static_cast<int>(i));
 					ShowItem(itemName);
+					std::string n = m_fs->GetLocalAbsolute(itemName);
+					Resources::Loader::ResourcesManager* resources = GetEngine()->GetResourcesManager();
+					Editor::EditorEngine* eng = GetEngine();
+
+					if (resources->GetCountScene(n) > 0)
+					{
+						std::shared_ptr<Resources::Object3DGraph> graph{ resources->GetScene(n) };
+						for (auto i{ 0 }; i < graph->materialsName.size(); i++)
+						{
+							ShowItem(graph->materialsName[i]);
+
+							if (ImGui::IsItemClicked())
+							{
+								GetEngine()->materialSelected = resources->GetMaterial(n.substr(0, n.find_last_of("\\") + 1) + graph->materialsName[i]);
+								GetEngine()->objectSelected = nullptr;
+							}
+						}
+					}
 					ImGui::PopID();
 					if (itemName != "..")
 						++nbItems;

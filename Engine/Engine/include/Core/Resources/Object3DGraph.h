@@ -20,6 +20,8 @@ namespace Resources
 		struct ImporterData;
 	}
 
+	struct Object3DGraph;
+
 	struct Node
 	{
 		Core::Maths::Vec3	position;
@@ -38,10 +40,10 @@ namespace Resources
 		 * @param node: The current node of the scene
 		 * @param directory: the full path of the first mesh find with bone
 		 */
-		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory);
+		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsName);
 
 		
-		void LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory);
+		void LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory, std::vector<std::string>& materialsNam);
 
 		/**
 		 * Load a assimp scene as one node
@@ -49,7 +51,7 @@ namespace Resources
 		 * @param node: The current node of the scene
 		 * @param directory: the full path of the first mesh find with bone
 		 */
-		void SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory);
+		void SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsNam);
 
 		/**
 		 * create an object with a mesh from
@@ -63,7 +65,7 @@ namespace Resources
 	{
 		Node rootNodeScene;
 		bool singleMesh;
-
+		std::vector<std::string> materialsName;
 		/**
 		 * Find in the scene a node with a mesh
 		 * @param scene: The scene of the 3D object load by assimp

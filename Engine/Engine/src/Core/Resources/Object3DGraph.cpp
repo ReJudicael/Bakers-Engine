@@ -16,7 +16,7 @@
 
 namespace Resources
 {
-	void Node::RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory)
+	void Node::RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsNam)
 	{
 		aiVector3D pos;
 		aiVector3D rot;
@@ -30,8 +30,9 @@ namespace Resources
 			nameMesh = directory + scene->mMeshes[node->mMeshes[0]]->mName.data;
 			mat = scene->mMaterials[scene->mMeshes[node->mMeshes[0]]->mMaterialIndex];
 			namesMaterial.push_back(directory + mat->GetName().data);
+			materialsNam.push_back(mat->GetName().data);
 
-			LoadMeshsAsChild(scene, node, mat, directory);
+			LoadMeshsAsChild(scene, node, mat, directory, materialsNam);
 		}
 		else
 		{
@@ -51,11 +52,11 @@ namespace Resources
 			children.resize(numChildren);
 		for (int i{ numCurrentChildren }; i < numChildren; i++)
 		{
-			children[i].RecursiveSceneLoad(scene, node->mChildren[i - numCurrentChildren], directory);
+			children[i].RecursiveSceneLoad(scene, node->mChildren[i - numCurrentChildren], directory, materialsNam);
 		}
 	}
 
-	void Node::LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory)
+	void Node::LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory, std::vector<std::string>& materialsNam)
 	{
 		int sameKey{ 0 };
 
@@ -78,6 +79,7 @@ namespace Resources
 			}
 
 			child.namesMaterial.push_back(nameMaterial);
+			materialsNam.push_back(nameMaterial);
 			children.push_back(child);
 		}
 	}
@@ -120,7 +122,7 @@ namespace Resources
 		}
 	}
 
-	void Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory)
+	void Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsNam)
 	{
 		nameObject = node->mName.data;
 
@@ -144,6 +146,7 @@ namespace Resources
 		{
 			mat = scene->mMaterials[scene->mMeshes[currNode->mMeshes[i]]->mMaterialIndex];
 			namesMaterial.push_back(directory + mat->GetName().data);
+			materialsNam.push_back(mat->GetName().data);
 		}
 	}
 
@@ -154,9 +157,9 @@ namespace Resources
 		importer->maxUseOfImporter++;
 
 		if (singleMesh)
-			rootNodeScene.SingleMeshSceneLoad(scene, node, directory);
+			rootNodeScene.SingleMeshSceneLoad(scene, node, directory, materialsName);
 		else
-			rootNodeScene.RecursiveSceneLoad(scene, node, directory);
+			rootNodeScene.RecursiveSceneLoad(scene, node, directory, materialsName);
 		importer->maxUseOfImporter--;
 	}
 

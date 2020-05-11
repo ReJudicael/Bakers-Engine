@@ -331,7 +331,7 @@ namespace Editor::Window
 
 	void WindowInspector::Tick()
 	{
-		if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
+		/*if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
 			m_inspectorObject = GetEngine()->objectSelected;
 
 		if (m_inspectorObject)
@@ -339,6 +339,37 @@ namespace Editor::Window
 			LockSelectedObjectButton();
 			ImGui::SameLine();
 			ObjectInspector(m_inspectorObject);
+		}*/
+
+		std::shared_ptr<Resources::Material> mat = GetEngine()->materialSelected;
+		if (mat)
+		{
+			ImGui::SliderFloat("shininess ", &mat->shininess, 0.f, 5.f);
+			ImGui::SliderFloat3("ambient ", mat->ambientColor.gba, 0.f, 5.f);
+
+			for (auto i{ 0 }; i < 1; i++)
+			{
+
+				std::string str = mat->textures[i]->name;
+
+					ImGui::RButtonDD("Texture ",
+						!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
+				if (!str.empty())
+					ImGui::HelpMarkerItem(str.c_str());
+
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
+					{
+						const std::string& path{ reinterpret_cast<const char*>(payload->Data) };
+
+						GetEngine()->GetResourcesManager()->LoadTexture(path, mat->textures[i]);
+
+						// Use "path" in your function
+						ImGui::EndDragDropTarget();
+					}
+				}
+			}
 		}
 	}
 }

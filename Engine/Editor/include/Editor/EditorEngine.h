@@ -31,6 +31,7 @@ namespace Editor
 		json				m_savedScene;
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
+		std::shared_ptr<Resources::Material> materialSelected{ nullptr };
 		SelectionMode operation{ SelectionMode::TRANSLATION };
 		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::WORLD };
 		bool isTestingRay{ false };
