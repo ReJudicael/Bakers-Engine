@@ -108,6 +108,12 @@ namespace Editor::Window
 		void DisplayObjectTransform(Core::Datastructure::Object* object);
 
 		/**
+		 * Display flags of object in hierarchy
+		 * @param object: Selected object
+		 */
+		void DisplayObjectFlags(Core::Datastructure::Object* object);
+
+		/**
 		 * Draw an enum property in window
 		 * @param prop: Property to draw
 		 * @param component: Component instance

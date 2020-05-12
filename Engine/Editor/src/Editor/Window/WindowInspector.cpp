@@ -104,6 +104,8 @@ namespace Editor::Window
 		if (isOpen)
 		{
 			ImGui::Spacing();
+			
+			DisplayObjectFlags(object);
 
 			if (GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL)
 				DisplayObjectLocalTransform(object);
@@ -112,6 +114,24 @@ namespace Editor::Window
 
 			ImGui::Spacing();
 		}
+	}
+
+	void				SetObjectStatic(bool isStatic, Core::Datastructure::Object* object)
+	{
+		if (isStatic != object->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC))
+			rttr::type::get<Core::Datastructure::Object>().get_property("flags").set_value(object, object->GetFlags() ^ Core::Datastructure::ObjectFlags::STATIC);
+		if (isStatic)
+		{
+			for (auto it : object->GetChildren())
+				SetObjectStatic(true, it);
+		}
+	}
+
+	void WindowInspector::DisplayObjectFlags(Core::Datastructure::Object* object)
+	{
+		bool b = object->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC);
+		ImGui::RCheckbox("Is static?", &b);
+		SetObjectStatic(b, object);
 	}
 
 	void WindowInspector::DrawEnum(rttr::property prop, rttr::instance component)

@@ -323,6 +323,8 @@ namespace Core::Datastructure
 			return;
 		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["w"], j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
 
+		rttr::type::get<Core::Datastructure::Object>().get_property("flags").set_value(o, (Core::Datastructure::ObjectFlag)j["Flags"]);
+
 		for (auto& components : j["Components"])
 		{
 			AddComponent(components, o);

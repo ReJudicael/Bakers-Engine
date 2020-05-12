@@ -473,7 +473,7 @@
                             }
                         }
                     ],
-                    "Flags": 0,
+                    "Flags": 1,
                     "Name": "GameObject",
                     "Pos": {
                         "x": 0.07504789531230927,
@@ -526,7 +526,7 @@
                     }
                 }
             ],
-            "Flags": 0,
+            "Flags": 1,
             "Name": "GameObject",
             "Pos": {
                 "x": 0.0,

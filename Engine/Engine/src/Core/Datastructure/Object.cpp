@@ -19,6 +19,7 @@ RTTR_PLUGIN_REGISTRATION
 		.property("pos", &Object::GetGlobalPos, &Object::SetGlobalPos)
 		.property("rot", &Object::GetGlobalRot, &Object::SetGlobalRot)
 		.property("scale", &Object::GetGlobalScale, &Object::SetGlobalScale)
+		.property("flags", &Object::m_flags, detail::protected_access())
 		.property_readonly("GlobalPos", &Object::GetGlobalPos)
 		.property_readonly("GlobalRot", &Object::GetGlobalRot)
 		.property_readonly("GlobalScale", &Object::GetGlobalScale)
