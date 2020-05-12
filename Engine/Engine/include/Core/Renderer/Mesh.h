@@ -103,6 +103,11 @@ public:
 	virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
 
 	/**
+	 * Adds current mesh to NavMesh
+	 */
+	void		AddToNavMesh();
+
+	/**
 	 * get the number total of the vertex in the mesh
 	 * @return the count of vertex
 	 */

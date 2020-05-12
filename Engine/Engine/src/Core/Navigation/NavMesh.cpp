@@ -373,6 +373,17 @@ namespace Core::Navigation
 		return &m_mesh.back();
 	}
 
+	void NavMeshBuilder::ClearInputMeshes()
+	{
+		for (auto it : m_mesh)
+		{
+			delete it.tris;
+			delete it.verts;
+		}
+		m_mesh.clear();
+		m_maxTris = 0;
+	}
+
 	void BuildContext::doResetLog()
 	{
 	}

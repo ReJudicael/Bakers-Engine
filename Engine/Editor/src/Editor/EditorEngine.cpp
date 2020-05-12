@@ -15,6 +15,7 @@
 #include "RootObject.hpp"
 #include "CoreMinimal.h"
 #include "LoadResources.h"
+#include "Mesh.h"
 
 #include <fstream>
 
@@ -367,6 +368,16 @@ namespace Editor
 	{
 		m_root->Clear();
 		LoadSceneFromJson(m_savedScene);
+	}
+
+	void EditorEngine::CompileNavMesh()
+	{
+		m_navMesh->ClearInputMeshes();
+		for (auto it : m_root->GetComponentsOfBaseType<Mesh>())
+		{
+			it->AddToNavMesh();
+		}
+		m_navMesh->Build();
 	}
 
 	void EditorEngine::SetCallbackToGLFW()

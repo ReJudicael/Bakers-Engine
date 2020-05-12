@@ -37,7 +37,6 @@ namespace Core::Navigation
 			return;
 		Core::Maths::Vec3 toDest{ (m_path.straightPath[m_pathIndex] - GetParent()->GetGlobalPos()) };
 		toDest.y = 0;
-		std::cout << toDest.SquaredLength() << std::endl;
 		if (toDest.SquaredLength() < m_destPrecision * m_destPrecision)
 		{
 			++m_pathIndex;
@@ -69,13 +68,6 @@ namespace Core::Navigation
 			delete m_pathQuery;
 			m_pathQuery = nullptr;
 			m_pathIndex = 0;
-
-			std::cout << "test path" << std::endl;
-
-			for (int i = 0; i < m_path.straightPathSize; ++i)
-			{
-				m_path.straightPath[i].Print();
-			}
 		}
 		UpdatePos();
 	}

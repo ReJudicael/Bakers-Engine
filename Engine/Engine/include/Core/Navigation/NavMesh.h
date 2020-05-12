@@ -97,6 +97,7 @@ namespace Core::Navigation
 
 		bool			Build();
 		Mesh*			AddMesh(float* verts, int nverts, int* tris, int ntris, const Core::Datastructure::Transform& position);
+		void			ClearInputMeshes();
 
 		bool			IsNavmeshUpdated() const { return m_isUpdated; }
 

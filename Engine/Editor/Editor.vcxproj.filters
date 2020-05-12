@@ -138,9 +138,6 @@
     <ClCompile Include="..\Dependencies\imgui-1.76\src\imgui\imgui_widgets.cpp">
       <Filter>Internal Dependencies\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Internal Dependencies\glad</Filter>
     </ClCompile>
@@ -157,6 +154,9 @@
       <Filter>Internal Dependencies\imGuizmo\src</Filter>
     </ClCompile>
     <ClCompile Include="src\Editor\Datastructure\DrawableUIComponent.cpp">
+      <Filter>Source Files\Editor\Datastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Datastructure\EditorCamera.cpp">
       <Filter>Source Files\Editor\Datastructure</Filter>
     </ClCompile>
   </ItemGroup>
@@ -242,9 +242,6 @@
     <ClInclude Include="..\Dependencies\imgui-1.76\include\imgui\imstb_truetype.h">
       <Filter>Internal Dependencies\imgui\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Editor\Datastructure\EditorCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Editor\Datastructure\DrawableUIComponent.h">
       <Filter>Header Files\Editor\Datastructure</Filter>
     </ClInclude>
@@ -262,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="include\Editor\IconsFontAwesome5.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Datastructure\EditorCamera.h">
+      <Filter>Header Files\Editor\Datastructure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -137,8 +137,6 @@ void Mesh::CreateAABBMesh()
 {
 	Core::Datastructure::Object* object = GetParent();
 	
-	GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()), m_model->indices.data(), static_cast<int>(m_model->indices.size()), object->GetUpdatedTransform());
-	
 	Core::Datastructure::IComponent* component = dynamic_cast<Core::Datastructure::IComponent*>(this);
 	physx::PxRigidActor* actor = object->GetScene()
 							->GetEngine()
@@ -192,6 +190,12 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
+}
+
+void Mesh::AddToNavMesh()
+{
+	if (m_parent->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC))
+		GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()), m_model->indices.data(), static_cast<int>(m_model->indices.size()), GetParent()->GetUpdatedTransform());
 }
 
 void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)
