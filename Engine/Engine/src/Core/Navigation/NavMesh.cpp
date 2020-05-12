@@ -244,6 +244,7 @@ namespace Core::Navigation
 				return false;
 			}
 
+			//Generation of crowd
 			/*if (m_crowd->init(MAX_AGENTS, 2.0f, m_navMesh))
 			{
 				DEBUG_LOG_ERROR("Could not init Detour crowd");
@@ -515,6 +516,13 @@ namespace Core::Navigation
 
 		m_VAO = VAO;
 		m_VAOSize = vertex.size();
+
+		if (!m_shader)
+		{
+			m_shader = m_engine->GetResourcesManager()->CreateShader("NavMeshShader", "Resources\\Shaders\\NavMeshShader.vert", "Resources\\Shaders\\NavMeshShader.frag");
+			if (!m_shader)
+				BAKERS_LOG_ERROR("Could not load NavMesh shader");
+		}
 
 		glBindVertexArray(0);
 	}

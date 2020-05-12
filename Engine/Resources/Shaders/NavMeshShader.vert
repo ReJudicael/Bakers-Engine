@@ -7,9 +7,10 @@ uniform mat4 uProj;
 uniform mat4 uCam;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
-out vec3 color;
+out vec4 color;
 void main()
 {
-	color = aColor;
+	color = vec4(1, 0, 1, 0.7);
+	//color = aColor;
 	gl_Position = uProj * uCam * vec4(aPosition, 1);
 }

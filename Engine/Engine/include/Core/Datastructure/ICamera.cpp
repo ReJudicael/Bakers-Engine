@@ -68,6 +68,8 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 
 		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
 			(*it)->Draw(this);
+
+		GetRoot()->GetEngine()->GetNavMesh()->DrawNavMesh(this);
 	}
 }
 
