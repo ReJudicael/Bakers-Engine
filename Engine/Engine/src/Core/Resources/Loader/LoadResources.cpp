@@ -41,11 +41,22 @@ namespace Resources::Loader
 		Shader wireframeShader("Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
 
-		LoadObjInModel("Cube","Resources/Models/cube.obj");
-		LoadObjInModel("Capsule","Resources/Models/capsule.obj");
-		LoadObjInModel("Quad","Resources/Models/quad.obj");
-		LoadObjInModel("Skybox","Resources/Models/skybox.obj");
-		LoadObjInModel("Sphere","Resources/Models/sphere.obj");
+		Material defaultMat;
+		defaultMat.ambientColor = {1.f, 1.f, 1.f};
+		defaultMat.diffuseColor = { 1.f, 1.f, 1.f };
+		defaultMat.specularColor = { 1.f, 1.f, 1.f };
+		defaultMat.shininessStrength = { 0.f };
+		defaultMat.shininess = { 1.f };
+		defaultMat.shader = m_shaders["Wireframe"];
+		defaultMat.shaderChoose = true;
+
+		m_materials.emplace("Default", std::make_shared<Material>(defaultMat));
+
+		LoadObjInModel("Cube",".\\Resources\\Models\\cube.obj");
+		LoadObjInModel("Capsule",".\\Resources\\Models\\capsule.obj");
+		LoadObjInModel("Quad",".\\Resources\\Models\\quad.obj");
+		LoadObjInModel("Skybox",".\\Resources\\Models\\skybox.obj");
+		LoadObjInModel("Sphere",".\\Resources\\Models\\sphere.obj");
 	}
 
 	ResourcesManager::~ResourcesManager()
@@ -261,6 +272,13 @@ namespace Resources::Loader
 		modelData->SetArrays(scene, 0);
 
 		m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
+
+		std::shared_ptr<Object3DGraph> sceneData = std::make_shared<Object3DGraph>();
+
+		sceneData->rootNodeScene.nameMesh = name;
+		sceneData->rootNodeScene.nameObject = name;
+		sceneData->rootNodeScene.namesMaterial.push_back("Default");
+		m_scenes.emplace(fileName, sceneData);
 		//modelData->LoadaiMeshModel(mesh, importer);
 	}
 
@@ -285,6 +303,8 @@ namespace Resources::Loader
 		std::shared_ptr<Material> materialOut = std::make_shared<Material>();
 
 		m_materials.emplace(keyMaterial, materialOut);
+
+		m_materialsGetUniform.push_back(materialOut);
 
 		m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut.get(), mat, directory, this, importer);
 
@@ -386,6 +406,19 @@ namespace Resources::Loader
 		}
 	}
 
+	void ResourcesManager::MaterialGetUniformFromShader()
+	{
+		for (auto it = m_materialsGetUniform.begin();
+			it != m_materialsGetUniform.end();)
+		{
+			if ((*it)->shaderChoose)
+			{
+				(*it)->InitVariantUniform();
+				it = m_materialsGetUniform.erase(it);
+			}
+		}
+	}
+
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{
 		for (auto it = m_modelsToLink.begin();
@@ -413,6 +446,8 @@ namespace Resources::Loader
 		}
 	}
 
+
+
 	void ResourcesManager::CheckDeleteAssimpImporter()
 	{
 		for (auto it = m_importerToDelete.begin();
@@ -426,6 +461,15 @@ namespace Resources::Loader
 			else
 				it++;
 		}
+	}
+
+	void ResourcesManager::UpdateResourcesManager()
+	{
+		LinkAllTextureToOpenGl();
+		LinkAllModelToOpenGl();
+		MaterialGetUniformFromShader();
+		CheckDeleteAssimpImporter();
+		ShaderUpdate();
 	}
 
 	std::shared_ptr<Shader> ResourcesManager::CreateShader(const char* shaderName, const char* vertexFilePath, const char* fragmentFilePath, Shader::EShaderHeaderType header)

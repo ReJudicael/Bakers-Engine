@@ -154,11 +154,11 @@ namespace Editor
 			EndFrame();
 			break;
 		case (Core::Datastructure::EngineState::INITIALIZED):
-			m_manager->LinkAllTextureToOpenGl();
+			m_manager->UpdateResourcesManager();
+			/*m_manager->LinkAllTextureToOpenGl();
 			m_manager->CheckDeleteAssimpImporter();
 			m_manager->LinkAllModelToOpenGl();
-			m_manager->ShaderUpdate();
-
+			m_manager->ShaderUpdate();*/
 			if (!m_navMesh->IsNavmeshUpdated())
 				m_navMesh->Build();
 

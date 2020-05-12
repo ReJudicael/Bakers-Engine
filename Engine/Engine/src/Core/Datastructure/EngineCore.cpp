@@ -433,10 +433,11 @@ namespace Core::Datastructure
 	{
 		ZoneScoped
 			m_root->StartFrame();
-			m_manager->CheckDeleteAssimpImporter();
+			m_manager->UpdateResourcesManager();
+			/*m_manager->CheckDeleteAssimpImporter();
 			m_manager->LinkAllTextureToOpenGl();
 			m_manager->LinkAllModelToOpenGl();
-			m_manager->ShaderUpdate();
+			m_manager->ShaderUpdate();*/
 			if (!m_navMesh->IsNavmeshUpdated())
 				m_navMesh->Build();
 	}

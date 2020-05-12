@@ -171,19 +171,19 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
 		
-		Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
-		material.shader->UseProgram();
+		std::shared_ptr<Resources::Material> material = m_materialsModel[currOffsetMesh.materialIndices];
+		material->shader->UseProgram();
 		{
 
 			// init the value of the texture1
-			glUniform1i(material.shader->GetLocation("uColorTexture"), 0);
+			glUniform1i(material->shader->GetLocation("uColorTexture"), 0);
 			// init the value of the texture2
-			glUniform1i(material.shader->GetLocation("uNormalMap"), 1);
+			glUniform1i(material->shader->GetLocation("uNormalMap"), 1);
 
-			material.SendMaterial();
-			glUniformMatrix4fv(material.shader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
-			glUniformMatrix4fv(material.shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
-			glUniformMatrix4fv(material.shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
+			material->SendMaterial();
+			glUniformMatrix4fv(material->shader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
+			glUniformMatrix4fv(material->shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
+			glUniformMatrix4fv(material->shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
 		}
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,

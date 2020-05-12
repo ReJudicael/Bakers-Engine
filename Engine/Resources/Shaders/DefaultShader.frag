@@ -16,15 +16,14 @@ in vec3 normal;
 
 void main()
 {
-	//pi = 0f;
 	oColor = texture(uColorTexture, vUV) ;
-	if (uLightCount == (0 * pi))
+	if (uLightCount == 0)
 		return;
 
 	vec3 view = normalize(camPos - unprojectedPos);
 	vec3 lightContribution;
 	for (int i = 0; i < uLightCount; i++)
 		lightContribution += getLightContribution(uLight[i], umat, unprojectedPos, normal, view);
-	oColor.x = pi;
-	oColor *= vec4(lightContribution, 1.0);
+	
+	oColor *= vec4(lightContribution * pi, 1.0);
 }

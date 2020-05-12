@@ -23,10 +23,16 @@ namespace Resources
 	struct Texture;
 	class Shader;
 
+	struct VariantUniform
+	{
+		std::string name;
+		rttr::variant var;
+	};
+
 	/**
 	 * Contains the values with which we can draw the color of the mesh
 	 */
-	struct Material /*: public std::enable_shared_from_this<Material>*/
+	struct Material
 	{
 		Core::Maths::Color						diffuseColor{};
 		Core::Maths::Color						ambientColor{};
@@ -37,8 +43,8 @@ namespace Resources
 		Core::Maths::Vec3						materialColor;
 
 		std::vector<std::shared_ptr<Texture>>	textures;
-		std::vector<rttr::variant>				variants;
-
+		std::vector<VariantUniform>				variants;
+		bool									shaderChoose{ false };
 		std::shared_ptr<Shader>					shader;
 
 		/**
@@ -61,6 +67,8 @@ namespace Resources
 		 */
 		void LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& texture, 
 									const aiTextureType& textureType, const std::string& directory, Loader::ResourcesManager* resources);
+
+		void InitVariantUniform();
 
 		void SendMaterial();
 	};

@@ -331,7 +331,7 @@ namespace Editor::Window
 
 	void WindowInspector::Tick()
 	{
-		/*if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
+		if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
 			m_inspectorObject = GetEngine()->objectSelected;
 
 		if (m_inspectorObject)
@@ -339,13 +339,19 @@ namespace Editor::Window
 			LockSelectedObjectButton();
 			ImGui::SameLine();
 			ObjectInspector(m_inspectorObject);
-		}*/
+		}
 
-		std::shared_ptr<Resources::Material> mat = GetEngine()->materialSelected;
+		/*std::shared_ptr<Resources::Material> mat = GetEngine()->materialSelected;
 		if (mat)
 		{
 			ImGui::SliderFloat("shininess ", &mat->shininess, 0.f, 5.f);
 			ImGui::SliderFloat3("ambient ", mat->ambientColor.gba, 0.f, 5.f);
+
+			for (auto i{ 0 }; i < mat->variants.size(); i++)
+			{
+				if(mat->variants[i].var.get_type().get_by_name("float") == type::get<float>())
+					ImGui::SliderFloat(mat->variants[i].name.c_str(), &mat->variants[i].var.get_value<float>(), 0.f, 5.f);
+			}
 
 			for (auto i{ 0 }; i < 1; i++)
 			{
@@ -368,8 +374,9 @@ namespace Editor::Window
 						// Use "path" in your function
 						ImGui::EndDragDropTarget();
 					}
+
 				}
 			}
-		}
+		}*/
 	}
 }

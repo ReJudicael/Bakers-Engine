@@ -144,9 +144,17 @@ namespace Resources
 
 		for (unsigned int i{ 0 }; i < currNode->mNumMeshes; i++)
 		{
-			mat = scene->mMaterials[scene->mMeshes[currNode->mMeshes[i]]->mMaterialIndex];
-			namesMaterial.push_back(directory + mat->GetName().data);
-			materialsNam.push_back(mat->GetName().data);
+			if (!scene->HasMaterials())
+			{
+				namesMaterial.push_back("Default");
+				materialsNam.push_back("Default");
+			}
+			else
+			{
+				mat = scene->mMaterials[scene->mMeshes[currNode->mMeshes[i]]->mMaterialIndex];
+				namesMaterial.push_back(directory + mat->GetName().data);
+				materialsNam.push_back(mat->GetName().data);
+			}
 		}
 	}
 

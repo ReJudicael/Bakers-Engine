@@ -72,6 +72,7 @@ namespace Resources
 			/* Used for stocked the different value which allow to bind different resources to OpengGL (for the multiThread)*/
 			std::list<std::shared_ptr<TextureData>>		m_texturesToLink;
 			std::list<std::shared_ptr<ModelData>>		m_modelsToLink;
+			std::list<std::shared_ptr<Material>>		m_materialsGetUniform;
 			std::list< std::shared_ptr<ImporterData>>	m_importerToDelete;
 		private:
 			/**
@@ -311,15 +312,19 @@ namespace Resources
 			 * Link to OpenGL the textures
 			 */
 			void LinkAllTextureToOpenGl();
-
-			
-
 			/**
 			 * Link to OpenGL the models
 			 */
 			void LinkAllModelToOpenGl();
 
+			void MaterialGetUniformFromShader();
+
+			/*
+			 * Check if the assimps importers can be destroy
+			 */
 			void CheckDeleteAssimpImporter();
+
+			void UpdateResourcesManager();
 
 			/**
 			 * Create Shader and add it to the shader map

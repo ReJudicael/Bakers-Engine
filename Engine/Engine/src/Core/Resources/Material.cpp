@@ -32,6 +32,7 @@ namespace Resources
 		mat->Get(AI_MATKEY_SHININESS, shininess);
 		mat->Get(AI_MATKEY_SHININESS_STRENGTH, shininessStrength);
 		materialColor = { 1.0f, 1.0f, 1.0f };
+		shaderChoose = true;
 
 		importer->maxUseOfImporter--;
 	}
@@ -60,39 +61,21 @@ namespace Resources
 
 	void Material::SendMaterial()
 	{
-		GLint count;
-		GLsizei length;
-		GLchar name[50];
-		GLint size;
-		GLenum type;
+		glUniform3fv(shader->GetLocation("umat.ambientColor"), 1, ambientColor.rgb);
+		glUniform3fv(shader->GetLocation("umat.diffuseColor"), 1, diffuseColor.rgb);
+		glUniform3fv(shader->GetLocation("umat.specularColor"), 1, specularColor.rgb);
+		glUniform1f(shader->GetLocation("umat.shininess"), shininess);
+		glUniform1f(shader->GetLocation("umat.shininessStrength"), shininessStrength);
 
-		glGetProgramiv(shader->GetProgram(), GL_ACTIVE_UNIFORMS, &count);
-		printf("Active Attributes: %d\n", count);
-
-		for (auto i{ 0 }; i < count; i++)
+		for (auto i{ 0 }; i < variants.size(); i++)
 		{
-			glGetActiveUniform(shader->GetProgram(), (GLuint)i, 50, &length, &size, &type, name);
-
-			if (name[0] != 'u')
+			if (variants[i].var.can_convert<float>())
 			{
-				rttr::variant var;
-				switch (type)
-				{
-				case GL_FLOAT:
-					float f{ 0.f };
-					var = f;
-					variants.push_back(var);
-					break;
-				}
-				
+				float tmp;
+				if(variants[i].var.convert<float>(tmp))
+					glUniform1f(shader->GetLocation(variants[i].name.c_str()), tmp);
 			}
 		}
-
-		glUniform3fv(shader->GetLocation("mat.ambientColor"), 1, ambientColor.rgb);
-		glUniform3fv(shader->GetLocation("mat.diffuseColor"), 1, diffuseColor.rgb);
-		glUniform3fv(shader->GetLocation("mat.specularColor"), 1, specularColor.rgb);
-		glUniform1f(shader->GetLocation("mat.shininess"), shininess);
-		glUniform1f(shader->GetLocation("mat.shininessStrength"), shininessStrength);
 
 		// send all the texture
 		for (auto i{ 0 }; i < textures.size(); i++)
@@ -107,6 +90,43 @@ namespace Resources
 				glActiveTexture(GL_TEXTURE1);
 				glBindTexture(GL_TEXTURE_2D, textures[1]->texture);
 				break;
+			}
+		}
+	}
+
+	void Material::InitVariantUniform()
+	{
+		GLint count;
+		GLsizei length;
+		GLchar name[50];
+		GLint size;
+		GLenum type;
+
+		glGetProgramiv(shader->GetProgram(), GL_ACTIVE_UNIFORMS, &count);
+		for (auto i{ 0 }; i < count; i++)
+		{
+			glGetActiveUniform(shader->GetProgram(), (GLuint)i, 50, &length, &size, &type, name);
+
+			if (name[0] != 'u')
+			{
+				VariantUniform uni;
+				uni.name = name;
+				rttr::variant var;
+				switch (type)
+				{
+				case GL_FLOAT:
+					uni.var = 0.f;
+					variants.push_back(uni);
+					break;
+				case GL_INT:
+					uni.var = 0;
+					variants.push_back(uni);
+					break;
+				case GL_UNSIGNED_INT:
+					uni.var = static_cast<unsigned int>(0);
+					variants.push_back(uni);
+					break;
+				}
 			}
 		}
 	}
