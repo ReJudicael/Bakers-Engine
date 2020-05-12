@@ -74,6 +74,31 @@ namespace Core::Datastructure
 		m_scale *= v;
 		return m_scale;
 	}
+	void Transform::RotateGlobal(const Transform& parent, const Maths::Quat& q) noexcept
+	{
+		m_isTrsUpdated = false;
+		m_isGTrsUpdated = false;
+		m_isGUpdated = false;
+
+		m_rot *= parent.GetGlobalRot().Inversed() * q;
+		m_rot.Normalize();
+	}
+	void Transform::ScaleGlobal(const Transform& parent, const Maths::Vec3& v) noexcept
+	{
+		m_isTrsUpdated = false;
+		m_isGTrsUpdated = false;
+		m_isGUpdated = false;
+
+		m_scale *= v / parent.GetGlobalScale();
+	}
+	void Transform::TranslateGlobal(const Transform& parent, const Maths::Vec3& v) noexcept
+	{
+		m_isTrsUpdated = false;
+		m_isGTrsUpdated = false;
+		m_isGUpdated = false;
+
+		m_pos += (parent.GetGlobalRot().Inversed() * Core::Maths::Quat(0, v - parent.GetGlobalPos()) * parent.GetGlobalRot()).GetVec() / parent.GetGlobalScale();
+	}
 	const Maths::Mat4& Transform::GetLocalTrs() noexcept
 	{
 		if (m_isTrsUpdated)

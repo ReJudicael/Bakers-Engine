@@ -49,7 +49,7 @@ namespace Core::Datastructure
 	{
 		m_inputSystem = new Core::SystemManagement::InputSystem(this);
 		m_audioSystem = new Audio::AudioSystem();
-		m_navMesh = new Core::Navigation::NavMeshBuilder();
+		m_navMesh = new Core::Navigation::NavMeshBuilder(this);
 		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem, this);
 	}
 
@@ -323,6 +323,8 @@ namespace Core::Datastructure
 			return;
 		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["w"], j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
 
+		rttr::type::get<Core::Datastructure::Object>().get_property("flags").set_value(o, (Core::Datastructure::ObjectFlag)j["Flags"]);
+
 		for (auto& components : j["Components"])
 		{
 			AddComponent(components, o);
@@ -362,6 +364,7 @@ namespace Core::Datastructure
 	{
 		m_physicsScene->BeginSimulate(static_cast<float>(deltaTime));
 		m_physicsScene->EndSimulate();
+		m_navMesh->UpdateQuery();
 		m_root->Update(static_cast<float>(deltaTime));
 	}
 

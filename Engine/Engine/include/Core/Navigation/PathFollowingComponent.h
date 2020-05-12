@@ -1,0 +1,38 @@
+#pragma once
+
+#include "CoreMinimal.h"
+
+#include "ComponentBase.h"
+#include "INavAgent.h"
+#include "IUpdatable.hpp"
+
+namespace Core::Navigation
+{
+	class PathFollowingComponent : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::INavAgent, public virtual Core::Datastructure::IUpdatable
+	{
+	protected:
+		virtual bool	OnStart() override;
+		virtual void	OnDestroy() override;
+		virtual void	OnUpdate(float deltaTime) override;
+
+		virtual void	StartCopy(IComponent*& copyTo) const override;
+		virtual void	OnCopy(IComponent* copyTo) const override;
+		virtual void	OnReset() override;
+
+		Core::Maths::Vec3	m_target;
+		NavPath				m_path;
+		int					m_pathIndex{ 0 };
+
+		float				m_moveSpeed{ 0.5f };
+		float				m_destPrecision{ 0.2f };
+
+		void				UpdatePos();
+	public:
+		PathFollowingComponent();
+
+		Core::Maths::Vec3	GetTarget() { return m_target; };
+		void				SetTarget(Core::Maths::Vec3 target);
+
+		REGISTER_CLASS(ComponentBase, INavAgent, IUpdatable)
+	};
+}
