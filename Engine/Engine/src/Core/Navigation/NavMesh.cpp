@@ -478,9 +478,9 @@ namespace Core::Navigation
 	{
 		std::vector<NavVertex>	vertex;
 		const dtNavMesh* mesh{ m_navMesh };
-		for (int t = 0; t < mesh->getMaxTiles(); ++t)
+		for (int l = 0; l < mesh->getMaxTiles(); ++l)
 		{
-			const dtMeshTile* tile = mesh->getTile(t);
+			const dtMeshTile* tile = mesh->getTile(l);
 			if (!tile->header) continue;
 
 			dtPolyRef base = mesh->getPolyRefBase(tile);
@@ -513,7 +513,7 @@ namespace Core::Navigation
 			}
 		}
 
-		GLuint VAO, VBO, EBO;
+		GLuint VAO, VBO;
 
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
@@ -526,7 +526,7 @@ namespace Core::Navigation
 		glVertexAttribPointer(1, 1, GL_UNSIGNED_INT, GL_FALSE, sizeof(NavVertex), (void*)offsetof(NavVertex, color));
 
 		m_VAO = VAO;
-		m_VAOSize = vertex.size();
+		m_VAOSize = static_cast<unsigned>(vertex.size());
 
 		if (!m_shader)
 		{
@@ -569,6 +569,126 @@ namespace Core::Navigation
 			return;
 
 		DrawNavMesh(cam->GetCameraMatrix(), cam->GetPerspectiveMatrix());
+	}
+
+	bool NavMeshBuilder::SaveNavMesh(const std::string& path) const
+	{
+		if (!m_navMesh)
+			return false;
+
+		const dtNavMesh* mesh = m_navMesh;
+
+		FILE* fp = fopen((path + +".nav").c_str(), "wb");
+		if (!fp)
+			return false;
+
+		NavMeshSetHeader header;
+		header.magic = NAVMESHSET_MAGIC;
+		header.version = NAVMESHSET_VERSION;
+		header.numTiles = 0;
+
+		for (int i = 0; i < mesh->getMaxTiles(); ++i)
+		{
+			const dtMeshTile* tile = mesh->getTile(i);
+			if (!tile || !tile->header || !tile->dataSize) continue;
+			++header.numTiles;
+		}
+		memcpy(&header.params, mesh->getParams(), sizeof(dtNavMeshParams));
+		fwrite(&header, sizeof(NavMeshSetHeader), 1, fp);
+
+		for (int i = 0; i < mesh->getMaxTiles(); ++i)
+		{
+			const dtMeshTile* tile = mesh->getTile(i);
+			if (!tile || !tile->header || !tile->dataSize) continue;
+
+			NavMeshTileHeader tileHeader;
+			tileHeader.tileRef = mesh->getTileRef(tile);
+			tileHeader.dataSize = tile->dataSize;
+			fwrite(&tileHeader, sizeof(tileHeader), 1, fp);
+
+			fwrite(tile->data, tile->dataSize, 1, fp);
+		}
+
+		fclose(fp);
+		return true;
+	}
+
+	bool NavMeshBuilder::LoadNavMesh(const std::string& path)
+	{
+		FILE* fp = fopen((path + ".nav").c_str(), "rb");
+		if (!fp) return 0;
+
+		// Read header.
+		NavMeshSetHeader header;
+		size_t readLen = fread(&header, sizeof(NavMeshSetHeader), 1, fp);
+		if (readLen != 1)
+		{
+			fclose(fp);
+			return false;
+		}
+		if (header.magic != NAVMESHSET_MAGIC)
+		{
+			fclose(fp);
+			return false;
+		}
+		if (header.version != NAVMESHSET_VERSION)
+		{
+			fclose(fp);
+			return false;
+		}
+
+		if (m_navMesh)
+			dtFreeNavMesh(m_navMesh);
+		m_navMesh = dtAllocNavMesh();
+		if (!m_navMesh)
+		{
+			fclose(fp);
+			return false;
+		}
+		dtStatus status = m_navMesh->init(&header.params);
+		if (dtStatusFailed(status))
+		{
+			fclose(fp);
+			return 0;
+		}
+		for (int i = 0; i < header.numTiles; ++i)
+		{
+			NavMeshTileHeader tileHeader;
+			readLen = fread(&tileHeader, sizeof(tileHeader), 1, fp);
+			if (readLen != 1)
+			{
+				fclose(fp);
+				return 0;
+			}
+
+			if (!tileHeader.tileRef || !tileHeader.dataSize)
+				break;
+
+			unsigned char* data = (unsigned char*)dtAlloc(tileHeader.dataSize, DT_ALLOC_PERM);
+			if (!data) break;
+			memset(data, 0, tileHeader.dataSize);
+			readLen = fread(data, tileHeader.dataSize, 1, fp);
+			if (readLen != 1)
+			{
+				dtFree(data);
+				fclose(fp);
+				return 0;
+			}
+
+			m_navMesh->addTile(data, tileHeader.dataSize, DT_TILE_FREE_DATA, tileHeader.tileRef, 0);
+		}
+		
+		fclose(fp);
+
+		if (!m_navQuery.Init(m_navMesh))
+		{
+			BAKERS_LOG_ERROR("Could not init Detour navmesh query");
+			return false;
+		}
+
+		BuildNavMeshRenderer();
+
+		return true;
 	}
 	
 	/*

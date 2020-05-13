@@ -194,7 +194,7 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 
 void Mesh::AddToNavMesh()
 {
-	if (m_parent->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC))
+	if (m_parent->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC) && m_model)
 		GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()), m_model->indices.data(), static_cast<int>(m_model->indices.size()), GetParent()->GetUpdatedTransform());
 }
 

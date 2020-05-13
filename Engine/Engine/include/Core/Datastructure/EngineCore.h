@@ -50,7 +50,7 @@ namespace Core
 
 			Core::Navigation::NavMeshBuilder*		m_navMesh;
 
-			std::string								m_currScene{ "Default.json" };
+			std::string								m_currScene{ "Default" };
 
 			double									m_time{ 0 };
 

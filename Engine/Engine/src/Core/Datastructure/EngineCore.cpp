@@ -97,7 +97,7 @@ namespace Core::Datastructure
 		int init{ OnInit(width, height) };
 		if (init)
 			return init;
-		init = !LoadScene("Default.json");
+		init = !LoadScene(m_currScene);
 		m_state = Core::Datastructure::EngineState::INITIALIZED;
 		return init;
 	}
@@ -338,13 +338,15 @@ namespace Core::Datastructure
 
 	bool	EngineCore::OnLoadScene()
 	{
-		std::ifstream inputScene(m_currScene);
+		std::ifstream inputScene(m_currScene + ".json");
 		if (!inputScene.is_open())
 			return false;
 		json data;
 		inputScene >> data;
 
 		LoadSceneFromJson(data);
+
+		m_navMesh->LoadNavMesh(m_currScene);
 
 		return true;
 	}

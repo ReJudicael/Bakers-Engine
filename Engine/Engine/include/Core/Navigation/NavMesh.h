@@ -41,6 +41,23 @@ namespace Core::Navigation
 		unsigned			color;
 	};
 
+	static const int NAVMESHSET_MAGIC = 'M' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'MSET';
+	static const int NAVMESHSET_VERSION = 1;
+
+	struct NavMeshSetHeader
+	{
+		int magic;
+		int version;
+		int numTiles;
+		dtNavMeshParams params;
+	};
+
+	struct NavMeshTileHeader
+	{
+		dtTileRef tileRef;
+		int dataSize;
+	};
+
 	class BuildContext : public rcContext
 	{
 		std::chrono::high_resolution_clock::time_point m_startTime[RC_MAX_TIMERS];
@@ -109,6 +126,9 @@ namespace Core::Navigation
 		const rcConfig& GetConfig() { return m_cfg; };
 
 		void					DrawNavMesh(Core::Datastructure::ICamera* cam);
+
+		bool					SaveNavMesh(const std::string& path) const;
+		bool					LoadNavMesh(const std::string& path);
 		/**
 		 * Allocates new nav querry
 		 */

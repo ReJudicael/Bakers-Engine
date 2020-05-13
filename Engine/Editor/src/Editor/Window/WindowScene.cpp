@@ -36,6 +36,16 @@ namespace Editor::Window
 		{
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
+
+			{
+				GLint PreviousFramebuffer;
+				glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
+				glBindFramebuffer(GL_FRAMEBUFFER, fbo->FBO);
+				GetEngine()->GetNavMesh()->DrawNavMesh(m_cam);
+				glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
+
+			}
+
 			ImGui::ImageUV(fbo->ColorTexture, windowSize);
 			if (ImGui::IsWindowHovered())
 				m_cam->Update(ImGui::GetIO().DeltaTime, GetEngine()->m_editorInput);

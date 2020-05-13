@@ -404,10 +404,7 @@ namespace Resources::Loader
 			it != m_importerToDelete.end();)
 		{
 			if ((*it)->maxUseOfImporter == 0)
-			{
-				std::cout << (*it)->maxUseOfImporter << std::endl;
 				it = m_importerToDelete.erase(it);
-			}
 			else
 				it++;
 		}

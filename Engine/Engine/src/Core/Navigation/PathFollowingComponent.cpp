@@ -37,7 +37,7 @@ namespace Core::Navigation
 			return;
 		Core::Maths::Vec3 toDest{ (m_path.straightPath[m_pathIndex] - GetParent()->GetGlobalPos()) };
 		toDest.y = 0;
-		if (toDest.SquaredLength() < m_destPrecision * m_destPrecision)
+		if (toDest.SquaredLength() - m_moveSpeed * m_moveSpeed < m_destPrecision * m_destPrecision)
 		{
 			++m_pathIndex;
 			UpdatePos();
