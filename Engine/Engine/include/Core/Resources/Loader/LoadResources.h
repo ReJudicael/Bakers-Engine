@@ -101,7 +101,7 @@ namespace Resources
 			 * @return the number who is add to the path of the model = number of same name find
 			 * (use after for the load of the aiMesh aiMaterial)
 			 */
-			int LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, 
+			unsigned int LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, 
 												std::shared_ptr<Model>& currModel, const std::string& nameMesh);
 
 			/**
@@ -243,6 +243,11 @@ namespace Resources
 			inline std::shared_ptr<Shader> GetShader(std::string keyName)
 			{
 				return m_shaders[keyName];
+			}
+
+			inline const unorderedmapShader& GetShaderMap()
+			{
+				return m_shaders;
 			}
 
 			/**

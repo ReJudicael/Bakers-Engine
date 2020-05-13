@@ -90,6 +90,16 @@ namespace Resources
 		 */
 		GLint	GetLocation(std::string uniformName);
 
+		inline std::string GetFragName()
+		{
+			return m_fragmentFile;
+		}
+
+		inline std::string GetVertName()
+		{
+			return m_vertexFile;
+		}
+
 		inline GLuint	GetProgram()
 		{
 			return m_programID;

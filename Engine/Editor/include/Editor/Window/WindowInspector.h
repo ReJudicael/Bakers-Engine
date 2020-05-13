@@ -10,6 +10,11 @@ namespace Core::Datastructure
 	class Object;
 }
 
+namespace Resources
+{
+	struct Material;
+}
+
 namespace Editor::Window
 {
 	/**
@@ -157,5 +162,7 @@ namespace Editor::Window
 		 * Draw elements in window
 		 */
 		void Tick() override;
+
+		void DrawShader(std::shared_ptr<Resources::Material>& mat);
 	};
 }

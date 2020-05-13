@@ -10,7 +10,7 @@ uniform sampler2D uColorTexture;
 uniform sampler2D uNormalMap;
 uniform light[10] uLight;
 uniform int uLightCount;
-uniform Material mat;
+uniform Material umat;
 
 // Shader outputs
 out vec4 oColor;
@@ -36,6 +36,6 @@ void main()
 	
 	vec3 lightContribution;
 	for (int i = 0; i < uLightCount; i++)
-		lightContribution += getLightContribution(uLight[i], mat, unprojectedPos, newNormal, view);
+		lightContribution += getLightContribution(uLight[i], umat, unprojectedPos, newNormal, view);
 	oColor *= vec4(lightContribution, 1.0);
 }

@@ -41,21 +41,37 @@ namespace Resources
 		std::string ModelName;
 		EOpenGLLinkState stateVAO;
 
+		/**
+		 * Load all the value of the aiMesh
+		 * @param scene: The aiScene who is currently loaded
+		 * @param index: the index of the aiMesh in the aiScene
+		 */
 		void SetArrays(const aiScene* scene, const unsigned int& index);
 
+		/**
+		 * Load all the value of the aiMesh
+		 * @param mesh: The aiMesh who is currently loaded
+		 * @param importer: the importer who currently have the scene of the aiMesh
+		 * @param indexMesh: the index of the mesh if the current aiMesh have 
+		 * the same name of an other mesh in the 3D Object
+		 */
 		void LoadaiMeshModel(aiMesh* mesh, std::shared_ptr<Loader::ImporterData>& importer, const unsigned int indexMesh = 0, const int increaseIndices = 0);
-
+		
+		/**
+		 * Load the AABB of an aiMesh
+		 * @param mesh: The aiMesh who is currently loaded
+		 */
 		void LoadaiMeshAABB(aiMesh* mesh);
 
 		/**
 		 * Load all the vertices of one aiMesh
-		 * @param mesh: The aiMesh with wich we want to load his vertices
+		 * @param mesh: The aiMesh who is currently loaded
 		 */
-		void LoadVertices(aiMesh* mesh, const int increaseIndices);
+		void LoadVertices(aiMesh* mesh, const unsigned int increaseIndices);
 
 		/**
 		 * Load all the indices of one aiMesh
-		 * @param mesh: The aiMesh with wich we want to load his indices
+		 * @param mesh: The aiMesh who is currently loaded
 		 * @param increaseIndices: The number of with wich we want increase the value of the indices of the mesh
 		 * use when multiple mesh are load for one Model
 		 */

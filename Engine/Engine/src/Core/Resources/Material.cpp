@@ -67,6 +67,31 @@ namespace Resources
 		glUniform1f(shader->GetLocation("umat.shininess"), shininess);
 		glUniform1f(shader->GetLocation("umat.shininessStrength"), shininessStrength);
 
+		GLuint unit{ 0 };
+		// send all the texture
+		for (auto i{ 0 }; i < textures.size(); i++)
+		{
+			switch (i)
+			{
+			case 0:
+				if (textures[i])
+				{
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, textures[0]->texture);
+					unit++;
+				}
+				break;
+			case 1:
+				if (textures[i])
+				{
+					glActiveTexture(GL_TEXTURE1);
+					glBindTexture(GL_TEXTURE_2D, textures[1]->texture);
+					unit++;
+				}
+				break;
+			}
+		}
+
 		for (auto i{ 0 }; i < variants.size(); i++)
 		{
 			if (variants[i].var.can_convert<float>())
@@ -74,24 +99,29 @@ namespace Resources
 				float tmp;
 				if(variants[i].var.convert<float>(tmp))
 					glUniform1f(shader->GetLocation(variants[i].name.c_str()), tmp);
+					
 			}
-		}
-
-		// send all the texture
-		for (auto i{ 0 }; i < textures.size(); i++)
-		{
-			switch (i)
+			else if (variants[i].var.can_convert<std::shared_ptr<Texture>>())
 			{
-			case 0:
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, textures[0]->texture);
-				break;
-			case 1:
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, textures[1]->texture);
-				break;
+				std::shared_ptr<Texture> text;
+				variants[i].var.convert<std::shared_ptr<Texture>>(text);
+				if (text)
+				{
+					unit++;
+					glActiveTexture(GL_TEXTURE0 + unit);
+					glBindTexture(GL_TEXTURE_2D, text->texture);
+					glUniform1i(shader->GetLocation(variants[i].name.c_str()), unit);
+				}
 			}
 		}
+	}
+
+	void Material::UpdateMaterialShader(std::shared_ptr<Shader> newShader)
+	{
+		shader = newShader;
+
+		variants.clear();
+		InitVariantUniform();
 	}
 
 	void Material::InitVariantUniform()
@@ -101,6 +131,8 @@ namespace Resources
 		GLchar name[50];
 		GLint size;
 		GLenum type;
+
+		int numberOfBasicTexture{ 0 };
 
 		glGetProgramiv(shader->GetProgram(), GL_ACTIVE_UNIFORMS, &count);
 		for (auto i{ 0 }; i < count; i++)
@@ -126,8 +158,16 @@ namespace Resources
 					uni.var = static_cast<unsigned int>(0);
 					variants.push_back(uni);
 					break;
+				case GL_SAMPLER_2D:
+					uni.var = std::shared_ptr<Texture>();
+					variants.push_back(uni);
+					break;
 				}
 			}
+			else if (type == GL_SAMPLER_2D)
+				numberOfBasicTexture++;
 		}
+
+		textures.resize(numberOfBasicTexture);
 	}
 }

@@ -331,7 +331,7 @@ namespace Editor::Window
 
 	void WindowInspector::Tick()
 	{
-		if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
+		/*if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
 			m_inspectorObject = GetEngine()->objectSelected;
 
 		if (m_inspectorObject)
@@ -339,24 +339,58 @@ namespace Editor::Window
 			LockSelectedObjectButton();
 			ImGui::SameLine();
 			ObjectInspector(m_inspectorObject);
-		}
+		}*/
 
-		/*std::shared_ptr<Resources::Material> mat = GetEngine()->materialSelected;
+		std::shared_ptr<Resources::Material> mat = GetEngine()->materialSelected;
 		if (mat)
 		{
+			DrawShader(mat);
+
 			ImGui::SliderFloat("shininess ", &mat->shininess, 0.f, 5.f);
 			ImGui::SliderFloat3("ambient ", mat->ambientColor.gba, 0.f, 5.f);
 
 			for (auto i{ 0 }; i < mat->variants.size(); i++)
 			{
-				if(mat->variants[i].var.get_type().get_by_name("float") == type::get<float>())
+				if(mat->variants[i].var.can_convert<float>())
 					ImGui::SliderFloat(mat->variants[i].name.c_str(), &mat->variants[i].var.get_value<float>(), 0.f, 5.f);
+				else if (mat->variants[i].var.can_convert<std::shared_ptr<Resources::Texture>>())
+				{
+					std::shared_ptr<Resources::Texture> text = mat->variants[i].var.get_value<std::shared_ptr<Resources::Texture>>();
+					std::string str;
+					if (text)
+						str = text->name;
+					else
+						str = "NoTexture";
+
+					ImGui::RButtonDD("Texture ",
+						!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
+					if (!str.empty())
+						ImGui::HelpMarkerItem(str.c_str());
+
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
+						{
+							const std::string& path{ reinterpret_cast<const char*>(payload->Data) };
+
+							GetEngine()->GetResourcesManager()->LoadTexture(path, mat->variants[i].var.get_value<std::shared_ptr<Resources::Texture>>());
+
+							// Use "path" in your function
+							ImGui::EndDragDropTarget();
+						}
+					}
+				}
+
 			}
 
-			for (auto i{ 0 }; i < 1; i++)
+			for (auto i{ 0 }; i < mat->textures.size(); i++)
 			{
-
-				std::string str = mat->textures[i]->name;
+				std::shared_ptr<Resources::Texture> text = mat->textures[i];
+					std::string str;
+				if (text)
+					str = text->name;
+				else
+					str = "NoTexture";
 
 					ImGui::RButtonDD("Texture ",
 						!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
@@ -374,9 +408,35 @@ namespace Editor::Window
 						// Use "path" in your function
 						ImGui::EndDragDropTarget();
 					}
-
 				}
 			}
-		}*/
+		}
+	}
+
+	void WindowInspector::DrawShader(std::shared_ptr<Resources::Material>& mat)
+	{
+		const Resources::unorderedmapShader& shader = GetEngine()->GetResourcesManager()->GetShaderMap();
+
+		std::string nameShader;
+		for (auto it = shader.begin();
+			it != shader.end(); ++it)
+		{
+			if (it->second == mat->shader)
+				nameShader = it->first;
+		}
+
+		if (ImGui::BeginCombo("Type Shader", nameShader.c_str()))
+		{
+			for (auto it = shader.begin();
+				it != shader.end(); ++it)
+			{
+				bool is;
+				if (ImGui::Selectable(it->first.c_str()))
+				{
+					mat->UpdateMaterialShader(it->second);
+				}
+			}
+			ImGui::EndCombo();
+		}
 	}
 }

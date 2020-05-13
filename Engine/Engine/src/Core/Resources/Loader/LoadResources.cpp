@@ -5,6 +5,8 @@
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
 
+#include <imgui\imgui.h>
+
 #include "Assimp/cimport.h"
 #include "Assimp/scene.h"
 //#include "Assimp/Importer.hpp"
@@ -152,7 +154,7 @@ namespace Resources::Loader
 
 			std::string name = directory + mesh->mName.data;
 
-			int numberOfSameKey{ LoadMeshsSceneCheckModelIsLoaded(modelData, model, name) };
+			unsigned int numberOfSameKey{ LoadMeshsSceneCheckModelIsLoaded(modelData, model, name) };
 
 			modelData->model = model;
 			modelData->SetArrays(scene, i);
@@ -169,7 +171,7 @@ namespace Resources::Loader
 		}
 	}
 
-	int ResourcesManager::LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, std::shared_ptr<Model>& currModel, const std::string& nameMesh)
+	unsigned int ResourcesManager::LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, std::shared_ptr<Model>& currModel, const std::string& nameMesh)
 	{
 		int numberOfSameKey{ 0 };
 		std::string name = nameMesh;

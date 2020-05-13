@@ -12,11 +12,11 @@ namespace Resources
 		aiMesh* mesh = scene->mMeshes[index];
 		auto indiceBegin = indices.size();
 		vertices.resize(vertices.size() + mesh->mNumVertices);
-		indices.resize(indices.size() + mesh->mNumFaces * static_cast<unsigned int>(3));
+		indices.resize(static_cast<int>(indices.size()) + mesh->mNumFaces * 3);
 
 		OffsetMesh offset;
-		offset.count = static_cast<unsigned int>(indices.size()) - indiceBegin;
-		offset.beginIndices = indiceBegin;
+		offset.count = static_cast<unsigned int>(indices.size() - indiceBegin);
+		offset.beginIndices = static_cast<GLuint>(indiceBegin);
 		offset.materialIndices = static_cast<unsigned int>(offsetsMesh.size());
 
 		offsetsMesh.push_back(offset);
@@ -34,8 +34,6 @@ namespace Resources
 
 		LoadVertices(mesh, increaseIndices);
 		LoadIndices(mesh, increaseIndices, indexMesh);
-
-		unsigned int sVertices = static_cast<unsigned int>(vertices.size() - increaseIndices);
 
 		offsetMeshState[indexMesh] = EOpenGLLinkState::CANLINK;
 		importer->maxUseOfImporter--;
@@ -59,8 +57,6 @@ namespace Resources
 
 	void ModelData::LoadIndices(aiMesh* mesh, const int increaseIndices, const unsigned int indexMesh)
 	{
-		unsigned int lastNumIndices = static_cast<unsigned int>(indices.size());
-
 		unsigned int index{ offsetsMesh[indexMesh].beginIndices };
 
 		for (unsigned int fid{ 0 }; fid < mesh->mNumFaces; fid++)
@@ -76,7 +72,7 @@ namespace Resources
 		}
 	}
 
-	void ModelData::LoadVertices(aiMesh* mesh, const int increaseIndices)
+	void ModelData::LoadVertices(aiMesh* mesh, const unsigned int increaseIndices)
 	{
 		Vertex v;
 		aiVector3D Zeor3D{ 0.f,0.f,0.f };
@@ -102,7 +98,7 @@ namespace Resources
 				v.Tangent = { Tangent->x, Tangent->y, Tangent->z };
 			}
 
-			vertices[increaseIndices + j] = v;
+			vertices[static_cast<int>(increaseIndices + j)] = v;
 		}
 	}
 

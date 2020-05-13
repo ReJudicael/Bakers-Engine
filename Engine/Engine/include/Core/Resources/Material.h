@@ -32,7 +32,7 @@ namespace Resources
 	/**
 	 * Contains the values with which we can draw the color of the mesh
 	 */
-	struct Material
+	BAKERS_API_STRUCT Material
 	{
 		Core::Maths::Color						diffuseColor{};
 		Core::Maths::Color						ambientColor{};
@@ -67,8 +67,14 @@ namespace Resources
 		 */
 		void LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& texture, 
 									const aiTextureType& textureType, const std::string& directory, Loader::ResourcesManager* resources);
-
+		/*
+		 * Create all the variable compared to 
+		 * the uniforms variable who haven't an 'u'
+		 * in the beginning
+		 */
 		void InitVariantUniform();
+
+		void UpdateMaterialShader(std::shared_ptr<Shader> newShader);
 
 		void SendMaterial();
 	};
