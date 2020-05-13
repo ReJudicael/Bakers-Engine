@@ -284,7 +284,119 @@
             }
         },
         {
-            "Childs": [],
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Player Camera",
+                            "Values": {
+                                "Black and White": {
+                                    "Name": "Black and White",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Blur": {
+                                    "Name": "Blur",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Color custom": {
+                                    "Name": "Color custom",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Min move length": {
+                                    "Name": "Min move length",
+                                    "Type": "float",
+                                    "Value": 0.0
+                                },
+                                "Move lerp speed": {
+                                    "Name": "Move lerp speed",
+                                    "Type": "float",
+                                    "Value": 0.0
+                                },
+                                "Perspective": {
+                                    "Name": "Perspective",
+                                    "Type": "Perspective",
+                                    "Value": {
+                                        "Type": "Perspective",
+                                        "Values": {
+                                            "FOV": {
+                                                "Name": "FOV",
+                                                "Type": "float",
+                                                "Value": 60.0
+                                            },
+                                            "Far": {
+                                                "Name": "Far",
+                                                "Type": "float",
+                                                "Value": 100.0
+                                            },
+                                            "Near": {
+                                                "Name": "Near",
+                                                "Type": "float",
+                                                "Value": 0.10000000149011612
+                                            },
+                                            "Ratio": {
+                                                "Name": "Ratio",
+                                                "Type": "float",
+                                                "Value": 1.077186942100525
+                                            }
+                                        }
+                                    }
+                                },
+                                "Postprocess Color": {
+                                    "Name": "Postprocess Color",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.5,
+                                        0.5,
+                                        0.5
+                                    ]
+                                },
+                                "Running speed": {
+                                    "Name": "Running speed",
+                                    "Type": "float",
+                                    "Value": 0.0
+                                },
+                                "Speed": {
+                                    "Name": "Speed",
+                                    "Type": "float",
+                                    "Value": 0.0
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "UmbreonView",
+                    "Pos": {
+                        "x": 0.30000001192092896,
+                        "y": 0.8999999761581421,
+                        "z": 1.7000000476837158
+                    },
+                    "Rot": {
+                        "w": 5.699933306244206e-15,
+                        "x": -7.549790126404332e-08,
+                        "y": 1.0,
+                        "z": -7.549790126404332e-08
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            ],
             "Components": [
                 {
                     "Type": "Mesh",
@@ -390,6 +502,11 @@
                 {
                     "Type": "PathFollowing",
                     "Values": {
+                        "AgentHeight": {
+                            "Name": "AgentHeight",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
@@ -409,9 +526,9 @@
                             "Name": "Target",
                             "Type": "Vec3",
                             "Value": [
-                                10.0,
-                                0.0,
-                                0.0
+                                -6.0,
+                                2.0,
+                                2.0
                             ]
                         }
                     }

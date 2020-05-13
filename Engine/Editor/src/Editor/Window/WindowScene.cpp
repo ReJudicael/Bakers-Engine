@@ -41,6 +41,7 @@ namespace Editor::Window
 				GLint PreviousFramebuffer;
 				glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
 				glBindFramebuffer(GL_FRAMEBUFFER, fbo->FBO);
+				glViewport(fbo->Size[0], fbo->Size[1], fbo->Size[2], fbo->Size[3]);
 				GetEngine()->GetNavMesh()->DrawNavMesh(m_cam);
 				glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
 

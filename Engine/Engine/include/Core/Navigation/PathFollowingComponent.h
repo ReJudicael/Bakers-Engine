@@ -25,6 +25,7 @@ namespace Core::Navigation
 
 		float				m_moveSpeed{ 0.5f };
 		float				m_destPrecision{ 0.2f };
+		float				m_agentHeight{ 1.f };
 
 		void				UpdatePos();
 	public:

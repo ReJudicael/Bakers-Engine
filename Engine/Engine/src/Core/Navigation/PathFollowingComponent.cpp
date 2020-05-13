@@ -9,6 +9,7 @@ RTTR_PLUGIN_REGISTRATION
 	rttr::registration::class_<PathFollowingComponent>("PathFollowing")
 		.constructor()
 		.property("Target", &PathFollowingComponent::GetTarget, &PathFollowingComponent::SetTarget)
+		.property("AgentHeight", &PathFollowingComponent::m_agentHeight)
 		.property("Speed", &PathFollowingComponent::m_moveSpeed);
 }
 
@@ -35,8 +36,7 @@ namespace Core::Navigation
 	{
 		if (m_pathIndex >= m_path.straightPathSize)
 			return;
-		Core::Maths::Vec3 toDest{ (m_path.straightPath[m_pathIndex] - GetParent()->GetGlobalPos()) };
-		toDest.y = 0;
+		Core::Maths::Vec3 toDest{ ((m_path.straightPath[m_pathIndex] + Core::Maths::Vec3(0, m_agentHeight, 0)) - GetParent()->GetGlobalPos()) };
 		if (toDest.SquaredLength() - m_moveSpeed * m_moveSpeed < m_destPrecision * m_destPrecision)
 		{
 			++m_pathIndex;
@@ -67,7 +67,7 @@ namespace Core::Navigation
 			m_path = m_pathQuery->path;
 			delete m_pathQuery;
 			m_pathQuery = nullptr;
-			m_pathIndex = 0;
+			m_pathIndex = 1;
 		}
 		UpdatePos();
 	}
