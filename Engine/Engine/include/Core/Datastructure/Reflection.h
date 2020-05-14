@@ -5,6 +5,13 @@
 #include <rttr/registration_friend.h>
 using namespace rttr;
 
+enum class MetaData_Type
+{
+	SHOW_IN_EDITOR, //Put either a bool or a string in this metadata. 
+					//The bool will tell the editor to enable or disable display of this property constantly.
+					//The string will call the method by the same name in the object.
+};
+
 
 #define REGISTER_CLASS(...) \
 RTTR_ENABLE(__VA_ARGS__)			\

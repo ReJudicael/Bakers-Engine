@@ -152,6 +152,29 @@ namespace Editor::Window
 	void WindowInspector::DrawProperty(rttr::property prop, rttr::instance component)
 	{
 		const rttr::type propType{ prop.get_type() };
+		rttr::variant needDisplay{ prop.get_metadata(MetaData_Type::SHOW_IN_EDITOR) };
+		if (needDisplay.is_valid())
+		{
+			if (needDisplay.get_type() == rttr::type::get<bool>())
+			{
+				if (!needDisplay.get_value<bool>())
+					return;
+			}
+			else if (needDisplay.get_type() == rttr::type::get<std::string>())
+			{
+				rttr::method m{ component.get_derived_type().get_method(needDisplay.get_value<std::string>()) };
+				if (m.is_valid())
+				{
+					rttr::variant v{ m.invoke(component) };
+					if (v.is_valid() && v.is_type<bool>() && !v.get_value<bool>())
+						return;
+				}
+				else
+					BAKERS_LOG_WARNING("Could not find method of name " + needDisplay.get_value<std::string>() + " in component " + component.get_derived_type().get_name());
+			}
+			else
+				BAKERS_LOG_WARNING("Property " + prop.get_name().to_string() + "'s metadata SHOW_IN_EDITOR does not have authorized type");
+		}
 
 		if (!propType.is_valid())
 		{

@@ -20,6 +20,10 @@ namespace Core::Renderer
 			QUAD
 		};
 
+		bool		IsBox() const;
+		bool		IsSphere() const;
+		bool		IsQuad() const;
+
 	private:
 		ESkyboxType m_type{ ESkyboxType::BOX };
 

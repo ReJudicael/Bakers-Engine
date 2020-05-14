@@ -14,13 +14,40 @@ RTTR_PLUGIN_REGISTRATION
 		)
 		.property("Type", &Core::Renderer::Environment::m_type)
 		.property("Box Tex", &Core::Renderer::Environment::m_boxTexture)
+			(
+				rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsBox")
+			)
 		.property("Sphere Tex", &Core::Renderer::Environment::m_sphereTexture)
+			(
+				rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsSphere")
+			)
 		.property("Front Quad Tex", &Core::Renderer::Environment::m_frontQuadTexture)
+			(
+				rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsQuad")
+			)
 		.property("Right Quad Tex", &Core::Renderer::Environment::m_rightQuadTexture)
+			(
+				rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsQuad")
+			)
 		.property("Back Quad Tex", &Core::Renderer::Environment::m_backQuadTexture)
+			(
+				rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsQuad")
+			)
 		.property("Left Quad Tex", &Core::Renderer::Environment::m_leftQuadTexture)
+			(
+				rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsQuad")
+			)
 		.property("Up Quad Tex", &Core::Renderer::Environment::m_upQuadTexture)
-		.property("Down Quad Tex", &Core::Renderer::Environment::m_downQuadTexture);
+			(
+				rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsQuad")
+			)
+		.property("Down Quad Tex", &Core::Renderer::Environment::m_downQuadTexture)
+			(
+				rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsQuad")
+			)
+		.method("IsQuad", &Core::Renderer::Environment::IsQuad)
+		.method("IsBox", &Core::Renderer::Environment::IsBox)
+		.method("IsSphere", &Core::Renderer::Environment::IsSphere);
 
 }
 
@@ -89,10 +116,10 @@ namespace Core::Renderer
 	void	Environment::SetTexturesToQuads()
 	{
 		std::shared_ptr<Resources::Texture> texture;
-
+		
 		GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_frontQuadTexture, texture);
 		m_quads[0]->SetMainTexture(texture);
-
+		
 		GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_rightQuadTexture, texture);
 		m_quads[1]->SetMainTexture(texture);
 
@@ -213,6 +240,21 @@ namespace Core::Renderer
 
 		for (int i{ 0 }; i < 6; ++i)
 			m_quads[i] = CreateSkyMesh("Quad");
+	}
+
+	bool Environment::IsBox() const
+	{
+		return m_type == ESkyboxType::BOX;
+	}
+
+	bool Environment::IsSphere() const
+	{
+		return m_type == ESkyboxType::SPHERE;
+	}
+
+	bool Environment::IsQuad() const
+	{
+		return m_type == ESkyboxType::QUAD;
 	}
 
 	Mesh* Environment::CreateSkyMesh(const char* model)
