@@ -62,12 +62,16 @@ namespace Core::Renderer
 
     bool Light::OnStart()
     {
-        Resources::Shader::lights.emplace_back(this);
         return ComponentBase::OnStart();
     }
 
     Light::Light() : ComponentBase()
     {
+    }
+
+    void    Light::OnInit()
+    {
+        Resources::Shader::lights.emplace_back(this);
     }
 
     Core::Maths::Vec3 Light::GetPosition()

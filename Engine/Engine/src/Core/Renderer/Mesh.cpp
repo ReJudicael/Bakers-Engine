@@ -152,7 +152,7 @@ void Mesh::CreateAABBMesh()
 											->GetEngine()->GetPhysicsScene(), actor));
 }
 
-void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
+void Mesh::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 {
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
@@ -165,10 +165,10 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 
 	glEnable(GL_DEPTH_TEST);
 
-	Display(cam, trs.array);
+	Display(view, proj, trs.array, givenShader);
 }
 
-void Mesh::Display(Core::Datastructure::ICamera* cam, float* trs)
+void Mesh::Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs, std::shared_ptr<Resources::Shader> givenShader)
 {
 	glBindVertexArray(m_model->VAOModel);
 
@@ -177,18 +177,25 @@ void Mesh::Display(Core::Datastructure::ICamera* cam, float* trs)
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
 
 		Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
-		material.shader->UseProgram();
+
+		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material.shader);
+
+		usedShader->UseProgram();
 		{
 
 			// init the value of the texture1
-			glUniform1i(material.shader->GetLocation("uColorTexture"), 0);
+			glUniform1i(usedShader->GetLocation("uColorTexture"), 0);
 			// init the value of the texture2
-			glUniform1i(material.shader->GetLocation("uNormalMap"), 1);
+			glUniform1i(usedShader->GetLocation("uNormalMap"), 1);
+			// Init value for texture 3
+			glUniform1i(usedShader->GetLocation("uShadowMap"), 2);
+
+			Resources::Shader::lights[0];
 
 			material.SendMaterial();
-			glUniformMatrix4fv(material.shader->GetLocation("uModel"), 1, GL_TRUE, trs);
-			glUniformMatrix4fv(material.shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
-			glUniformMatrix4fv(material.shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
+			glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs);
+			glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
+			glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
 		}
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,
@@ -199,7 +206,7 @@ void Mesh::Display(Core::Datastructure::ICamera* cam, float* trs)
 	glBindVertexArray(0);
 }
 
-void Mesh::DrawFixedMesh(Core::Datastructure::ICamera* cam, Core::Maths::Mat4 trs)
+void Mesh::DrawFixedMesh(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, Core::Maths::Mat4 trs)
 {
 	// check if the mesh have a modelMesh
 	if (m_model == nullptr)
@@ -208,7 +215,7 @@ void Mesh::DrawFixedMesh(Core::Datastructure::ICamera* cam, Core::Maths::Mat4 tr
 	if (m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
 		return;
 
-	Display(cam, trs.array);
+	Display(view, proj, trs.array);
 }
 
 void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)

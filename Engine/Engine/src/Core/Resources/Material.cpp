@@ -66,20 +66,11 @@ namespace Resources
 		glUniform1f(shader->GetLocation("mat.shininess"), shininess);
 		glUniform1f(shader->GetLocation("mat.shininessStrength"), shininessStrength);
 
-		// send all the texture
-		for (auto i{ 0 }; i < textures.size(); i++)
+		// Send each texture
+		for (size_t i{ 0 }; i < textures.size(); ++i)
 		{
-			switch (i)
-			{
-			case 0:
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, textures[0]->texture);
-				break;
-			case 1:
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, textures[1]->texture);
-				break;
-			}
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, textures[i]->texture);
 		}
 	}
 }

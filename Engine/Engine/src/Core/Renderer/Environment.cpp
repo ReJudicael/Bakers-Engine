@@ -43,7 +43,7 @@ namespace Core::Renderer
 		}
 	}
 
-	void	Environment::DrawQuads(Datastructure::ICamera* cam)
+	void	Environment::DrawQuads(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj)
 	{
 		Datastructure::Transform drawTransform = { {0.f, 0.f, -0.5f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f} };
 		
@@ -51,32 +51,32 @@ namespace Core::Renderer
 		const float pi = static_cast<float>(M_PI);
 
 		// Front quad
-		m_quads[0]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
+		m_quads[0]->DrawFixedMesh(view, proj, drawTransform.GetLocalTrs());
 
 		// Right quad
 		drawTransform.SetLocalPos({ 0.5f, 0.f, 0.f });
 		drawTransform.SetLocalRot({ 0.f, -halfpi, 0.f });
-		m_quads[1]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
+		m_quads[1]->DrawFixedMesh(view, proj, drawTransform.GetLocalTrs());
 
 		// Back quad
 		drawTransform.SetLocalPos({ 0.f, 0.f, 0.5f });
 		drawTransform.SetLocalRot({ 0.f, pi, 0.f });
-		m_quads[2]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
+		m_quads[2]->DrawFixedMesh(view, proj, drawTransform.GetLocalTrs());
 
 		// Left quad
 		drawTransform.SetLocalPos({ -0.5f, 0.f, 0.f });
 		drawTransform.SetLocalRot({ 0.f, halfpi, 0.f });
-		m_quads[3]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
+		m_quads[3]->DrawFixedMesh(view, proj, drawTransform.GetLocalTrs());
 
 		// Up quad
 		drawTransform.SetLocalPos({ 0.f, 0.5f, 0.f });
 		drawTransform.SetLocalRot({ halfpi, 0.f, 0.f });
-		m_quads[4]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
+		m_quads[4]->DrawFixedMesh(view, proj, drawTransform.GetLocalTrs());
 
 		// Down quad
 		drawTransform.SetLocalPos({ 0.f, -0.5f, 0.f });
 		drawTransform.SetLocalRot({ -halfpi, 0.f, 0.f });
-		m_quads[5]->DrawFixedMesh(cam, drawTransform.GetLocalTrs());
+		m_quads[5]->DrawFixedMesh(view, proj, drawTransform.GetLocalTrs());
 	}
 
 	void	Environment::SetTexturesToQuads()
@@ -102,8 +102,11 @@ namespace Core::Renderer
 		m_quads[5]->SetMainTexture(texture);
 	}
 
-	void	Environment::OnDraw(Datastructure::ICamera* cam)
+	void	Environment::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
+		if (givenShader) // Skybox has to be drawn with skybox shader only
+			return;
+
 		std::shared_ptr<Resources::Texture> texture;
 		
 		switch (m_type)
@@ -111,16 +114,16 @@ namespace Core::Renderer
 		case ESkyboxType::BOX: 
 			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_boxTexture, texture);
 			m_box->SetMainTexture(texture);
-			m_box->DrawFixedMesh(cam, Core::Maths::Mat4::Identity()); 
+			m_box->DrawFixedMesh(view, proj, Core::Maths::Mat4::Identity());
 			break;
 		case ESkyboxType::QUAD: 
 			SetTexturesToQuads();
-			DrawQuads(cam); 
+			DrawQuads(view, proj); 
 			break;
 		case ESkyboxType::SPHERE: 
 			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_sphereTexture, texture);
 			m_sphere->SetMainTexture(texture);
-			m_sphere->DrawFixedMesh(cam, Core::Maths::Mat4::Identity()); 
+			m_sphere->DrawFixedMesh(view, proj, Core::Maths::Mat4::Identity());
 			break;
 		}
 	}

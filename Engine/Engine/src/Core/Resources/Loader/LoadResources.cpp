@@ -35,12 +35,6 @@ namespace Resources::Loader
 		CreateShader("Wireframe", "Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		CreateShader("Skybox", "Resources\\Shaders\\SkyboxShader.vert", "Resources\\Shaders\\SkyboxShader.frag");
 
-		Shader normalMapShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		m_shaders.emplace("NormalMapDefault", std::make_shared<Shader>(normalMapShader));
-
-		Shader wireframeShader("Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
-		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
-
 		LoadObjInModel("Cube","Resources/Models/cube.obj");
 		LoadObjInModel("Capsule","Resources/Models/capsule.obj");
 		LoadObjInModel("Quad","Resources/Models/quad.obj");

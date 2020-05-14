@@ -47,9 +47,10 @@ namespace Core::Renderer
 
 		/**
 		 * OnDraw call for each skybox quad
-		 * @param cam: Camera to pass to OnDraw
+		 * @param view: View matrix
+		 * @param proj: Projection matrix
 		 */
-		void DrawQuads(Datastructure::ICamera* cam);
+		void DrawQuads(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj);
 
 		/**
 		 * Set texture set from editor to each quad
@@ -60,9 +61,11 @@ namespace Core::Renderer
 
 		/**
 		 * Called for rendering. Must be overriden if the component is inherited
-		 * @param cam: Camera to render to
+		 * @param view: View matrix
+		 * @param proj: Projection matrix
+		 * @param givenShader: Shader to use instead of material shader if provided
 		 */
-		virtual void OnDraw(Datastructure::ICamera* cam);
+		virtual void OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr);
 
 		/**
 		 * Copies the data of the component into the given component.

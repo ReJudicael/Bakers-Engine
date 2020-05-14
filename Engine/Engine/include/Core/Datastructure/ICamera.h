@@ -23,6 +23,9 @@ namespace Core::Datastructure
 		unsigned			m_cameraHeight{800};
 
 		Core::Renderer::Framebuffer* m_fbo{ nullptr };
+		std::shared_ptr<Resources::Shader> m_shadowShader{ nullptr };
+		unsigned int m_depthStorage;
+		unsigned int m_depthTexture;
 
 		/**
 		 * Generate and return camera matrix

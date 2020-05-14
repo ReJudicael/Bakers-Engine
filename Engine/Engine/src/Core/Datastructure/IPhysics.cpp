@@ -59,9 +59,12 @@ namespace Core
 			phy->OnContactEvent = OnContactEvent;
 		}
 
-		void IPhysics::OnDraw(Core::Datastructure::ICamera* cam)
+		void IPhysics::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 		{
-			m_collider->DrawCollider(cam, GetParent()->GetGlobalPos(), GetParent()->GetGlobalRot());
+			if (givenShader) // Collider can't be drawn with other shader
+				return;
+
+			m_collider->DrawCollider(view, proj, GetParent()->GetGlobalPos(), GetParent()->GetGlobalRot());
 		}
 
 		void IPhysics::OnDestroy()

@@ -59,7 +59,7 @@ namespace Core::Physics
 
 	}
 
-	void SphereCollider::DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot)
+	void SphereCollider::DrawCollider(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot)
 	{
 
 		glEnable(GL_DEPTH_TEST);
@@ -84,8 +84,8 @@ namespace Core::Physics
 		Gtrs.SetLocalScale({ 1.f,1.f,1.f });
 
 		glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, (Ltrs.GetLocalTrs() * Gtrs.GetLocalTrs()).array);
-		glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
-		glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
+		glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, view.array);
+		glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

@@ -26,7 +26,7 @@ namespace Core::Datastructure
 		GetRoot()->RemoveRenderable(this);
 	}
 
-	void IRenderable::Draw(ICamera* cam)
+	void IRenderable::Draw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
 		ZoneScoped
 		ZoneText("Rendering single component", 27)
@@ -34,7 +34,7 @@ namespace Core::Datastructure
 		
 		if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 		{
-			OnDraw(cam);
+			OnDraw(view, proj, givenShader);
 		}
 	}
 

@@ -44,11 +44,12 @@ namespace Core::Physics
 
 		/**
 		 * Draw the collider as a capsule
-		 * @param cam: Camera to render to
+		 * @param view: View matrix
+		 * @param proj: Projection matrix
 		 * @param pos: position in global of the physics actor
 		 * @param rot: rotation in global of the physics actor
 		 */
-		virtual void DrawCollider(Core::Datastructure::ICamera * cam, const Core::Maths::Vec3 & pos, const Core::Maths::Quat & rot) override;
+		virtual void DrawCollider(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, const Core::Maths::Vec3 & pos, const Core::Maths::Quat & rot) override;
 
 		REGISTER_CLASS(Collider)
 	};

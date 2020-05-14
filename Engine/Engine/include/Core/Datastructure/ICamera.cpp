@@ -41,6 +41,25 @@ void Core::Datastructure::ICamera::OnInit()
 	GetRoot()->AddCamera(this);
 	m_fbo = GetRoot()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Core::Renderer::FBOType::CAMERA);
 	m_fbo->userPtr = this;
+
+
+	m_shadowShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("Shadow", "Resources\\Shaders\\ShadowShader.vert", "Resources\\Shaders\\ShadowShader.frag");
+	
+	glGenTextures(1, &m_depthTexture);
+	glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		m_fbo->Size[2], m_fbo->Size[3], 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glGenFramebuffers(1, &m_depthStorage);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_depthStorage);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 bool Core::Datastructure::ICamera::OnStart()
@@ -62,12 +81,24 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 		TracyGpuZone("Rendering frame buffer")
 	if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, m_depthStorage);
 		glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
-			(*it)->Draw(this);
+			(*it)->Draw(this->GetCameraMatrix(), this->GetPerspectiveMatrix(), m_shadowShader);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+
+		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
+			(*it)->Draw(this->GetCameraMatrix(), this->GetPerspectiveMatrix());
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindVertexArray(0);
 	}
 }
 
@@ -88,6 +119,14 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 	SetRatio(width, height);
 	
 	m_fbo->Resize(width, height);
+
+	glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		m_fbo->Size[2], m_fbo->Size[3], 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 void Core::Datastructure::ICamera::OnDestroy()

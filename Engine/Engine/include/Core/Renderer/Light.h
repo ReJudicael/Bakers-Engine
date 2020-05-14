@@ -66,6 +66,11 @@ namespace Core::Renderer
 		Light();
 
 		/**
+		 * First frame upon creation event
+		 */
+		virtual void				OnInit() override;
+
+		/**
 		 * Activation getter
 		 * @return True is the light is active, false otherwise
 		 */

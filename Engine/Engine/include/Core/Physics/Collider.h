@@ -159,7 +159,7 @@ namespace Core
 
 			virtual EFilterRaycast GetRaycastFilter();
 
-			virtual void DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot) = 0;
+			virtual void DrawCollider(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot) = 0;
 
 			/*
 			 * Destroy the shape and his pxMaterial

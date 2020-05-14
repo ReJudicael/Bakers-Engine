@@ -208,7 +208,7 @@ namespace Core::Renderer
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 				for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
-					(*it)->Draw(this);
+					(*it)->Draw(this->GetCameraMatrix(), this->GetPerspectiveMatrix());
 
 				for (int i{ 0 }; i < FBO.size(); ++i)
 				{
