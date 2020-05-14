@@ -13,14 +13,14 @@ RTTR_PLUGIN_REGISTRATION
 			value("Quads", Core::Renderer::Environment::ESkyboxType::QUAD)
 		)
 		.property("Type", &Core::Renderer::Environment::m_type)
-		.property("Box Tex", &Core::Renderer::Environment::m_boxTexture)
-		.property("Sphere Tex", &Core::Renderer::Environment::m_sphereTexture)
-		.property("Front Quad Tex", &Core::Renderer::Environment::m_frontQuadTexture)
-		.property("Right Quad Tex", &Core::Renderer::Environment::m_rightQuadTexture)
-		.property("Back Quad Tex", &Core::Renderer::Environment::m_backQuadTexture)
-		.property("Left Quad Tex", &Core::Renderer::Environment::m_leftQuadTexture)
-		.property("Up Quad Tex", &Core::Renderer::Environment::m_upQuadTexture)
-		.property("Down Quad Tex", &Core::Renderer::Environment::m_downQuadTexture);
+		.property("Box Tex", &Core::Renderer::Environment::GetBoxTexture, &Core::Renderer::Environment::SetBoxTexture)
+		.property("Sphere Tex", &Core::Renderer::Environment::GetSphereTexture, &Core::Renderer::Environment::SetSphereTexture)
+		.property("Front Quad Tex", &Core::Renderer::Environment::GetFrontQuadTexture, &Core::Renderer::Environment::SetFrontQuadTexture)
+		.property("Right Quad Tex", &Core::Renderer::Environment::GetRightQuadTexture, &Core::Renderer::Environment::SetRightQuadTexture)
+		.property("Back Quad Tex", &Core::Renderer::Environment::GetBackQuadTexture, &Core::Renderer::Environment::SetBackQuadTexture)
+		.property("Left Quad Tex", &Core::Renderer::Environment::GetLeftQuadTexture, &Core::Renderer::Environment::SetLeftQuadTexture)
+		.property("Up Quad Tex", &Core::Renderer::Environment::GetUpQuadTexture, &Core::Renderer::Environment::SetUpQuadTexture)
+		.property("Down Quad Tex", &Core::Renderer::Environment::GetDownQuadTexture, &Core::Renderer::Environment::SetDownQuadTexture);
 
 }
 
@@ -107,22 +107,15 @@ namespace Core::Renderer
 		if (givenShader) // Skybox has to be drawn with skybox shader only
 			return;
 
-		std::shared_ptr<Resources::Texture> texture;
-		
 		switch (m_type)
 		{
 		case ESkyboxType::BOX: 
-			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_boxTexture, texture);
-			m_box->SetMainTexture(texture);
 			m_box->DrawFixedMesh(view, proj, Core::Maths::Mat4::Identity());
 			break;
 		case ESkyboxType::QUAD: 
-			SetTexturesToQuads();
 			DrawQuads(view, proj); 
 			break;
 		case ESkyboxType::SPHERE: 
-			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_sphereTexture, texture);
-			m_sphere->SetMainTexture(texture);
 			m_sphere->DrawFixedMesh(view, proj, Core::Maths::Mat4::Identity());
 			break;
 		}
@@ -204,12 +197,22 @@ namespace Core::Renderer
 	void	Environment::OnInit()
 	{
 		IRenderable::OnInit();
-		
+
 		m_box = CreateSkyMesh("Skybox");
 		m_sphere = CreateSkyMesh("Sphere");
 
+		std::shared_ptr<Resources::Texture> boxTexture;
+		GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_boxTexture, boxTexture);
+		m_box->SetMainTexture(boxTexture);
+
+		std::shared_ptr<Resources::Texture> sphereTexture;
+		GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_sphereTexture, sphereTexture);
+		m_sphere->SetMainTexture(sphereTexture);
+
 		for (int i{ 0 }; i < 6; ++i)
 			m_quads[i] = CreateSkyMesh("Quad");
+
+		SetTexturesToQuads();
 	}
 
 	Mesh* Environment::CreateSkyMesh(const char* model)
@@ -229,5 +232,101 @@ namespace Core::Renderer
 		toSet->SetRoot(GetRoot());
 
 		return toSet;
+	}
+
+	void Environment::SetBoxTexture(std::string tex)
+	{
+		m_boxTexture = tex;
+
+		if (IsInit())
+		{
+			std::shared_ptr<Resources::Texture> texture;
+			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_boxTexture, texture);
+			m_box->SetMainTexture(texture);
+		}
+	};
+
+	void Environment::SetSphereTexture(std::string tex)
+	{
+		m_sphereTexture = tex;
+
+		if (IsInit())
+		{
+			std::shared_ptr<Resources::Texture> texture;
+			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_sphereTexture, texture);
+			m_sphere->SetMainTexture(texture);
+		}
+	}
+
+	void Environment::SetFrontQuadTexture(std::string tex)
+	{
+		m_frontQuadTexture = tex;
+
+		if (IsInit())
+		{
+			std::shared_ptr<Resources::Texture> texture;
+			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_frontQuadTexture, texture);
+			m_quads[0]->SetMainTexture(texture);
+		}
+	}
+
+	void Environment::SetRightQuadTexture(std::string tex)
+	{
+		m_rightQuadTexture = tex;
+
+		if (IsInit())
+		{
+			std::shared_ptr<Resources::Texture> texture;
+			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_rightQuadTexture, texture);
+			m_quads[1]->SetMainTexture(texture);
+		}
+	}
+
+	void Environment::SetBackQuadTexture(std::string tex)
+	{
+		m_backQuadTexture = tex;
+
+		if (IsInit())
+		{
+			std::shared_ptr<Resources::Texture> texture;
+			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_backQuadTexture, texture);
+			m_quads[2]->SetMainTexture(texture);
+		}
+	}
+
+	void Environment::SetLeftQuadTexture(std::string tex)
+	{
+		m_leftQuadTexture = tex;
+
+		if (IsInit())
+		{
+			std::shared_ptr<Resources::Texture> texture;
+			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_leftQuadTexture, texture);
+			m_quads[3]->SetMainTexture(texture);
+		}
+	}
+
+	void Environment::SetUpQuadTexture(std::string tex)
+	{
+		m_upQuadTexture = tex;
+
+		if (IsInit())
+		{
+			std::shared_ptr<Resources::Texture> texture;
+			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_upQuadTexture, texture);
+			m_quads[4]->SetMainTexture(texture);
+		}
+	}
+
+	void Environment::SetDownQuadTexture(std::string tex)
+	{
+		m_downQuadTexture = tex;
+
+		if (IsInit())
+		{
+			std::shared_ptr<Resources::Texture> texture;
+			GetRoot()->GetEngine()->GetResourcesManager()->LoadTexture(m_downQuadTexture, texture);
+			m_quads[5]->SetMainTexture(texture);
+		}
 	}
 }

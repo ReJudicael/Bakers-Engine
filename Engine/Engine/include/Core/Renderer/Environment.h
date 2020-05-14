@@ -57,6 +57,26 @@ namespace Core::Renderer
 		 */
 		void SetTexturesToQuads();
 
+		// Setters for texture registration
+		void SetBoxTexture(std::string tex);
+		void SetSphereTexture(std::string tex);
+		void SetFrontQuadTexture(std::string tex);
+		void SetRightQuadTexture(std::string tex);
+		void SetBackQuadTexture(std::string tex);
+		void SetLeftQuadTexture(std::string tex);
+		void SetUpQuadTexture(std::string tex);
+		void SetDownQuadTexture(std::string tex);
+
+		// Getters for texture registration
+		std::string GetBoxTexture() { return m_boxTexture; };
+		std::string GetSphereTexture() { return m_sphereTexture; };
+		std::string GetFrontQuadTexture() { return m_frontQuadTexture; };
+		std::string GetRightQuadTexture() { return m_rightQuadTexture; };
+		std::string GetBackQuadTexture() { return m_backQuadTexture; };
+		std::string GetLeftQuadTexture() { return m_leftQuadTexture; };
+		std::string GetUpQuadTexture() { return m_upQuadTexture; };
+		std::string GetDownQuadTexture() { return m_downQuadTexture; };
+
 	protected:
 
 		/**
