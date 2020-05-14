@@ -19,6 +19,7 @@ namespace Core::Navigation
 
 		m_query->findNearestPoly(m_current.start.xyz, halfExtent, &m_current.filter, &startRef, startPos);
 		m_query->findNearestPoly(m_current.end.xyz, halfExtent, &m_current.filter, &endRef, endPos);
+
 		m_query->initSlicedFindPath(startRef, endRef, startPos, endPos, &m_current.filter);
 		m_current.endRef = endRef;
 
@@ -29,12 +30,21 @@ namespace Core::Navigation
 
 	void NavQuery::InitCurrPath()
 	{
-		Core::Maths::Vec3	endPos{ m_current.end };
-		if (m_current.result->path.polyRefPath[(size_t)m_current.result->path.numPolys - 1] != m_current.endRef)
-			m_query->closestPointOnPoly(m_current.result->path.polyRefPath[(size_t)m_current.result->path.numPolys - 1], m_current.end.xyz, endPos.xyz, 0);
 		
 		float	straightPath[NavPath::MAX_PATH_POLY * 3];
-		m_query->findStraightPath(m_current.start.xyz, endPos.xyz, m_current.result->path.polyRefPath.data(), 
+		dtPolyRef	startRef, endRef;
+		float		startPos[3], endPos[3];
+
+		constexpr float	halfExtent[3]{ 100.f, 100.f, 100.f };
+
+		m_query->findNearestPoly(m_current.start.xyz, halfExtent, &m_current.filter, &startRef, startPos);
+
+		if (m_current.result->path.polyRefPath[(size_t)m_current.result->path.numPolys - 1] != m_current.endRef)
+			m_query->closestPointOnPoly(m_current.result->path.polyRefPath[(size_t)m_current.result->path.numPolys - 1], m_current.end.xyz, endPos, 0);
+		else
+			m_query->findNearestPoly(m_current.end.xyz, halfExtent, &m_current.filter, &endRef, endPos);
+
+		m_query->findStraightPath(startPos, endPos, m_current.result->path.polyRefPath.data(), 
 			m_current.result->path.numPolys, straightPath, m_straightPathFlags, m_current.result->path.polyRefStraightPath.data(), 
 			&m_current.result->path.straightPathSize, static_cast<int>(m_current.result->path.polyRefPath.size()), DT_STRAIGHTPATH_ALL_CROSSINGS);
 		for (int i = 0; i < NavPath::MAX_PATH_POLY; ++i)
