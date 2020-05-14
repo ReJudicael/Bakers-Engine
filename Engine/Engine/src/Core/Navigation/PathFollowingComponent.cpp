@@ -44,6 +44,28 @@ namespace Core::Navigation
 		}
 		else
 			GetParent()->TranslateGlobal(toDest.Normalized() * m_moveSpeed);
+
+		toDest.y = 0;
+		toDest.Normalize();
+
+		Core::Maths::Vec3 right{ toDest.Cross({0, 1, 0}).Normalized() * -1};
+		Core::Maths::Vec3 up{ toDest.Cross(right).Normalized() };
+
+		Core::Maths::Mat4 mat;
+
+		mat.Set<0, 0>(right.x);
+		mat.Set<0, 1>(up.x);
+		mat.Set<0, 2>(toDest.x);
+
+		mat.Set<1, 0>(right.y);
+		mat.Set<1, 1>(up.y);
+		mat.Set<1, 2>(toDest.y);
+
+		mat.Set<2, 0>(right.z);
+		mat.Set<2, 1>(up.z);
+		mat.Set<2, 2>(toDest.z);
+
+		GetParent()->SetRot(mat);
 	}
 
 	PathFollowingComponent::PathFollowingComponent() : ComponentBase(), INavAgent()
