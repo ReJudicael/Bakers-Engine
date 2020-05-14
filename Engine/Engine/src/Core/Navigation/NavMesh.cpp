@@ -446,6 +446,13 @@ namespace Core::Navigation
 		return query;
 	}
 
+	dtStatus NavMeshBuilder::FindClosestPointOnNavMesh(const Core::Maths::Vec3& point, const Core::Maths::Vec3& dist, dtPolyRef* ref, Core::Maths::Vec3& pos)
+	{
+		if (!m_navQuery.IsInit())
+			return DT_FAILURE;
+		return m_navQuery.FindNearestPoly(point, dist, m_queryFilter, ref, pos);
+	}
+
 	void NavMeshBuilder::RemovePathQuery(NavQuery::QueryResult* toRemove)
 	{
 		m_navQuery.RemoveQuery(toRemove);

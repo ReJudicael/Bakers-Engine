@@ -46,6 +46,8 @@ namespace Core::Navigation
 		void	AddQuery(const Core::Maths::Vec3& start, const Core::Maths::Vec3& end, const dtQueryFilter& filter, QueryResult* result);
 		void	RemoveQuery(QueryResult* toRemove);
 
+		dtStatus	FindNearestPoly(const Core::Maths::Vec3& point, const Core::Maths::Vec3& dist, const dtQueryFilter& filter, dtPolyRef* ref, Core::Maths::Vec3& pos);
+
 		void	Update(int maxIters = 128);
 	};
 }

@@ -93,6 +93,11 @@ namespace Core::Navigation
 
 	}
 
+	dtStatus NavQuery::FindNearestPoly(const Core::Maths::Vec3& point, const Core::Maths::Vec3& dist, const dtQueryFilter& filter, dtPolyRef* ref, Core::Maths::Vec3& pos)
+	{
+		return m_query->findNearestPoly(point.xyz, dist.xyz, &filter, ref, pos.xyz);
+	}
+
 	void NavQuery::Update(int maxIters)
 	{
 		if (!dtStatusInProgress(m_status))
