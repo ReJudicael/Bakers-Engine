@@ -31,6 +31,7 @@ namespace Resources
 		std::string					nameMesh;
 		std::string					nameObject;
 		std::vector<std::string>	namesMaterial;
+		bool						isSkeletal;
 
 		std::vector<Node> children;
 
@@ -44,6 +45,8 @@ namespace Resources
 
 		
 		void LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory, std::vector<std::string>& materialsNam);
+
+		const aiNode* FindNodeWithMeshes(const aiScene* scene, const aiNode* node);
 
 		/**
 		 * Load a assimp scene as one node

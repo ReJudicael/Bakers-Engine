@@ -204,6 +204,12 @@
     <ClCompile Include="src\Core\Physics\SphereCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Resources\Animation\AnimationVertexData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\Animation\BoneData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\Datastructure\INavAgent.cpp">
       <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
@@ -227,6 +233,15 @@
     </ClCompile>
     <ClCompile Include="src\Core\Renderer\Environment.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Animation\Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Animation\Bone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Animation\SkeletalMesh.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -422,6 +437,12 @@
     <ClInclude Include="include\Core\Physics\SphereCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Resources\Animation\AnimationVertexData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Resources\Animation\BoneData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Core\Datastructure\INavAgent.h">
       <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
@@ -445,6 +466,15 @@
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\Environment.h">
       <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Animation\Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Animation\SkeletalMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Animation\Bone.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

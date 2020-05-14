@@ -343,6 +343,9 @@ namespace Core::Datastructure
 		inputScene >> data;
 
 		LoadSceneFromJson(data);
+		Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
+		m_manager->Load3DObject("Resources/Models/cavaleiro.fbx");
+		Resources::Object3DGraph::CreateScene("Resources/Models/cavaleiro.fbx", *m_manager, umbreon);
 
 		return true;
 	}

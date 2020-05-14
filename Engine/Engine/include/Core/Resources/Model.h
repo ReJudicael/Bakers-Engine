@@ -27,5 +27,6 @@ namespace Resources
 		Core::Maths::Vec3			max;
 		std::vector<Vertex>			vertices;
 		std::vector<GLuint>			indices;
+		bool						haveBones;
 	};
 }

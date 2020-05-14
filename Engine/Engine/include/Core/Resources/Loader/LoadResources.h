@@ -10,7 +10,7 @@
 #include "Vec2.hpp"
 #include "ModelData.h"
 #include "TextureData.h"
-//#include "Material.h"
+#include "Material.h"
 #include "Texture.h"
 #include "Object3DGraph.h"
 #include "Vertex.h" 
@@ -18,6 +18,9 @@
 #include "Shader.h"
 #include "TaskSystem.hpp"
 #include "CoreMinimal.h"
+#include "BoneData.h"
+#include "Bone.h"
+#include "Animation.h"
 
 struct aiScene;
 struct aiNode;
@@ -34,16 +37,25 @@ class Core::Datastructure::Object;
 
 namespace Resources
 {
+	/*namespace Animation
+	{
+		struct BoneData;
+	}*/
+
 	struct Model;
 	//struct Texture;
 	//struct TextureData;
-	struct Material;
+	//struct Material;
 
 	using unorderedmapTexture = std::unordered_map<std::string, std::shared_ptr<Texture>>;
 	using unorderedmapShader = std::unordered_map<std::string, std::shared_ptr<Shader>>;
 	using unorderedmapModel = std::unordered_map<std::string, std::shared_ptr<Model>>;
 	using unorderedmapMaterial = std::unordered_map<std::string, std::shared_ptr<Material>>;
 	using unorderedmapObject3DGraph = std::unordered_map<std::string, std::shared_ptr<Object3DGraph>>;
+	using unorderedmapBonesIndex = std::unordered_map<std::string, Animation::BoneData>;
+	using unorderedmapSkeletalIndex = std::unordered_map<std::string, std::shared_ptr<unorderedmapBonesIndex>>;
+	using unorderedmapBonesHierarchy = std::unordered_map<std::string, std::shared_ptr<Core::Animation::BoneTree>>;
+	using unorderedmapAnimations = std::unordered_map<std::string, std::shared_ptr<Core::Animation::Animation>>;
 
 	namespace Loader
 	{
@@ -63,12 +75,16 @@ namespace Resources
 			unorderedmapMaterial			m_materials;
 			unorderedmapModel				m_models;
 			unorderedmapObject3DGraph		m_scenes;
+			unorderedmapBonesIndex			m_bonesID;
+			unorderedmapSkeletalIndex		m_skeletalIndex;
+			unorderedmapBonesHierarchy		m_BoneHierarchies;
 
 			Core::Datastructure::RootObject* m_rootNode;
 
 
 		public:
 			Core::SystemManagement::TaskSystem m_task;
+			unorderedmapAnimations			m_animations;
 			/* Used for stocked the different value which allow to bind different resources to OpengGL (for the multiThread)*/
 			std::list<std::shared_ptr<TextureData>>		m_texturesToLink;
 			std::list<std::shared_ptr<ModelData>>		m_modelsToLink;
@@ -156,7 +172,6 @@ namespace Resources
 			{
 				return m_textures.count(keyName);
 			}
-
 			/**
 			 * Emplace a new texture in the textures unordered_map with a key
 			 * Call the function emplace of unordered_map
@@ -167,7 +182,6 @@ namespace Resources
 			{
 				m_textures.emplace(keyName, texture);
 			}
-
 			/**
 			 * Get the count in the textures unordered_map of the key given
 			 * Call the operator [] of unordered_map
@@ -189,7 +203,6 @@ namespace Resources
 			{
 				return m_materials.count(keyName);
 			}
-
 			/**
 			 * Emplace a new material in the materials unordered_map with a key
 			 * Call the function emplace of unordered_map
@@ -200,7 +213,6 @@ namespace Resources
 			{
 				m_materials.emplace(keyName, texture);
 			}
-
 			/**
 			 * Get the count in the materials unordered_map of the key given
 			 * Call the operator [] of unordered_map
@@ -222,7 +234,6 @@ namespace Resources
 			{
 				return m_models.count(keyName);
 			}
-
 			/**
 			 * Get the count in the models unordered_map of the key given
 			 * Call the operator [] of unordered_map
@@ -260,7 +271,6 @@ namespace Resources
 			{
 				return m_scenes.count(keyName);
 			}
-
 			/**
 			 * Get the count in the scenes unordered_map of the key given
 			 * Call the operator [] of unordered_map
@@ -280,6 +290,27 @@ namespace Resources
 			{
 				m_rootNode = r;
 			}
+			/**
+			 * Get the count in the skeleton unordered_map of the key given
+			 * Call the function count of unordered_map
+			 * @param keyName: the key of the skeleton with which we want to know the count
+			 * @return the number of elements wich have the key
+			 */
+			inline size_t GetCountSkeleton(const std::string& keyName)
+			{
+				return m_BoneHierarchies.count(keyName);
+			}
+			/**
+			 * Get the count in the skeleton unordered_map of the key given
+			 * Call the operator [] of unordered_map
+			 * @param keyName: the key of the skeleton with which we try to find
+			 * @return the shared_ptr of the skeleton we try to find with the keyName
+			 */
+			inline std::shared_ptr<Core::Animation::BoneTree> GetSkeleton(const std::string& keyName)
+			{
+				return m_BoneHierarchies[keyName];
+			}
+
 
 			inline void PushTextureToLink(std::shared_ptr<TextureData> textureData)
 			{
@@ -294,6 +325,82 @@ namespace Resources
 
 
 			/**
+			 * Load all the mesh in the 3D object and put the materials, 
+			 * the models and the textures in the ResourcesManager
+			 * @param scene: The scene of the 3D object load by assimp
+			 * @param directory: the folder path of the 3D Object
+			 */
+			//void LoadMeshsScene(const aiScene* scene, const std::string& directory);
+
+			/**
+			 * Load all the meshs in the 3D object, 
+			 * group them together inside one model 
+			 * and put the materials, the model and the textures in the ResourcesManager
+			 * @param scene: The scene of the 3D object load by assimp
+			 * @param directory: the folder path of the 3D Object
+			 */
+			//void LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory, const bool& isSkeletal = false, const int& firstMeshWithBones = 0);
+
+			/**
+			 * Load the bones of the meshses of a 3DObject for have one mesh
+			 * @param modelData: The modelData who have put the value of bones for the VAO
+			 * @param scene: The scene of the 3D object load by assimp
+			 * @param mesh: The current mesh who is loading
+			 * @param directory: the full path of the first mesh find with bone
+			 * @param numBones: the number of bone of all the meshes, increase inside the function
+			 * @param numVertices: The current number of vertices since the first to the current meshes who is loading 
+			 * @param bonesIndex: the unordered_map of the bone index of the current assimp scene
+			 */
+			void LoadAnimationaiMesh(std::shared_ptr<ModelData>& modelData, const aiScene* scene, aiMesh* mesh, const std::string& directory
+									, unsigned int& numBones, const unsigned int& numVertices, 
+									std::shared_ptr<unorderedmapBonesIndex>& bonesIndex);
+
+			/**
+			 * Load the hierarchy of bones
+			 * @param scene: The scene of the 3D object load by assimp
+			 * @param directory: the full path of the first mesh find with bone
+			 * @param numBones: the number of bone of all the meshes, increase inside the function
+			 * @param bonesIndex: the unordered_map of the bone index of the current assimp scene
+			 */
+			void LoadBonesHierarchy(const aiScene* scene, const std::string& directory
+									, const unsigned int& numBones
+									, const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex);
+
+			/**
+			 * Find in the nodes scene the first node who is a bone
+			 * @param node: The current node of the scene
+			 * @param bonesIndex: the unordered_map of the bone index of the current assimp scene
+			 * @param mat: the matrix
+			 */
+			const aiNode* FindFirstBoneNode(const aiNode* node, const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex, Core::Maths::Mat4& mat);
+
+			/**
+			 * Load all the animation of an assimp scene
+			 * @param scene: The scene of the 3D object load by assimp
+			 * @param directory: the folder path of the 3D Object
+			 */
+			void LoadAnimation(const aiScene* scene, const std::string& directory);
+
+			/**
+			 * Load an simple obj just in a model
+			 * @param name: The name for find the model
+			 * @param fileName: the name of the 3D object we want to load
+			 */
+			//void LoadObjInModel(const std::string& name, const char* fileName);
+
+			/**
+			 * Load the Material of an aiMesh
+			 * Check if the material hasn't been already load (or try), don't load if not
+			 * @param scene: the aiScene of the mesh
+			 * @param mesh: the mesh of the material that we want load
+			 * @param directory: the folder path of the 3D Object
+			 * @param numberOfSameKey: an int default 0, 
+			 * (just use in the function LoadMeshsScene) the number of time that the name of the mesh is used
+			 */
+			/*void LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh,
+				const std::string& directory, const int numberOfSameKey = 0);*/
+
+			/**
 			 * Load a texture
 			 * Check if the texture hasn't been already load (or try to load), don't load if not
 			 * @param keyName: the full folder path of the texture
@@ -302,13 +409,16 @@ namespace Resources
 			void LoadTexture(const std::string& keyName, std::shared_ptr<Texture>& texture);
 
 			/**
-			 * Load a scene from an aiScene
+			 * Load a Object3DGraph from an aiScene
 			 * Check if the scene hasn't been already load (or try to load), don't load if not
 			 * @param importer: the importer who load the scene
 			 * @param scene: the aiScene we want to load
 			 * @param keyName: the name of the scene it's the full folder path of the 3D object 
+			 *  @param directory: the folder path of the 3D Object
+			 *  @param indexFirstMesh: 
 			 * @param directory: the folder path of the 3D Object
 			 */
+			//void Load3DObjectGraph(const aiScene* scene, const std::string& keyName, const std::string& directory, const unsigned int& indexFirstMesh = 0, const bool& isSkeletal = false);
 			void LoadSceneResources(std::shared_ptr<Loader::ImporterData>& importer, 
 									const aiScene* scene, const std::string& keyName, 
 									const std::string& directory, const bool inMultiThread);
@@ -358,9 +468,9 @@ namespace Resources
 		};
 
 		/**
-		  * cointains an assimp importer for the multiThread
-		  * and a value for kill or let him be
-		  */
+		 * cointains an assimp importer for the multiThread
+		 * and a value for kill or let him be
+		 */
 		struct ImporterData
 		{
 			Assimp::Importer importer;

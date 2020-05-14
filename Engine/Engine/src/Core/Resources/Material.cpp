@@ -20,8 +20,9 @@ namespace Resources
 		LoadTextureMaterial(mat, textures[textures.size()- 1], aiTextureType_NORMALS, directory, resources);
 		// maybe load a normalMap
 
+		if(textures.size() <= 0)
+			shader = resources->GetShader("Wireframe");
 
-		
 		aiColor3D color;
 		mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
 		diffuseColor = { color.r, color.g, color.b };

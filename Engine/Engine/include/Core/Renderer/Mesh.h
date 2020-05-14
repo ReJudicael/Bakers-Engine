@@ -122,7 +122,7 @@ public:
 	 * @param resources: the resourcesmanager of the scene
 	 * @param namesMaterial: all the names of material we want to link to the mesh
 	 */
-	void AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial);
+	virtual void AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial);
 
 	/**
 	 * Add material to mesh

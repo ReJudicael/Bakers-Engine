@@ -8,6 +8,8 @@
 #include "Object.hpp"
 #include "EngineCore.h"
 #include "PhysicsScene.h"
+#include "PxRigidStatic.h"
+#include "SkeletalMesh.h"
 #include "TriggeredEvent.h"
 #include "Transform.hpp"
 #include "RootObject.hpp"
@@ -27,7 +29,10 @@ namespace Resources
 
 		if (node->mNumMeshes > 0)
 		{
-			nameMesh = directory + scene->mMeshes[node->mMeshes[0]]->mName.data;
+			aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
+			isSkeletal = mesh->HasBones();
+
+			nameMesh = directory + mesh->mName.data;
 			mat = scene->mMaterials[scene->mMeshes[node->mMeshes[0]]->mMaterialIndex];
 			namesMaterial.push_back(directory + mat->GetName().data);
 			materialsNam.push_back(mat->GetName().data);
@@ -59,14 +64,16 @@ namespace Resources
 	void Node::LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory, std::vector<std::string>& materialsNam)
 	{
 		int sameKey{ 0 };
-
+		aiMesh* mesh;
 		for (unsigned int i{ 1 }; i < node->mNumMeshes; i++)
 		{
 			Node child;
 			child.position = { 0.0f,  0.0f,  0.0f };
 			child.rotation = { 0.0f,  0.0f,  0.0f };
 			child.scale = { 1.f, 1.f, 1.f };
-			child.nameMesh = directory + scene->mMeshes[node->mMeshes[i]]->mName.data;
+			mesh = scene->mMeshes[node->mMeshes[i]];
+			isSkeletal = mesh->HasBones();
+			child.nameMesh = directory + mesh->mName.data;
 			child.nameObject = node->mName.data;
 			mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
 			std::string nameMaterial = directory + mat->GetName().data;
@@ -86,18 +93,25 @@ namespace Resources
 
 	void Node::CreateObjectScene(Core::Datastructure::Object* Object, Loader::ResourcesManager& resources)
 	{
-		Object->SetName(nameObject);
-
-		Object->SetScale(scale);
-		Object->SetPos(position);
-		Object->SetRot(rotation);
-
 		if (nameMesh.find("nothing") == std::string::npos)
 		{
-			Mesh* mesh = { new Mesh() };
-
 			if (resources.GetCountModel(nameMesh) > 0)
 			{
+				Mesh* mesh = new Mesh();
+
+				if (!isSkeletal)
+					mesh = new Mesh();
+				else
+				{
+					Core::Animation::SkeletalMesh* skeletal = new Core::Animation::SkeletalMesh();
+					if (resources.GetCountSkeleton(nameMesh) > 0)
+					{
+						skeletal->initBone(resources.GetSkeleton(nameMesh));
+						skeletal->m_testAnimation = resources.m_animations.begin()->second;
+					}
+					mesh = skeletal;
+				}
+
 				//mesh->AddModel(resources.GetModel(nameMesh));
 				mesh->SetChildModel(nameMesh);
 				mesh->AddMaterials(resources, namesMaterial);
@@ -105,13 +119,14 @@ namespace Resources
 
 				/*Core::Datastructure::TriggeredEvent* newEvent{ new Core::Datastructure::TriggeredEvent() };
 
-				newEvent->SetTriggeredEvent(std::bind(&Mesh::IsModelLoaded, mesh), std::bind(&Mesh::CreateAABBMesh, mesh));
+				nameObject = currNode->mName.data;
 
 				Object->AddComponent(newEvent);*/
 
 				/*For Test*/
 				//Core::Physics::StaticMesh* staticMesh{ new Core::Physics::StaticMesh() };
 				//Object->AddComponent(staticMesh);
+
 			}
 		}
 
@@ -122,27 +137,25 @@ namespace Resources
 		}
 	}
 
-	void Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsNam)
+	void Resources::Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsNam)
 	{
-		nameObject = node->mName.data;
-
 		aiVector3D pos;
 		aiVector3D rot;
 		aiVector3D sca;
 
 		node->mTransformation.Decompose(sca, rot, pos);
 
-
 		position = { pos.x, pos.y, pos.z };
 		rotation = { rot.x, rot.y, rot.z };
 		scale = { sca.x, sca.y, sca.z };
 
-		const aiNode* currNode = currNode = node->mChildren[0];
+		const aiNode* currNode = FindNodeWithMeshes(scene, node);
+		nameObject = scene->mMeshes[currNode->mMeshes[0]]->mName.data;
+
+		nameMesh = directory + scene->mMeshes[currNode->mMeshes[0]]->mName.data;
+
 		aiMaterial* mat;
-
-		nameMesh = nameMesh = directory + scene->mMeshes[currNode->mMeshes[0]]->mName.data;
-
-		for (unsigned int i{ 0 }; i < currNode->mNumMeshes; i++)
+		for (unsigned int i{ 0 }; i < scene->mNumMeshes; i++)
 		{
 			if (!scene->HasMaterials())
 			{
@@ -158,10 +171,21 @@ namespace Resources
 		}
 	}
 
+	const aiNode* Node::FindNodeWithMeshes(const aiScene* scene, const aiNode* node)
+	{
+		if (node->mNumMeshes > 0)
+			return node;
+		for (int i{ 0 }; i < node->mNumChildren; i++)
+		{
+			const aiNode* nodeWithMesh = FindNodeWithMeshes(scene, node->mChildren[i]);
+			if (nodeWithMesh != nullptr)
+				return nodeWithMesh;
+		}
+		return nullptr;
+	}
+
 	void Object3DGraph::SceneLoad(std::shared_ptr<Resources::Loader::ImporterData>& importer, const aiScene* scene, const aiNode* node, const std::string& directory, const bool isSingleMesh)
 	{
-		singleMesh = isSingleMesh;
-
 		importer->maxUseOfImporter++;
 
 		if (singleMesh)
@@ -171,13 +195,29 @@ namespace Resources
 		importer->maxUseOfImporter--;
 	}
 
-	void Object3DGraph::CreateScene(const std::string& keyName, Loader::ResourcesManager& resources, Core::Datastructure::Object* rootObject)
-	{
 
+	void Object3DGraph::CreateScene(const std::string& keyName, 
+									Resources::Loader::ResourcesManager& resources, 
+									Core::Datastructure::Object* rootObject)
+	{
 		if (resources.GetCountScene(keyName) <= 0)
 			return;
 		std::shared_ptr<Object3DGraph> scene = resources.GetScene(keyName);
 
-		scene->rootNodeScene.CreateObjectScene(rootObject, resources);
+		Core::Datastructure::Object* object = rootObject;
+
+		/*if (!scene->singleMesh)
+		{
+			auto index = keyName.find_last_of("/");
+			std::string name;
+			name = keyName.substr(index + 1, keyName.size() - 1);
+
+			index = name.find_last_of(".");
+			name = name.substr(0, index);
+
+			object = rootObject->CreateChild(name, {});
+		}*/
+
+		scene->rootNodeScene.CreateObjectScene(object, resources);
 	}
 }

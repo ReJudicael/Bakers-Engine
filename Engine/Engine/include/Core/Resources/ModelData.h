@@ -4,16 +4,23 @@
 #include <vector>
  
 #include "Vertex.h" 
+#include "AnimationVertexData.h" 
 #include "OpenGlLinkState.h" 
 #include "CoreMinimal.h"
 
 
 struct aiMesh;
+struct aiBone;
+struct aiScene;
 
  
 
 namespace Resources
 {
+	namespace Loader
+	{
+		class ResourcesManager;
+	}
 	struct Material;
 	struct OffsetMesh;
 	struct Model;
@@ -25,6 +32,7 @@ namespace Resources
 	/** 
 	 * Class use for create a Model, 
 	 * contains all the values use for link a Model to OpenGL
+	 * and for animated Mesh
 	 */
 	struct ModelData
 	{
@@ -37,6 +45,8 @@ namespace Resources
 		Core::Maths::Vec3			min;
 		Core::Maths::Vec3			max;
 		std::shared_ptr<Model>		model;
+		bool											haveBones;
+		std::vector<Animation::AnimationVertexData>		modelAnimationData;
 
 		std::string ModelName;
 		EOpenGLLinkState stateVAO;
@@ -47,6 +57,8 @@ namespace Resources
 		 * @param index: the index of the aiMesh in the aiScene
 		 */
 		void SetArrays(const aiScene* scene, const unsigned int& index);
+
+		//void SetArray(const aiScene* scene, const bool& isSkeletal);
 
 		/**
 		 * Load all the value of the aiMesh
@@ -76,6 +88,9 @@ namespace Resources
 		 * use when multiple mesh are load for one Model
 		 */
 		void LoadIndices(aiMesh* mesh, const int increaseIndices, const unsigned int indexMesh);
+
+		void LoadAnimationVertexData(aiMesh* mesh, const unsigned int& boneIndex, 
+										aiBone* currBone, const unsigned int& numVertices);
 
 		/**
 		 * Link the Model to OpenGL
