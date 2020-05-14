@@ -170,4 +170,15 @@ namespace Resources
 
 		textures.resize(numberOfBasicTexture);
 	}
+
+	void Material::CreateDefaultMaterial(Resources::Loader::ResourcesManager* resources)
+	{
+		ambientColor = { 1.f, 1.f, 1.f };
+		diffuseColor = { 1.f, 1.f, 1.f };
+		specularColor = { 1.f, 1.f, 1.f };
+		shininessStrength = { 0.f };
+		shininess = { 1.f };
+		shader = resources->GetShader("Wireframe");
+		shaderChoose = true;
+	}
 }

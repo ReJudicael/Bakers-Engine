@@ -77,6 +77,8 @@ namespace Resources
 		void UpdateMaterialShader(std::shared_ptr<Shader> newShader);
 
 		void SendMaterial();
+
+		void CreateDefaultMaterial(Resources::Loader::ResourcesManager* resources);
 	};
 }
 

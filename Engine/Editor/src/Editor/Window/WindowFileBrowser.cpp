@@ -325,10 +325,11 @@ namespace Editor::Window
 							if (ImGui::IsItemClicked())
 							{
 								GetEngine()->materialSelected = resources->GetMaterial(n.substr(0, n.find_last_of("\\") + 1) + graph->materialsName[i]);
-								GetEngine()->objectSelected = nullptr;
+								//GetEngine()->objectSelected = nullptr;
 							}
 						}
 					}
+
 					ImGui::PopID();
 					if (itemName != "..")
 						++nbItems;

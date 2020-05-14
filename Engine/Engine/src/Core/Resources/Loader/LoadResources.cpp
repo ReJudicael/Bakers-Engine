@@ -43,16 +43,9 @@ namespace Resources::Loader
 		Shader wireframeShader("Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
 
-		Material defaultMat;
-		defaultMat.ambientColor = {1.f, 1.f, 1.f};
-		defaultMat.diffuseColor = { 1.f, 1.f, 1.f };
-		defaultMat.specularColor = { 1.f, 1.f, 1.f };
-		defaultMat.shininessStrength = { 0.f };
-		defaultMat.shininess = { 1.f };
-		defaultMat.shader = m_shaders["Wireframe"];
-		defaultMat.shaderChoose = true;
-
-		m_materials.emplace("Default", std::make_shared<Material>(defaultMat));
+		std::shared_ptr<Material> material = std::make_shared<Material>();
+		material->CreateDefaultMaterial(this);
+		m_materials.emplace("Default", std::make_shared<Material>(material));
 
 		LoadObjInModel("Cube",".\\Resources\\Models\\cube.obj");
 		LoadObjInModel("Capsule",".\\Resources\\Models\\capsule.obj");
