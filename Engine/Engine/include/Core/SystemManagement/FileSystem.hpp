@@ -1,15 +1,36 @@
 #pragma once
 
-#include "StringExtension.hpp"
-#include "ShellFileAPI.h"
-
 #include <filesystem>
 #include <string>
+
+#include "StringExtension.hpp"
+#include "ShellFileAPI.h"
 #include "CoreMinimal.h"
+
+constexpr const char*	DEFAULT_PATH = ".\\Resources";
+constexpr size_t		DEGREE_DEFAULT_PATH = 2;
 
 namespace Core::SystemManagement
 {
 	using Path = std::filesystem::path;
+
+	/**
+	 * Tree directory path
+	 * An element of Navigation Pane
+	 */
+	struct TreeDirectoryPath
+	{
+		std::string path;
+		std::string filename;
+		std::vector<TreeDirectoryPath> children;
+
+		TreeDirectoryPath() = default;
+		TreeDirectoryPath(const std::string& _path) : path{ _path } {}
+		TreeDirectoryPath(const std::string& _path, std::string _filename) : path{ _path }, filename{ _filename } {}
+
+		TreeDirectoryPath&	Back() { return children.back(); }
+		void				EmplaceBack(const TreeDirectoryPath& td) { children.emplace_back(td); }
+	};
 
 	/**
 	 * File handling (creation, destruction, move, rename, etc.) class
@@ -20,12 +41,22 @@ namespace Core::SystemManagement
 		/**
 		 * Current directory
 		 */
-		std::string m_currentDirectory{ "." };
+		std::string m_currentDirectory{ DEFAULT_PATH };
+
+		/**
+		 * Tree Directory Path
+		 */
+		TreeDirectoryPath m_tdp;
 
 		/**
 		 * Actualize the contents in current path
 		 */
 		bool m_refreshContentsInCurrentPath{ true };
+
+		/**
+		 * Actualize the tree directory path
+		 */
+		bool m_refreshTreeDirectoryPath{ true };
 
 		/**
 		 * Last directory saved to get the current path separated by directories
@@ -64,17 +95,28 @@ namespace Core::SystemManagement
 		 * @param dir: Directory wanted
 		 */
 		void SetCurrentDirectory(const std::string& dir) noexcept;
-		
+
 		/**
 		 * Actualize contents in current path
 		 */
 		void RefreshCurrentPath() noexcept;
 
 		/**
-		 * Whether it is necessary to update the content in the current path or not
-		 * @return True if it is necessary to update the content in the current path, false otherwise
+		 * Whether the current path is refreshed or not
+		 * @return True if the current path is refreshed or not, false otherwise
 		 */
 		bool IsRefreshedCurrentPath() const noexcept;
+
+		/**
+		 * Actualize the tree directory path
+		 */
+		void RefreshTreeDirectoryPath() noexcept;
+
+		/**
+		 * Whether the tree directory path is refreshed or not
+		 * @return True if the tree directory path is refreshed or not, false otherwise
+		 */
+		bool IsRefreshedTreeDirectoryPath() const noexcept;
 
 		/**
 		 * Check if the given path leads to a file
@@ -277,6 +319,18 @@ namespace Core::SystemManagement
 		std::vector<Path> GetContentsInCurrentPath() noexcept;
 
 		/**
+		 * Set value in TreeDirectoryPath
+		 * @param tdp: Tree directory path
+		 */
+		void SetDirectoriesInTreeDirectoryPathRecursive(TreeDirectoryPath& tdp) noexcept;
+
+		/*
+		 * Get TreeDirectoryPath
+		 * @return TreeDirectoryPath
+		 */
+		TreeDirectoryPath GetTreeDirectoryPath() noexcept;
+
+		/**
 		 * Move path
 		 * @param oldPath: Old path
 		 * @param newPath: New path
@@ -291,9 +345,7 @@ namespace Core::SystemManagement
 
 	inline void FileSystem::SetCurrentDirectory(const std::string& dir) noexcept
 	{
-		if (IsDirectory(dir))
-			m_currentDirectory = dir;
-
+		m_currentDirectory = dir;
 		m_refreshContentsInCurrentPath = true;
 	}
 
@@ -305,6 +357,16 @@ namespace Core::SystemManagement
 	inline bool FileSystem::IsRefreshedCurrentPath() const noexcept
 	{
 		return m_refreshContentsInCurrentPath;
+	}
+
+	inline void FileSystem::RefreshTreeDirectoryPath() noexcept
+	{
+		m_refreshTreeDirectoryPath = true;
+	}
+
+	inline bool FileSystem::IsRefreshedTreeDirectoryPath() const noexcept
+	{
+		return m_refreshTreeDirectoryPath;
 	}
 
 	inline bool FileSystem::IsRegularFile(const Path& path) const noexcept
@@ -380,7 +442,7 @@ namespace Core::SystemManagement
 	inline std::string FileSystem::GetParentPath(const Path& path) const noexcept
 	{
 		const std::string& parent_path = path.parent_path().string();
-		return parent_path != "" ? parent_path : ".";
+		return parent_path != "" ? parent_path : DEFAULT_PATH;
 	}
 
 	inline std::string FileSystem::GetParentCurrentPath() const noexcept
@@ -545,7 +607,7 @@ namespace Core::SystemManagement
 			// Try to repair path
 			size_t pos{ m_currentDirectory.rfind('\\') };
 			if (pos == std::string::npos)
-				SetCurrentDirectory(".");
+				SetCurrentDirectory(DEFAULT_PATH);
 
 			SetCurrentDirectory(GetCurrentPathAtPos(pos));
 		}
@@ -553,6 +615,9 @@ namespace Core::SystemManagement
 
 	inline std::vector<Path> FileSystem::GetContentsInPath(const Path& path) const noexcept
 	{
+		if (!Exists(path))
+			return std::vector<Path>();
+
 		std::vector<Path> contents;
 		int directoryCount{ 0 };
 		for (std::filesystem::directory_entry entry : std::filesystem::directory_iterator(path))
@@ -578,6 +643,33 @@ namespace Core::SystemManagement
 			m_refreshContentsInCurrentPath = false;
 		}
 		return m_contentsInCurrentPath;
+	}
+
+	inline void FileSystem::SetDirectoriesInTreeDirectoryPathRecursive(TreeDirectoryPath& tdp) noexcept
+	{
+		if (!Exists(tdp.path))
+			return;
+
+		for (std::filesystem::directory_entry p : std::filesystem::directory_iterator(tdp.path))
+		{
+			if (IsDirectory(p))
+			{
+				tdp.EmplaceBack({ p.path().string(), p.path().filename().string() });
+				SetDirectoriesInTreeDirectoryPathRecursive(tdp.Back());
+			}
+		}
+	}
+
+	inline TreeDirectoryPath FileSystem::GetTreeDirectoryPath() noexcept
+	{
+		if (m_refreshTreeDirectoryPath)
+		{
+			TreeDirectoryPath tdp{ DEFAULT_PATH };
+			SetDirectoriesInTreeDirectoryPathRecursive(tdp);
+			m_tdp = tdp;
+			m_refreshTreeDirectoryPath = false;
+		}
+		return m_tdp;
 	}
 
 	inline void FileSystem::MovePath(const std::string& oldPath, const std::string& newPath) noexcept

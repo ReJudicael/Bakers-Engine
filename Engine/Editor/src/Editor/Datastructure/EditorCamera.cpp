@@ -106,10 +106,10 @@ namespace Editor::Datastructure
 	{
 		if (input->IsMouseButtonDown(EMouseButton::RIGHT))
 		{ 
-			input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::INVISIBLE);
+			if (!input->IsCursorHidden())
+				input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::INVISIBLE);
 			ComputeInputTranslation(input);
 			ComputeRotation(input);
-			
 		}
 		else if (IsUsingMouseTranslation(input))
 		{
@@ -117,10 +117,10 @@ namespace Editor::Datastructure
 		}
 		else
 		{
-			input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
+			if (input->IsCursorHidden())
+				input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
 			m_mousePos = input->GetMousePos();
 			m_isMouseSet = false;
-			return;
 		}
 	}
 

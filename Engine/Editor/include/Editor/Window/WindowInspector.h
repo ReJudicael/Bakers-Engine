@@ -108,6 +108,13 @@ namespace Editor::Window
 		void DisplayObjectTransform(Core::Datastructure::Object* object);
 
 		/**
+		 * Set an object static or not
+		 * @param isStatic: Whether the object will be static or not
+		 * @param object: Selected object
+		 */
+		void SetObjectStatic(bool isStatic, Core::Datastructure::Object* object);
+
+		/**
 		 * Display flags of object in hierarchy
 		 * @param object: Selected object
 		 */

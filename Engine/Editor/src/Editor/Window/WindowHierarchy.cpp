@@ -9,10 +9,8 @@ namespace Editor::Window
 	WindowHierarchy::WindowHierarchy(Canvas* canvas, bool visible) :
 		AWindow{ canvas, "Hierarchy", visible }
 	{
-		m_treeNodeFlags =	ImGuiTreeNodeFlags_OpenOnDoubleClick	|
-							ImGuiTreeNodeFlags_SpanAvailWidth;
-
-		m_inputTextFlags =	ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
+		m_treeNodeFlags		= ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+		m_inputTextFlags	= ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
 	}
 
 	void WindowHierarchy::PushWindowStyle()

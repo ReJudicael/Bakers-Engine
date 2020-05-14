@@ -6,7 +6,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Navigation;
-	rttr::registration::class_<PathFollowingComponent>("PathFollowing")
+	rttr::registration::class_<PathFollowingComponent>("Path Following")
 		.constructor()
 		.property("Target", &PathFollowingComponent::GetTarget, &PathFollowingComponent::SetTarget)
 		.property("AgentHeight", &PathFollowingComponent::m_agentHeight)

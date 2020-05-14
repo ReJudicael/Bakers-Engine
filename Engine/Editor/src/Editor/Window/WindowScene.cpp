@@ -50,6 +50,8 @@ namespace Editor::Window
 			ImGui::ImageUV(fbo->ColorTexture, windowSize);
 			if (ImGui::IsWindowHovered())
 				m_cam->Update(ImGui::GetIO().DeltaTime, GetEngine()->m_editorInput);
+			else if (GetEngine()->m_editorInput->IsCursorHidden())
+				GetEngine()->m_editorInput->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
 
 			if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
 			{
@@ -57,6 +59,7 @@ namespace Editor::Window
 				m_cam->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
 			}
 
+			ImGui::ImageUV(fbo->ColorTexture, windowSize);
 			if (GetEngine()->objectSelected && GetEngine()->operation != SelectionMode::MOVEMENT)
 			{
 				ImGuiIO& io = ImGui::GetIO();
@@ -195,7 +198,6 @@ namespace Editor::Window
 	void WindowScene::Tick()
 	{
 		DisplayScene();
-
 		if (GetEngine()->isTestingRay)
 		{
 			GetEngine()->isTestingRay = false;

@@ -15,14 +15,14 @@ namespace Editor::Window
 	{
 	private:
 		/**
-		 * InputText flags to rename a path
-		 */
-		ImGuiInputTextFlags m_inputTextFlags;
-
-		/**
 		 * TreeNode flags
 		 */
 		ImGuiTreeNodeFlags m_treeNodeFlags;
+
+		/**
+		 * InputText flags to rename a path
+		 */
+		ImGuiInputTextFlags m_inputTextFlags;
 
 		/**
 		 * Path Filter
@@ -112,25 +112,20 @@ namespace Editor::Window
 		void RenameContent(const std::string& itemName);
 
 		/**
-		 * Menu refresh contents in current path
-		 */
-		void MenuItemRefresh();
-
-		/**
 		 * Menu item view
 		 */
 		void MenuItemNew();
 
 		/**
-		 * Pop-up displayed when mouse right button is pressed on window
+		 * Pop-up displayed when mouse right button is pressed on directory content window
 		 */
-		void PopupMenuOnWindow();
+		void PopupMenuOnDirectoryContentWindow();
 
 		/**
-		 * Pop-up displayed when mouse right button is pressed on item
+		 * Pop-up displayed when mouse right button is pressed on directory content item
 		 * @param itemPath: Path of the chosen file / folder
 		 */
-		void PopupMenuOnItem(const std::string& itemPath);
+		void PopupMenuOnDirectoryContentItem(const std::string& itemPath);
 
 		/**
 		 * Slider to zoom the displayed content
@@ -176,15 +171,20 @@ namespace Editor::Window
 
 		/**
 		 * Show all folders of a path in recursive
-		 * @param path: Folder path 
+		 * @param path: Folder path
 		 */
-		void ShowAllFoldersRecursive(std::filesystem::path path);
+		void ShowAllFoldersRecursive(const Core::SystemManagement::TreeDirectoryPath& tdp);
+
+		/**
+		 * Pop-up displayed when mouse right button is pressed on panel navigation window
+		 */
+		void PopupMenuOnNavigationPanelWindow();
 
 		/**
 		 * Show directory tree
 		 * @param path: Path where recursive starts for display
 		 */
-		void ShowDirectoryTree(const std::string& path);
+		void ShowNavigationPanel(const Core::SystemManagement::TreeDirectoryPath& tdp);
 
 	private:
 		/**

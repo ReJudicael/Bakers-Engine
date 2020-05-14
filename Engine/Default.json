@@ -500,7 +500,7 @@
                     }
                 },
                 {
-                    "Type": "PathFollowing",
+                    "Type": "Path Following",
                     "Values": {
                         "AgentHeight": {
                             "Name": "AgentHeight",

@@ -99,12 +99,12 @@ namespace Editor::Window
 			object->SetPos({ 0.f, 0.f, 0.f });
 			object->SetRot({ 0.f, 0.f, 0.f });
 			object->SetScale({ 1.f, 1.f, 1.f });
+			SetObjectStatic(false, object);
 		}
 
 		if (isOpen)
 		{
 			ImGui::Spacing();
-			
 			DisplayObjectFlags(object);
 
 			if (GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL)
@@ -116,21 +116,22 @@ namespace Editor::Window
 		}
 	}
 
-	void				SetObjectStatic(bool isStatic, Core::Datastructure::Object* object)
+	void WindowInspector::SetObjectStatic(bool isStatic, Core::Datastructure::Object* object)
 	{
 		if (isStatic != object->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC))
 			rttr::type::get<Core::Datastructure::Object>().get_property("flags").set_value(object, object->GetFlags() ^ Core::Datastructure::ObjectFlags::STATIC);
+
 		if (isStatic)
 		{
-			for (auto it : object->GetChildren())
+			for (Core::Datastructure::Object* it : object->GetChildren())
 				SetObjectStatic(true, it);
 		}
 	}
 
 	void WindowInspector::DisplayObjectFlags(Core::Datastructure::Object* object)
 	{
-		bool b = object->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC);
-		ImGui::RCheckbox("Is static?", &b);
+		bool b{ object->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC) };
+		ImGui::RCheckbox("Is static", &b);
 		SetObjectStatic(b, object);
 	}
 
@@ -312,6 +313,7 @@ namespace Editor::Window
 	{
 		if (object->IsDestroyed())
 			return;
+
 		DisplayObjectName(object);
 
 		ImGui::Spacing();
