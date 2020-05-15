@@ -196,6 +196,9 @@ void Mesh::Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj,
 			glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs);
 			glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
 			glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
+			
+			Core::Maths::Mat4 light = Resources::Shader::lights[0]->GetViewFromLight();
+			glUniformMatrix4fv(usedShader->GetLocation("uLightView"), 1, GL_TRUE, light.array);
 		}
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,

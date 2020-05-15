@@ -84,6 +84,21 @@ namespace Core::Renderer
         return m_parent->Forward();
     }
 
+    Core::Maths::Mat4 Light::GetViewFromLight()
+    {
+        if (m_type != ELightType::DIRECTION)
+        {
+            return m_parent->GetGlobalTRS().Inversed();
+        }
+        else
+        {
+            Datastructure::Transform view;
+            view.SetLocalPos(GetDirection() * 10.f);
+            view.SetLocalRot(m_parent->GetRot());
+            return view.GetLocalTrs().Inversed();
+        }
+    }
+
     void    Light::OnDestroy()
     {
         ComponentBase::OnDestroy();

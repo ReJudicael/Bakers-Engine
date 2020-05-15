@@ -2,6 +2,7 @@
 
 #include "ComponentBase.h"
 #include "Color.hpp"
+#include "Mat4.hpp"
 
 #include "CoreMinimal.h"
 
@@ -170,6 +171,12 @@ namespace Core::Renderer
 		 * @return Direction of owner's forward vector in World Space
 		 */
 		Core::Maths::Vec3 GetDirection();
+
+		/**
+		 * Get View matrix for shadow mapping
+		 * @return Reverse transform of view from light
+		 */
+		Core::Maths::Mat4 GetViewFromLight();
 
 		REGISTER_CLASS(ComponentBase)
 	};

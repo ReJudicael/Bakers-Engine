@@ -135,15 +135,20 @@
                                         "Type": "float",
                                         "Value": 100.0
                                     },
+                                    "Height": {
+                                        "Name": "Height",
+                                        "Type": "float",
+                                        "Value": 337.0
+                                    },
                                     "Near": {
                                         "Name": "Near",
                                         "Type": "float",
                                         "Value": 0.10000000149011612
                                     },
-                                    "Ratio": {
-                                        "Name": "Ratio",
+                                    "Width": {
+                                        "Name": "Width",
                                         "Type": "float",
-                                        "Value": 1.077186942100525
+                                        "Value": 369.0
                                     }
                                 }
                             }
@@ -166,80 +171,6 @@
                             "Name": "Speed",
                             "Type": "float",
                             "Value": 5.0
-                        }
-                    }
-                },
-                {
-                    "Type": "Light",
-                    "Values": {
-                        "Active": {
-                            "Name": "Active",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Ambient": {
-                            "Name": "Ambient",
-                            "Type": "Color",
-                            "Value": [
-                                1.0,
-                                1.0,
-                                1.0,
-                                1.0
-                            ]
-                        },
-                        "Angle": {
-                            "Name": "Angle",
-                            "Type": "float",
-                            "Value": 0.7850000262260437
-                        },
-                        "AngleSmoothness": {
-                            "Name": "AngleSmoothness",
-                            "Type": "float",
-                            "Value": 0.0010000000474974513
-                        },
-                        "Attenuation": {
-                            "Name": "Attenuation",
-                            "Type": "Vec3",
-                            "Value": [
-                                1.0,
-                                0.0,
-                                0.0
-                            ]
-                        },
-                        "Diffuse": {
-                            "Name": "Diffuse",
-                            "Type": "Color",
-                            "Value": [
-                                1.0,
-                                1.0,
-                                1.0,
-                                1.0
-                            ]
-                        },
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Range": {
-                            "Name": "Range",
-                            "Type": "float",
-                            "Value": 100.0
-                        },
-                        "Specular": {
-                            "Name": "Specular",
-                            "Type": "Color",
-                            "Value": [
-                                1.0,
-                                1.0,
-                                1.0,
-                                1.0
-                            ]
-                        },
-                        "Type": {
-                            "Name": "Type",
-                            "Type": "LightType",
-                            "Value": 1
                         }
                     }
                 },
@@ -1425,6 +1356,103 @@
             "Rot": {
                 "w": 1.0,
                 "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Light",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Ambient": {
+                            "Name": "Ambient",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                0.9999899864196777,
+                                0.9999899864196777,
+                                1.0
+                            ]
+                        },
+                        "Angle": {
+                            "Name": "Angle",
+                            "Type": "float",
+                            "Value": 0.7850000262260437
+                        },
+                        "AngleSmoothness": {
+                            "Name": "AngleSmoothness",
+                            "Type": "float",
+                            "Value": 0.0010000000474974513
+                        },
+                        "Attenuation": {
+                            "Name": "Attenuation",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Diffuse": {
+                            "Name": "Diffuse",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Range": {
+                            "Name": "Range",
+                            "Type": "float",
+                            "Value": 100.0
+                        },
+                        "Specular": {
+                            "Name": "Specular",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "LightType",
+                            "Value": 0
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Light",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 0.7071067690849304,
+                "x": -0.7071067690849304,
                 "y": 0.0,
                 "z": 0.0
             },

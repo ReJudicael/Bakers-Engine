@@ -51,8 +51,10 @@ void Core::Datastructure::ICamera::OnInit()
 		m_fbo->Size[2], m_fbo->Size[3], 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
 	glGenFramebuffers(1, &m_depthStorage);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_depthStorage);
@@ -85,8 +87,12 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 		glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		Core::Maths::Mat4 light = Resources::Shader::lights[0]->GetViewFromLight();
+
+		glCullFace(GL_FRONT);
 		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
-			(*it)->Draw(this->GetCameraMatrix(), this->GetPerspectiveMatrix(), m_shadowShader);
+			(*it)->Draw(light, this->GetPerspectiveMatrix(), m_shadowShader);
+		glCullFace(GL_BACK);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -123,10 +129,6 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 	glBindTexture(GL_TEXTURE_2D, m_depthTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
 		m_fbo->Size[2], m_fbo->Size[3], 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 void Core::Datastructure::ICamera::OnDestroy()

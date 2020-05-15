@@ -19,9 +19,9 @@ struct light
     vec3 diffuse;
     vec3 specular;
     vec3 attenuation;
-};
-
-vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3 view)
+};	
+	
+vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3 view, float shadow)
 {
 	vec3 lightDir;
 	float attenuation = 1;
@@ -57,12 +57,12 @@ vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3
 		}
 	}
 
-	vec3 ambient = attenuation * light.ambient * mat.ambientColor;
+	vec3 ambient = attenuation * light.ambient * mat.ambientColor * (shadow < 0.5 ? 0.5 : shadow);
 
 	float diff = dot(normal, lightDir);
 	if (diff < 0)
 		diff = 0;
-	vec3 diffuse = attenuation * diff * light.diffuse * mat.diffuseColor;
+	vec3 diffuse = attenuation * diff * light.diffuse * mat.diffuseColor * shadow;
 
 	vec3 reflectDir = normalize(reflect(-lightDir, normal));
 	float spec = dot(view, reflectDir);
@@ -71,7 +71,7 @@ vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3
         else
                 spec = 0;
         vec3 specular = attenuation * spec * light.specular * mat.specularColor;
-		specular = clamp(specular * mat.shininessStrength, 0.0, 1.0);
+		specular = clamp(specular * mat.shininessStrength, 0.0, 1.0) * shadow;
 
 	return ambient + diffuse + specular;
 }

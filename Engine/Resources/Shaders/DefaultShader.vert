@@ -8,10 +8,12 @@ layout(location = 3) in vec3 aTangent;
 uniform mat4 uModel;
 uniform mat4 uProj;
 uniform mat4 uCam;
+uniform mat4 uLightView;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
 out vec2 vUV;
 out vec3 unprojectedPos;
+out vec4 lightSpacePos;
 out vec3 camPos;
 out vec3 normal;
 out vec3 tangent;
@@ -25,4 +27,6 @@ void main()
 	normal = aNormal;
 	tangent = aTangent;
 	gl_Position = uProj * uCam * pos;
+	
+	lightSpacePos = uProj * uLightView * pos;
 }

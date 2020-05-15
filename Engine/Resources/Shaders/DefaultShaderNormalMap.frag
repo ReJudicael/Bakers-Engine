@@ -36,6 +36,6 @@ void main()
 	
 	vec3 lightContribution;
 	for (int i = 0; i < uLightCount; i++)
-		lightContribution += getLightContribution(uLight[i], mat, unprojectedPos, newNormal, view);
+		lightContribution += getLightContribution(uLight[i], mat, unprojectedPos, newNormal, view, 1.0);
 	oColor *= vec4(lightContribution, 1.0);
 }
