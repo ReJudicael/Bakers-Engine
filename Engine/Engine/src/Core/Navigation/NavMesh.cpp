@@ -49,6 +49,7 @@ namespace Core::Navigation
 
 	bool NavMeshBuilder::Build()
 	{
+		ZoneScoped
 		if (m_mesh.size() == 0 || m_maxTris == 0)
 			return false;
 
@@ -337,6 +338,7 @@ namespace Core::Navigation
 
 	Mesh* NavMeshBuilder::AddMesh(float* verts, int nverts, int* tris, int ntris, const Core::Datastructure::Transform& position)
 	{
+		ZoneScoped
 		float* newVerts{ (float*)malloc(nverts * sizeof(float*)) };
 
 		Core::Maths::Quat	rot{ position.GetGlobalRot() };
@@ -585,7 +587,8 @@ namespace Core::Navigation
 
 		const dtNavMesh* mesh = m_navMesh;
 
-		FILE* fp = fopen((path + +".nav").c_str(), "wb");
+		FILE* fp;
+		fopen_s(&fp, (path + +".nav").c_str(), "wb");
 		if (!fp)
 			return false;
 
@@ -622,7 +625,8 @@ namespace Core::Navigation
 
 	bool NavMeshBuilder::LoadNavMesh(const std::string& path)
 	{
-		FILE* fp = fopen((path + ".nav").c_str(), "rb");
+		FILE* fp;
+		fopen_s(&fp, (path + ".nav").c_str(), "rb");
 		if (!fp) return 0;
 
 		// Read header.

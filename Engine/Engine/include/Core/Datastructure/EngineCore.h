@@ -123,7 +123,7 @@ namespace Core
 			virtual void	OnStartFrame();
 			virtual void	OnUpdate(double deltaTime);
 			bool			OnLoadScene();
-			void			LoadSceneFromJson(json scene);
+			void			LoadSceneFromJson(json& scene);
 		public:
 
 			GLFWwindow* GetWindow();

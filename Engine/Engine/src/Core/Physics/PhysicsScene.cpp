@@ -22,6 +22,7 @@ namespace Core::Physics
 
 	bool PhysicsScene::InitPhysX()
 	{
+		ZoneScoped
 		m_pxFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_pxDefaultAllocatorCallback,
 			m_pxDefaultErrorCallback);
 
@@ -65,6 +66,7 @@ namespace Core::Physics
 
 	void PhysicsScene::CreateScene()
 	{
+		ZoneScoped
 		physx::PxSceneDesc sceneDesc(m_pxPhysics->getTolerancesScale());
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
 		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(4);

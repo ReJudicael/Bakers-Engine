@@ -28,12 +28,15 @@ namespace Editor
 
 	EditorEngine::EditorEngine(int width, int height) : EngineCore(width, height)
 	{
+		ZoneScoped
 		m_editorInput = new Core::SystemManagement::InputSystem(this);
 	}
 
 	EditorEngine::~EditorEngine()
 	{
+		ZoneScoped
 		delete m_man;
+		delete m_editorInput;
 		glfwDestroyWindow(m_window);
 		glfwTerminate();
 	}
@@ -59,6 +62,7 @@ namespace Editor
 
 	int EditorEngine::OnInit(const int width, const int height)
 	{
+		ZoneScoped
 		glfwSetErrorCallback(callback_error);
 		int temp;
 		if (temp = EngineCore::OnInit(width, height))
@@ -101,12 +105,14 @@ namespace Editor
 
 	void EditorEngine::SetSizeWindow(const int width, const int height)
 	{
+		ZoneScoped
 		m_width = width;
 		m_height = height;
 	}
 
 	void EditorEngine::MainLoop()
 	{
+		ZoneScoped
 		while (!glfwWindowShouldClose(m_window))
 		{
 			OnLoop();
@@ -115,6 +121,7 @@ namespace Editor
 
 	void EditorEngine::EndFrame()
 	{
+		ZoneScoped
 		if (objectSelected != nullptr && objectSelected->IsDestroyed())
 			objectSelected = nullptr;
 
@@ -124,6 +131,7 @@ namespace Editor
 
 	void EditorEngine::OnLoop()
 	{
+		ZoneScoped
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -178,6 +186,7 @@ namespace Editor
 
 	void	EditorEngine::Render()
 	{
+		ZoneScoped
 		EngineCore::Render();
 		m_man->Render();
 	}
@@ -189,6 +198,7 @@ namespace Editor
 
 	void	EditorEngine::SelectObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& direction)
 	{
+		ZoneScoped
 		Core::Datastructure::Object* result = SearchObjectInScene(origin, direction);
 
 		if (result != nullptr)
@@ -197,6 +207,7 @@ namespace Editor
 
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept
 	{
+		ZoneScoped
 		double pos[2];
 		glfwGetCursorPos(GetWindow(), &pos[0], &pos[1]);
 		return Core::Maths::Vec2(static_cast<float>(pos[0]), static_cast<float>(pos[1]));
@@ -348,6 +359,7 @@ namespace Editor
 
 	void EditorEngine::UpdateSavedScene()
 	{
+		ZoneScoped
 		m_savedScene.clear();
 		int i{ 0 };
 		m_savedScene["Childs"] = json::array();
@@ -359,6 +371,7 @@ namespace Editor
 
 	void EditorEngine::SaveScene()
 	{
+		ZoneScoped
 		if (m_state >= Core::Datastructure::EngineState::STARTING && m_state <= Core::Datastructure::EngineState::CLOSING)
 			return;
 		UpdateSavedScene();
@@ -369,12 +382,15 @@ namespace Editor
 
 	void EditorEngine::ReloadScene()
 	{
+		ZoneScoped
 		m_root->Clear();
+		m_root->RemoveDestroyed();
 		LoadSceneFromJson(m_savedScene);
 	}
 
 	void EditorEngine::CompileNavMesh()
 	{
+		ZoneScoped
 		m_navMesh->ClearInputMeshes();
 		for (auto it : m_root->GetComponentsOfBaseType<Mesh>())
 		{
@@ -385,6 +401,7 @@ namespace Editor
 
 	void EditorEngine::SetCallbackToGLFW()
 	{
+		ZoneScoped
 		OnResizeWindow += BIND_EVENT_2(EditorEngine::SetSizeWindow);
 
 		SetKeyCallBackToGLFW();
@@ -395,6 +412,7 @@ namespace Editor
 
 	GLFWkeyfun EditorEngine::SetKeyCallBackToGLFW()
 	{
+		ZoneScoped
 		GLFWkeyfun key_callback = [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			ZoneScopedN("InputSystemKeyUpdate")
@@ -413,6 +431,7 @@ namespace Editor
 
 	GLFWmousebuttonfun EditorEngine::SetMouseButtonCallBackToGLFW()
 	{
+		ZoneScoped
 		GLFWmousebuttonfun mouse_button_callback = [](GLFWwindow* window, int button, int action, int mods)
 		{
 			ZoneScopedN("InputSystemMouseButtonUpdate")
@@ -431,6 +450,7 @@ namespace Editor
 
 	GLFWscrollfun EditorEngine::SetScrollCallBackToGLFW()
 	{
+		ZoneScoped
 		GLFWscrollfun scroll_callback = [](GLFWwindow* window, double xoffset, double yoffset)
 		{
 			ZoneScopedN("InputSystemScrollUpdate")
@@ -446,6 +466,7 @@ namespace Editor
 
 	GLFWwindowsizefun EditorEngine::SetWindowSizeToGLFW()
 	{
+		ZoneScoped
 		GLFWwindowsizefun window_size_callback = [](GLFWwindow* window, int width, int height)
 		{
 			EditorEngine* this_window = reinterpret_cast<EditorEngine*>(glfwGetWindowUserPointer(window));

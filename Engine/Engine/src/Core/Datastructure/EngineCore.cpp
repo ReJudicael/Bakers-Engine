@@ -34,6 +34,7 @@ namespace Core::Datastructure
 {
 	double EngineCore::GetDeltaTime()
 	{
+		ZoneScoped
 		double currentTime = glfwGetTime();
 		double deltaTime = currentTime - m_time;
 
@@ -55,6 +56,7 @@ namespace Core::Datastructure
 
 	EngineCore::~EngineCore()
 	{
+		ZoneScoped
 		delete m_root;
 		delete m_inputSystem;
 		delete m_audioSystem;
@@ -63,7 +65,7 @@ namespace Core::Datastructure
 			delete fbo;
 		}
 		delete m_manager;
-
+		delete m_physicsScene;
 		Core::Debug::Logger::ClearLogs();
 	}
 
@@ -93,6 +95,7 @@ namespace Core::Datastructure
 
 	int EngineCore::Init(int width, int height)
 	{
+		ZoneScoped
 		m_state = Core::Datastructure::EngineState::INITIALIZING;
 		int init{ OnInit(width, height) };
 		if (init)
@@ -104,6 +107,7 @@ namespace Core::Datastructure
 
 	Core::Datastructure::Object* EngineCore::AddMesh(const char* name,const char* model, const char* shader, const char* tex, const Transform& trs, Object* parent)
 	{
+		ZoneScoped
 		Object* object;
 		if (parent)
 			object = parent->CreateChild(name, {});
@@ -154,6 +158,7 @@ namespace Core::Datastructure
 
 	int EngineCore::OnInit(int width, int height)
 	{
+		ZoneScoped
 		glfwSetErrorCallback(error);
 
 		if (!glfwInit())
@@ -181,7 +186,7 @@ namespace Core::Datastructure
 
 		TracyGpuContext
 
-			m_physicsScene = new Core::Physics::PhysicsScene();
+		m_physicsScene = new Core::Physics::PhysicsScene();
 
 		if (!m_physicsScene->InitPhysX())
 			return -1;
@@ -195,6 +200,7 @@ namespace Core::Datastructure
 
 	void	EngineCore::OnLoop()
 	{
+		ZoneScoped
 		ZoneNamedN(updateLoop, "Main loop iteration", true)
 		
 		double deltaTime = GetDeltaTime();
@@ -220,16 +226,18 @@ namespace Core::Datastructure
 
 	void	EngineCore::Update(double deltaTime)
 	{
+		ZoneScoped
 		OnUpdate(deltaTime);
 	}
 
 	bool EngineCore::LoadScene(const std::string& scene)
 	{
+		ZoneScoped
 		m_currScene = scene;
 		return OnLoadScene();
 	}
 
-	void	LoadArray(json j, rttr::variant_sequential_view out)
+	void	LoadArray(json& j, rttr::variant_sequential_view out)
 	{
 		for (auto it : j["Value"])
 		{
@@ -252,7 +260,7 @@ namespace Core::Datastructure
 		}
 	}
 
-	void	LoadProperty(rttr::property prop, rttr::instance inst, json j)
+	void	LoadProperty(rttr::property prop, rttr::instance inst, json& j)
 	{
 		if (j["Type"] == "ArraySequential")
 		{
@@ -300,14 +308,15 @@ namespace Core::Datastructure
 		}
 	}
 
-	void	AddComponent(json j, Object* parent)
+	void	AddComponent(json& j, Object* parent)
 	{
+		ZoneScoped
 		rttr::type cType{ rttr::type::get_by_name(j["Type"]) };
 		if (!cType.is_valid() || !cType.is_derived_from<IComponent>())
 			return;
 		rttr::variant c{ cType.invoke("GetCopy", cType.create(), {}) };
 		
-		for (auto it : j["Values"])
+		for (auto& it : j["Values"])
 		{
 			rttr::property prop {cType.get_property(it["Name"])};
 			LoadProperty(prop, c, it);
@@ -317,8 +326,9 @@ namespace Core::Datastructure
 		parent->AddComponent(c.get_value<ComponentBase*>());
 	}
 
-	void	AddChild(json j, Object* parent)
+	void	AddChild(json& j, Object* parent)
 	{
+		ZoneScoped
 		if (ObjectFlag(j["Flags"]).test_flag(ObjectFlags::DYNAMICALLY_GENERATED))
 			return;
 		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["w"], j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
@@ -338,6 +348,7 @@ namespace Core::Datastructure
 
 	bool	EngineCore::OnLoadScene()
 	{
+		ZoneScoped
 		std::ifstream inputScene(m_currScene + ".json");
 		if (!inputScene.is_open())
 			return false;
@@ -352,18 +363,16 @@ namespace Core::Datastructure
 	}
 
 
-	void EngineCore::LoadSceneFromJson(json scene)
+	void EngineCore::LoadSceneFromJson(json& scene)
 	{
-		for (auto& resources : scene["Resource"])
-			m_manager->Load3DObject(static_cast<std::string>(resources["Name"]).c_str());
-
-
+		ZoneScoped
 		for (auto& childs : scene["Childs"])
 			AddChild(childs, m_root);
 	}
 
 	void	EngineCore::OnUpdate(double deltaTime)
 	{
+		ZoneScoped
 		m_physicsScene->BeginSimulate(static_cast<float>(deltaTime));
 		m_physicsScene->EndSimulate();
 		m_navMesh->UpdateQuery();
@@ -372,6 +381,7 @@ namespace Core::Datastructure
 
 	Object* EngineCore::SearchObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& dir)
 	{
+		ZoneScoped
 		Core::Physics::HitResultQuery query;
 
 		if (m_physicsScene->Raycast(origin, dir, query))
@@ -392,6 +402,7 @@ namespace Core::Datastructure
 
 	int Core::Datastructure::EngineCore::GetFBONum(Core::Renderer::FBOType t)
 	{
+		ZoneScoped
 		int num{ 0 };
 		auto it{ m_fbo.begin() };
 		while (it != m_fbo.end())
@@ -405,6 +416,7 @@ namespace Core::Datastructure
 
 	Core::Renderer::Framebuffer* EngineCore::GetFBO(int num, Core::Renderer::FBOType type)
 	{
+		ZoneScoped
 		if (num >= m_fbo.size())
 			return nullptr;
 		auto it{ m_fbo.begin() };
@@ -431,6 +443,7 @@ namespace Core::Datastructure
 
 	void		EngineCore::StartFrame()
 	{
+		ZoneScoped
 		OnStartFrame();
 	}
 
@@ -457,6 +470,7 @@ namespace Core::Datastructure
 	
 	void		EngineCore::EndFrame()
 	{
+		ZoneScoped
 		m_root->RemoveDestroyed();
 		m_root->UpdateTransforms();
 		m_audioSystem->Tick();
@@ -465,16 +479,19 @@ namespace Core::Datastructure
 
 	Core::Renderer::Framebuffer* EngineCore::CreateFBO()
 	{
+		ZoneScoped
 		return CreateFBO(m_width, m_height);
 	}
 
 	Core::Renderer::Framebuffer* EngineCore::CreateFBO(int width, int height, Core::Renderer::FBOType t)
 	{
+		ZoneScoped
 		return m_fbo.emplace_back(new Core::Renderer::Framebuffer(width, height, t));
 	}
 
 	void EngineCore::DeleteFBO(Core::Renderer::Framebuffer* fbo)
 	{
+		ZoneScoped
 		for (auto it{ m_fbo.begin() }; it != m_fbo.end();)
 		{
 			if (*it == fbo)
@@ -489,6 +506,7 @@ namespace Core::Datastructure
 
 	void EngineCore::SetCallbackToGLFW()
 	{
+		ZoneScoped
 		SetKeyCallBackToGLFW();
 		SetMouseButtonCallBackToGLFW();
 		SetScrollCallBackToGLFW();
@@ -497,6 +515,7 @@ namespace Core::Datastructure
 
 	GLFWkeyfun EngineCore::SetKeyCallBackToGLFW()
 	{
+		ZoneScoped
 		GLFWkeyfun key_callback = [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			ZoneScopedN("InputSystemKeyUpdate")
@@ -515,6 +534,7 @@ namespace Core::Datastructure
 
 	GLFWmousebuttonfun EngineCore::SetMouseButtonCallBackToGLFW()
 	{
+		ZoneScoped
 		GLFWmousebuttonfun mouse_button_callback = [](GLFWwindow* window, int button, int action, int mods)
 		{
 			ZoneScopedN("InputSystemMouseButtonUpdate")
@@ -533,6 +553,7 @@ namespace Core::Datastructure
 
 	GLFWscrollfun EngineCore::SetScrollCallBackToGLFW()
 	{
+		ZoneScoped
 		GLFWscrollfun scroll_callback = [](GLFWwindow* window, double xoffset, double yoffset)
 		{
 			ZoneScopedN("InputSystemScrollUpdate")
@@ -548,6 +569,7 @@ namespace Core::Datastructure
 
 	GLFWwindowsizefun EngineCore::SetWindowSizeToGLFW()
 	{
+		ZoneScoped
 		GLFWwindowsizefun window_size_callback = [](GLFWwindow* window, int width, int height)
 		{
 			EngineCore* this_window = reinterpret_cast<EngineCore*>(glfwGetWindowUserPointer(window));
@@ -561,6 +583,7 @@ namespace Core::Datastructure
 
 	void EngineCore::AddMeshToNav(Vertex* verts, int nverts, GLuint* tris, int ntris, const Core::Datastructure::Transform& position)
 	{
+		ZoneScoped
 		if (ntris == 0 || nverts == 0)
 			return;
 		std::vector<float>	vertices;
