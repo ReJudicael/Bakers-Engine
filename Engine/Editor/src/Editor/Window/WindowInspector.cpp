@@ -331,7 +331,7 @@ namespace Editor::Window
 
 	void WindowInspector::Tick()
 	{
-		/*if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
+		if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
 			m_inspectorObject = GetEngine()->objectSelected;
 
 		if (m_inspectorObject)
@@ -339,9 +339,9 @@ namespace Editor::Window
 			LockSelectedObjectButton();
 			ImGui::SameLine();
 			ObjectInspector(m_inspectorObject);
-		}*/
+		}
 
-		std::shared_ptr<Resources::Material> mat = GetEngine()->materialSelected;
+		/*std::shared_ptr<Resources::Material> mat = GetEngine()->materialSelected;
 		if (mat)
 		{
 			DrawShader(mat);
@@ -410,7 +410,7 @@ namespace Editor::Window
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	void WindowInspector::DrawShader(std::shared_ptr<Resources::Material>& mat)

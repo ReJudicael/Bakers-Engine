@@ -118,7 +118,7 @@ namespace Resources
 			 * (use after for the load of the aiMesh aiMaterial)
 			 */
 			unsigned int LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, 
-												std::shared_ptr<Model>& currModel, const std::string& nameMesh);
+												std::shared_ptr<Model>& currModel, std::string& nameMesh);
 
 			/**
 			 * Load all the meshs in the 3D object, 
@@ -323,24 +323,6 @@ namespace Resources
 			 */
 			void Load3DObject(const char* fileName, const bool graphInMulti = false);
 
-
-			/**
-			 * Load all the mesh in the 3D object and put the materials, 
-			 * the models and the textures in the ResourcesManager
-			 * @param scene: The scene of the 3D object load by assimp
-			 * @param directory: the folder path of the 3D Object
-			 */
-			//void LoadMeshsScene(const aiScene* scene, const std::string& directory);
-
-			/**
-			 * Load all the meshs in the 3D object, 
-			 * group them together inside one model 
-			 * and put the materials, the model and the textures in the ResourcesManager
-			 * @param scene: The scene of the 3D object load by assimp
-			 * @param directory: the folder path of the 3D Object
-			 */
-			//void LoadMeshsSceneInSingleMesh(const aiScene* scene, const std::string& directory, const bool& isSkeletal = false, const int& firstMeshWithBones = 0);
-
 			/**
 			 * Load the bones of the meshses of a 3DObject for have one mesh
 			 * @param modelData: The modelData who have put the value of bones for the VAO
@@ -372,7 +354,9 @@ namespace Resources
 			 * @param bonesIndex: the unordered_map of the bone index of the current assimp scene
 			 * @param mat: the matrix
 			 */
-			const aiNode* FindFirstBoneNode(const aiNode* node, const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex, Core::Maths::Mat4& mat);
+			const aiNode* FindFirstBoneNode(const aiNode* node, 
+											const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex, 
+											Core::Maths::Mat4& mat);
 
 			/**
 			 * Load all the animation of an assimp scene

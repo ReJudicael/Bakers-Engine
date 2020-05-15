@@ -297,6 +297,13 @@ namespace Core::Physics
 		Core::Maths::Vec3 extent{ abs(minG.x) + abs(maxG.x), abs(minG.y) + abs(maxG.y), abs(minG.z) + abs(maxG.z) };
 		extent /= 2;
 
+		if (extent.x <= 0)
+			extent.x = 0.01f;
+		if (extent.y <= 0)
+			extent.y = 0.01f;
+		if (extent.z <= 0)
+			extent.z = 0.01f;
+
 		physx::PxShape* shape = m_pxPhysics->createShape(physx::PxBoxGeometry(physx::PxVec3{ extent.x, extent.y, extent.z }), *material, true);
 		physx::PxTransform shapeTransform{ shape->getLocalPose() };
 		shapeTransform.p = { pos.x, pos.y, pos.z };

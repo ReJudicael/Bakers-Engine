@@ -17,7 +17,7 @@ namespace Core::Animation
 		aiQuaternion rot;
 		aiVector3D sca;
 		node->mTransformation.Decompose(sca, rot, pos);
-		baseTransform = Core::Datastructure::Transform{ offsetP,
+		baseTransform = Core::Datastructure::Transform{ /*offsetP,*/
 														{ pos.x, pos.y, pos.z }, 
 														{ rot.w, rot.x, rot.y, rot.z },
 														{ sca.x, sca.y, sca.z } };

@@ -91,13 +91,14 @@ namespace Resources::Loader
 
 		//aiImportFile
 		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
-			//| aiProcess_GenSmoothNormals
 			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
 			| aiProcess_SplitLargeMeshes
 			| aiProcess_SortByPType
 			| aiProcess_ValidateDataStructure // validate the scene data
 			| aiProcess_CalcTangentSpace // calculate the tangent
 			| aiProcess_GenBoundingBoxes // generate the AABB of the meshs aiProcess_Gen
+			| aiProcess_GenNormals
+			| aiProcess_LimitBoneWeights
 			//| aiProcess_FlipUVs
 		);
 
@@ -190,9 +191,8 @@ namespace Resources::Loader
 			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
 			std::shared_ptr<unorderedmapBonesIndex> bonesIndex = std::make_shared<unorderedmapBonesIndex>();
 			if (mesh->HasBones())
-				LoadAnimationaiMesh(modelData, scene, mesh, 
-									directory + mesh->mName.data + std::to_string(numberOfSameKey), 
-									numBones,0, bonesIndex);
+				LoadAnimationaiMesh(modelData, scene, mesh,
+					name, numBones, 0, bonesIndex);
 			//modelData->LoadaiMeshModel(mesh);
 
 			if (scene->HasMaterials())
@@ -203,7 +203,9 @@ namespace Resources::Loader
 		std::cout << "end load" << std::endl;
 	}
 
-	unsigned int ResourcesManager::LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, std::shared_ptr<Model>& currModel, const std::string& nameMesh)
+	unsigned int ResourcesManager::LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, 
+																	std::shared_ptr<Model>& currModel, 
+																	std::string& nameMesh)
 	{
 		int numberOfSameKey{ 0 };
 		std::string name = nameMesh;
@@ -230,12 +232,14 @@ namespace Resources::Loader
 			currModelData->ModelName = name;
 			m_modelsToLink.push_back(currModelData);
 			m_models.emplace(name, currModel);
+			nameMesh = name;
 		}
 		else
 		{
 			currModelData->ModelName = name;
 			m_modelsToLink.push_back(currModelData);
 			m_models.emplace(name, currModel);
+			nameMesh = name;
 		}
 		return numberOfSameKey;
 	}
@@ -273,7 +277,6 @@ namespace Resources::Loader
 			aiMesh* mesh = scene->mMeshes[i];
 
 			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, i, indexLastMesh);
-			//modelData->LoadaiMeshModel(mesh, i,indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
 			/*if (isSkeletal)
@@ -292,8 +295,6 @@ namespace Resources::Loader
 				skeletalModelData->LoadaiMeshModel(mesh, indexLastMesh);
 				indexLastMesh += mesh->mNumVertices;
 			}*/
-			//modelData->LoadVertices(mesh);
-			//modelData->LoadIndices(mesh, indexLastMesh);
 
 			if (scene->HasMaterials())
 			{
@@ -312,7 +313,9 @@ namespace Resources::Loader
 			unsigned int currBoneIndex{ 0 };
 			std::string nameBone = mesh->mBones[i]->mName.data;
 			aiBone* currBone = mesh->mBones[i];
-			if (bonesIndex->count(nameBone) <= 0)
+
+			// TO DO maybe delete because mesh have his own skelet
+			//if (bonesIndex->count(nameBone) <= 0)
 			{
 				currBoneIndex = numBones;
 				Animation::BoneData boneData;
@@ -325,10 +328,10 @@ namespace Resources::Loader
 				bonesIndex->emplace(nameBone, boneData);
 				numBones++;
 			}
-			else
-				currBoneIndex = bonesIndex->operator[](nameBone).boneIndex;
-
-			modelData->LoadAnimationVertexData(mesh, currBoneIndex, currBone, numVertices);
+			// TO DO maybe delete because mesh have his own skelet
+			/*else
+				currBoneIndex = bonesIndex->operator[](nameBone).boneIndex;*/
+			//modelData->LoadAnimationVertexData(mesh, currBoneIndex, currBone, numVertices);
 		}
 
 		if (modelData->modelAnimationData.size() - numVertices == mesh->mNumVertices)
@@ -354,11 +357,10 @@ namespace Resources::Loader
 		aiQuaternion rot;
 		aiVector3D sca;
 		firstBoneNode->mParent->mTransformation.Decompose(sca, rot, pos);
-		//scene->mRootNode->mTransformation.Decompose(sca, rot, pos);
-		tree->inverseGlobal = /*mat4*/Core::Datastructure::Transform(
+		/*tree->inverseGlobal = Core::Datastructure::Transform(
 								{ pos.x, pos.y, pos.z },
 								{ rot.w, rot.x, rot.y, rot.z },
-								{ sca.x, sca.y, sca.z }).GetLocalTrs().Inversed();
+								{ sca.x, sca.y, sca.z }).GetLocalTrs().Inversed();*/
 
 		constexpr Core::Maths::Mat<4,4> i{ i.Identity() };
 

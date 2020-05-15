@@ -23,8 +23,6 @@ namespace Core
 
 		struct Bone
 		{
-			Core::Maths::Vec3				relativePosition;
-			Core::Maths::Quat				relativeRotation;
 
 			Core::Datastructure::Transform	baseTransform;
 			Core::Datastructure::Transform	LocalTRS;
@@ -34,7 +32,6 @@ namespace Core
 			std::string						boneName;
 			unsigned int					boneIndex;
 
-			//Core::Animation::Bone			parent;
 			std::vector<Bone>				child;
 
 			void InitBone(const aiNode* node, const std::shared_ptr<Resources::unorderedmapBonesIndex>& bonesIndex, Core::Datastructure::Transform offsetP);
@@ -45,7 +42,6 @@ namespace Core
 		{
 			Bone rootBone{};
 			unsigned int numBone;
-			Core::Maths::Mat4 inverseGlobal;
 		};
 	}
 }

@@ -143,7 +143,7 @@
                                     "Ratio": {
                                         "Name": "Ratio",
                                         "Type": "float",
-                                        "Value": 1.095986008644104
+                                        "Value": 1.0244327783584595
                                     }
                                 }
                             }
@@ -284,7 +284,67 @@
             }
         },
         {
-            "Childs": [],
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsChild": {
+                                    "Name": "IsChild",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsRoot": {
+                                    "Name": "IsRoot",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "MaterialsNames": {
+                                    "Name": "MaterialsNames",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Dog\\Dog"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Dog\\Dog_body"
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Dog_body",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            ],
             "Components": [
                 {
                     "Type": "Dynamic Mesh",
@@ -351,7 +411,7 @@
                         "IsRoot": {
                             "Name": "IsRoot",
                             "Type": "bool",
-                            "Value": false
+                            "Value": true
                         },
                         "MaterialsNames": {
                             "Name": "MaterialsNames",
@@ -440,9 +500,9 @@
             "Flags": 0,
             "Name": "UmbreonHighPoly.obj",
             "Pos": {
-                "x": 0.00023810997663531452,
-                "y": 1.0000033378601074,
-                "z": 3.173835648340173e-05
+                "x": 0.0002368007117183879,
+                "y": 1.0000015497207642,
+                "z": 2.9856828405172564e-05
             },
             "Rot": {
                 "w": 1.0,

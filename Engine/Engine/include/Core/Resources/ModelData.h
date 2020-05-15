@@ -67,7 +67,9 @@ namespace Resources
 		 * @param indexMesh: the index of the mesh if the current aiMesh have 
 		 * the same name of an other mesh in the 3D Object
 		 */
-		void LoadaiMeshModel(aiMesh* mesh, std::shared_ptr<Loader::ImporterData>& importer, const unsigned int indexMesh = 0, const int increaseIndices = 0);
+		void LoadaiMeshModel(aiMesh* mesh, std::shared_ptr<Loader::ImporterData>& importer, 
+								const unsigned int indexMesh = 0, 
+								const int increaseIndices = 0);
 		
 		/**
 		 * Load the AABB of an aiMesh
@@ -88,9 +90,12 @@ namespace Resources
 		 * use when multiple mesh are load for one Model
 		 */
 		void LoadIndices(aiMesh* mesh, const int increaseIndices, const unsigned int indexMesh);
+		
+		void LoadAnimationVertexDatas(aiMesh* mesh, const unsigned int increaseIndices);
 
-		void LoadAnimationVertexData(aiMesh* mesh, const unsigned int& boneIndex, 
-										aiBone* currBone, const unsigned int& numVertices);
+		void LoadAnimationVertexData(aiMesh* mesh, const unsigned int boneIndex, 
+										aiBone* currBone, const unsigned int numVertices);
+
 
 		/**
 		 * Link the Model to OpenGL

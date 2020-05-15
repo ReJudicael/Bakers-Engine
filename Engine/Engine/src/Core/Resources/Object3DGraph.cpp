@@ -85,6 +85,7 @@ namespace Resources
 				nameMaterial += std::to_string(sameKey);
 			}
 
+			child.isSkeletal = mesh->HasBones();
 			child.namesMaterial.push_back(nameMaterial);
 			materialsNam.push_back(nameMaterial);
 			children.push_back(child);
@@ -93,6 +94,12 @@ namespace Resources
 
 	void Node::CreateObjectScene(Core::Datastructure::Object* Object, Loader::ResourcesManager& resources)
 	{
+		Object->SetName(nameObject);
+
+		Object->SetScale(scale);
+		Object->SetPos(position);
+		Object->SetRot(rotation);
+
 		if (nameMesh.find("nothing") == std::string::npos)
 		{
 			if (resources.GetCountModel(nameMesh) > 0)
@@ -106,7 +113,7 @@ namespace Resources
 					Core::Animation::SkeletalMesh* skeletal = new Core::Animation::SkeletalMesh();
 					if (resources.GetCountSkeleton(nameMesh) > 0)
 					{
-						skeletal->initBone(resources.GetSkeleton(nameMesh));
+						skeletal->initBones(resources.GetSkeleton(nameMesh));
 						skeletal->m_testAnimation = resources.m_animations.begin()->second;
 					}
 					mesh = skeletal;

@@ -39,14 +39,17 @@ namespace Resources
 		offsetsMesh.push_back(offset);
 		offsetMeshState.push_back(EOpenGLLinkState::CANTLINK);
 		model->offsetsMesh = offsetsMesh;
+
 		if (mesh->HasBones())
 		{
 			haveBones = true;
 			modelAnimationData.resize(vertices.size());
+			//offsetMeshState.resize(offsetMeshState.size() + mesh->mNumBones);
 		}
 	}
 
-	void ModelData::LoadaiMeshModel(aiMesh* mesh, std::shared_ptr<Loader::ImporterData>& importer, const unsigned int indexMesh, const int increaseIndices)
+	void ModelData::LoadaiMeshModel(aiMesh* mesh, std::shared_ptr<Loader::ImporterData>& importer, 
+									const unsigned int indexMesh, const int increaseIndices)
 	{
 		if (mesh == nullptr)
 			stateVAO = EOpenGLLinkState::LOADPROBLEM;
@@ -57,6 +60,7 @@ namespace Resources
 		model->haveBones = haveBones;
 		LoadVertices(mesh, increaseIndices);
 		LoadIndices(mesh, increaseIndices, indexMesh);
+		LoadAnimationVertexDatas(mesh, increaseIndices);
 
 		offsetMeshState[indexMesh] = EOpenGLLinkState::CANLINK;
 		importer->maxUseOfImporter--;
@@ -125,11 +129,16 @@ namespace Resources
 		}
 	}
 
+	void ModelData::LoadAnimationVertexDatas(aiMesh* mesh, const unsigned int increaseIndices)
+	{
+		for (auto i{ 0 }; i < mesh->mNumBones; i++)
+		{
+			LoadAnimationVertexData(mesh, i, mesh->mBones[i], increaseIndices);
+		}
+	}
 
-	void ModelData::LoadAnimationVertexData(aiMesh* mesh, 
-											const unsigned int& boneIndex, 
-											aiBone* currBone, 
-											const unsigned int& numVertices)
+	void ModelData::LoadAnimationVertexData(aiMesh* mesh, const unsigned int boneIndex, 
+											aiBone* currBone, const unsigned int numVertices)
 	{
 		for (unsigned int j{ 0 }; j < currBone->mNumWeights; j++)
 		{

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Transform.hpp"
 #include <unordered_map>
+#include <map>
 #include <string>
 
 struct aiAnimation;
@@ -30,7 +31,7 @@ namespace Core::Animation
 		unsigned int nbKeyFrame;
 		std::string name;
 
-		std::unordered_map<std::string, BoneAnimation> animationTree;
+		std::map<std::string, BoneAnimation> animationTree;
 
 		void initAnimation(const aiAnimation* anim);
 	};

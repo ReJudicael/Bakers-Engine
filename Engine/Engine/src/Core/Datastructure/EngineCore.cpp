@@ -344,8 +344,13 @@ namespace Core::Datastructure
 
 		LoadSceneFromJson(data);
 		Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
-		m_manager->Load3DObject("Resources/Models/cavaleiro.fbx");
-		Resources::Object3DGraph::CreateScene("Resources/Models/cavaleiro.fbx", *m_manager, umbreon);
+		//m_manager->Load3DObject("Resources/Models/cavaleiro.fbx");
+		//m_manager->Load3DObject("Resources/Models/fbx(ONLYIMPORT).fbx");
+		//m_manager->Load3DObject("Resources/Models/Combo01_SwordShieldAnim.FBX");
+
+		//Resources::Object3DGraph::CreateScene("Resources/Models/cavaleiro.fbx", *m_manager, umbreon);
+		//Resources::Object3DGraph::CreateScene("Resources/Models/fbx(ONLYIMPORT).fbx", *m_manager, umbreon);
+		//Resources::Object3DGraph::CreateScene("Resources/Models/Combo01_SwordShieldAnim.FBX", *m_manager, umbreon);
 
 		return true;
 	}
@@ -353,10 +358,6 @@ namespace Core::Datastructure
 
 	void EngineCore::LoadSceneFromJson(json scene)
 	{
-		for (auto& resources : scene["Resource"])
-			m_manager->Load3DObject(static_cast<std::string>(resources["Name"]).c_str());
-
-
 		for (auto& childs : scene["Childs"])
 			AddChild(childs, m_root);
 	}

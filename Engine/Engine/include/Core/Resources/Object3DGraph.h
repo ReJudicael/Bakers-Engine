@@ -31,7 +31,7 @@ namespace Resources
 		std::string					nameMesh;
 		std::string					nameObject;
 		std::vector<std::string>	namesMaterial;
-		bool						isSkeletal;
+		bool						isSkeletal{ false };
 
 		std::vector<Node> children;
 
