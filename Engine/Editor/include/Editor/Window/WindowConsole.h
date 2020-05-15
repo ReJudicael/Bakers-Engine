@@ -47,6 +47,8 @@ namespace Editor::Window
 		 */
 		bool m_clearOnPlay{ false };
 
+		int  m_listenerId;
+
 	public:
 		/**
 		 * Constructor which set title of window ("Console")
@@ -56,7 +58,7 @@ namespace Editor::Window
 		/**
 		 * Default destructor
 		 */
-		~WindowConsole() = default;
+		~WindowConsole();
 
 	private:
 		/**

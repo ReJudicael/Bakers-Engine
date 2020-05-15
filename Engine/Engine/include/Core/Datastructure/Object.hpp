@@ -412,7 +412,7 @@ namespace Core::Datastructure
 
 		std::list<ComponentBase*>& GetComponents() noexcept;
 
-		std::string GetName() const noexcept
+		const std::string& GetName() const noexcept
 		{
 			return m_name;
 		}

@@ -121,6 +121,7 @@ namespace Core::Datastructure
 
 	bool			Object::HasChild(Object* o) const noexcept
 	{
+		ZoneScoped
 		for (auto c : m_childs)
 		{
 			if (c == o || c->HasChild(o))
