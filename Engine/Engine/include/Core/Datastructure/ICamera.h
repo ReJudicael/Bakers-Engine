@@ -24,8 +24,6 @@ namespace Core::Datastructure
 
 		Core::Renderer::Framebuffer* m_fbo{ nullptr };
 		std::shared_ptr<Resources::Shader> m_shadowShader{ nullptr };
-		unsigned int m_depthStorage;
-		unsigned int m_depthTexture;
 
 		/**
 		 * Generate and return camera matrix
@@ -108,6 +106,12 @@ namespace Core::Datastructure
 		 * @param renderables: Objects of the scene
 		 */
 		virtual void Draw(const std::list<IRenderable*>& renderables);
+
+		/**
+		 * Draw objects into depth buffer for shadow mapping
+		 * @param renderables: Objects of the scene
+		 */
+		void DrawDepth(const std::list<IRenderable*>& renderables);
 		
 		REGISTER_CLASS(IComponent)
 	};

@@ -198,13 +198,15 @@ namespace Core::Renderer
 			TracyGpuZone("Rendering frame buffer")
 			if (IsStarted() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 			{
+				glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
+				DrawDepth(renderables);
+
 				std::vector<Core::Renderer::Framebuffer*> FBO = GetActiveFramebuffers();
 				if (FBO.size() > 0)
 					glBindFramebuffer(GL_FRAMEBUFFER, FBO[0]->FBO);
 				else
 					glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 
-				glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 				for (auto it{ renderables.begin() }; it != renderables.end(); ++it)

@@ -125,5 +125,7 @@ namespace Resources
 		 * Send Lights to shader program
 		 */
 		void SendLights();
+
+		static std::vector<Core::Renderer::Light*> GetShadowCastingLights();
 	};
 }

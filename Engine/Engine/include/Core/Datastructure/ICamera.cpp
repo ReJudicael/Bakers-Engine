@@ -44,24 +44,6 @@ void Core::Datastructure::ICamera::OnInit()
 
 
 	m_shadowShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("Shadow", "Resources\\Shaders\\ShadowShader.vert", "Resources\\Shaders\\ShadowShader.frag");
-	
-	glGenTextures(1, &m_depthTexture);
-	glBindTexture(GL_TEXTURE_2D, m_depthTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		m_fbo->Size[2], m_fbo->Size[3], 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-	glGenFramebuffers(1, &m_depthStorage);
-	glBindFramebuffer(GL_FRAMEBUFFER, m_depthStorage);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 bool Core::Datastructure::ICamera::OnStart()
@@ -76,6 +58,25 @@ Core::Datastructure::ICamera::~ICamera() noexcept
 	GetRoot()->RemoveCamera(this);
 }
 
+void Core::Datastructure::ICamera::DrawDepth(const std::list<IRenderable*>& renderables)
+{
+	Core::Renderer::Light* first = Resources::Shader::GetShadowCastingLights()[0];
+	first->ResizeShadowTexture(m_fbo->Size[2], m_fbo->Size[3]);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, first->ShadowBuffer());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	Core::Maths::Mat4 light = first->GetViewFromLight();
+
+	glCullFace(GL_FRONT);
+	for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
+		(*it)->Draw(light, this->GetPerspectiveMatrix(), m_shadowShader);
+	glCullFace(GL_BACK);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, first->ShadowTexture());
+}
+
 void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRenderable*>& renderables)
 {
 	ZoneScoped
@@ -83,22 +84,12 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 		TracyGpuZone("Rendering frame buffer")
 	if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, m_depthStorage);
 		glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		Core::Maths::Mat4 light = Resources::Shader::lights[0]->GetViewFromLight();
-
-		glCullFace(GL_FRONT);
-		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
-			(*it)->Draw(light, this->GetPerspectiveMatrix(), m_shadowShader);
-		glCullFace(GL_BACK);
+		
+		DrawDepth(renderables);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, m_depthTexture);
 
 		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
 			(*it)->Draw(this->GetCameraMatrix(), this->GetPerspectiveMatrix());
@@ -126,9 +117,7 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 	
 	m_fbo->Resize(width, height);
 
-	glBindTexture(GL_TEXTURE_2D, m_depthTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		m_fbo->Size[2], m_fbo->Size[3], 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	Resources::Shader::lights[0]->ResizeShadowTexture(width, height);
 }
 
 void Core::Datastructure::ICamera::OnDestroy()
