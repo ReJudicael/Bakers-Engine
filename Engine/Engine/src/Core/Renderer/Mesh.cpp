@@ -23,7 +23,8 @@ RTTR_PLUGIN_REGISTRATION
 		.property("Model", &Mesh::GetModel, &Mesh::SetModel)
 		.property("IsRoot", &Mesh::m_isRoot, detail::protected_access())
 		.property("MaterialsNames", &Mesh::m_materialsNames, detail::protected_access())
-		.property("IsChild", &Mesh::m_isChild, detail::protected_access());
+		.property("IsChild", &Mesh::m_isChild, detail::protected_access())
+		.property("Cast Shadows", &Mesh::m_castShadow);
 }
 
 void Mesh::SetModel(std::string newModel)
@@ -154,6 +155,10 @@ void Mesh::CreateAABBMesh()
 
 void Mesh::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 {
+	// If the draw is made for shadow mapping and the mesh cannot cast shadows
+	if (givenShader && !m_castShadow)
+		return;
+
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
 	// check if the mesh have a modelMesh
@@ -182,21 +187,23 @@ void Mesh::Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj,
 
 		usedShader->UseProgram();
 		{
-
-			// init the value of the texture1
+			// Init value of texture1 for mesh texture
 			glUniform1i(usedShader->GetLocation("uColorTexture"), 0);
-			// init the value of the texture2
+			// Init value of texture2 for normal map
 			glUniform1i(usedShader->GetLocation("uNormalMap"), 1);
-			// Init value for texture 3
-			glUniform1i(usedShader->GetLocation("uShadowMap"), 2);
+			// Init value of higher texture for shadow maps
+			for (size_t i{0}; i < 10; ++i)
+				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(i) + "]"), 2 + i);
 
 			material.SendMaterial();
 			glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs);
 			glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
 			glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
 			
-			Core::Maths::Mat4 light = Resources::Shader::GetShadowCastingLights()[0]->GetViewFromLight();
-			glUniformMatrix4fv(usedShader->GetLocation("uLightView"), 1, GL_TRUE, light.array);
+			std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
+			for (size_t i{ 0 }; i < lights.size(); ++i)
+				glUniformMatrix4fv(usedShader->GetLocation("uLightView[" + std::to_string(i) + "]"), 1, GL_TRUE, lights[i]->GetViewFromLight().array);
+			glUniform1i(usedShader->GetLocation("uShadowCount"), lights.size());
 		}
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,

@@ -34,6 +34,7 @@ protected:
 
 	bool		m_isRoot{ false };
 	bool		m_isChild{ false };
+	bool		m_castShadow{ true };
 
 	std::vector<std::shared_ptr<Resources::Material>>	m_materialsModel;
 	std::vector<std::string>							m_materialsNames;

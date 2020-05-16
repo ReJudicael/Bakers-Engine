@@ -34,6 +34,7 @@ RTTR_PLUGIN_REGISTRATION
     RegisterClassProperty<Light>("Light", "Diffuse", &Light::m_diffuse);
     RegisterClassProperty<Light>("Light", "Specular", &Light::m_specular);
     RegisterClassProperty<Light>("Light", "Attenuation", &Light::m_attenuation);
+    RegisterClassProperty<Light>("Light", "CastShadows", &Light::m_castShadow);
 }
 
 namespace Core::Renderer
