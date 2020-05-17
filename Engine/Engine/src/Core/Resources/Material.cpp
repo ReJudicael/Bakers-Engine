@@ -15,7 +15,11 @@ namespace Resources
 		importer->maxUseOfImporter++;
 		textures.resize(2);
 
-		shader = resources->GetShader("Default");
+		if(!IsSkeletal)
+			shader = resources->GetShader("Default");
+		else
+			shader = resources->GetShader("SkeletDefault");
+
 		LoadTextureMaterial(mat, textures[0], aiTextureType_DIFFUSE, directory, resources);
 		LoadTextureMaterial(mat, textures[textures.size()- 1], aiTextureType_NORMALS, directory, resources);
 		// maybe load a normalMap
@@ -50,7 +54,12 @@ namespace Resources
 				//texture = std::make_shared<Texture>();
 				resources->LoadTexture(fullPath, texture);
 				if (textureType == aiTextureType_NORMALS)
-					shader = resources->GetShader("NormalMapDefault");
+				{
+					if (!IsSkeletal)
+						shader = resources->GetShader("NormalMapDefault");
+					else
+						shader = resources->GetShader("SkeletNormalMapDefault");
+				}
 			}
 		}
 		else

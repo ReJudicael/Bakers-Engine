@@ -24,15 +24,15 @@ namespace Core
 		struct Bone
 		{
 
-			Core::Datastructure::Transform	baseTransform;
-			Core::Datastructure::Transform	LocalTRS;
+			Core::Datastructure::Transform			baseTransform;
+			Core::Datastructure::Transform			LocalTRS;
 
-			Core::Maths::Mat4				offsetBone;
+			Core::Maths::Mat4						offsetBone;
 
-			std::string						boneName;
-			unsigned int					boneIndex;
+			std::string								boneName;
+			unsigned int							boneIndex;
 
-			std::vector<Bone>				child;
+			std::vector<std::shared_ptr<Bone>>		child;
 
 			void InitBone(const aiNode* node, const std::shared_ptr<Resources::unorderedmapBonesIndex>& bonesIndex, Core::Datastructure::Transform offsetP);
 
@@ -40,7 +40,7 @@ namespace Core
 
 		struct BoneTree
 		{
-			Bone rootBone{};
+			std::shared_ptr<Bone> rootBone{};
 			unsigned int numBone;
 		};
 	}

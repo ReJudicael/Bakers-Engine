@@ -334,6 +334,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="..\Dependencies\stb\stb_image.cpp" />
     <ClCompile Include="include\Core\Datastructure\ICamera.cpp" />
     <ClCompile Include="src\Core\Animation\Animation.cpp" />
+    <ClCompile Include="src\Core\Animation\AnimationHandler.cpp" />
     <ClCompile Include="src\Core\Animation\Bone.cpp" />
     <ClCompile Include="src\Core\Animation\SkeletalMesh.cpp" />
     <ClCompile Include="src\Core\Audio\AudioListener.cpp" />
@@ -387,6 +388,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Animation\Animation.h" />
+    <ClInclude Include="include\Core\Animation\AnimationHandler.h" />
     <ClInclude Include="include\Core\Animation\Bone.h" />
     <ClInclude Include="include\Core\Animation\SkeletalMesh.h" />
     <ClInclude Include="include\Core\Audio\AudioListener.h" />

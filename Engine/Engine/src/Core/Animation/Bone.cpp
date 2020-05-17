@@ -9,7 +9,7 @@ namespace Core::Animation
 	{
 		Resources::Animation::BoneData currBoneData = bonesIndex->operator[](node->mName.data);
 
-		offsetBone = /*offsetP */ currBoneData.offsetMesh;
+		offsetBone = currBoneData.offsetMesh;
 		boneIndex = currBoneData.boneIndex;
 		boneName = node->mName.data;
 
@@ -21,16 +21,15 @@ namespace Core::Animation
 														{ pos.x, pos.y, pos.z }, 
 														{ rot.w, rot.x, rot.y, rot.z },
 														{ sca.x, sca.y, sca.z } };
-		//offsetBone = (offsetP * baseTransform.GetLocalTrs()).Inversed();
 
 
 		for (unsigned int i{ 0 }; i < node->mNumChildren; i++)
 		{
-			Bone childBone;
+			std::shared_ptr<Bone> childBone = std::make_shared<Bone>();
 			const aiNode* childNode{ node->mChildren[i] };
 			if (bonesIndex->count(childNode->mName.data) > 0)
 			{
-				childBone.InitBone(childNode, bonesIndex, baseTransform);
+				childBone->InitBone(childNode, bonesIndex, baseTransform);
 				child.push_back(childBone);
 			}
 		}

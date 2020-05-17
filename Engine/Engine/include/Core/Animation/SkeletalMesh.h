@@ -6,40 +6,36 @@
 #include "Bone.h"
 #include "Animation.h"
 #include "IUpdatable.hpp"
+#include "AnimationHandler.h"
 
 namespace Core::Animation
 {
-	struct BoneTMP
+	struct ObjectBone
 	{
-		Core::Maths::Mat4	TRS;
-		Bone				bone;
-		BoneTMP*			parent;
+		Core::Datastructure::Transform	globalPosition;
+		std::shared_ptr<Bone>			bone;
 	};
 
 	BAKERS_API_CLASS SkeletalMesh : public Mesh, public virtual Core::Datastructure::IUpdatable
 	{
 	protected:
-		Bone m_rootBone;
-		std::vector<BoneTMP> Bones;
+		std::shared_ptr<Bone> m_rootBone;
 		std::vector<Core::Maths::Mat4> m_finalTransforms;
+
+	public:
+
+		AnimationHandler animationHandler;
+
+	protected:
 		virtual void OnReset() override;
 		virtual void OnCopy(IComponent* copyTo) const override;
+
 	public:
-		std::shared_ptr<Animation> m_testAnimation;
-		float m_currTimeAnim{ 0.f };
-		float m_speedAnim{ 1.f };
-		bool canDraw{true};
-
-		void UpdateBone(Bone& bone, Core::Maths::Mat4 parentTransform, std::shared_ptr<Animation> animation, const float& animationTime);
-		void UpdateAllBones(std::shared_ptr<Animation> animation, const float& animationTime);
-
-		Core::Maths::Mat4 BlendAnimation(std::shared_ptr<Animation> animation, Bone bone, BoneAnimation boneAnim, const float& animationTime);
-
-		unsigned int Find(BoneAnimation animation, const float& animationTime);
+		SkeletalMesh() = default;
 
 		void initBones(std::shared_ptr<BoneTree> inBone);
 
-		void initBonePos(Bone currBone, Core::Maths::Mat4 parent);
+		void initBonePos(std::shared_ptr<Bone> currBone, Core::Maths::Mat4 parent);
 
 		/**
 		 * Function inheritated from IRenderable,

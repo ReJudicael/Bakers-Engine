@@ -11,8 +11,7 @@ namespace Core::Animation
 	RTTR_PLUGIN_REGISTRATION
 	{
 		registration::class_<SkeletalMesh>("SkeletalMesh")
-			.constructor()
-			.property("speed anim", &SkeletalMesh::m_speedAnim);
+			.constructor();
 	}
 
 	bool SkeletalMesh::OnStart()
@@ -51,93 +50,22 @@ namespace Core::Animation
 		Core::Datastructure::IUpdatable::OnCopy(copyTo);
 	}
 
-
-	Core::Maths::Quat Nlerp(const Core::Maths::Quat& Q1, const Core::Maths::Quat& Q2, const float& t)
-	{
-		float bias = Q1.Dot(Q2) >= 0 ? 1 : -1;
-		return (Q1 * (1 - t) * bias + Q2 * t).Normalized();
-	}
-
-	void SkeletalMesh::UpdateBone(Bone& bone, Core::Maths::Mat4 parentTransform, std::shared_ptr<Animation> animation, const float& animationTime)
-	{
-		Core::Maths::Mat4 nodeTransform{ bone.baseTransform.GetLocalTrs() };
-
-		if (animation->animationTree.count(bone.boneName) > 0)
-		{
-			// TODO calculate the position of the animation
-			nodeTransform = BlendAnimation(animation, bone, animation->animationTree[bone.boneName], animationTime);
-		}
-		
-		Core::Maths::Mat4 globalTransform = parentTransform * nodeTransform;
-		
-		m_finalTransforms[bone.boneIndex] = (globalTransform * ( bone.offsetBone));
-
-		for (auto i{ 0 }; i < bone.child.size(); i++)
-		{
-			UpdateBone(bone.child[i], globalTransform, animation, animationTime);
-		}
-	}
-
-	Core::Maths::Mat4 SkeletalMesh::BlendAnimation(std::shared_ptr<Animation> animation, Bone bone, BoneAnimation boneAnim, const float& animationTime)
-	{
-		if (boneAnim.timeKey.size() == 1)
-			return Core::Datastructure::Transform{ boneAnim.boneLocalTransforms[0].localPosition, 
-													boneAnim.boneLocalTransforms[0].localRotation, 
-													boneAnim.boneLocalTransforms[0].localScale }.GetLocalTrs();
-
-
-		unsigned int curr = Find(boneAnim, animationTime);
-		unsigned int next = curr + 1;
-
-		BoneLocalTransform currLocal = boneAnim.boneLocalTransforms[curr];
-		BoneLocalTransform nextLocal = boneAnim.boneLocalTransforms[next];
-
-		float weight = (animationTime - boneAnim.timeKey[curr]) / (boneAnim.timeKey[next] - boneAnim.timeKey[curr]);
-
-
-		Core::Maths::Vec3 position{ (currLocal.localPosition) * (1 - weight) + (nextLocal.localPosition) * weight };
-		
-		Core::Maths::Quat rotation{ Nlerp(currLocal.localRotation,nextLocal.localRotation, weight )};
-
-		return Core::Datastructure::Transform{ position, rotation, currLocal.localScale }.GetLocalTrs();
-	}
-
-	unsigned int SkeletalMesh::Find(BoneAnimation boneAnim,const float& animationTime)
-	{
-		for (auto i{ 0 }; i < boneAnim.timeKey.size() - 1; i++)
-		{
-			if (animationTime < boneAnim.timeKey[i + 1])
-				return i;
-		}
-	}
-
-	void SkeletalMesh::UpdateAllBones(std::shared_ptr<Animation> animation, const float& animationTime)
-	{
-		constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
-
-		for (auto i{ 0 }; i < m_rootBone.child.size(); i++)
-		{
-			UpdateBone(m_rootBone.child[i], identity, m_testAnimation, m_currTimeAnim);
-		}
-
-		canDraw = true;
-	}
-
 	void SkeletalMesh::initBones(std::shared_ptr<BoneTree> inBone)
 	{
 		 m_rootBone = inBone->rootBone;
-
+		 constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
 		 m_finalTransforms.resize(inBone->numBone);
+		 initBonePos(m_rootBone, identity);
 	}
 
-	void SkeletalMesh::initBonePos(Bone currBone, Core::Maths::Mat4 parent)
+	void SkeletalMesh::initBonePos(std::shared_ptr<Bone> currBone, Core::Maths::Mat4 parent)
 	{
-		Core::Maths::Mat4 curr = parent * currBone.baseTransform.GetLocalTrs();
-		m_finalTransforms[currBone.boneIndex] = curr * currBone.offsetBone;
+		Core::Maths::Mat4 curr = parent * currBone->baseTransform.GetLocalTrs();
+		m_finalTransforms[currBone->boneIndex] = curr * currBone->offsetBone;
 
-		for (auto i = 0; i < currBone.child.size(); i++)
+		for (auto i = 0; i < currBone->child.size(); i++)
 		{
-			initBonePos(currBone.child[i], curr);
+			initBonePos(currBone->child[i], curr);
 		}
 	}
 
@@ -145,10 +73,11 @@ namespace Core::Animation
 	{
 		Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
-		while (!canDraw)
+		while (!animationHandler.animationFinish)
 		{
 			trs = (m_parent->GetGlobalTRS());
 		}
+
 		// check if the mesh have a modelMesh
 		if (m_model == nullptr)
 			return;
@@ -196,33 +125,12 @@ namespace Core::Animation
 
 	void SkeletalMesh::OnUpdate(float deltaTime)
 	{
-		m_currTimeAnim += deltaTime * m_speedAnim;
-		if (m_currTimeAnim > m_testAnimation->Time)
-			m_currTimeAnim = 0.f;
-
-		canDraw = false;
-
-		GetParent()->GetScene()->GetEngine()->GetResourcesManager()->m_task.AddTask(&Core::Animation::SkeletalMesh::UpdateAllBones, 
-																					this, m_testAnimation, m_currTimeAnim);
-		/*constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
-
-		for (auto i{ 0 }; i < m_rootBone.child.size(); i++)
-		{
-			UpdateBone(m_rootBone.child[i], identity, m_testAnimation, m_currTimeAnim);
-		}*/
+		GetParent()->GetScene()->GetEngine()->GetResourcesManager()->m_task.AddTask(&Core::Animation::AnimationHandler::UpdateSkeletalMeshBones,
+																					&animationHandler, m_rootBone, std::ref(m_finalTransforms), deltaTime);
 	}
 
 	void SkeletalMesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)
 	{
-		/*for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
-		{
-			if (i < namesMaterial.size())
-				m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
-			else
-				m_materialsModel.push_back(resources.GetMaterial(namesMaterial[0]));
-
-			m_materialsModel[i]->shader = resources.GetShader("Skeletal");
-		}*/
 		if (!m_model)
 		{
 			m_materialsNames = namesMaterial;
@@ -232,7 +140,6 @@ namespace Core::Animation
 			for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
 			{
 				m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
-				m_materialsModel[i]->shader = resources.GetShader("Skeletal");
 			}
 		}
 	}

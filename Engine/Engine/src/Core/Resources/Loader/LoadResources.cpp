@@ -35,7 +35,9 @@ namespace Resources::Loader
 	//m_task {new Core::SystemManagement::TaskSystem()}
 	{
 		CreateShader("Default", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("SkeletDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("NormalMapDefault", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("SkeletNormalMapDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("Wireframe", "Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		CreateShader("Skybox", "Resources\\Shaders\\SkyboxShader.vert", "Resources\\Shaders\\SkyboxShader.frag");
 
@@ -133,7 +135,7 @@ namespace Resources::Loader
 		{
 			if (scene->HasAnimations())
 			{
-				LoadAnimation(scene, directoryFile);
+				LoadAnimation(scene, directoryFile, fileName);
 			}
 
 			if (scene->mNumMeshes > 0)
@@ -342,12 +344,7 @@ namespace Resources::Loader
 												, const unsigned int& numBones
 												, const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex)
 	{
-		Core::Maths::Mat4 mat4;
-		mat4(0, 0) = 1;
-		mat4(1, 1) = 1;
-		mat4(2, 2) = 1;
-		mat4(3, 3) = 1;
-		const aiNode* firstBoneNode{ FindFirstBoneNode(scene->mRootNode, bonesIndex, mat4)};
+		const aiNode* firstBoneNode{ FindFirstBoneNode(scene->mRootNode, bonesIndex)};
 
 		if (firstBoneNode == nullptr)
 			return;
@@ -366,31 +363,31 @@ namespace Resources::Loader
 
 		Core::Datastructure::Transform t{};
 		
-		tree->rootBone.InitBone(firstBoneNode->mParent, bonesIndex, t);
+		tree->rootBone = std::make_shared<Core::Animation::Bone>();
+		tree->rootBone->InitBone(firstBoneNode->mParent, bonesIndex, t);
 		tree->numBone = numBones;
 
 		m_BoneHierarchies.emplace(directory, tree);
 	}
 
-	const aiNode* ResourcesManager::FindFirstBoneNode(const aiNode* node, const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex, 
-														Core::Maths::Mat4& mat)
+	const aiNode* ResourcesManager::FindFirstBoneNode(const aiNode* node, const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex)
 	{
-		aiVector3D pos;
+		/*aiVector3D pos;
 		aiQuaternion rot;
 		aiVector3D sca;
-		node->mTransformation.Decompose(sca, rot, pos);
+		node->mTransformation.Decompose(sca, rot, pos);*/
 
 		if (bonesIndex->count(node->mName.data) > 0)
 			return node;
-		mat = mat * Core::Datastructure::Transform(
+		/*mat = mat * Core::Datastructure::Transform(
 			{ pos.x, pos.y, pos.z },
 			{ rot.w, rot.x, rot.y, rot.z },
-			{ sca.x, sca.y, sca.z }).GetLocalTrs();
+			{ sca.x, sca.y, sca.z }).GetLocalTrs();*/
 
 
 		for (unsigned int i{ 0 }; i < node->mNumChildren; i++)
 		{
-			const aiNode* child = FindFirstBoneNode(node->mChildren[i], bonesIndex, mat);
+			const aiNode* child = FindFirstBoneNode(node->mChildren[i], bonesIndex);
 			if (child != nullptr)
 				return child;
 		}
@@ -398,7 +395,7 @@ namespace Resources::Loader
 		return nullptr;
 	}
 
-	void ResourcesManager::LoadAnimation(const aiScene* scene, const std::string& directory)
+	void ResourcesManager::LoadAnimation(const aiScene* scene, const std::string& directory, const std::string& fileName)
 	{
 		for (unsigned int i{ 0 }; i < scene->mNumAnimations; i++)
 		{
@@ -407,8 +404,10 @@ namespace Resources::Loader
 			std::shared_ptr<Core::Animation::Animation> animation = std::make_shared<Core::Animation::Animation>();
 
 			animation->initAnimation(anim);
-
-			m_animations.emplace(directory + anim->mName.data, animation);
+			if(scene->mNumAnimations == 1)
+				m_animations.emplace(fileName, animation);
+			else	
+				m_animations.emplace(directory + anim->mName.data, animation);
 		}
 	}
 
@@ -442,12 +441,12 @@ namespace Resources::Loader
 
 		m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
 
-		std::shared_ptr<Object3DGraph> sceneData = std::make_shared<Object3DGraph>();
+		/*std::shared_ptr<Object3DGraph> sceneData = std::make_shared<Object3DGraph>();
 
 		sceneData->rootNodeScene.nameMesh = name;
 		sceneData->rootNodeScene.nameObject = name;
 		sceneData->rootNodeScene.namesMaterial.push_back("Default");
-		m_scenes.emplace(fileName, sceneData);
+		m_scenes.emplace(fileName, sceneData);*/
 		//modelData->LoadaiMeshModel(mesh, importer);
 	}
 
@@ -474,7 +473,7 @@ namespace Resources::Loader
 		m_materials.emplace(keyMaterial, materialOut);
 
 		m_materialsGetUniform.push_back(materialOut);
-
+		materialOut->IsSkeletal = mesh->HasBones();
 		m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut, mat, directory, this, importer);
 
 	}

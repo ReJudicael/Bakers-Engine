@@ -22,32 +22,17 @@ out vec3 normal;
 out vec3 tangent;
 out mat4 projCam;
 out vec4 posboneTT;
-out int id;
-out int id2;
-out int id3;
-out int id4;
 out float W;
 
 void main()
 {
-
-	/*mat4 BoneTransform = gBones[BoneIDs[0]] * Weights[0];
-    	BoneTransform += gBones[BoneIDs[1]] * Weights[1];
-    	BoneTransform += gBones[BoneIDs[2]] * Weights[2];
-    	BoneTransform += gBones[BoneIDs[3]] * Weights[3];*/
 
 	vec4 posIn = vec4(aPosition, 1.0f);
 	vec4 pos = Weights[0] * (gBones[int(BoneIDs[0])] * posIn) +
 			Weights[1] * (gBones[int(BoneIDs[1])] * posIn) +
 			Weights[2] * (gBones[int(BoneIDs[2])] * posIn) +
 			Weights[3] * (gBones[int(BoneIDs[3])] * posIn);
-	id = int(BoneIDs.x);
-	id2 = int(BoneIDs.y);
-	id3 = int(BoneIDs[2]);
-	id4 = int(BoneIDs[3]);
-	W = Weights[0];
-	posboneTT = pos;
-	//vec4 pos = BoneTransform * vec4(aPosition, 1.0);
+	
 	pos =  uModel * vec4(pos.xyz, 1.0f);
 	unprojectedPos = pos.xyz;
 
@@ -56,8 +41,18 @@ void main()
 	gl_Position = uProj * uCam * pos;
 	vUV = aUV;
 
-	//vec4 boneNormal = BoneTransform * vec4(aNormal,0.0);
+	vec4 normalIn = vec4(aNormal, 0.0f);
+	vec4 boneNormal = Weights[0] * (gBones[int(BoneIDs[0])] * normalIn) +
+			Weights[1] * (gBones[int(BoneIDs[1])] * normalIn) +
+			Weights[2] * (gBones[int(BoneIDs[2])] * normalIn) +
+			Weights[3] * (gBones[int(BoneIDs[3])] * normalIn);
+	normal = boneNormal.xyz;
 
-	//normal = (uModel * boneNormal).xyz;
+	vec4 TangentIn = vec4(aTangent, 0.0f);
+	vec4 boneTangent = Weights[0] * (gBones[int(BoneIDs[0])] * TangentIn) +
+			Weights[1] * (gBones[int(BoneIDs[1])] * TangentIn) +
+			Weights[2] * (gBones[int(BoneIDs[2])] * TangentIn) +
+			Weights[3] * (gBones[int(BoneIDs[3])] * TangentIn);
 	
+	tangent = boneTangent.xyz; 
 }

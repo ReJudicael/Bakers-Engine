@@ -79,6 +79,12 @@
     <Filter Include="Source Files\Core\Maths">
       <UniqueIdentifier>{68cca1cb-d8fc-42d1-a6a9-c5698cb88fcc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Animation">
+      <UniqueIdentifier>{9fbbde2c-b1bf-43d9-8cba-2c4e97387b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Animation">
+      <UniqueIdentifier>{030c6ba1-57f5-425d-b2d7-dc0a7e313f3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Datastructure\Transform.cpp">
@@ -242,6 +248,9 @@
     </ClCompile>
     <ClCompile Include="src\Core\Animation\SkeletalMesh.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Animation\AnimationHandler.cpp">
+      <Filter>Source Files\Core\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -475,6 +484,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Animation\Bone.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Animation\AnimationHandler.h">
+      <Filter>Header Files\Core\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

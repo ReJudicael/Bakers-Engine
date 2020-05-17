@@ -45,6 +45,7 @@ namespace Resources
 		std::vector<std::shared_ptr<Texture>>	textures;
 		std::vector<VariantUniform>				variants;
 		bool									shaderChoose{ false };
+		bool									IsSkeletal{ false };
 		std::shared_ptr<Shader>					shader;
 
 		/**
@@ -54,7 +55,7 @@ namespace Resources
 		 * @param resources: the ResouresManager
 		 */
 		void LoadMaterialFromaiMaterial(aiMaterial* mat, const std::string& directory, 
-										Loader::ResourcesManager* resources, 
+										Loader::ResourcesManager* resources,
 										std::shared_ptr<Resources::Loader::ImporterData>& importer);
 
 		/**

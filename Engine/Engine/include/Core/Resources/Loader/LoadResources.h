@@ -355,15 +355,14 @@ namespace Resources
 			 * @param mat: the matrix
 			 */
 			const aiNode* FindFirstBoneNode(const aiNode* node, 
-											const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex, 
-											Core::Maths::Mat4& mat);
+											const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex);
 
 			/**
 			 * Load all the animation of an assimp scene
 			 * @param scene: The scene of the 3D object load by assimp
 			 * @param directory: the folder path of the 3D Object
 			 */
-			void LoadAnimation(const aiScene* scene, const std::string& directory);
+			void LoadAnimation(const aiScene* scene, const std::string& directory, const std::string& fileName);
 
 			/**
 			 * Load an simple obj just in a model
