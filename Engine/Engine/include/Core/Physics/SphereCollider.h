@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "ComponentBase.h"
 #include "Collider.h"
 
 namespace Resources
@@ -13,13 +14,33 @@ namespace Resources
 
 namespace Core::Physics
 {
-	class SphereCollider :public Collider
+	class SphereCollider : public Core::Datastructure::ComponentBase, public virtual Collider
 	{
+	private:
 		float	m_extent{ 0.5f };
+	protected:
+
+		virtual void StartCopy(IComponent*& copyTo) const override;
+
+		virtual void OnCopy(IComponent* copyTo) const override;
+
+		/**
+		 * Function inheritated from IComponent,
+		 * override for delete the collider
+		 */
+		virtual void OnDestroy() override;
+
+
+		virtual void OnReset() override;
+
+		virtual bool OnStart() override;
+
 	public:
 		SphereCollider() = default;
 
-		SphereCollider(Resources::Loader::ResourcesManager* resources);
+		virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
+
+		virtual void OnInit() override;
 
 		/**
 		 * Function inheritated from Collider,
@@ -46,8 +67,8 @@ namespace Core::Physics
 		 * @param pos: position in global of the physics actor
 		 * @param rot: rotation in global of the physics actor
 		 */
-		virtual void DrawCollider(Core::Datastructure::ICamera * cam, const Core::Maths::Vec3 & pos, const Core::Maths::Quat & rot) override;
+		virtual void DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot) override {};
 
-		REGISTER_CLASS(Collider)
+		REGISTER_CLASS(Core::Datastructure::ComponentBase, Collider)
 	};
 }

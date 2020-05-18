@@ -9,21 +9,52 @@
 #include "LoadResources.h"
 #include "PhysicsScene.h"
 #include "OffsetMesh.h"
+#include "RootObject.hpp"
+#include "EngineCore.h"
 
 namespace Core::Physics
 {
 
 	RTTR_PLUGIN_REGISTRATION
 	{
-		registration::class_<Core::Physics::CapsuleCollider>("Collider")
+		registration::class_<Core::Physics::CapsuleCollider>("Capsule Collider")
+		.constructor()
 		.property("Capsule Half Extent", &Core::Physics::CapsuleCollider::GetCapsuleHalfExtent ,&Core::Physics::CapsuleCollider::SetCapsuleHalfExtent)
 		;
 	}
 
-	CapsuleCollider::CapsuleCollider(Resources::Loader::ResourcesManager* resources) :
-		Collider(resources)
+	void CapsuleCollider::OnInit()
 	{
-		InitModel(resources->GetModel("Capsule"));
+		Core::Datastructure::RootObject* root = GetRoot();
+		InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
+		InitModel(root->GetEngine()->GetResourcesManager()->GetModel("Capsule"));
+		Core::Physics::Collider::OnInit();
+		Core::Datastructure::ComponentBase::OnInit();
+	}
+
+	bool CapsuleCollider::OnStart()
+	{
+		return Core::Physics::Collider::OnStart();
+	}
+	void CapsuleCollider::StartCopy(IComponent*& copyTo) const
+	{
+		copyTo = new CapsuleCollider();
+		OnCopy(copyTo);
+	}
+
+	void CapsuleCollider::OnCopy(IComponent* copyTo) const
+	{
+		Core::Physics::Collider::OnCopy(copyTo);
+	}
+
+	void CapsuleCollider::OnDestroy()
+	{
+		Core::Physics::Collider::OnDestroy();
+	}
+
+	void CapsuleCollider::OnReset()
+	{
+		Core::Physics::Collider::Reset();
 	}
 
 	void CapsuleCollider::CreateShape(physx::PxPhysics* physics)
@@ -61,7 +92,7 @@ namespace Core::Physics
 
 	}
 
-	void CapsuleCollider::DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot)
+	void CapsuleCollider::OnDraw(Core::Datastructure::ICamera* cam)
 	{
 
 		glEnable(GL_DEPTH_TEST);
@@ -81,8 +112,8 @@ namespace Core::Physics
 		Ltrs.SetLocalScale({ GetCapsuleHalfExtent().x, GetCapsuleHalfExtent().y, GetCapsuleHalfExtent().x });
 
 		Core::Datastructure::Transform Gtrs;
-		Gtrs.SetLocalPos(pos);
-		Gtrs.SetLocalRot(rot);
+		Gtrs.SetLocalPos(GetParent()->GetGlobalPos());
+		Gtrs.SetLocalRot(GetParent()->GetGlobalRot());
 		Gtrs.SetLocalScale({ 1.f,1.f,1.f });
 
 		glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, (Gtrs.GetLocalTrs() * Ltrs.GetLocalTrs()).array);

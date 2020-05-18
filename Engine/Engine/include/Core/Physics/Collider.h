@@ -4,7 +4,11 @@
 #include "Vec3.hpp"
 #include "Quaternion.hpp"
 #include "CoreMinimal.h"
+#include "IComponent.hpp"
+#include "IRenderable.hpp"
 #include "Model.h"
+#include "HitResult.h"
+#include "EventSystem.hpp"
 
 
 namespace physx
@@ -12,6 +16,8 @@ namespace physx
 	class PxShape;
 	class PxPhysics;
 	class PxMaterial;
+	class PxRigidActor;
+	class PxRigidDynamic;
 }
 namespace Resources
 {
@@ -36,21 +42,55 @@ namespace Core
 	{
 		enum class EFilterRaycast : int;
 
+		class RigidBody;
 
 		/**
 		 * Contains the shape and the material of the physics mesh 
 		 * with wich he is attached
 		 */
-		BAKERS_API_CLASS Collider
+		BAKERS_API_CLASS Collider : public virtual Core::Datastructure::IComponent, public virtual Core::Datastructure::IRenderable
 		{
 		protected:
 			physx::PxShape*						m_pxShape{};
 			physx::PxMaterial*					m_pxMaterial{};
+			physx::PxRigidActor*				m_pxRigidActor{};
 			std::shared_ptr<Resources::Shader>	m_shader{};
 			std::shared_ptr<Resources::Model>	m_model{};
+			int									m_IDFunctionSetTRS;
+
+		public:
+			Core::SystemManagement::EventSystem<Collider*>	OnTriggerEnterEvent;
+			Core::SystemManagement::EventSystem<Collider*>	OnTriggerExitEvent;
+			Core::SystemManagement::EventSystem<Collider*, Core::Maths::Vec3, Core::Physics::HitResult>	OnContactEvent;
+		
+		protected:
+
+			virtual void OnCopy(IComponent* copyTo) const override;
+
+			/**
+			 * Function inheritated from IComponent,
+			 * override for delete the collider
+			 */
+			virtual void OnDestroy() override;
+
+
+			virtual void OnReset() override;
+
+			virtual bool OnStart() override;
 		public:
 			Collider() = default;
-			Collider(Resources::Loader::ResourcesManager* resources);
+
+			/**
+			 * Function inheritated from IComponent,
+			 * override for create the collider from the PhysicsScene
+			 */
+			virtual void OnInit() override;
+
+			virtual void OnDraw(Core::Datastructure::ICamera* cam) override = 0;
+
+			void DestroyRigidActor();
+
+			void InitRigidBody(Core::Physics::RigidBody* rigidBody, int& ID, physx::PxRigidDynamic*& pxRigidBody);
 
 			/**
 			 * Get the PhysX shape of the collider
@@ -166,9 +206,11 @@ namespace Core
 			 */
 			virtual void DestroyShape();
 
+			virtual void SetPhysicsTransformParent();
+
 
 			virtual ~Collider();
-			REGISTER_CLASS()
+			REGISTER_CLASS(Core::Datastructure::IComponent, Core::Datastructure::IRenderable)
 		};
 	}
 }

@@ -9,26 +9,56 @@
 #include "PhysicsScene.h"
 #include "OffsetMesh.h"
 #include "LoadResources.h"
+#include "RootObject.hpp"
+#include "EngineCore.h"
 
 namespace Core::Physics
 {
 
 	RTTR_PLUGIN_REGISTRATION
 	{
-		registration::class_<Core::Physics::SphereCollider>("Collider")
+		registration::class_<Core::Physics::SphereCollider>("Sphere Collider")
+		.constructor()
 		.property("Radius", &Core::Physics::SphereCollider::GetSphereHalfExtent ,&Core::Physics::SphereCollider::SetSphereHalfExtent)
 		;
 	}
 
-	SphereCollider::SphereCollider(Resources::Loader::ResourcesManager* resources) :
-		Collider(resources)
+	void SphereCollider::OnInit()
 	{
-		InitModel(resources->GetModel("Sphere"));
+		Core::Datastructure::RootObject* root = GetRoot();
+		InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
+		InitModel(root->GetEngine()->GetResourcesManager()->GetModel("Sphere"));
+		Core::Physics::Collider::OnInit();
+		Core::Datastructure::ComponentBase::OnInit();
+	}
+
+	bool SphereCollider::OnStart()
+	{
+		return Core::Physics::Collider::OnStart();
+	}
+	void SphereCollider::StartCopy(IComponent*& copyTo) const
+	{
+		copyTo = new SphereCollider();
+		OnCopy(copyTo);
+	}
+
+	void SphereCollider::OnCopy(IComponent* copyTo) const
+	{
+		Core::Physics::Collider::OnCopy(copyTo);
+	}
+
+	void SphereCollider::OnDestroy()
+	{
+		Core::Physics::Collider::OnDestroy();
+	}
+
+	void SphereCollider::OnReset()
+	{
+		Core::Physics::Collider::Reset();
 	}
 
 	void SphereCollider::CreateShape(physx::PxPhysics* physics)
 	{
-		//physx::PxVec2 extent = physx::PxVec3(m_extent.x, m_extent.y);
 		physx::PxVec3 localPosition = physx::PxVec3(0.f, 0.f, 0.f);
 
 		m_pxMaterial = physics->createMaterial(1.5f, 1.5f, 0.0f);
@@ -59,7 +89,7 @@ namespace Core::Physics
 
 	}
 
-	void SphereCollider::DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot)
+	void SphereCollider::OnDraw(Core::Datastructure::ICamera* cam)
 	{
 
 		glEnable(GL_DEPTH_TEST);
@@ -79,11 +109,11 @@ namespace Core::Physics
 		Ltrs.SetLocalScale({ GetSphereHalfExtent(), GetSphereHalfExtent(), GetSphereHalfExtent() });
 
 		Core::Datastructure::Transform Gtrs;
-		Gtrs.SetLocalPos(pos);
-		Gtrs.SetLocalRot(rot);
+		Gtrs.SetLocalPos(GetParent()->GetGlobalPos());
+		Gtrs.SetLocalRot(GetParent()->GetGlobalRot());
 		Gtrs.SetLocalScale({ 1.f,1.f,1.f });
 
-		glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, (Ltrs.GetLocalTrs() * Gtrs.GetLocalTrs()).array);
+		glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, (Gtrs.GetLocalTrs() * Ltrs.GetLocalTrs()).array);
 		glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
 		glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
 

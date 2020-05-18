@@ -73,7 +73,6 @@ namespace Core
 		{
 			IComponent::OnReset();
 			delete m_collider;
-			m_collider = new Core::Physics::BoxCollider(GetRoot()->GetEngine()->GetResourcesManager());
 		}
 	}
 }

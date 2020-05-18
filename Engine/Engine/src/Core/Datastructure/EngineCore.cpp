@@ -10,7 +10,6 @@
 #include "Framebuffer.h"
 #include "Collider.h"
 #include "BoxCollider.h"
-#include "StaticMesh.h"
 #include "PhysicsScene.h"
 #include "DynamicMesh.h"
 #include "AudioSystem.h"

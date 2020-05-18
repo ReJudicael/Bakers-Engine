@@ -177,9 +177,14 @@ namespace Core::Datastructure
 		/**
 		 * Set an event call when the transform of the Object change
 		 */
-		inline void SetAnEventTransformChange(std::function<void()> function)
+		inline Core::SystemManagement::ID SetAnEventTransformChange(std::function<void()> function)
 		{
-			m_EventTransformChange += function;
+			return m_EventTransformChange += function;
+		}
+
+		inline void DeleteAnEventTransformChange(Core::SystemManagement::ID ID)
+		{
+			m_EventTransformChange.RemoveListener(ID);
 		}
 
 		/**

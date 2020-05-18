@@ -10,20 +10,51 @@
 #include "PhysicsScene.h"
 #include "OffsetMesh.h"
 #include "LoadResources.h"
+#include "RootObject.hpp"
+#include "EngineCore.h"
 
 namespace Core::Physics
 {
 	RTTR_PLUGIN_REGISTRATION
 	{
-		registration::class_<Core::Physics::BoxCollider>("Collider")
+		registration::class_<Core::Physics::BoxCollider>("Box Collider")
+		.constructor()
 		.property("Box Half Extent", &Core::Physics::BoxCollider::GetBoxHalfExtent ,&Core::Physics::BoxCollider::SetBoxHalfExtent)
 		;
 	}
 
-	BoxCollider::BoxCollider(Resources::Loader::ResourcesManager* resources) :
-	Collider(resources)
+	void BoxCollider::OnInit()
 	{
-		InitModel(resources->GetModel("Cube"));
+		Core::Datastructure::RootObject* root = GetRoot();
+		InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
+		InitModel(root->GetEngine()->GetResourcesManager()->GetModel("Cube"));
+		Core::Physics::Collider::OnInit();
+		Core::Datastructure::ComponentBase::OnInit();
+	}
+
+	bool BoxCollider::OnStart()
+	{
+		return Core::Physics::Collider::OnStart();
+	}
+	void BoxCollider::StartCopy(IComponent*& copyTo) const
+	{
+		copyTo = new BoxCollider();
+		OnCopy(copyTo);
+	}
+
+	void BoxCollider::OnCopy(IComponent* copyTo) const
+	{
+		Core::Physics::Collider::OnCopy(copyTo);
+	}
+
+	void BoxCollider::OnDestroy()
+	{
+		Core::Physics::Collider::OnDestroy();
+	}
+
+	void BoxCollider::OnReset()
+	{
+		Core::Physics::Collider::Reset();
 	}
 
 	void BoxCollider::CreateShape(physx::PxPhysics* physics)
@@ -59,7 +90,7 @@ namespace Core::Physics
 
 	}
 
-	void BoxCollider::DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot)
+	void BoxCollider::OnDraw(Core::Datastructure::ICamera* cam)
 	{
 		
 		glEnable(GL_DEPTH_TEST);
@@ -79,11 +110,11 @@ namespace Core::Physics
 		Ltrs.SetLocalScale(GetBoxHalfExtent() * 2);
 
 		Core::Datastructure::Transform Gtrs;
-		Gtrs.SetLocalPos(pos);
-		Gtrs.SetLocalRot(rot);
+		Gtrs.SetLocalPos(GetParent()->GetGlobalPos());
+		Gtrs.SetLocalRot(GetParent()->GetGlobalRot());
 		Gtrs.SetLocalScale({ 1.f,1.f,1.f });
 
-		glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, (Ltrs.GetLocalTrs() * Gtrs.GetLocalTrs()).array);
+		glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, (Gtrs.GetLocalTrs() * Ltrs.GetLocalTrs()).array);
 		glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
 		glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
 

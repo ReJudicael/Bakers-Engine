@@ -6,7 +6,6 @@
 #include "PxMaterial.h"
 #include "PxDefaultSimulationFilterShader.h"
 #include "Collider.h"
-#include "StaticMesh.h"
 #include "Transform.hpp"
 #include "Model.h"
 #include "Vec3.hpp"
@@ -259,6 +258,43 @@ namespace Core::Physics
 	void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)
 	{
 		physics->CreateActor(m_pxPhysics, m_pxScene);
+	}
+
+	physx::PxRigidStatic* PhysicsScene::CreateRigidStatic(physx::PxRigidActor*& actor, physx::PxShape* shape, Core::Datastructure::Transform parentTRS)
+	{
+		Maths::Vec3 vec = parentTRS.GetGlobalPos();
+		physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
+		Maths::Quat quat = parentTRS.GetGlobalRot();
+		physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
+
+		physx::PxRigidStatic* rigid;
+
+		rigid = m_pxPhysics->createRigidStatic(physx::PxTransform(position, rotation));
+		rigid->attachShape(*shape);
+
+		actor = rigid;
+		m_pxScene->addActor(*actor);
+		return rigid;
+	}
+	physx::PxRigidDynamic* PhysicsScene::CreateRigidDynamic(physx::PxRigidActor*& actor, physx::PxShape* shape, Core::Datastructure::Transform parentTRS)
+	{
+		Maths::Vec3 vec = parentTRS.GetGlobalPos();
+		physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
+		Maths::Quat quat = parentTRS.GetGlobalRot();
+		physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
+		physx::PxRigidDynamic* dynamic;
+		dynamic = m_pxPhysics->createRigidDynamic(physx::PxTransform(position, rotation));
+		dynamic->attachShape(*shape);
+
+		dynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
+
+		// usefull if we don't want to do the update every time if the rigid doesn't move
+		//m_dynamicMesh->setActorFlag(physx::PxActorFlag::eSEND_SLEEP_NOTIFIES);
+		actor = dynamic;
+
+		m_pxScene->addActor(*actor);
+
+		return dynamic;
 	}
 
 	physx::PxRigidActor* PhysicsScene::CreateEditorPhysicsActor(void* useDataPtr,

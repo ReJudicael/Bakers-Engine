@@ -103,6 +103,9 @@ namespace Core
 			 */
 			void AttachActor(Core::Datastructure::IPhysics* physics);
 
+			physx::PxRigidStatic* CreateRigidStatic(physx::PxRigidActor*& actor, physx::PxShape* shape, Core::Datastructure::Transform transform);
+			physx::PxRigidDynamic* CreateRigidDynamic(physx::PxRigidActor*& actor, physx::PxShape* shape, Core::Datastructure::Transform transform);
+
 
 			/*
 			 * Create a PxRigidStatic as a bax with the AABB value of the mesh model
@@ -225,7 +228,6 @@ namespace Core
 			 * @param deltaTime: the deltaTime give by the update
 			 */
 			void BeginSimulate(const float deltaTime);
-
 
 			/**
 			 * Fetch the result of the simulation

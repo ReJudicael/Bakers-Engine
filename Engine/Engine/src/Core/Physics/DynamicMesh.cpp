@@ -15,88 +15,89 @@ namespace Core
 	{
 		RTTR_PLUGIN_REGISTRATION
 		{
-			registration::class_<Core::Physics::DynamicMesh>("Dynamic Mesh")
+			registration::class_<Core::Physics::RigidBody>("Rigid Body")
 			.constructor()
-			.constructor<Collider*>()
-			.property("Velocity", &Core::Physics::DynamicMesh::GetVelocity, &Core::Physics::DynamicMesh::SetLinearVelocity)
-			.property("Mass", &Core::Physics::DynamicMesh::GetMass, &Core::Physics::DynamicMesh::SetMass)
-			.property("Rotation Lock X", &Core::Physics::DynamicMesh::GetPhysicsLockXRotation, 
-						&Core::Physics::DynamicMesh::SetPhysicsLockXRotation)
-			.property("Rotation Lock Y", &Core::Physics::DynamicMesh::GetPhysicsLockYRotation, 
-						&Core::Physics::DynamicMesh::SetPhysicsLockYRotation)
-			.property("Rotation Lock Z", &Core::Physics::DynamicMesh::GetPhysicsLockZRotation, 
-						&Core::Physics::DynamicMesh::SetPhysicsLockZRotation)
+			.property("Velocity", &Core::Physics::RigidBody::GetVelocity, &Core::Physics::RigidBody::SetLinearVelocity)
+			.property("Mass", &Core::Physics::RigidBody::GetMass, &Core::Physics::RigidBody::SetMass)
+			.property("Rotation XLock", &Core::Physics::RigidBody::GetPhysicsLockXRotation,
+						&Core::Physics::RigidBody::SetPhysicsLockXRotation)
+			.property("Rotation YLock", &Core::Physics::RigidBody::GetPhysicsLockYRotation,
+						&Core::Physics::RigidBody::SetPhysicsLockYRotation)
+			.property("Rotation ZLock", &Core::Physics::RigidBody::GetPhysicsLockZRotation,
+						&Core::Physics::RigidBody::SetPhysicsLockZRotation)
 			;
 		}
 
-		DynamicMesh::DynamicMesh() :
-			Core::Datastructure::IPhysics(),
-			m_dynamicMesh{ nullptr }
+		void RigidBody::OnInit()
 		{
+			std::list<Core::Physics::Collider*> colliders;
+			GetParent()->GetComponentsOfBaseTypeInObject(colliders);
+
+			if (colliders.size() > 0)
+				(*colliders.begin())->InitRigidBody(this, m_IDFunctionSetTRS, m_pxRigidBody);
+
+			Core::Datastructure::IUpdatable::OnInit();
 		}
 
-		DynamicMesh::DynamicMesh(Collider* collider) :
-			Core::Datastructure::IPhysics(collider),
-			m_dynamicMesh{ nullptr }
+		bool RigidBody::OnStart()
 		{
+			if (!m_pxRigidBody)
+				OnInit();
+			return IUpdatable::OnStart() && m_pxRigidBody;
 		}
 
-		bool DynamicMesh::OnStart()
+		void RigidBody::StartCopy(IComponent*& copyTo) const
 		{
-			GetParent()->SetAnEventTransformChange(std::bind(&DynamicMesh::SetPhysicsTransformParent, this));
-			return IPhysics::OnStart() && IUpdatable::OnStart();
-
-		}
-
-		void DynamicMesh::StartCopy(IComponent*& copyTo) const
-		{
-			copyTo = new DynamicMesh();
+			copyTo = new RigidBody();
 			OnCopy(copyTo);
 
 		}
 
-		void DynamicMesh::OnCopy(IComponent* copyTo) const
+		void RigidBody::OnCopy(IComponent* copyTo) const
 		{
 			ComponentBase::OnCopy(copyTo);
-			IPhysics::OnCopy(copyTo);
 			IUpdatable::OnCopy(copyTo);
 
-			DynamicMesh* phy = dynamic_cast<DynamicMesh*>(copyTo);
+			RigidBody* phy = dynamic_cast<RigidBody*>(copyTo);
 
-			phy->m_dynamicMesh = m_dynamicMesh;
+			phy->m_pxRigidBody = m_pxRigidBody;
+			phy->m_BodyChangeGlobalPos = m_BodyChangeGlobalPos;
+			phy->m_IDFunctionSetTRS = m_IDFunctionSetTRS;
 
 		}
 
-		void DynamicMesh::DestroyDynamicMesh()
+		void RigidBody::DestroyDynamicMesh()
 		{
-			GetRoot()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_dynamicMesh);
-			m_dynamicMesh->release();
-			m_dynamicMesh = nullptr;
+			if (m_pxRigidBody)
+			{
+				GetRoot()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_pxRigidBody);
+				m_pxRigidBody->release();
+				m_pxRigidBody = nullptr;
+			}
 		}
 
-		void DynamicMesh::OnDestroy()
+		void RigidBody::OnDestroy()
 		{
 			ComponentBase::OnDestroy();
-			IPhysics::OnDestroy();
 			IUpdatable::OnDestroy();
 			if (IsStarted())
 			{
-				DestroyDynamicMesh();
+				//DestroyDynamicMesh();
+				GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
 				GetParent()->RemoveEventTransformChange();
 			}
 		}
 
-		void DynamicMesh::OnReset()
+		void RigidBody::OnReset()
 		{
 			// TODO
 			//Maybe To improve
 			DestroyDynamicMesh();
 			ComponentBase::OnReset();
-			IPhysics::OnReset();
 			IUpdatable::OnReset();
 		}
 
-		void DynamicMesh::CreateActor(physx::PxPhysics* physics, physx::PxScene* scene)
+		/*void RigidBody::CreateActor(physx::PxPhysics* physics, physx::PxScene* scene)
 		{
 			Maths::Vec3 vec = GetParent()->GetGlobalPos();
 			physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
@@ -114,13 +115,36 @@ namespace Core
 
 			scene->addActor(*m_dynamicMesh);
 			PhysicsLockRotation(true, false, true);
+		}*/
+
+		void RigidBody::InitPhysic(physx::PxShape* shape)
+		{
+			
 		}
 
-		void DynamicMesh::SetPhysicsTransformParent()
+		void RigidBody::OnUpdate(float deltaTime)
 		{
-			if (m_dynamicMesh == nullptr || m_MeshChangeGlobalPos)
+			if (!m_pxRigidBody)
 			{
-				m_MeshChangeGlobalPos = false;
+				GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
+			}
+
+			physx::PxVec3 pos = m_pxRigidBody->getGlobalPose().p;
+			physx::PxQuat rot = m_pxRigidBody->getGlobalPose().q;
+
+			m_BodyChangeGlobalPos = true;
+			GetParent()->SetGlobalPos({ pos.x, pos.y, pos.z });
+			m_BodyChangeGlobalPos = true;
+			GetParent()->SetGlobalRot({ rot.w, rot.x, rot.y, rot.z });
+			//float y = m_dynamicMesh->getLinearVelocity().y;
+
+		}
+
+		void RigidBody::SetPhysicsTransformParent()
+		{
+			if (m_pxRigidBody == nullptr || m_BodyChangeGlobalPos)
+			{
+				m_BodyChangeGlobalPos = false;
 				return;
 			}
 
@@ -129,68 +153,54 @@ namespace Core
 			Maths::Quat quat = GetParent()->GetGlobalRot();
 			physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
 
-			m_dynamicMesh->setGlobalPose(physx::PxTransform(position, rotation));
+			m_pxRigidBody->setGlobalPose(physx::PxTransform(position, rotation));
 
 			ClearForces();
 		}
 
-		void DynamicMesh::OnUpdate(float deltaTime)
+		void RigidBody::SetLinearVelocity(Core::Maths::Vec3 newVelocity)
 		{
-			
-			physx::PxVec3 pos = m_dynamicMesh->getGlobalPose().p;
-			physx::PxQuat rot = m_dynamicMesh->getGlobalPose().q;
-
-			m_MeshChangeGlobalPos = true;
-			GetParent()->SetGlobalPos({ pos.x, pos.y, pos.z });
-			m_MeshChangeGlobalPos = true;
-			GetParent()->SetGlobalRot({ rot.w, rot.x, rot.y, rot.z });
-			//float y = m_dynamicMesh->getLinearVelocity().y;
-
-		}
-
-		void DynamicMesh::SetLinearVelocity(Core::Maths::Vec3 newVelocity)
-		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return;
-			m_dynamicMesh->setLinearVelocity({ newVelocity.x, newVelocity.y, newVelocity.z });
+			m_pxRigidBody->setLinearVelocity({ newVelocity.x, newVelocity.y, newVelocity.z });
 		}
 
-		Core::Maths::Vec3 DynamicMesh::GetVelocity()
+		Core::Maths::Vec3 RigidBody::GetVelocity()
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return { 0.f, 0.f, 0.f };
-			physx::PxVec3 vec{ m_dynamicMesh->getLinearVelocity() };
+			physx::PxVec3 vec{ m_pxRigidBody->getLinearVelocity() };
 			return { vec.x, vec.y, vec.z };
 		}
 
-		void DynamicMesh::AddVelocity(const Core::Maths::Vec3 vector)
+		void RigidBody::AddVelocity(const Core::Maths::Vec3 vector)
 		{
-			m_dynamicMesh->addForce({ vector.x,vector.y,vector.z }, physx::PxForceMode::eVELOCITY_CHANGE);
+			m_pxRigidBody->addForce({ vector.x,vector.y,vector.z }, physx::PxForceMode::eVELOCITY_CHANGE);
 		}
 
-		void DynamicMesh::SetMass(const float mass)
+		void RigidBody::SetMass(const float mass)
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return;
-			m_dynamicMesh->setMass(static_cast<physx::PxReal>(mass));
+			m_pxRigidBody->setMass(static_cast<physx::PxReal>(mass));
 		}
 
-		float DynamicMesh::GetMass()
+		float RigidBody::GetMass()
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return 0;
-			return m_dynamicMesh->getMass();
+			return m_pxRigidBody->getMass();
 		}
 
-		void DynamicMesh::ClearForces()
+		void RigidBody::ClearForces()
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return;
-			m_dynamicMesh->clearForce();
-			m_dynamicMesh->clearTorque();
+			m_pxRigidBody->clearForce();
+			m_pxRigidBody->clearTorque();
 		}
 
-		void DynamicMesh::PhysicsLockRotation(bool Axisx, bool Axisy, bool Axisz)
+		void RigidBody::PhysicsLockRotation(bool Axisx, bool Axisy, bool Axisz)
 		{
 			SetPhysicsLockXRotation(Axisx);
 			SetPhysicsLockYRotation(Axisy);
@@ -198,46 +208,46 @@ namespace Core
 		}
 
 
-		void DynamicMesh::SetPhysicsLockXRotation(bool Axisx)
+		void RigidBody::SetPhysicsLockXRotation(bool Axisx)
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return;
-			m_dynamicMesh->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, Axisx);
+			m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, Axisx);
 		}
 
-		bool DynamicMesh::GetPhysicsLockXRotation()
+		bool RigidBody::GetPhysicsLockXRotation()
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return false;
-			return m_dynamicMesh->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X);
+			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X);
 		}
 
-		void DynamicMesh::SetPhysicsLockYRotation(bool Axisy)
+		void RigidBody::SetPhysicsLockYRotation(bool Axisy)
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return;
-			m_dynamicMesh->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, Axisy);
+			m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, Axisy);
 		}
 
-		bool DynamicMesh::GetPhysicsLockYRotation()
+		bool RigidBody::GetPhysicsLockYRotation()
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return false;
-			return m_dynamicMesh->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y);
+			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y);
 		}
 
-		void DynamicMesh::SetPhysicsLockZRotation(bool Axisz)
+		void RigidBody::SetPhysicsLockZRotation(bool Axisz)
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return;
-			m_dynamicMesh->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, Axisz);
+			m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, Axisz);
 		}
 
-		bool DynamicMesh::GetPhysicsLockZRotation()
+		bool RigidBody::GetPhysicsLockZRotation()
 		{
-			if (m_dynamicMesh == nullptr)
+			if (m_pxRigidBody == nullptr)
 				return false;
-			return m_dynamicMesh->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
+			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
 		}
 	}
 }

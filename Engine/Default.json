@@ -347,55 +347,6 @@
             ],
             "Components": [
                 {
-                    "Type": "Dynamic Mesh",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "LayerMask": {
-                            "Name": "LayerMask",
-                            "Type": "Layout",
-                            "Value": 1
-                        },
-                        "Mass": {
-                            "Name": "Mass",
-                            "Type": "float",
-                            "Value": 1.0
-                        },
-                        "Rotation Lock X": {
-                            "Name": "Rotation Lock X",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Rotation Lock Y": {
-                            "Name": "Rotation Lock Y",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation Lock Z": {
-                            "Name": "Rotation Lock Z",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Velocity": {
-                            "Name": "Velocity",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
-                        }
-                    }
-                },
-                {
                     "Type": "Mesh",
                     "Values": {
                         "IsActive": {
@@ -1283,49 +1234,6 @@
                         "x": 1.0,
                         "y": 1.0,
                         "z": 1.0
-                    }
-                },
-                {
-                    "Childs": [],
-                    "Components": [
-                        {
-                            "Type": "Static Mesh",
-                            "Values": {
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsUpdating": {
-                                    "Name": "IsUpdating",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "LayerMask": {
-                                    "Name": "LayerMask",
-                                    "Type": "Layout",
-                                    "Value": 1
-                                }
-                            }
-                        }
-                    ],
-                    "Flags": 0,
-                    "Name": "StaticMesh",
-                    "Pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "Rot": {
-                        "w": 1.0,
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "Scale": {
-                        "x": 10.0,
-                        "y": 10.0,
-                        "z": 10.0
                     }
                 },
                 {
@@ -2220,26 +2128,6 @@
                             "Value": 1.0
                         }
                     }
-                },
-                {
-                    "Type": "Static Mesh",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "LayerMask": {
-                            "Name": "LayerMask",
-                            "Type": "Layout",
-                            "Value": 1
-                        }
-                    }
                 }
             ],
             "Flags": 0,
@@ -2248,6 +2136,76 @@
                 "x": 9.377946853637695,
                 "y": 7.138454437255859,
                 "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Sphere Collider",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "LocalPositon": {
+                            "Name": "LocalPositon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "LocalRotation": {
+                            "Name": "LocalRotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Mat: S D R": {
+                            "Name": "Mat: S D R",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Radius": {
+                            "Name": "Radius",
+                            "Type": "float",
+                            "Value": 0.5
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "GameObject",
+            "Pos": {
+                "x": 0.0,
+                "y": -0.4560120701789856,
+                "z": -0.778256893157959
             },
             "Rot": {
                 "w": 1.0,
