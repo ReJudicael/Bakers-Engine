@@ -169,6 +169,8 @@ namespace Core::Renderer
             }
         }
 
+        Resources::Shader::lights.emplace_back(this);
+
         m_isActive = true;
         m_type = ELightType::DIRECTION;
         m_range = 100;
@@ -178,6 +180,7 @@ namespace Core::Renderer
         m_diffuse = { 1.f, 1.f, 1.f };
         m_specular = { 1.f, 1.f, 1.f };
         m_attenuation = { 1.f, 0.f, 0.f };
+        m_castShadow = true;
     }
 
     bool    Light::IsActive() const

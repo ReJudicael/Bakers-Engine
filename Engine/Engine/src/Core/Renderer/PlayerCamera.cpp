@@ -187,7 +187,7 @@ namespace Core::Renderer
 	{
 		Core::Datastructure::ICamera::Resize(width, height);
 
-		for (int i{0}; i < m_postProcessFBO.size(); ++i)
+		for (int i{ 0 }; i < m_postProcessFBO.size(); ++i)
 			m_postProcessFBO[i]->Resize(width, height);
 	}
 
@@ -217,7 +217,7 @@ namespace Core::Renderer
 					if (i == FBO.size() - 1)
 						glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 					else
-						glBindFramebuffer(GL_FRAMEBUFFER, FBO[i+1]->FBO);
+						glBindFramebuffer(GL_FRAMEBUFFER, FBO[i + 1]->FBO);
 
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 					FBO[i]->data.s->UseProgram();
@@ -284,7 +284,7 @@ namespace Core::Renderer
 	{
 		Core::Datastructure::ICamera::OnDestroy();
 
-		for (int i{0}; i < m_postProcessFBO.size(); ++i)
-			GetRoot()->GetEngine()->DeleteFBO(m_postProcessFBO[0]);
+		for (int i{ 0 }; i < m_postProcessFBO.size(); ++i)
+			GetRoot()->GetEngine()->DeleteFBO(m_postProcessFBO[i]);
 	}
 }
