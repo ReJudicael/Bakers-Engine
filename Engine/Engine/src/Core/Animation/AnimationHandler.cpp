@@ -71,23 +71,23 @@ namespace Core::Animation
 	Core::Maths::Mat4 AnimationNode::BlendAnimation(std::shared_ptr<Bone> bone, Core::Datastructure::Transform& out)
 	{
 
-		BoneAnimation boneAnim = nodeAnimation->animationTree[bone->boneName];
+		std::shared_ptr<BoneAnimation> boneAnim = nodeAnimation->animationTree[bone->boneName];
 
-		if (boneAnim.timeKey.size() == 1)
-			return Core::Datastructure::Transform{ boneAnim.boneLocalTransforms[0].localPosition,
-													boneAnim.boneLocalTransforms[0].localRotation,
-													boneAnim.boneLocalTransforms[0].localScale }.GetLocalTrs();
+		if (boneAnim->timeKey.size() == 1)
+			return Core::Datastructure::Transform{ boneAnim->boneLocalTransforms[0].localPosition,
+													boneAnim->boneLocalTransforms[0].localRotation,
+													boneAnim->boneLocalTransforms[0].localScale }.GetLocalTrs();
 
 
 		unsigned int curr = FindBoneAnimationIndex(boneAnim);
 		unsigned int next = curr + 1;
-		if (next >= boneAnim.boneLocalTransforms.size())
+		if (next >= boneAnim->boneLocalTransforms.size())
 			next = curr;
 
-		BoneLocalTransform currLocal = boneAnim.boneLocalTransforms[curr];
-		BoneLocalTransform nextLocal = boneAnim.boneLocalTransforms[next];
+		BoneLocalTransform currLocal = boneAnim->boneLocalTransforms[curr];
+		BoneLocalTransform nextLocal = boneAnim->boneLocalTransforms[next];
 
-		float weight = (m_currentTime - boneAnim.timeKey[curr]) / (boneAnim.timeKey[next] - boneAnim.timeKey[curr]);
+		float weight = (m_currentTime - boneAnim->timeKey[curr]) / (boneAnim->timeKey[next] - boneAnim->timeKey[curr]);
 
 
 		Core::Maths::Vec3 position{ (currLocal.localPosition) * (1 - weight) + (nextLocal.localPosition) * weight };
@@ -99,12 +99,12 @@ namespace Core::Animation
 	}
 
 
-	unsigned int AnimationNode::FindBoneAnimationIndex(BoneAnimation boneAnim)
+	unsigned int AnimationNode::FindBoneAnimationIndex(std::shared_ptr<BoneAnimation> boneAnim)
 	{
 		unsigned int index;
-		for (index = 0; index < boneAnim.timeKey.size() - 1; index++)
+		for (index = 0; index < boneAnim->timeKey.size() - 1; index++)
 		{
-			if (m_currentTime < boneAnim.timeKey[index + 1])
+			if (m_currentTime < boneAnim->timeKey[index + 1])
 				return index;
 		}
 		return index;
@@ -208,19 +208,21 @@ namespace Core::Animation
 	void AnimationHandler::UpdateSkeletalMeshBones(std::shared_ptr<Bone> rootBone, 
 													std::vector<Core::Maths::Mat4>& finalTransform, float deltaTime)
 	{
-
-		m_currentAnimationNode->UpdateAnimationNode(deltaTime);
-
-		constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
-
-		for (auto i{ 0 }; i < rootBone->child.size(); i++)
+		if (m_currentAnimationNode)
 		{
-			m_currentAnimationNode->UpdateAnimationBone(rootBone->child[i], identity, finalTransform);
-		}
+			m_currentAnimationNode->UpdateAnimationNode(deltaTime);
 
-		if (m_currentAnimationNode->IsTransitionFinish())
-		{
-			m_currentAnimationNode->SetNextAnimation(m_currentAnimationNode);
+			constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
+
+			for (auto i{ 0 }; i < rootBone->child.size(); i++)
+			{
+				m_currentAnimationNode->UpdateAnimationBone(rootBone->child[i], identity, finalTransform);
+			}
+
+			if (m_currentAnimationNode->IsTransitionFinish())
+			{
+				m_currentAnimationNode->SetNextAnimation(m_currentAnimationNode);
+			}
 		}
 
 		animationFinish = true;

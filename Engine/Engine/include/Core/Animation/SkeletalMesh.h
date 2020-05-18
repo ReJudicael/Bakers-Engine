@@ -10,16 +10,18 @@
 
 namespace Core::Animation
 {
-	struct ObjectBone
+	/*struct ObjectBone
 	{
-		Core::Datastructure::Transform	globalPosition;
-		std::shared_ptr<Bone>			bone;
-	};
+		Core::Datastructure::Transform				globalPosition;
+		std::vector<ObjectBone>						childBone;
+		std::vector<Core::Datastructure::Object*>	childObject;
+	};*/
 
 	BAKERS_API_CLASS SkeletalMesh : public Mesh, public virtual Core::Datastructure::IUpdatable
 	{
 	protected:
-		std::shared_ptr<Bone> m_rootBone;
+		std::shared_ptr<Bone>			m_rootBone;
+		//std::shared_ptr<ObjectBone>		treeBone;
 		std::vector<Core::Maths::Mat4> m_finalTransforms;
 
 	public:
@@ -27,15 +29,19 @@ namespace Core::Animation
 		AnimationHandler animationHandler;
 
 	protected:
-		virtual void OnReset() override;
-		virtual void OnCopy(IComponent* copyTo) const override;
+		virtual bool OnStart() override;				
+		virtual void	OnReset() override;
+		virtual void	OnCopy(IComponent* copyTo) const override;
+		virtual void	StartCopy(IComponent*& copyTo) const override;
+
+		virtual void	UpdateModel() override;
 
 	public:
 		SkeletalMesh() = default;
 
-		void initBones(std::shared_ptr<BoneTree> inBone);
+		void InitBones(std::shared_ptr<BoneTree> inBone);
 
-		void initBonePos(std::shared_ptr<Bone> currBone, Core::Maths::Mat4 parent);
+		void InitBonePos(std::shared_ptr<Bone> currBone, Core::Maths::Mat4 parent);
 
 		/**
 		 * Function inheritated from IRenderable,
@@ -45,8 +51,7 @@ namespace Core::Animation
 		virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
 
 		virtual void OnUpdate(float deltaTime) override;
-
-		virtual bool OnStart() override;
+														
 		virtual void OnInit() override;
 		virtual void OnDestroy() override;
 

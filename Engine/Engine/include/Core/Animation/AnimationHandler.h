@@ -110,7 +110,7 @@ namespace Core::Animation
 		 * @param boneAnim: the current bone
 		 * @return the keyBone in the animation
 		 */
-		unsigned int FindBoneAnimationIndex(BoneAnimation boneAnim);
+		unsigned int FindBoneAnimationIndex(std::shared_ptr<BoneAnimation> boneAnim);
 
 		/*
 		 * Update the AnimationBone

@@ -45,7 +45,7 @@ protected:
 	virtual void	StartCopy(IComponent*& copyTo) const override;
 	virtual bool	OnStart() override;
 
-	void			UpdateModel();
+	virtual void	UpdateModel();
 public:
 
 	int		m_vertexCount = 0;

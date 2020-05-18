@@ -113,13 +113,13 @@ namespace Resources
 					Core::Animation::SkeletalMesh* skeletal = new Core::Animation::SkeletalMesh();
 					if (resources.GetCountSkeleton(nameMesh) > 0)
 					{
-						skeletal->initBones(resources.GetSkeleton(nameMesh));
+						skeletal->InitBones(resources.GetSkeleton(nameMesh));
 
 						std::shared_ptr<Core::Animation::AnimationNode> anim1 = std::make_shared<Core::Animation::AnimationNode>();
-						anim1->nodeAnimation = resources.m_animations.begin()->second;
+						anim1->nodeAnimation = resources.LoadAsAnAnimation("Resources/Models/Combo01_SwordShieldAnim.FBX");
 
 						std::shared_ptr<Core::Animation::AnimationNode> anim2 = std::make_shared<Core::Animation::AnimationNode>();
-						anim2->nodeAnimation = resources.m_animations["Resources/Models/Walk_SwordShieldAnim.FBX"];
+						anim2->nodeAnimation = resources.LoadAsAnAnimation("Resources/Models/Walk_SwordShieldAnim.FBX");
 
 						std::shared_ptr<Core::Animation::TransitionNode> transition1 = std::make_shared<Core::Animation::TransitionNode>();
 						transition1->InitTransition(anim1, anim2);

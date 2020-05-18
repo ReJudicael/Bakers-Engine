@@ -31,7 +31,7 @@ namespace Core::Animation
 		unsigned int nbKeyFrame;
 		std::string name;
 
-		std::map<std::string, BoneAnimation> animationTree;
+		std::map<std::string, std::shared_ptr<BoneAnimation>> animationTree;
 
 		void initAnimation(const aiAnimation* anim);
 	};

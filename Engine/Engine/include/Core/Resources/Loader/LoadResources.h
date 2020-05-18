@@ -357,6 +357,8 @@ namespace Resources
 			const aiNode* FindFirstBoneNode(const aiNode* node, 
 											const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex);
 
+			std::shared_ptr<Core::Animation::Animation> LoadAsAnAnimation(const std::string& fileName);
+
 			/**
 			 * Load all the animation of an assimp scene
 			 * @param scene: The scene of the 3D object load by assimp

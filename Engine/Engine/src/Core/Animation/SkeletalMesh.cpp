@@ -10,7 +10,7 @@ namespace Core::Animation
 {
 	RTTR_PLUGIN_REGISTRATION
 	{
-		registration::class_<SkeletalMesh>("SkeletalMesh")
+		registration::class_<SkeletalMesh>("Skeletal Mesh")
 			.constructor();
 	}
 
@@ -44,28 +44,49 @@ namespace Core::Animation
 		Core::Datastructure::IUpdatable::OnReset();
 	}
 
+	void SkeletalMesh::StartCopy(IComponent*& copyTo) const
+	{
+		copyTo = new SkeletalMesh();
+		OnCopy(copyTo);
+	}
 	void SkeletalMesh::OnCopy(IComponent* copyTo) const
 	{
 		Mesh::OnCopy(copyTo);
 		Core::Datastructure::IUpdatable::OnCopy(copyTo);
 	}
 
-	void SkeletalMesh::initBones(std::shared_ptr<BoneTree> inBone)
+	void	SkeletalMesh::UpdateModel()
+	{
+		Resources::Loader::ResourcesManager* manager{ GetRoot()->GetEngine()->GetResourcesManager() };
+		
+		if (m_isChild)
+		{
+			if (manager->GetCountSkeleton(m_modelName) <= 0)
+				return;
+			InitBones(manager->GetSkeleton(m_modelName));
+
+			animationHandler = AnimationHandler(nullptr);
+		}
+		Mesh::UpdateModel();
+	}
+
+	void SkeletalMesh::InitBones(std::shared_ptr<BoneTree> inBone)
 	{
 		 m_rootBone = inBone->rootBone;
 		 constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
 		 m_finalTransforms.resize(inBone->numBone);
-		 initBonePos(m_rootBone, identity);
+
+		 InitBonePos(m_rootBone, identity);
 	}
 
-	void SkeletalMesh::initBonePos(std::shared_ptr<Bone> currBone, Core::Maths::Mat4 parent)
+	void SkeletalMesh::InitBonePos(std::shared_ptr<Bone> currBone, Core::Maths::Mat4 parent)
 	{
 		Core::Maths::Mat4 curr = parent * currBone->baseTransform.GetLocalTrs();
 		m_finalTransforms[currBone->boneIndex] = curr * currBone->offsetBone;
 
 		for (auto i = 0; i < currBone->child.size(); i++)
 		{
-			initBonePos(currBone->child[i], curr);
+			InitBonePos(currBone->child[i], curr);
 		}
 	}
 
@@ -125,8 +146,9 @@ namespace Core::Animation
 
 	void SkeletalMesh::OnUpdate(float deltaTime)
 	{
-		GetParent()->GetScene()->GetEngine()->GetResourcesManager()->m_task.AddTask(&Core::Animation::AnimationHandler::UpdateSkeletalMeshBones,
-																					&animationHandler, m_rootBone, std::ref(m_finalTransforms), deltaTime);
+		GetParent()->GetScene()->GetEngine()->GetResourcesManager()->
+					m_task.AddTask(&Core::Animation::AnimationHandler::UpdateSkeletalMeshBones,
+					&animationHandler, m_rootBone, std::ref(m_finalTransforms), deltaTime);
 	}
 
 	void SkeletalMesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)

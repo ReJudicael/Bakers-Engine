@@ -41,11 +41,11 @@ namespace Resources::Loader
 		CreateShader("Wireframe", "Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		CreateShader("Skybox", "Resources\\Shaders\\SkyboxShader.vert", "Resources\\Shaders\\SkyboxShader.frag");
 
-		Shader normalMapShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		/*Shader normalMapShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		m_shaders.emplace("NormalMapDefault", std::make_shared<Shader>(normalMapShader));
 
 		Shader wireframeShader("Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
-		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
+		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));*/
 
 		Shader skeletal("./Resources/Shaders/SkeletalShader.vert", "./Resources/Shaders/SkeletalShader.frag");
 		m_shaders.emplace("Skeletal", std::make_shared<Shader>(skeletal));
@@ -131,7 +131,7 @@ namespace Resources::Loader
 			LoadMeshsSceneInSingleMesh(importer, scene, directoryFile);
 			LoadSceneResources(importer, scene, Name, directoryFile, graphInMulti);
 		}
-		else //if (Name.find(".fbx") != std::string::npos)
+		else
 		{
 			if (scene->HasAnimations())
 			{
@@ -154,11 +154,6 @@ namespace Resources::Loader
 					}
 
 				}
-				/*if (isSkeletal)
-				{
-					LoadMeshsSceneInSingleMesh(importer ,scene, directoryFile, isSkeletal,firstMeshWithBones);
-					Load3DObjectGraph(scene, Name, directoryFile, firstMeshWithBones, isSkeletal);
-				}*/
 				LoadMeshsScene(importer, scene, directoryFile);
 				LoadSceneResources(importer, scene, Name, directoryFile, graphInMulti);
 			}
@@ -202,7 +197,6 @@ namespace Resources::Loader
 				LoadaiMeshMaterial(importer, scene, mesh, directory, numberOfSameKey);
 			}
 		}
-		std::cout << "end load" << std::endl;
 	}
 
 	unsigned int ResourcesManager::LoadMeshsSceneCheckModelIsLoaded(std::shared_ptr<ModelData>& currModelData, 
@@ -281,22 +275,6 @@ namespace Resources::Loader
 			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, i, indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
-			/*if (isSkeletal)
-			{
-				if (mesh->HasBones())
-				{
-					LoadAnimationaiMesh(skeletalModelData, scene, mesh, 
-										directory + scene->mMeshes[firstMeshWithBones]->mName.data, 
-										numBones, indexLastMesh, bonesIndex);
-					skeletalModelData->LoadaiMeshModel(mesh, indexLastMesh);
-					indexLastMesh += mesh->mNumVertices;
-				}
-			}
-			else
-			{
-				skeletalModelData->LoadaiMeshModel(mesh, indexLastMesh);
-				indexLastMesh += mesh->mNumVertices;
-			}*/
 
 			if (scene->HasMaterials())
 			{
@@ -354,10 +332,6 @@ namespace Resources::Loader
 		aiQuaternion rot;
 		aiVector3D sca;
 		firstBoneNode->mParent->mTransformation.Decompose(sca, rot, pos);
-		/*tree->inverseGlobal = Core::Datastructure::Transform(
-								{ pos.x, pos.y, pos.z },
-								{ rot.w, rot.x, rot.y, rot.z },
-								{ sca.x, sca.y, sca.z }).GetLocalTrs().Inversed();*/
 
 		constexpr Core::Maths::Mat<4,4> i{ i.Identity() };
 
@@ -372,18 +346,8 @@ namespace Resources::Loader
 
 	const aiNode* ResourcesManager::FindFirstBoneNode(const aiNode* node, const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex)
 	{
-		/*aiVector3D pos;
-		aiQuaternion rot;
-		aiVector3D sca;
-		node->mTransformation.Decompose(sca, rot, pos);*/
-
 		if (bonesIndex->count(node->mName.data) > 0)
 			return node;
-		/*mat = mat * Core::Datastructure::Transform(
-			{ pos.x, pos.y, pos.z },
-			{ rot.w, rot.x, rot.y, rot.z },
-			{ sca.x, sca.y, sca.z }).GetLocalTrs();*/
-
 
 		for (unsigned int i{ 0 }; i < node->mNumChildren; i++)
 		{
@@ -393,6 +357,33 @@ namespace Resources::Loader
 		}
 
 		return nullptr;
+	}
+
+	std::shared_ptr<Core::Animation::Animation> ResourcesManager::LoadAsAnAnimation(const std::string& fileName)
+	{
+		if (m_animations.count(fileName) > 0)
+			return m_animations[fileName];
+
+		std::shared_ptr<ImporterData> importer = std::make_shared<ImporterData>();
+		const aiScene* scene = LoadSceneFromImporter(importer->importer, fileName.c_str());
+
+		if (!scene)
+		{
+			return nullptr;
+		}
+
+		if (!scene->HasAnimations())
+			return nullptr;
+
+		aiAnimation* anim = scene->mAnimations[0];
+
+		std::shared_ptr<Core::Animation::Animation> animation = std::make_shared<Core::Animation::Animation>();
+
+		animation->initAnimation(anim);
+
+		m_animations.emplace(fileName, animation);
+
+		return animation;
 	}
 
 	void ResourcesManager::LoadAnimation(const aiScene* scene, const std::string& directory, const std::string& fileName)
