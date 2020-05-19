@@ -128,6 +128,8 @@ namespace Core
 
 			GLFWwindow* GetWindow();
 
+			virtual void InitMesh(Mesh* mesh) {};
+
 			Core::SystemManagement::InputSystem* GetInputSystem();
 			Core::Audio::AudioSystem* GetAudioSystem();
 			int								GetFBONum(Core::Renderer::FBOType t);

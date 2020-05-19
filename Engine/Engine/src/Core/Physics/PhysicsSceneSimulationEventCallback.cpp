@@ -37,8 +37,8 @@ namespace Core::Physics
 					physx::PxVec3 impulse = contacts[0].impulse;
 					impulseVector = { impulse.x,impulse.y, impulse.z };
 
-					Core::Datastructure::IPhysics* contact1 = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[0]->userData));
-					Core::Datastructure::IPhysics* contact2 = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[1]->userData));
+					Core::Physics::Collider* contact1 = dynamic_cast<Core::Physics::Collider*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[0]->userData));
+					Core::Physics::Collider* contact2 = dynamic_cast<Core::Physics::Collider*>(static_cast<Core::Datastructure::IComponent*>(pairHeader.actors[1]->userData));
 					if(contact1)
 						contact1->OnContactEvent(contact2, impulseVector, hitResult);
 					if(contact2)
@@ -80,8 +80,8 @@ namespace Core::Physics
 	}
 	void PhysicsSceneSimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
 	{
-		Core::Datastructure::IPhysics* triggered = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairs->triggerActor->userData));
-		Core::Datastructure::IPhysics* triggerWith = dynamic_cast<Core::Datastructure::IPhysics*>(static_cast<Core::Datastructure::IComponent*>(pairs->otherActor->userData));
+		Core::Physics::Collider* triggered = dynamic_cast<Core::Physics::Collider*>(static_cast<Core::Datastructure::IComponent*>(pairs->triggerActor->userData));
+		Core::Physics::Collider* triggerWith = dynamic_cast<Core::Physics::Collider*>(static_cast<Core::Datastructure::IComponent*>(pairs->otherActor->userData));
 
 		if (pairs->status == physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{

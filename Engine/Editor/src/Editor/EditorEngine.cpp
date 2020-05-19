@@ -3,6 +3,8 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include "PxQueryReport.h"
+#include "PxRigidActor.h"
 
 #include "WindowFileBrowser.h"
 #include "WindowConsole.h"
@@ -15,6 +17,7 @@
 #include "RootObject.hpp"
 #include "CoreMinimal.h"
 #include "LoadResources.h"
+#include "PhysicsScene.h"
 
 #include <fstream>
 
@@ -32,6 +35,8 @@ namespace Editor
 
 	EditorEngine::~EditorEngine()
 	{
+		if(m_editorScene)
+			m_editorScene->release();
 		delete m_man;
 		glfwDestroyWindow(m_window);
 		glfwTerminate();
@@ -68,6 +73,8 @@ namespace Editor
 
 		if (!gladLoadGL())
 			return 202;
+
+		m_physicsScene->CreateQueryScene(m_editorScene);
 
 		glDebugMessageCallback(MessageCallback, 0);
 
@@ -189,10 +196,27 @@ namespace Editor
 
 	void	EditorEngine::SelectObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& direction)
 	{
-		Core::Datastructure::Object* result = SearchObjectInScene(origin, direction);
+		physx::PxRaycastBuffer hit;
+		Core::Datastructure::Object* result{ nullptr };
+		if(m_editorScene->raycast(physx::PxVec3{ origin.x, origin.y, origin.z },
+								physx::PxVec3{ direction.x, direction.y, direction.z }, FLT_MAX, hit))
+		{
+			Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(hit.block.actor->userData) };
+			if (physicsMesh)
+				result = physicsMesh->GetParent();
+		}
+		else
+		{
+			result = SearchObjectInScene(origin, direction);
+		}
 
 		if (result != nullptr)
 			objectSelected = result;
+	}
+
+	void EditorEngine::InitMesh(Mesh* mesh)
+	{
+		mesh->CreateAABBMesh(m_editorScene);
 	}
 
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept

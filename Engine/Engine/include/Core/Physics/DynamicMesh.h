@@ -18,12 +18,22 @@ namespace Core
 {
 	namespace Physics
 	{
+		struct RigidBodySave
+		{
+			float	Mass;
+			bool	XLock;
+			bool	YLock;
+			bool	ZLock;
+			bool	Gravity;
+		};
+
 		/**
 		 * Contains a collider and a link to a PxRigidDynamic from the PhysicsScene
 		 */
 		BAKERS_API_CLASS RigidBody : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IUpdatable
 		{
 		private:
+			RigidBodySave*			m_tmpRigidBodySave;
 			physx::PxRigidDynamic*	m_pxRigidBody;
 			int						m_IDFunctionSetTRS;
 			bool					m_BodyChangeGlobalPos;
@@ -31,14 +41,26 @@ namespace Core
 		protected:
 
 			/**
-			 * Function inheritated from IPhysics and IUpdatable,
-			 * override for call the two OnStart of IPhysics and IUpdatable
+			 * Function inheritated from ComponentBase and IUpdatable,
+			 * override for call the two OnStart of ComponentBase and IUpdatable
 			 */
 			virtual bool OnStart() override;
 
+			/**
+			 * Function inheritated from ComponentBase
+			 * override for call the StartCopy of ComponentBase
+			 * and init copyTo as an RigidBody
+			 */
 			virtual void StartCopy(IComponent*& copyTo) const override;
 
+			/**
+			 * Function inheritated from ComponentBase
+			 * override for call the OnCopy of ComponentBase
+			 * and copy the save
+			 */
 			virtual void OnCopy(IComponent* copyTo) const override;
+
+			RigidBodySave* SaveRigidBody() const;
 
 			/*
 			 * Release the PxRigidDynamic, 
@@ -58,11 +80,18 @@ namespace Core
 			 */
 			virtual void OnReset() override;
 
+			void SetToDefault();
+
 		public:
 			/**
 			 * Default Constructor
 			 */
 			RigidBody() = default;
+
+			/**
+			 * Default Destructor
+			 */
+			~RigidBody();
 
 			virtual void OnInit() override;
 
@@ -73,8 +102,15 @@ namespace Core
 			 */
 			virtual void OnUpdate(float deltaTime) override;
 
-			void InitPhysic(physx::PxShape* shape);
+			/**
+			 * Init the value of the physics if they are save
+			 */
+			void InitPhysic();
 
+			/**
+			 * Set the position of the PxRigidActor with the position 
+			 * of the parent object
+			 */
 			void SetPhysicsTransformParent();
 
 			/** 
@@ -87,7 +123,7 @@ namespace Core
 			 * Get the linear velocity of the PxRigidDynamic
 			 * @return the current velocity
 			 */
-			virtual Core::Maths::Vec3 GetVelocity();
+			virtual Core::Maths::Vec3 GetVelocity() const;
 			
 			/**
 			 * Add a vector to the linear velocity of the PxRigidDynamic
@@ -105,7 +141,7 @@ namespace Core
 			 * Get the mass of the PxRigidDynamic
 			 * @return the current mass
 			 */
-			float GetMass();
+			float GetMass() const;
 
 			/**
 			 * Clear all the forces of the PxRigidDynamic
@@ -129,7 +165,7 @@ namespace Core
 			 * Get if the rotation in x is lock or not
 			 * @return true if the axis x is lock
 			 */
-			virtual bool GetPhysicsLockXRotation();
+			virtual bool GetPhysicsLockXRotation() const;
 
 			/**
 			 * Lock or delock the rotation for the axis x during the physics simulation
@@ -140,7 +176,7 @@ namespace Core
 			 * Get if the rotation in x is lock or not
 			 * @return true if the axis y is lock
 			 */
-			virtual bool GetPhysicsLockYRotation();
+			virtual bool GetPhysicsLockYRotation() const;
 
 			/**
 			 * Lock or delock the rotation for the axis x during the physics simulation
@@ -151,7 +187,19 @@ namespace Core
 			 * Get if the rotation in x is lock or not
 			 * @return true if the axis z is lock
 			 */
-			virtual bool GetPhysicsLockZRotation();
+			virtual bool GetPhysicsLockZRotation() const;
+
+			/**
+			 * Lock or delock the rotation for the axis x during the physics simulation
+			 * @param use: true use the gravity
+			 */
+			virtual void SetUseGravity(bool use);
+
+			/**
+			 * Lock or delock the rotation for the axis x during the physics simulation
+			 * @return true if the RigidBody use the gravity
+			 */
+			virtual bool GetUseGravity() const;
 
 
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IUpdatable)

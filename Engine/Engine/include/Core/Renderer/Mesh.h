@@ -15,6 +15,11 @@
 #include "Model.h"
 #include "CoreMinimal.h"
 
+namespace physx
+{
+	class PxScene;
+}
+
 namespace Resources
 {
 	struct Material;
@@ -84,7 +89,7 @@ public:
 	/**
 	 * Create the AABB box of the mesh in the physics scene
 	 */
-	void CreateAABBMesh();
+	void CreateAABBMesh(physx::PxScene*& scene);
 
 	inline Core::Maths::Vec3 GetAABBMaxModel()
 	{

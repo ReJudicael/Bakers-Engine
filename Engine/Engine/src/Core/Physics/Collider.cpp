@@ -31,41 +31,50 @@ namespace Core::Physics
 		m_pxRigidActor->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(
 									dynamic_cast<Core::Physics::Collider*>(this)));
 
+		m_IDFunctionSetTRS = GetParent()->SetAnEventTransformChange(std::bind(&Collider::SetPhysicsTransformParent, this));
+		
 		Core::Datastructure::IRenderable::OnInit();
 		Core::Datastructure::IComponent::OnInit();
 	}
 
 	bool Collider::OnStart()
 	{
-		m_IDFunctionSetTRS = GetParent()->SetAnEventTransformChange(std::bind(&Collider::SetPhysicsTransformParent, this));
 		return Core::Datastructure::IRenderable::OnStart() && Core::Datastructure::IComponent::OnStart();
-
 	}
 
 	void Collider::OnCopy(IComponent* copyTo) const
 	{
 
-		Collider* phy = dynamic_cast<Collider*>(copyTo);
+		Collider* col = dynamic_cast<Collider*>(copyTo);
 
-		phy->m_pxMaterial = m_pxMaterial;
-		phy->m_pxRigidActor = m_pxRigidActor;
-		phy->m_shader = m_shader;
-		phy->m_model = m_model;
-		phy->OnTriggerEnterEvent = OnTriggerEnterEvent;
-		phy->OnTriggerExitEvent = OnTriggerExitEvent;
-		phy->OnContactEvent = OnContactEvent;
+		col->m_tmpColliderSave = SaveCollider();
 
 		Core::Datastructure::IRenderable::OnCopy(copyTo);
 		Core::Datastructure::IComponent::OnCopy(copyTo);
 
 	}
 
+	ColliderSave* Collider::SaveCollider() const
+	{
+		if (!m_pxRigidActor && !m_pxShape && !m_pxMaterial)
+			return nullptr;
+		ColliderSave* colliderSave = new ColliderSave();
+
+		colliderSave->isTrigger = IsTrigger();
+		colliderSave->localPosition = GetLocalPosition();
+		colliderSave->localRotation = GetLocalRotationEuler();
+		colliderSave->physicsMaterial = GetMaterial();
+		colliderSave->raycastFilter = GetRaycastFilter();
+	}
+
 	void Collider::DestroyRigidActor()
 	{
 		GetRoot()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_pxRigidActor);
+		//m_pxRigidActor->detachShape(*m_pxShape);
 		DestroyShape();
-		m_pxRigidActor->release();
-		m_pxRigidActor = nullptr;
+		if(m_pxRigidActor->isReleasable())
+			m_pxRigidActor->release();
+		//m_pxRigidActor = nullptr;
 	}
 
 	void Collider::OnDestroy()
@@ -83,7 +92,7 @@ namespace Core::Physics
 	{
 		// TODO
 		//Maybe To improve
-		DestroyRigidActor();
+		//DestroyRigidActor();
 		Core::Datastructure::IRenderable::OnReset();
 		Core::Datastructure::IComponent::OnReset();
 	}
@@ -97,18 +106,26 @@ namespace Core::Physics
 
 		ID = GetParent()->SetAnEventTransformChange(
 								std::bind(&Core::Physics::RigidBody::SetPhysicsTransformParent, rigidBody));
+		rigidBody->InitPhysic();
 	}
 
 	void Collider::SetLocalPosition(Core::Maths::Vec3 pos)
 	{
-		if (!m_pxShape)
-			return;
-		physx::PxTransform transform = m_pxShape->getLocalPose();
-		transform.p = physx::PxVec3(pos.x, pos.y, pos.z);
-		m_pxShape->setLocalPose(transform);
+		if (m_pxShape)
+		{
+			physx::PxTransform transform = m_pxShape->getLocalPose();
+			transform.p = physx::PxVec3(pos.x, pos.y, pos.z);
+			m_pxShape->setLocalPose(transform);
+		}
+		else if (!IsDestroyed())
+		{
+			if (!m_tmpColliderSave)
+				m_tmpColliderSave = new ColliderSave();
+			m_tmpColliderSave->localPosition = pos;
+		}
 	}
 
-	Core::Maths::Vec3 Collider::GetLocalPosition()
+	Core::Maths::Vec3 Collider::GetLocalPosition() const
 	{
 		if (!m_pxShape)
 			return{};
@@ -125,7 +142,7 @@ namespace Core::Physics
 		m_pxShape->setLocalPose(transform);
 	}
 
-	Core::Maths::Quat Collider::GetLocalRotationQuat()
+	Core::Maths::Quat Collider::GetLocalRotationQuat() const
 	{
 		if (!m_pxShape)
 			return{};
@@ -136,33 +153,47 @@ namespace Core::Physics
 
 	void Collider::SetLocalRotationEuler(Core::Maths::Vec3 euler)
 	{
-		if (!m_pxShape)
-			return;
-		physx::PxTransform transform = m_pxShape->getLocalPose();
-		Core::Maths::Quat quat{ euler };
-		transform.q = { quat.x, quat.y, quat.z, quat.w };
-		m_pxShape->setLocalPose(transform);
+		if (m_pxShape)
+		{
+			physx::PxTransform transform = m_pxShape->getLocalPose();
+			Core::Maths::Quat quat{ euler };
+			transform.q = { quat.x, quat.y, quat.z, quat.w };
+			m_pxShape->setLocalPose(transform);
+		}
+		else if (!IsDestroyed())
+		{
+			if (!m_tmpColliderSave)
+				m_tmpColliderSave = new ColliderSave();
+			m_tmpColliderSave->localRotation = {euler};
+		}
 	}
 
-	Core::Maths::Vec3 Collider::GetLocalRotationEuler()
+	Core::Maths::Vec3 Collider::GetLocalRotationEuler() const
 	{
 		if (!m_pxShape)
 			return{};
 		physx::PxQuat localRot = m_pxShape->getLocalPose().q;
 		Core::Maths::Quat quat{ localRot.w, localRot.x, localRot.y, localRot.z };
-		return quat.ToEulerAngles();
+		return quat.ToEulerAngles() * 180/M_1_PI;
 	}
 
 	void Collider::SetMaterial(Core::Maths::Vec3 mat)
 	{
-		if (!m_pxShape)
-			return;
-		m_pxMaterial->setStaticFriction(mat.x);
-		m_pxMaterial->setDynamicFriction(mat.y);
-		m_pxMaterial->setRestitution(mat.z);
+		if (m_pxShape)
+		{
+			m_pxMaterial->setStaticFriction(mat.x);
+			m_pxMaterial->setDynamicFriction(mat.y);
+			m_pxMaterial->setRestitution(mat.z);
+		}
+		else if (!IsDestroyed())
+		{
+			if (!m_tmpColliderSave)
+				m_tmpColliderSave = new ColliderSave();
+			m_tmpColliderSave->physicsMaterial = { mat };
+		}
 	}
 
-	Core::Maths::Vec3 Collider::GetMaterial()
+	Core::Maths::Vec3 Collider::GetMaterial() const
 	{
 		if (!m_pxShape)
 			return {};
@@ -171,15 +202,22 @@ namespace Core::Physics
 
 	void Collider::Trigger(bool trigger)
 	{
-		if (!m_pxShape)
-			return;
-		if (trigger)
-			TriggerCollider();
-		else
-			SimulationCollider();
+		if (m_pxShape)
+		{
+			if (trigger)
+				TriggerCollider();
+			else
+				SimulationCollider();
+		}
+		else if (!IsDestroyed())
+		{
+			if (!m_tmpColliderSave)
+				m_tmpColliderSave = new ColliderSave();
+			m_tmpColliderSave->isTrigger = trigger;
+		}
 	}
 
-	bool Collider::IsTrigger()
+	bool Collider::IsTrigger() const
 	{
 		if (!m_pxShape)
 			return false;
@@ -204,14 +242,21 @@ namespace Core::Physics
 
 	void Collider::SetRaycastFilter(const EFilterRaycast& filter)
 	{
-		if (!m_pxShape)
-			return;
-		physx::PxFilterData filterData;
-		filterData.word0 = static_cast<physx::PxU32>(filter);
-		m_pxShape->setQueryFilterData(filterData);
+		if (m_pxShape)
+		{
+			physx::PxFilterData filterData;
+			filterData.word0 = static_cast<physx::PxU32>(filter);
+			m_pxShape->setQueryFilterData(filterData);
+		}
+		else if (!IsDestroyed())
+		{
+			if (!m_tmpColliderSave)
+				m_tmpColliderSave = new ColliderSave();
+			m_tmpColliderSave->raycastFilter = filter;
+		}
 	}
 
-	EFilterRaycast Collider::GetRaycastFilter()
+	EFilterRaycast Collider::GetRaycastFilter() const
 	{
 		if (!m_pxShape)
 			return EFilterRaycast::GROUPE1;
@@ -222,7 +267,7 @@ namespace Core::Physics
 
 	void Collider::DestroyShape()
 	{
-		if (m_pxShape == nullptr)
+		if (m_pxShape)
 			return;
 		m_pxShape->release();
 		m_pxMaterial->release();
@@ -243,7 +288,8 @@ namespace Core::Physics
 
 	Collider::~Collider()
 	{
-		DestroyShape();
+		if (m_tmpColliderSave)
+			delete m_tmpColliderSave;
 	}
 
 }

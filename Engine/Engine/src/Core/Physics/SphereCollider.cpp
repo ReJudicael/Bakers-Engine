@@ -45,6 +45,11 @@ namespace Core::Physics
 	void SphereCollider::OnCopy(IComponent* copyTo) const
 	{
 		Core::Physics::Collider::OnCopy(copyTo);
+
+		SphereCollider* col = dynamic_cast<SphereCollider*>(copyTo);
+
+		if(col->m_tmpColliderSave)
+			col->m_tmpColliderSave->extent.x = GetSphereHalfExtent();
 	}
 
 	void SphereCollider::OnDestroy()
@@ -60,22 +65,50 @@ namespace Core::Physics
 	void SphereCollider::CreateShape(physx::PxPhysics* physics)
 	{
 		physx::PxVec3 localPosition = physx::PxVec3(0.f, 0.f, 0.f);
+		physx::PxQuat localRotation{};
+		physx::PxVec3 mat = { 1.5f, 1.5f, 0.0f };
+		physx::PxReal radius{ 0.5f };
+		physx::PxU32 filter;
 
-		m_pxMaterial = physics->createMaterial(1.5f, 1.5f, 0.0f);
-		m_pxShape = physics->createShape(physx::PxSphereGeometry(0.5f), *m_pxMaterial, true);
-		m_pxShape->setLocalPose(physx::PxTransform(localPosition));
+		if (m_tmpColliderSave)
+		{
+			localPosition = { m_tmpColliderSave->localPosition.x, m_tmpColliderSave->localPosition.y, m_tmpColliderSave->localPosition.z };
+			localRotation = { m_tmpColliderSave->localRotation.x, m_tmpColliderSave->localRotation.y, 
+								m_tmpColliderSave->localRotation.z, m_tmpColliderSave->localRotation.w };
+			radius = m_tmpColliderSave->extent.x;
 
-		SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
+			mat = { m_tmpColliderSave->physicsMaterial.x, m_tmpColliderSave->physicsMaterial.y, m_tmpColliderSave->physicsMaterial.z };
+		}
+
+		m_pxMaterial = physics->createMaterial(mat.x, mat.y, mat.z);
+		m_pxShape = physics->createShape(physx::PxSphereGeometry(radius), *m_pxMaterial, true);
+		m_pxShape->setLocalPose(physx::PxTransform(localPosition, localRotation));
+		
+		if (m_tmpColliderSave)
+		{
+			SetRaycastFilter(m_tmpColliderSave->raycastFilter);
+			Trigger(m_tmpColliderSave->isTrigger);
+			delete m_tmpColliderSave;
+			m_tmpColliderSave = nullptr;
+		}
+		else
+			SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
 	}
 
 	void SphereCollider::SetSphereHalfExtent(float halfExtent)
 	{
-		m_extent = halfExtent;
-		if (m_pxShape != nullptr)
+		if (m_pxShape && halfExtent > 0.f)
 			m_pxShape->setGeometry(physx::PxSphereGeometry(halfExtent));
+		else if (!IsDestroyed())
+		{
+			if (!m_tmpColliderSave)
+				m_tmpColliderSave = new ColliderSave();
+			m_tmpColliderSave->extent.x = halfExtent;
+		}
+
 	}
 
-	float SphereCollider::GetSphereHalfExtent()
+	float SphereCollider::GetSphereHalfExtent() const
 	{
 		if (m_pxShape != nullptr)
 		{

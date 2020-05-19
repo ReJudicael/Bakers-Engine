@@ -45,6 +45,10 @@ namespace Core::Physics
 	void BoxCollider::OnCopy(IComponent* copyTo) const
 	{
 		Core::Physics::Collider::OnCopy(copyTo);
+
+		BoxCollider* col = dynamic_cast<BoxCollider*>(copyTo);
+		if(col->m_tmpColliderSave)
+			col->m_tmpColliderSave->extent = GetBoxHalfExtent();
 	}
 
 	void BoxCollider::OnDestroy()
@@ -59,24 +63,51 @@ namespace Core::Physics
 
 	void BoxCollider::CreateShape(physx::PxPhysics* physics)
 	{
-		physx::PxVec3 extent = physx::PxVec3(m_extent.x, m_extent.y, m_extent.z);
 		physx::PxVec3 localPosition = physx::PxVec3(0.f, 0.f, 0.f);
+		physx::PxQuat localRotation{};
+		physx::PxVec3 mat = { 1.5f, 1.5f, 0.0f };
+		physx::PxVec3 extent{ 0.5 };
+		physx::PxU32 filter;
 
-		m_pxMaterial = physics->createMaterial(1.5f, 1.5f, 0.0f);
+		if (m_tmpColliderSave)
+		{
+			localPosition = { m_tmpColliderSave->localPosition.x, m_tmpColliderSave->localPosition.y, m_tmpColliderSave->localPosition.z };
+			localRotation = { m_tmpColliderSave->localRotation.x, m_tmpColliderSave->localRotation.y,
+								m_tmpColliderSave->localRotation.z, m_tmpColliderSave->localRotation.w };
+			extent = { m_tmpColliderSave->extent.x, m_tmpColliderSave->extent.y, m_tmpColliderSave->extent.z };
+
+			mat = { m_tmpColliderSave->physicsMaterial.x, m_tmpColliderSave->physicsMaterial.y, m_tmpColliderSave->physicsMaterial.z };
+		}
+
+		m_pxMaterial = physics->createMaterial(mat.x, mat.y, mat.z);
 		m_pxShape = physics->createShape(physx::PxBoxGeometry(extent), *m_pxMaterial, true);
-		m_pxShape->setLocalPose(physx::PxTransform(localPosition));
+		m_pxShape->setLocalPose(physx::PxTransform(localPosition, localRotation));
 
-		SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
+		if (m_tmpColliderSave)
+		{
+			SetRaycastFilter(m_tmpColliderSave->raycastFilter);
+			Trigger(m_tmpColliderSave->isTrigger);
+			delete m_tmpColliderSave;
+			m_tmpColliderSave = nullptr;
+		}
+		else
+			SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
+
 	}
 
 	void BoxCollider::SetBoxHalfExtent(Core::Maths::Vec3 halfExtent)
 	{
-		m_extent = halfExtent;
-		if(m_pxShape != nullptr)
+		if(m_pxShape && halfExtent.x > 0.f && halfExtent.y > 0.f && halfExtent.z > 0.f)
 			m_pxShape->setGeometry(physx::PxBoxGeometry(physx::PxVec3{ halfExtent.x, halfExtent.y, halfExtent.z }));
+		else if (!IsDestroyed())
+		{
+			if (!m_tmpColliderSave)
+				m_tmpColliderSave = new ColliderSave();
+			m_tmpColliderSave->extent = halfExtent;
+		}
 	}
 	
-	Core::Maths::Vec3 BoxCollider::GetBoxHalfExtent()
+	Core::Maths::Vec3 BoxCollider::GetBoxHalfExtent() const
 	{
 		if (m_pxShape != nullptr)
 		{

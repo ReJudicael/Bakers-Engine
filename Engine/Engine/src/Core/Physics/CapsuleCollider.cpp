@@ -45,6 +45,11 @@ namespace Core::Physics
 	void CapsuleCollider::OnCopy(IComponent* copyTo) const
 	{
 		Core::Physics::Collider::OnCopy(copyTo);
+
+		CapsuleCollider* col = dynamic_cast<CapsuleCollider*>(copyTo);
+
+		if(col->m_tmpColliderSave)
+			col->m_tmpColliderSave->extent = { GetCapsuleHalfExtent().x, GetCapsuleHalfExtent().y };
 	}
 
 	void CapsuleCollider::OnDestroy()
@@ -59,26 +64,58 @@ namespace Core::Physics
 
 	void CapsuleCollider::CreateShape(physx::PxPhysics* physics)
 	{
-		//physx::PxVec2 extent = physx::PxVec3(m_extent.x, m_extent.y);
 		physx::PxVec3 localPosition = physx::PxVec3(0.f, 0.f, 0.f);
-		// rotation 90 on z axis
-		physx::PxQuat localRot = physx::PxQuat(1.57f, physx::PxVec3{0.f, 0.f, 1.f});
+		// rotate 90 degree on z axis
+		physx::PxQuat localRotation = physx::PxQuat(1.57f, physx::PxVec3{ 0.f, 0.f, 1.f });
+		physx::PxVec3 mat = { 1.5f, 1.5f, 0.0f };
+		physx::PxReal radius{ 0.5 };
+		physx::PxReal halfHeight{ 0.5 };
+		physx::PxU32 filter;
 
-		m_pxMaterial = physics->createMaterial(1.f, 1.f, 0.0f);
-		m_pxShape = physics->createShape(physx::PxCapsuleGeometry(0.5f,0.5f), *m_pxMaterial, true);
-		m_pxShape->setLocalPose(physx::PxTransform(localPosition, localRot));
+		if (m_tmpColliderSave)
+		{
+			localPosition = { m_tmpColliderSave->localPosition.x, m_tmpColliderSave->localPosition.y, m_tmpColliderSave->localPosition.z };
+			localRotation = { m_tmpColliderSave->localRotation.x, m_tmpColliderSave->localRotation.y,
+								m_tmpColliderSave->localRotation.z, m_tmpColliderSave->localRotation.w };
+			radius = m_tmpColliderSave->extent.x;
+			halfHeight = m_tmpColliderSave->extent.y;
 
-		SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
+			mat = { m_tmpColliderSave->physicsMaterial.x, m_tmpColliderSave->physicsMaterial.y, m_tmpColliderSave->physicsMaterial.z };
+		}
+
+		m_pxMaterial = physics->createMaterial(mat.x, mat.y, mat.z);
+
+		m_pxShape = physics->createShape(physx::PxCapsuleGeometry(radius, halfHeight), *m_pxMaterial, true);
+		m_pxShape->setLocalPose(physx::PxTransform(localPosition, localRotation));
+
+
+		if (m_tmpColliderSave)
+		{
+			SetRaycastFilter(m_tmpColliderSave->raycastFilter);
+			Trigger(m_tmpColliderSave->isTrigger);
+			delete m_tmpColliderSave;
+			m_tmpColliderSave = nullptr;
+		}
+		else
+			SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
+
+
 	}
 
 	void CapsuleCollider::SetCapsuleHalfExtent(Core::Maths::Vec2 halfExtent)
 	{
-		m_extent = halfExtent;
-		if (m_pxShape != nullptr)
+		if (m_pxShape && halfExtent.x > 0.f && halfExtent.y > 0.f)
 			m_pxShape->setGeometry(physx::PxCapsuleGeometry(halfExtent.x, halfExtent.y));
+		else if (!IsDestroyed())
+		{
+			if (!m_tmpColliderSave)
+				m_tmpColliderSave = new ColliderSave();
+			m_tmpColliderSave->extent = {halfExtent.x, halfExtent.y, 0.f};
+		}
+
 	}
 
-	Core::Maths::Vec2 CapsuleCollider::GetCapsuleHalfExtent()
+	Core::Maths::Vec2 CapsuleCollider::GetCapsuleHalfExtent() const
 	{
 		if (m_pxShape != nullptr)
 		{

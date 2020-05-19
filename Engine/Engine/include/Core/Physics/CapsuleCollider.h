@@ -17,9 +17,6 @@ namespace Core::Physics
 
 	BAKERS_API_CLASS CapsuleCollider : public Core::Datastructure::ComponentBase, public virtual Collider
 	{
-	private:
-		Core::Maths::Vec2	m_extent{ 0.5f,1.f };
-
 	protected:
 
 		virtual void StartCopy(IComponent*& copyTo) const override;
@@ -61,7 +58,7 @@ namespace Core::Physics
 		 * Get the half extent of the capsule collider
 		 * @return the half extent of the capsule collider
 		 */
-		Core::Maths::Vec2 GetCapsuleHalfExtent();
+		Core::Maths::Vec2 GetCapsuleHalfExtent() const;
 
 		/**
 		 * Draw the collider as a capsule

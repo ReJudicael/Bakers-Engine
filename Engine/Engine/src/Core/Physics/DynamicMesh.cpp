@@ -19,6 +19,7 @@ namespace Core
 			.constructor()
 			.property("Velocity", &Core::Physics::RigidBody::GetVelocity, &Core::Physics::RigidBody::SetLinearVelocity)
 			.property("Mass", &Core::Physics::RigidBody::GetMass, &Core::Physics::RigidBody::SetMass)
+			.property("Use Gravity", &Core::Physics::RigidBody::GetUseGravity, &Core::Physics::RigidBody::SetUseGravity)
 			.property("Rotation XLock", &Core::Physics::RigidBody::GetPhysicsLockXRotation,
 						&Core::Physics::RigidBody::SetPhysicsLockXRotation)
 			.property("Rotation YLock", &Core::Physics::RigidBody::GetPhysicsLockYRotation,
@@ -60,10 +61,21 @@ namespace Core
 
 			RigidBody* phy = dynamic_cast<RigidBody*>(copyTo);
 
-			phy->m_pxRigidBody = m_pxRigidBody;
-			phy->m_BodyChangeGlobalPos = m_BodyChangeGlobalPos;
-			phy->m_IDFunctionSetTRS = m_IDFunctionSetTRS;
+			phy->m_tmpRigidBodySave = SaveRigidBody();
 
+		}
+
+		RigidBodySave* RigidBody::SaveRigidBody() const
+		{
+			if (!m_pxRigidBody)
+				return nullptr;
+			RigidBodySave* save = new RigidBodySave();
+
+			save->Gravity = GetUseGravity();
+			save->Mass = GetMass();
+			save->XLock = GetPhysicsLockXRotation();
+			save->YLock = GetPhysicsLockYRotation();
+			save->ZLock = GetPhysicsLockZRotation();
 		}
 
 		void RigidBody::DestroyDynamicMesh()
@@ -90,36 +102,31 @@ namespace Core
 
 		void RigidBody::OnReset()
 		{
-			// TODO
-			//Maybe To improve
-			DestroyDynamicMesh();
+			
+			SetToDefault();
 			ComponentBase::OnReset();
 			IUpdatable::OnReset();
 		}
 
-		/*void RigidBody::CreateActor(physx::PxPhysics* physics, physx::PxScene* scene)
+		void RigidBody::SetToDefault()
 		{
-			Maths::Vec3 vec = GetParent()->GetGlobalPos();
-			physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
-			Maths::Quat quat = GetParent()->GetGlobalRot();
-			physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
-			m_dynamicMesh = physics->createRigidDynamic(physx::PxTransform(position, rotation));
-			m_dynamicMesh->attachShape(*m_collider->GetShape());
-			
-			m_dynamicMesh->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
-			
-			// usefull if we don't want to do the update every time if the rigid doesn't move
-			//m_dynamicMesh->setActorFlag(physx::PxActorFlag::eSEND_SLEEP_NOTIFIES);
-			
-			m_dynamicMesh->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(dynamic_cast<Core::Datastructure::IPhysics*>(this)));
+			PhysicsLockRotation(false, false, false);
+			SetMass(1.f);
+			SetUseGravity(true);
+		}
 
-			scene->addActor(*m_dynamicMesh);
-			PhysicsLockRotation(true, false, true);
-		}*/
-
-		void RigidBody::InitPhysic(physx::PxShape* shape)
+		void RigidBody::InitPhysic()
 		{
-			
+			if (m_tmpRigidBodySave)
+			{
+				PhysicsLockRotation(m_tmpRigidBodySave->XLock, m_tmpRigidBodySave->YLock, m_tmpRigidBodySave->ZLock);
+				SetMass(m_tmpRigidBodySave->Mass);
+				SetUseGravity(m_tmpRigidBodySave->Gravity);
+
+				delete m_tmpRigidBodySave;
+				m_tmpRigidBodySave = nullptr;
+			}
+
 		}
 
 		void RigidBody::OnUpdate(float deltaTime)
@@ -136,8 +143,6 @@ namespace Core
 			GetParent()->SetGlobalPos({ pos.x, pos.y, pos.z });
 			m_BodyChangeGlobalPos = true;
 			GetParent()->SetGlobalRot({ rot.w, rot.x, rot.y, rot.z });
-			//float y = m_dynamicMesh->getLinearVelocity().y;
-
 		}
 
 		void RigidBody::SetPhysicsTransformParent()
@@ -165,7 +170,7 @@ namespace Core
 			m_pxRigidBody->setLinearVelocity({ newVelocity.x, newVelocity.y, newVelocity.z });
 		}
 
-		Core::Maths::Vec3 RigidBody::GetVelocity()
+		Core::Maths::Vec3 RigidBody::GetVelocity() const
 		{
 			if (m_pxRigidBody == nullptr)
 				return { 0.f, 0.f, 0.f };
@@ -180,12 +185,17 @@ namespace Core
 
 		void RigidBody::SetMass(const float mass)
 		{
-			if (m_pxRigidBody == nullptr)
-				return;
-			m_pxRigidBody->setMass(static_cast<physx::PxReal>(mass));
+			if (m_pxRigidBody)
+				m_pxRigidBody->setMass(static_cast<physx::PxReal>(mass));
+			else if (!IsDestroyed())
+			{
+				if (!m_tmpRigidBodySave)
+					m_tmpRigidBodySave = new RigidBodySave();
+				m_tmpRigidBodySave->Mass = mass;
+			}
 		}
 
-		float RigidBody::GetMass()
+		float RigidBody::GetMass() const
 		{
 			if (m_pxRigidBody == nullptr)
 				return 0;
@@ -210,12 +220,17 @@ namespace Core
 
 		void RigidBody::SetPhysicsLockXRotation(bool Axisx)
 		{
-			if (m_pxRigidBody == nullptr)
-				return;
-			m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, Axisx);
+			if (m_pxRigidBody)
+				m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, Axisx);
+			else if (!IsDestroyed())
+			{
+				if (!m_tmpRigidBodySave)
+					m_tmpRigidBodySave = new RigidBodySave();
+				m_tmpRigidBodySave->XLock = Axisx;
+			}
 		}
 
-		bool RigidBody::GetPhysicsLockXRotation()
+		bool RigidBody::GetPhysicsLockXRotation() const
 		{
 			if (m_pxRigidBody == nullptr)
 				return false;
@@ -224,12 +239,17 @@ namespace Core
 
 		void RigidBody::SetPhysicsLockYRotation(bool Axisy)
 		{
-			if (m_pxRigidBody == nullptr)
-				return;
-			m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, Axisy);
+			if (m_pxRigidBody)
+				m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, Axisy);
+			else if (!IsDestroyed())
+			{
+				if (!m_tmpRigidBodySave)
+					m_tmpRigidBodySave = new RigidBodySave();
+				m_tmpRigidBodySave->YLock = Axisy;
+			}
 		}
 
-		bool RigidBody::GetPhysicsLockYRotation()
+		bool RigidBody::GetPhysicsLockYRotation() const
 		{
 			if (m_pxRigidBody == nullptr)
 				return false;
@@ -238,16 +258,47 @@ namespace Core
 
 		void RigidBody::SetPhysicsLockZRotation(bool Axisz)
 		{
-			if (m_pxRigidBody == nullptr)
-				return;
-			m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, Axisz);
+			if (m_pxRigidBody)
+				m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, Axisz);
+			else if (!IsDestroyed())
+			{
+				if (!m_tmpRigidBodySave)
+					m_tmpRigidBodySave = new RigidBodySave();
+				m_tmpRigidBodySave->ZLock = Axisz;
+			}
 		}
 
-		bool RigidBody::GetPhysicsLockZRotation()
+		bool RigidBody::GetPhysicsLockZRotation() const
 		{
 			if (m_pxRigidBody == nullptr)
 				return false;
 			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
+		}
+
+		void RigidBody::SetUseGravity(bool use)
+		{
+			if (m_pxRigidBody)
+				m_pxRigidBody->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, !use);
+			else if (!IsDestroyed())
+			{
+				if (!m_tmpRigidBodySave)
+					m_tmpRigidBodySave = new RigidBodySave();
+				m_tmpRigidBodySave->Gravity = use;
+			}
+		}
+
+		bool RigidBody::GetUseGravity() const
+		{
+			if (m_pxRigidBody)
+				return !m_pxRigidBody->getActorFlags().isSet(physx::PxActorFlag::eDISABLE_GRAVITY);
+
+			return false;
+		}
+
+		RigidBody::~RigidBody()
+		{
+			if (m_tmpRigidBodySave)
+				delete m_tmpRigidBodySave;
 		}
 	}
 }

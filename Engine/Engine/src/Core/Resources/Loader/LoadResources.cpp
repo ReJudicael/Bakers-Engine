@@ -41,11 +41,11 @@ namespace Resources::Loader
 		CreateShader("Wireframe", "Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		CreateShader("Skybox", "Resources\\Shaders\\SkyboxShader.vert", "Resources\\Shaders\\SkyboxShader.frag");
 
-		/*Shader normalMapShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		Shader normalMapShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		m_shaders.emplace("NormalMapDefault", std::make_shared<Shader>(normalMapShader));
 
 		Shader wireframeShader("Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
-		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));*/
+		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
 
 		Shader skeletal("./Resources/Shaders/SkeletalShader.vert", "./Resources/Shaders/SkeletalShader.frag");
 		m_shaders.emplace("Skeletal", std::make_shared<Shader>(skeletal));

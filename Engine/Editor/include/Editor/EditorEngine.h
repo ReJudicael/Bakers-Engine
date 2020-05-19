@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PxScene.h"
+
 #include "EngineCore.h"
 #include "GuiManager.h"
 #include "CoreMinimal.h"
@@ -29,6 +31,8 @@ namespace Editor
 		bool				m_step{ false };
 
 		json				m_savedScene;
+
+		std::vector<Mesh*> m_meshesNeedInit;
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
 		std::shared_ptr<Resources::Material> materialSelected{ nullptr };
@@ -38,6 +42,8 @@ namespace Editor
 
 
 		Core::SystemManagement::InputSystem* m_editorInput{ nullptr };
+
+		physx::PxScene*		m_editorScene;
 
 	public:
 		EditorEngine();
@@ -52,7 +58,8 @@ namespace Editor
 		void	Render() override;
 		bool	IsSelectingEngineView();
 		void	SelectObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& direction);
-
+		
+		virtual void InitMesh(Mesh* mesh) override;
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
 
 		void	Play() { m_state = Core::Datastructure::EngineState::STARTING; }

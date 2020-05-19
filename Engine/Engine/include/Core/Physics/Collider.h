@@ -44,13 +44,25 @@ namespace Core
 
 		class RigidBody;
 
+		struct ColliderSave
+		{
+			Core::Maths::Vec3	localPosition;
+			Core::Maths::Quat	localRotation;
+			Core::Maths::Vec3	extent;
+			Core::Maths::Vec3	physicsMaterial;
+			bool				isTrigger;
+			EFilterRaycast		raycastFilter;
+		};
+
 		/**
 		 * Contains the shape and the material of the physics mesh 
 		 * with wich he is attached
 		 */
 		BAKERS_API_CLASS Collider : public virtual Core::Datastructure::IComponent, public virtual Core::Datastructure::IRenderable
 		{
+
 		protected:
+			ColliderSave*						m_tmpColliderSave;
 			physx::PxShape*						m_pxShape{};
 			physx::PxMaterial*					m_pxMaterial{};
 			physx::PxRigidActor*				m_pxRigidActor{};
@@ -66,6 +78,8 @@ namespace Core
 		protected:
 
 			virtual void OnCopy(IComponent* copyTo) const override;
+
+			virtual ColliderSave* SaveCollider() const;
 
 			/**
 			 * Function inheritated from IComponent,
@@ -113,7 +127,7 @@ namespace Core
 			 * the physics mesh with wich he is attached
 			 * @return the local position of the shape
 			 */
-			virtual Core::Maths::Vec3 GetLocalPosition();
+			virtual Core::Maths::Vec3 GetLocalPosition() const;
 
 			/**
 			 * Set the local rotation of the shape compared to
@@ -127,7 +141,7 @@ namespace Core
 			 * the physics mesh with wich he is attached
 			 * @return the local rotation of the shape in quaternion
 			 */
-			virtual Core::Maths::Quat GetLocalRotationQuat();
+			virtual Core::Maths::Quat GetLocalRotationQuat() const;
 
 			/**
 			 * Set the local rotation of the shape compared to
@@ -141,7 +155,7 @@ namespace Core
 			 * the physics mesh with wich he is attached
 			 * @return the local rotation in Euler angle
 			 */
-			virtual Core::Maths::Vec3 GetLocalRotationEuler();
+			virtual Core::Maths::Vec3 GetLocalRotationEuler() const;
 
 			/**
 			 * Set the local rotation of the shape compared to
@@ -155,7 +169,7 @@ namespace Core
 			 * the physics mesh with wich he is attached
 			 * @return the material of the shape, StaticFriction, DynamicFriction, Restitution
 			 */
-			virtual Core::Maths::Vec3 GetMaterial();
+			virtual Core::Maths::Vec3 GetMaterial() const;
 
 			/**
 			 * create the shape of the collider from the PhysicsScene
@@ -173,7 +187,7 @@ namespace Core
 			 * return the trigger state of the shape
 			 * @return true if the shape is a trigger
 			 */
-			virtual bool IsTrigger();
+			virtual bool IsTrigger() const;
 
 			/**
 			 * Set the state trigger of the shape
@@ -197,7 +211,7 @@ namespace Core
 
 			virtual void SetRaycastFilter(const EFilterRaycast& filter);
 
-			virtual EFilterRaycast GetRaycastFilter();
+			virtual EFilterRaycast GetRaycastFilter() const;
 
 			virtual void DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot) = 0;
 

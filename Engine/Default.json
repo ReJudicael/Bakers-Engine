@@ -2182,15 +2182,138 @@
                             "Name": "Mat: S D R",
                             "Type": "Vec3",
                             "Value": [
-                                1.5,
-                                1.5,
-                                0.0
+                                10.0,
+                                10.0,
+                                0.5
                             ]
                         },
                         "Radius": {
                             "Name": "Radius",
                             "Type": "float",
-                            "Value": 0.5
+                            "Value": 1.0
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
+                },
+                {
+                    "Type": "Rigid Body",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Mass": {
+                            "Name": "Mass",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Rotation XLock": {
+                            "Name": "Rotation XLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Rotation YLock": {
+                            "Name": "Rotation YLock",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Rotation ZLock": {
+                            "Name": "Rotation ZLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Use Gravity": {
+                            "Name": "Use Gravity",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Velocity": {
+                            "Name": "Velocity",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "GameObject",
+            "Pos": {
+                "x": 0.0,
+                "y": 5.720952987670898,
+                "z": 0.6124039888381958
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                5.0,
+                                1.0,
+                                2.0
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "LocalPositon": {
+                            "Name": "LocalPositon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "LocalRotation": {
+                            "Name": "LocalRotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Mat: S D R": {
+                            "Name": "Mat: S D R",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
                         },
                         "Trigger": {
                             "Name": "Trigger",
@@ -2204,8 +2327,8 @@
             "Name": "GameObject",
             "Pos": {
                 "x": 0.0,
-                "y": -0.4560120701789856,
-                "z": -0.778256893157959
+                "y": 0.0,
+                "z": 0.0
             },
             "Rot": {
                 "w": 1.0,

@@ -14,11 +14,9 @@ namespace Resources
 
 namespace Core::Physics
 {
+
 	BAKERS_API_CLASS BoxCollider : public Core::Datastructure::ComponentBase, public virtual Collider
 	{
-	public:
-		Core::Maths::Vec3	m_extent{ 0.5f,0.5f,0.5f };
-
 	protected:
 
 		virtual void StartCopy(IComponent*& copyTo) const override;
@@ -60,7 +58,7 @@ namespace Core::Physics
 		 * Get the half extent of the capsule collider
 		 * @return the half extent of the box collider
 		 */
-		Core::Maths::Vec3 GetBoxHalfExtent();
+		Core::Maths::Vec3 GetBoxHalfExtent() const;
 
 		/**
 		 * Draw the collider as a box

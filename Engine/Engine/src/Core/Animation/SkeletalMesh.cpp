@@ -18,7 +18,7 @@ namespace Core::Animation
 	{
 		if (IsModelLoaded())
 		{
-			CreateAABBMesh();
+			//CreateAABBMesh();
 			Mesh::OnStart();
 			Core::Datastructure::IUpdatable::OnStart();
 			return true;

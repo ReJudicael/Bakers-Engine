@@ -133,7 +133,7 @@ bool Mesh::IsModelLoaded()
 	return m_model && m_model->stateVAO == Resources::EOpenGLLinkState::ISLINK;
 }
 
-void Mesh::CreateAABBMesh()
+void Mesh::CreateAABBMesh(physx::PxScene*& scene)
 {
 	Core::Datastructure::Object* object = GetParent();
 	
@@ -143,10 +143,10 @@ void Mesh::CreateAABBMesh()
 	physx::PxRigidActor* actor = object->GetScene()
 							->GetEngine()
 							->GetPhysicsScene()
-							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(), m_model);
+							->CreateEditorPhysicsActor(static_cast<void*>(component), object->GetUpdatedTransform(), m_model, scene);
 	
 	m_destroyActorEvent += std::bind(&Core::Physics::PhysicsScene::DestroyEditorPhysicActor , object->GetScene()
-		->GetEngine()->GetPhysicsScene(), actor);
+		->GetEngine()->GetPhysicsScene(), actor, scene);
 
 	GetParent()->SetAnEventTransformChange(std::bind(&Core::Physics::PhysicsScene::UpdatePoseOfActor, object->GetScene()
 											->GetEngine()->GetPhysicsScene(), actor));
@@ -237,7 +237,13 @@ bool Mesh::OnStart()
 {
 	if (IsModelLoaded())
 	{
-		CreateAABBMesh();
+		//CreateAABBMesh();
+		/*Core::Datastructure::Object* object = GetParent();
+		GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()),
+												m_model->indices.data(), static_cast<int>(m_model->indices.size()), 
+												object->GetUpdatedTransform());*/
+		GetRoot()->GetEngine()->InitMesh(this);
+
 		IRenderable::OnStart();
 		ComponentBase::OnStart();
 		return true;

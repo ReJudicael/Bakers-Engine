@@ -5,11 +5,12 @@
 #include "PxPhysicsAPI.h"
 #include "PxMaterial.h"
 #include "PxDefaultSimulationFilterShader.h"
+#include "PxRigidActor.h"
+
 #include "Collider.h"
 #include "Transform.hpp"
 #include "Model.h"
 #include "Vec3.hpp"
-#include "PxRigidActor.h"
 #include "Object.hpp"
 #include "Mesh.h"
 
@@ -71,14 +72,11 @@ namespace Core::Physics
 		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
 		PhysicsSceneSimulationEventCallback* eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.filterShader = &Core::Physics::PhysicsSceneSimulationEventCallback::filterShader;
-		//sceneDesc.filterShader = &physx::PxDefaultSimulationFilterShader;
 
 		sceneDesc.simulationEventCallback = eventCallBack;
-		//sceneDesc.filterCallback = filterCallback;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_PCM;
-		//sceneDesc.flags |= physx::PxSceneFlag::eENABLE_STABILIZATION;
 		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
 
 		m_pxScene = m_pxPhysics->createScene(sceneDesc);
@@ -89,6 +87,26 @@ namespace Core::Physics
 		}
 	}
 
+	void PhysicsScene::CreateQueryScene(physx::PxScene*& scene)
+	{
+		physx::PxSceneDesc sceneDesc(m_pxPhysics->getTolerancesScale());
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
+		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(4);
+		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
+		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
+		sceneDesc.filterShader = &physx::PxDefaultSimulationFilterShader;
+		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
+		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
+
+		scene = m_pxPhysics->createScene(sceneDesc);
+
+		if (!m_pxScene)
+		{
+			std::cout << "Scene failed!" << std::endl;
+		}
+		
+	}
+
 	void PhysicsScene::CreatePhysicsShape(Collider& collider)
 	{
 		collider.CreateShape(m_pxPhysics);
@@ -97,8 +115,10 @@ namespace Core::Physics
 	void HitResultQuery::initHitResult(const physx::PxRaycastHit raycastHit)
 	{
 		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(raycastHit.actor->userData) };
+		if (!physicsMesh)
+			return;
 		objectHit = physicsMesh->GetParent();
-		physicsMeshHit = dynamic_cast<Core::Datastructure::IPhysics*>(physicsMesh);
+		physicsMeshHit = dynamic_cast<Core::Physics::Collider*>(physicsMesh);
 
 		physx::PxVec3 posHit{ raycastHit.position };
 		hitPoint = { posHit.x, posHit.y, posHit.z };
@@ -109,7 +129,7 @@ namespace Core::Physics
 	{
 		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(overlapHit.actor->userData) };
 		objectHit = physicsMesh->GetParent();
-		physicsMeshHit = dynamic_cast<Core::Datastructure::IPhysics*>(physicsMesh);
+		physicsMeshHit = dynamic_cast<Core::Physics::Collider*>(physicsMesh);
 
 		//physx::PxU32 face{ overlapHit.faceIndex };
 	}
@@ -299,7 +319,7 @@ namespace Core::Physics
 
 	physx::PxRigidActor* PhysicsScene::CreateEditorPhysicsActor(void* useDataPtr,
 																const Core::Datastructure::Transform& transform,
-																std::shared_ptr<Resources::Model> model)
+																std::shared_ptr<Resources::Model> model, physx::PxScene*& scene)
 	{
 		physx::PxShape* shape{ CreateEditorBoxShape(transform, model) };
 
@@ -315,7 +335,7 @@ namespace Core::Physics
 		shape->release();
 		rigidStatic->userData = useDataPtr;
 		rigidStatic->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
-		m_pxScene->addActor(*rigidStatic);
+		scene->addActor(*rigidStatic);
 
 		return rigidStatic;
 	}
@@ -369,11 +389,11 @@ namespace Core::Physics
 		return extent;
 	}
 
-	void PhysicsScene::DestroyEditorPhysicActor(physx::PxRigidActor* actor)
+	void PhysicsScene::DestroyEditorPhysicActor(physx::PxRigidActor* actor, physx::PxScene*& scene)
 	{
 		if (actor == nullptr)
 			return;
-		m_pxScene->removeActor(*actor);
+		scene->removeActor(*actor);
 		const physx::PxU32 numShapes = actor->getNbShapes();
 		std::vector<physx::PxShape*> shapes = std::vector<physx::PxShape*>(numShapes);
 		actor->getShapes(shapes.data(), numShapes);
@@ -399,7 +419,8 @@ namespace Core::Physics
 
 	void PhysicsScene::EndSimulate()
 	{
-		m_pxScene->fetchResults(m_IsSimulating);
+		if(m_IsSimulating)
+			m_pxScene->fetchResults(m_IsSimulating);
 	}
 
 	void PhysicsScene::ReleasePhysXSDK()
@@ -413,24 +434,20 @@ namespace Core::Physics
 			PxCloseExtensions();
 
 			m_pxScene->release();
-			//m_pxDispatcher->release();
 			m_pxPhysics->release();
 			m_pxCooking->release();
+
 			if (m_pxPvd)
 			{
 				m_pxPvd->release();
 				m_pxPvd = nullptr;
 			}
 
-			//m_pxCudaContextManager->release();
-
 			m_pxFoundation->release();
 			m_pxScene = nullptr;
 			m_pxPhysics = nullptr;
 			m_pxCooking = nullptr;
 			m_pxFoundation = nullptr;
-			//m_pxDispatcher = nullptr;
-			//m_pxCudaContextManager = nullptr;
 		}
 	}
 
