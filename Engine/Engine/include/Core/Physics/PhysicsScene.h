@@ -77,21 +77,23 @@ namespace Core
 		BAKERS_API_CLASS PhysicsScene
 		{
 		private:
-			physx::PxFoundation*					m_pxFoundation;
-			physx::PxPvd*							m_pxPvd;
-			physx::PxPvdTransport*					m_pxTransport;
-			physx::PxPhysics*						m_pxPhysics;
-			physx::PxCooking*						m_pxCooking;
-			physx::PxScene*							m_pxScene;
-			PhysicsSceneSimulationEventCallback*	m_eventCallBack;
+			physx::PxFoundation*					m_pxFoundation{ nullptr };
+			physx::PxPvd*							m_pxPvd{ nullptr };
+			physx::PxPvdTransport*					m_pxTransport{ nullptr };
+			physx::PxPhysics*						m_pxPhysics{ nullptr };
+			physx::PxCooking*						m_pxCooking{ nullptr };
+			physx::PxScene*							m_pxScene{ nullptr };
+			PhysicsSceneSimulationEventCallback* m_eventCallBack{ nullptr };
 
 			physx::PxDefaultErrorCallback	m_pxDefaultErrorCallback;
 			physx::PxDefaultAllocator		m_pxDefaultAllocatorCallback;
 
-			bool							m_IsSimulating;
+			bool							m_IsSimulating{ false };
 			float							m_accumulator{ 0.f };
 			float							m_stepSimulation{ 1.f / 60.f };
 		public:
+			PhysicsScene() = default;
+
 
 			/**
 			 * Init the instance of PhysX for create the PhysXScene

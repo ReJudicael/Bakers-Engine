@@ -31,10 +31,12 @@ namespace Core
 
 		void RigidBody::OnInit()
 		{
+			// try to find the collider attached to the Object
 			std::list<Core::Physics::Collider*> colliders;
 			GetParent()->GetComponentsOfBaseTypeInObject(colliders);
 
 			if (colliders.size() > 0)
+				// if he find one he init the collider as a RigidBody
 				(*colliders.begin())->InitRigidBody(this, m_IDFunctionSetTRS, m_pxRigidBody);
 
 			Core::Datastructure::IUpdatable::OnInit();
@@ -76,6 +78,8 @@ namespace Core
 			save->XLock = GetPhysicsLockXRotation();
 			save->YLock = GetPhysicsLockYRotation();
 			save->ZLock = GetPhysicsLockZRotation();
+
+			return save;
 		}
 
 		void RigidBody::DestroyDynamicMesh()
@@ -92,12 +96,13 @@ namespace Core
 		{
 			ComponentBase::OnDestroy();
 			IUpdatable::OnDestroy();
-			if (IsStarted())
-			{
-				//DestroyDynamicMesh();
-				GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
-				GetParent()->RemoveEventTransformChange();
-			}
+			std::list<Core::Physics::Collider*> colliders;
+			GetParent()->GetComponentsOfBaseTypeInObject(colliders);
+
+			if (colliders.size() > 0 && !(*colliders.begin())->IsDestroyed())
+				(*colliders.begin())->CreateActor();
+
+			GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
 		}
 
 		void RigidBody::OnReset()
@@ -185,6 +190,8 @@ namespace Core
 
 		void RigidBody::SetMass(const float mass)
 		{
+			// if there is already a shape put the value in the shape
+			// if the object isn't going to be destroyed save the value
 			if (m_pxRigidBody)
 				m_pxRigidBody->setMass(static_cast<physx::PxReal>(mass));
 			else if (!IsDestroyed())
@@ -204,7 +211,7 @@ namespace Core
 
 		void RigidBody::ClearForces()
 		{
-			if (m_pxRigidBody == nullptr)
+			if (m_pxRigidBody)
 				return;
 			m_pxRigidBody->clearForce();
 			m_pxRigidBody->clearTorque();
@@ -220,6 +227,8 @@ namespace Core
 
 		void RigidBody::SetPhysicsLockXRotation(bool Axisx)
 		{
+			// if there is already a shape put the value in the shape
+			// if the object isn't going to be destroyed save the value
 			if (m_pxRigidBody)
 				m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, Axisx);
 			else if (!IsDestroyed())
@@ -239,6 +248,8 @@ namespace Core
 
 		void RigidBody::SetPhysicsLockYRotation(bool Axisy)
 		{
+			// if there is already a shape put the value in the shape
+			// if the object isn't going to be destroyed save the value
 			if (m_pxRigidBody)
 				m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, Axisy);
 			else if (!IsDestroyed())
@@ -258,6 +269,8 @@ namespace Core
 
 		void RigidBody::SetPhysicsLockZRotation(bool Axisz)
 		{
+			// if there is already a shape put the value in the shape
+			// if the object isn't going to be destroyed save the value
 			if (m_pxRigidBody)
 				m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, Axisz);
 			else if (!IsDestroyed())
@@ -277,6 +290,8 @@ namespace Core
 
 		void RigidBody::SetUseGravity(bool use)
 		{
+			// if there is already a shape put the value in the shape
+			// if the object isn't going to be destroyed save the value
 			if (m_pxRigidBody)
 				m_pxRigidBody->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, !use);
 			else if (!IsDestroyed())

@@ -1574,6 +1574,80 @@
                 "y": 1.0,
                 "z": 1.0
             }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                2.0,
+                                0.5,
+                                2.0
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "LocalPositon": {
+                            "Name": "LocalPositon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "LocalRotation": {
+                            "Name": "LocalRotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Mat: S D R": {
+                            "Name": "Mat: S D R",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "GameObject",
+            "Pos": {
+                "x": 0.2352737933397293,
+                "y": 3.662118434906006,
+                "z": 0.8339622616767883
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
         }
     ]
 }

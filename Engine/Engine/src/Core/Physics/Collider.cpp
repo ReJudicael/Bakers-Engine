@@ -7,6 +7,7 @@
 #include "LoadResources.h"
 #include "RootObject.hpp"
 #include "EngineCore.h"
+#include "Maths.hpp"
 #include "DynamicMesh.h"
 
 
@@ -26,13 +27,18 @@ namespace Core::Physics
 	{
 		Core::Datastructure::RootObject* root = GetRoot();
 
+		// create the shape of the collider
 		root->GetEngine()->GetPhysicsScene()->CreatePhysicsShape(*this);
 
+		CreateActor();
+		/*
+		// create the collider RigidActor as a StaticActor
 		root->GetEngine()->GetPhysicsScene()->CreateRigidStatic(m_pxRigidActor, m_pxShape, GetParent()->GetUpdatedTransform());
+		// init the user data of the actor
 		m_pxRigidActor->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(
 									dynamic_cast<Core::Physics::Collider*>(this)));
 
-		m_IDFunctionSetTRS = GetParent()->SetAnEventTransformChange(std::bind(&Collider::SetPhysicsTransformParent, this));
+		m_IDFunctionSetTRS = GetParent()->SetAnEventTransformChange(std::bind(&Collider::SetPhysicsTransformParent, this));*/
 		
 		Core::Datastructure::IRenderable::OnInit();
 		Core::Datastructure::IComponent::OnInit();
@@ -66,27 +72,31 @@ namespace Core::Physics
 		colliderSave->localRotation = GetLocalRotationEuler();
 		colliderSave->physicsMaterial = GetMaterial();
 		colliderSave->raycastFilter = GetRaycastFilter();
+
+		return colliderSave;
 	}
 
 	void Collider::DestroyRigidActor()
 	{
+		// detach the actor from the physics scene
 		GetRoot()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_pxRigidActor);
 		//m_pxRigidActor->detachShape(*m_pxShape);
+		// detroy the shape
 		DestroyShape();
+		// release teh actor if it's possible
 		if(m_pxRigidActor->isReleasable())
 			m_pxRigidActor->release();
-		//m_pxRigidActor = nullptr;
 	}
 
 	void Collider::OnDestroy()
 	{
 		Core::Datastructure::IRenderable::OnDestroy();
 		Core::Datastructure::IComponent::OnDestroy();
-		if (IsStarted())
-		{
+		/*if (IsStarted())
+		{*/
 			DestroyRigidActor();
 			GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
-		}
+		//}
 	}
 
 	void Collider::OnReset()
@@ -103,23 +113,62 @@ namespace Core::Physics
 		SetMaterial({ 1.f, 1.f, 0.f });
 	}
 
-	void Collider::InitRigidBody(Core::Physics::RigidBody* rigidBody, int& ID, physx::PxRigidDynamic*& pxRigidBody)
+	void Collider::DetachShape()
 	{
+		// detach the collider shape for his actor if he have one
 		if (m_pxShape->getActor())
 			m_pxRigidActor->detachShape(*m_pxShape);
 
-		if(m_pxRigidActor->isReleasable())
-			m_pxRigidActor->release();
+		if (m_pxRigidActor && m_pxRigidActor->getScene())
+		{
+			// detach the actor from the physics scene
+			GetRoot()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_pxRigidActor);
 
+			// release the collider rigid actor
+			if (m_pxRigidActor->isReleasable())
+				m_pxRigidActor->release();
+		}
+	}
+
+	void Collider::CreateActor()
+	{
+		Core::Datastructure::RootObject* root = GetRoot();
+
+		DetachShape();
+
+		// create the collider RigidActor as a StaticActor
+		root->GetEngine()->GetPhysicsScene()->CreateRigidStatic(m_pxRigidActor, m_pxShape, GetParent()->GetUpdatedTransform());
+		// init the user data of the actor
+		m_pxRigidActor->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(
+			dynamic_cast<Core::Physics::Collider*>(this)));
+
+		m_IDFunctionSetTRS = GetParent()->SetAnEventTransformChange(std::bind(&Collider::SetPhysicsTransformParent, this));
+	}
+
+	void Collider::InitRigidBody(Core::Physics::RigidBody* rigidBody, int& ID, physx::PxRigidDynamic*& pxRigidBody)
+	{
+		DetachShape();
+
+		// recreate the collider rigid actor as a dynamic actor
 		pxRigidBody = GetRoot()->GetEngine()->GetPhysicsScene()->CreateRigidDynamic(m_pxRigidActor, m_pxShape, GetParent()->GetUpdatedTransform());
+
+		// init the user data of the actor
+		m_pxRigidActor->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(
+									dynamic_cast<Core::Physics::Collider*>(this)));
 
 		ID = GetParent()->SetAnEventTransformChange(
 								std::bind(&Core::Physics::RigidBody::SetPhysicsTransformParent, rigidBody));
+		// Delete the function who set the position of the actor if the object move
+		GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
+
+		// Init the actor as his save
 		rigidBody->InitPhysic();
 	}
 
 	void Collider::SetLocalPosition(Core::Maths::Vec3 pos)
 	{
+		// if there is already a shape put the value in the shape
+		// if the object isn't going to be destroyed save the value
 		if (m_pxShape)
 		{
 			physx::PxTransform transform = m_pxShape->getLocalPose();
@@ -162,11 +211,16 @@ namespace Core::Physics
 
 	void Collider::SetLocalRotationEuler(Core::Maths::Vec3 euler)
 	{
+		// if there is already a shape put the value in the shape
+		// if the object isn't going to be destroyed save the value
 		if (m_pxShape)
 		{
 			physx::PxTransform transform = m_pxShape->getLocalPose();
-			Core::Maths::Quat quat{ euler };
-			transform.q = { quat.x, quat.y, quat.z, quat.w };
+			Core::Maths::Quat quat{ Core::Maths::ToRadiansf(euler.x), 
+									Core::Maths::ToRadiansf(euler.y), 
+									Core::Maths::ToRadiansf(euler.z) };
+
+			transform.q = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
 			m_pxShape->setLocalPose(transform);
 		}
 		else if (!IsDestroyed())
@@ -183,11 +237,15 @@ namespace Core::Physics
 			return{};
 		physx::PxQuat localRot = m_pxShape->getLocalPose().q;
 		Core::Maths::Quat quat{ localRot.w, localRot.x, localRot.y, localRot.z };
-		return quat.ToEulerAngles() * 180/M_1_PI;
+		return	{	Core::Maths::ToDegreesf(quat.ToEulerAngles().x),
+					Core::Maths::ToDegreesf(quat.ToEulerAngles().y), 
+					Core::Maths::ToDegreesf(quat.ToEulerAngles().z) };
 	}
 
 	void Collider::SetMaterial(Core::Maths::Vec3 mat)
 	{
+		// if there is already a shape put the value in the shape
+		// if the object isn't going to be destroyed save the value
 		if (m_pxShape)
 		{
 			m_pxMaterial->setStaticFriction(mat.x);
@@ -211,6 +269,8 @@ namespace Core::Physics
 
 	void Collider::Trigger(bool trigger)
 	{
+		// if there is already a shape put the value in the shape
+		// if the object isn't going to be destroyed save the value
 		if (m_pxShape)
 		{
 			if (trigger)
@@ -251,6 +311,8 @@ namespace Core::Physics
 
 	void Collider::SetRaycastFilter(const EFilterRaycast& filter)
 	{
+		// if there is already a shape put the value in the shape
+		// if the object isn't going to be destroyed save the value
 		if (m_pxShape)
 		{
 			physx::PxFilterData filterData;

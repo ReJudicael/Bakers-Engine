@@ -33,10 +33,10 @@ namespace Core
 		BAKERS_API_CLASS RigidBody : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IUpdatable
 		{
 		private:
-			RigidBodySave*			m_tmpRigidBodySave;
-			physx::PxRigidDynamic*	m_pxRigidBody;
-			int						m_IDFunctionSetTRS;
-			bool					m_BodyChangeGlobalPos;
+			RigidBodySave*			m_tmpRigidBodySave{nullptr};
+			physx::PxRigidDynamic* m_pxRigidBody{ nullptr };
+			int						m_IDFunctionSetTRS{ 0 };
+			bool					m_BodyChangeGlobalPos{ false };
 
 		protected:
 

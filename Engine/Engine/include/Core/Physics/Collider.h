@@ -62,13 +62,13 @@ namespace Core
 		{
 
 		protected:
-			ColliderSave*						m_tmpColliderSave;
+			ColliderSave*						m_tmpColliderSave{nullptr};
 			physx::PxShape*						m_pxShape{};
 			physx::PxMaterial*					m_pxMaterial{};
 			physx::PxRigidActor*				m_pxRigidActor{};
 			std::shared_ptr<Resources::Shader>	m_shader{};
 			std::shared_ptr<Resources::Model>	m_model{};
-			int									m_IDFunctionSetTRS;
+			int									m_IDFunctionSetTRS{0};
 
 		public:
 			Core::SystemManagement::EventSystem<Collider*>	OnTriggerEnterEvent;
@@ -92,6 +92,7 @@ namespace Core
 
 			virtual void SetToDefault();
 
+
 			virtual bool OnStart() override;
 		public:
 			Collider() = default;
@@ -105,6 +106,10 @@ namespace Core
 			virtual void OnDraw(Core::Datastructure::ICamera* cam) override = 0;
 
 			void DestroyRigidActor();
+			
+			void DetachShape();
+
+			void CreateActor();
 
 			void InitRigidBody(Core::Physics::RigidBody* rigidBody, int& ID, physx::PxRigidDynamic*& pxRigidBody);
 
