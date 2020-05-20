@@ -12,6 +12,7 @@ namespace Core
 	{
 		RTTR_PLUGIN_REGISTRATION
 		{
+			ZoneScopedN("Registering RTTR")
 			registration::class_<IPhysics>("IPhysics")
 			.enumeration<Core::Physics::EFilterRaycast>("Layout")
 			(

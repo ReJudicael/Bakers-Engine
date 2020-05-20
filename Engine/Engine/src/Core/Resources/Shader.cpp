@@ -65,6 +65,7 @@ namespace Resources
 
 	GLint Shader::GetLocation(std::string uniformName)
 	{
+		ZoneScoped
 		if (m_locations.find(uniformName) != m_locations.end())
 			return m_locations[uniformName];
 
@@ -179,6 +180,7 @@ namespace Resources
 
 	void Shader::SendLights()
 	{
+		ZoneScoped
 		int activeLightsCount = 0;
 		for (int i = 0; i < lights.size(); i++)
 		{

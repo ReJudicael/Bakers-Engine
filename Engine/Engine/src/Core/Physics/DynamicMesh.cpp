@@ -15,6 +15,7 @@ namespace Core
 	{
 		RTTR_PLUGIN_REGISTRATION
 		{
+			ZoneScopedN("Registering RTTR")
 			registration::class_<Core::Physics::DynamicMesh>("Dynamic Mesh")
 			.constructor()
 			.constructor<Collider*>()
@@ -43,6 +44,7 @@ namespace Core
 
 		bool DynamicMesh::OnStart()
 		{
+			ZoneScoped
 			GetParent()->SetAnEventTransformChange(std::bind(&DynamicMesh::SetPhysicsTransformParent, this));
 			return IPhysics::OnStart() && IUpdatable::OnStart();
 

@@ -18,6 +18,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	registration::class_<Mesh>("Mesh")
 		.constructor()
 		.property("Model", &Mesh::GetModel, &Mesh::SetModel)
@@ -100,7 +101,7 @@ void Mesh::UpdateModel()
 
 Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
 {
-
+	ZoneScoped
 }
 
 Mesh::~Mesh()
@@ -152,6 +153,7 @@ void Mesh::CreateAABBMesh()
 
 void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 {
+	ZoneScoped
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
 	// check if the mesh have a modelMesh
@@ -239,6 +241,7 @@ void Mesh::StartCopy(IComponent*& copyTo) const
 
 bool Mesh::OnStart()
 {
+	ZoneScoped
 	if (IsModelLoaded())
 	{
 		CreateAABBMesh();

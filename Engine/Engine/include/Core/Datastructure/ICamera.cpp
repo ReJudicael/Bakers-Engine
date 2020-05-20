@@ -5,6 +5,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<ICamera>("ICamera")
 		.method("GetCameraPerspective", &ICamera::GetPerspectiveMatrix)
@@ -14,6 +15,7 @@ RTTR_PLUGIN_REGISTRATION
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 {
+	ZoneScoped
 	if (!IsPerspectiveMatrixUpdated())
 	{
 		ZoneScoped
@@ -26,6 +28,7 @@ const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetCameraMatrix()
 {
+	ZoneScoped
 	if (!IsCameraMatrixUpdated())
 	{
 		ZoneScoped
@@ -45,6 +48,7 @@ void Core::Datastructure::ICamera::OnInit()
 
 bool Core::Datastructure::ICamera::OnStart()
 {
+	ZoneScoped
 	return IComponent::OnStart();
 }
 

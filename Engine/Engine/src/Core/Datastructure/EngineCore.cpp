@@ -21,6 +21,7 @@ using nlohmann::json;
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<EngineCore>("EngineCore")
 		.method("Update", &EngineCore::Update)
@@ -48,10 +49,11 @@ namespace Core::Datastructure
 
 	EngineCore::EngineCore(const int width, const int height) : m_width{ width }, m_height{ height }, m_fbo{ nullptr }, m_window{ nullptr }, m_manager{ nullptr }, m_physicsScene{ nullptr }
 	{
+		ZoneScoped
 		m_inputSystem = new Core::SystemManagement::InputSystem(this);
+		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem, this);
 		m_audioSystem = new Audio::AudioSystem();
 		m_navMesh = new Core::Navigation::NavMeshBuilder(this);
-		m_root = Core::Datastructure::RootObject::CreateRootNode(m_inputSystem, this);
 	}
 
 	EngineCore::~EngineCore()
@@ -61,12 +63,14 @@ namespace Core::Datastructure
 		delete m_inputSystem;
 		delete m_audioSystem;
 		for (auto fbo : m_fbo)
-		{
 			delete fbo;
-		}
-		delete m_manager;
-		delete m_physicsScene;
-		Core::Debug::Logger::ClearLogs();
+		if (m_manager)
+			delete m_manager;
+		if (m_physicsScene)
+			delete m_physicsScene;
+		delete m_navMesh;
+		Core::Debug::Logger::ClearLogs(); 
+		FREE_TRACY_GL_IMAGE
 	}
 
 	int EngineCore::Init()
@@ -218,6 +222,7 @@ namespace Core::Datastructure
 		}
 		else if (m_state == EngineState::CLOSING)
 		{
+			Resources::Shader::lights.clear();
 			m_state = EngineState::CLOSED;
 		}
 
@@ -331,19 +336,15 @@ namespace Core::Datastructure
 		ZoneScoped
 		if (ObjectFlag(j["Flags"]).test_flag(ObjectFlags::DYNAMICALLY_GENERATED))
 			return;
-		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["w"], j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
 
-		rttr::type::get<Core::Datastructure::Object>().get_property("flags").set_value(o, (Core::Datastructure::ObjectFlag)j["Flags"]);
+		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["w"], j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
+		rttr::type::get<Core::Datastructure::Object>().get_property("flags").set_value(o, static_cast<Core::Datastructure::ObjectFlag>(static_cast<int>(j["Flags"])));
 
 		for (auto& components : j["Components"])
-		{
 			AddComponent(components, o);
-		}
 
 		for (auto& childs : j["Childs"])
-		{
 			AddChild(childs, o);
-		}
 	}
 
 	bool	EngineCore::OnLoadScene()

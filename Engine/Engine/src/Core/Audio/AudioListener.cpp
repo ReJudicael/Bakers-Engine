@@ -6,6 +6,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+    ZoneScopedN("Registering RTTR")
     registration::class_<Core::Audio::AudioListener>("Audio Listener")
         .constructor()
         .property("Active", &Core::Audio::AudioListener::m_isActive);
@@ -25,6 +26,7 @@ namespace Core::Audio
 
     bool AudioListener::OnStart()
     {
+        ZoneScoped
         return ComponentUpdatable::OnStart();
     }
 

@@ -1,3 +1,5 @@
+#include "CoreMinimal.h"
+
 #include "NavQuery.h"
 #include "Vec3.hpp"
 
@@ -30,7 +32,7 @@ namespace Core::Navigation
 
 	void NavQuery::InitCurrPath()
 	{
-		
+		ZoneScoped
 		float	straightPath[NavPath::MAX_PATH_POLY * 3];
 		dtPolyRef	startRef, endRef;
 		float		startPos[3], endPos[3];
@@ -69,6 +71,7 @@ namespace Core::Navigation
 
 	void NavQuery::AddQuery(const Core::Maths::Vec3& start, const Core::Maths::Vec3& end, const dtQueryFilter& filter, QueryResult* result)
 	{
+		ZoneScoped
 		if (result == nullptr)
 			return;
 		m_queriesQueue.push({ start, end, dtPolyRef(-1), result, filter });
@@ -77,6 +80,7 @@ namespace Core::Navigation
 
 	void NavQuery::RemoveQuery(QueryResult* toRemove)
 	{
+		ZoneScoped
 		for (int i = m_queriesQueue.size(); i > 0; --i)
 		{
 			Core::Navigation::NavQuery::Query q{ m_queriesQueue.front() };
@@ -95,11 +99,13 @@ namespace Core::Navigation
 
 	dtStatus NavQuery::FindNearestPoly(const Core::Maths::Vec3& point, const Core::Maths::Vec3& dist, const dtQueryFilter& filter, dtPolyRef* ref, Core::Maths::Vec3& pos)
 	{
+		ZoneScoped
 		return m_query->findNearestPoly(point.xyz, dist.xyz, &filter, ref, pos.xyz);
 	}
 
 	void NavQuery::Update(int maxIters)
 	{
+		ZoneScoped
 		if (!dtStatusInProgress(m_status))
 		{
 			if (!InitNextQuery())

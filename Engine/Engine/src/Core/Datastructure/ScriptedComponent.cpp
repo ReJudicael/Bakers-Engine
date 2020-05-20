@@ -5,6 +5,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 
 	RegisterDefaultClassConstructor<ScriptedComponent>("Script" , ComponentUpdatable(), ComponentBase());
@@ -36,7 +37,8 @@ namespace Core::Datastructure
 	}
 
 	bool ScriptedComponent::OnStart()
-	{	
+	{
+		ZoneScoped
 		bool temp = ComponentUpdatable::OnStart();
 
 		if (m_script.empty())

@@ -2,6 +2,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<ComponentBase>("ComponentBase")
 		.constructor<>()
@@ -19,6 +20,7 @@ namespace Core::Datastructure
 
 	ComponentBase* ComponentBase::GetCopy() const
 	{
+		ZoneScoped
 		IComponent* result;
 		StartCopy(result);
 		return dynamic_cast<ComponentBase*>(result);

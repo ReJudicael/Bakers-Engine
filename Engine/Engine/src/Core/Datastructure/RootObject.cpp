@@ -4,6 +4,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<RootObject>("RootObject")
 		.method("StartFrame", &RootObject::StartFrame)
@@ -165,6 +166,7 @@ namespace Core::Datastructure
 
 	RootObject* RootObject::CreateRootNode(SystemManagement::InputSystem* inputSystem, EngineCore* engine) noexcept
 	{
+		ZoneScoped
 		return new RootObject(inputSystem, engine);
 	}
 }

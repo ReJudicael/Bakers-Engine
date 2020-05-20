@@ -9,6 +9,7 @@ namespace Core::Navigation
 {
 	NavMeshBuilder::NavMeshBuilder(Core::Datastructure::EngineCore* engine) : m_engine{ engine }
 	{
+		ZoneScoped
 		m_cfg.cs = 0.3f;
 		m_cfg.ch = 0.2f;
 		m_cfg.walkableSlopeAngle = 45.f;
@@ -33,8 +34,10 @@ namespace Core::Navigation
 		m_ctx = new BuildContext();
 		//m_crowd = dtAllocCrowd();
 	}
+
 	NavMeshBuilder::~NavMeshBuilder()
 	{
+		ZoneScoped
 		for (auto it{ m_mesh.begin() }; it != m_mesh.end(); ++it)
 		{
 			delete it->verts;
@@ -45,6 +48,7 @@ namespace Core::Navigation
 		//dtFreeCrowd(m_crowd);
 
 		dtFreeNavMesh(m_navMesh);
+		delete m_ctx;
 	}
 
 	bool NavMeshBuilder::Build()
@@ -377,6 +381,7 @@ namespace Core::Navigation
 
 	void NavMeshBuilder::ClearInputMeshes()
 	{
+		ZoneScoped
 		for (auto it : m_mesh)
 		{
 			delete it.tris;
@@ -439,6 +444,7 @@ namespace Core::Navigation
 
 	NavQuery::QueryResult* NavMeshBuilder::FindPath(const Core::Maths::Vec3& start, const Core::Maths::Vec3& end, unsigned short excludedAreaFlags) noexcept
 	{
+		ZoneScoped
 		if (!m_navQuery.IsInit())
 			return nullptr;
 
@@ -450,6 +456,7 @@ namespace Core::Navigation
 
 	dtStatus NavMeshBuilder::FindClosestPointOnNavMesh(const Core::Maths::Vec3& point, const Core::Maths::Vec3& dist, dtPolyRef* ref, Core::Maths::Vec3& pos)
 	{
+		ZoneScoped
 		if (!m_navQuery.IsInit())
 			return DT_FAILURE;
 		return m_navQuery.FindNearestPoly(point, dist, m_queryFilter, ref, pos);
@@ -457,11 +464,13 @@ namespace Core::Navigation
 
 	void NavMeshBuilder::RemovePathQuery(NavQuery::QueryResult* toRemove)
 	{
+		ZoneScoped
 		m_navQuery.RemoveQuery(toRemove);
 	}
 
 	void NavMeshBuilder::UpdateQuery()
 	{
+		ZoneScoped
 		m_navQuery.Update();
 	}
 
@@ -485,6 +494,7 @@ namespace Core::Navigation
 
 	void NavMeshBuilder::BuildNavMeshRenderer()
 	{
+		ZoneScoped
 		std::vector<NavVertex>	vertex;
 		const dtNavMesh* mesh{ m_navMesh };
 		for (int l = 0; l < mesh->getMaxTiles(); ++l)
@@ -549,17 +559,13 @@ namespace Core::Navigation
 
 	void NavMeshBuilder::DrawNavMesh(const Core::Maths::Mat4& cam, const Core::Maths::Mat4& perspective)
 	{
+		ZoneScoped
 		if (m_VAOSize <= 0)
 			return;
 
 		if (!m_shader)
 		{
-			m_shader = m_engine->GetResourcesManager()->CreateShader("NavMeshShader", "Resources\\Shaders\\NavMeshShader.vert", "Resources\\Shaders\\NavMeshShader.vert");
-			if (!m_shader)
-			{
-				BAKERS_LOG_ERROR("Could not load NavMesh shader");
-				return;
-			}
+			return;
 		}
 		glEnable(GL_DEPTH_TEST);
 
@@ -574,6 +580,7 @@ namespace Core::Navigation
 
 	void NavMeshBuilder::DrawNavMesh(Core::Datastructure::ICamera* cam)
 	{
+		ZoneScoped
 		if (m_navMesh == nullptr)
 			return;
 
@@ -582,6 +589,7 @@ namespace Core::Navigation
 
 	bool NavMeshBuilder::SaveNavMesh(const std::string& path) const
 	{
+		ZoneScoped
 		if (!m_navMesh)
 			return false;
 
@@ -625,6 +633,7 @@ namespace Core::Navigation
 
 	bool NavMeshBuilder::LoadNavMesh(const std::string& path)
 	{
+		ZoneScoped
 		FILE* fp;
 		fopen_s(&fp, (path + ".nav").c_str(), "rb");
 		if (!fp) return 0;

@@ -1,12 +1,5 @@
 #include "ComponentUpdatable.h"
 
-RTTR_PLUGIN_REGISTRATION
-{
-	// TODO: Hide it in Editor
-	registration::class_<Core::Datastructure::ComponentUpdatable>("ComponentUpdatable")
-		.constructor();
-}
-
 namespace Core::Datastructure
 {
 	void	ComponentUpdatable::OnCopy(IComponent* copyTo) const

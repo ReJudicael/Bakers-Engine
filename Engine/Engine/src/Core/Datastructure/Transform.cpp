@@ -3,6 +3,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	using namespace Core::Maths;
 	registration::class_<Transform>("Transform")

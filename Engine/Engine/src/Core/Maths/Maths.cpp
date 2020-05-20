@@ -3,6 +3,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	rttr::registration::class_<Core::Maths::Vec2>("Vec2")
 		.constructor()
 		.property("x", &Core::Maths::Vec2::x)

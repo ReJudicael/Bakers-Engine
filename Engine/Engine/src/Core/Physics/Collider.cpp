@@ -10,6 +10,7 @@ namespace Core::Physics
 {
 	RTTR_PLUGIN_REGISTRATION
 	{
+		ZoneScopedN("Registering RTTR")
 		registration::class_<Core::Physics::Collider>("Collider")
 		.property("LocalPositon", &Core::Physics::Collider::GetLocalPosition, &Core::Physics::Collider::SetLocalPosition)
 		.property("LocalRotation", &Core::Physics::Collider::GetLocalRotationEuler, &Core::Physics::Collider::SetLocalRotationEuler)

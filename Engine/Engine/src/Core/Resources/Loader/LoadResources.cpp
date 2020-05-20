@@ -50,6 +50,7 @@ namespace Resources::Loader
 
 	ResourcesManager::~ResourcesManager()
 	{
+		ZoneScoped
 		m_task.EndTaskSystem();
 
 		for (unorderedmapModel::iterator itmodel = m_models.begin();
@@ -269,7 +270,6 @@ namespace Resources::Loader
 												const std::string& directory, const int numberOfSameKey)
 	{	
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
-		Material material;
 		std::string keyMaterial;
 
 		if (numberOfSameKey > 0)
@@ -341,7 +341,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::LinkAllTextureToOpenGl()
 	{
-
+		ZoneScoped
 		for (auto it = m_texturesToLink.begin(); 
 				it != m_texturesToLink.end();)
 		{
@@ -373,6 +373,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{
+		ZoneScoped
 		for (auto it = m_modelsToLink.begin();
 			it != m_modelsToLink.end();)
 		{
@@ -400,6 +401,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::CheckDeleteAssimpImporter()
 	{
+		ZoneScoped
 		for (auto it = m_importerToDelete.begin();
 			it != m_importerToDelete.end();)
 		{
@@ -412,6 +414,7 @@ namespace Resources::Loader
 
 	std::shared_ptr<Shader> ResourcesManager::CreateShader(const char* shaderName, const char* vertexFilePath, const char* fragmentFilePath, Shader::EShaderHeaderType header)
 	{
+		ZoneScoped
 		if (m_shaders.find(shaderName) != m_shaders.end())
 			return m_shaders[shaderName];
 
@@ -424,9 +427,11 @@ namespace Resources::Loader
 
 	void ResourcesManager::ShaderUpdate()
 	{
+		ZoneScoped
 		for (unorderedmapShader::iterator itshader = m_shaders.begin();
 			itshader != m_shaders.end(); ++itshader)
 		{
+			ZoneScopedN("ShaderUpdateLoop")
 			itshader->second->UseProgram();
 			itshader->second->SendLights();
 		}

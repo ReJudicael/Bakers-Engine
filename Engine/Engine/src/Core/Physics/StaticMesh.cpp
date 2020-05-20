@@ -14,6 +14,7 @@ namespace Core
 	{
 		RTTR_PLUGIN_REGISTRATION
 		{
+			ZoneScopedN("Registering RTTR")
 			registration::class_<Core::Physics::StaticMesh>("Static Mesh")
 			.constructor()
 			.constructor<Collider*>()
@@ -26,6 +27,7 @@ namespace Core
 
 		bool StaticMesh::OnStart()
 		{
+			ZoneScoped
 			GetParent()->SetAnEventTransformChange(std::bind(&StaticMesh::SetPhysicsTransformParent, this));
 			return IPhysics::OnStart() && IUpdatable::OnStart();
 

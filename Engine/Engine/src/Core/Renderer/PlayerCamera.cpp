@@ -8,6 +8,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	registration::class_<Core::Renderer::PlayerCamera>("Player Camera")
 		.constructor()
 		.constructor<const float, const float, const float, const float>()
@@ -26,10 +27,12 @@ namespace Core::Renderer
 {
 	PlayerCamera::PlayerCamera() : Camera()
 	{
+		ZoneScoped
 	}
 
 	PlayerCamera::PlayerCamera(const float ratio, const float fov, const float near, const float far) : Camera(ratio, fov, near, far)
 	{
+		ZoneScoped
 	}
 
 	void PlayerCamera::OnInit()
@@ -283,6 +286,7 @@ namespace Core::Renderer
 		Core::Datastructure::ICamera::OnDestroy();
 
 		for (int i{0}; i < m_postProcessFBO.size(); ++i)
-			GetRoot()->GetEngine()->DeleteFBO(m_postProcessFBO[0]);
+			GetRoot()->GetEngine()->DeleteFBO(m_postProcessFBO[i]);
+		m_postProcessFBO.clear();
 	}
 }

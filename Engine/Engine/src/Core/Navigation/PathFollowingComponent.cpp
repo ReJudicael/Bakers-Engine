@@ -5,6 +5,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Navigation;
 	rttr::registration::class_<PathFollowingComponent>("Path Following")
 		.constructor()
@@ -17,6 +18,7 @@ namespace Core::Navigation
 {
 	bool PathFollowingComponent::OnStart()
 	{
+		ZoneScoped
 		Core::Navigation::NavMeshBuilder* nav{ GetRoot()->GetEngine()->GetNavMesh() };
 		if (!nav)
 			return false;
@@ -25,6 +27,7 @@ namespace Core::Navigation
 			return false;
 		return IUpdatable::OnStart();
 	}
+
 	void PathFollowingComponent::OnDestroy()
 	{
 		ComponentBase::OnDestroy();

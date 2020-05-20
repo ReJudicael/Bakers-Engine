@@ -4,6 +4,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	registration::class_<Core::Renderer::Environment>("Environment")
 		.constructor()
 		.enumeration<Core::Renderer::Environment::ESkyboxType>("Skybox type")
@@ -185,6 +186,7 @@ namespace Core::Renderer
 
 	bool	Environment::OnStart()
 	{
+		ZoneScoped
 		return IRenderable::OnStart();
 	}
 

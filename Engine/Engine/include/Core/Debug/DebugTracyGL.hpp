@@ -9,12 +9,14 @@
 
 #define TRACY_GL_IMAGE
 #define INIT_TRACY_GL_IMAGE(width, height) 
+#define FREE_TRACY_GL_IMAGE
 #define TRACY_GL_IMAGE_SEND(width, height) 
 
 #else
 
 #define TRACY_GL_IMAGE	Core::Debug::TracyGL*	__TracyGLImageSender;
 #define INIT_TRACY_GL_IMAGE(width, height) __TracyGLImageSender = new Core::Debug::TracyGL(width, height);
+#define FREE_TRACY_GL_IMAGE delete __TracyGLImageSender;
 #define TRACY_GL_IMAGE_SEND(width, height) __TracyGLImageSender->SendCapture(width, height);
 
 namespace Core::Debug

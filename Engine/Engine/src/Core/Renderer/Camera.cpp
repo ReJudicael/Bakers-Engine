@@ -5,6 +5,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	registration::class_<Core::Renderer::CameraPerspective>("Perspective")
 		.property("Ratio", &Core::Renderer::CameraPerspective::ratio)
 		.property("FOV", &Core::Renderer::CameraPerspective::fov)
@@ -54,6 +55,7 @@ namespace Core::Renderer
 
 	bool Camera::OnStart()
 	{
+		ZoneScoped
 		return ICamera::OnStart() && IUpdatable::OnStart();
 	}
 

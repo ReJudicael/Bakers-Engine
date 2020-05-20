@@ -5,6 +5,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Renderer;
 	rttr::registration::enumeration<FBOType>("FBO types")
 		(
@@ -63,13 +64,15 @@ namespace Core::Renderer
 
 	Framebuffer::~Framebuffer() noexcept
 	{
+		ZoneScoped
 		glDeleteTextures(1, &ColorTexture);
 		glDeleteRenderbuffers(1, &DepthStencilRenderbuffer);
 		glDeleteFramebuffers(1, &FBO);
 	}
 
-	void	Framebuffer::InitPostProcess(std::shared_ptr<Resources::Shader> s)
+	void	Framebuffer::InitPostProcess(const std::shared_ptr<Resources::Shader>& s)
 	{
+		ZoneScoped
 		data.s = s;
 		// Gen unit quad
 		{

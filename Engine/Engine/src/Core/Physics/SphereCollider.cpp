@@ -15,6 +15,7 @@ namespace Core::Physics
 
 	RTTR_PLUGIN_REGISTRATION
 	{
+		ZoneScopedN("Registering RTTR")
 		registration::class_<Core::Physics::SphereCollider>("Collider")
 		.property("Radius", &Core::Physics::SphereCollider::GetSphereHalfExtent ,&Core::Physics::SphereCollider::SetSphereHalfExtent)
 		;

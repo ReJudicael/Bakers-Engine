@@ -40,7 +40,7 @@ namespace Core::Datastructure
 
 		void			FindPath(const Core::Maths::Vec3& end, unsigned short excludedAreaFlags = 0);
 
-		void			OnDestroy();
+		virtual void			OnDestroy() override;
 	public:
 		INavAgent();
 		~INavAgent();

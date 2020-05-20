@@ -112,7 +112,6 @@ namespace Editor
 
 	void EditorEngine::MainLoop()
 	{
-		ZoneScoped
 		while (!glfwWindowShouldClose(m_window))
 		{
 			OnLoop();

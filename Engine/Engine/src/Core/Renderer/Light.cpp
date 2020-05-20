@@ -7,6 +7,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+    ZoneScopedN("Registering RTTR")
     using namespace Core::Renderer;
     using namespace Core::Datastructure;
 
@@ -62,6 +63,7 @@ namespace Core::Renderer
 
     bool Light::OnStart()
     {
+        ZoneScoped
         Resources::Shader::lights.emplace_back(this);
         return ComponentBase::OnStart();
     }
@@ -83,13 +85,13 @@ namespace Core::Renderer
     void    Light::OnDestroy()
     {
         ComponentBase::OnDestroy();
-        m_isActive = false;
+        m_isActive = false; 
         for (auto it{ Resources::Shader::lights.begin() }; it != Resources::Shader::lights.end(); ++it)
         {
             if (*it == this)
             {
                 it = Resources::Shader::lights.erase(it);
-                return;
+                break;
             }
         }
     }

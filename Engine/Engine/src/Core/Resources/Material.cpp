@@ -12,6 +12,7 @@ namespace Resources
 	void Material::LoadMaterialFromaiMaterial(aiMaterial* mat, const std::string& directory,
 		Loader::ResourcesManager* resources, std::shared_ptr<Resources::Loader::ImporterData>& importer)
 	{
+		ZoneScoped
 		importer->maxUseOfImporter++;
 		textures.resize(2);
 
@@ -39,6 +40,7 @@ namespace Resources
 	void Material::LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& texture,
 					const aiTextureType& textureType, const std::string& directory, Loader::ResourcesManager* resources)
 	{
+		ZoneScoped
 		if (mat->GetTextureCount(textureType) > 0)
 		{
 			aiString path;
@@ -60,6 +62,7 @@ namespace Resources
 
 	void Material::SendMaterial()
 	{
+		ZoneScoped
 		glUniform3fv(shader->GetLocation("mat.ambientColor"), 1, ambientColor.rgb);
 		glUniform3fv(shader->GetLocation("mat.diffuseColor"), 1, diffuseColor.rgb);
 		glUniform3fv(shader->GetLocation("mat.specularColor"), 1, specularColor.rgb);

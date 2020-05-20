@@ -1,8 +1,8 @@
 #pragma once
 
+#include "CoreMinimal.h"
 #include "EventSystem.hpp"
 #include "InputSystem.hpp"
-#include "CoreMinimal.h"
 #include "Framebuffer.h"
 #include "LoadResources.h"
 #include "NavMesh.h"

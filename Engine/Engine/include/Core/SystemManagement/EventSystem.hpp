@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Debug.h"
 #include <unordered_map>
 #include <functional>
 #include <EngineDefines.h>

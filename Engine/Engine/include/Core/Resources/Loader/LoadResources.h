@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <list>
-#include <unordered_map>
 #include <memory>
 #include "Assimp/Importer.hpp"
 
@@ -18,6 +17,7 @@
 #include "Shader.h"
 #include "TaskSystem.hpp"
 #include "CoreMinimal.h"
+#include <unordered_map>
 
 struct aiScene;
 struct aiNode;
