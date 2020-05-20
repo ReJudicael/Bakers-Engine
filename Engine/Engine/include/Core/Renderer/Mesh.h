@@ -34,6 +34,7 @@ protected:
 
 	bool		m_isRoot{ false };
 	bool		m_isChild{ false };
+	bool		m_castShadow{ true };
 
 	std::vector<std::shared_ptr<Resources::Material>>	m_materialsModel;
 	std::vector<std::string>							m_materialsNames;
@@ -98,9 +99,29 @@ public:
 	/**
 	 * Function inheritated from IRenderable,
 	 * override for draw the mesh with the material and the model
-	 * @param cam: the camera to render to
+	 * @param view: View matrix
+	 * @param proj: Projection matrix
+	 * @param givenShader: Shader to use instead of material shader if provided
 	 */
-	virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
+	virtual void OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr) override;
+
+	/**
+	 * Handle OpenGL drawing of mesh
+	 * @param view: View matrix
+	 * @param proj: Projection matrix
+	 * @param trs: Model matrix array to send to shader
+	 * @param givenShader: Shader to use instead of material shader if provided
+	 */
+	void Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs, std::shared_ptr<Resources::Shader> givenShader = nullptr);
+
+	/**
+	 * Draw mesh with given transform instead of parent transform
+	 * Used to draw environment meshes for skybox
+	 * @param view: View matrix
+	 * @param proj: Projection matrix
+	 * @param trs: Model matrix used for shader instead of parent transform
+	 */
+	void DrawFixedMesh(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, Core::Maths::Mat4 trs);
 
 	/**
 	 * Adds current mesh to NavMesh

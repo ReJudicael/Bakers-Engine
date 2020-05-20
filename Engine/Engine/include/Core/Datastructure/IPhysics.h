@@ -68,7 +68,7 @@ namespace Core
 			 */
 			virtual void OnDestroy() override;
 
-			virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
+			virtual void OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr) override;
 
 			/**
 			 * Create a physics mesh from the PhysicsScene, call in the OnStart

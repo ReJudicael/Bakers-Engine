@@ -2,6 +2,8 @@
 
 #include "ScriptedComponent.h"
 #include "Maths.hpp"
+#include "Object.hpp"
+#include "InputSystem.hpp"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -17,6 +19,7 @@ RTTR_PLUGIN_REGISTRATION
 		"Error", ScriptedComponent::ErrorWrapper);
 
 	Core::Maths::RegisterMathsForLua(lua);
+	Core::SystemManagement::InputSystem::RegisterInputEnums(lua);
 }	
 
 namespace Core::Datastructure
@@ -77,6 +80,9 @@ namespace Core::Datastructure
 
 	void ScriptedComponent::StartLuaScript()
 	{
+		m_env["object"] = m_parent;
+		m_env["Input"] = Input();
+
 		if (m_start.valid())
 			m_start();
 		else

@@ -19,7 +19,6 @@ RTTR_PLUGIN_REGISTRATION
 		.method("RemoveUpdatable", &RootObject::RemoveUpdatable)
 		.method("RemoveRenderable", &RootObject::RemoveRenderable)
 		.method("RemoveCamera", &RootObject::RemoveCamera)
-		.method("SetCamerasRatio", &RootObject::SetCamerasRatio)
 		.method("DestroyComponent", &RootObject::DestroyComponent)
 		.method("DestroyObject", &RootObject::DestroyObject)
 		.method("Destroy", &RootObject::Destroy)
@@ -106,14 +105,6 @@ namespace Core::Datastructure
 	void RootObject::RemoveCamera(ICamera* i) noexcept
 	{
 		m_cameras.remove(i);
-	}
-
-	void RootObject::SetCamerasRatio(float ratio) noexcept
-	{
-		for (auto value : m_cameras)
-		{
-			value->SetRatio(ratio);
-		}
 	}
 
 	void RootObject::DestroyComponent(IComponent* i) noexcept

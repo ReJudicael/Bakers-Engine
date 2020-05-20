@@ -3,6 +3,22 @@
 
 namespace Core::SystemManagement
 {
+	RTTR_PLUGIN_REGISTRATION
+	{
+		Core::Datastructure::lua.new_usertype<InputSystem>("InputSystem");
+		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsKeyPressed", &InputSystem::IsKeyPressed);
+		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsKeyDown", &InputSystem::IsKeyDown);
+		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsKeyUp", &InputSystem::IsKeyUp);
+		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsKeyUnused", &InputSystem::IsKeyUnused);
+		
+		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsMouseButtonPressed", &InputSystem::IsMouseButtonPressed);
+		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsMouseButtonDown", &InputSystem::IsMouseButtonDown);
+		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsMouseButtonUp", &InputSystem::IsMouseButtonUp);
+		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsMouseButtonUnused", &InputSystem::IsMouseButtonUnused);
+		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsMouseButtonDoubleClicked", &InputSystem::IsMouseDoubleClicked);
+	}
+
+
 	InputSystem::InputSystem(Core::Datastructure::EngineCore* core) :
 		m_core{ core }
 	{
@@ -22,17 +38,58 @@ namespace Core::SystemManagement
 		m_core->OnScrollYAxis -= m_scrollListenerID;
 	}
 
-	Core::Maths::Vec2 SystemManagement::InputSystem::GetMousePos() const noexcept
+	Core::Maths::Vec2 InputSystem::GetMousePos() const noexcept
 	{
 		if (!m_isActive)
 			return { 0, 0 };
 		return m_core->GetMousePos();
 	}
 
-	void SystemManagement::InputSystem::SetMousePos(Core::Maths::Vec2 pos) const noexcept
+	void InputSystem::SetMousePos(Core::Maths::Vec2 pos) const noexcept
 	{
 		if (!m_isActive)
 			return;
 		glfwSetCursorPos(m_core->GetWindow(), pos.x, pos.y);
+	}
+
+	void InputSystem::RegisterInputEnums(sol::state& lua)
+	{
+		lua["MouseButton"] = lua.create_table_with(
+			"B1", EMouseButton::B1,
+			"B2", EMouseButton::B2,
+			"B3", EMouseButton::B3,
+			"LEFT", EMouseButton::LEFT,
+			"RIGHT", EMouseButton::RIGHT,
+			"MIDDLE", EMouseButton::MIDDLE,
+			"LAST", EMouseButton::LAST);
+
+		lua["Key"] = lua.create_table_with(
+			"A", EKey::A,
+			"B", EKey::B,
+			"C", EKey::C,
+			"D", EKey::D,
+			"E", EKey::E,
+			"F", EKey::F,
+			"G", EKey::G,
+			"H", EKey::H,
+			"I", EKey::I,
+			"J", EKey::J,
+			"K", EKey::K,
+			"L", EKey::L,
+			"M", EKey::M,
+			"N", EKey::N,
+			"O", EKey::O,
+			"P", EKey::P,
+			"Q", EKey::Q,
+			"R", EKey::R,
+			"S", EKey::S,
+			"T", EKey::T,
+			"U", EKey::U,
+			"V", EKey::V,
+			"W", EKey::W,
+			"X", EKey::X,
+			"Y", EKey::Y,
+			"Z", EKey::Z
+		);
 	}
 }

@@ -204,4 +204,17 @@ namespace Resources
 
 		glUniform1i(GetLocation("uLightCount"), activeLightsCount);
 	}
+
+	std::vector<Core::Renderer::Light*> Shader::GetShadowCastingLights()
+	{
+		std::vector<Core::Renderer::Light*> selectedLights;
+
+		for (size_t i{ 0 }; i < Shader::lights.size(); ++i)
+		{
+			if (Shader::lights[i]->CanCastShadow())
+				selectedLights.push_back(Shader::lights[i]);
+		}
+
+		return selectedLights;
+	}
 }

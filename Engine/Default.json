@@ -9,22 +9,22 @@
                         "Back Quad Tex": {
                             "Name": "Back Quad Tex",
                             "Type": "std::string",
-                            "Value": ""
+                            "Value": ".\\Resources\\Textures\\skyboxBack.jpg"
                         },
                         "Box Tex": {
                             "Name": "Box Tex",
                             "Type": "std::string",
-                            "Value": ""
+                            "Value": ".\\Resources\\Textures\\skybox.jpg"
                         },
                         "Down Quad Tex": {
                             "Name": "Down Quad Tex",
                             "Type": "std::string",
-                            "Value": ""
+                            "Value": ".\\Resources\\Textures\\skyboxDown.jpg"
                         },
                         "Front Quad Tex": {
                             "Name": "Front Quad Tex",
                             "Type": "std::string",
-                            "Value": ""
+                            "Value": ".\\Resources\\Textures\\skyboxFront.jpg"
                         },
                         "IsActive": {
                             "Name": "IsActive",
@@ -34,12 +34,12 @@
                         "Left Quad Tex": {
                             "Name": "Left Quad Tex",
                             "Type": "std::string",
-                            "Value": ""
+                            "Value": ".\\Resources\\Textures\\skyboxLeft.jpg"
                         },
                         "Right Quad Tex": {
                             "Name": "Right Quad Tex",
                             "Type": "std::string",
-                            "Value": ""
+                            "Value": ".\\Resources\\Textures\\skyboxRight.jpg"
                         },
                         "Sphere Tex": {
                             "Name": "Sphere Tex",
@@ -49,12 +49,12 @@
                         "Type": {
                             "Name": "Type",
                             "Type": "Skybox type",
-                            "Value": 1
+                            "Value": 2
                         },
                         "Up Quad Tex": {
                             "Name": "Up Quad Tex",
                             "Type": "std::string",
-                            "Value": ""
+                            "Value": ".\\Resources\\Textures\\skyboxUp.jpg"
                         }
                     }
                 }
@@ -135,15 +135,20 @@
                                         "Type": "float",
                                         "Value": 100.0
                                     },
+                                    "Height": {
+                                        "Name": "Height",
+                                        "Type": "float",
+                                        "Value": 583.0
+                                    },
                                     "Near": {
                                         "Name": "Near",
                                         "Type": "float",
                                         "Value": 0.10000000149011612
                                     },
-                                    "Ratio": {
-                                        "Name": "Ratio",
+                                    "Width": {
+                                        "Name": "Width",
                                         "Type": "float",
-                                        "Value": 1.077186942100525
+                                        "Value": 623.0
                                     }
                                 }
                             }
@@ -166,80 +171,6 @@
                             "Name": "Speed",
                             "Type": "float",
                             "Value": 5.0
-                        }
-                    }
-                },
-                {
-                    "Type": "Light",
-                    "Values": {
-                        "Active": {
-                            "Name": "Active",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Ambient": {
-                            "Name": "Ambient",
-                            "Type": "Color",
-                            "Value": [
-                                1.0,
-                                1.0,
-                                1.0,
-                                1.0
-                            ]
-                        },
-                        "Angle": {
-                            "Name": "Angle",
-                            "Type": "float",
-                            "Value": 0.7850000262260437
-                        },
-                        "AngleSmoothness": {
-                            "Name": "AngleSmoothness",
-                            "Type": "float",
-                            "Value": 0.0010000000474974513
-                        },
-                        "Attenuation": {
-                            "Name": "Attenuation",
-                            "Type": "Vec3",
-                            "Value": [
-                                1.0,
-                                0.0,
-                                0.0
-                            ]
-                        },
-                        "Diffuse": {
-                            "Name": "Diffuse",
-                            "Type": "Color",
-                            "Value": [
-                                1.0,
-                                1.0,
-                                1.0,
-                                1.0
-                            ]
-                        },
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Range": {
-                            "Name": "Range",
-                            "Type": "float",
-                            "Value": 100.0
-                        },
-                        "Specular": {
-                            "Name": "Specular",
-                            "Type": "Color",
-                            "Value": [
-                                1.0,
-                                1.0,
-                                1.0,
-                                1.0
-                            ]
-                        },
-                        "Type": {
-                            "Name": "Type",
-                            "Type": "LightType",
-                            "Value": 1
                         }
                     }
                 },
@@ -342,15 +273,20 @@
                                                 "Type": "float",
                                                 "Value": 100.0
                                             },
+                                            "Height": {
+                                                "Name": "Height",
+                                                "Type": "float",
+                                                "Value": 780.0
+                                            },
                                             "Near": {
                                                 "Name": "Near",
                                                 "Type": "float",
                                                 "Value": 0.10000000149011612
                                             },
-                                            "Ratio": {
-                                                "Name": "Ratio",
+                                            "Width": {
+                                                "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 1.077186942100525
+                                                "Value": 1024.0
                                             }
                                         }
                                     }
@@ -401,6 +337,11 @@
                 {
                     "Type": "Mesh",
                     "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
@@ -435,7 +376,7 @@
                         "Audio Clip": {
                             "Name": "Audio Clip",
                             "Type": "std::string",
-                            "Value": ".\\Resources\\Sound\\amb_bird_call_01.ogg"
+                            "Value": ".\\Resources\\Sounds\\amb_bird_call_01.ogg"
                         },
                         "Audio Mode": {
                             "Name": "Audio Mode",
@@ -561,6 +502,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -614,6 +560,11 @@
                 {
                     "Type": "Mesh",
                     "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
@@ -670,6 +621,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -729,6 +685,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -788,6 +749,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -847,6 +813,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -906,6 +877,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -965,6 +941,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -1024,6 +1005,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -1083,6 +1069,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -1142,6 +1133,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -1201,6 +1197,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -1260,6 +1261,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -1319,6 +1325,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -1378,6 +1389,11 @@
                         {
                             "Type": "Mesh",
                             "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -1436,6 +1452,11 @@
                 {
                     "Type": "Mesh",
                     "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
@@ -1482,6 +1503,221 @@
                 "x": 0.009999999776482582,
                 "y": 0.009999999776482582,
                 "z": 0.009999999776482582
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Audio Source",
+                    "Values": {
+                        "Audio Clip": {
+                            "Name": "Audio Clip",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Sounds\\veh_lawnmower_0879_on_exh.ogg"
+                        },
+                        "Audio Mode": {
+                            "Name": "Audio Mode",
+                            "Type": "Audio Mode",
+                            "Value": 16
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Max Distance": {
+                            "Name": "Max Distance",
+                            "Type": "float",
+                            "Value": 10000.0
+                        },
+                        "Min Distance": {
+                            "Name": "Min Distance",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Mute": {
+                            "Name": "Mute",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Pan": {
+                            "Name": "Pan",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Pitch": {
+                            "Name": "Pitch",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Play On Awake": {
+                            "Name": "Play On Awake",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Priority": {
+                            "Name": "Priority",
+                            "Type": "int",
+                            "Value": 128
+                        },
+                        "Volume": {
+                            "Name": "Volume",
+                            "Type": "float",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                {
+                    "Type": "Static Mesh",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "LayerMask": {
+                            "Name": "LayerMask",
+                            "Type": "Layout",
+                            "Value": 1
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "GameObject",
+            "Pos": {
+                "x": 9.377946853637695,
+                "y": 7.138454437255859,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Light",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Ambient": {
+                            "Name": "Ambient",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                0.9999899864196777,
+                                0.9999899864196777,
+                                1.0
+                            ]
+                        },
+                        "Angle": {
+                            "Name": "Angle",
+                            "Type": "float",
+                            "Value": 0.7850000262260437
+                        },
+                        "AngleSmoothness": {
+                            "Name": "AngleSmoothness",
+                            "Type": "float",
+                            "Value": 0.0010000000474974513
+                        },
+                        "Attenuation": {
+                            "Name": "Attenuation",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CastShadows": {
+                            "Name": "CastShadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Diffuse": {
+                            "Name": "Diffuse",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Range": {
+                            "Name": "Range",
+                            "Type": "float",
+                            "Value": 100.0
+                        },
+                        "Specular": {
+                            "Name": "Specular",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "LightType",
+                            "Value": 0
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Light",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 0.7071067690849304,
+                "x": -0.7071067690849304,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
             }
         }
     ]

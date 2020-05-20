@@ -48,7 +48,12 @@ namespace Core::Maths
 			"y", &Vec2::y,
 			"xy", &Vec2::xy,
 			"Normalize", &Vec2::Normalize,
-			"SquaredLength", &Vec2::SquaredLength);
+			"SquaredLength", &Vec2::SquaredLength,
+			"String", &Vec2::ToString,
+			sol::meta_function::addition,
+				sol::overload([](const Vec2& v1, const Vec2& v2) -> Vec2 { return v1 + v2; }),
+			sol::meta_function::subtraction,
+				sol::overload([](const Vec2& v1, const Vec2& v2) -> Vec2 { return v1 - v2; }));
 
 		lua.new_usertype<Vec3>("Vec3",
 			sol::constructors<Vec3(), Vec3(float, float, float)>(),
@@ -58,8 +63,16 @@ namespace Core::Maths
 			"xyz", &Vec3::xyz,
 			"Normalize", &Vec3::Normalize,
 			"SquaredLength", &Vec3::SquaredLength,
+			"String", &Vec3::ToString,
 			"Dot", &Vec3::Dot,
-			"Cross", &Vec3::Cross);
+			"Cross", &Vec3::Cross,
+			sol::meta_function::multiplication, 
+				sol::overload([](const Vec3& v1, const Vec3& v2) -> Vec3 { return v1 * v2; },
+					[](const Vec3& v1, const float& f) -> Vec3 { return v1 * f; }),
+			sol::meta_function::addition,
+				sol::overload([](const Vec3& v1, const Vec3& v2) -> Vec3 { return v1 + v2; }),
+			sol::meta_function::subtraction,
+				sol::overload([](const Vec3& v1, const Vec3& v2) -> Vec3 { return v1 - v2; }));
 
 		lua.new_usertype<Vec4>("Vec4",
 			sol::constructors<Vec4(), Vec4(float, float, float, float)>(),
@@ -70,8 +83,26 @@ namespace Core::Maths
 			"xyzw", &Vec4::xyzw,
 			"Normalize", &Vec4::Normalize,
 			"SquaredLenght", &Vec4::SquaredLength,
+			"String", &Vec4::ToString,
 			"Dot", sol::resolve<float(const Vec4&) const>(&Vec4::Dot),
-			"Cross", sol::resolve<Vec4(const Vec4&) const>(&Vec4::Cross));
+			"Cross", sol::resolve<Vec4(const Vec4&) const>(&Vec4::Cross),
+			sol::meta_function::multiplication,
+				sol::overload([](const Vec4& v1, const Vec4& v2) -> Vec4 { return v1 * v2; }),
+			sol::meta_function::addition,
+				sol::overload([](const Vec4& v1, const Vec4& v2) -> Vec4 { return v1 + v2; }),
+			sol::meta_function::subtraction,
+				sol::overload([](const Vec4& v1, const Vec4& v2) -> Vec4 { return v1 - v2; }));
+		
+		lua.new_usertype<Quaternion>("Quaternion",
+			sol::constructors<Quat(), Quat(float, float, float, float), Quat(float, Vec3), Quat(Vec3)>(),
+			"x", &Quat::x,
+			"y", &Quat::y,
+			"z", &Quat::z,
+			"w", &Quat::w,
+			"String", &Quat::ToString,
+			"Normalize", &Quat::Normalize,
+			"Rotate", &Quat::Rotate,
+			"Euler", &Quat::ToEulerAngles);
 	}
 
 }

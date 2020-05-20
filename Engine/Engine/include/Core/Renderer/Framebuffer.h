@@ -16,7 +16,6 @@ namespace Core::Renderer
 	{
 		std::shared_ptr<Resources::Shader> s = nullptr;
 		GLuint VAO;
-		GLuint VBO;
 		bool active = true;
 	};
 

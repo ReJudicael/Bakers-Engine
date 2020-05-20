@@ -11,9 +11,10 @@ namespace Editor::Datastructure
 	{
 	}
 
-	void EditorCamera::SetRatio(const float newRatio)
+	void EditorCamera::SetRatio(const float width, const float height)
 	{
-		m_persp.ratio = newRatio;
+		m_persp.width = width;
+		m_persp.height = height;
 		m_isPerspectiveUpdated = false;
 	}
 
@@ -69,7 +70,7 @@ namespace Editor::Datastructure
 	
 	Core::Maths::Mat4 EditorCamera::OnGeneratePerspective()
 	{
-		return Core::Renderer::Camera::CreatePerspectiveMatrix(m_persp.ratio, m_persp.fov, m_persp.near, m_persp.far);
+		return Core::Renderer::Camera::CreatePerspectiveMatrix(m_persp.width, m_persp.height, m_persp.fov, m_persp.near, m_persp.far);
 	}
 	
 	void EditorCamera::StartCopy(IComponent*& copyTo) const

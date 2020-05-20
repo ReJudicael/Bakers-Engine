@@ -51,22 +51,45 @@ namespace Core::Renderer
 
 		/**
 		 * OnDraw call for each skybox quad
-		 * @param cam: Camera to pass to OnDraw
+		 * @param view: View matrix
+		 * @param proj: Projection matrix
 		 */
-		void DrawQuads(Datastructure::ICamera* cam);
+		void DrawQuads(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj);
 
 		/**
 		 * Set texture set from editor to each quad
 		 */
 		void SetTexturesToQuads();
 
+		// Setters for texture registration
+		void SetBoxTexture(std::string tex);
+		void SetSphereTexture(std::string tex);
+		void SetFrontQuadTexture(std::string tex);
+		void SetRightQuadTexture(std::string tex);
+		void SetBackQuadTexture(std::string tex);
+		void SetLeftQuadTexture(std::string tex);
+		void SetUpQuadTexture(std::string tex);
+		void SetDownQuadTexture(std::string tex);
+
+		// Getters for texture registration
+		std::string GetBoxTexture() { return m_boxTexture; };
+		std::string GetSphereTexture() { return m_sphereTexture; };
+		std::string GetFrontQuadTexture() { return m_frontQuadTexture; };
+		std::string GetRightQuadTexture() { return m_rightQuadTexture; };
+		std::string GetBackQuadTexture() { return m_backQuadTexture; };
+		std::string GetLeftQuadTexture() { return m_leftQuadTexture; };
+		std::string GetUpQuadTexture() { return m_upQuadTexture; };
+		std::string GetDownQuadTexture() { return m_downQuadTexture; };
+
 	protected:
 
 		/**
 		 * Called for rendering. Must be overriden if the component is inherited
-		 * @param cam: Camera to render to
+		 * @param view: View matrix
+		 * @param proj: Projection matrix
+		 * @param givenShader: Shader to use instead of material shader if provided
 		 */
-		virtual void OnDraw(Datastructure::ICamera* cam);
+		virtual void OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr);
 
 		/**
 		 * Copies the data of the component into the given component.
