@@ -27,6 +27,7 @@ namespace Core::Physics
 		Core::Datastructure::RootObject* root = GetRoot();
 
 		root->GetEngine()->GetPhysicsScene()->CreatePhysicsShape(*this);
+
 		root->GetEngine()->GetPhysicsScene()->CreateRigidStatic(m_pxRigidActor, m_pxShape, GetParent()->GetUpdatedTransform());
 		m_pxRigidActor->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(
 									dynamic_cast<Core::Physics::Collider*>(this)));
@@ -90,17 +91,25 @@ namespace Core::Physics
 
 	void Collider::OnReset()
 	{
-		// TODO
-		//Maybe To improve
-		//DestroyRigidActor();
-		Core::Datastructure::IRenderable::OnReset();
+		//Core::Datastructure::IRenderable::OnReset();
 		Core::Datastructure::IComponent::OnReset();
+	}
+
+	void Collider::SetToDefault()
+	{
+		SetLocalPosition({ 0.f, 0.f, 0.f });
+		SetLocalRotationQuat({ 1.f, 0.f, 0.f, 0.f });
+		Trigger(false);
+		SetMaterial({ 1.f, 1.f, 0.f });
 	}
 
 	void Collider::InitRigidBody(Core::Physics::RigidBody* rigidBody, int& ID, physx::PxRigidDynamic*& pxRigidBody)
 	{
 		if (m_pxShape->getActor())
 			m_pxRigidActor->detachShape(*m_pxShape);
+
+		if(m_pxRigidActor->isReleasable())
+			m_pxRigidActor->release();
 
 		pxRigidBody = GetRoot()->GetEngine()->GetPhysicsScene()->CreateRigidDynamic(m_pxRigidActor, m_pxShape, GetParent()->GetUpdatedTransform());
 

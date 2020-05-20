@@ -3,6 +3,7 @@
 #include "PxDefaultAllocator.h"
 #include "PxDefaultErrorCallback.h"
 #include "PxSimulationEventCallback.h"
+#include "PhysicsSceneSimulationEventCallback.h"
 #include "IPhysics.h"
 #include "PxSimpleTypes.h"
 
@@ -76,12 +77,13 @@ namespace Core
 		BAKERS_API_CLASS PhysicsScene
 		{
 		private:
-			physx::PxFoundation* m_pxFoundation;
-			physx::PxPvd* m_pxPvd;
-			physx::PxPvdTransport* m_pxTransport;
-			physx::PxPhysics* m_pxPhysics;
-			physx::PxCooking* m_pxCooking;
-			physx::PxScene* m_pxScene;
+			physx::PxFoundation*					m_pxFoundation;
+			physx::PxPvd*							m_pxPvd;
+			physx::PxPvdTransport*					m_pxTransport;
+			physx::PxPhysics*						m_pxPhysics;
+			physx::PxCooking*						m_pxCooking;
+			physx::PxScene*							m_pxScene;
+			PhysicsSceneSimulationEventCallback*	m_eventCallBack;
 
 			physx::PxDefaultErrorCallback	m_pxDefaultErrorCallback;
 			physx::PxDefaultAllocator		m_pxDefaultAllocatorCallback;

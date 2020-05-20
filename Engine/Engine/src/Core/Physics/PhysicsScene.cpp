@@ -1,7 +1,7 @@
 #include <iostream>
 #include "PhysicsScene.h"
 
-#include "PhysicsSceneSimulationEventCallback.h"
+//#include "PhysicsSceneSimulationEventCallback.h"
 #include "PxPhysicsAPI.h"
 #include "PxMaterial.h"
 #include "PxDefaultSimulationFilterShader.h"
@@ -70,10 +70,11 @@ namespace Core::Physics
 		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(4);
 		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
 		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
-		PhysicsSceneSimulationEventCallback* eventCallBack = new PhysicsSceneSimulationEventCallback();
+		m_eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.filterShader = &Core::Physics::PhysicsSceneSimulationEventCallback::filterShader;
 
-		sceneDesc.simulationEventCallback = eventCallBack;
+		sceneDesc.sceneQueryUpdateMode = physx::PxSceneQueryUpdateMode::eBUILD_ENABLED_COMMIT_ENABLED;
+		sceneDesc.simulationEventCallback = m_eventCallBack;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_PCM;
@@ -95,12 +96,14 @@ namespace Core::Physics
 		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
 		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
 		sceneDesc.filterShader = &physx::PxDefaultSimulationFilterShader;
+
+		sceneDesc.sceneQueryUpdateMode = physx::PxSceneQueryUpdateMode::eBUILD_ENABLED_COMMIT_ENABLED;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
 		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
 
 		scene = m_pxPhysics->createScene(sceneDesc);
 
-		if (!m_pxScene)
+		if (!scene)
 		{
 			std::cout << "Scene failed!" << std::endl;
 		}
@@ -393,26 +396,33 @@ namespace Core::Physics
 	{
 		if (actor == nullptr)
 			return;
+
 		scene->removeActor(*actor);
+
+		// Get all the shape of the actor and detach them
 		const physx::PxU32 numShapes = actor->getNbShapes();
 		std::vector<physx::PxShape*> shapes = std::vector<physx::PxShape*>(numShapes);
 		actor->getShapes(shapes.data(), numShapes);
 		for (physx::PxU32 i = 0; i < numShapes; i++)
 		{
 			actor->detachShape(*shapes[i]);
-			//shapes[i]->release();
 		}
-		//actor->release();
 	}
 
 	void PhysicsScene::BeginSimulate(const float deltaTime)
 	{
+		// Update the accumulator
 		m_accumulator += deltaTime;
+
+		// if true the physics doesn't update
 		if (m_accumulator < m_stepSimulation)
+		{
 			m_IsSimulating = false;
+			return;
+		}
 
+		// Update the physics
 		m_accumulator -= m_stepSimulation;
-
 		m_pxScene->simulate(m_stepSimulation);
 		m_IsSimulating = true;
 	}
@@ -425,6 +435,8 @@ namespace Core::Physics
 
 	void PhysicsScene::ReleasePhysXSDK()
 	{
+		BeginSimulate(0.f);
+
 		m_IsSimulating = true;
 
 		EndSimulate();
@@ -434,6 +446,10 @@ namespace Core::Physics
 			PxCloseExtensions();
 
 			m_pxScene->release();
+
+			if (m_eventCallBack)
+				delete m_eventCallBack;
+			
 			m_pxPhysics->release();
 			m_pxCooking->release();
 

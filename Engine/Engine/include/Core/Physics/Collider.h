@@ -90,6 +90,8 @@ namespace Core
 
 			virtual void OnReset() override;
 
+			virtual void SetToDefault();
+
 			virtual bool OnStart() override;
 		public:
 			Collider() = default;
@@ -105,6 +107,7 @@ namespace Core
 			void DestroyRigidActor();
 
 			void InitRigidBody(Core::Physics::RigidBody* rigidBody, int& ID, physx::PxRigidDynamic*& pxRigidBody);
+
 
 			/**
 			 * Get the PhysX shape of the collider

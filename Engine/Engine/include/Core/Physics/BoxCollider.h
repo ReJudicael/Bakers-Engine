@@ -32,6 +32,8 @@ namespace Core::Physics
 
 		virtual void OnReset() override;
 
+		virtual void SetToDefault() override;
+
 		virtual bool OnStart() override;
 
 	public :

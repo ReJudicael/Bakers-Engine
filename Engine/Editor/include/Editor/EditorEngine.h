@@ -44,6 +44,7 @@ namespace Editor
 		Core::SystemManagement::InputSystem* m_editorInput{ nullptr };
 
 		physx::PxScene*		m_editorScene;
+		float				m_accumulator;
 
 	public:
 		EditorEngine();

@@ -151,6 +151,20 @@ namespace Editor
 				break;
 			}
 			m_step = false;
+
+			/*bool fetch;
+			m_accumulator += GetDeltaTime();
+			if (m_accumulator < 1/60)
+				fetch = false;
+
+			m_accumulator -= 1 / 60;
+			
+
+			m_editorScene->simulate(1 / 60);
+			fetch = true;
+
+			m_editorScene->fetchResults(fetch);*/
+
 			EngineCore::OnLoop();
 			break;
 		case (Core::Datastructure::EngineState::CLOSED):
@@ -162,10 +176,6 @@ namespace Editor
 			break;
 		case (Core::Datastructure::EngineState::INITIALIZED):
 			m_manager->UpdateResourcesManager();
-			/*m_manager->LinkAllTextureToOpenGl();
-			m_manager->CheckDeleteAssimpImporter();
-			m_manager->LinkAllModelToOpenGl();
-			m_manager->ShaderUpdate();*/
 			if (!m_navMesh->IsNavmeshUpdated())
 				m_navMesh->Build();
 
@@ -198,8 +208,9 @@ namespace Editor
 	{
 		physx::PxRaycastBuffer hit;
 		Core::Datastructure::Object* result{ nullptr };
+
 		if(m_editorScene->raycast(physx::PxVec3{ origin.x, origin.y, origin.z },
-								physx::PxVec3{ direction.x, direction.y, direction.z }, FLT_MAX, hit))
+								physx::PxVec3{ direction.x, direction.y, direction.z }.getNormalized(), FLT_MAX, hit))
 		{
 			Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(hit.block.actor->userData) };
 			if (physicsMesh)

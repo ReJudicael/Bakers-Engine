@@ -59,7 +59,15 @@ namespace Core::Physics
 
 	void CapsuleCollider::OnReset()
 	{
-		Core::Physics::Collider::Reset();
+		SetToDefault();
+		Core::Physics::Collider::OnReset();
+		Core::Datastructure::ComponentBase::OnReset();
+	}
+
+	void CapsuleCollider::SetToDefault()
+	{
+		Collider::SetToDefault();
+		SetCapsuleHalfExtent({ 0.5f, 0.5f });
 	}
 
 	void CapsuleCollider::CreateShape(physx::PxPhysics* physics)

@@ -58,7 +58,15 @@ namespace Core::Physics
 
 	void BoxCollider::OnReset()
 	{
-		Core::Physics::Collider::Reset();
+		SetToDefault();
+		Core::Physics::Collider::OnReset();
+		Core::Datastructure::ComponentBase::OnReset();
+	}
+
+	void BoxCollider::SetToDefault()
+	{
+		Collider::SetToDefault();
+		SetBoxHalfExtent({ 0.5f, 0.5f, 0.5f });
 	}
 
 	void BoxCollider::CreateShape(physx::PxPhysics* physics)

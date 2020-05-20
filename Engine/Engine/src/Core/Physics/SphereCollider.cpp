@@ -59,7 +59,15 @@ namespace Core::Physics
 
 	void SphereCollider::OnReset()
 	{
-		Core::Physics::Collider::Reset();
+		SetToDefault();
+		Core::Physics::Collider::OnReset();
+		Core::Datastructure::ComponentBase::OnReset();
+	}
+
+	void SphereCollider::SetToDefault()
+	{
+		Collider::SetToDefault();
+		SetSphereHalfExtent(0.5f);
 	}
 
 	void SphereCollider::CreateShape(physx::PxPhysics* physics)

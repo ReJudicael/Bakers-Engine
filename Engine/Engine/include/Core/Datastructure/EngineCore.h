@@ -46,6 +46,7 @@ namespace Core
 			std::list<Core::Renderer::Framebuffer*>	m_fbo;
 			GLFWwindow* m_window;
 			Resources::Loader::ResourcesManager*	m_manager;
+
 			Core::Physics::PhysicsScene*			m_physicsScene;
 
 			Core::Navigation::NavMeshBuilder*		m_navMesh;
