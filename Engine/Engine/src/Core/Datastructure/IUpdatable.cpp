@@ -39,6 +39,7 @@ namespace Core::Datastructure
 
 	void	IUpdatable::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		IComponent::OnCopy(copyTo);
 	}
 

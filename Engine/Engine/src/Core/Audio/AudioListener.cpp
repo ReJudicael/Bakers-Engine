@@ -20,6 +20,7 @@ namespace Core::Audio
 
     void AudioListener::StartCopy(IComponent*& copyTo) const
     {
+        ZoneScoped
         copyTo = new AudioListener();
         OnCopy(copyTo);
     }
@@ -32,6 +33,7 @@ namespace Core::Audio
 
     void AudioListener::OnCopy(IComponent* copyTo) const
     {
+        ZoneScoped
         ComponentUpdatable::OnCopy(copyTo);
         AudioListener* copy{ dynamic_cast<AudioListener*>(copyTo) };
         copy->m_isActive = m_isActive;

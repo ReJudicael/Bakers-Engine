@@ -49,6 +49,7 @@ namespace Core
 		
 		void IPhysics::OnCopy(IComponent* copyTo) const
 		{
+			ZoneScoped
 			IComponent::OnCopy(copyTo);
 
 			IPhysics* phy = dynamic_cast<IPhysics*>(copyTo);

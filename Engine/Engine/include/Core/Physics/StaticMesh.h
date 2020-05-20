@@ -50,6 +50,7 @@ namespace Core
 			 * Default Constructor
 			 */
 			StaticMesh() = default;
+			~StaticMesh() = default;
 
 			/**
 			 * Constructor with a Collider, for init the collider directly

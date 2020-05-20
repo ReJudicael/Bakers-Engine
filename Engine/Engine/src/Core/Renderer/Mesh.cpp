@@ -261,12 +261,14 @@ void	Mesh::OnReset()
 
 void Mesh::OnCopy(IComponent* copyTo) const
 {
+	ZoneScoped
 	ComponentBase::OnCopy(copyTo);
 	IRenderable::OnCopy(copyTo);
 }
 
 void Mesh::StartCopy(IComponent*& copyTo) const
 {
+	ZoneScoped
 	copyTo = new Mesh();
 	OnCopy(copyTo);
 }

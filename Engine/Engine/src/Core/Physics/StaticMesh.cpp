@@ -35,12 +35,14 @@ namespace Core
 
 		void StaticMesh::StartCopy(IComponent*& copyTo) const
 		{
+			ZoneScoped
 			copyTo = new StaticMesh();
 			OnCopy(copyTo);
 		}
 
 		void StaticMesh::OnCopy(IComponent* copyTo) const
 		{
+			ZoneScoped
 			ComponentBase::OnCopy(copyTo);
 			IPhysics::OnCopy(copyTo);
 			IUpdatable::OnCopy(copyTo);
@@ -48,7 +50,6 @@ namespace Core
 			StaticMesh* phy = dynamic_cast<StaticMesh*>(copyTo);
 
 			phy->m_staticMesh = m_staticMesh;
-
 		}
 
 		void StaticMesh::DestroyStaticMesh()

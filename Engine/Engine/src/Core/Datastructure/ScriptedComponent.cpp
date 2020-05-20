@@ -118,6 +118,7 @@ namespace Core::Datastructure
 
 	void ScriptedComponent::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentUpdatable::OnCopy(copyTo);
 		ScriptedComponent* copy{ dynamic_cast<ScriptedComponent*>(copyTo) };
 
@@ -127,6 +128,7 @@ namespace Core::Datastructure
 
 	void ScriptedComponent::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new ScriptedComponent();
 		OnCopy(copyTo);
 	}

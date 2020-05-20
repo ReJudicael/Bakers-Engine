@@ -40,12 +40,14 @@ namespace Core::Audio
 
 	void AudioSource::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new AudioSource();
 		OnCopy(copyTo);
 	}
 
 	void AudioSource::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentUpdatable::OnCopy(copyTo);
 		AudioSource* copy{ dynamic_cast<AudioSource*>(copyTo) };
 

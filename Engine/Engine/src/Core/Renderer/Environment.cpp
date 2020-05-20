@@ -151,6 +151,7 @@ namespace Core::Renderer
 
 	void	Environment::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentBase::OnCopy(copyTo);
 		IRenderable::OnCopy(copyTo);
 
@@ -170,6 +171,7 @@ namespace Core::Renderer
 
 	void	Environment::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new Environment();
 		OnCopy(copyTo);
 	}

@@ -109,6 +109,7 @@ namespace Core::Renderer
 
 	void Camera::OnCopy(IComponent* toCopy) const
 	{
+		ZoneScoped
 		ComponentBase::OnCopy(toCopy);
 		ICamera::OnCopy(toCopy);
 		IUpdatable::OnCopy(toCopy);
@@ -120,6 +121,7 @@ namespace Core::Renderer
 
 	void	Camera::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new Camera();
 		OnCopy(copyTo);
 	}

@@ -14,6 +14,7 @@ namespace Core::Datastructure
 {
 	void	ComponentBase::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new ComponentBase();
 		OnCopy(copyTo);
 	}

@@ -41,6 +41,7 @@ namespace Core::Datastructure
 
 	void IRenderable::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		IComponent::OnCopy(copyTo);
 		IRenderable* copy{ dynamic_cast<IRenderable*>(copyTo) };
 

@@ -42,6 +42,7 @@ namespace Core::Renderer
 {
     void Light::OnCopy(IComponent* copyTo) const
     {
+        ZoneScoped
         ComponentBase::OnCopy(copyTo);
         Light* copy{ dynamic_cast<Light*>(copyTo) };
 
@@ -58,6 +59,7 @@ namespace Core::Renderer
 
     void Light::StartCopy(IComponent*& copyTo) const
     {
+        ZoneScoped
         copyTo = new Light();
         OnCopy(copyTo);
     }

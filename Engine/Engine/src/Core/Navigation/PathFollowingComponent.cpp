@@ -99,12 +99,14 @@ namespace Core::Navigation
 
 	void PathFollowingComponent::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new PathFollowingComponent();
 		OnCopy(copyTo);
 	}
 
 	void PathFollowingComponent::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		INavAgent::OnCopy(copyTo);
 		IUpdatable::OnCopy(copyTo);
 	}

@@ -52,6 +52,7 @@ namespace Core
 
 		void DynamicMesh::StartCopy(IComponent*& copyTo) const
 		{
+			ZoneScoped
 			copyTo = new DynamicMesh();
 			OnCopy(copyTo);
 
@@ -59,6 +60,7 @@ namespace Core
 
 		void DynamicMesh::OnCopy(IComponent* copyTo) const
 		{
+			ZoneScoped
 			ComponentBase::OnCopy(copyTo);
 			IPhysics::OnCopy(copyTo);
 			IUpdatable::OnCopy(copyTo);

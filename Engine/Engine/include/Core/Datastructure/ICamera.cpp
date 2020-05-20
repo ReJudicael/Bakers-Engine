@@ -107,6 +107,7 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 
 void Core::Datastructure::ICamera::OnCopy(IComponent* copyTo) const
 {
+	ZoneScoped
 	IComponent::OnCopy(copyTo);
 	ICamera* copy{ dynamic_cast<Core::Datastructure::ICamera*>(copyTo) };
 

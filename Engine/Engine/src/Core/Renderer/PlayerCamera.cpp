@@ -238,6 +238,7 @@ namespace Core::Renderer
 
 	void PlayerCamera::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		Camera::OnCopy(copyTo);
 		PlayerCamera* copy{ dynamic_cast<PlayerCamera*>(copyTo) };
 
@@ -259,6 +260,7 @@ namespace Core::Renderer
 
 	void PlayerCamera::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		PlayerCamera* test = new PlayerCamera();
 		copyTo = test;
 		OnCopy(copyTo);

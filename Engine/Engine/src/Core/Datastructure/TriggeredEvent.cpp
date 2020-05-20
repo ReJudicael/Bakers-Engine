@@ -16,12 +16,14 @@ namespace Core::Datastructure
 {
 	void TriggeredEvent::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentBase::OnCopy(copyTo);
 		IUpdatable::OnCopy(copyTo);
 	}
 
 	void TriggeredEvent::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new TriggeredEvent();
 		OnCopy(copyTo);
 	}

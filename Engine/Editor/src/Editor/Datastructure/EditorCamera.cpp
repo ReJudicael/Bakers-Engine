@@ -75,12 +75,14 @@ namespace Editor::Datastructure
 	
 	void EditorCamera::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new EditorCamera();
 		OnCopy(copyTo);
 	}
 	
 	void EditorCamera::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentBase::OnCopy(copyTo);
 		ICamera::OnCopy(copyTo);
 	}
