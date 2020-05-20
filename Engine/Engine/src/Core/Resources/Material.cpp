@@ -9,6 +9,14 @@
 
 namespace Resources
 {
+	RTTR_PLUGIN_REGISTRATION
+	{
+		registration::class_<Resources::Material>("Rigid Body")
+		.constructor()
+		.property("Variants Uniform", &Resources::Material::variants)
+		;
+	}
+
 	void Material::LoadMaterialFromaiMaterial(aiMaterial* mat, const std::string& directory,
 		Loader::ResourcesManager* resources, std::shared_ptr<Resources::Loader::ImporterData>& importer)
 	{
@@ -22,7 +30,6 @@ namespace Resources
 
 		LoadTextureMaterial(mat, textures[0], aiTextureType_DIFFUSE, directory, resources);
 		LoadTextureMaterial(mat, textures[textures.size()- 1], aiTextureType_NORMALS, directory, resources);
-		// maybe load a normalMap
 
 		if(textures.size() <= 0)
 			shader = resources->GetShader("Wireframe");
@@ -102,25 +109,58 @@ namespace Resources
 			}
 		}
 
+		SendVariants(unit);
+	}
+
+	void Material::SendVariants(GLuint unitTexture)
+	{
 		for (auto i{ 0 }; i < variants.size(); i++)
 		{
-			if (variants[i].var.can_convert<float>())
+
+			if (variants[i].var.get_type() == rttr::type::get<bool>())
 			{
-				float tmp;
-				if(variants[i].var.convert<float>(tmp))
-					glUniform1f(shader->GetLocation(variants[i].name.c_str()), tmp);
-					
+				bool b{ variants[i].var.to_bool() };
+				glUniform1i(shader->GetLocation(variants[i].name.c_str()), b);
 			}
-			else if (variants[i].var.can_convert<std::shared_ptr<Texture>>())
+			else if (variants[i].var.get_type() == rttr::type::get<int>())
 			{
-				std::shared_ptr<Texture> text;
-				variants[i].var.convert<std::shared_ptr<Texture>>(text);
+				int i{ variants[i].var.to_int() };
+				glUniform1i(shader->GetLocation(variants[i].name.c_str()), i);
+			}
+			else if (variants[i].var.get_type() == rttr::type::get<float>())
+			{
+				float f{ variants[i].var.to_float() };
+				glUniform1f(shader->GetLocation(variants[i].name.c_str()), f);
+			}
+			else if (variants[i].var.get_type() == rttr::type::get<Core::Maths::Vec2>())
+			{
+				Core::Maths::Vec2 v{ variants[i].var.get_value<Core::Maths::Vec2>() };
+				glUniform2fv(shader->GetLocation(variants[i].name.c_str()), 1, v.xy);
+			}
+			else if (variants[i].var.get_type() == rttr::type::get<Core::Maths::Vec3>())
+			{
+				Core::Maths::Vec3 v{ variants[i].var.get_value<Core::Maths::Vec3>() };
+				glUniform3fv(shader->GetLocation(variants[i].name.c_str()), 1, v.xyz);
+			}
+			else if (variants[i].var.get_type() == rttr::type::get<Core::Maths::Vec4>())
+			{
+				Core::Maths::Vec4 v{ variants[i].var.get_value<Core::Maths::Vec4>() };
+				glUniform4fv(shader->GetLocation(variants[i].name.c_str()), 1, v.xyzw);
+			}
+			else if (variants[i].var.get_type() == rttr::type::get<Core::Maths::Color>())
+			{
+				Core::Maths::Color c{ variants[i].var.get_value<Core::Maths::Color>() };
+				glUniform3fv(shader->GetLocation(variants[i].name.c_str()), 1, c.rgb);
+			}
+			else if (variants[i].var.get_type() == rttr::type::get<std::shared_ptr<Texture>>())
+			{
+				std::shared_ptr<Texture> text{ variants[i].var.get_value<std::shared_ptr<Texture>>() };
 				if (text)
 				{
-					unit++;
-					glActiveTexture(GL_TEXTURE0 + unit);
+					unitTexture++;
+					glActiveTexture(GL_TEXTURE0 + unitTexture);
 					glBindTexture(GL_TEXTURE_2D, text->texture);
-					glUniform1i(shader->GetLocation(variants[i].name.c_str()), unit);
+					glUniform1i(shader->GetLocation(variants[i].name.c_str()), unitTexture);
 				}
 			}
 		}
@@ -153,25 +193,71 @@ namespace Resources
 			{
 				VariantUniform uni;
 				uni.name = name;
-				rttr::variant var;
+
 				switch (type)
 				{
-				case GL_FLOAT:
-					uni.var = 0.f;
-					variants.push_back(uni);
-					break;
-				case GL_INT:
-					uni.var = 0;
-					variants.push_back(uni);
-					break;
-				case GL_UNSIGNED_INT:
-					uni.var = static_cast<unsigned int>(0);
-					variants.push_back(uni);
-					break;
-				case GL_SAMPLER_2D:
-					uni.var = std::shared_ptr<Texture>();
-					variants.push_back(uni);
-					break;
+					case GL_BOOL:
+					{
+						uni.var = false;
+						variants.push_back(uni);
+						break;
+					}
+
+					case GL_INT:
+					{
+						uni.var = 0;
+						variants.push_back(uni);
+						break;
+					}
+
+					case GL_FLOAT:
+					{
+						uni.var = 0.f;
+						variants.push_back(uni);
+						break;
+					}
+
+					case GL_UNSIGNED_INT:
+					{
+						uni.var = static_cast<unsigned int>(0);
+						variants.push_back(uni);
+						break;
+					}
+
+					case GL_FLOAT_VEC2:
+					{
+						uni.var = Core::Maths::Vec2();
+						variants.push_back(uni);
+						break;
+					}
+
+					case GL_FLOAT_VEC3:
+					{
+						uni.var = Core::Maths::Vec3();
+						variants.push_back(uni);
+						break;
+					}
+
+					case GL_FLOAT_VEC4:
+					{
+						uni.var = Core::Maths::Vec4();
+						variants.push_back(uni);
+						break;
+					}
+
+					case GL_COLOR:
+					{
+						uni.var = Core::Maths::Color();
+						variants.push_back(uni);
+						break;
+					}
+
+					case GL_SAMPLER_2D:
+					{
+						uni.var = std::shared_ptr<Texture>();
+						variants.push_back(uni);
+						break;
+					}
 				}
 			}
 			else if (type == GL_SAMPLER_2D)
@@ -186,9 +272,9 @@ namespace Resources
 		ambientColor = { 1.f, 1.f, 1.f };
 		diffuseColor = { 1.f, 1.f, 1.f };
 		specularColor = { 1.f, 1.f, 1.f };
-		shininessStrength = { 0.f };
+		shininessStrength = { 0.5f };
 		shininess = { 1.f };
-		shader = resources->GetShader("Wireframe");
+		shader = resources->GetShader("WireframeLight");
 		shaderChoose = true;
 	}
 }

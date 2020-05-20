@@ -40,13 +40,15 @@ namespace Resources
 		float									shininess{};
 		float									shininessStrength{};
 
-		Core::Maths::Vec3						materialColor;
+		Core::Maths::Vec3						materialColor{};
 
-		std::vector<std::shared_ptr<Texture>>	textures;
-		std::vector<VariantUniform>				variants;
+		std::vector<std::shared_ptr<Texture>>	textures{};
+		std::vector<VariantUniform>				variants{};
 		bool									shaderChoose{ false };
 		bool									IsSkeletal{ false };
-		std::shared_ptr<Shader>					shader;
+		std::shared_ptr<Shader>					shader{};
+
+		Material() = default;
 
 		/**
 		 * Load the current material with an aiMaterial from assimp
@@ -77,7 +79,15 @@ namespace Resources
 
 		void UpdateMaterialShader(std::shared_ptr<Shader> newShader);
 
+		/**
+		 * Send to the shader the value of the material
+		 */
 		void SendMaterial();
+
+		/**
+		 * Send to the shader the variants values of the material
+		 */
+		void SendVariants(GLuint unitTexture);
 
 		void CreateDefaultMaterial(Resources::Loader::ResourcesManager* resources);
 	};
