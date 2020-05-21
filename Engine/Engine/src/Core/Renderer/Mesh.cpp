@@ -18,12 +18,14 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	registration::class_<Mesh>("Mesh")
 		.constructor()
 		.property("Model", &Mesh::GetModel, &Mesh::SetModel)
 		.property("IsRoot", &Mesh::m_isRoot, detail::protected_access())
 		.property("MaterialsNames", &Mesh::m_materialsNames, detail::protected_access())
-		.property("IsChild", &Mesh::m_isChild, detail::protected_access());
+		.property("IsChild", &Mesh::m_isChild, detail::protected_access())
+		.property("Cast Shadows", &Mesh::m_castShadow);
 }
 
 void Mesh::SetModel(std::string newModel)
@@ -100,7 +102,7 @@ void Mesh::UpdateModel()
 
 Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
 {
-
+	ZoneScoped
 }
 
 Mesh::~Mesh()
@@ -137,8 +139,6 @@ void Mesh::CreateAABBMesh(physx::PxScene*& scene)
 {
 	Core::Datastructure::Object* object = GetParent();
 	
-	GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()), m_model->indices.data(), static_cast<int>(m_model->indices.size()), object->GetUpdatedTransform());
-	
 	Core::Datastructure::IComponent* component = dynamic_cast<Core::Datastructure::IComponent*>(this);
 	physx::PxRigidActor* actor = object->GetScene()
 							->GetEngine()
@@ -152,8 +152,13 @@ void Mesh::CreateAABBMesh(physx::PxScene*& scene)
 											->GetEngine()->GetPhysicsScene(), actor));
 }
 
-void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
+void Mesh::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 {
+	ZoneScoped
+	// If the draw is made for shadow mapping and the mesh cannot cast shadows
+	if (givenShader && !m_castShadow)
+		return;
+
 	Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
 	// check if the mesh have a modelMesh
@@ -165,25 +170,40 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 
 	glEnable(GL_DEPTH_TEST);
 
+	Display(view, proj, trs.array, givenShader);
+}
+
+void Mesh::Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs, std::shared_ptr<Resources::Shader> givenShader)
+{
 	glBindVertexArray(m_model->VAOModel);
 
 	for (int i = 0; i < m_model->offsetsMesh.size(); i++)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
-		
-		std::shared_ptr<Resources::Material> material = m_materialsModel[currOffsetMesh.materialIndices];
-		material->shader->UseProgram();
+
+		Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
+
+		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material.shader);
+
+		usedShader->UseProgram();
 		{
+			// Init value of texture1 for mesh texture
+			glUniform1i(usedShader->GetLocation("uColorTexture"), 0);
+			// Init value of texture2 for normal map
+			glUniform1i(usedShader->GetLocation("uNormalMap"), 1);
+			// Init value of higher texture for shadow maps
+			for (size_t i{0}; i < 10; ++i)
+				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(i) + "]"), 2 + i);
 
-			// init the value of the texture1
-			glUniform1i(material->shader->GetLocation("uColorTexture"), 0);
-			// init the value of the texture2
-			glUniform1i(material->shader->GetLocation("uNormalMap"), 1);
-
-			material->SendMaterial();
-			glUniformMatrix4fv(material->shader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
-			glUniformMatrix4fv(material->shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
-			glUniformMatrix4fv(material->shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
+			material.SendMaterial();
+			glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs);
+			glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
+			glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
+			
+			std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
+			for (size_t i{ 0 }; i < lights.size(); ++i)
+				glUniformMatrix4fv(usedShader->GetLocation("uLightView[" + std::to_string(i) + "]"), 1, GL_TRUE, lights[i]->GetViewFromLight().array);
+			glUniform1i(usedShader->GetLocation("uShadowCount"), lights.size());
 		}
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,
@@ -192,6 +212,24 @@ void Mesh::OnDraw(Core::Datastructure::ICamera* cam)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
+}
+
+void Mesh::AddToNavMesh()
+{
+	if (m_parent->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC) && m_model)
+		GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()), m_model->indices.data(), static_cast<int>(m_model->indices.size()), GetParent()->GetUpdatedTransform());
+}
+
+void Mesh::DrawFixedMesh(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, Core::Maths::Mat4 trs)
+{
+	// check if the mesh have a modelMesh
+	if (m_model == nullptr)
+		return;
+	// check if the VAO of the model is link to OpenGL
+	if (m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+		return;
+
+	Display(view, proj, trs.array);
 }
 
 void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)
@@ -223,18 +261,21 @@ void	Mesh::OnReset()
 
 void Mesh::OnCopy(IComponent* copyTo) const
 {
+	ZoneScoped
 	ComponentBase::OnCopy(copyTo);
 	IRenderable::OnCopy(copyTo);
 }
 
 void Mesh::StartCopy(IComponent*& copyTo) const
 {
+	ZoneScoped
 	copyTo = new Mesh();
 	OnCopy(copyTo);
 }
 
 bool Mesh::OnStart()
 {
+	ZoneScoped
 	if (IsModelLoaded())
 	{
 		//CreateAABBMesh();

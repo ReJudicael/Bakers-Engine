@@ -88,6 +88,8 @@ namespace Editor
 		void	SaveScene();
 		void	ReloadScene();
 
+		void	CompileNavMesh();
+
 		void	SetGameInputState(bool state) { m_inputSystem->SetActive(state); };
 	private:
 		void				SetCallbackToGLFW();

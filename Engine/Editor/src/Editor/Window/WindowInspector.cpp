@@ -99,11 +99,13 @@ namespace Editor::Window
 			object->SetPos({ 0.f, 0.f, 0.f });
 			object->SetRot({ 0.f, 0.f, 0.f });
 			object->SetScale({ 1.f, 1.f, 1.f });
+			SetObjectStatic(false, object);
 		}
 
 		if (isOpen)
 		{
 			ImGui::Spacing();
+			DisplayObjectFlags(object);
 
 			if (GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL)
 				DisplayObjectLocalTransform(object);
@@ -112,6 +114,25 @@ namespace Editor::Window
 
 			ImGui::Spacing();
 		}
+	}
+
+	void WindowInspector::SetObjectStatic(bool isStatic, Core::Datastructure::Object* object)
+	{
+		if (isStatic != object->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC))
+			rttr::type::get<Core::Datastructure::Object>().get_property("flags").set_value(object, object->GetFlags() ^ Core::Datastructure::ObjectFlags::STATIC);
+
+		if (isStatic)
+		{
+			for (Core::Datastructure::Object* it : object->GetChildren())
+				SetObjectStatic(true, it);
+		}
+	}
+
+	void WindowInspector::DisplayObjectFlags(Core::Datastructure::Object* object)
+	{
+		bool b{ object->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC) };
+		ImGui::RCheckbox("Is static", &b);
+		SetObjectStatic(b, object);
 	}
 
 	void WindowInspector::DrawEnum(rttr::property prop, rttr::instance component)
@@ -131,6 +152,29 @@ namespace Editor::Window
 	void WindowInspector::DrawProperty(rttr::property prop, rttr::instance component)
 	{
 		const rttr::type propType{ prop.get_type() };
+		rttr::variant needDisplay{ prop.get_metadata(MetaData_Type::SHOW_IN_EDITOR) };
+		if (needDisplay.is_valid())
+		{
+			if (needDisplay.get_type() == rttr::type::get<bool>())
+			{
+				if (!needDisplay.get_value<bool>())
+					return;
+			}
+			else if (needDisplay.get_type() == rttr::type::get<std::string>())
+			{
+				rttr::method m{ component.get_derived_type().get_method(needDisplay.get_value<std::string>()) };
+				if (m.is_valid())
+				{
+					rttr::variant v{ m.invoke(component) };
+					if (v.is_valid() && v.is_type<bool>() && !v.get_value<bool>())
+						return;
+				}
+				else
+					BAKERS_LOG_WARNING("Could not find method of name " + needDisplay.get_value<std::string>() + " in component " + component.get_derived_type().get_name());
+			}
+			else
+				BAKERS_LOG_WARNING("Property " + prop.get_name().to_string() + "'s metadata SHOW_IN_EDITOR does not have authorized type");
+		}
 
 		if (!propType.is_valid())
 		{
@@ -292,6 +336,7 @@ namespace Editor::Window
 	{
 		if (object->IsDestroyed())
 			return;
+
 		DisplayObjectName(object);
 
 		ImGui::Spacing();

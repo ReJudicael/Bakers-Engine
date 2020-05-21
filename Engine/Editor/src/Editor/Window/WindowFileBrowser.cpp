@@ -26,8 +26,8 @@ namespace Editor::Window
 		AWindow{ canvas, "File Browser", visible }
 	{
 		m_fs = new Core::SystemManagement::FileSystem();
-		m_inputTextFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
-		m_treeNodeFlags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+		m_treeNodeFlags		= ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+		m_inputTextFlags	= ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
 	}
 
 	WindowFileBrowser::~WindowFileBrowser()
@@ -37,9 +37,9 @@ namespace Editor::Window
 
 	void WindowFileBrowser::PushWindowStyle()
 	{
-		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.f, 0.f, 0.f, 0.f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.259f, 0.588f, 0.980f, 0.392f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive,	{ 0.059f, 0.529f, 0.980f, 0.392f });
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.f, 0.f, 0.f, 0.f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.259f, 0.588f, 0.980f, 0.392f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, { 0.059f, 0.529f, 0.980f, 0.392f });
 	}
 
 	void WindowFileBrowser::PopWindowStyle()
@@ -69,8 +69,8 @@ namespace Editor::Window
 	{
 		m_fs->RenameContent(m_fs->GetLocalAbsolute(itemName), m_name);
 		m_renamePath.clear();
-		m_scrollSetted	= false;
-		m_canRename		= false;
+		m_scrollSetted = false;
+		m_canRename = false;
 	}
 
 	void WindowFileBrowser::RenameContent(const std::string& itemName)
@@ -86,12 +86,6 @@ namespace Editor::Window
 
 		if (apply || ImGui::IsItemDeactivated())
 			ApplyNameToItem(itemName);
-	}
-
-	void WindowFileBrowser::MenuItemRefresh()
-	{
-		if (ImGui::MenuItem("Refresh"))
-			m_fs->RefreshCurrentPath();
 	}
 
 	void WindowFileBrowser::MenuItemNew()
@@ -117,24 +111,27 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowFileBrowser::PopupMenuOnWindow()
+	void WindowFileBrowser::PopupMenuOnDirectoryContentWindow()
 	{
-		if (ImGui::BeginPopupContextWindow("## PopupMenuOnWindow", ImGuiMouseButton_Right, false))
+		if (ImGui::BeginPopupContextWindow("## PopupMenuOnDirectoryContentWindow", ImGuiMouseButton_Right, false))
 		{
 			if (ImGui::MenuItem("Show in Explorer"))
 				m_fs->ShowCurrentPathInExplorer();
 
 			ImGui::Separator();
-			MenuItemRefresh();
+
+			if (ImGui::MenuItem("Refresh"))
+				m_fs->RefreshCurrentPath();
+
 			ImGui::Separator();
 			MenuItemNew();
 			ImGui::EndPopup();
 		}
 	}
 
-	void WindowFileBrowser::PopupMenuOnItem(const std::string& itemPath)
+	void WindowFileBrowser::PopupMenuOnDirectoryContentItem(const std::string& itemPath)
 	{
-		if (ImGui::BeginPopupContextItem("## PopupMenuOnItem", ImGuiMouseButton_Right))
+		if (ImGui::BeginPopupContextItem("## PopupMenuOnDirectoryContentItem", ImGuiMouseButton_Right))
 		{
 			if (ImGui::MenuItem("Open"))
 				m_fs->OpenContent(itemPath);
@@ -152,7 +149,9 @@ namespace Editor::Window
 					m_fs->DeleteContent(itemPath);
 			}
 			ImGui::Separator();
-			MenuItemRefresh();
+
+			if (ImGui::MenuItem("Refresh"))
+				m_fs->RefreshCurrentPath();
 
 			ImGui::EndPopup();
 		}
@@ -195,17 +194,14 @@ namespace Editor::Window
 
 	void WindowFileBrowser::ShowCurrentPathOnHeader()
 	{
-		const std::string rootDirectory{ "." };
+		const std::string& rootDirectory{ DEFAULT_PATH };
 		if (ImGui::ImageButtonUV(GetIcon(rootDirectory)))
 			m_fs->SetCurrentDirectory(rootDirectory);
 		DragDropTargetItem(rootDirectory);
 
 		const std::vector<std::string>& foldersPath{ m_fs->GetExplodedCurrentPath() };
-		for (int i{ 0 }; i < foldersPath.size(); ++i)
+		for (size_t i{ DEGREE_DEFAULT_PATH }; i < foldersPath.size(); ++i)
 		{
-			if (foldersPath[i] == ".")
-				continue;
-
 			const size_t& pos{ m_fs->GetCurrentDirectory().find(foldersPath[i]) + foldersPath[i].size() };
 
 			ImGui::SameLine();
@@ -270,7 +266,7 @@ namespace Editor::Window
 		DragDropSourceItem(itemName, itemPath);
 		DragDropTargetItem(itemPath);
 
-		PopupMenuOnItem(itemPath);
+		PopupMenuOnDirectoryContentItem(itemPath);
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			m_fs->OpenContent(itemPath);
@@ -282,15 +278,15 @@ namespace Editor::Window
 		ImVec2 regionSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 30.f };
 		ImGui::BeginChild("## ShowDirectoryContent", regionSize, false);
 		{
-			if (m_fs->GetCurrentDirectory() != ".")
+			if (m_fs->GetCurrentDirectory() != DEFAULT_PATH)
 				contents.insert(contents.begin(), "..");
 
-			PopupMenuOnWindow();
+			PopupMenuOnDirectoryContentWindow();
 
 			int columns{ static_cast<int>(regionSize.x / m_contentPathSize) };
 			if (columns < 1) columns = 1;
 
-			if (ImGui::BeginTable("## ShowDirectoryContentColumns", columns))
+			if (ImGui::BeginTable("## ShowDirectoryContentTable", columns))
 			{
 				std::string itemName;
 				nbItems = 0;
@@ -345,39 +341,50 @@ namespace Editor::Window
 		ZoomPathContents();
 	}
 
-	void WindowFileBrowser::ShowAllFoldersRecursive(std::filesystem::path path)
+	void WindowFileBrowser::ShowAllFoldersRecursive(const Core::SystemManagement::TreeDirectoryPath& tdp)
 	{
-		for (auto& p : std::filesystem::directory_iterator(path))
+		for (const Core::SystemManagement::TreeDirectoryPath& p : tdp.children)
 		{
-			if (m_fs->IsDirectory(p))
+			ImGuiTreeNodeFlags flags{ m_treeNodeFlags };
+#pragma warning(suppress : 26812)
+			flags |= p.children.empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_OpenOnArrow;
+
+			if (m_fs->GetCurrentDirectory() == p.path)
+				flags |= ImGuiTreeNodeFlags_Selected;
+
+			bool isOpen = ImGui::TreeNodeEx((ICON_FA_FOLDER "  " + p.filename).c_str(), flags);
+			DragDropTargetItem(p.path);
+
+			if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+				m_fs->SetCurrentDirectory(p.path);
+
+			if (isOpen)
 			{
-				ImGuiTreeNodeFlags flags{ m_treeNodeFlags };
-
-				if (m_fs->GetCurrentDirectory() == p.path().string())
-					flags |= ImGuiTreeNodeFlags_Selected;
-
-				bool isOpen = ImGui::TreeNodeEx((ICON_FA_FOLDER "  " + p.path().filename().string()).c_str(), flags);
-
-				if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-					m_fs->SetCurrentDirectory(p.path().string());
-
-				if (isOpen)
-				{
-					ShowAllFoldersRecursive(p.path());
-					ImGui::TreePop();
-				}
+				ShowAllFoldersRecursive(p);
+				ImGui::TreePop();
 			}
 		}
 	}
 
-	void WindowFileBrowser::ShowDirectoryTree(const std::string& path)
+	void WindowFileBrowser::PopupMenuOnNavigationPanelWindow()
 	{
-			ImVec2 regionSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 2 };
-			ImGui::BeginChild("## ShowDirectoryTree", regionSize);
-			{
-				ShowAllFoldersRecursive(path);
-			}
-			ImGui::EndChild();
+		if (ImGui::BeginPopupContextWindow("## PopupMenuOnNavigationPanelWindow", ImGuiMouseButton_Right))
+		{
+			if (ImGui::MenuItem("Refresh"))
+				m_fs->RefreshTreeDirectoryPath();
+			ImGui::EndPopup();
+		}
+	}
+
+	void WindowFileBrowser::ShowNavigationPanel(const Core::SystemManagement::TreeDirectoryPath& tdp)
+	{
+		ImVec2 regionSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 2 };
+		ImGui::BeginChild("## ShowDirectoryTree", regionSize);
+		{
+			ShowAllFoldersRecursive(tdp);
+			PopupMenuOnNavigationPanelWindow();
+		}
+		ImGui::EndChild();
 	}
 
 	void WindowFileBrowser::Tick()
@@ -388,11 +395,11 @@ namespace Editor::Window
 
 		if (ImGui::BeginTable("## FileBrowser", 2, ImGuiTableFlags_BordersVInner | ImGuiTableFlags_BordersVFullHeight | ImGuiTableFlags_Resizable))
 		{
-			ImGui::TableSetupColumn("## FileBrowserTree", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 10);
+			ImGui::TableSetupColumn("## PanelNavigation", ImGuiTableColumnFlags_WidthFixed, ImGui::GetFontSize() * 10);
 
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
-			ShowDirectoryTree(".");
+			ShowNavigationPanel(m_fs->GetTreeDirectoryPath());
 			ImGui::TableSetColumnIndex(1);
 			ShowDirectoryContent(m_fs->GetContentsInCurrentPath());
 			ImGui::EndTable();

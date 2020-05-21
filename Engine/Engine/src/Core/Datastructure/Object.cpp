@@ -4,6 +4,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<Object>("Object")
 		.method("Destroy", &Object::Destroy)
@@ -19,6 +20,7 @@ RTTR_PLUGIN_REGISTRATION
 		.property("pos", &Object::GetGlobalPos, &Object::SetGlobalPos)
 		.property("rot", &Object::GetGlobalRot, &Object::SetGlobalRot)
 		.property("scale", &Object::GetGlobalScale, &Object::SetGlobalScale)
+		.property("flags", &Object::m_flags, detail::protected_access())
 		.property_readonly("GlobalPos", &Object::GetGlobalPos)
 		.property_readonly("GlobalRot", &Object::GetGlobalRot)
 		.property_readonly("GlobalScale", &Object::GetGlobalScale)
@@ -31,6 +33,12 @@ RTTR_PLUGIN_REGISTRATION
 		.property_readonly("Forward", &Object::Forward)
 		.property_readonly("Up", &Object::Up)
 		.property_readonly("Right", &Object::Right);
+
+	lua.new_usertype<Object>("Object",
+		"Transform", &Object::m_transform,
+		"Translate", &Object::Translate,
+		"Rotate", &Object::Rotate,
+		"Scale", &Object::Scale);
 }
 
 namespace Core::Datastructure
@@ -120,6 +128,7 @@ namespace Core::Datastructure
 
 	bool			Object::HasChild(Object* o) const noexcept
 	{
+		ZoneScoped
 		for (auto c : m_childs)
 		{
 			if (c == o || c->HasChild(o))

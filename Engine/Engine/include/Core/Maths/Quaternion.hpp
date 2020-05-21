@@ -133,6 +133,46 @@ namespace Core::Maths
 		{}
 
 		/**
+		 * Constructor that creates a quaternion from a matrix
+		 * @param mat: Rotational matrix from whitch to extract a quaternion
+		 */
+		inline					Quaternion(const Mat4& mat) noexcept
+		{
+			float trace = mat.Get<0, 0>() + mat.Get<1, 1>() + mat.Get<2, 2>();
+			if (trace > 0) {
+				float s = 0.5f / sqrtf(trace + 1.0f);
+				w = 0.25f / s;
+				x = (mat.Get<2, 1>() - mat.Get<1, 2>()) * s;
+				y = (mat.Get<0, 2>() - mat.Get<2, 0>()) * s;
+				z = (mat.Get<1, 0>() - mat.Get<0, 1>()) * s;
+			}
+			else if (mat.Get<0, 0>() > mat.Get<1, 1>() && mat.Get<0, 0>() > mat.Get<2, 2>())
+			{
+				float s = 2.0f * sqrtf(1.0f + mat.Get<0, 0>() - mat.Get<1, 1>() - mat.Get<2, 2>());
+				w = (mat.Get<2, 1>() - mat.Get<1, 2>()) / s;
+				x = 0.25f * s;
+				y = (mat.Get<0, 1>() + mat.Get<1, 0>()) / s;
+				z = (mat.Get<0, 2>() + mat.Get<2, 0>()) / s;
+			}
+			else if (mat.Get<1, 1>() > mat.Get<2, 2>())
+			{
+				float s = 2.0f * sqrtf(1.0f + mat.Get<1, 1>() - mat.Get<0, 0>() - mat.Get<2, 2>());
+				w = (mat.Get<0, 2>() - mat.Get<2, 0>()) / s;
+				x = (mat.Get<0, 1>() + mat.Get<1, 0>()) / s;
+				y = 0.25f * s;
+				z = (mat.Get<1, 2>() + mat.Get<2, 1>()) / s;
+			}
+			else
+			{
+				float s = 2.0f * sqrtf(1.0f + mat.Get<2, 2>() - mat.Get<0, 0>() - mat.Get<1, 1>());
+				w = (mat.Get<1, 0>() - mat.Get<0, 1>()) / s;
+				x = (mat.Get<0, 2>() + mat.Get<2, 0>()) / s;
+				y = (mat.Get<1, 2>() + mat.Get<2, 1>()) / s;
+				z = 0.25f * s;
+			}
+		}
+
+		/**
 		 * Fills the quaternion with zeroes
 		 */
 		inline constexpr void	Zero() noexcept

@@ -199,6 +199,7 @@ namespace Editor
 		{
 			GetEngine()->GetResourcesManager()->ReloadScripts();
 			GetEngine()->GetResourcesManager()->ReloadShaders();
+			GetEngine()->CompileNavMesh();
 		}
 		ImGui::HelpMarkerItem("Compile");
 	}

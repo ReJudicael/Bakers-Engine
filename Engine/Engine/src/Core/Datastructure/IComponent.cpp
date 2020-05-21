@@ -5,6 +5,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<IComponent>("IComponent")
 		.property_readonly("parent", &IComponent::GetParent, detail::protected_access())

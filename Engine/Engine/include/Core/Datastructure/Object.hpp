@@ -202,8 +202,9 @@ namespace Core::Datastructure
 		 */
 		const Maths::Vec3&	Translate(const Maths::Vec3& v) noexcept
 		{
+			const Maths::Vec3& temp = m_transform.Translate(v);
 			RequireUpdate();
-			return m_transform.Translate(v);
+			return temp;
 		}
 		/**
 		 * Rotates the object in local space by given vector
@@ -212,8 +213,9 @@ namespace Core::Datastructure
 		 */
 		const Maths::Quat&	Rotate(const Maths::Quat& q) noexcept
 		{
+			const Maths::Quat& temp = m_transform.Rotate(q);
 			RequireUpdate();
-			return m_transform.Rotate(q);
+			return temp;
 		}
 		/**
 		 * Scales the object in local space by given vector
@@ -222,8 +224,40 @@ namespace Core::Datastructure
 		 */
 		const Maths::Vec3&	Scale(const Maths::Vec3& v) noexcept
 		{
+			const Maths::Vec3& temp = m_transform.Scale(v);
 			RequireUpdate();
-			return m_transform.Scale(v);
+			return temp;
+		}
+
+		/**
+		 * Translates the object in global space by given vector
+		 * @param v: Vector to translate by
+		 * @return Const reference to position of the object
+		 */
+		void TranslateGlobal(const Maths::Vec3& v) noexcept
+		{
+			m_transform.TranslateGlobal(m_parent->GetUpdatedTransform(), v);
+			RequireUpdate();
+		}
+		/**
+		 * Rotates the object in global space by given vector
+		 * @param q: Quaternion to rotate by
+		 * @return Const reference to rotation of the object
+		 */
+		void RotateGlobal(const Maths::Quat& q) noexcept
+		{
+			m_transform.RotateGlobal(m_parent->GetUpdatedTransform(), q);
+			RequireUpdate();
+		}
+		/**
+		 * Scales the object in global space by given vector
+		 * @param v: Vector to scale by
+		 * @return Const reference to scale of the object
+		 */
+		void ScaleGlobal(const Maths::Vec3& v) noexcept
+		{
+			m_transform.ScaleGlobal(m_parent->GetUpdatedTransform(), v);
+			RequireUpdate();
 		}
 
 		/**
@@ -383,7 +417,7 @@ namespace Core::Datastructure
 
 		std::list<ComponentBase*>& GetComponents() noexcept;
 
-		std::string GetName() const noexcept
+		const std::string& GetName() const noexcept
 		{
 			return m_name;
 		}

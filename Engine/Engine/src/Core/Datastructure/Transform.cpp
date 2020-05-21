@@ -3,6 +3,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	using namespace Core::Maths;
 	registration::class_<Transform>("Transform")
@@ -20,6 +21,21 @@ RTTR_PLUGIN_REGISTRATION
 		.property_readonly("IsGposUpdated", &Transform::m_isGUpdated)
 		.property_readonly("IsGTrsUpdated", &Transform::m_isGTrsUpdated)
 		.property_readonly("IsLTrsUpdated", &Transform::m_isTrsUpdated);
+
+	lua.new_usertype<Transform>("Transform",
+		sol::constructors<Transform()>(),
+		"Position", &Transform::m_pos,
+		"Rotation", & Transform::m_rot,
+		"Scale", &Transform::m_scale,
+		"GlobalPos", &Transform::m_gpos,
+		"GlobalRot", &Transform::m_grot,
+		"GlobalScale", &Transform::m_gscale,
+		"Translate", &Transform::Translate,
+		"Rotate", &Transform::Rotate,
+		"Scale", &Transform::Scale,
+		"Right", &Transform::GetRight,
+		"Up", &Transform::GetUp,
+		"Forward", &Transform::GetForward);
 }
 
 namespace Core::Datastructure
@@ -73,6 +89,31 @@ namespace Core::Datastructure
 
 		m_scale *= v;
 		return m_scale;
+	}
+	void Transform::RotateGlobal(const Transform& parent, const Maths::Quat& q) noexcept
+	{
+		m_isTrsUpdated = false;
+		m_isGTrsUpdated = false;
+		m_isGUpdated = false;
+
+		m_rot *= parent.GetGlobalRot().Inversed() * q;
+		m_rot.Normalize();
+	}
+	void Transform::ScaleGlobal(const Transform& parent, const Maths::Vec3& v) noexcept
+	{
+		m_isTrsUpdated = false;
+		m_isGTrsUpdated = false;
+		m_isGUpdated = false;
+
+		m_scale *= v / parent.GetGlobalScale();
+	}
+	void Transform::TranslateGlobal(const Transform& parent, const Maths::Vec3& v) noexcept
+	{
+		m_isTrsUpdated = false;
+		m_isGTrsUpdated = false;
+		m_isGUpdated = false;
+
+		m_pos += (parent.GetGlobalRot().Inversed() * Core::Maths::Quat(0, v - parent.GetGlobalPos()) * parent.GetGlobalRot()).GetVec() / parent.GetGlobalScale();
 	}
 	const Maths::Mat4& Transform::GetLocalTrs() noexcept
 	{

@@ -5,6 +5,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Renderer;
 	rttr::registration::enumeration<FBOType>("FBO types")
 		(
@@ -63,13 +64,17 @@ namespace Core::Renderer
 
 	Framebuffer::~Framebuffer() noexcept
 	{
+		ZoneScoped
 		glDeleteTextures(1, &ColorTexture);
 		glDeleteRenderbuffers(1, &DepthStencilRenderbuffer);
 		glDeleteFramebuffers(1, &FBO);
 	}
 
-	void	Framebuffer::InitPostProcess(std::shared_ptr<Resources::Shader> s)
+	void	Framebuffer::InitPostProcess(const std::shared_ptr<Resources::Shader>& s)
 	{
+		ZoneScoped
+		GLuint VBO;
+
 		data.s = s;
 		// Gen unit quad
 		{
@@ -85,15 +90,15 @@ namespace Core::Renderer
 			};
 
 			// Upload mesh to gpu
-			glGenBuffers(1, &data.VBO);
-			glBindBuffer(GL_ARRAY_BUFFER, data.VBO);
+			glGenBuffers(1, &VBO);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), Quad, GL_STATIC_DRAW);
 		}
 
 		// Create a vertex array and bind it
 		glGenVertexArrays(1, &data.VAO);
 		glBindVertexArray(data.VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, data.VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);

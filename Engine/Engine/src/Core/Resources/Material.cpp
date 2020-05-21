@@ -20,6 +20,7 @@ namespace Resources
 	void Material::LoadMaterialFromaiMaterial(aiMaterial* mat, const std::string& directory,
 		Loader::ResourcesManager* resources, std::shared_ptr<Resources::Loader::ImporterData>& importer)
 	{
+		ZoneScoped
 		importer->maxUseOfImporter++;
 		textures.resize(2);
 
@@ -32,7 +33,7 @@ namespace Resources
 		LoadTextureMaterial(mat, textures[textures.size()- 1], aiTextureType_NORMALS, directory, resources);
 
 		if(textures.size() <= 0)
-			shader = resources->GetShader("Wireframe");
+			shader = resources->GetShader("DefaultNoTexture");
 
 		aiColor3D color;
 		mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
@@ -52,6 +53,7 @@ namespace Resources
 	void Material::LoadTextureMaterial(aiMaterial* mat, std::shared_ptr<Texture>& texture,
 					const aiTextureType& textureType, const std::string& directory, Loader::ResourcesManager* resources)
 	{
+		ZoneScoped
 		if (mat->GetTextureCount(textureType) > 0)
 		{
 			aiString path;
@@ -274,7 +276,7 @@ namespace Resources
 		specularColor = { 1.f, 1.f, 1.f };
 		shininessStrength = { 0.5f };
 		shininess = { 1.f };
-		shader = resources->GetShader("Wireframe");
+		shader = resources->GetShader("DefaultNoTexture");
 		shaderChoose = true;
 	}
 }

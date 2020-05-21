@@ -4,6 +4,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<IRenderable>("IRenderable")
 		.property_readonly("VAO", &IRenderable::m_VAO, rttr::detail::protected_access());
@@ -26,7 +27,7 @@ namespace Core::Datastructure
 		GetRoot()->RemoveRenderable(this);
 	}
 
-	void IRenderable::Draw(ICamera* cam)
+	void IRenderable::Draw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
 		ZoneScoped
 		ZoneText("Rendering single component", 27)
@@ -34,12 +35,13 @@ namespace Core::Datastructure
 		
 		if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 		{
-			OnDraw(cam);
+			OnDraw(view, proj, givenShader);
 		}
 	}
 
 	void IRenderable::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		IComponent::OnCopy(copyTo);
 		IRenderable* copy{ dynamic_cast<IRenderable*>(copyTo) };
 

@@ -352,6 +352,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Maths\Maths.cpp" />
     <ClCompile Include="src\Core\Navigation\NavMesh.cpp" />
     <ClCompile Include="src\Core\Navigation\NavQuery.cpp" />
+    <ClCompile Include="src\Core\Navigation\PathFollowingComponent.cpp" />
     <ClCompile Include="src\Core\Physics\BoxCollider.cpp" />
     <ClCompile Include="src\Core\Physics\CapsuleCollider.cpp" />
     <ClCompile Include="src\Core\Physics\Collider.cpp" />
@@ -429,6 +430,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClInclude Include="include\Core\Navigation\NavMesh.h" />
     <ClInclude Include="include\Core\Navigation\NavPath.h" />
     <ClInclude Include="include\Core\Navigation\NavQuery.h" />
+    <ClInclude Include="include\Core\Navigation\PathFollowingComponent.h" />
     <ClInclude Include="include\Core\Physics\BoxCollider.h" />
     <ClInclude Include="include\Core\Physics\CapsuleCollider.h" />
     <ClInclude Include="include\Core\Physics\DynamicMesh.h" />

@@ -19,6 +19,7 @@ namespace Core::Physics
 	{
 		registration::class_<Core::Physics::CapsuleCollider>("Capsule Collider")
 		.constructor()
+		ZoneScopedN("Registering RTTR")
 		.property("Capsule Half Extent", &Core::Physics::CapsuleCollider::GetCapsuleHalfExtent ,&Core::Physics::CapsuleCollider::SetCapsuleHalfExtent)
 		;
 	}

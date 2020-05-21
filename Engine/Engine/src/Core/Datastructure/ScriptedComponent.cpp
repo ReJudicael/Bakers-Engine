@@ -2,9 +2,12 @@
 
 #include "ScriptedComponent.h"
 #include "Maths.hpp"
+#include "Object.hpp"
+#include "InputSystem.hpp"
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 
 	RegisterDefaultClassConstructor<ScriptedComponent>("Script" , ComponentUpdatable(), ComponentBase());
@@ -16,6 +19,7 @@ RTTR_PLUGIN_REGISTRATION
 		"Error", ScriptedComponent::ErrorWrapper);
 
 	Core::Maths::RegisterMathsForLua(lua);
+	Core::SystemManagement::InputSystem::RegisterInputEnums(lua);
 }	
 
 namespace Core::Datastructure
@@ -36,7 +40,8 @@ namespace Core::Datastructure
 	}
 
 	bool ScriptedComponent::OnStart()
-	{	
+	{
+		ZoneScoped
 		bool temp = ComponentUpdatable::OnStart();
 
 		if (m_script.empty())
@@ -75,6 +80,9 @@ namespace Core::Datastructure
 
 	void ScriptedComponent::StartLuaScript()
 	{
+		m_env["object"] = m_parent;
+		m_env["Input"] = Input();
+
 		if (m_start.valid())
 			m_start();
 		else
@@ -110,6 +118,7 @@ namespace Core::Datastructure
 
 	void ScriptedComponent::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentUpdatable::OnCopy(copyTo);
 		ScriptedComponent* copy{ dynamic_cast<ScriptedComponent*>(copyTo) };
 
@@ -119,6 +128,7 @@ namespace Core::Datastructure
 
 	void ScriptedComponent::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new ScriptedComponent();
 		OnCopy(copyTo);
 	}

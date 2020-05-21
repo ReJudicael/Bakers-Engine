@@ -17,6 +17,7 @@ namespace Core::Physics
 {
 	RTTR_PLUGIN_REGISTRATION
 	{
+		ZoneScopedN("Registering RTTR")
 		registration::class_<Core::Physics::BoxCollider>("Box Collider")
 		.constructor()
 		.property("Box Half Extent", &Core::Physics::BoxCollider::GetBoxHalfExtent ,&Core::Physics::BoxCollider::SetBoxHalfExtent)

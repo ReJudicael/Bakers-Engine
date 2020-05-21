@@ -15,6 +15,7 @@ namespace Core::Physics
 {
 	RTTR_PLUGIN_REGISTRATION
 	{
+		ZoneScopedN("Registering RTTR")
 		registration::class_<Core::Physics::Collider>("Collider")
 		.enumeration<Core::Physics::EFilterRaycast>("Layout")
 			(

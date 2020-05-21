@@ -5,6 +5,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<ICamera>("ICamera")
 		.method("GetCameraPerspective", &ICamera::GetPerspectiveMatrix)
@@ -14,6 +15,7 @@ RTTR_PLUGIN_REGISTRATION
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 {
+	ZoneScoped
 	if (!IsPerspectiveMatrixUpdated())
 	{
 		ZoneScoped
@@ -26,6 +28,7 @@ const Core::Maths::Mat4& Core::Datastructure::ICamera::GetPerspectiveMatrix()
 
 const Core::Maths::Mat4& Core::Datastructure::ICamera::GetCameraMatrix()
 {
+	ZoneScoped
 	if (!IsCameraMatrixUpdated())
 	{
 		ZoneScoped
@@ -41,10 +44,14 @@ void Core::Datastructure::ICamera::OnInit()
 	GetRoot()->AddCamera(this);
 	m_fbo = GetRoot()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Core::Renderer::FBOType::CAMERA);
 	m_fbo->userPtr = this;
+
+
+	m_shadowShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("Shadow", "Resources\\Shaders\\ShadowShader.vert", "Resources\\Shaders\\ShadowShader.frag");
 }
 
 bool Core::Datastructure::ICamera::OnStart()
 {
+	ZoneScoped
 	return IComponent::OnStart();
 }
 
@@ -55,6 +62,27 @@ Core::Datastructure::ICamera::~ICamera() noexcept
 	GetRoot()->RemoveCamera(this);
 }
 
+void Core::Datastructure::ICamera::DrawDepth(const std::list<IRenderable*>& renderables)
+{
+	std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
+
+	for (size_t i{ 0 }; i < lights.size(); ++i)
+	{
+		lights[i]->ResizeShadowTexture(m_fbo->Size[2], m_fbo->Size[3]);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, lights[i]->ShadowBuffer());
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glCullFace(GL_FRONT);
+		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
+			(*it)->Draw(lights[i]->GetViewFromLight(), this->GetPerspectiveMatrix(), m_shadowShader);
+		glCullFace(GL_BACK);
+
+		glActiveTexture(GL_TEXTURE2 + i);
+		glBindTexture(GL_TEXTURE_2D, lights[i]->ShadowTexture());
+	}
+}
+
 void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRenderable*>& renderables)
 {
 	ZoneScoped
@@ -62,17 +90,24 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 		TracyGpuZone("Rendering frame buffer")
 	if (IsInit() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 		glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
+		
+		DrawDepth(renderables);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
-			(*it)->Draw(this);
+			(*it)->Draw(this->GetCameraMatrix(), this->GetPerspectiveMatrix());
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindVertexArray(0);
 	}
 }
 
 void Core::Datastructure::ICamera::OnCopy(IComponent* copyTo) const
 {
+	ZoneScoped
 	IComponent::OnCopy(copyTo);
 	ICamera* copy{ dynamic_cast<Core::Datastructure::ICamera*>(copyTo) };
 
@@ -85,9 +120,11 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 	m_cameraWidth = width;
 	m_cameraHeight = height;
 
-	SetRatio(width / (float)height);
+	SetRatio(width, height);
 	
 	m_fbo->Resize(width, height);
+	if(Resources::Shader::lights.size() > 0)
+		Resources::Shader::lights[0]->ResizeShadowTexture(width, height);
 }
 
 void Core::Datastructure::ICamera::OnDestroy()

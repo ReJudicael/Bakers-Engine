@@ -12,11 +12,14 @@ const int MAX_BONES = 100;
 uniform mat4 uModel;
 uniform mat4 uProj;
 uniform mat4 uCam;
-uniform mat4 gBones[MAX_BONES];
+uniform mat4 uBones[MAX_BONES];
+uniform mat4[10] uLightView;
+uniform int uShadowCount;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
 out vec2 vUV;
 out vec3 unprojectedPos;
+out vec4[10] lightSpacePos;
 out vec3 camPos;
 out vec3 normal;
 out vec3 tangent;
@@ -28,10 +31,10 @@ void main()
 {
 
 	vec4 posIn = vec4(aPosition, 1.0f);
-	vec4 pos = Weights[0] * (gBones[int(BoneIDs[0])] * posIn) +
-			Weights[1] * (gBones[int(BoneIDs[1])] * posIn) +
-			Weights[2] * (gBones[int(BoneIDs[2])] * posIn) +
-			Weights[3] * (gBones[int(BoneIDs[3])] * posIn);
+	vec4 pos = Weights[0] * (uBones[int(BoneIDs[0])] * posIn) +
+			Weights[1] * (uBones[int(BoneIDs[1])] * posIn) +
+			Weights[2] * (uBones[int(BoneIDs[2])] * posIn) +
+			Weights[3] * (uBones[int(BoneIDs[3])] * posIn);
 	
 	pos =  uModel * vec4(pos.xyz, 1.0f);
 	unprojectedPos = pos.xyz;
@@ -42,17 +45,21 @@ void main()
 	vUV = aUV;
 
 	vec4 normalIn = vec4(aNormal, 0.0f);
-	vec4 boneNormal = Weights[0] * (gBones[int(BoneIDs[0])] * normalIn) +
-			Weights[1] * (gBones[int(BoneIDs[1])] * normalIn) +
-			Weights[2] * (gBones[int(BoneIDs[2])] * normalIn) +
-			Weights[3] * (gBones[int(BoneIDs[3])] * normalIn);
+	vec4 boneNormal = Weights[0] * (uBones[int(BoneIDs[0])] * normalIn) +
+			Weights[1] * (uBones[int(BoneIDs[1])] * normalIn) +
+			Weights[2] * (uBones[int(BoneIDs[2])] * normalIn) +
+			Weights[3] * (uBones[int(BoneIDs[3])] * normalIn);
 	normal = boneNormal.xyz;
 
 	vec4 TangentIn = vec4(aTangent, 0.0f);
-	vec4 boneTangent = Weights[0] * (gBones[int(BoneIDs[0])] * TangentIn) +
-			Weights[1] * (gBones[int(BoneIDs[1])] * TangentIn) +
-			Weights[2] * (gBones[int(BoneIDs[2])] * TangentIn) +
-			Weights[3] * (gBones[int(BoneIDs[3])] * TangentIn);
+	vec4 boneTangent = Weights[0] * (uBones[int(BoneIDs[0])] * TangentIn) +
+			Weights[1] * (uBones[int(BoneIDs[1])] * TangentIn) +
+			Weights[2] * (uBones[int(BoneIDs[2])] * TangentIn) +
+			Weights[3] * (uBones[int(BoneIDs[3])] * TangentIn);
+
 	
 	tangent = boneTangent.xyz; 
+
+	for (int i = 0; i < uShadowCount; ++i)
+		lightSpacePos[i] = uProj * uLightView[i] * pos;
 }

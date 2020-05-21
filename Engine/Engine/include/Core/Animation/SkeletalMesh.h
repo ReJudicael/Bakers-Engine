@@ -81,7 +81,7 @@ namespace Core::Animation
 		 * override for draw the mesh with the material and the model
 		 * @param cam: the camera to render to
 		 */
-		virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
+		virtual void OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr) override;
 
 		/**
 		 * Function inheritated from IUpdatable,

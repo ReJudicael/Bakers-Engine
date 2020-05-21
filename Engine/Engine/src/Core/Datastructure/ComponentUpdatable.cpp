@@ -1,22 +1,17 @@
 #include "ComponentUpdatable.h"
 
-RTTR_PLUGIN_REGISTRATION
-{
-	// TODO: Hide it in Editor
-	registration::class_<Core::Datastructure::ComponentUpdatable>("ComponentUpdatable")
-		.constructor();
-}
-
 namespace Core::Datastructure
 {
 	void	ComponentUpdatable::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentBase::OnCopy(copyTo);
 		IUpdatable::OnCopy(copyTo);
 	}
 
 	void	ComponentUpdatable::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new ComponentUpdatable();
 		OnCopy(copyTo);
 	}

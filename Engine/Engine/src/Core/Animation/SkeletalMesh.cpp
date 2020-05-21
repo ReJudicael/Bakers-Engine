@@ -65,7 +65,7 @@ namespace Core::Animation
 				return;
 			InitBones(manager->GetSkeleton(m_modelName));
 
-			animationHandler = AnimationHandler(nullptr);
+			//animationHandler = AnimationHandler(nullptr);
 		}
 		Mesh::UpdateModel();
 	}
@@ -90,7 +90,7 @@ namespace Core::Animation
 		}
 	}
 
-	void SkeletalMesh::OnDraw(Core::Datastructure::ICamera* cam)
+	void SkeletalMesh::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
 		Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
 
@@ -115,24 +115,27 @@ namespace Core::Animation
 			Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
 
 			Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
-			material.shader->UseProgram();
+			std::shared_ptr<Resources::Shader> usedShader = (givenShader ? 
+												GetRoot()->GetEngine()->GetResourcesManager()->GetShader("SkeletalShadow") : material.shader);
+
+			usedShader->UseProgram();
 			{
 				// init the value of the texture1
-				glUniform1i(material.shader->GetLocation("uColorTexture"), 0);
+				glUniform1i(usedShader->GetLocation("uColorTexture"), 0);
 				// init the value of the texture2
-				glUniform1i(material.shader->GetLocation("uNormalMap"), 1);
+				glUniform1i(usedShader->GetLocation("uNormalMap"), 1);
 
 				//material.shader->SendLights();
 
 				material.SendMaterial();
-				glUniformMatrix4fv(material.shader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
-				glUniformMatrix4fv(material.shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
-				glUniformMatrix4fv(material.shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
+				glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
+				glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
+				glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
 				// Send to the shader the transform matrix of bones
 				for (auto j{ 0 }; j < m_finalTransforms.size(); j++)
 				{
-					std::string loc = "gBones[" + std::to_string(j) + "]";
-					glUniformMatrix4fv(material.shader->GetLocation(loc), 1, GL_TRUE, m_finalTransforms[j].array);
+					std::string loc = "uBones[" + std::to_string(j) + "]";
+					glUniformMatrix4fv(usedShader->GetLocation(loc), 1, GL_TRUE, m_finalTransforms[j].array);
 				}
 			}
 

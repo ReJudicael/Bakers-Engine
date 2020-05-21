@@ -11,9 +11,10 @@ namespace Editor::Datastructure
 	{
 	}
 
-	void EditorCamera::SetRatio(const float newRatio)
+	void EditorCamera::SetRatio(const float width, const float height)
 	{
-		m_persp.ratio = newRatio;
+		m_persp.width = width;
+		m_persp.height = height;
 		m_isPerspectiveUpdated = false;
 	}
 
@@ -69,17 +70,19 @@ namespace Editor::Datastructure
 	
 	Core::Maths::Mat4 EditorCamera::OnGeneratePerspective()
 	{
-		return Core::Renderer::Camera::CreatePerspectiveMatrix(m_persp.ratio, m_persp.fov, m_persp.near, m_persp.far);
+		return Core::Renderer::Camera::CreatePerspectiveMatrix(m_persp.width, m_persp.height, m_persp.fov, m_persp.near, m_persp.far);
 	}
 	
 	void EditorCamera::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new EditorCamera();
 		OnCopy(copyTo);
 	}
 	
 	void EditorCamera::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentBase::OnCopy(copyTo);
 		ICamera::OnCopy(copyTo);
 	}
@@ -106,10 +109,10 @@ namespace Editor::Datastructure
 	{
 		if (input->IsMouseButtonDown(EMouseButton::RIGHT))
 		{ 
-			input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::INVISIBLE);
+			if (!input->IsCursorHidden())
+				input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::INVISIBLE);
 			ComputeInputTranslation(input);
 			ComputeRotation(input);
-			
 		}
 		else if (IsUsingMouseTranslation(input))
 		{
@@ -117,10 +120,10 @@ namespace Editor::Datastructure
 		}
 		else
 		{
-			input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
+			if (input->IsCursorHidden())
+				input->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
 			m_mousePos = input->GetMousePos();
 			m_isMouseSet = false;
-			return;
 		}
 	}
 

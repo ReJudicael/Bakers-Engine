@@ -3,6 +3,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	rttr::registration::class_<TriggeredEvent>("Triggered Event")
 		.constructor()
@@ -15,12 +16,14 @@ namespace Core::Datastructure
 {
 	void TriggeredEvent::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentBase::OnCopy(copyTo);
 		IUpdatable::OnCopy(copyTo);
 	}
 
 	void TriggeredEvent::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new TriggeredEvent();
 		OnCopy(copyTo);
 	}
@@ -32,6 +35,7 @@ namespace Core::Datastructure
 	}
 	bool TriggeredEvent::OnStart()
 	{
+		ZoneScoped
 		//m_functionsAssigned = false;
 		//m_autoDestroy = true;
 		return ComponentBase::OnStart() && IUpdatable::OnStart();

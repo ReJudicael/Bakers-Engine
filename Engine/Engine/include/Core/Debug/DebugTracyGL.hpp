@@ -9,12 +9,14 @@
 
 #define TRACY_GL_IMAGE
 #define INIT_TRACY_GL_IMAGE(width, height) 
+#define FREE_TRACY_GL_IMAGE
 #define TRACY_GL_IMAGE_SEND(width, height) 
 
 #else
 
 #define TRACY_GL_IMAGE	Core::Debug::TracyGL*	__TracyGLImageSender;
 #define INIT_TRACY_GL_IMAGE(width, height) __TracyGLImageSender = new Core::Debug::TracyGL(width, height);
+#define FREE_TRACY_GL_IMAGE delete __TracyGLImageSender;
 #define TRACY_GL_IMAGE_SEND(width, height) __TracyGLImageSender->SendCapture(width, height);
 
 namespace Core::Debug
@@ -32,14 +34,15 @@ namespace Core::Debug
 		int m_fiIdx = 0;
 		std::vector <int> m_fiQueue;
 
-		int m_width, m_height;
+		uint16_t m_width, m_height;
 	public:
-		inline TracyGL(long captureWidth = 320, long captureHeight = 180) noexcept;
+		inline TracyGL(uint16_t captureWidth = 320, uint16_t captureHeight = 180) noexcept;
+		inline ~TracyGL() noexcept;
 
 		inline void	SendCapture(int screenWidth, int screenHeight);
 	};
 
-	inline	TracyGL::TracyGL(long captureWidth, long captureHeight) noexcept : m_fiFence(), m_width {captureWidth}, m_height {captureHeight}
+	inline	TracyGL::TracyGL(uint16_t captureWidth, uint16_t captureHeight) noexcept : m_fiFence(), m_width {captureWidth}, m_height {captureHeight}
 	{
 		glGenTextures(4, m_fiTexture);
 		glGenFramebuffers(4, m_fiFramebuffer);
@@ -58,6 +61,14 @@ namespace Core::Debug
 		}
 	}
 
+	inline TracyGL::~TracyGL() noexcept
+	{
+		for (unsigned i = 0; i < m_fiQueue.size(); ++i)
+		{
+			glDeleteSync(m_fiFence[m_fiQueue[i]]);
+		}
+	}
+
 	inline void TracyGL::SendCapture(int screenWidth, int screenHeight)
 	{
 		ZoneScoped
@@ -69,7 +80,7 @@ namespace Core::Debug
 			glDeleteSync(m_fiFence[fiIdx]);
 			glBindBuffer(GL_PIXEL_PACK_BUFFER, m_fiPbo[fiIdx]);
 			auto ptr = glMapBufferRange(GL_PIXEL_PACK_BUFFER, 0, 320 * 180 * 4, GL_MAP_READ_BIT);
-			FrameImage(ptr, m_width, m_height, m_fiQueue.size(), true);
+			FrameImage(ptr, m_width, m_height, static_cast<uint8_t>(m_fiQueue.size()), true);
 			glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
 			m_fiQueue.erase(m_fiQueue.begin());
 		}

@@ -19,7 +19,12 @@ namespace Editor::Window
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\warning.png", m_logsIcon[1].first);
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\ConsoleIcons\\error.png", m_logsIcon[2].first);
 
-		Core::Debug::Logger::AddEvent(BIND_EVENT(WindowConsole::LogCallback));
+		m_listenerId = Core::Debug::Logger::AddEvent(BIND_EVENT(WindowConsole::LogCallback));
+	}
+
+	WindowConsole::~WindowConsole()
+	{
+		Core::Debug::Logger::RemoveEvent(m_listenerId);
 	}
 
 	void WindowConsole::PushWindowStyle()

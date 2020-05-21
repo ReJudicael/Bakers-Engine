@@ -19,9 +19,49 @@ struct light
     vec3 diffuse;
     vec3 specular;
     vec3 attenuation;
-};
+};	
+	
 
-vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3 view)
+float shadowComputing(int shadowCount, vec4[10] positions, sampler2D[10] shadowMaps)
+{
+	if (shadowCount == 0 || shadowCount > 10)
+		return 1.0;
+
+	float shadow = 0;
+
+	for (int i = 0; i < shadowCount; ++i)
+	{
+		vec3 proj = positions[i].xyz / positions[i].w;
+		proj = proj * 0.5 + 0.5;
+	
+		float currentDepth = proj.z;
+		if (currentDepth > 1.0)
+			return 0.0;
+	
+		// Shadow bias to remove shadow acne
+		float bias = 0.0005;
+	
+		// Compute smooth shadow with PCF
+		float currentShadow = 0;
+		vec2 size = 1.0 / textureSize(shadowMaps[i], 0);
+		for(int x = -1; x <= 1; ++x)
+		{
+			for(int y = -1; y <= 1; ++y)
+			{
+				float depth = texture(shadowMaps[i], proj.xy + vec2(x, y) * size).r; 
+				currentShadow += currentDepth - bias < depth ? 1.0 : 0.0;        
+			}    
+		}
+		currentShadow /= 9.0;
+	
+		shadow += currentShadow;
+	}
+	
+	return shadow / float(shadowCount);
+}	
+	
+	
+vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3 view, float shadow)
 {
 	vec3 lightDir;
 	float attenuation = 1;
@@ -57,12 +97,12 @@ vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3
 		}
 	}
 
-	vec3 ambient = attenuation * light.ambient * mat.ambientColor;
+	vec3 ambient = attenuation * light.ambient * mat.ambientColor * max(0.5, shadow);
 
 	float diff = dot(normal, lightDir);
 	if (diff < 0)
 		diff = 0;
-	vec3 diffuse = attenuation * diff * light.diffuse * mat.diffuseColor;
+	vec3 diffuse = attenuation * diff * light.diffuse * mat.diffuseColor * shadow;
 
 	vec3 reflectDir = normalize(reflect(-lightDir, normal));
 	float spec = dot(view, reflectDir);
@@ -71,7 +111,7 @@ vec3 getLightContribution(light light, Material mat, vec3 pos, vec3 normal, vec3
         else
                 spec = 0;
         vec3 specular = attenuation * spec * light.specular * mat.specularColor;
-		specular = clamp(specular * mat.shininessStrength, 0.0, 1.0);
+		specular = clamp(specular * mat.shininessStrength, 0.0, 1.0) * shadow;
 
 	return ambient + diffuse + specular;
 }

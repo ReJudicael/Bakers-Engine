@@ -21,9 +21,11 @@ namespace Core::Datastructure
 	protected:
 		/**
 		 * Called for rendering. Must be overriden if the component is inherited
-		 * @param cam: Camera to render to
+		 * @param view: View matrix
+		 * @param proj: Projection matrix
+		 * @param givenShader: Shader to use instead of material shader if provided
 		 */
-		virtual void OnDraw(ICamera* cam) = 0;
+		virtual void OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr) = 0;
 		virtual void OnCopy(IComponent* copyTo) const override;
 		virtual void OnReset() override;
 	public:
@@ -36,7 +38,7 @@ namespace Core::Datastructure
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;
 
-		void Draw(ICamera* cam);
+		void Draw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr);
 
 		REGISTER_CLASS(IComponent)
 	};

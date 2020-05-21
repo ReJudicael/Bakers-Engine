@@ -35,14 +35,15 @@ namespace Resources::Loader
 	//m_task {new Core::SystemManagement::TaskSystem()}
 	{
 		CreateShader("Default", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("DefaultNoTexture", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultNoTexture.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("SkeletDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("NormalMapDefault", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("SkeletNormalMapDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("Wireframe", "Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		CreateShader("Skybox", "Resources\\Shaders\\SkyboxShader.vert", "Resources\\Shaders\\SkyboxShader.frag");
 
-		Shader normalMapShader("Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		m_shaders.emplace("NormalMapDefault", std::make_shared<Shader>(normalMapShader));
+		Shader SkeletalShadow("Resources\\Shaders\\SkeletalShadow.vert", "Resources\\Shaders\\SkeletalShadow.frag");
+		m_shaders.emplace("SkeletalShadow", std::make_shared<Shader>(SkeletalShadow));
 
 		Shader wireframeShader("Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
@@ -63,6 +64,7 @@ namespace Resources::Loader
 
 	ResourcesManager::~ResourcesManager()
 	{
+		ZoneScoped
 		m_task.EndTaskSystem();
 
 		for (unorderedmapModel::iterator itmodel = m_models.begin();
@@ -446,7 +448,6 @@ namespace Resources::Loader
 												const std::string& directory, const int numberOfSameKey)
 	{	
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
-		Material material;
 		std::string keyMaterial;
 
 		if (numberOfSameKey > 0)
@@ -539,7 +540,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::LinkAllTextureToOpenGl()
 	{
-
+		ZoneScoped
 		for (auto it = m_texturesToLink.begin(); 
 				it != m_texturesToLink.end();)
 		{
@@ -585,6 +586,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::LinkAllModelToOpenGl()
 	{
+		ZoneScoped
 		for (auto it = m_modelsToLink.begin();
 			it != m_modelsToLink.end();)
 		{
@@ -614,14 +616,12 @@ namespace Resources::Loader
 
 	void ResourcesManager::CheckDeleteAssimpImporter()
 	{
+		ZoneScoped
 		for (auto it = m_importerToDelete.begin();
 			it != m_importerToDelete.end();)
 		{
 			if ((*it)->maxUseOfImporter == 0)
-			{
-				std::cout << (*it)->maxUseOfImporter << std::endl;
 				it = m_importerToDelete.erase(it);
-			}
 			else
 				it++;
 		}
@@ -638,6 +638,7 @@ namespace Resources::Loader
 
 	std::shared_ptr<Shader> ResourcesManager::CreateShader(const char* shaderName, const char* vertexFilePath, const char* fragmentFilePath, Shader::EShaderHeaderType header)
 	{
+		ZoneScoped
 		if (m_shaders.find(shaderName) != m_shaders.end())
 			return m_shaders[shaderName];
 
@@ -650,9 +651,11 @@ namespace Resources::Loader
 
 	void ResourcesManager::ShaderUpdate()
 	{
+		ZoneScoped
 		for (unorderedmapShader::iterator itshader = m_shaders.begin();
 			itshader != m_shaders.end(); ++itshader)
 		{
+			ZoneScopedN("ShaderUpdateLoop")
 			itshader->second->UseProgram();
 			itshader->second->SendLights();
 		}

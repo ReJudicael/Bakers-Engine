@@ -23,6 +23,7 @@ namespace Core::Datastructure
 		unsigned			m_cameraHeight{800};
 
 		Core::Renderer::Framebuffer* m_fbo{ nullptr };
+		std::shared_ptr<Resources::Shader> m_shadowShader{ nullptr };
 
 		/**
 		 * Generate and return camera matrix
@@ -92,7 +93,7 @@ namespace Core::Datastructure
 		 * Set window ratio to camera perspective data
 		 * @param newRatio: New ratio to be applied
 		 */
-		virtual void				SetRatio(float ratio) = 0;
+		virtual void				SetRatio(const float width, const float height) = 0;
 
 		/**
 		 * Call when viewport of the camera must be resized. 
@@ -105,6 +106,12 @@ namespace Core::Datastructure
 		 * @param renderables: Objects of the scene
 		 */
 		virtual void Draw(const std::list<IRenderable*>& renderables);
+
+		/**
+		 * Draw objects into depth buffer for shadow mapping
+		 * @param renderables: Objects of the scene
+		 */
+		void DrawDepth(const std::list<IRenderable*>& renderables);
 		
 		REGISTER_CLASS(IComponent)
 	};

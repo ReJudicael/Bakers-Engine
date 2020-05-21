@@ -212,6 +212,8 @@ namespace Resources
 	{
 		importer->maxUseOfImporter++;
 
+		singleMesh = isSingleMesh;
+
 		if (singleMesh)
 			rootNodeScene.SingleMeshSceneLoad(scene, node, directory, materialsName);
 		else

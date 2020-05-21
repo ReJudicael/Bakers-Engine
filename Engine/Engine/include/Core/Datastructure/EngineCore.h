@@ -1,8 +1,8 @@
 #pragma once
 
+#include "CoreMinimal.h"
 #include "EventSystem.hpp"
 #include "InputSystem.hpp"
-#include "CoreMinimal.h"
 #include "Framebuffer.h"
 #include "LoadResources.h"
 #include "NavMesh.h"
@@ -52,7 +52,7 @@ namespace Core
 
 			Core::Navigation::NavMeshBuilder*		m_navMesh;
 
-			std::string								m_currScene{ "Default.json" };
+			std::string								m_currScene{ "Default" };
 
 			double									m_time{ 0 };
 
@@ -125,7 +125,7 @@ namespace Core
 			virtual void	OnStartFrame();
 			virtual void	OnUpdate(double deltaTime);
 			bool			OnLoadScene();
-			void			LoadSceneFromJson(json scene);
+			void			LoadSceneFromJson(json& scene);
 		public:
 
 			GLFWwindow* GetWindow();

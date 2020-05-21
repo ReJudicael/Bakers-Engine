@@ -4,6 +4,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<IUpdatable>("IUpdatable")
 		.method("Update", &IUpdatable::Update)
@@ -14,6 +15,7 @@ namespace Core::Datastructure
 {
 	bool IUpdatable::OnStart()
 	{
+		ZoneScoped
 		if (GetRoot() == nullptr)
 			return false;
 		GetRoot()->AddUpdatable(this);
@@ -37,6 +39,7 @@ namespace Core::Datastructure
 
 	void	IUpdatable::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		IComponent::OnCopy(copyTo);
 	}
 

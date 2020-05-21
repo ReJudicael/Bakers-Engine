@@ -5,8 +5,10 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	registration::class_<Core::Renderer::CameraPerspective>("Perspective")
-		.property("Ratio", &Core::Renderer::CameraPerspective::ratio)
+		.property("Width", &Core::Renderer::CameraPerspective::width)
+		.property("Height", &Core::Renderer::CameraPerspective::height)
 		.property("FOV", &Core::Renderer::CameraPerspective::fov)
 		.property("Near", &Core::Renderer::CameraPerspective::near)
 		.property("Far", &Core::Renderer::CameraPerspective::far);
@@ -14,7 +16,7 @@ RTTR_PLUGIN_REGISTRATION
 	Core::Datastructure::RegisterDefaultClassConstructor<Core::Renderer::Camera>("Camera");
 	registration::class_<Core::Renderer::Camera>("Camera")
 		.constructor()
-		.constructor<const float, const float, const float, const float>();
+		.constructor<const float, const float, const float, const float, const float>();
 
 	Core::Datastructure::RegisterClassPropertyGS<Core::Renderer::Camera>("Camera", "Perspective", &Core::Renderer::Camera::GetPerspData, &Core::Renderer::Camera::SetPerspData);
 }
@@ -33,16 +35,17 @@ namespace Core::Renderer
 
 	Core::Maths::Mat4 Camera::OnGeneratePerspective()
 	{
-		return CreatePerspectiveMatrix(m_persp.ratio, m_persp.fov, m_persp.near, m_persp.far);
+		return CreatePerspectiveMatrix(m_persp.width, m_persp.height, m_persp.fov, m_persp.near, m_persp.far);
 	}
 
 	Camera::Camera() : ComponentBase(), ICamera(), IUpdatable()
 	{
 	}
 
-	Camera::Camera(const float ratio, const float fov, const float near, const float far) : ComponentBase(), ICamera(), IUpdatable()
+	Camera::Camera(const float width, const float height, const float fov, const float near, const float far) : ComponentBase(), ICamera(), IUpdatable()
 	{
-		m_persp.ratio = ratio;
+		m_persp.width = width;
+		m_persp.height = height;
 		m_persp.fov = fov;
 		m_persp.near = near;
 		m_persp.far = far;
@@ -54,16 +57,17 @@ namespace Core::Renderer
 
 	bool Camera::OnStart()
 	{
+		ZoneScoped
 		return ICamera::OnStart() && IUpdatable::OnStart();
 	}
 
-	Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float ratio, const float fov, const float near, const float far)
+	Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float width, const float height, const float fov, const float near, const float far)
 	{
 		Core::Maths::Mat4 persp;
 
 		float top = near * tanf((static_cast<float>(M_PI) * fov / 180.f) / 2.f);
 		float bot = -top;
-		float right = top * ratio;
+		float right = top * (width / height);
 		float left = -right;
 
 		persp.m_mat[0][0] = (2 * near) / (right - left);
@@ -77,14 +81,35 @@ namespace Core::Renderer
 		return persp;
 	}
 
-	void Camera::SetRatio(const float newRatio)
+	Core::Maths::Mat4 Camera::CreateOrthographicMatrix(const float width, const float height, const float near, const float far)
 	{
-		m_persp.ratio = newRatio;
+		Core::Maths::Mat4 ortho = Core::Maths::Mat4::Identity();
+
+		float top{ height };
+		float left{ 0 };
+		float bot{ 0 };
+		float right{ width };
+
+		ortho(0, 0) = 4000 / (right - left);
+		ortho(1, 1) = 4000 / (top - bot);
+		ortho(2, 2) = -2 / (far - near);
+		ortho(0, 3) = -((right + left) / (right - left));
+		ortho(1, 3) = -((top + bot) / (top - bot));
+		ortho(2, 3) = -((far + near) / (far - near));
+
+		return ortho;
+	}
+
+	void Camera::SetRatio(const float width, const float height)
+	{
+		m_persp.width = width;
+		m_persp.height = height;
 		m_isPerspectiveUpdated = false;
 	}
 
 	void Camera::OnCopy(IComponent* toCopy) const
 	{
+		ZoneScoped
 		ComponentBase::OnCopy(toCopy);
 		ICamera::OnCopy(toCopy);
 		IUpdatable::OnCopy(toCopy);
@@ -96,6 +121,7 @@ namespace Core::Renderer
 
 	void	Camera::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new Camera();
 		OnCopy(copyTo);
 	}

@@ -4,6 +4,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 	registration::class_<RootObject>("RootObject")
 		.method("StartFrame", &RootObject::StartFrame)
@@ -18,7 +19,6 @@ RTTR_PLUGIN_REGISTRATION
 		.method("RemoveUpdatable", &RootObject::RemoveUpdatable)
 		.method("RemoveRenderable", &RootObject::RemoveRenderable)
 		.method("RemoveCamera", &RootObject::RemoveCamera)
-		.method("SetCamerasRatio", &RootObject::SetCamerasRatio)
 		.method("DestroyComponent", &RootObject::DestroyComponent)
 		.method("DestroyObject", &RootObject::DestroyObject)
 		.method("Destroy", &RootObject::Destroy)
@@ -107,14 +107,6 @@ namespace Core::Datastructure
 		m_cameras.remove(i);
 	}
 
-	void RootObject::SetCamerasRatio(float ratio) noexcept
-	{
-		for (auto value : m_cameras)
-		{
-			value->SetRatio(ratio);
-		}
-	}
-
 	void RootObject::DestroyComponent(IComponent* i) noexcept
 	{
 		m_destroyedComponents.push_back(i);
@@ -165,6 +157,7 @@ namespace Core::Datastructure
 
 	RootObject* RootObject::CreateRootNode(SystemManagement::InputSystem* inputSystem, EngineCore* engine) noexcept
 	{
+		ZoneScoped
 		return new RootObject(inputSystem, engine);
 	}
 }

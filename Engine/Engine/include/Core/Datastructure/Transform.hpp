@@ -141,26 +141,48 @@ namespace Core::Datastructure
 		inline bool					IsTrsUpdated() const noexcept;
 
 		/**
-		 * Translates transform in local referential by given vector. 
+		 * Translates transform in global referential by given vector. 
 		 * Global variables and local trs needs updating after operation
 		 * @param v: Vector to translate by
 		 * @return Local position after operation
 		 */
 		const Maths::Vec3&			Translate(const Maths::Vec3& v) noexcept;
 		/**
-		 * Rotates transform in local referential by given vector.
+		 * Rotates transform in global referential by given vector.
 		 * Global variables and local trs needs updating after operation
 		 * @param q: Quaternion to rotate by
 		 * @return Local rotation after operation
 		 */
 		const Maths::Quat&			Rotate(const Maths::Quat& q) noexcept;
 		/**
-		 * Scales local transform by given vector.
+		 * Scales global transform by given vector.
 		 * Global variables and local trs needs updating after operation
 		 * @param v: Vector to scale by
 		 * @return Local rotation after operation
 		 */
 		const Maths::Vec3&			Scale(const Maths::Vec3& v) noexcept;
+
+		/**
+		 * Translates transform in local referential by given vector.
+		 * Global variables and local trs needs updating after operation
+		 * @param v: Vector to translate by
+		 * @return Local position after operation
+		 */
+		void TranslateGlobal(const Transform& parent, const Maths::Vec3& v) noexcept;
+		/**
+		 * Rotates transform in local referential by given vector.
+		 * Global variables and local trs needs updating after operation
+		 * @param q: Quaternion to rotate by
+		 * @return Local rotation after operation
+		 */
+		void RotateGlobal(const Transform& parent, const Maths::Quat& q) noexcept;
+		/**
+		 * Scales local transform by given vector.
+		 * Global variables and local trs needs updating after operation
+		 * @param v: Vector to scale by
+		 * @return Local rotation after operation
+		 */
+		void ScaleGlobal(const Transform& parent, const Maths::Vec3& v) noexcept;
 		
 		/**
 		 * Set local position to given position

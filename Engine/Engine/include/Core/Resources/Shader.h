@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CoreMinimal.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <unordered_map>
@@ -140,5 +141,7 @@ namespace Resources
 		 * Send Lights to shader program
 		 */
 		void SendLights();
+
+		static std::vector<Core::Renderer::Light*> GetShadowCastingLights();
 	};
 }

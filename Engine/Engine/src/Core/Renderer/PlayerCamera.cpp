@@ -8,9 +8,10 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	registration::class_<Core::Renderer::PlayerCamera>("Player Camera")
 		.constructor()
-		.constructor<const float, const float, const float, const float>()
+		.constructor<const float, const float, const float, const float, const float>()
 		.property_readonly("Is running", &Core::Renderer::PlayerCamera::m_isRunning)
 		.property("Speed", &Core::Renderer::PlayerCamera::m_speed)
 		.property("Running speed", &Core::Renderer::PlayerCamera::m_runningSpeed)
@@ -26,10 +27,12 @@ namespace Core::Renderer
 {
 	PlayerCamera::PlayerCamera() : Camera()
 	{
+		ZoneScoped
 	}
 
-	PlayerCamera::PlayerCamera(const float ratio, const float fov, const float near, const float far) : Camera(ratio, fov, near, far)
+	PlayerCamera::PlayerCamera(const float width, const float height, const float fov, const float near, const float far) : Camera(width, height, fov, near, far)
 	{
+		ZoneScoped
 	}
 
 	void PlayerCamera::OnInit()
@@ -187,7 +190,7 @@ namespace Core::Renderer
 	{
 		Core::Datastructure::ICamera::Resize(width, height);
 
-		for (int i{0}; i < m_postProcessFBO.size(); ++i)
+		for (int i{ 0 }; i < m_postProcessFBO.size(); ++i)
 			m_postProcessFBO[i]->Resize(width, height);
 	}
 
@@ -198,24 +201,26 @@ namespace Core::Renderer
 			TracyGpuZone("Rendering frame buffer")
 			if (IsStarted() && m_isActive && !IsDestroyed() && m_parent->IsActive())
 			{
+				glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
+				DrawDepth(renderables);
+
 				std::vector<Core::Renderer::Framebuffer*> FBO = GetActiveFramebuffers();
 				if (FBO.size() > 0)
 					glBindFramebuffer(GL_FRAMEBUFFER, FBO[0]->FBO);
 				else
 					glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 
-				glViewport(m_fbo->Size[0], m_fbo->Size[1], m_fbo->Size[2], m_fbo->Size[3]);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 				for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
-					(*it)->Draw(this);
+					(*it)->Draw(this->GetCameraMatrix(), this->GetPerspectiveMatrix());
 
 				for (int i{ 0 }; i < FBO.size(); ++i)
 				{
 					if (i == FBO.size() - 1)
 						glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 					else
-						glBindFramebuffer(GL_FRAMEBUFFER, FBO[i+1]->FBO);
+						glBindFramebuffer(GL_FRAMEBUFFER, FBO[i + 1]->FBO);
 
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 					FBO[i]->data.s->UseProgram();
@@ -233,6 +238,7 @@ namespace Core::Renderer
 
 	void PlayerCamera::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		Camera::OnCopy(copyTo);
 		PlayerCamera* copy{ dynamic_cast<PlayerCamera*>(copyTo) };
 
@@ -254,6 +260,7 @@ namespace Core::Renderer
 
 	void PlayerCamera::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		PlayerCamera* test = new PlayerCamera();
 		copyTo = test;
 		OnCopy(copyTo);
@@ -282,7 +289,8 @@ namespace Core::Renderer
 	{
 		Core::Datastructure::ICamera::OnDestroy();
 
-		for (int i{0}; i < m_postProcessFBO.size(); ++i)
-			GetRoot()->GetEngine()->DeleteFBO(m_postProcessFBO[0]);
+		for (int i{ 0 }; i < m_postProcessFBO.size(); ++i)
+			GetRoot()->GetEngine()->DeleteFBO(m_postProcessFBO[i]);
+		m_postProcessFBO.clear();
 	}
 }

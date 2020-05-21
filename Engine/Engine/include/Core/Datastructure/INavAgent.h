@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IComponent.hpp"
+#include "NavQuery.h"
 #include "CoreMinimal.h"
 
 namespace Core::Datastructure
@@ -21,7 +22,7 @@ namespace Core::Datastructure
 	class INavAgent : virtual public IComponent
 	{
 	protected:
-		int				m_agentID{ -1 };
+		/*int				m_agentID{ -1 };
 
 		float			m_agentHeight{ 2.0f };
 		float			m_agentRadius{ 0.6f };
@@ -31,11 +32,15 @@ namespace Core::Datastructure
 		float			m_agentMaxSlope{ 45.0f };
 		unsigned char	m_obstacleAvoidanceQuality{ 3 };
 		float			m_separationWeight{ 2.0f };
-
+		
 		NavAgentFlag	m_flags{ NavAgentFlags::NONE };
+		*/
 
-		bool			OnStart() override;
-		void			OnDestroy() override;
+		Core::Navigation::NavQuery::QueryResult* m_pathQuery{ nullptr };
+
+		void			FindPath(const Core::Maths::Vec3& end, unsigned short excludedAreaFlags = 0);
+
+		virtual void			OnDestroy() override;
 	public:
 		INavAgent();
 		~INavAgent();

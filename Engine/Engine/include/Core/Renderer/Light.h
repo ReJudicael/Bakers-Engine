@@ -2,6 +2,7 @@
 
 #include "ComponentBase.h"
 #include "Color.hpp"
+#include "Mat4.hpp"
 
 #include "CoreMinimal.h"
 
@@ -33,6 +34,13 @@ namespace Core::Renderer
 		Core::Maths::Color	m_diffuse;
 		Core::Maths::Color	m_specular;
 		Core::Maths::Vec3	m_attenuation = { 1.f, 0.f, 0.f };
+
+		// Shadow mapping variables
+		bool			m_castShadow{ true };
+		unsigned int	m_depthBuffer{ 0 };
+		unsigned int	m_depthTexture{ 0 };
+		unsigned int	m_depthWidth{ 1000 };
+		unsigned int	m_depthHeight{ 1000 };
 	protected:
 		/**
 		 * Copies the data of the component into the given component.
@@ -64,6 +72,16 @@ namespace Core::Renderer
 		 * Default Constructor
 		 */
 		Light();
+
+		/**
+		 * Destructor
+		 */
+		~Light();
+
+		/**
+		 * First frame upon creation event
+		 */
+		virtual void				OnInit() override;
 
 		/**
 		 * Activation getter
@@ -155,6 +173,30 @@ namespace Core::Renderer
 		inline void SetAttenuation(const Core::Maths::Vec3& value) { m_attenuation = value; };
 
 		/**
+		 * Return FBO storing depth for shadow mapping
+		 */
+		inline unsigned int ShadowBuffer() { return m_depthBuffer; };
+
+		/**
+		 * Return shadow map texture
+		 * @return id of texture used to store depth map for shadow computing
+		 */
+		inline unsigned int ShadowTexture() { return m_depthTexture; };
+
+		/**
+		 * Indicate whether the light can cast shadow or not
+		 * @return false for point lights or deactivated lights, true otherwise
+		 */
+		bool CanCastShadow();
+
+		/**
+		 * Resize texture used to store depth for shadow mapping
+		 * @param width: New width of the window
+		 * @param height: New height of the window
+		 */
+		void ResizeShadowTexture(int width, int height);
+
+		/**
 		 * Get Light position in World Space
 		 * @return Position of owner in World Space
 		 */
@@ -165,6 +207,12 @@ namespace Core::Renderer
 		 * @return Direction of owner's forward vector in World Space
 		 */
 		Core::Maths::Vec3 GetDirection();
+
+		/**
+		 * Get View matrix for shadow mapping
+		 * @return Reverse transform of view from light
+		 */
+		Core::Maths::Mat4 GetViewFromLight();
 
 		REGISTER_CLASS(ComponentBase)
 	};

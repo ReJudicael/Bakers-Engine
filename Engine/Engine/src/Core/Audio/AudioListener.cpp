@@ -6,6 +6,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+    ZoneScopedN("Registering RTTR")
     registration::class_<Core::Audio::AudioListener>("Audio Listener")
         .constructor()
         .property("Active", &Core::Audio::AudioListener::m_isActive);
@@ -19,17 +20,20 @@ namespace Core::Audio
 
     void AudioListener::StartCopy(IComponent*& copyTo) const
     {
+        ZoneScoped
         copyTo = new AudioListener();
         OnCopy(copyTo);
     }
 
     bool AudioListener::OnStart()
     {
+        ZoneScoped
         return ComponentUpdatable::OnStart();
     }
 
     void AudioListener::OnCopy(IComponent* copyTo) const
     {
+        ZoneScoped
         ComponentUpdatable::OnCopy(copyTo);
         AudioListener* copy{ dynamic_cast<AudioListener*>(copyTo) };
         copy->m_isActive = m_isActive;

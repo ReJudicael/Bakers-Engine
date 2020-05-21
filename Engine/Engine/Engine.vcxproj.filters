@@ -237,6 +237,9 @@
     <ClCompile Include="src\Core\Renderer\Environment.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Navigation\PathFollowingComponent.cpp">
+      <Filter>Source Files\Core\Navigation</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\Animation\Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -469,6 +472,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\Environment.h">
       <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Navigation\PathFollowingComponent.h">
+      <Filter>Header Files\Core\Navigation</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Animation\Animation.h">
       <Filter>Header Files</Filter>

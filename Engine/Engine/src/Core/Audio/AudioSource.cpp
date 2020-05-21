@@ -8,6 +8,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
 	using namespace Core::Datastructure;
 
 	registration::class_<Core::Audio::AudioSource>("Audio Source")
@@ -39,12 +40,14 @@ namespace Core::Audio
 
 	void AudioSource::StartCopy(IComponent*& copyTo) const
 	{
+		ZoneScoped
 		copyTo = new AudioSource();
 		OnCopy(copyTo);
 	}
 
 	void AudioSource::OnCopy(IComponent* copyTo) const
 	{
+		ZoneScoped
 		ComponentUpdatable::OnCopy(copyTo);
 		AudioSource* copy{ dynamic_cast<AudioSource*>(copyTo) };
 
@@ -92,6 +95,7 @@ namespace Core::Audio
 
 	bool AudioSource::OnStart()
 	{
+		ZoneScoped
 		if (m_audioClip.empty())
 			return false;
 
@@ -200,6 +204,7 @@ namespace Core::Audio
 
 	void AudioSource::CreateSound(const std::string& soundPath)
 	{
+		ZoneScoped
 		FMOD_RESULT result = m_fmodSystem->createSound(soundPath.c_str(), static_cast<FMOD_MODE>(m_audioMode) | (m_loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF), 0, &m_fmodSound);
 		CHECK_ERR_FMOD(result);
 	}

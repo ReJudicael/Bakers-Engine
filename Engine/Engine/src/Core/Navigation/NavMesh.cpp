@@ -1,11 +1,15 @@
 #include "NavMesh.h"
 
 #include "DetourNavMeshBuilder.h"
+#include "IRenderable.hpp"
+#include "EngineCore.h"
+#include "Shader.h"
 
 namespace Core::Navigation
 {
-	NavMeshBuilder::NavMeshBuilder()
+	NavMeshBuilder::NavMeshBuilder(Core::Datastructure::EngineCore* engine) : m_engine{ engine }
 	{
+		ZoneScoped
 		m_cfg.cs = 0.3f;
 		m_cfg.ch = 0.2f;
 		m_cfg.walkableSlopeAngle = 45.f;
@@ -30,8 +34,10 @@ namespace Core::Navigation
 		m_ctx = new BuildContext();
 		//m_crowd = dtAllocCrowd();
 	}
+
 	NavMeshBuilder::~NavMeshBuilder()
 	{
+		ZoneScoped
 		for (auto it{ m_mesh.begin() }; it != m_mesh.end(); ++it)
 		{
 			delete it->verts;
@@ -42,10 +48,12 @@ namespace Core::Navigation
 		//dtFreeCrowd(m_crowd);
 
 		dtFreeNavMesh(m_navMesh);
+		delete m_ctx;
 	}
 
 	bool NavMeshBuilder::Build()
 	{
+		ZoneScoped
 		if (m_mesh.size() == 0 || m_maxTris == 0)
 			return false;
 
@@ -241,6 +249,7 @@ namespace Core::Navigation
 				return false;
 			}
 
+			//Generation of crowd
 			/*if (m_crowd->init(MAX_AGENTS, 2.0f, m_navMesh))
 			{
 				DEBUG_LOG_ERROR("Could not init Detour crowd");
@@ -325,24 +334,28 @@ namespace Core::Navigation
 		}
 
 		BAKERS_LOG_MESSAGE(time);
+
+		BuildNavMeshRenderer();
 		
 		return true;
 	}
 
 	Mesh* NavMeshBuilder::AddMesh(float* verts, int nverts, int* tris, int ntris, const Core::Datastructure::Transform& position)
 	{
+		ZoneScoped
 		float* newVerts{ (float*)malloc(nverts * sizeof(float*)) };
 
 		Core::Maths::Quat	rot{ position.GetGlobalRot() };
 		Core::Maths::Quat	rotInv{ rot.Inversed() };
 		Core::Maths::Vec3	pos{ position.GetGlobalPos() };
+		Core::Maths::Vec3	scale{ position.GetGlobalScale() };
 
 		Core::Maths::Vec3 vert;
 
 		for (int i{ 0 }; i < nverts / 3; ++i)
 		{
 			vert = { verts[i * 3], verts[i * 3 + 1], verts[i * 3 + 2] };
-			vert = pos + (rot * Core::Maths::Quat(0, vert) * rotInv).GetVec();
+			vert = pos + (rot * Core::Maths::Quat(0, vert * scale) * rotInv).GetVec();
 			newVerts[i * 3] = vert.x;
 			newVerts[i * 3 + 1] = vert.y;
 			newVerts[i * 3 + 2] = vert.z;
@@ -364,6 +377,18 @@ namespace Core::Navigation
 			m_maxTris = ntris;
 
 		return &m_mesh.back();
+	}
+
+	void NavMeshBuilder::ClearInputMeshes()
+	{
+		ZoneScoped
+		for (auto it : m_mesh)
+		{
+			delete it.tris;
+			delete it.verts;
+		}
+		m_mesh.clear();
+		m_maxTris = 0;
 	}
 
 	void BuildContext::doResetLog()
@@ -419,6 +444,7 @@ namespace Core::Navigation
 
 	NavQuery::QueryResult* NavMeshBuilder::FindPath(const Core::Maths::Vec3& start, const Core::Maths::Vec3& end, unsigned short excludedAreaFlags) noexcept
 	{
+		ZoneScoped
 		if (!m_navQuery.IsInit())
 			return nullptr;
 
@@ -426,6 +452,263 @@ namespace Core::Navigation
 		m_navQuery.AddQuery(start, end, m_queryFilter, query);
 
 		return query;
+	}
+
+	dtStatus NavMeshBuilder::FindClosestPointOnNavMesh(const Core::Maths::Vec3& point, const Core::Maths::Vec3& dist, dtPolyRef* ref, Core::Maths::Vec3& pos)
+	{
+		ZoneScoped
+		if (!m_navQuery.IsInit())
+			return DT_FAILURE;
+		return m_navQuery.FindNearestPoly(point, dist, m_queryFilter, ref, pos);
+	}
+
+	void NavMeshBuilder::RemovePathQuery(NavQuery::QueryResult* toRemove)
+	{
+		ZoneScoped
+		m_navQuery.RemoveQuery(toRemove);
+	}
+
+	void NavMeshBuilder::UpdateQuery()
+	{
+		ZoneScoped
+		m_navQuery.Update();
+	}
+
+	inline int bit(int a, int b)
+	{
+		return (a & (1 << b)) >> b;
+	}
+
+	inline unsigned int duRGBA(int r, int g, int b, int a)
+	{
+		return ((unsigned int)r) | ((unsigned int)g << 8) | ((unsigned int)b << 16) | ((unsigned int)a << 24);
+	}
+
+	unsigned int duIntToCol(int i, int a)
+	{
+		int	r = bit(i, 1) + bit(i, 3) * 2 + 1;
+		int	g = bit(i, 2) + bit(i, 4) * 2 + 1;
+		int	b = bit(i, 0) + bit(i, 5) * 2 + 1;
+		return duRGBA(r * 63, g * 63, b * 63, a);
+	}
+
+	void NavMeshBuilder::BuildNavMeshRenderer()
+	{
+		ZoneScoped
+		std::vector<NavVertex>	vertex;
+		const dtNavMesh* mesh{ m_navMesh };
+		for (int l = 0; l < mesh->getMaxTiles(); ++l)
+		{
+			const dtMeshTile* tile = mesh->getTile(l);
+			if (!tile->header) continue;
+
+			dtPolyRef base = mesh->getPolyRefBase(tile);
+
+			int tileNum = mesh->decodePolyIdTile(base);
+			const unsigned int tileColor = duIntToCol(tileNum, 128);
+
+			for (int i = 0; i < tile->header->polyCount; ++i)
+			{
+				const dtPoly* p = &tile->polys[i];
+				if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip off-mesh links.
+					continue;
+
+				const dtPolyDetail* pd = &tile->detailMeshes[i];
+				unsigned int col = tileColor;
+				for (int j = 0; j < pd->triCount; ++j)
+				{
+					const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
+					for (int k = 0; k < 3; ++k)
+					{
+						if (t[k] < p->vertCount)
+							vertex.push_back({ Core::Maths::Vec3(tile->verts[p->verts[t[k]] * 3], tile->verts[p->verts[t[k]] * 3 + 1], tile->verts[p->verts[t[k]] * 3 + 2]), col });
+						else
+							vertex.push_back({ Core::Maths::Vec3(tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3], 
+																tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 1],
+																tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 2]),
+																col });
+					}
+				}
+			}
+		}
+
+		GLuint VAO, VBO;
+
+		glGenVertexArrays(1, &VAO);
+		glBindVertexArray(VAO);
+		glGenBuffers(1, &VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, vertex.size() * sizeof(NavVertex), vertex.data(), GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(NavVertex), (void*)offsetof(NavVertex, pos));
+		glVertexAttribPointer(1, 1, GL_UNSIGNED_INT, GL_FALSE, sizeof(NavVertex), (void*)offsetof(NavVertex, color));
+
+		m_VAO = VAO;
+		m_VAOSize = static_cast<unsigned>(vertex.size());
+
+		if (!m_shader)
+		{
+			m_shader = m_engine->GetResourcesManager()->CreateShader("NavMeshShader", "Resources\\Shaders\\NavMeshShader.vert", "Resources\\Shaders\\NavMeshShader.frag");
+			if (!m_shader)
+				BAKERS_LOG_ERROR("Could not load NavMesh shader");
+		}
+
+		glBindVertexArray(0);
+	}
+
+	void NavMeshBuilder::DrawNavMesh(const Core::Maths::Mat4& cam, const Core::Maths::Mat4& perspective)
+	{
+		ZoneScoped
+		if (m_VAOSize <= 0)
+			return;
+
+		if (!m_shader)
+		{
+			return;
+		}
+		glEnable(GL_DEPTH_TEST);
+
+		glBindVertexArray(m_VAO);
+
+		m_shader->UseProgram();
+		glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, cam.array);
+		glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, perspective.array);
+		glDrawArrays(GL_TRIANGLES, 0, m_VAOSize);
+		glBindVertexArray(0);
+	}
+
+	void NavMeshBuilder::DrawNavMesh(Core::Datastructure::ICamera* cam)
+	{
+		ZoneScoped
+		if (m_navMesh == nullptr)
+			return;
+
+		DrawNavMesh(cam->GetCameraMatrix(), cam->GetPerspectiveMatrix());
+	}
+
+	bool NavMeshBuilder::SaveNavMesh(const std::string& path) const
+	{
+		ZoneScoped
+		if (!m_navMesh)
+			return false;
+
+		const dtNavMesh* mesh = m_navMesh;
+
+		FILE* fp;
+		fopen_s(&fp, (path + +".nav").c_str(), "wb");
+		if (!fp)
+			return false;
+
+		NavMeshSetHeader header;
+		header.magic = NAVMESHSET_MAGIC;
+		header.version = NAVMESHSET_VERSION;
+		header.numTiles = 0;
+
+		for (int i = 0; i < mesh->getMaxTiles(); ++i)
+		{
+			const dtMeshTile* tile = mesh->getTile(i);
+			if (!tile || !tile->header || !tile->dataSize) continue;
+			++header.numTiles;
+		}
+		memcpy(&header.params, mesh->getParams(), sizeof(dtNavMeshParams));
+		fwrite(&header, sizeof(NavMeshSetHeader), 1, fp);
+
+		for (int i = 0; i < mesh->getMaxTiles(); ++i)
+		{
+			const dtMeshTile* tile = mesh->getTile(i);
+			if (!tile || !tile->header || !tile->dataSize) continue;
+
+			NavMeshTileHeader tileHeader;
+			tileHeader.tileRef = mesh->getTileRef(tile);
+			tileHeader.dataSize = tile->dataSize;
+			fwrite(&tileHeader, sizeof(tileHeader), 1, fp);
+
+			fwrite(tile->data, tile->dataSize, 1, fp);
+		}
+
+		fclose(fp);
+		return true;
+	}
+
+	bool NavMeshBuilder::LoadNavMesh(const std::string& path)
+	{
+		ZoneScoped
+		FILE* fp;
+		fopen_s(&fp, (path + ".nav").c_str(), "rb");
+		if (!fp) return 0;
+
+		// Read header.
+		NavMeshSetHeader header;
+		size_t readLen = fread(&header, sizeof(NavMeshSetHeader), 1, fp);
+		if (readLen != 1)
+		{
+			fclose(fp);
+			return false;
+		}
+		if (header.magic != NAVMESHSET_MAGIC)
+		{
+			fclose(fp);
+			return false;
+		}
+		if (header.version != NAVMESHSET_VERSION)
+		{
+			fclose(fp);
+			return false;
+		}
+
+		if (m_navMesh)
+			dtFreeNavMesh(m_navMesh);
+		m_navMesh = dtAllocNavMesh();
+		if (!m_navMesh)
+		{
+			fclose(fp);
+			return false;
+		}
+		dtStatus status = m_navMesh->init(&header.params);
+		if (dtStatusFailed(status))
+		{
+			fclose(fp);
+			return 0;
+		}
+		for (int i = 0; i < header.numTiles; ++i)
+		{
+			NavMeshTileHeader tileHeader;
+			readLen = fread(&tileHeader, sizeof(tileHeader), 1, fp);
+			if (readLen != 1)
+			{
+				fclose(fp);
+				return 0;
+			}
+
+			if (!tileHeader.tileRef || !tileHeader.dataSize)
+				break;
+
+			unsigned char* data = (unsigned char*)dtAlloc(tileHeader.dataSize, DT_ALLOC_PERM);
+			if (!data) break;
+			memset(data, 0, tileHeader.dataSize);
+			readLen = fread(data, tileHeader.dataSize, 1, fp);
+			if (readLen != 1)
+			{
+				dtFree(data);
+				fclose(fp);
+				return 0;
+			}
+
+			m_navMesh->addTile(data, tileHeader.dataSize, DT_TILE_FREE_DATA, tileHeader.tileRef, 0);
+		}
+		
+		fclose(fp);
+
+		if (!m_navQuery.Init(m_navMesh))
+		{
+			BAKERS_LOG_ERROR("Could not init Detour navmesh query");
+			return false;
+		}
+
+		BuildNavMeshRenderer();
+
+		return true;
 	}
 	
 	/*

@@ -268,6 +268,12 @@ namespace Core::SystemManagement
 		 * @return true if the mouse cursor is invisible, false otherwise
 		 */
 		bool IsCursorHidden() const noexcept;
+
+		/**
+		 * Register Key and MouseButton enums into lua
+		 * @param lua: Lua state in which the enums are registered
+		 */
+		static void RegisterInputEnums(sol::state& lua);
 	};
 
 	inline EStateKey InputSystem::GetKeyState(EKey key) const noexcept

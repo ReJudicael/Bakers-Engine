@@ -1,4 +1,5 @@
 #include "Logger.h"
+#include "Debug.h"
 
 #include <iostream>
 #include <time.h>
@@ -66,7 +67,7 @@ namespace Core::Debug
 		logs.clear();
 	}
 
-	void Logger::AddLog(ELogType type, std::string messageLog, const char* file, const char* function, int line) noexcept
+	void Logger::AddLog(ELogType type, const std::string& messageLog, const char* file, const char* function, int line) noexcept
 	{
 		if (messageLog.size() <= 0)
 			return;
@@ -74,11 +75,12 @@ namespace Core::Debug
 		DisplayLogInConsole(type, function, messageLog);
 
 		const std::string _time{ GetCurrentTimeAsTring() };
-		char* time = (char*)malloc(sizeof(char) * 9);
+		char* time = new char[sizeof(char) * 9];
+		
 #pragma warning(suppress : 6387)
 		memcpy(time, _time.c_str(), 9);
 
-		char* message = (char*)malloc(sizeof(char) * (messageLog.size() + 1));
+		char* message = new char[sizeof(char) * (messageLog.size() + 1)];
 #pragma warning(suppress : 6387)
 		memcpy(message, messageLog.c_str(), messageLog.size() + 1);
 

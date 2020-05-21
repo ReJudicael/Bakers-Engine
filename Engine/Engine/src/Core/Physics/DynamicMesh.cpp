@@ -15,6 +15,7 @@ namespace Core
 	{
 		RTTR_PLUGIN_REGISTRATION
 		{
+			ZoneScopedN("Registering RTTR")
 			registration::class_<Core::Physics::RigidBody>("Rigid Body")
 			.constructor()
 			.property("Velocity", &Core::Physics::RigidBody::GetVelocity, &Core::Physics::RigidBody::SetLinearVelocity)
@@ -51,6 +52,7 @@ namespace Core
 
 		void RigidBody::StartCopy(IComponent*& copyTo) const
 		{
+			ZoneScoped
 			copyTo = new RigidBody();
 			OnCopy(copyTo);
 
@@ -58,6 +60,7 @@ namespace Core
 
 		void RigidBody::OnCopy(IComponent* copyTo) const
 		{
+			ZoneScoped
 			ComponentBase::OnCopy(copyTo);
 			IUpdatable::OnCopy(copyTo);
 

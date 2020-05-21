@@ -16,7 +16,6 @@ namespace Core::Renderer
 	{
 		std::shared_ptr<Resources::Shader> s = nullptr;
 		GLuint VAO;
-		GLuint VBO;
 		bool active = true;
 	};
 
@@ -34,7 +33,7 @@ namespace Core::Renderer
 		Framebuffer(int width = 1280, int height = 800, FBOType t = FBOType::CUSTOM) noexcept;
 		~Framebuffer() noexcept;
 
-		void	InitPostProcess(std::shared_ptr<Resources::Shader> s);
+		void	InitPostProcess(const std::shared_ptr<Resources::Shader>& s);
 
 		void	Resize(int width, int height) noexcept;
 	};
