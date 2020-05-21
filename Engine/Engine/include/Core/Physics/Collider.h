@@ -66,8 +66,8 @@ namespace Core
 			physx::PxShape*						m_pxShape{};
 			physx::PxMaterial*					m_pxMaterial{};
 			physx::PxRigidActor*				m_pxRigidActor{};
-			std::shared_ptr<Resources::Shader>	m_shader{};
-			std::shared_ptr<Resources::Model>	m_model{};
+			//std::shared_ptr<Resources::Shader>	m_shader{};
+			//std::shared_ptr<Resources::Model>	m_model{};
 			int									m_IDFunctionSetTRS{0};
 
 		public:
@@ -208,7 +208,7 @@ namespace Core
 			 */
 			virtual void SimulationCollider();
 
-			virtual void InitShader(std::shared_ptr<Resources::Shader> shader)
+			/*virtual void InitShader(std::shared_ptr<Resources::Shader> shader)
 			{
 				m_shader = shader;
 			}
@@ -216,13 +216,11 @@ namespace Core
 			virtual void InitModel(std::shared_ptr<Resources::Model> model)
 			{
 				m_model = model;
-			}
+			}*/
 
 			virtual void SetRaycastFilter(const EFilterRaycast& filter);
 
 			virtual EFilterRaycast GetRaycastFilter() const;
-
-			virtual void DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot) = 0;
 
 			/*
 			 * Destroy the shape and his pxMaterial

@@ -60,13 +60,11 @@ namespace Core
 			 */
 			virtual void OnCopy(IComponent* copyTo) const override;
 
-			RigidBodySave* SaveRigidBody() const;
-
-			/*
-			 * Release the PxRigidDynamic, 
-			 * and release him from the PhysicsScene
+			/**
+			 * Create a save of the PxRigidDynamic
+			 * use for OnCopy
 			 */
-			virtual void DestroyDynamicMesh();
+			RigidBodySave* SaveRigidBody() const;
 
 			/**
 			 * Function inheritated from IPhysics and IUpdatable,
@@ -80,6 +78,9 @@ namespace Core
 			 */
 			virtual void OnReset() override;
 
+			/**
+			 * Set the PxRigidDynamic to default
+			 */
 			void SetToDefault();
 
 		public:

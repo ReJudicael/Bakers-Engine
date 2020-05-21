@@ -25,7 +25,6 @@ namespace Core::Physics
 
 	void SphereCollider::OnInit()
 	{
-		Core::Datastructure::RootObject* root = GetRoot();
 		Core::Physics::Collider::OnInit();
 		GetRoot()->GetEngine()->PutSphereCollider(this);
 		Core::Datastructure::ComponentBase::OnInit();

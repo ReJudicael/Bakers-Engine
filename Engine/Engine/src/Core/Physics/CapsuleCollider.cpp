@@ -25,9 +25,6 @@ namespace Core::Physics
 
 	void CapsuleCollider::OnInit()
 	{
-		Core::Datastructure::RootObject* root = GetRoot();
-		InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
-		InitModel(root->GetEngine()->GetResourcesManager()->GetModel("Capsule"));
 		Core::Physics::Collider::OnInit();
 		GetRoot()->GetEngine()->PutCapsuleCollider(this);
 		Core::Datastructure::ComponentBase::OnInit();

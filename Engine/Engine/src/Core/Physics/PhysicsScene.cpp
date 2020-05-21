@@ -278,10 +278,10 @@ namespace Core::Physics
 		}
 	}
 
-	void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)
+	/*void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)
 	{
 		physics->CreateActor(m_pxPhysics, m_pxScene);
-	}
+	}*/
 
 	physx::PxRigidStatic* PhysicsScene::CreateRigidStatic(physx::PxRigidActor*& actor, physx::PxShape* shape, Core::Datastructure::Transform parentTRS)
 	{

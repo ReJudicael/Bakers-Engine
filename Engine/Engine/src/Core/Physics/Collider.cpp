@@ -16,6 +16,13 @@ namespace Core::Physics
 	RTTR_PLUGIN_REGISTRATION
 	{
 		registration::class_<Core::Physics::Collider>("Collider")
+		.enumeration<Core::Physics::EFilterRaycast>("Layout")
+			(
+			value("GROUPE1", Core::Physics::EFilterRaycast::GROUPE1),
+			value("GROUPE2", Core::Physics::EFilterRaycast::GROUPE2),
+			value("GROUPE3", Core::Physics::EFilterRaycast::GROUPE3),
+			value("GROUPE4", Core::Physics::EFilterRaycast::GROUPE4)
+			)
 		.property("LocalPositon", &Core::Physics::Collider::GetLocalPosition, &Core::Physics::Collider::SetLocalPosition)
 		.property("LocalRotation", &Core::Physics::Collider::GetLocalRotationEuler, &Core::Physics::Collider::SetLocalRotationEuler)
 		.property("Mat: S D R", &Core::Physics::Collider::GetMaterial, &Core::Physics::Collider::SetMaterial)

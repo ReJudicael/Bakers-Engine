@@ -21,7 +21,6 @@ namespace Core::Animation
 	{
 	protected:
 		std::shared_ptr<Bone>			m_rootBone;
-		//std::shared_ptr<ObjectBone>		treeBone;
 		std::vector<Core::Maths::Mat4> m_finalTransforms;
 
 	public:
@@ -29,33 +28,75 @@ namespace Core::Animation
 		AnimationHandler animationHandler;
 
 	protected:
-		virtual bool OnStart() override;				
-		virtual void	OnReset() override;
-		virtual void	OnCopy(IComponent* copyTo) const override;
+		/**
+		 * Function inheritated from Mesh and IUpdatable,
+		 * override for start the Mesh, and the IUpdatable
+		 */
+		virtual bool	OnStart() override;		
+		/**
+		 * Function inheritated from Mesh and IUpdatable,
+		 * override for create the copyTo as a SkeletalMesh
+		 */
 		virtual void	StartCopy(IComponent*& copyTo) const override;
-
+		/**
+		 * Function inheritated from Mesh and IUpdatable,
+		 * override for copy the SkeletalMesh
+		 */
+		virtual void	OnCopy(IComponent* copyTo) const override;
+		/**
+		 * Function inheritated from Mesh and IUpdatable,
+		 * override for reset the Mesh, and the IUpdatable
+		 */
+		virtual void	OnReset() override;
+		/**
+		 * Function inheritated from Mesh,
+		 * override for update the model and the rootbone
+		 */
 		virtual void	UpdateModel() override;
 
 	public:
 		SkeletalMesh() = default;
 
+		/**
+		 * Function inheritated from Mesh and IUpdatable,
+		 * override for init the Mesh, and the IUpdatable
+		 */
+		virtual void OnInit() override;
+
+		/**  
+		 * Init the root bone of the SkeletalMesh
+		 * @param inBone: the BoneTree for init the SkeletalMesh
+		 */
 		void InitBones(std::shared_ptr<BoneTree> inBone);
 
+		/**
+		 * Init the bone position for draw them
+		 * @param currBone: the current bone 
+		 * @param parent: the parent matrix
+		 */
 		void InitBonePos(std::shared_ptr<Bone> currBone, Core::Maths::Mat4 parent);
 
 		/**
-		 * Function inheritated from IRenderable,
+		 * Function inheritated from Mesh,
 		 * override for draw the mesh with the material and the model
 		 * @param cam: the camera to render to
 		 */
 		virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
 
+		/**
+		 * Function inheritated from IUpdatable,
+		 * override for update the AnimationHandler
+		 * @param deltaTime: the delta time
+		 */
 		virtual void OnUpdate(float deltaTime) override;
-														
-		virtual void OnInit() override;
+		/**
+		 * Function inheritated from Mesh and IUpdatable,
+		 * override for destroy the Mesh, the IUpdatable
+		 */
 		virtual void OnDestroy() override;
 
-		virtual void AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial) override;
+		virtual void AddMaterials(	Resources::Loader::ResourcesManager& resources, 
+									const std::vector<std::string>& namesMaterial) override;
 
 		REGISTER_CLASS(Mesh, Core::Datastructure::IUpdatable)
 	};

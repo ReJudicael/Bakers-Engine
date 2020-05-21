@@ -93,8 +93,14 @@ namespace Core
 			float							m_stepSimulation{ 1.f / 60.f };
 			
 		protected:
+			/*
+			 * Release all the scene create by physX
+			 */
 			void ReleaseAllScene();
 		public:
+			/**
+			 * Default constructor
+			 */
 			PhysicsScene() = default;
 
 
@@ -108,9 +114,23 @@ namespace Core
 			 * @param physics: the physics mesh that we want to attach and create
 			 * for this PhysicsScene
 			 */
-			void AttachActor(Core::Datastructure::IPhysics* physics);
+			//void AttachActor(Core::Datastructure::IPhysics* physics);
 
+			/*
+			 * Create a PhysX PxRigidStatic
+			 * @param actor: the PxRigidActor who is gonna be create as a PxRigidStatic
+			 * @param shape: the shape use for create the actor
+			 * @param transform: the object transform
+			 * @return the pointer of the PxRigidStatic created
+			 */
 			physx::PxRigidStatic* CreateRigidStatic(physx::PxRigidActor*& actor, physx::PxShape* shape, Core::Datastructure::Transform transform);
+			/*
+			 * Create a PhysX PxRigidDynamic
+			 * @param actor: the PxRigidActor who is gonna be create as a PxRigidDynamic
+			 * @param shape: the shape use for create the actor
+			 * @param transform: the object transform
+			 * @return the pointer of the PxRigidDynamic created
+			 */
 			physx::PxRigidDynamic* CreateRigidDynamic(physx::PxRigidActor*& actor, physx::PxShape* shape, Core::Datastructure::Transform transform);
 
 
@@ -153,6 +173,10 @@ namespace Core
 			 */
 			void CreateScene();
 
+			/*
+			 * Create a PxScene use has a query scene
+			 * @param scene: the scene create has a query
+			 */
 			void CreateQueryScene(physx::PxScene*& scene);
 
 			/**

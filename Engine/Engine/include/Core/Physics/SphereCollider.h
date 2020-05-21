@@ -18,29 +18,55 @@ namespace Core::Physics
 	{
 	protected:
 
+		/**
+		 * Function inheritated from ComponentBase,
+		 * override for create the copy as a SphereCollider
+		 */
 		virtual void StartCopy(IComponent*& copyTo) const override;
 
+		/*
+		 * Function inheritated from ComponentBase,
+		 * override for create a save of the current for the copyTo
+		 */
 		virtual void OnCopy(IComponent* copyTo) const override;
 
 		/**
-		 * Function inheritated from IComponent,
-		 * override for delete the collider
+		 * Function inheritated from Collider and ComponentBase,
+		 * override for delete the collider from the editor
 		 */
 		virtual void OnDestroy() override;
 
-
+		/**
+		 * Function inheritated from Collider and ComponentBase,
+		 * override for reset the collider,the ComponentBase and
+		 * set the SphereCollider to default
+		 */
 		virtual void OnReset() override;
 
+		/**
+		 * Function inheritated from Collider,
+		 * set the extent of the SphereCollider to default
+		 */
 		virtual void SetToDefault() override;
 
+		/**
+		 * Function inheritated from Colliderand ComponentBase,
+		 * override for start the collider, the componentBase
+		 */
 		virtual bool OnStart() override;
 
 	public:
+
+		/**
+		 * Default constructor
+		 */
 		SphereCollider() = default;
 
-		virtual void DrawCollider(Core::Datastructure::ICamera* cam, std::shared_ptr<Resources::Shader> shader,
-									std::shared_ptr<Resources::Model> model) override;
-
+		/**
+		 * Function inheritated from Collider and ComponentBase,
+		 * override for init the collider, the ComponentBase and
+		 * put the collider in the editor for draw him
+		 */
 		virtual void OnInit() override;
 
 		/**
@@ -63,12 +89,14 @@ namespace Core::Physics
 		float GetSphereHalfExtent() const;
 
 		/**
+		 * Function inheritated from Collider,
 		 * Draw the collider as a capsule
 		 * @param cam: Camera to render to
-		 * @param pos: position in global of the physics actor
-		 * @param rot: rotation in global of the physics actor
+		 * @param shader: the shader to render to
+		 * @param model: the model of the collider
 		 */
-		virtual void DrawCollider(Core::Datastructure::ICamera* cam, const Core::Maths::Vec3& pos, const Core::Maths::Quat& rot) override {};
+		virtual void DrawCollider(	Core::Datastructure::ICamera* cam, std::shared_ptr<Resources::Shader> shader,
+									std::shared_ptr<Resources::Model> model) override;
 
 		REGISTER_CLASS(Core::Datastructure::ComponentBase, Collider)
 	};

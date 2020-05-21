@@ -82,16 +82,6 @@ namespace Core
 			return save;
 		}
 
-		void RigidBody::DestroyDynamicMesh()
-		{
-			if (m_pxRigidBody)
-			{
-				GetRoot()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_pxRigidBody);
-				m_pxRigidBody->release();
-				m_pxRigidBody = nullptr;
-			}
-		}
-
 		void RigidBody::OnDestroy()
 		{
 			ComponentBase::OnDestroy();

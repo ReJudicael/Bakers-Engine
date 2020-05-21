@@ -31,9 +31,8 @@ namespace Core::Animation
 		 * @param conditionTransition: the condition for the transition
 		 */
 		void InitTransition(std::shared_ptr<AnimationNode> currentAnimationNode, 
-							std::shared_ptr<AnimationNode> nextAnimationNode, std::function<bool()> conditionTransition = nullptr);
-
-		void DefaultCondition();
+							std::shared_ptr<AnimationNode> nextAnimationNode, 
+							std::function<bool()> conditionTransition = nullptr);
 
 		/**
 		 * Blend the 2 animation of the transition
@@ -94,7 +93,7 @@ namespace Core::Animation
 		 * @param parent: the parent TRS matrix
 		 * @param finalTransform: the matrix vector wich is send to the shader
 		 */
-		void UpdateAnimationBone(std::shared_ptr<Bone> currentBone, Core::Maths::Mat4 parent, 
+		void UpdateAnimationBone(	std::shared_ptr<Bone> currentBone, Core::Maths::Mat4 parent, 
 									std::vector<Core::Maths::Mat4>& finalTransform);
 		
 		/*
@@ -176,9 +175,8 @@ namespace Core::Animation
 		 * Set the new currentAnimationNode in the AnimationHandler
 		 * @param currentAnimation: the currentAnimationNode in the AnimationHandler
 		 */
-		void UpdateSkeletalMeshBones(std::shared_ptr<Bone> rootBone, std::vector<Core::Maths::Mat4>& finalTransform, float deltaTime);
-
-		void EndTransitionUpdate();
+		void UpdateSkeletalMeshBones(	std::shared_ptr<Bone> rootBone, 
+										std::vector<Core::Maths::Mat4>& finalTransform, float deltaTime);
 	};
 }
 

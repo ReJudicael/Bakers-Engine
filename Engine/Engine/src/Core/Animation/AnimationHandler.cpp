@@ -19,6 +19,8 @@ namespace Core::Animation
 		m_currentAnimationNode = currentAnimationNode;
 		m_nextAnimationNode = nextAnimationNode;
 
+		// if no conditionTransition isn't give 
+		// create a default transition
 		if (conditionTransition)
 			m_conditionTransition = conditionTransition;
 		else
@@ -27,9 +29,11 @@ namespace Core::Animation
 
 	Core::Maths::Mat4 TransitionNode::TransitionAnimation(std::shared_ptr<Bone> bone)
 	{
+		// calculate the animation blend of the currentAnimation
 		Core::Datastructure::Transform TRS1;
 		m_currentAnimationNode->BlendAnimation(bone, TRS1);
 
+		// calculate the animation blend of the nextAnimation
 		Core::Datastructure::Transform TRS2;
 		m_nextAnimationNode->BlendAnimation(bone, TRS2);
 
@@ -44,9 +48,9 @@ namespace Core::Animation
 
 	Core::Maths::Mat4 TransitionNode::UpdateBoneTransition(std::shared_ptr<Bone> bone)
 	{
-		if (m_currentAnimationNode->nodeAnimation->animationTree.count(bone->boneName) > 0 && m_nextAnimationNode->nodeAnimation->animationTree.count(bone->boneName) > 0)
+		if (m_currentAnimationNode->nodeAnimation->animationTree.count(bone->boneName) > 0 
+			&& m_nextAnimationNode->nodeAnimation->animationTree.count(bone->boneName) > 0)
 		{
-			// TODO calculate the position of the animation
 			return TransitionAnimation(bone);
 		}
 	}
@@ -73,6 +77,7 @@ namespace Core::Animation
 
 		std::shared_ptr<BoneAnimation> boneAnim = nodeAnimation->animationTree[bone->boneName];
 
+		// if the bone have juste one key in the animation no need to blend 
 		if (boneAnim->timeKey.size() == 1)
 			return Core::Datastructure::Transform{ boneAnim->boneLocalTransforms[0].localPosition,
 													boneAnim->boneLocalTransforms[0].localRotation,
@@ -119,7 +124,6 @@ namespace Core::Animation
 		{
 			if (nodeAnimation->animationTree.count(currentBone->boneName) > 0)
 			{
-				// TODO calculate the position of the animation
 				Core::Datastructure::Transform TRS;
 				nodeTransform = BlendAnimation(currentBone, TRS);
 			}
@@ -193,10 +197,12 @@ namespace Core::Animation
 
 	void AnimationNode::SetNextAnimation(std::shared_ptr<AnimationNode>& currentAnimation)
 	{
+		//reset the currentAnimation and his transition
 		reset = false;
 		m_inTransition = false;
 		m_currentTime = 0.f;
 		transitionsAnimation[indexTransition]->Reset();
+		//change the currentAnimation to the nextAnimation
 		currentAnimation = transitionsAnimation[indexTransition]->m_nextAnimationNode;
 		indexTransition = 0;
 	}
@@ -219,6 +225,7 @@ namespace Core::Animation
 				m_currentAnimationNode->UpdateAnimationBone(rootBone->child[i], identity, finalTransform);
 			}
 
+			// check if the Transition of the currentAniation is finish
 			if (m_currentAnimationNode->IsTransitionFinish())
 			{
 				m_currentAnimationNode->SetNextAnimation(m_currentAnimationNode);

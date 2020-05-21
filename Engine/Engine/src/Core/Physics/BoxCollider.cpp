@@ -25,9 +25,6 @@ namespace Core::Physics
 
 	void BoxCollider::OnInit()
 	{
-		Core::Datastructure::RootObject* root = GetRoot();
-		InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
-		InitModel(root->GetEngine()->GetResourcesManager()->GetModel("Cube"));
 		Core::Physics::Collider::OnInit();
 		GetRoot()->GetEngine()->PutBoxCollider(this);
 		Core::Datastructure::ComponentBase::OnInit();
