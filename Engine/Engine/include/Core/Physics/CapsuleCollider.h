@@ -39,7 +39,8 @@ namespace Core::Physics
 
 		CapsuleCollider() = default;
 
-		virtual void OnDraw(Core::Datastructure::ICamera* cam) override;
+		virtual void DrawCollider(Core::Datastructure::ICamera* cam, std::shared_ptr<Resources::Shader> shader,
+									std::shared_ptr<Resources::Model> model) override;
 
 		virtual void OnInit() override;
 

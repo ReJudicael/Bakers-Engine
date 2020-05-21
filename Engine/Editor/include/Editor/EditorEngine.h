@@ -8,6 +8,7 @@
 #include "FileSystem.hpp"
 #include "InputSystem.hpp"
 #include "ImGuizmo.h"
+#include "Collider.h"
 
 #include "json.hpp"
 using nlohmann::json;
@@ -32,7 +33,9 @@ namespace Editor
 
 		json				m_savedScene;
 
-		std::vector<Mesh*> m_meshesNeedInit;
+		std::vector<Mesh*>	m_meshesNeedInit;
+
+
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
 		std::shared_ptr<Resources::Material> materialSelected{ nullptr };
@@ -40,11 +43,13 @@ namespace Editor
 		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::WORLD };
 		bool isTestingRay{ false };
 
+		std::list<Core::Physics::Collider*> m_BoxCollider;
+		std::list<Core::Physics::Collider*> m_SphereCollider;
+		std::list<Core::Physics::Collider*> m_CapsuleCollider;
 
 		Core::SystemManagement::InputSystem* m_editorInput{ nullptr };
 
 		physx::PxScene*		m_editorScene;
-		float				m_accumulator;
 
 	public:
 		EditorEngine();
@@ -61,6 +66,14 @@ namespace Editor
 		void	SelectObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& direction);
 		
 		virtual void InitMesh(Mesh* mesh) override;
+
+		virtual void PutBoxCollider(Core::Physics::Collider* coll) override;
+		virtual void DeleteBoxCollider(Core::Physics::Collider* coll) override;
+		virtual void PutSphereCollider(Core::Physics::Collider* coll) override;
+		virtual void DeleteSphereCollider(Core::Physics::Collider* coll) override;
+		virtual void PutCapsuleCollider(Core::Physics::Collider* coll) override;
+		virtual void DeleteCapsuleCollider(Core::Physics::Collider* coll) override;
+
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
 
 		void	Play() { m_state = Core::Datastructure::EngineState::STARTING; }

@@ -58,7 +58,7 @@ namespace Core
 		 * Contains the shape and the material of the physics mesh 
 		 * with wich he is attached
 		 */
-		BAKERS_API_CLASS Collider : public virtual Core::Datastructure::IComponent, public virtual Core::Datastructure::IRenderable
+		BAKERS_API_CLASS Collider : public virtual Core::Datastructure::IComponent
 		{
 
 		protected:
@@ -102,8 +102,9 @@ namespace Core
 			 * override for create the collider from the PhysicsScene
 			 */
 			virtual void OnInit() override;
-
-			virtual void OnDraw(Core::Datastructure::ICamera* cam) override = 0;
+			
+			virtual void DrawCollider(Core::Datastructure::ICamera* cam, std::shared_ptr<Resources::Shader> shader,
+										std::shared_ptr<Resources::Model> model) = 0;
 
 			void DestroyRigidActor();
 			
@@ -232,7 +233,7 @@ namespace Core
 
 
 			virtual ~Collider();
-			REGISTER_CLASS(Core::Datastructure::IComponent, Core::Datastructure::IRenderable)
+			REGISTER_CLASS(Core::Datastructure::IComponent)
 		};
 	}
 }

@@ -124,8 +124,8 @@ namespace Resources
 			}
 			else if (variants[i].var.get_type() == rttr::type::get<int>())
 			{
-				int i{ variants[i].var.to_int() };
-				glUniform1i(shader->GetLocation(variants[i].name.c_str()), i);
+				int in{ variants[i].var.to_int() };
+				glUniform1i(shader->GetLocation(variants[i].name.c_str()), in);
 			}
 			else if (variants[i].var.get_type() == rttr::type::get<float>())
 			{
@@ -274,7 +274,7 @@ namespace Resources
 		specularColor = { 1.f, 1.f, 1.f };
 		shininessStrength = { 0.5f };
 		shininess = { 1.f };
-		shader = resources->GetShader("WireframeLight");
+		shader = resources->GetShader("Wireframe");
 		shaderChoose = true;
 	}
 }

@@ -40,13 +40,13 @@ namespace Core::Physics
 
 		m_IDFunctionSetTRS = GetParent()->SetAnEventTransformChange(std::bind(&Collider::SetPhysicsTransformParent, this));*/
 		
-		Core::Datastructure::IRenderable::OnInit();
+		//Core::Datastructure::IRenderable::OnInit();
 		Core::Datastructure::IComponent::OnInit();
 	}
 
 	bool Collider::OnStart()
 	{
-		return Core::Datastructure::IRenderable::OnStart() && Core::Datastructure::IComponent::OnStart();
+		return Core::Datastructure::IComponent::OnStart();
 	}
 
 	void Collider::OnCopy(IComponent* copyTo) const
@@ -56,7 +56,6 @@ namespace Core::Physics
 
 		col->m_tmpColliderSave = SaveCollider();
 
-		Core::Datastructure::IRenderable::OnCopy(copyTo);
 		Core::Datastructure::IComponent::OnCopy(copyTo);
 
 	}
@@ -90,7 +89,6 @@ namespace Core::Physics
 
 	void Collider::OnDestroy()
 	{
-		Core::Datastructure::IRenderable::OnDestroy();
 		Core::Datastructure::IComponent::OnDestroy();
 		/*if (IsStarted())
 		{*/

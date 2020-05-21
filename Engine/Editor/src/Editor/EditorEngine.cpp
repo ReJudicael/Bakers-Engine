@@ -35,8 +35,6 @@ namespace Editor
 
 	EditorEngine::~EditorEngine()
 	{
-		if(m_editorScene)
-			m_editorScene->release();
 		delete m_man;
 		glfwDestroyWindow(m_window);
 		glfwTerminate();
@@ -152,19 +150,6 @@ namespace Editor
 			}
 			m_step = false;
 
-			/*bool fetch;
-			m_accumulator += GetDeltaTime();
-			if (m_accumulator < 1/60)
-				fetch = false;
-
-			m_accumulator -= 1 / 60;
-			
-
-			m_editorScene->simulate(1 / 60);
-			fetch = true;
-
-			m_editorScene->fetchResults(fetch);*/
-
 			EngineCore::OnLoop();
 			break;
 		case (Core::Datastructure::EngineState::CLOSED):
@@ -228,6 +213,37 @@ namespace Editor
 	void EditorEngine::InitMesh(Mesh* mesh)
 	{
 		mesh->CreateAABBMesh(m_editorScene);
+	}
+
+
+	void EditorEngine::PutBoxCollider(Core::Physics::Collider* coll)
+	{
+		m_BoxCollider.push_back(coll);
+	}
+
+	void EditorEngine::DeleteBoxCollider(Core::Physics::Collider* coll)
+	{
+		m_BoxCollider.remove(coll);
+	}
+
+	void EditorEngine::PutSphereCollider(Core::Physics::Collider* coll)
+	{
+		m_SphereCollider.push_back(coll);
+	}
+
+	void EditorEngine::DeleteSphereCollider(Core::Physics::Collider* coll)
+	{
+		m_SphereCollider.remove(coll);
+	}
+
+	void EditorEngine::PutCapsuleCollider(Core::Physics::Collider* coll)
+	{
+		m_CapsuleCollider.push_back(coll);
+	}
+
+	void EditorEngine::DeleteCapsuleCollider(Core::Physics::Collider* coll)
+	{
+		m_CapsuleCollider.remove(coll);
 	}
 
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept

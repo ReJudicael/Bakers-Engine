@@ -15,7 +15,7 @@ namespace Resources
 	/*
 	 * Contains the values with which we can draw the geometry of the mesh
 	 */
-	struct Model
+	BAKERS_API_STRUCT Model
 	{
 		GLuint						VAOModel{ 0 };
 

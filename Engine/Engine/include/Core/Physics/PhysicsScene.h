@@ -91,6 +91,9 @@ namespace Core
 			bool							m_IsSimulating{ false };
 			float							m_accumulator{ 0.f };
 			float							m_stepSimulation{ 1.f / 60.f };
+			
+		protected:
+			void ReleaseAllScene();
 		public:
 			PhysicsScene() = default;
 
@@ -262,6 +265,7 @@ namespace Core
 			 * @param actor: the actor wich will be destroyed
 			 */
 			void RemoveActorFromPhysicsScene(physx::PxRigidActor* actor);
+
 
 			/*
 			 * Default Destructor, call ReleasePhysXSDK()

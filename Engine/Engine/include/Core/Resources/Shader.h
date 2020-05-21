@@ -13,7 +13,7 @@ namespace Resources
 	/**
 	 * Handle program creation through vertex and fragment shader files
 	 */
-	class Shader
+	BAKERS_API_CLASS Shader
 	{
 	public:
 		const char* version = "#version 400 core\n";

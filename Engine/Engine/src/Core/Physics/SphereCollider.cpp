@@ -26,9 +26,8 @@ namespace Core::Physics
 	void SphereCollider::OnInit()
 	{
 		Core::Datastructure::RootObject* root = GetRoot();
-		InitShader(root->GetEngine()->GetResourcesManager()->GetShader("Wireframe"));
-		InitModel(root->GetEngine()->GetResourcesManager()->GetModel("Sphere"));
 		Core::Physics::Collider::OnInit();
+		GetRoot()->GetEngine()->PutSphereCollider(this);
 		Core::Datastructure::ComponentBase::OnInit();
 	}
 
@@ -54,6 +53,7 @@ namespace Core::Physics
 
 	void SphereCollider::OnDestroy()
 	{
+		GetRoot()->GetEngine()->DeleteSphereCollider(this);
 		Core::Physics::Collider::OnDestroy();
 	}
 
@@ -130,17 +130,17 @@ namespace Core::Physics
 
 	}
 
-	void SphereCollider::OnDraw(Core::Datastructure::ICamera* cam)
+	void SphereCollider::DrawCollider(Core::Datastructure::ICamera* cam, std::shared_ptr<Resources::Shader> shader,
+										std::shared_ptr<Resources::Model> model)
 	{
-
 		glEnable(GL_DEPTH_TEST);
 
-		if (m_model == nullptr || m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+		if (model == nullptr || model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
 			return;
 
-		glBindVertexArray(m_model->VAOModel);
+		glBindVertexArray(model->VAOModel);
 
-		m_shader->UseProgram();
+		shader->UseProgram();
 
 		Core::Maths::Vec3 localPos{ m_pxShape->getLocalPose().p.x, m_pxShape->getLocalPose().p.y, m_pxShape->getLocalPose().p.z };
 		Core::Maths::Quat localRot{ m_pxShape->getLocalPose().q.w, m_pxShape->getLocalPose().q.x, m_pxShape->getLocalPose().q.y, m_pxShape->getLocalPose().q.z };
@@ -154,14 +154,14 @@ namespace Core::Physics
 		Gtrs.SetLocalRot(GetParent()->GetGlobalRot());
 		Gtrs.SetLocalScale({ 1.f,1.f,1.f });
 
-		glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, (Gtrs.GetLocalTrs() * Ltrs.GetLocalTrs()).array);
-		glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
-		glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
+		glUniformMatrix4fv(shader->GetLocation("uModel"), 1, GL_TRUE, (Gtrs.GetLocalTrs() * Ltrs.GetLocalTrs()).array);
+		glUniformMatrix4fv(shader->GetLocation("uCam"), 1, GL_TRUE, cam->GetCameraMatrix().array);
+		glUniformMatrix4fv(shader->GetLocation("uProj"), 1, GL_FALSE, cam->GetPerspectiveMatrix().array);
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		glDrawElements(GL_TRIANGLES, m_model->offsetsMesh[0].count, GL_UNSIGNED_INT,
-			(GLvoid*)(m_model->offsetsMesh[0].beginIndices * sizeof(GLuint)));
+		glDrawElements(GL_TRIANGLES, model->offsetsMesh[0].count, GL_UNSIGNED_INT,
+			(GLvoid*)(model->offsetsMesh[0].beginIndices * sizeof(GLuint)));
 
 		glBindVertexArray(0);
 

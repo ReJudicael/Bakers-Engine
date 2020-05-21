@@ -2,6 +2,8 @@
 
 #include "AWindow.h"
 #include "EditorCamera.h"
+#include "Model.h"
+#include "Shader.h"
 
 namespace Core::Renderer
 {
@@ -16,6 +18,9 @@ namespace Editor::Window
 	class WindowScene final : public AWindow
 	{
 		Datastructure::EditorCamera* m_cam;
+
+		std::vector<std::shared_ptr<Resources::Model>>		m_model;
+		std::shared_ptr<Resources::Shader>					m_shader;
 
 		Core::Maths::Mat<4, 4> m_cube{ m_cube.Identity() };
 	public:

@@ -394,10 +394,10 @@ namespace Core::Physics
 
 	void PhysicsScene::DestroyEditorPhysicActor(physx::PxRigidActor* actor, physx::PxScene*& scene)
 	{
-		if (actor == nullptr)
+		if (!actor)
 			return;
-
-		scene->removeActor(*actor);
+		if(scene)
+			scene->removeActor(*actor);
 
 		// Get all the shape of the actor and detach them
 		const physx::PxU32 numShapes = actor->getNbShapes();
@@ -445,11 +445,12 @@ namespace Core::Physics
 		{
 			PxCloseExtensions();
 
-			m_pxScene->release();
+			//m_pxScene->release();
 
 			if (m_eventCallBack)
 				delete m_eventCallBack;
-			
+
+			ReleaseAllScene();
 			m_pxPhysics->release();
 			m_pxCooking->release();
 
@@ -470,6 +471,15 @@ namespace Core::Physics
 	void PhysicsScene::RemoveActorFromPhysicsScene(physx::PxRigidActor* actor)
 	{
 		m_pxScene->removeActor(*actor);
+	}
+
+	void PhysicsScene::ReleaseAllScene()
+	{
+		const physx::PxU32 numScenes = m_pxPhysics->getNbScenes();
+		std::vector<physx::PxScene*> scene = std::vector<physx::PxScene*>(numScenes);
+		m_pxPhysics->getScenes(scene.data(), numScenes);
+		for (auto i = 0; i < numScenes; i++)
+			scene[i]->release();
 	}
 
 	PhysicsScene::~PhysicsScene()

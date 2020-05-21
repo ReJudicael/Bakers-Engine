@@ -19,6 +19,7 @@ namespace Core
 	namespace Physics
 	{
 		class PhysicsScene;
+		class Collider;
 	}
 	namespace Datastructure
 	{
@@ -130,6 +131,13 @@ namespace Core
 			GLFWwindow* GetWindow();
 
 			virtual void InitMesh(Mesh* mesh) {};
+
+			virtual void PutBoxCollider(Core::Physics::Collider* mesh) {};
+			virtual void DeleteBoxCollider(Core::Physics::Collider* mesh) {};
+			virtual void PutSphereCollider(Core::Physics::Collider* mesh) {};
+			virtual void DeleteSphereCollider(Core::Physics::Collider* mesh) {};
+			virtual void PutCapsuleCollider(Core::Physics::Collider* mesh) {};
+			virtual void DeleteCapsuleCollider(Core::Physics::Collider* mesh) {};
 
 			Core::SystemManagement::InputSystem* GetInputSystem();
 			Core::Audio::AudioSystem* GetAudioSystem();

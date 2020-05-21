@@ -18,6 +18,12 @@ namespace Editor::Window
 		GetEngine()->m_root->AddComponent(m_cam);
 
 		m_cube.array[14] = 10;
+
+		m_model.push_back(GetEngine()->GetResourcesManager()->GetModel("Cube"));
+		m_model.push_back(GetEngine()->GetResourcesManager()->GetModel("Sphere"));
+		m_model.push_back(GetEngine()->GetResourcesManager()->GetModel("Capsule"));
+
+		m_shader = GetEngine()->GetResourcesManager()->GetShader("Wireframe");
 	}
 
 	void WindowScene::PushWindowStyle()
@@ -37,6 +43,51 @@ namespace Editor::Window
 			if (ImGui::IsWindowHovered())
 				m_cam->Update(ImGui::GetIO().DeltaTime, GetEngine()->m_editorInput);
 			Core::Renderer::Framebuffer* fbo{ m_cam->GetFBO() };
+
+			{
+				GLint PreviousFramebuffer;
+				glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
+				glBindFramebuffer(GL_FRAMEBUFFER, fbo->FBO);
+				glViewport(fbo->Size[0], fbo->Size[1], fbo->Size[2], fbo->Size[3]);
+				std::list<Core::Physics::Collider*> box = GetEngine()->m_BoxCollider;
+				for (auto it = box.begin(); it != box.end();)
+				{
+					/*if (!(*it))
+					{
+						it = box.erase(it);
+					}
+					else*/
+					{
+						(*it)->DrawCollider(m_cam, m_shader, m_model[0]);
+						it++;
+					}
+				}
+
+				std::list<Core::Physics::Collider*> sphere = GetEngine()->m_SphereCollider;
+				for (auto it = sphere.begin(); it != sphere.end();)
+				{
+					/*if (!(*it))
+						it = sphere.erase(it);
+					else*/
+					{
+						(*it)->DrawCollider(m_cam, m_shader, m_model[1]);
+						it++;
+					}
+				}
+				std::list<Core::Physics::Collider*> capsule = GetEngine()->m_CapsuleCollider;
+				for (auto it = capsule.begin(); it != capsule.end();)
+				{
+					/*if (!(*it))
+						it = capsule.erase(it);
+					else*/
+					{
+						(*it)->DrawCollider(m_cam, m_shader, m_model[2]);
+						it++;
+					}
+				}
+				glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
+			}
+
 			ImVec2 windowSize{ ImGui::GetContentRegionAvail() };
 
 			if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
