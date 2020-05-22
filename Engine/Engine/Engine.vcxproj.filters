@@ -231,6 +231,9 @@
     <ClCompile Include="src\Core\Navigation\PathFollowingComponent.cpp">
       <Filter>Source Files\Core\Navigation</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Audio\AudioClip.cpp">
+      <Filter>Source Files\Core\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -451,6 +454,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Navigation\PathFollowingComponent.h">
       <Filter>Header Files\Core\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Audio\AudioClip.h">
+      <Filter>Header Files\Core\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

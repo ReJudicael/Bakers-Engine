@@ -17,6 +17,7 @@
 #include "Debug.h"
 #include "Shader.h"
 #include "TaskSystem.hpp"
+#include "Audio/AudioClip.h"
 #include "CoreMinimal.h"
 
 struct aiScene;
@@ -44,6 +45,7 @@ namespace Resources
 	using unorderedmapModel = std::unordered_map<std::string, std::shared_ptr<Model>>;
 	using unorderedmapMaterial = std::unordered_map<std::string, std::shared_ptr<Material>>;
 	using unorderedmapObject3DGraph = std::unordered_map<std::string, std::shared_ptr<Object3DGraph>>;
+	using unorderedmapAudioClip = std::unordered_map<std::string, std::shared_ptr<Core::Audio::AudioClip>>;
 
 	namespace Loader
 	{
@@ -63,7 +65,7 @@ namespace Resources
 			unorderedmapMaterial			m_materials;
 			unorderedmapModel				m_models;
 			unorderedmapObject3DGraph		m_scenes;
-
+			unorderedmapAudioClip			m_audioClips;
 			Core::Datastructure::RootObject* m_rootNode;
 
 
@@ -312,14 +314,14 @@ namespace Resources
 			 */
 			void LinkAllTextureToOpenGl();
 
-			
-
 			/**
 			 * Link to OpenGL the models
 			 */
 			void LinkAllModelToOpenGl();
 
 			void CheckDeleteAssimpImporter();
+
+			std::shared_ptr<Core::Audio::AudioClip> CreateAudioClip(const std::string& audioClipPath, FMOD::System* fmodSystem);
 
 			/**
 			 * Create Shader and add it to the shader map

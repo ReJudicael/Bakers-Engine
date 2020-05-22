@@ -46,8 +46,8 @@ namespace Editor::Window
 				glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
 
 			}
-
 			ImGui::ImageUV(fbo->ColorTexture, windowSize);
+
 			if (ImGui::IsWindowHovered())
 				m_cam->Update(ImGui::GetIO().DeltaTime, GetEngine()->m_editorInput);
 			else if (GetEngine()->m_editorInput->IsCursorHidden())
@@ -58,8 +58,6 @@ namespace Editor::Window
 				//To redo with the scene camera;
 				m_cam->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
 			}
-
-			ImGui::ImageUV(fbo->ColorTexture, windowSize);
 			if (GetEngine()->objectSelected && GetEngine()->operation != SelectionMode::MOVEMENT)
 			{
 				ImGuiIO& io = ImGui::GetIO();

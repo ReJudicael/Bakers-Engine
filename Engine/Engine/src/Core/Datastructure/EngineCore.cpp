@@ -59,12 +59,12 @@ namespace Core::Datastructure
 		ZoneScoped
 		delete m_root;
 		delete m_inputSystem;
-		delete m_audioSystem;
 		for (auto fbo : m_fbo)
 		{
 			delete fbo;
 		}
 		delete m_manager;
+		delete m_audioSystem;
 		delete m_physicsScene;
 		Core::Debug::Logger::ClearLogs();
 	}
