@@ -43,9 +43,10 @@ namespace Editor
 		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::WORLD };
 		bool isTestingRay{ false };
 
-		std::list<Core::Physics::Collider*> m_BoxCollider;
-		std::list<Core::Physics::Collider*> m_SphereCollider;
-		std::list<Core::Physics::Collider*> m_CapsuleCollider;
+		std::list<Core::Physics::Collider*>										m_BoxCollider;
+		std::list<Core::Physics::Collider*>										m_SphereCollider;
+		std::list<Core::Physics::Collider*>										m_CapsuleCollider;
+		std::map<std::string, std::shared_ptr<Resources::Loader::Object3DInfo>>		m_info3DObject;
 
 		Core::SystemManagement::InputSystem* m_editorInput{ nullptr };
 
@@ -73,6 +74,15 @@ namespace Editor
 		virtual void DeleteSphereCollider(Core::Physics::Collider* coll) override;
 		virtual void PutCapsuleCollider(Core::Physics::Collider* coll) override;
 		virtual void DeleteCapsuleCollider(Core::Physics::Collider* coll) override;
+
+		virtual void SaveObject3DInfo(const char* fileName, const Resources::Loader::Object3DInfo& Object3D) override;
+		std::shared_ptr<Resources::Loader::Object3DInfo> GetObject3DInfo(const std::string& fileName)
+		{
+			if (m_info3DObject.count(fileName))
+				return m_info3DObject[fileName];
+			return nullptr;
+		}
+		//void FindAllMaterialsAndModels(const Resources::Node& node, std::vector<std::string> names);
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
 

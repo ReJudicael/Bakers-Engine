@@ -58,7 +58,11 @@ namespace Resources
 
 	namespace Loader
 	{
-
+		BAKERS_API_STRUCT Object3DInfo
+		{
+			std::vector<std::string> modelsName;
+			std::vector<std::string> materialsName;
+		};
 
 		/**
 		  * Manage/Handle the resources loaded and storage.
@@ -82,8 +86,8 @@ namespace Resources
 
 
 		public:
-			Core::SystemManagement::TaskSystem m_task;
-			unorderedmapAnimations			m_animations;
+			Core::SystemManagement::TaskSystem*			m_task;
+			unorderedmapAnimations						m_animations;
 			/* Used for stocked the different value which allow to bind different resources to OpengGL (for the multiThread)*/
 			std::list<std::shared_ptr<TextureData>>		m_texturesToLink;
 			std::list<std::shared_ptr<ModelData>>		m_modelsToLink;
@@ -94,7 +98,7 @@ namespace Resources
 			 * Load the 3D object in a single mesh for the obj and multiple mesh for the FBX, with the API assimp
 			 * @param fileName: the name of the 3D object we want to load
 			 */
-			bool LoadAssimpScene(const char* fileName, const bool graphInMulti);
+			bool LoadAssimpScene(const char* fileName, Object3DInfo& info, const bool graphInMulti);
 
 			const aiScene* LoadSceneFromImporter(Assimp::Importer& importer, const char* fileName);
 
@@ -105,7 +109,7 @@ namespace Resources
 			 * @param scene: The scene of the 3D object load by assimp
 			 * @param directory: the folder path of the 3D Object
 			 */
-			void LoadMeshsScene(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory);
+			void LoadMeshsScene(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory, Object3DInfo& info);
 			
 			/**
 			 * Check if the mesh who is loading hasn't the same name (with path)
@@ -128,7 +132,7 @@ namespace Resources
 			 * @param directory: the folder path of the 3D Object
 			 */
 			void LoadMeshsSceneInSingleMesh(std::shared_ptr<Loader::ImporterData>& importer, 
-											const aiScene* scene, const std::string& directory);
+											const aiScene* scene, const std::string& directory, Object3DInfo& info);
 
 			/**
 			 * Load the first Mesh of an obj, 
@@ -148,13 +152,17 @@ namespace Resources
 			 * @param numberOfSameKey: an int default 0, 
 			 * (just use in the function LoadMeshsScene) the number of time that the name of the mesh is used
 			 */
-			void LoadaiMeshMaterial(std::shared_ptr<Loader::ImporterData> importer, const aiScene* scene, aiMesh* mesh,
-				const std::string& directory, const int numberOfSameKey = 0);
+			void LoadaiMeshMaterial(	std::shared_ptr<Loader::ImporterData> importer, const aiScene* scene, aiMesh* mesh,
+										const std::string& directory, Object3DInfo& info, const int numberOfSameKey = 0);
 		public:
 			/**
 			 * Construct the ResourcesManager and create defaults shaders
 			 */
 			ResourcesManager();
+
+			ResourcesManager(Core::SystemManagement::TaskSystem* task);
+
+			void DefaultConstruct();
 
 			/**
 			 * Remove all the resources and detach the link with OpenGL of all resources
@@ -320,7 +328,7 @@ namespace Resources
 			 * Check if the 3D object hasn't been already load (or try), and load it if not.
 			 * @param fileName: the name of the 3D object we want to load
 			 */
-			void Load3DObject(const char* fileName, const bool graphInMulti = false);
+			Object3DInfo Load3DObject(const char* fileName, const bool graphInMulti = false);
 
 			/**
 			 * Load the bones of the meshses of a 3DObject for have one mesh
@@ -332,9 +340,10 @@ namespace Resources
 			 * @param numVertices: The current number of vertices since the first to the current meshes who is loading 
 			 * @param bonesIndex: the unordered_map of the bone index of the current assimp scene
 			 */
-			void LoadAnimationaiMesh(std::shared_ptr<ModelData>& modelData, const aiScene* scene, aiMesh* mesh, const std::string& directory
-									, unsigned int& numBones, const unsigned int& numVertices, 
-									std::shared_ptr<unorderedmapBonesIndex>& bonesIndex);
+			void LoadAnimationaiMesh(	std::shared_ptr<ModelData>& modelData, const aiScene* scene, 
+										aiMesh* mesh, const std::string& directory
+										, unsigned int& numBones, const unsigned int& numVertices, 
+										std::shared_ptr<unorderedmapBonesIndex>& bonesIndex);
 
 			/**
 			 * Load the hierarchy of bones
@@ -364,25 +373,6 @@ namespace Resources
 			 * @param directory: the folder path of the 3D Object
 			 */
 			void LoadAnimation(const aiScene* scene, const std::string& directory, const std::string& fileName);
-
-			/**
-			 * Load an simple obj just in a model
-			 * @param name: The name for find the model
-			 * @param fileName: the name of the 3D object we want to load
-			 */
-			//void LoadObjInModel(const std::string& name, const char* fileName);
-
-			/**
-			 * Load the Material of an aiMesh
-			 * Check if the material hasn't been already load (or try), don't load if not
-			 * @param scene: the aiScene of the mesh
-			 * @param mesh: the mesh of the material that we want load
-			 * @param directory: the folder path of the 3D Object
-			 * @param numberOfSameKey: an int default 0, 
-			 * (just use in the function LoadMeshsScene) the number of time that the name of the mesh is used
-			 */
-			/*void LoadaiMeshMaterial(const aiScene* scene, aiMesh* mesh,
-				const std::string& directory, const int numberOfSameKey = 0);*/
 
 			/**
 			 * Load a texture

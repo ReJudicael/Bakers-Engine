@@ -307,24 +307,28 @@ namespace Editor::Window
 					ImGui::TableNextCell();
 					ImGui::PushID(static_cast<int>(i));
 					ShowItem(itemName);
-					std::string n = m_fs->GetLocalAbsolute(itemName);
-					Resources::Loader::ResourcesManager* resources = GetEngine()->GetResourcesManager();
-					Editor::EditorEngine* eng = GetEngine();
+					//if (ImGui::IsItemClicked())
+					//{
+						std::string n = m_fs->GetLocalAbsolute(itemName);
+						std::shared_ptr<Resources::Loader::Object3DInfo> info = GetEngine()->GetObject3DInfo(n);
+						Resources::Loader::ResourcesManager* resources = GetEngine()->GetResourcesManager();
 
-					if (resources->GetCountScene(n) > 0)
-					{
-						std::shared_ptr<Resources::Object3DGraph> graph{ resources->GetScene(n) };
-						for (auto i{ 0 }; i < graph->materialsName.size(); i++)
+						if (info)
 						{
-							ShowItem(graph->materialsName[i]);
-
-							if (ImGui::IsItemClicked())
+							// diplay materials
+							for (auto i{ 0 }; i < info->materialsName.size(); i++)
 							{
-								GetEngine()->materialSelected = resources->GetMaterial(n.substr(0, n.find_last_of("\\") + 1) + graph->materialsName[i]);
-								//GetEngine()->objectSelected = nullptr;
+								int index = info->materialsName[i].find_last_of('\\');
+								std::string name = n.substr(index + 1, n.size());
+								ShowItem(name);
+
+								if (ImGui::IsItemClicked())
+								{
+									GetEngine()->materialSelected = resources->GetMaterial(info->materialsName[i]);
+								}
 							}
 						}
-					}
+					//}
 
 					ImGui::PopID();
 					if (itemName != "..")

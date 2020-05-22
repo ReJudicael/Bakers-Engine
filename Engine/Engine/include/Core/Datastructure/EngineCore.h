@@ -41,7 +41,8 @@ namespace Core
 		protected:
 			EngineState								m_state {EngineState::NONE};
 			Core::SystemManagement::InputSystem *	m_inputSystem{ nullptr };
-			Core::Audio::AudioSystem* m_audioSystem{ nullptr };
+			Core::Audio::AudioSystem*				m_audioSystem{ nullptr };
+			Core::SystemManagement::TaskSystem*		m_task{ nullptr };
 			int m_width{ 0 };
 			int m_height{ 0 };
 			std::list<Core::Renderer::Framebuffer*>	m_fbo;
@@ -138,6 +139,10 @@ namespace Core
 			virtual void DeleteSphereCollider(Core::Physics::Collider* mesh) {};
 			virtual void PutCapsuleCollider(Core::Physics::Collider* mesh) {};
 			virtual void DeleteCapsuleCollider(Core::Physics::Collider* mesh) {};
+
+			virtual void SaveObject3DInfo(const char* fileName, const Resources::Loader::Object3DInfo& Object3D) {};
+
+			virtual std::shared_ptr<Resources::Object3DGraph> LoadObject(const char* fileName, const bool graphInMulti = false);
 
 			Core::SystemManagement::InputSystem* GetInputSystem();
 			Core::Audio::AudioSystem* GetAudioSystem();

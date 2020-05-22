@@ -31,8 +31,19 @@
 namespace Resources::Loader
 {
 
-	ResourcesManager::ResourcesManager()
-	//m_task {new Core::SystemManagement::TaskSystem()}
+	ResourcesManager::ResourcesManager():
+	m_task {new Core::SystemManagement::TaskSystem()}
+	{
+		DefaultConstruct();
+	}
+
+	ResourcesManager::ResourcesManager(Core::SystemManagement::TaskSystem* task) :
+		m_task{ task }
+	{
+		DefaultConstruct();
+	}
+
+	void ResourcesManager::DefaultConstruct()
 	{
 		CreateShader("Default", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("DefaultNoTexture", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultNoTexture.frag", Resources::Shader::EShaderHeaderType::LIGHT);
@@ -55,17 +66,17 @@ namespace Resources::Loader
 		material->CreateDefaultMaterial(this);
 		m_materials.emplace("Default", material);
 
-		LoadObjInModel("Cube",".\\Resources\\Models\\cube.obj");
-		LoadObjInModel("Capsule",".\\Resources\\Models\\capsule.obj");
-		LoadObjInModel("Quad",".\\Resources\\Models\\quad.obj");
-		LoadObjInModel("Skybox",".\\Resources\\Models\\skybox.obj");
-		LoadObjInModel("Sphere",".\\Resources\\Models\\sphere.obj");
+		LoadObjInModel("Cube", ".\\Resources\\Models\\cube.obj");
+		LoadObjInModel("Capsule", ".\\Resources\\Models\\capsule.obj");
+		LoadObjInModel("Quad", ".\\Resources\\Models\\quad.obj");
+		LoadObjInModel("Skybox", ".\\Resources\\Models\\skybox.obj");
+		LoadObjInModel("Sphere", ".\\Resources\\Models\\sphere.obj");
 	}
 
 	ResourcesManager::~ResourcesManager()
 	{
 		ZoneScoped
-		m_task.EndTaskSystem();
+		m_task->EndTaskSystem();
 
 		for (unorderedmapModel::iterator itmodel = m_models.begin();
 			itmodel != m_models.end(); ++itmodel)
@@ -80,13 +91,15 @@ namespace Resources::Loader
 			itshader->second->Delete();
 	}
 
-	void ResourcesManager::Load3DObject(const char* fileName, const bool graphInMulti)
+	Object3DInfo ResourcesManager::Load3DObject(const char* fileName, const bool graphInMulti)
 	{
 		std::string Name = fileName;
+		Object3DInfo info{};
 
 		if (m_scenes.count(Name) == 0)
-			if (!LoadAssimpScene(fileName, graphInMulti))
-				return;
+			if (LoadAssimpScene(fileName, info, graphInMulti))
+				return info;
+		return info;
 	}
 
 	const aiScene* ResourcesManager::LoadSceneFromImporter(Assimp::Importer& importer,const char* fileName)
@@ -109,7 +122,7 @@ namespace Resources::Loader
 		return scene;
 	}
 
-	bool ResourcesManager::LoadAssimpScene(const char* fileName, const bool graphInMulti)
+	bool ResourcesManager::LoadAssimpScene(const char* fileName, Object3DInfo& info, const bool graphInMulti)
 	{
 		std::string Name = fileName;
 
@@ -130,7 +143,7 @@ namespace Resources::Loader
 
 		if (Name.find(".obj") != std::string::npos)
 		{
-			LoadMeshsSceneInSingleMesh(importer, scene, directoryFile);
+			LoadMeshsSceneInSingleMesh(importer, scene, directoryFile, info);
 			LoadSceneResources(importer, scene, Name, directoryFile, graphInMulti);
 		}
 		else
@@ -142,7 +155,7 @@ namespace Resources::Loader
 
 			if (scene->mNumMeshes > 0)
 			{
-				LoadMeshsScene(importer, scene, directoryFile);
+				LoadMeshsScene(importer, scene, directoryFile, info);
 				LoadSceneResources(importer, scene, Name, directoryFile, graphInMulti);
 			}
 		}
@@ -150,7 +163,8 @@ namespace Resources::Loader
 		return true;
 	}
 
-	void ResourcesManager::LoadMeshsScene(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory)
+	void ResourcesManager::LoadMeshsScene(	std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, 
+											const std::string& directory, Object3DInfo& info)
 	{
 		unsigned int indexLastMesh{ 0 };
 		unsigned int lastNumIndices{ 0 };
@@ -168,12 +182,14 @@ namespace Resources::Loader
 
 			unsigned int numberOfSameKey{ LoadMeshsSceneCheckModelIsLoaded(modelData, model, name) };
 
+			info.modelsName.push_back(name);
+
 			modelData->model = model;
 			modelData->SetArrays(scene, i);
 			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
 			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
 
-			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
+			m_task->AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
 			std::shared_ptr<unorderedmapBonesIndex> bonesIndex = std::make_shared<unorderedmapBonesIndex>();
 			if (mesh->HasBones())
 				LoadAnimationaiMesh(modelData, scene, mesh,
@@ -182,7 +198,7 @@ namespace Resources::Loader
 
 			if (scene->HasMaterials())
 			{
-				LoadaiMeshMaterial(importer, scene, mesh, directory, numberOfSameKey);
+				LoadaiMeshMaterial(importer, scene, mesh, directory, info, numberOfSameKey);
 			}
 		}
 	}
@@ -228,11 +244,9 @@ namespace Resources::Loader
 		return numberOfSameKey;
 	}
 
-	void ResourcesManager::LoadMeshsSceneInSingleMesh(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory)
+	void ResourcesManager::LoadMeshsSceneInSingleMesh(	std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, 
+														const std::string& directory, Object3DInfo& info)
 	{
-		/*if (m_models.count(directory + scene->mMeshes[firstMeshWithBones]->mName.data) > 0)
-			return;*/
-
 		std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
 		std::shared_ptr<Model> model = std::make_shared<Model>();
 
@@ -241,15 +255,11 @@ namespace Resources::Loader
 
 		modelData->model = model;
 		m_models.emplace(directory + scene->mMeshes[0]->mName.data, model);
+
+		info.modelsName.push_back(directory + scene->mMeshes[0]->mName.data);
+
 		m_modelsToLink.push_back(modelData);
 		modelData->ModelName = directory + scene->mMeshes[0]->mName.data;
-
-		/*if (isSkeletal)
-		{
-			bonesIndex = std::make_shared<unorderedmapBonesIndex>();
-			m_skeletalIndex.emplace(directory + scene->mMeshes[firstMeshWithBones]->mName.data, bonesIndex);
-			skeletalModelData->SetArray(scene, isSkeletal);
-		}*/
 
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
 		{
@@ -260,13 +270,13 @@ namespace Resources::Loader
 		{
 			aiMesh* mesh = scene->mMeshes[i];
 
-			m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, i, indexLastMesh);
+			m_task->AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, i, indexLastMesh);
 
 			indexLastMesh += mesh->mNumVertices;
 
 			if (scene->HasMaterials())
 			{
-				LoadaiMeshMaterial(importer, scene, mesh, directory);
+				LoadaiMeshMaterial(importer, scene, mesh, directory, info);
 			}
 		}
 	}
@@ -418,21 +428,14 @@ namespace Resources::Loader
 
 		modelData->SetArrays(scene, 0);
 
-		m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
+		m_task->AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
 
 		std::shared_ptr<Object3DGraph> sceneData = std::make_shared<Object3DGraph>();
-
-		/*sceneData->rootNodeScene.nameMesh = name;
-		sceneData->rootNodeScene.nameObject = name;
-		sceneData->rootNodeScene.namesMaterial.push_back("Default");
-		sceneData->materialsName.push_back("Default");
-		m_scenes.emplace(fileName, sceneData);
-		modelData->LoadaiMeshModel(mesh, importer);*/
 	}
 
 	void ResourcesManager::LoadaiMeshMaterial(std::shared_ptr<Loader::ImporterData> importer, 
 												const aiScene* scene, aiMesh* mesh, 
-												const std::string& directory, const int numberOfSameKey)
+												const std::string& directory, Object3DInfo& info, const int numberOfSameKey)
 	{	
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 		std::string keyMaterial;
@@ -449,11 +452,13 @@ namespace Resources::Loader
 
 		std::shared_ptr<Material> materialOut = std::make_shared<Material>();
 
+		info.materialsName.push_back(keyMaterial);
+
 		m_materials.emplace(keyMaterial, materialOut);
 
 		m_materialsGetUniform.push_back(materialOut);
 		materialOut->IsSkeletal = mesh->HasBones();
-		m_task.AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut, mat, directory, this, importer);
+		m_task->AddTask(&Resources::Material::LoadMaterialFromaiMaterial, materialOut, mat, directory, this, importer);
 
 	}
 
@@ -504,7 +509,7 @@ namespace Resources::Loader
 		if (fileName.find(".obj") != std::string::npos)
 		{
 			if(inMultiThread)
-				m_task.AddTask(&Resources::Object3DGraph::SceneLoad, sceneData.get(), importer,scene, rootNode, directory, true);
+				m_task->AddTask(&Resources::Object3DGraph::SceneLoad, sceneData.get(), importer,scene, rootNode, directory, true);
 			else
 				sceneData->SceneLoad(importer, scene, rootNode, directory, true);
 			
@@ -517,7 +522,7 @@ namespace Resources::Loader
 		else
 		{
 			if (inMultiThread)
-				m_task.AddTask(&Resources::Object3DGraph::SceneLoad, sceneData.get(), importer, scene, rootNode, directory, false);
+				m_task->AddTask(&Resources::Object3DGraph::SceneLoad, sceneData.get(), importer, scene, rootNode, directory, false);
 			else
 				sceneData->SceneLoad(importer, scene, rootNode, directory, false);
 		}
@@ -543,7 +548,7 @@ namespace Resources::Loader
 					{
 						glGenTextures(1, &(*it)->textureptr->texture);
 						(*it)->ID = (*it)->textureptr->texture;
-						m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, (*it), (*it)->nameTexture.c_str(), this, true);
+						m_task->AddTask(&Resources::TextureData::CreateTextureFromImage, (*it), (*it)->nameTexture.c_str(), this, true);
 					}
 					it++;
 					break;

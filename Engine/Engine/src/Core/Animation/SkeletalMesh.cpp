@@ -150,7 +150,7 @@ namespace Core::Animation
 	void SkeletalMesh::OnUpdate(float deltaTime)
 	{
 		GetParent()->GetScene()->GetEngine()->GetResourcesManager()->
-					m_task.AddTask(&Core::Animation::AnimationHandler::UpdateSkeletalMeshBones,
+					m_task->AddTask(&Core::Animation::AnimationHandler::UpdateSkeletalMeshBones,
 					&animationHandler, m_rootBone, std::ref(m_finalTransforms), deltaTime);
 	}
 

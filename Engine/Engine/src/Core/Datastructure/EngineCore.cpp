@@ -69,6 +69,8 @@ namespace Core::Datastructure
 			delete m_physicsScene;
 		delete m_navMesh;
 		Core::Debug::Logger::ClearLogs(); 
+		if (m_task)
+			delete m_task;
 		FREE_TRACY_GL_IMAGE
 	}
 
@@ -159,6 +161,21 @@ namespace Core::Datastructure
 		}
 	}
 
+	std::shared_ptr<Resources::Object3DGraph> EngineCore::LoadObject(const char* fileName, const bool graphInMulti)
+	{
+		Resources::Loader::Object3DInfo info = m_manager->Load3DObject(fileName, graphInMulti);
+
+		if (m_manager->GetCountScene(fileName))
+		{
+			std::shared_ptr<Resources::Object3DGraph> object3D{ m_manager->GetScene(fileName) };
+			/*m_task->AddTask(std::bind(&Core::Datastructure::EngineCore::SaveObject3DInfo, this, object3D));
+			m_task->AddTask(std::bind(&Core::Datastructure::EngineCore::SaveObject3DInfo, this, object3D));*/
+			SaveObject3DInfo(fileName, info);
+			return object3D;
+		}
+		return nullptr;
+	}
+
 	int EngineCore::OnInit(int width, int height)
 	{
 		ZoneScoped
@@ -195,7 +212,9 @@ namespace Core::Datastructure
 			return -1;
 
 		m_fbo.clear();
-		m_manager = new Resources::Loader::ResourcesManager();
+
+		m_task = new Core::SystemManagement::TaskSystem();
+		m_manager = new Resources::Loader::ResourcesManager(m_task);
 		m_manager->SetRootNode(m_root);
 
 		return 0;

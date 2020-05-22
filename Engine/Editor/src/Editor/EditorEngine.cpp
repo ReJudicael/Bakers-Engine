@@ -254,6 +254,11 @@ namespace Editor
 		m_CapsuleCollider.remove(coll);
 	}
 
+	void EditorEngine::SaveObject3DInfo(const char* fileName, const Resources::Loader::Object3DInfo& Object3D)
+	{
+		m_info3DObject.emplace(fileName, std::make_shared<Resources::Loader::Object3DInfo>(Object3D));
+	}
+
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept
 	{
 		ZoneScoped

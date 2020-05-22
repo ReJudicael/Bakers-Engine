@@ -12,7 +12,7 @@
 #include "SkeletalMesh.h"
 #include "TriggeredEvent.h"
 #include "Transform.hpp"
-#include "RootObject.hpp"
+#include "RootObject.hpp" 
 #include "Model.h"
 #include "AnimationHandler.h"
 
@@ -185,7 +185,7 @@ namespace Resources
 			if (!scene->HasMaterials())
 			{
 				namesMaterial.push_back("Default");
-				materialsNam.push_back("Default");
+				//materialsNam.push_back("Default");
 			}
 			else
 			{

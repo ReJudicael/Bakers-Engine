@@ -92,7 +92,7 @@ void Mesh::UpdateModel()
 		return;
 	
 	Resources::Loader::ResourcesManager* manager{ GetRoot()->GetEngine()->GetResourcesManager() };
-	manager->Load3DObject(m_modelName.c_str());
+	GetRoot()->GetEngine()->LoadObject(m_modelName.c_str());
 
 	if (m_isChild)
 	{
