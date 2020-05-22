@@ -19,17 +19,17 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	ZoneScopedN("Registering RTTR")
-	registration::class_<Mesh>("Mesh")
+	registration::class_<Core::Renderer::Mesh>("Mesh")
 		.constructor()
-		.property("Model", &Mesh::GetModel, &Mesh::SetModel)
-		.property("Materials", &Mesh::GetMaterials, &Mesh::SetMaterials)
-		.property("IsRoot", &Mesh::m_isRoot, detail::protected_access())
-		.property("MaterialsNames", &Mesh::m_materialsNames, detail::protected_access())
-		.property("IsChild", &Mesh::m_isChild, detail::protected_access())
-		.property("Cast Shadows", &Mesh::m_castShadow);
+		.property("Model", &Core::Renderer::Mesh::GetModel, &Core::Renderer::Mesh::SetModel)
+		.property("Materials", &Core::Renderer::Mesh::GetMaterials, &Core::Renderer::Mesh::SetMaterials)
+		.property("IsRoot", &Core::Renderer::Mesh::m_isRoot, detail::protected_access())
+		.property("MaterialsNames", &Core::Renderer::Mesh::m_materialsNames, detail::protected_access())
+		.property("IsChild", &Core::Renderer::Mesh::m_isChild, detail::protected_access())
+		.property("Cast Shadows", &Core::Renderer::Mesh::m_castShadow);
 }
 
-void Mesh::SetModel(std::string newModel)
+void Core::Renderer::Mesh::SetModel(std::string newModel)
 {
 	if (m_modelName != "")
 	{
@@ -42,7 +42,7 @@ void Mesh::SetModel(std::string newModel)
 	UpdateModel();
 }
 
-void Mesh::SetMaterials(std::vector<std::string> newMaterials)
+void Core::Renderer::Mesh::SetMaterials(std::vector<std::string> newMaterials)
 {
 	for (auto i = 0; i < m_materialsNames.size(); i++)
 	{
@@ -57,7 +57,7 @@ void Mesh::SetMaterials(std::vector<std::string> newMaterials)
 	}
 }
 
-bool Mesh::ChangeOneMaterial(std::string newMaterial, int iD)
+bool Core::Renderer::Mesh::ChangeOneMaterial(std::string newMaterial, int iD)
 {
 	if (iD >= m_materialsModel.size())
 		return false;
@@ -76,7 +76,7 @@ bool Mesh::ChangeOneMaterial(std::string newMaterial, int iD)
 	return false;
 }
 
-void Mesh::SetChildModel(std::string newModel)
+void Core::Renderer::Mesh::SetChildModel(std::string newModel)
 {
 	m_isRoot = false;
 	m_isChild = true;
@@ -86,7 +86,7 @@ void Mesh::SetChildModel(std::string newModel)
 	UpdateModel();
 }
 
-void Mesh::UpdateModel()
+void Core::Renderer::Mesh::UpdateModel()
 {
 	if (m_modelName == "")
 		return;
@@ -135,12 +135,12 @@ void Mesh::UpdateModel()
 	}
 }
 
-Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
+Core::Renderer::Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
 {
 	ZoneScoped
 }
 
-Mesh::~Mesh()
+Core::Renderer::Mesh::~Mesh()
 {
 	glDeleteTextures(1, &m_texture);
 	//glDeleteBuffers(1, &m_vertexBuffer);
@@ -148,29 +148,29 @@ Mesh::~Mesh()
 	//glDeleteProgram(m_program);
 }
 
-void Mesh::OnInit()
+void Core::Renderer::Mesh::OnInit()
 {
 	IRenderable::OnInit();
 	UpdateModel();
 }
 
-void Mesh::OnDestroy()
+void Core::Renderer::Mesh::OnDestroy()
 {
 	m_destroyActorEvent.Invoke();
 	IRenderable::OnDestroy();
 }
 
-void Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
+void Core::Renderer::Mesh::SendProjectionMatrix(Core::Maths::Mat4 data)
 {
 	m_projection = data.array;
 }
 
-bool Mesh::IsModelLoaded()
+bool Core::Renderer::Mesh::IsModelLoaded()
 {
 	return m_model && m_model->stateVAO == Resources::EOpenGLLinkState::ISLINK;
 }
 
-void Mesh::CreateAABBMesh(physx::PxScene*& scene)
+void Core::Renderer::Mesh::CreateAABBMesh(physx::PxScene*& scene)
 {
 	Core::Datastructure::Object* object = GetParent();
 	
@@ -187,7 +187,7 @@ void Mesh::CreateAABBMesh(physx::PxScene*& scene)
 											->GetEngine()->GetPhysicsScene(), actor));
 }
 
-void Mesh::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
+void Core::Renderer::Mesh::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 {
 	ZoneScoped
 	// If the draw is made for shadow mapping and the mesh cannot cast shadows
@@ -208,11 +208,11 @@ void Mesh::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, 
 	Display(view, proj, trs.array, givenShader);
 }
 
-void Mesh::Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs, std::shared_ptr<Resources::Shader> givenShader)
+void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs, std::shared_ptr<Resources::Shader> givenShader)
 {
 	glBindVertexArray(m_model->VAOModel);
 
-	for (int i = 0; i < m_model->offsetsMesh.size(); i++)
+	for (auto i{ 0 }; i < m_model->offsetsMesh.size(); i++)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
 
@@ -227,8 +227,8 @@ void Mesh::Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj,
 			// Init value of texture2 for normal map
 			glUniform1i(usedShader->GetLocation("uNormalMap"), 1);
 			// Init value of higher texture for shadow maps
-			for (size_t i{0}; i < 10; ++i)
-				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(i) + "]"), 2 + i);
+			for (int j{0}; j < 10; ++j)
+				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + i);
 
 			material.SendMaterial();
 			glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs);
@@ -236,8 +236,8 @@ void Mesh::Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj,
 			glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
 			
 			std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
-			for (size_t i{ 0 }; i < lights.size(); ++i)
-				glUniformMatrix4fv(usedShader->GetLocation("uLightView[" + std::to_string(i) + "]"), 1, GL_TRUE, lights[i]->GetViewFromLight().array);
+			for (auto j{ 0 }; j < lights.size(); ++j)
+				glUniformMatrix4fv(usedShader->GetLocation("uLightView[" + std::to_string(j) + "]"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
 			glUniform1i(usedShader->GetLocation("uShadowCount"), lights.size());
 		}
 
@@ -249,13 +249,13 @@ void Mesh::Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj,
 	glBindVertexArray(0);
 }
 
-void Mesh::AddToNavMesh()
+void  Core::Renderer::Mesh::AddToNavMesh()
 {
 	if (m_parent->GetFlags().test_flag(Core::Datastructure::ObjectFlags::STATIC) && m_model)
 		GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()), m_model->indices.data(), static_cast<int>(m_model->indices.size()), GetParent()->GetUpdatedTransform());
 }
 
-void Mesh::DrawFixedMesh(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, Core::Maths::Mat4 trs)
+void  Core::Renderer::Mesh::DrawFixedMesh(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, Core::Maths::Mat4 trs)
 {
 	// check if the mesh have a modelMesh
 	if (m_model == nullptr)
@@ -267,7 +267,7 @@ void Mesh::DrawFixedMesh(const Core::Maths::Mat4& view, const Core::Maths::Mat4&
 	Display(view, proj, trs.array);
 }
 
-void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)
+void  Core::Renderer::Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)
 {
 	if (!m_model)
 	{
@@ -281,7 +281,7 @@ void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const st
 	}
 }
 
-int Mesh::GetVertexCount()
+int  Core::Renderer::Mesh::GetVertexCount()
 {
 	int size = 0;
 	for (int i = 0; i < m_model->offsetsMesh.size(); ++i)
@@ -289,36 +289,36 @@ int Mesh::GetVertexCount()
 	return size;
 }
 
-void	Mesh::OnReset()
+void Core::Renderer::Mesh::OnReset()
 {
 	ComponentBase::OnReset();
 	IRenderable::OnReset();
 }
 
-void Mesh::OnCopy(IComponent* copyTo) const
+void  Core::Renderer::Mesh::OnCopy(IComponent* copyTo) const
 {
 	ZoneScoped
 	ComponentBase::OnCopy(copyTo);
 	IRenderable::OnCopy(copyTo);
 }
 
-void Mesh::StartCopy(IComponent*& copyTo) const
+void  Core::Renderer::Mesh::StartCopy(IComponent*& copyTo) const
 {
 	ZoneScoped
-	copyTo = new Mesh();
+	copyTo = new  Core::Renderer::Mesh();
 	OnCopy(copyTo);
 }
 
-bool Mesh::OnStart()
+bool  Core::Renderer::Mesh::OnStart()
 {
 	ZoneScoped
 	if (IsModelLoaded())
 	{
 		//CreateAABBMesh();
-		/*Core::Datastructure::Object* object = GetParent();
+		Core::Datastructure::Object* object = GetParent();
 		GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()),
 												m_model->indices.data(), static_cast<int>(m_model->indices.size()), 
-												object->GetUpdatedTransform());*/
+												object->GetUpdatedTransform());
 		GetRoot()->GetEngine()->InitMesh(this);
 
 		IRenderable::OnStart();
@@ -328,7 +328,7 @@ bool Mesh::OnStart()
 	return false;
 }
 
-std::shared_ptr<Resources::Material> Mesh::GetMainMaterial()
+std::shared_ptr<Resources::Material>  Core::Renderer::Mesh::GetMainMaterial()
 {
 	if (m_materialsModel.size() == 0)
 		return nullptr;
@@ -336,7 +336,7 @@ std::shared_ptr<Resources::Material> Mesh::GetMainMaterial()
 		return m_materialsModel[0];
 }
 
-void Mesh::SetMainMaterial(std::shared_ptr<Resources::Material> material)
+void  Core::Renderer::Mesh::SetMainMaterial(std::shared_ptr<Resources::Material> material)
 {
 	if (m_materialsModel.size() == 0)
 		m_materialsModel.push_back(material);
@@ -344,7 +344,7 @@ void Mesh::SetMainMaterial(std::shared_ptr<Resources::Material> material)
 		m_materialsModel[0] = material;
 }
 
-void Mesh::SetMainTexture(std::shared_ptr<Resources::Texture> texture, int material)
+void  Core::Renderer::Mesh::SetMainTexture(std::shared_ptr<Resources::Texture> texture, int material)
 {
 	if (m_materialsModel.size() <= material)
 		return;

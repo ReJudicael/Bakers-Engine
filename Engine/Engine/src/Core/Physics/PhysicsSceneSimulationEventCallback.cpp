@@ -2,8 +2,8 @@
 
 #include "PhysicsSceneSimulationEventCallback.h"
 #include "PxRigidActor.h"
-#include "IPhysics.h"
 #include "PhysicsScene.h"
+#include "Collider.h"
 #include "Object.hpp"
 #include "RootObject.hpp"
 #include "EngineCore.h"
@@ -47,34 +47,6 @@ namespace Core::Physics
 				break;
 			}
 
-			/*physx::PxContactStreamIterator iter(cp.contactPatches, cp.contactPoints, cp.getInternalFaceIndices(), cp.patchCount, cp.contactCount);
-
-			const physx::PxReal* impulses = cp.contactImpulses;
-
-			physx::PxU32 indexContact{ 0 };
-			physx::PxU32 flippedContacts{ cp.flags & physx::PxContactPairFlag::eINTERNAL_CONTACTS_ARE_FLIPPED };
-			physx::PxU32 hasImpulses{ cp.flags & physx::PxContactPairFlag::eINTERNAL_HAS_IMPULSES };
-
-			while (iter.hasNextPatch())
-			{
-				iter.nextPatch();
-				while (iter.hasNextContact())
-				{
-					iter.nextContact();
-
-					physx::PxVec3 contactPoint{ iter.getContactPoint() };
-
-					//physx::PxVec3 impulse{ hasImpulses ? impulses[indexContact] * : physx::PxVec3{0.f} };
-
-					physx::PxU32 internalFaceIndex0 = flippedContacts ?
-						iter.getFaceIndex1() : iter.getFaceIndex0();
-					physx::PxU32 internalFaceIndex1 = flippedContacts ?
-						iter.getFaceIndex0() : iter.getFaceIndex1();
-
-					indexContact++;
-
-				}
-			}*/
 		}
 
 	}

@@ -76,7 +76,6 @@ namespace Core::Physics
 		physx::PxQuat localRotation{};
 		physx::PxVec3 mat = { 1.5f, 1.5f, 0.0f };
 		physx::PxReal radius{ 0.5f };
-		physx::PxU32 filter;
 
 		if (m_tmpColliderSave)
 		{

@@ -3,9 +3,9 @@
 #include "CoreMinimal.h"
 #include "ComponentBase.h"
 #include "ICollidable.h"
-#include "IPhysics.h"
 #include "IUpdatable.hpp"
 #include "PxRigidDynamic.h"
+#include "Vec3.hpp"
 
 namespace physx
 {

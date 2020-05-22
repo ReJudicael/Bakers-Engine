@@ -8,7 +8,7 @@
 #include "RootObject.hpp"
 #include "EngineCore.h"
 #include "Maths.hpp"
-#include "DynamicMesh.h"
+#include "RigidBody.h"
 
 
 namespace Core::Physics

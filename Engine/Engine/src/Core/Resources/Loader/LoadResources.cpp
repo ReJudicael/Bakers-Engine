@@ -166,10 +166,7 @@ namespace Resources::Loader
 	void ResourcesManager::LoadMeshsScene(	std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, 
 											const std::string& directory, Object3DInfo& info)
 	{
-		unsigned int indexLastMesh{ 0 };
-		unsigned int lastNumIndices{ 0 };
 		unsigned int numBones{ 0 };
-
 
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
 		{
@@ -186,15 +183,12 @@ namespace Resources::Loader
 
 			modelData->model = model;
 			modelData->SetArrays(scene, i);
-			indexLastMesh = static_cast<unsigned int>(modelData->vertices.size());
-			lastNumIndices = static_cast<unsigned int>(modelData->indices.size());
 
 			m_task->AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
 			std::shared_ptr<unorderedmapBonesIndex> bonesIndex = std::make_shared<unorderedmapBonesIndex>();
 			if (mesh->HasBones())
 				LoadAnimationaiMesh(modelData, scene, mesh,
 					name, numBones, 0, bonesIndex);
-			//modelData->LoadaiMeshModel(mesh);
 
 			if (scene->HasMaterials())
 			{

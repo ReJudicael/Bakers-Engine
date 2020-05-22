@@ -78,7 +78,6 @@ namespace Core::Physics
 		physx::PxVec3 mat = { 1.5f, 1.5f, 0.0f };
 		physx::PxReal radius{ 0.5 };
 		physx::PxReal halfHeight{ 0.5 };
-		physx::PxU32 filter;
 
 		if (m_tmpColliderSave)
 		{

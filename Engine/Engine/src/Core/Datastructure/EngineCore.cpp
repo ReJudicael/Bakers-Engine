@@ -11,7 +11,7 @@
 #include "Collider.h"
 #include "BoxCollider.h"
 #include "PhysicsScene.h"
-#include "DynamicMesh.h"
+#include "RigidBody.h"
 #include "AudioSystem.h"
 
 #include "json.hpp"
@@ -119,7 +119,7 @@ namespace Core::Datastructure
 		else
 			object = m_root->CreateChild(name, {});
 
-		Mesh* m = new Mesh();
+		Core::Renderer::Mesh* m = new Core::Renderer::Mesh();
 		m->AddModel(GetResourcesManager()->GetModel(model));
 		std::shared_ptr<Resources::Material> mat = std::make_shared<Resources::Material>();
 		mat->shader = GetResourcesManager()->GetShader(shader);

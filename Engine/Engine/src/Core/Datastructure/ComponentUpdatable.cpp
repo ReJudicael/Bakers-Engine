@@ -2,6 +2,13 @@
 
 namespace Core::Datastructure
 {
+	RTTR_PLUGIN_REGISTRATION
+	{
+		ZoneScopedN("Registering RTTR")
+		registration::class_<Core::Datastructure::ComponentUpdatable>("Component Updatable")
+		.constructor();
+	}
+
 	void	ComponentUpdatable::OnCopy(IComponent* copyTo) const
 	{
 		ZoneScoped

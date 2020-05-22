@@ -1,4 +1,4 @@
-#include "DynamicMesh.h"
+#include "RigidBody.h"
 #include "PxScene.h"
 #include "PxRigidStatic.h"
 #include "PxPhysics.h"

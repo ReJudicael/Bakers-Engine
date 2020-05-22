@@ -218,7 +218,7 @@ namespace Editor
 			objectSelected = result;
 	}
 
-	void EditorEngine::InitMesh(Mesh* mesh)
+	void EditorEngine::InitMesh(Core::Renderer::Mesh* mesh)
 	{
 		mesh->CreateAABBMesh(m_editorScene);
 	}
@@ -446,7 +446,7 @@ namespace Editor
 	{
 		ZoneScoped
 		m_navMesh->ClearInputMeshes();
-		for (auto it : m_root->GetComponentsOfBaseType<Mesh>())
+		for (auto it : m_root->GetComponentsOfBaseType<Core::Renderer::Mesh>())
 		{
 			it->AddToNavMesh();
 		}

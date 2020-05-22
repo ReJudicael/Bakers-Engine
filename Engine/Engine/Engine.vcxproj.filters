@@ -85,6 +85,18 @@
     <Filter Include="Source Files\Core\Animation">
       <UniqueIdentifier>{030c6ba1-57f5-425d-b2d7-dc0a7e313f3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Physics">
+      <UniqueIdentifier>{9eae04d2-3b45-46a9-a76f-cab012c776fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Resources\Animation">
+      <UniqueIdentifier>{f1735ae1-63ff-47c0-8c7e-e25aebcb474e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Physics">
+      <UniqueIdentifier>{1ddb9362-088e-4e6b-bd24-831056d62806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Resources\Animation">
+      <UniqueIdentifier>{7531a19a-3a54-4167-ab46-c127a659f84b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Datastructure\Transform.cpp">
@@ -162,9 +174,6 @@
     <ClCompile Include="src\Core\Renderer\Framebuffer.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Resources\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Resources\Object3DGraph.cpp">
       <Filter>Source Files\Core\Resources</Filter>
     </ClCompile>
@@ -174,44 +183,11 @@
     <ClCompile Include="src\Core\Datastructure\ScriptedComponent.cpp">
       <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Physics\PhysicsScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Physics\Collider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Physics\DynamicMesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Physics\BoxCollider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Physics\PhysicsSceneSimulationEventCallback.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Datastructure\IPhysics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Datastructure\ICollidable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Datastructure\Reflection.cpp">
       <Filter>Source Files\Core\Datastructure</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Navigation\NavMesh.cpp">
       <Filter>Source Files\Core\Navigation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Physics\CapsuleCollider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Physics\SphereCollider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Resources\Animation\AnimationVertexData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Resources\Animation\BoneData.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Datastructure\INavAgent.cpp">
       <Filter>Source Files\Core\Datastructure</Filter>
@@ -240,17 +216,50 @@
     <ClCompile Include="src\Core\Navigation\PathFollowingComponent.cpp">
       <Filter>Source Files\Core\Navigation</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Animation\Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Animation\Bone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\Animation\SkeletalMesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Animation\AnimationHandler.cpp">
       <Filter>Source Files\Core\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Animation\Animation.cpp">
+      <Filter>Source Files\Core\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Animation\Bone.cpp">
+      <Filter>Source Files\Core\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Animation\SkeletalMesh.cpp">
+      <Filter>Source Files\Core\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\BoxCollider.cpp">
+      <Filter>Source Files\Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\CapsuleCollider.cpp">
+      <Filter>Source Files\Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\Collider.cpp">
+      <Filter>Source Files\Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\PhysicsScene.cpp">
+      <Filter>Source Files\Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\PhysicsSceneSimulationEventCallback.cpp">
+      <Filter>Source Files\Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\SphereCollider.cpp">
+      <Filter>Source Files\Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Datastructure\ICollidable.cpp">
+      <Filter>Source Files\Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\Animation\AnimationVertexData.cpp">
+      <Filter>Source Files\Core\Resources\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\Animation\BoneData.cpp">
+      <Filter>Source Files\Core\Resources\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\Texture.cpp">
+      <Filter>Source Files\Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\DynamicMesh.cpp">
+      <Filter>Source Files\Core\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -410,44 +419,8 @@
     <ClInclude Include="include\Core\Maths\MathMinimal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Core\Physics\PhysicsScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Physics\Collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Datastructure\IPhysics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Datastructure\ICollidable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Physics\DynamicMesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Physics\BoxCollider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Navigation\NavMesh.h">
       <Filter>Header Files\Core\Navigation</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Physics\HitResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Physics\CapsuleCollider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Physics\SphereCollider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Resources\Animation\AnimationVertexData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Resources\Animation\BoneData.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Datastructure\INavAgent.h">
       <Filter>Header Files\Core\Datastructure</Filter>
@@ -476,17 +449,50 @@
     <ClInclude Include="include\Core\Navigation\PathFollowingComponent.h">
       <Filter>Header Files\Core\Navigation</Filter>
     </ClInclude>
-    <ClInclude Include="include\Core\Animation\Animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Animation\SkeletalMesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Animation\Bone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Animation\AnimationHandler.h">
       <Filter>Header Files\Core\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Animation\Animation.h">
+      <Filter>Header Files\Core\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Animation\Bone.h">
+      <Filter>Header Files\Core\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\BoxCollider.h">
+      <Filter>Header Files\Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\CapsuleCollider.h">
+      <Filter>Header Files\Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\Collider.h">
+      <Filter>Header Files\Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\HitResult.h">
+      <Filter>Header Files\Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h">
+      <Filter>Header Files\Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\SphereCollider.h">
+      <Filter>Header Files\Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\PhysicsScene.h">
+      <Filter>Header Files\Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Datastructure\ICollidable.h">
+      <Filter>Header Files\Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Animation\SkeletalMesh.h">
+      <Filter>Header Files\Core\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Resources\Animation\AnimationVertexData.h">
+      <Filter>Header Files\Core\Resources\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Resources\Animation\BoneData.h">
+      <Filter>Header Files\Core\Resources\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Physics\RigidBody.h">
+      <Filter>Header Files\Core\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

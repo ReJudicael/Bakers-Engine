@@ -41,10 +41,12 @@ namespace Resources
 		 * @param node: The current node of the scene
 		 * @param directory: the full path of the first mesh find with bone
 		 */
-		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsName);
+		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, 
+								const std::string& directory, std::vector<std::string>& materialsName);
 
 		
-		void LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory, std::vector<std::string>& materialsNam);
+		void LoadMeshsAsChild(	const aiScene* scene, const aiNode* node, aiMaterial* mat, 
+								const std::string& directory, std::vector<std::string>& materialsNam);
 
 		const aiNode* FindNodeWithMeshes(const aiScene* scene, const aiNode* node);
 
@@ -54,7 +56,8 @@ namespace Resources
 		 * @param node: The current node of the scene
 		 * @param directory: the full path of the first mesh find with bone
 		 */
-		void SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsNam);
+		void SingleMeshSceneLoad(	const aiScene* scene, const aiNode* node, const std::string& directory, 
+									std::vector<std::string>& materialsNam);
 
 		/**
 		 * create an object with a mesh from

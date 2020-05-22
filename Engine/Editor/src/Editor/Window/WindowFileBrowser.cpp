@@ -319,7 +319,7 @@ namespace Editor::Window
 							for (auto i{ 0 }; i < info->materialsName.size(); i++)
 							{
 								int index = info->materialsName[i].find_last_of('\\');
-								std::string name = n.substr(index + 1, n.size());
+								std::string name = info->materialsName[i].substr(index + 1, n.size());
 								ShowItem(name);
 
 								if (ImGui::IsItemClicked())

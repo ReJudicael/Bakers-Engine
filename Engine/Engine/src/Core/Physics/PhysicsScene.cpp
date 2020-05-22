@@ -261,8 +261,8 @@ namespace Core::Physics
 		physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
 		Maths::Quat quat = comp->GetParent()->GetGlobalRot();
 		physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
-		// TO DO Update the scale of the min and the max of the AABB
-		Mesh* mesh = dynamic_cast<Mesh*>(comp);
+
+		Core::Renderer::Mesh* mesh = dynamic_cast<Core::Renderer::Mesh*>(comp);
 
 		actor->setGlobalPose(physx::PxTransform(position, rotation));
 
@@ -437,7 +437,7 @@ namespace Core::Physics
 
 	void PhysicsScene::ReleasePhysXSDK()
 	{
-		BeginSimulate(0.f);
+		BeginSimulate(0.1f);
 
 		m_IsSimulating = true;
 
@@ -446,8 +446,6 @@ namespace Core::Physics
 		if (m_pxPhysics != nullptr)
 		{
 			PxCloseExtensions();
-
-			//m_pxScene->release();
 
 			if (m_eventCallBack)
 				delete m_eventCallBack;
@@ -480,7 +478,7 @@ namespace Core::Physics
 		const physx::PxU32 numScenes = m_pxPhysics->getNbScenes();
 		std::vector<physx::PxScene*> scene = std::vector<physx::PxScene*>(numScenes);
 		m_pxPhysics->getScenes(scene.data(), numScenes);
-		for (auto i = 0; i < numScenes; i++)
+		for (physx::PxU32 i = 0; i < numScenes; i++)
 			scene[i]->release();
 	}
 

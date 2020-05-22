@@ -17,7 +17,7 @@ namespace Core::Animation
 		std::vector<Core::Datastructure::Object*>	childObject;
 	};*/
 
-	BAKERS_API_CLASS SkeletalMesh : public Mesh, public virtual Core::Datastructure::IUpdatable
+	BAKERS_API_CLASS SkeletalMesh : public Core::Renderer::Mesh, public virtual Core::Datastructure::IUpdatable
 	{
 	protected:
 		std::shared_ptr<Bone>			m_rootBone;
@@ -98,7 +98,7 @@ namespace Core::Animation
 		virtual void AddMaterials(	Resources::Loader::ResourcesManager& resources, 
 									const std::vector<std::string>& namesMaterial) override;
 
-		REGISTER_CLASS(Mesh, Core::Datastructure::IUpdatable)
+		REGISTER_CLASS(Core::Renderer::Mesh, Core::Datastructure::IUpdatable)
 	};
 
 }

@@ -131,7 +131,7 @@ namespace Core
 
 			GLFWwindow* GetWindow();
 
-			virtual void InitMesh(Mesh* mesh) {};
+			virtual void InitMesh(Core::Renderer::Mesh* mesh) {};
 
 			virtual void PutBoxCollider(Core::Physics::Collider* mesh) {};
 			virtual void DeleteBoxCollider(Core::Physics::Collider* mesh) {};

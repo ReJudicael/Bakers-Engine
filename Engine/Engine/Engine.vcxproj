@@ -343,7 +343,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Datastructure\EngineCore.cpp" />
     <ClCompile Include="src\Core\Datastructure\ICollidable.cpp" />
     <ClCompile Include="src\Core\Datastructure\INavAgent.cpp" />
-    <ClCompile Include="src\Core\Datastructure\IPhysics.cpp" />
     <ClCompile Include="src\Core\Datastructure\Reflection.cpp" />
     <ClCompile Include="src\Core\Datastructure\ScriptedComponent.cpp" />
     <ClCompile Include="src\Core\Datastructure\TriggeredEvent.cpp" />
@@ -401,7 +400,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClInclude Include="include\Core\Datastructure\ICollidable.h" />
     <ClInclude Include="include\Core\Datastructure\IComponent.hpp" />
     <ClInclude Include="include\Core\Datastructure\INavAgent.h" />
-    <ClInclude Include="include\Core\Datastructure\IPhysics.h" />
     <ClInclude Include="include\Core\Datastructure\IRenderable.hpp" />
     <ClInclude Include="include\Core\Datastructure\IUpdatable.hpp" />
     <ClInclude Include="include\Core\Datastructure\EngineCore.h" />
@@ -433,7 +431,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClInclude Include="include\Core\Navigation\PathFollowingComponent.h" />
     <ClInclude Include="include\Core\Physics\BoxCollider.h" />
     <ClInclude Include="include\Core\Physics\CapsuleCollider.h" />
-    <ClInclude Include="include\Core\Physics\DynamicMesh.h" />
+    <ClInclude Include="include\Core\Physics\RigidBody.h" />
     <ClInclude Include="include\Core\Physics\HitResult.h" />
     <ClInclude Include="include\Core\Physics\PhysicsScene.h" />
     <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h" />

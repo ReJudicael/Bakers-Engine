@@ -33,7 +33,7 @@ namespace Editor
 
 		json				m_savedScene;
 
-		std::vector<Mesh*>	m_meshesNeedInit;
+		std::vector<Core::Renderer::Mesh*>	m_meshesNeedInit;
 
 
 	public:
@@ -66,7 +66,7 @@ namespace Editor
 		bool	IsSelectingEngineView();
 		void	SelectObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& direction);
 		
-		virtual void InitMesh(Mesh* mesh) override;
+		virtual void InitMesh(Core::Renderer::Mesh* mesh) override;
 
 		virtual void PutBoxCollider(Core::Physics::Collider* coll) override;
 		virtual void DeleteBoxCollider(Core::Physics::Collider* coll) override;

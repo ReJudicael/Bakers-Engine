@@ -104,10 +104,10 @@ namespace Resources
 		{
 			if (resources.GetCountModel(nameMesh) > 0)
 			{
-				Mesh* mesh = new Mesh();
+				Core::Renderer::Mesh* mesh = new Core::Renderer::Mesh();
 
 				if (!isSkeletal)
-					mesh = new Mesh();
+					mesh = new Core::Renderer::Mesh();
 				else
 				{
 					Core::Animation::SkeletalMesh* skeletal = new Core::Animation::SkeletalMesh();
@@ -173,8 +173,6 @@ namespace Resources
 		rotation = { rot.x, rot.y, rot.z };
 		scale = { sca.x, sca.y, sca.z };
 
-		const aiNode* currNode = FindNodeWithMeshes(scene, node);
-
 		nameObject = scene->mMeshes[0]->mName.data;
 
 		nameMesh = directory + scene->mMeshes[0]->mName.data;
@@ -200,7 +198,7 @@ namespace Resources
 	{
 		if (node->mNumMeshes > 0)
 			return node;
-		for (int i{ 0 }; i < node->mNumChildren; i++)
+		for (unsigned int i{ 0 }; i < node->mNumChildren; i++)
 		{
 			const aiNode* nodeWithMesh = FindNodeWithMeshes(scene, node->mChildren[i]);
 			if (nodeWithMesh != nullptr)

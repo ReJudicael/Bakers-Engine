@@ -4,8 +4,9 @@
 #include "PxDefaultErrorCallback.h"
 #include "PxSimulationEventCallback.h"
 #include "PhysicsSceneSimulationEventCallback.h"
-#include "IPhysics.h"
 #include "PxSimpleTypes.h"
+#include "Vec3.hpp"
+#include "Object.hpp"
 
 namespace physx
 {
