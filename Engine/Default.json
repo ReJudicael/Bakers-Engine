@@ -240,10 +240,26 @@
                             "Type": "bool",
                             "Value": false
                         },
+                        "Materials": {
+                            "Name": "Materials",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Dog\\Dog"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
                         "MaterialsNames": {
                             "Name": "MaterialsNames",
                             "Type": "ArraySequential",
-                            "Value": [],
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Dog\\Dog"
+                                }
+                            ],
                             "Wrapped type": "std::string"
                         },
                         "Model": {
@@ -405,10 +421,26 @@
                                     "Type": "bool",
                                     "Value": false
                                 },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\cube"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
                                     "Type": "ArraySequential",
-                                    "Value": [],
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\cube"
+                                        }
+                                    ],
                                     "Wrapped type": "std::string"
                                 },
                                 "Model": {
@@ -463,10 +495,26 @@
                             "Type": "bool",
                             "Value": false
                         },
+                        "Materials": {
+                            "Name": "Materials",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
                         "MaterialsNames": {
                             "Name": "MaterialsNames",
                             "Type": "ArraySequential",
-                            "Value": [],
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
                             "Wrapped type": "std::string"
                         },
                         "Model": {
@@ -523,6 +571,17 @@
                                     "Name": "IsRoot",
                                     "Type": "bool",
                                     "Value": false
+                                },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\aaa"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
                                 },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
@@ -588,6 +647,17 @@
                                     "Type": "bool",
                                     "Value": false
                                 },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #45"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
                                     "Type": "ArraySequential",
@@ -651,6 +721,17 @@
                                     "Name": "IsRoot",
                                     "Type": "bool",
                                     "Value": false
+                                },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #44"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
                                 },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
@@ -716,6 +797,17 @@
                                     "Type": "bool",
                                     "Value": false
                                 },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #69"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
                                     "Type": "ArraySequential",
@@ -779,6 +871,17 @@
                                     "Name": "IsRoot",
                                     "Type": "bool",
                                     "Value": false
+                                },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #69"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
                                 },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
@@ -844,6 +947,17 @@
                                     "Type": "bool",
                                     "Value": false
                                 },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #70"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
                                     "Type": "ArraySequential",
@@ -907,6 +1021,17 @@
                                     "Name": "IsRoot",
                                     "Type": "bool",
                                     "Value": false
+                                },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #44"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
                                 },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
@@ -972,6 +1097,17 @@
                                     "Type": "bool",
                                     "Value": false
                                 },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #69"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
                                     "Type": "ArraySequential",
@@ -1035,6 +1171,17 @@
                                     "Name": "IsRoot",
                                     "Type": "bool",
                                     "Value": false
+                                },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #69"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
                                 },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
@@ -1100,6 +1247,17 @@
                                     "Type": "bool",
                                     "Value": false
                                 },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #44"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
                                     "Type": "ArraySequential",
@@ -1163,6 +1321,17 @@
                                     "Name": "IsRoot",
                                     "Type": "bool",
                                     "Value": false
+                                },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #44"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
                                 },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
@@ -1228,6 +1397,17 @@
                                     "Type": "bool",
                                     "Value": false
                                 },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #44"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
                                     "Type": "ArraySequential",
@@ -1292,6 +1472,17 @@
                                     "Type": "bool",
                                     "Value": false
                                 },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #44"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
                                 "MaterialsNames": {
                                     "Name": "MaterialsNames",
                                     "Type": "ArraySequential",
@@ -1354,6 +1545,12 @@
                             "Name": "IsRoot",
                             "Type": "bool",
                             "Value": true
+                        },
+                        "Materials": {
+                            "Name": "Materials",
+                            "Type": "ArraySequential",
+                            "Value": [],
+                            "Wrapped type": "std::string"
                         },
                         "MaterialsNames": {
                             "Name": "MaterialsNames",
@@ -1834,7 +2031,7 @@
             "Flags": 0,
             "Name": "GameObject",
             "Pos": {
-                "x": -5.195334434509277,
+                "x": -6.381313323974609,
                 "y": 10.548004150390625,
                 "z": 1.986636996269226
             },

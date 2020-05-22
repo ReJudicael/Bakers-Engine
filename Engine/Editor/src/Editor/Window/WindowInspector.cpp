@@ -152,6 +152,7 @@ namespace Editor::Window
 	void WindowInspector::DrawProperty(rttr::property prop, rttr::instance component)
 	{
 		const rttr::type propType{ prop.get_type() };
+		const rttr::variant variantVec{ prop.get_value(component) };
 		rttr::variant needDisplay{ prop.get_metadata(MetaData_Type::SHOW_IN_EDITOR) };
 		if (needDisplay.is_valid())
 		{
@@ -228,6 +229,19 @@ namespace Editor::Window
 			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba) && !prop.is_readonly())
 				prop.set_value(component, c);
 		}
+		else if (variantVec.is_type<std::vector<std::string>>())
+		{
+			std::vector<std::string> vector = variantVec.get_value<std::vector<std::string>>();
+			//print Name of the value
+			bool toChange{ false };
+			for (auto i = 0; i < vector.size(); i++)
+			{
+				if (DisplayVectorDragAndDrop(prop, vector, i))
+					toChange = true;
+			}
+			if(toChange)
+				prop.set_value(component, vector);
+		}
 		else if (propType == rttr::type::get<std::string>())
 		{
 			const std::string str{ prop.get_value(component).get_value<std::string>() };
@@ -260,6 +274,30 @@ namespace Editor::Window
 				prop.get_name().to_string().c_str(),
 				prop.get_value(component).to_string().c_str());
 		}
+	}
+
+	bool WindowInspector::DisplayVectorDragAndDrop(rttr::property prop, std::vector<std::string>& strs, unsigned int index)
+	{
+		const std::string str{ strs[index] };
+		std::string nameprop{ prop.get_name().to_string() };
+		ImGui::RButtonDD((prop.get_name().to_string() + std::to_string(index)).c_str(),
+			!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
+		if (!str.empty())
+			ImGui::HelpMarkerItem(str.c_str());
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
+			{
+				const std::string& path{ reinterpret_cast<const char*>(payload->Data) };
+				strs[index] = path;
+				//prop.set_value(component, path);
+				return true;
+				ImGui::EndDragDropTarget();
+			}
+		}
+
+		return false;
 	}
 
 	void WindowInspector::DisplayObjectComponents(Core::Datastructure::Object* object)

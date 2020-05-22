@@ -174,9 +174,10 @@ namespace Resources
 		scale = { sca.x, sca.y, sca.z };
 
 		const aiNode* currNode = FindNodeWithMeshes(scene, node);
-		nameObject = scene->mMeshes[currNode->mMeshes[0]]->mName.data;
 
-		nameMesh = directory + scene->mMeshes[currNode->mMeshes[0]]->mName.data;
+		nameObject = scene->mMeshes[0]->mName.data;
+
+		nameMesh = directory + scene->mMeshes[0]->mName.data;
 
 		aiMaterial* mat;
 		for (unsigned int i{ 0 }; i < scene->mNumMeshes; i++)
@@ -188,7 +189,7 @@ namespace Resources
 			}
 			else
 			{
-				mat = scene->mMaterials[scene->mMeshes[currNode->mMeshes[i]]->mMaterialIndex];
+				mat = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
 				namesMaterial.push_back(directory + mat->GetName().data);
 				materialsNam.push_back(mat->GetName().data);
 			}

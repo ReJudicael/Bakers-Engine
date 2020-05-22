@@ -142,20 +142,6 @@ namespace Resources::Loader
 
 			if (scene->mNumMeshes > 0)
 			{
-				bool isSkeletal{ false };
-				int firstMeshWithBones{ 0 };
-
-
-				for (unsigned int i = 0; i < scene->mNumMeshes; i++)
-				{
-					if (scene->mMeshes[i]->HasBones())
-					{
-						isSkeletal = true;
-						firstMeshWithBones = i;
-						break;
-					}
-
-				}
 				LoadMeshsScene(importer, scene, directoryFile);
 				LoadSceneResources(importer, scene, Name, directoryFile, graphInMulti);
 			}
@@ -434,13 +420,14 @@ namespace Resources::Loader
 
 		m_task.AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, 0, 0);
 
-		/*std::shared_ptr<Object3DGraph> sceneData = std::make_shared<Object3DGraph>();
+		std::shared_ptr<Object3DGraph> sceneData = std::make_shared<Object3DGraph>();
 
-		sceneData->rootNodeScene.nameMesh = name;
+		/*sceneData->rootNodeScene.nameMesh = name;
 		sceneData->rootNodeScene.nameObject = name;
 		sceneData->rootNodeScene.namesMaterial.push_back("Default");
-		m_scenes.emplace(fileName, sceneData);*/
-		//modelData->LoadaiMeshModel(mesh, importer);
+		sceneData->materialsName.push_back("Default");
+		m_scenes.emplace(fileName, sceneData);
+		modelData->LoadaiMeshModel(mesh, importer);*/
 	}
 
 	void ResourcesManager::LoadaiMeshMaterial(std::shared_ptr<Loader::ImporterData> importer, 

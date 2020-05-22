@@ -22,6 +22,7 @@ RTTR_PLUGIN_REGISTRATION
 	registration::class_<Mesh>("Mesh")
 		.constructor()
 		.property("Model", &Mesh::GetModel, &Mesh::SetModel)
+		.property("Materials", &Mesh::GetMaterials, &Mesh::SetMaterials)
 		.property("IsRoot", &Mesh::m_isRoot, detail::protected_access())
 		.property("MaterialsNames", &Mesh::m_materialsNames, detail::protected_access())
 		.property("IsChild", &Mesh::m_isChild, detail::protected_access())
@@ -39,6 +40,40 @@ void Mesh::SetModel(std::string newModel)
 	if (!IsInit())
 		return;
 	UpdateModel();
+}
+
+void Mesh::SetMaterials(std::vector<std::string> newMaterials)
+{
+	for (auto i = 0; i < m_materialsNames.size(); i++)
+	{
+		if (newMaterials[i] != m_materialsNames[i])
+		{
+			if (ChangeOneMaterial(newMaterials[i], i))
+			{
+				m_materialsNames = newMaterials;
+				break;
+			}
+		}
+	}
+}
+
+bool Mesh::ChangeOneMaterial(std::string newMaterial, int iD)
+{
+	if (iD >= m_materialsModel.size())
+		return false;
+
+	Resources::Loader::ResourcesManager* manager{ GetRoot()->GetEngine()->GetResourcesManager() };
+	if (manager->GetCountMaterials(newMaterial))
+	{
+		m_materialsModel[iD] = manager->GetMaterial(newMaterial);
+		return true;
+	}
+
+	//load the JSON
+	//if (newMaterials[iD].find(".BakersMaterial"))
+		//load if not
+
+	return false;
 }
 
 void Mesh::SetChildModel(std::string newModel)
@@ -242,6 +277,7 @@ void Mesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const st
 	{
 		for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
 			m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
+		m_materialsNames = namesMaterial;
 	}
 }
 

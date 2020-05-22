@@ -59,9 +59,17 @@ public:
 	std::vector<float> m_vertices;
 	std::vector<int> m_indices;
 
-	std::string		GetModel() { return m_modelName; };
-	void			SetModel(std::string newModel); 
-	void			SetChildModel(std::string newModel);
+protected:
+	bool ChangeOneMaterial(std::string newMaterial, int iD);
+public:
+
+	std::string					GetModel() { return m_modelName; };
+	void						SetModel(std::string newModel);
+
+	std::vector<std::string>	GetMaterials() { return m_materialsNames; }
+	void						SetMaterials(std::vector<std::string> newMaterials);
+
+	void						SetChildModel(std::string newModel);
 
 	float*	m_projection;
 

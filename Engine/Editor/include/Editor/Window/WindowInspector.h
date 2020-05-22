@@ -139,6 +139,8 @@ namespace Editor::Window
 		 */
 		void DrawProperty(rttr::property prop, rttr::instance component);
 
+		bool DisplayVectorDragAndDrop(rttr::property prop, std::vector<std::string> & strs, unsigned int index);
+
 		/**
 		 * Display the properties of the given instance
 		 * @param t: Type of the instance to display properties
