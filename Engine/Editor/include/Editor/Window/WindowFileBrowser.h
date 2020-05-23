@@ -106,6 +106,14 @@ namespace Editor::Window
 		void ApplyNameToItem(const std::string& itemName);
 
 		/**
+		 * Reset the in the resources manager the path of the material
+		 * if the itemName is a .bmat
+		 * who is attached to this file
+		 * @param itemName: Name of the item to rename
+		 */
+		void RenameMaterial(const std::string& itemName);
+
+		/**
 		 * Rename the selected file / folder
 		 * @param itemName: Name of the chosen file / folder
 		 */

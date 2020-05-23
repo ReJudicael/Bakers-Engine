@@ -10,6 +10,7 @@ uniform mat4 uProj;
 uniform mat4 uCam;
 uniform mat4[10] uLightView;
 uniform int uShadowCount;
+uniform vec4 cColor;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
 out vec2 vUV;
@@ -18,6 +19,7 @@ out vec4[10] lightSpacePos;
 out vec3 camPos;
 out vec3 normal;
 out vec3 tangent;
+out vec4 color;
 
 void main()
 {
@@ -31,4 +33,6 @@ void main()
 	
 	for (int i = 0; i < uShadowCount; ++i)
 		lightSpacePos[i] = uProj * uLightView[i] * pos;
+
+	color = cColor;
 }

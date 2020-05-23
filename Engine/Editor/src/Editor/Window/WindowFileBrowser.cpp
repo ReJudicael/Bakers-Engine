@@ -68,9 +68,27 @@ namespace Editor::Window
 	void WindowFileBrowser::ApplyNameToItem(const std::string& itemName)
 	{
 		m_fs->RenameContent(m_fs->GetLocalAbsolute(itemName), m_name);
+		// for the resources manager replace the material in his map
+		// with the new path create
+		RenameMaterial(m_fs->GetLocalAbsolute(itemName));
 		m_renamePath.clear();
 		m_scrollSetted = false;
 		m_canRename = false;
+	}
+
+	void WindowFileBrowser::RenameMaterial(const std::string& itemName)
+	{
+		const std::string& str{ m_name };
+
+		// check if the new name have ".bmat"
+		// and if the last have this too
+		if (str.find(".bmat") && itemName.find(".bmat"))
+		{
+			// get the new local path
+			std::string newPath = itemName.substr(0, itemName.find_last_of("\\") + 1) + m_name;
+			// replace the material in the map
+			GetEngine()->GetResourcesManager()->ReplaceMaterial(itemName, newPath);
+		}
 	}
 
 	void WindowFileBrowser::RenameContent(const std::string& itemName)
@@ -104,6 +122,16 @@ namespace Editor::Window
 			{
 				const std::string& path = m_fs->CreateFile("Script", ".lua");
 				Core::Datastructure::ScriptedComponent::CreateScript(path);
+				m_renamePath = path;
+			}
+
+			if (ImGui::MenuItem("Material"))
+			{
+				// create a new material file
+				const std::string& path = m_fs->CreateFile("NewMaterial", ".bmat");
+				// create a new material in the resources manager with the local path of the new file created
+				GetEngine()->GetResourcesManager()->CreateNewMaterial(path);
+				// this new material file is the one who need to be rename
 				m_renamePath = path;
 			}
 
@@ -257,7 +285,9 @@ namespace Editor::Window
 		{
 			ImGui::ImageButtonUV(GetIcon(itemPath), { m_contentPathSize - 20.f });
 			if (m_renamePath == itemPath)
+			{
 				RenameContent(itemName);
+			}
 			else
 				ImGui::TextWrapped(itemName.c_str());
 		}
@@ -307,28 +337,34 @@ namespace Editor::Window
 					ImGui::TableNextCell();
 					ImGui::PushID(static_cast<int>(i));
 					ShowItem(itemName);
-					//if (ImGui::IsItemClicked())
-					//{
-						std::string n = m_fs->GetLocalAbsolute(itemName);
-						std::shared_ptr<Resources::Loader::Object3DInfo> info = GetEngine()->GetObject3DInfo(n);
-						Resources::Loader::ResourcesManager* resources = GetEngine()->GetResourcesManager();
 
-						if (info)
+					std::string n = m_fs->GetLocalAbsolute(itemName);
+					std::shared_ptr<Resources::Loader::Object3DInfo> info = GetEngine()->GetObject3DInfo(n);
+					Resources::Loader::ResourcesManager* resources = GetEngine()->GetResourcesManager();
+
+					// check if the file is cliked and if it's a .bmat
+					if (ImGui::IsItemClicked() && n.find(".bmat"))
+					{
+						// try to load if it's not
+						GetEngine()->materialSelected = resources->LoadBMatMaterial(n);
+					}
+
+
+					if (info)
+					{
+						// diplay materials
+						for (auto i{ 0 }; i < info->materialsName.size(); i++)
 						{
-							// diplay materials
-							for (auto i{ 0 }; i < info->materialsName.size(); i++)
-							{
-								int index = info->materialsName[i].find_last_of('\\');
-								std::string name = info->materialsName[i].substr(index + 1, n.size());
-								ShowItem(name);
+							int index = info->materialsName[i].find_last_of('\\');
+							std::string name = info->materialsName[i].substr(index + 1, n.size());
+							ShowItem(name);
 
-								if (ImGui::IsItemClicked())
-								{
-									GetEngine()->materialSelected = resources->GetMaterial(info->materialsName[i]);
-								}
+							if (ImGui::IsItemClicked())
+							{
+								GetEngine()->materialSelected = resources->GetMaterial(info->materialsName[i]);
 							}
 						}
-					//}
+					}
 
 					ImGui::PopID();
 					if (itemName != "..")

@@ -14,11 +14,12 @@ in vec3 unprojectedPos;
 in vec4[10] lightSpacePos;
 in vec3 camPos;
 in vec3 normal;
+in vec4 color;
 
 
 void main()
 {
-	oColor = vec4(1.0f,1.0f,1.0f,1.0f);
+	oColor = color;
 	if (uLightCount == 0)
 		return;
 

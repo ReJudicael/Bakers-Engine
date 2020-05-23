@@ -10,12 +10,6 @@
 
 namespace Core::Animation
 {
-	/*struct ObjectBone
-	{
-		Core::Datastructure::Transform				globalPosition;
-		std::vector<ObjectBone>						childBone;
-		std::vector<Core::Datastructure::Object*>	childObject;
-	};*/
 
 	BAKERS_API_CLASS SkeletalMesh : public Core::Renderer::Mesh, public virtual Core::Datastructure::IUpdatable
 	{
@@ -95,6 +89,11 @@ namespace Core::Animation
 		 */
 		virtual void OnDestroy() override;
 
+		/**
+		 * Add all the materials in the model
+		 * @param resources: the resources manager
+		 * @param namesMaterial: all the names of the materials
+		 */
 		virtual void AddMaterials(	Resources::Loader::ResourcesManager& resources, 
 									const std::vector<std::string>& namesMaterial) override;
 

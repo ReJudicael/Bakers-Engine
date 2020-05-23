@@ -109,6 +109,15 @@ namespace Core::Renderer
 		{
 			return m_model->min;
 		}
+		/**
+		 * Update the mesh namesMaterial
+		 * @param index: the index of the material in this mesh
+		 * @param newName: the new name of the material
+		 */
+		void UpdateNameMaterial(const int index, const std::string& newName)
+		{
+			m_materialsNames[index] = newName;
+		}
 
 		/**
 		 * Function inheritated from IRenderable,

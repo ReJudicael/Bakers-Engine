@@ -1,3 +1,6 @@
+#include <fstream>
+#include <iomanip>
+
 #include "Material.h"
 #include "Assimp/scene.h"
 #include "Assimp/material.h"
@@ -21,6 +24,7 @@ namespace Resources
 		Loader::ResourcesManager* resources, std::shared_ptr<Resources::Loader::ImporterData>& importer)
 	{
 		ZoneScoped
+		// the importer is used in this function
 		importer->maxUseOfImporter++;
 		textures.resize(2);
 
@@ -47,6 +51,7 @@ namespace Resources
 		materialColor = { 1.0f, 1.0f, 1.0f };
 		shaderChoose = true;
 
+		// the importer is know not used in this function
 		importer->maxUseOfImporter--;
 	}
 
@@ -60,7 +65,6 @@ namespace Resources
 			if (mat->GetTexture(textureType, 0, &path) == AI_SUCCESS)
 			{
 				std::string fullPath = directory + path.data;
-				//texture = std::make_shared<Texture>();
 				resources->LoadTexture(fullPath, texture);
 				if (textureType == aiTextureType_NORMALS)
 				{
@@ -152,7 +156,7 @@ namespace Resources
 			else if (variants[i].var.get_type() == rttr::type::get<Core::Maths::Color>())
 			{
 				Core::Maths::Color c{ variants[i].var.get_value<Core::Maths::Color>() };
-				glUniform3fv(shader->GetLocation(variants[i].name.c_str()), 1, c.rgb);
+				glUniform4fv(shader->GetLocation(variants[i].name.c_str()), 1, c.rgba);
 			}
 			else if (variants[i].var.get_type() == rttr::type::get<std::shared_ptr<Texture>>())
 			{
@@ -186,11 +190,13 @@ namespace Resources
 
 		int numberOfBasicTexture{ 0 };
 
+		// get all the uniform used of the shader
 		glGetProgramiv(shader->GetProgram(), GL_ACTIVE_UNIFORMS, &count);
 		for (auto i{ 0 }; i < count; i++)
 		{
 			glGetActiveUniform(shader->GetProgram(), (GLuint)i, 50, &length, &size, &type, name);
 
+			// check if it's a personal uniform
 			if (name[0] != 'u')
 			{
 				VariantUniform uni;
@@ -242,7 +248,10 @@ namespace Resources
 
 					case GL_FLOAT_VEC4:
 					{
-						uni.var = Core::Maths::Vec4();
+						if (name[0] == 'c')
+							uni.var = Core::Maths::Color(1.f, 1.f, 1.f, 1.f);
+						else
+							uni.var = Core::Maths::Vec4();
 						variants.push_back(uni);
 						break;
 					}
@@ -269,14 +278,220 @@ namespace Resources
 		textures.resize(numberOfBasicTexture);
 	}
 
+	void  Material::SaveMaterial(const std::string& pathMaterial, const std::string& shaderPath)
+	{
+		std::ofstream o(pathMaterial);
+		json save;
+
+		json color;
+
+		{
+			save["Shader"] = shaderPath;
+
+			Core::Maths::Color temp{ diffuseColor };
+			color["r"] = temp.r;
+			color["g"] = temp.g;
+			color["b"] = temp.b;
+			color["a"] = temp.b;
+			save["Diffuse"] = color;
+
+			temp = ambientColor;
+			color["r"] = temp.r;
+			color["g"] = temp.g;
+			color["b"] = temp.b;
+			color["a"] = temp.a;
+			save["Ambient"] = color;
+
+			temp = ambientColor;
+			color["r"] = temp.r;
+			color["g"] = temp.g;
+			color["b"] = temp.b;
+			color["a"] = temp.b;
+			save["Specular"] = color;
+
+			save["shininess"] = shininess;
+			save["shininessS"] = shininessStrength;
+		}
+
+		save["Variant"] = json::array();
+		{
+			for (auto i = 0; i < variants.size();)
+				save["Variant"][i++] = SaveVariants(i);
+		}
+
+		o << std::setw(4) << save << std::endl;
+	}
+
+	bool  Material::LoadMaterialFromJSON(const std::string& pathMaterial, Resources::Loader::ResourcesManager* resources)
+	{
+		std::ifstream inputScene(pathMaterial);
+		if (!inputScene.is_open())
+			return false;
+
+		json data;
+		inputScene >> data;
+
+		{
+			if (resources->GetCountShader(data["Shader"]) > 0)
+				shader = resources->GetShader(data["Shader"]);
+
+			diffuseColor.r = data["Diffuse"]["r"];
+			diffuseColor.g = data["Diffuse"]["g"];
+			diffuseColor.b = data["Diffuse"]["b"];
+			diffuseColor.a = data["Diffuse"]["a"];
+
+			ambientColor.r = data["Ambient"]["r"];
+			ambientColor.g = data["Ambient"]["g"];
+			ambientColor.b = data["Ambient"]["b"];
+			ambientColor.a = data["Ambient"]["a"];
+
+			specularColor.r = data["Specular"]["r"];
+			specularColor.g = data["Specular"]["g"];
+			specularColor.b = data["Specular"]["b"];
+			specularColor.a = data["Specular"]["a"];
+
+			shininess = data["shininess"];
+			shininessStrength = data["shininessS"];
+		}
+		shaderChoose = true;
+
+		if(shader)
+			InitVariantUniform();
+
+		for (auto i = 0; i < variants.size(); i++)
+			LoadVariants(i, data["Variant"][i], resources);
+
+		return true;
+	}
+
+	json Material::SaveVariants(const int& index)
+	{
+		json out;
+		if (variants[index].var.get_type() == rttr::type::get<bool>())
+		{
+			bool b{ variants[index].var.to_bool() };
+			out["Value"] = b;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<int>())
+		{
+			int in{ variants[index].var.to_int() };
+			out["Value"] = in;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<float>())
+		{
+			float f{ variants[index].var.to_float() };
+			out["Value"] = f;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<Core::Maths::Vec2>())
+		{
+			Core::Maths::Vec2 v{ variants[index].var.get_value<Core::Maths::Vec2>() };
+			json tmp;
+			tmp["x"] = v.x;
+			tmp["y"] = v.y;
+			out["Value"] = tmp;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<Core::Maths::Vec3>())
+		{
+			Core::Maths::Vec3 v{ variants[index].var.get_value<Core::Maths::Vec3>() };
+			json tmp;
+			tmp["x"] = v.x;
+			tmp["y"] = v.y;
+			tmp["z"] = v.z;
+			out["Value"] = tmp;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<Core::Maths::Vec4>())
+		{
+			Core::Maths::Vec4 v{ variants[index].var.get_value<Core::Maths::Vec4>() };
+			json tmp;
+			tmp["x"] = v.x;
+			tmp["y"] = v.y;
+			tmp["z"] = v.z;
+			tmp["w"] = v.w;
+			out["Value"] = tmp;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<Core::Maths::Color>())
+		{
+			Core::Maths::Color c{ variants[index].var.get_value<Core::Maths::Color>() };
+			json tmp;
+			tmp["r"] = c.r;
+			tmp["g"] = c.g;
+			tmp["b"] = c.b;
+			tmp["a"] = c.a;
+			out["Value"] = tmp;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<std::shared_ptr<Texture>>())
+		{
+			std::shared_ptr<Texture> text{ variants[index].var.get_value<std::shared_ptr<Texture>>() };
+			out["Value"] = text->name;
+		}
+
+		return out;
+	}
+
+	void Material::LoadVariants(const int& index, json j, Resources::Loader::ResourcesManager* resources)
+	{
+		if (variants[index].var.get_type() == rttr::type::get<bool>())
+		{
+			variants[index].var = static_cast<bool>(j["Value"]);
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<int>())
+		{
+			variants[index].var = static_cast<int>(j["Value"]);
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<float>())
+		{
+			variants[index].var = static_cast<float>(j["Value"]);
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<Core::Maths::Vec2>())
+		{
+			Core::Maths::Vec2 v{};
+			v.x = j["Value"]["x"];
+			v.y = j["Value"]["y"];
+			variants[index].var = v;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<Core::Maths::Vec3>())
+		{
+			Core::Maths::Vec3 v{};
+			v.x = j["Value"]["x"];
+			v.y = j["Value"]["y"];
+			v.z = j["Value"]["z"];
+			variants[index].var = v;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<Core::Maths::Vec4>())
+		{
+			Core::Maths::Vec4 v{};
+			v.x = j["Value"]["x"];
+			v.y = j["Value"]["y"];
+			v.z = j["Value"]["z"];
+			v.w = j["Value"]["w"];
+			variants[index].var = v;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<Core::Maths::Color>())
+		{
+			Core::Maths::Color c{};
+			c.r = j["Value"]["r"];
+			c.g = j["Value"]["g"];
+			c.b = j["Value"]["b"];
+			c.a = j["Value"]["a"];
+			variants[index].var = c;
+		}
+		else if (variants[index].var.get_type() == rttr::type::get<std::shared_ptr<Texture>>())
+		{
+			std::shared_ptr<Texture> text{};
+			resources->LoadTexture(j["Value"], text);
+			variants[index].var = text;
+		}
+	}
+
 	void Material::CreateDefaultMaterial(Resources::Loader::ResourcesManager* resources)
 	{
-		ambientColor = { 1.f, 1.f, 1.f };
-		diffuseColor = { 1.f, 1.f, 1.f };
-		specularColor = { 1.f, 1.f, 1.f };
+		ambientColor = { 0.f, 0.f, 0.f };
+		diffuseColor = { 0.64f, 0.64f, 0.64f };
+		specularColor = { 0.5f, 0.5f, 0.5f };
 		shininessStrength = { 0.5f };
 		shininess = { 1.f };
 		shader = resources->GetShader("DefaultNoTexture");
+		InitVariantUniform();
 		shaderChoose = true;
 	}
 }

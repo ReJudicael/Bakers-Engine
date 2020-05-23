@@ -1403,7 +1403,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #44"
+                                            "Value": ".\\Resources\\Models\\Default.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -1414,7 +1414,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\DiningRoom\\Material #44"
+                                            "Value": ".\\Resources\\Models\\Default.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -2031,7 +2031,7 @@
             "Flags": 0,
             "Name": "GameObject",
             "Pos": {
-                "x": -6.381313323974609,
+                "x": -5.149868965148926,
                 "y": 10.548004150390625,
                 "z": 1.986636996269226
             },

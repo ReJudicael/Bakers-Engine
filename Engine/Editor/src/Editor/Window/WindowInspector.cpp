@@ -232,13 +232,16 @@ namespace Editor::Window
 		else if (variantVec.is_type<std::vector<std::string>>())
 		{
 			std::vector<std::string> vector = variantVec.get_value<std::vector<std::string>>();
-			//print Name of the value
+			// if after the for toChange is true the vector need to be set
 			bool toChange{ false };
+			// display all the value of the vector
 			for (auto i = 0; i < vector.size(); i++)
 			{
+				// if one of the value has been change the vector need to be set
 				if (DisplayVectorDragAndDrop(prop, vector, i))
 					toChange = true;
 			}
+			// if the vector has been changed set the value
 			if(toChange)
 				prop.set_value(component, vector);
 		}
@@ -278,8 +281,11 @@ namespace Editor::Window
 
 	bool WindowInspector::DisplayVectorDragAndDrop(rttr::property prop, std::vector<std::string>& strs, unsigned int index)
 	{
+		// the name int ht evector
 		const std::string str{ strs[index] };
+		// the name of the property
 		std::string nameprop{ prop.get_name().to_string() };
+		// put the indexof the material in the name
 		ImGui::RButtonDD((prop.get_name().to_string() + std::to_string(index)).c_str(),
 			!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
 		if (!str.empty())
@@ -290,13 +296,14 @@ namespace Editor::Window
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
 			{
 				const std::string& path{ reinterpret_cast<const char*>(payload->Data) };
+				// if there is a drop change the value in the vector
 				strs[index] = path;
-				//prop.set_value(component, path);
-				return true;
 				ImGui::EndDragDropTarget();
+				// return true because the vector has been changed
+				return true;
 			}
 		}
-
+		// nothing changed in the vector
 		return false;
 	}
 
@@ -423,77 +430,6 @@ namespace Editor::Window
 			ImGui::SameLine();
 			ObjectInspector(m_inspectorObject);
 		}
-
-		/*std::shared_ptr<Resources::Material> mat = GetEngine()->materialSelected;
-		if (mat)
-		{
-			DrawShader(mat);
-
-			ImGui::SliderFloat("shininess ", &mat->shininess, 0.f, 5.f);
-			ImGui::SliderFloat3("ambient ", mat->ambientColor.gba, 0.f, 5.f);
-
-			for (auto i{ 0 }; i < mat->variants.size(); i++)
-			{
-				if(mat->variants[i].var.can_convert<float>())
-					ImGui::SliderFloat(mat->variants[i].name.c_str(), &mat->variants[i].var.get_value<float>(), 0.f, 5.f);
-				else if (mat->variants[i].var.can_convert<std::shared_ptr<Resources::Texture>>())
-				{
-					std::shared_ptr<Resources::Texture> text = mat->variants[i].var.get_value<std::shared_ptr<Resources::Texture>>();
-					std::string str;
-					if (text)
-						str = text->name;
-					else
-						str = "NoTexture";
-
-					ImGui::RButtonDD("Texture ",
-						!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
-					if (!str.empty())
-						ImGui::HelpMarkerItem(str.c_str());
-
-					if (ImGui::BeginDragDropTarget())
-					{
-						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
-						{
-							const std::string& path{ reinterpret_cast<const char*>(payload->Data) };
-
-							GetEngine()->GetResourcesManager()->LoadTexture(path, mat->variants[i].var.get_value<std::shared_ptr<Resources::Texture>>());
-
-							// Use "path" in your function
-							ImGui::EndDragDropTarget();
-						}
-					}
-				}
-
-			}
-
-			for (auto i{ 0 }; i < mat->textures.size(); i++)
-			{
-				std::shared_ptr<Resources::Texture> text = mat->textures[i];
-					std::string str;
-				if (text)
-					str = text->name;
-				else
-					str = "NoTexture";
-
-					ImGui::RButtonDD("Texture ",
-						!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
-				if (!str.empty())
-					ImGui::HelpMarkerItem(str.c_str());
-
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
-					{
-						const std::string& path{ reinterpret_cast<const char*>(payload->Data) };
-
-						GetEngine()->GetResourcesManager()->LoadTexture(path, mat->textures[i]);
-
-						// Use "path" in your function
-						ImGui::EndDragDropTarget();
-					}
-				}
-			}
-		}*/
 	}
 
 	void WindowInspector::DrawShader(std::shared_ptr<Resources::Material>& mat)

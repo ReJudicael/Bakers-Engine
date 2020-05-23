@@ -66,13 +66,23 @@ bool Core::Renderer::Mesh::ChangeOneMaterial(std::string newMaterial, int iD)
 	if (manager->GetCountMaterials(newMaterial))
 	{
 		m_materialsModel[iD] = manager->GetMaterial(newMaterial);
+		m_materialsModel[iD]->UpdateNameMaterial.AddListener(
+			std::bind(&Core::Renderer::Mesh::UpdateNameMaterial, this, iD, std::placeholders::_1));
 		return true;
 	}
 
 	//load the JSON
-	//if (newMaterials[iD].find(".BakersMaterial"))
-		//load if not
-
+	if (newMaterial.find(".bmat"))	
+	{ 
+		if (manager->GetMaterial(newMaterial))
+		{
+			m_materialsModel[iD] = manager->GetMaterial(newMaterial);
+			return true;
+			m_materialsModel[iD]->UpdateNameMaterial.AddListener(
+				std::bind(&Core::Renderer::Mesh::UpdateNameMaterial, this, iD, std::placeholders::_1));
+		}
+		return false;
+	}
 	return false;
 }
 
@@ -275,9 +285,19 @@ void  Core::Renderer::Mesh::AddMaterials(Resources::Loader::ResourcesManager& re
 	}
 	else
 	{
-		for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
-			m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
 		m_materialsNames = namesMaterial;
+		for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
+		{
+			m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
+			if (m_materialsModel[i])
+				m_materialsModel[i]->UpdateNameMaterial.AddListener(
+					std::bind(&Core::Renderer::Mesh::UpdateNameMaterial, this, i, std::placeholders::_1));
+			else
+			{
+				m_materialsModel[i] = resources.GetMaterial("Default");
+				m_materialsNames[i] = "Default";
+			}
+		}
 	}
 }
 
@@ -314,7 +334,6 @@ bool  Core::Renderer::Mesh::OnStart()
 	ZoneScoped
 	if (IsModelLoaded())
 	{
-		//CreateAABBMesh();
 		Core::Datastructure::Object* object = GetParent();
 		GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()),
 												m_model->indices.data(), static_cast<int>(m_model->indices.size()), 

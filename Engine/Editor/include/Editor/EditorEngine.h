@@ -43,9 +43,9 @@ namespace Editor
 		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::WORLD };
 		bool isTestingRay{ false };
 
-		std::list<Core::Physics::Collider*>										m_BoxCollider;
-		std::list<Core::Physics::Collider*>										m_SphereCollider;
-		std::list<Core::Physics::Collider*>										m_CapsuleCollider;
+		std::list<Core::Physics::Collider*>											m_BoxCollider;
+		std::list<Core::Physics::Collider*>											m_SphereCollider;
+		std::list<Core::Physics::Collider*>											m_CapsuleCollider;
 		std::map<std::string, std::shared_ptr<Resources::Loader::Object3DInfo>>		m_info3DObject;
 
 		Core::SystemManagement::InputSystem* m_editorInput{ nullptr };
@@ -66,23 +66,63 @@ namespace Editor
 		bool	IsSelectingEngineView();
 		void	SelectObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& direction);
 		
+		/**
+		 * Init the mesh for create his editor box
+		 * @param mesh: the lesh who need to be init
+		 */
 		virtual void InitMesh(Core::Renderer::Mesh* mesh) override;
 
+		/**
+		 * push the collider has a box collider
+		 * for draw him
+		 * @param coll: the collider
+		 */
 		virtual void PutBoxCollider(Core::Physics::Collider* coll) override;
+		/**
+		 * delete the collider from the list
+		 * @param coll: the collider
+		 */
 		virtual void DeleteBoxCollider(Core::Physics::Collider* coll) override;
+		/**
+		 * push the collider has a sphere collider
+		 * for draw him
+		 * @param coll: the collider
+		 */
 		virtual void PutSphereCollider(Core::Physics::Collider* coll) override;
+		/**
+		 * delete the collider from the list
+		 * @param coll: the collider
+		 */
 		virtual void DeleteSphereCollider(Core::Physics::Collider* coll) override;
+		/**
+		 * push the collider has a capsule collider
+		 * for draw him
+		 * @param coll: the collider
+		 */
 		virtual void PutCapsuleCollider(Core::Physics::Collider* coll) override;
+		/**
+		 * delete the collider from the list
+		 * @param coll: the collider
+		 */
 		virtual void DeleteCapsuleCollider(Core::Physics::Collider* coll) override;
 
+		/**
+		 * put the Object3DInfo gived in the info3DObject map
+		 * @param fileName: the name of the 3D Object
+		 * @param Object3D: the Object3Info of the 3D object
+		 */
 		virtual void SaveObject3DInfo(const char* fileName, const Resources::Loader::Object3DInfo& Object3D) override;
-		std::shared_ptr<Resources::Loader::Object3DInfo> GetObject3DInfo(const std::string& fileName)
+		/**
+		 * Get a Object3DInfo
+		 * @param localPath: the local path of the 3D Object
+		 * @return the Object3DInfo finded
+		 */
+		std::shared_ptr<Resources::Loader::Object3DInfo> GetObject3DInfo(const std::string& localPath)
 		{
-			if (m_info3DObject.count(fileName))
-				return m_info3DObject[fileName];
+			if (m_info3DObject.count(localPath))
+				return m_info3DObject[localPath];
 			return nullptr;
 		}
-		//void FindAllMaterialsAndModels(const Resources::Node& node, std::vector<std::string> names);
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
 

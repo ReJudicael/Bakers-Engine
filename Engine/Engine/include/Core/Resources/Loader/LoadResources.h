@@ -192,7 +192,7 @@ namespace Resources
 				m_textures.emplace(keyName, texture);
 			}
 			/**
-			 * Get the count in the textures unordered_map of the key given
+			 * Get the shared_ptr in the textures unordered_map of the key given
 			 * Call the operator [] of unordered_map
 			 * @param keyName: the key of the texture with which we try to find
 			 * @return the shared_ptr of the texture we try to find with the keyName
@@ -223,14 +223,18 @@ namespace Resources
 				m_materials.emplace(keyName, texture);
 			}
 			/**
-			 * Get the count in the materials unordered_map of the key given
+			 * Get the shared_ptr in the materials unordered_map of the key given
 			 * Call the operator [] of unordered_map
 			 * @param keyName: the key of the material with which we try to find
 			 * @return the shared_ptr of the material we try to find with the keyName
 			 */
 			inline std::shared_ptr<Material> GetMaterial(std::string keyName)
 			{
-				return m_materials[keyName];
+				if (GetCountMaterials(keyName) > 0)
+					return m_materials[keyName];
+				else if (keyName.find(".bmat"))
+					return LoadBMatMaterial(keyName);
+				return nullptr;
 			}
 
 			/**
@@ -244,7 +248,7 @@ namespace Resources
 				return m_models.count(keyName);
 			}
 			/**
-			 * Get the count in the models unordered_map of the key given
+			 * Get the shared_ptr in the models unordered_map of the key given
 			 * Call the operator [] of unordered_map
 			 * @param keyName: the key of the model with which we try to find
 			 * @return the shared_ptr of the model we try to find with the keyName
@@ -255,7 +259,7 @@ namespace Resources
 			}
 
 			/**
-			 * Get the count in the shaders unordered_map of the key given
+			 * Get the shared_ptr in the shaders unordered_map of the key given
 			 * Call the operator [] of unordered_map
 			 * @param keyName: the key of the shader with which we try to find
 			 * @return the shared_ptr of the shader we try to find with the keyName
@@ -263,6 +267,17 @@ namespace Resources
 			inline std::shared_ptr<Shader> GetShader(std::string keyName)
 			{
 				return m_shaders[keyName];
+			}
+
+			/**
+			 * Get the count in the shaders unordered_map of the key given
+			 * Call the function count of unordered_map
+			 * @param keyName: the key of the shader with which we try to find
+			 * @return the number of elements wich have the key
+			 */
+			inline size_t GetCountShader(std::string keyName)
+			{
+				return m_shaders.count(keyName);
 			}
 
 			inline const unorderedmapShader& GetShaderMap()
@@ -327,6 +342,25 @@ namespace Resources
 			}
 
 			/**
+			 * Create a new Material as a default material
+			 * @param path: the path of the material
+			 */
+			void CreateNewMaterial(const std::string& path);
+
+			/**
+			 * Replace the material in the materials map
+			 * changing the path
+			 * @param path: the path of the material
+			 */
+			void ReplaceMaterial(const std::string& path, const std::string& newPath);
+
+			/**
+			 * Load a material with a .bmat
+			 * @param path: the path of the file
+			 */
+			std::shared_ptr<Resources::Material> LoadBMatMaterial(const std::string& path);
+
+			/**
 			 * Check if the 3D object hasn't been already load (or try), and load it if not.
 			 * @param fileName: the name of the 3D object we want to load
 			 */
@@ -367,6 +401,10 @@ namespace Resources
 			const aiNode* FindFirstBoneNode(const aiNode* node, 
 											const std::shared_ptr<unorderedmapBonesIndex>& bonesIndex);
 
+			/**
+			 * Load a file as an animation
+			 * @param fileName: the path of the name
+			 */
 			std::shared_ptr<Core::Animation::Animation> LoadAsAnAnimation(const std::string& fileName);
 
 			/**
@@ -408,13 +446,19 @@ namespace Resources
 			 */
 			void LinkAllModelToOpenGl();
 
+			/**
+			 * the materials who have a shader get all the uniform for his shader
+			 */
 			void MaterialGetUniformFromShader();
 
-			/*
+			/**
 			 * Check if the assimps importers can be destroy
 			 */
 			void CheckDeleteAssimpImporter();
 
+			/**
+			 * Update the value of the ResourcesManager
+			 */
 			void UpdateResourcesManager();
 
 			std::shared_ptr<Core::Audio::AudioClip> CreateAudioClip(const std::string& audioClipPath, FMOD::System* fmodSystem);

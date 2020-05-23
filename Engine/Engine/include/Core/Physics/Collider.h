@@ -66,8 +66,6 @@ namespace Core
 			physx::PxShape*						m_pxShape{};
 			physx::PxMaterial*					m_pxMaterial{};
 			physx::PxRigidActor*				m_pxRigidActor{};
-			//std::shared_ptr<Resources::Shader>	m_shader{};
-			//std::shared_ptr<Resources::Model>	m_model{};
 			int									m_IDFunctionSetTRS{0};
 
 		public:

@@ -93,6 +93,37 @@ namespace Resources::Loader
 			itshader->second->Delete();
 	}
 
+	void ResourcesManager::CreateNewMaterial(const std::string& path)
+	{
+		std::shared_ptr<Material> material = std::make_shared<Material>();
+		material->CreateDefaultMaterial(this);
+		material->SaveMaterial(path, "DefaultNoTexture");
+		m_materials.emplace(path, material);
+	}
+
+	void ResourcesManager::ReplaceMaterial(const std::string& path, const std::string& newPath)
+	{
+		auto it = m_materials.find(path);
+		//m_materials[newPath] = std::make_shared<Resources::Material>();
+		if (it != m_materials.end())
+		{
+			(it->second)->UpdateNameMaterial(newPath);
+			std::swap(m_materials[newPath], it->second);
+			m_materials.erase(it);
+		}
+	}
+
+	std::shared_ptr<Resources::Material> ResourcesManager::LoadBMatMaterial(const std::string& string)
+	{
+		std::shared_ptr<Resources::Material> material = std::make_shared<Resources::Material>();
+		if (material->LoadMaterialFromJSON(string, this))
+		{
+			m_materials.emplace(string, material);
+			return material;
+		}
+		return nullptr;
+	}
+
 	Object3DInfo ResourcesManager::Load3DObject(const char* fileName, const bool graphInMulti)
 	{
 		std::string Name = fileName;
@@ -247,7 +278,6 @@ namespace Resources::Loader
 		std::shared_ptr<Model> model = std::make_shared<Model>();
 
 		unsigned int indexLastMesh{ 0 };
-		unsigned int numBones{ 0 };
 
 		modelData->model = model;
 		m_models.emplace(directory + scene->mMeshes[0]->mName.data, model);

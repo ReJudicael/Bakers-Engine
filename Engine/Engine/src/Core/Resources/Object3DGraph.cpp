@@ -57,7 +57,8 @@ namespace Resources
 			children.resize(numChildren);
 		for (int i{ numCurrentChildren }; i < numChildren; i++)
 		{
-			children[i].RecursiveSceneLoad(scene, node->mChildren[i - numCurrentChildren], directory, materialsNam);
+			if(node->mChildren[i - numCurrentChildren]->mName != aiString("Armature"))
+				children[i].RecursiveSceneLoad(scene, node->mChildren[i - numCurrentChildren], directory, materialsNam);
 		}
 	}
 

@@ -4,10 +4,14 @@
 #include <vector>
 #include <string>
 
+#include "json.hpp"
+using nlohmann::json;
+
 #include "Vec3.hpp"
 #include "Color.hpp"
 #include "Texture.h"
 #include "CoreMinimal.h"
+#include "Shader.h"
 
 struct aiMaterial;
 struct aiScene;
@@ -21,7 +25,6 @@ namespace Resources
 		struct ImporterData;
 	}
 	struct Texture;
-	class Shader;
 
 	struct VariantUniform
 	{
@@ -34,6 +37,7 @@ namespace Resources
 	 */
 	BAKERS_API_STRUCT Material
 	{
+		Core::SystemManagement::EventSystem<std::string>	UpdateNameMaterial;
 		Core::Maths::Color						diffuseColor{};
 		Core::Maths::Color						ambientColor{};
 		Core::Maths::Color						specularColor{};
@@ -89,6 +93,55 @@ namespace Resources
 		 */
 		void SendVariants(GLuint unitTexture);
 
+
+		/*
+		 * Send to the shader of the material a float
+		 * @param name: the name of the float in the shader
+		 * @param f: the float to send
+		 */
+		void Sendfloat(const std::string& name, float f)
+		{
+			if (shader)
+			{
+				shader->UseProgram();
+				glUniform1f(shader->GetLocation(name.c_str()), f);
+			}
+		}
+
+		/**
+		 * Save the values of the material in a file .bmat
+		 * @param pathMaterial: the local path of the file
+		 * @param shaderPath: the shader path
+		 */
+		void  SaveMaterial(const std::string& pathMaterial, const std::string& shaderPath);
+
+		/**
+		 * Load the values of the material in a file .bmat
+		 * @param pathMaterial: the local path of the file
+		 * @param resources: the resources manager
+		 * @retur true if the load succed 
+		 */
+		bool  LoadMaterialFromJSON(const std::string& pathMaterial, Resources::Loader::ResourcesManager* resources);
+
+		/**
+		 * Save all the variants in the .bmat
+		 * @param index: the index in the array of variant
+		 * @return the json create
+		 */
+		json SaveVariants(const int& index);
+
+		/**
+		 * Load all the variant in the .bmat
+		 * @param index: the index in the array of variant
+		 * @param j: the json who stock the value
+		 * @param resources: the resources manager
+		 */
+		void LoadVariants(const int& index, json j, Resources::Loader::ResourcesManager* resources);
+
+		/**
+		 * Create a default Material
+		 * @param resources: the resources manager
+		 */
 		void CreateDefaultMaterial(Resources::Loader::ResourcesManager* resources);
 	};
 }
