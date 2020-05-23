@@ -138,7 +138,7 @@
                                     "Height": {
                                         "Name": "Height",
                                         "Type": "float",
-                                        "Value": 573.0
+                                        "Value": 385.0
                                     },
                                     "Near": {
                                         "Name": "Near",
@@ -148,7 +148,7 @@
                                     "Width": {
                                         "Name": "Width",
                                         "Type": "float",
-                                        "Value": 587.0
+                                        "Value": 421.0
                                     }
                                 }
                             }
@@ -2029,7 +2029,7 @@
                 }
             ],
             "Flags": 0,
-            "Name": "GameObject",
+            "Name": "Light",
             "Pos": {
                 "x": -6.381313323974609,
                 "y": 10.548004150390625,
@@ -2038,6 +2038,89 @@
             "Rot": {
                 "w": 0.7071067690849304,
                 "x": -0.7071067690849304,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Particle System",
+                    "Values": {
+                        "Birth Color": {
+                            "Name": "Birth Color",
+                            "Type": "Color",
+                            "Value": [
+                                0.15834558010101318,
+                                0.14065086841583252,
+                                0.7142857313156128,
+                                1.0
+                            ]
+                        },
+                        "Death Color": {
+                            "Name": "Death Color",
+                            "Type": "Color",
+                            "Value": [
+                                0.05791503190994263,
+                                0.9890906810760498,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Gravity": {
+                            "Name": "Gravity",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Life time": {
+                            "Name": "Life time",
+                            "Type": "float",
+                            "Value": 5.0
+                        },
+                        "Particle texture": {
+                            "Name": "Particle texture",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Particle.png"
+                        },
+                        "Particles number": {
+                            "Name": "Particles number",
+                            "Type": "int",
+                            "Value": 100
+                        },
+                        "Time Before Spawn": {
+                            "Name": "Time Before Spawn",
+                            "Type": "float",
+                            "Value": 0.10000000149011612
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Particles",
+            "Pos": {
+                "x": 0.0,
+                "y": 1.661167025566101,
+                "z": 7.183152675628662
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
                 "y": 0.0,
                 "z": 0.0
             },
