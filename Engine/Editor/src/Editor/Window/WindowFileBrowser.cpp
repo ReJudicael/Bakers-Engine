@@ -205,7 +205,7 @@ namespace Editor::Window
 			const size_t& pos{ m_fs->GetCurrentDirectory().find(foldersPath[i]) + foldersPath[i].size() };
 
 			ImGui::SameLine();
-			ImGui::PushID(i);
+			ImGui::PushID(static_cast<int>(i));
 			{
 				if (ImGui::Button(foldersPath[i].c_str()))
 					m_fs->SetCurrentDirectory(m_fs->GetCurrentPathAtPos(pos));

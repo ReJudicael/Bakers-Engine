@@ -16,6 +16,7 @@
 #include "Debug.h"
 #include "Shader.h"
 #include "TaskSystem.hpp"
+#include "Audio/AudioClip.h"
 #include "CoreMinimal.h"
 #include "BoneData.h"
 #include "Bone.h"
@@ -55,6 +56,7 @@ namespace Resources
 	using unorderedmapSkeletalIndex = std::unordered_map<std::string, std::shared_ptr<unorderedmapBonesIndex>>;
 	using unorderedmapBonesHierarchy = std::unordered_map<std::string, std::shared_ptr<Core::Animation::BoneTree>>;
 	using unorderedmapAnimations = std::unordered_map<std::string, std::shared_ptr<Core::Animation::Animation>>;
+	using unorderedmapAudioClip = std::unordered_map<std::string, std::shared_ptr<Core::Audio::AudioClip>>;
 
 	namespace Loader
 	{
@@ -81,7 +83,7 @@ namespace Resources
 			unorderedmapBonesIndex			m_bonesID;
 			unorderedmapSkeletalIndex		m_skeletalIndex;
 			unorderedmapBonesHierarchy		m_BoneHierarchies;
-
+			unorderedmapAudioClip			m_audioClips;
 			Core::Datastructure::RootObject* m_rootNode;
 
 
@@ -414,6 +416,8 @@ namespace Resources
 			void CheckDeleteAssimpImporter();
 
 			void UpdateResourcesManager();
+
+			std::shared_ptr<Core::Audio::AudioClip> CreateAudioClip(const std::string& audioClipPath, FMOD::System* fmodSystem);
 
 			/**
 			 * Create Shader and add it to the shader map

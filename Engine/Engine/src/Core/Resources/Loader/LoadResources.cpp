@@ -23,6 +23,8 @@
 //#include "Material.h"
 //#include "Texture.h"
 //#include "TextureData.h"
+
+#include "AudioClip.h"
 #include "Object3DGraph.h"
 #include "BoneData.h"
 #include "Mat.hpp"
@@ -620,6 +622,14 @@ namespace Resources::Loader
 		MaterialGetUniformFromShader();
 		CheckDeleteAssimpImporter();
 		ShaderUpdate();
+	}
+
+	std::shared_ptr<Core::Audio::AudioClip> ResourcesManager::CreateAudioClip(const std::string& audioClipPath, FMOD::System* fmodSystem)
+	{
+		if (m_audioClips[audioClipPath] == nullptr)
+			m_audioClips[audioClipPath] = std::make_shared<Core::Audio::AudioClip>(audioClipPath, fmodSystem);
+
+		return m_audioClips[audioClipPath];
 	}
 
 	std::shared_ptr<Shader> ResourcesManager::CreateShader(const char* shaderName, const char* vertexFilePath, const char* fragmentFilePath, Shader::EShaderHeaderType header)

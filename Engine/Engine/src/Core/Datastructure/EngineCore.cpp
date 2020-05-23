@@ -60,7 +60,6 @@ namespace Core::Datastructure
 		ZoneScoped
 		delete m_root;
 		delete m_inputSystem;
-		delete m_audioSystem;
 		for (auto fbo : m_fbo)
 			delete fbo;
 		if (m_manager)
@@ -71,6 +70,7 @@ namespace Core::Datastructure
 		Core::Debug::Logger::ClearLogs(); 
 		if (m_task)
 			delete m_task;
+		delete m_audioSystem;
 		FREE_TRACY_GL_IMAGE
 	}
 

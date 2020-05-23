@@ -19,7 +19,7 @@ RTTR_PLUGIN_REGISTRATION
 		)
 
 		.constructor()
-		.property("Audio Clip",     &Core::Audio::AudioSource::m_audioClip)
+		.property("Audio Clip",     &Core::Audio::AudioSource::m_audioClipStr)
 		.property("Audio Mode",     &Core::Audio::AudioSource::m_audioMode)
 		.property("Mute",           &Core::Audio::AudioSource::m_mute)
 		.property("Play On Awake",  &Core::Audio::AudioSource::m_playOnAwake)
@@ -51,7 +51,7 @@ namespace Core::Audio
 		ComponentUpdatable::OnCopy(copyTo);
 		AudioSource* copy{ dynamic_cast<AudioSource*>(copyTo) };
 
-		copy->m_audioClip	= m_audioClip;
+		copy->m_audioClipStr	= m_audioClipStr;
 		copy->m_audioMode	= m_audioMode;
 		copy->m_mute		= m_mute;
 		copy->m_playOnAwake	= m_playOnAwake;
@@ -74,7 +74,7 @@ namespace Core::Audio
 	{
 		ComponentUpdatable::OnReset();
 
-		m_audioClip		= "";
+		m_audioClipStr	= "";
 		m_audioMode		= Core::Audio::EAudioMode::AUDIO_2D;
 		m_mute			= false;
 		m_playOnAwake	= true;
@@ -90,16 +90,16 @@ namespace Core::Audio
 	void AudioSource::OnDestroy()
 	{
 		ComponentUpdatable::OnDestroy();
-		Destroy();
+		Stop();
 	}
 
 	bool AudioSource::OnStart()
 	{
 		ZoneScoped
-		if (m_audioClip.empty())
+		if (m_audioClipStr.empty())
 			return false;
 
-		CreateSound(m_audioClip);
+		m_audioClip = GetRoot()->GetEngine()->GetResourcesManager()->CreateAudioClip(m_audioClipStr, m_fmodSystem);
 
 		if (m_playOnAwake)
 			Play();
@@ -118,9 +118,8 @@ namespace Core::Audio
 		if (IsPlaying())
 			return;
 
-		FMOD_RESULT result = m_fmodSystem->playSound(m_fmodSound, nullptr, false, &m_fmodChannel);
+		m_audioClip->Play(&m_fmodChannel);
 		m_fmodChannel->setMute(true);
-		CHECK_ERR_FMOD(result);
 	}
 
 	void AudioSource::Pause()
@@ -142,13 +141,13 @@ namespace Core::Audio
 
 	void AudioSource::Stop()
 	{
-		if (!IsPlaying())
-			return;
+		if (IsPlaying())
+		{
+			FMOD_RESULT result = m_fmodChannel->stop();
+			m_fmodChannel = nullptr;
 
-		FMOD_RESULT result = m_fmodChannel->stop();
-		m_fmodChannel = nullptr;
-
-		CHECK_ERR_FMOD(result);
+			CHECK_ERR_FMOD(result);
+		}
 	}
 
 	void AudioSource::Update()
@@ -156,6 +155,7 @@ namespace Core::Audio
 		if (!IsPlaying())
 			return;
 
+		m_fmodChannel->setMode(static_cast<FMOD_MODE>(m_audioMode) | (m_loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF));
 		m_fmodChannel->setMute(m_mute);
 		m_fmodChannel->setVolume(m_volume);
 		m_fmodChannel->setPriority(m_priority);
@@ -179,33 +179,20 @@ namespace Core::Audio
 		}
 	}
 
-	void AudioSource::Destroy()
-	{
-		Stop();
-		if (!m_fmodSound)
-			return;
-
-		FMOD_RESULT result = m_fmodSound->release();
-		CHECK_ERR_FMOD(result);
-	}
-
-	bool AudioSource::IsPlaying() const
+	bool AudioSource::IsPlaying()
 	{
 		if (!m_fmodChannel)
 			return false;
 
 		bool isPlaying;
 		FMOD_RESULT result = m_fmodChannel->isPlaying(&isPlaying);
+
 		if (CHECK_ERR_FMOD(result))
+		{
+			Stop();
 			return false;
+		}
 
 		return isPlaying;
-	}
-
-	void AudioSource::CreateSound(const std::string& soundPath)
-	{
-		ZoneScoped
-		FMOD_RESULT result = m_fmodSystem->createSound(soundPath.c_str(), static_cast<FMOD_MODE>(m_audioMode) | (m_loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF), 0, &m_fmodSound);
-		CHECK_ERR_FMOD(result);
 	}
 }

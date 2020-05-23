@@ -2,6 +2,7 @@
 
 #include "ComponentUpdatable.h"
 #include "CoreMinimal.h"
+#include "AudioClip.h"
 
 namespace FMOD
 {
@@ -45,7 +46,12 @@ namespace Core::Audio
 		/**
 		 * AudioClip path
 		 */
-		std::string		m_audioClip;
+		std::string		m_audioClipStr;
+
+		/**
+		 * AudioClip
+		 */
+		std::shared_ptr<AudioClip> m_audioClip;
 
 		/**
 		 * Audio Mode: 2D or 3D
@@ -136,15 +142,10 @@ namespace Core::Audio
 		void Update();
 
 		/**
-		 * Release sound
-		 */
-		void Destroy();
-
-		/**
 		 * Wheter the sound is playing or not
 		 * @return Wheter the sound is playing or not
 		 */
-		bool IsPlaying() const;
+		bool IsPlaying();
 
 		/**
 		 * Create a sound
