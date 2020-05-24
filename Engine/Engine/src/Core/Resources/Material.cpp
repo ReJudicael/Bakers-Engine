@@ -277,7 +277,9 @@ namespace Resources
 					}
 				}
 			}
-			else if (type == GL_SAMPLER_2D)
+			else if (std::string(name) == "uColorTexture")
+				numberOfBasicTexture++;
+			else if (std::string(name) == "uNormalMap")
 				numberOfBasicTexture++;
 		}
 
@@ -319,9 +321,15 @@ namespace Resources
 			save["Specular"] = color;
 
 			if (textures.size() >= 1)
-				save["BaseTexture"] = textures[0]->name;
+				if (textures[0])
+					save["BaseTexture"] = textures[0]->name;
+				else
+					save["BaseTexture"] = "nothing";
 			if(textures.size() >= 2)
-				save["NormalMap"] = textures[1]->name;
+				if (textures[1])
+					save["BaseTexture"] = textures[0]->name;
+				else
+					save["BaseTexture"] = "nothing";
 
 
 			save["shininess"] = shininess;
@@ -363,12 +371,16 @@ namespace Resources
 			if (!data["BaseTexture"].is_null())
 			{
 				textures.resize(1);
-				resources->LoadTexture(data["BaseTexture"], textures[0]);
+				if (data["BaseTexture"] != "nothing")
+					resources->LoadTexture(data["BaseTexture"], textures[0]);
+				textures[0] = std::make_shared<Resources::Texture>();
 			}
 			if (!data["NormalMap"].is_null())
 			{
 				textures.resize(2);
-				resources->LoadTexture(data["NormalMap"], textures[1]);
+				if(data["NormalMap"] != "nothing")
+					resources->LoadTexture(data["NormalMap"], textures[1]);
+				textures[1] = std::make_shared<Resources::Texture>();
 			}
 
 			specularColor.r = data["Specular"]["r"];

@@ -88,7 +88,7 @@ namespace Editor::Window
 		 * Display the names and current values of the properties
 		 * The user can be modify these values
 		 */
-		void MaterialInspector(std::shared_ptr<Resources::Material> material);
+		void MaterialInspector(std::shared_ptr<Resources::Material>& material);
 
 		/**
 		 * Button to lock / unlock the selected material

@@ -91,17 +91,19 @@ namespace Editor::Window
 		DragDropTargetItem(str, texture);
 	}
 
-	void WindowMaterial::MaterialInspector(std::shared_ptr<Resources::Material> material)
+	void WindowMaterial::MaterialInspector(std::shared_ptr<Resources::Material>& material)
 	{
 		if (ImGui::CollapsingHeaderWithImageUV(m_propertyIcon->texture, "Properties", m_treeNodeFlags))
 		{
 			ImGui::Spacing();
 			ShowMaterialShaders();
-			ImGui::RDragFloat("Shininess", &material->shininess, 0.01f);
-			ImGui::RColorEdit4("Ambient", material->ambientColor.rgba);
-			for (auto& varUniform : material->variants)
+			ImGui::RDragFloat("Shininess", &GetEngine()->materialSelected->shininess, 0.01f);
+			ImGui::RColorEdit4("Ambient", GetEngine()->materialSelected->ambientColor.rgba);
+			ImGui::RColorEdit4("Diffuse", GetEngine()->materialSelected->diffuseColor.rgba);
+			ImGui::RColorEdit4("Specular", GetEngine()->materialSelected->specularColor.rgba);
+			for (auto& varUniform : GetEngine()->materialSelected->variants)
 				ShowMaterialVariant(varUniform);
-			for (auto& texture : material->textures)
+			for (auto& texture : GetEngine()->materialSelected->textures)
 				ShowMaterialTexture(texture);
 		}
 	}
@@ -136,7 +138,7 @@ namespace Editor::Window
 			ImGui::Spacing();
 			ImGui::Separator();
 			ImGui::Spacing();
-			MaterialInspector(m_material);
+			MaterialInspector(GetEngine()->materialSelected);
 		}
 	}
 }

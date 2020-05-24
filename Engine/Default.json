@@ -148,7 +148,7 @@
                                     "Width": {
                                         "Name": "Width",
                                         "Type": "float",
-                                        "Value": 587.0
+                                        "Value": 598.0
                                     }
                                 }
                             }
@@ -1403,7 +1403,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\Default.bmat"
+                                            "Value": ".\\Resources\\Models\\cDrole.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -1414,7 +1414,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\Default.bmat"
+                                            "Value": ".\\Resources\\Models\\cDrole.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"

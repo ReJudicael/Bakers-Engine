@@ -305,7 +305,7 @@ namespace Editor::Window
 		PopupMenuOnDirectoryContentItem(itemPath);
 
 		if (ImGui::IsItemClicked() && m_fs->GetExtensionWithoutDotStr(itemPath) == "bmat")
-			GetEngine()->materialSelected = GetEngine()->GetResourcesManager()->LoadBMatMaterial(itemPath);
+			GetEngine()->materialSelected = GetEngine()->GetResourcesManager()->GetMaterial(itemPath);
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			m_fs->OpenContent(itemPath);
