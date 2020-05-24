@@ -114,6 +114,14 @@ namespace Editor::Window
 		void RenameMaterial(const std::string& itemName);
 
 		/**
+		 * Reset the in the resources manager the path of the shader
+		 * if the itemName is a .bshader
+		 * who is attached to this file
+		 * @param itemName: Name of the item to rename
+		 */
+		void RenameShader(const std::string& itemName);
+
+		/**
 		 * Rename the selected file / folder
 		 * @param itemName: Name of the chosen file / folder
 		 */

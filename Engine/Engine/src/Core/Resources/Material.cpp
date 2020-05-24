@@ -14,8 +14,14 @@ namespace Resources
 {
 	RTTR_PLUGIN_REGISTRATION
 	{
-		registration::class_<Resources::Material>("Rigid Body")
+		registration::class_<Resources::Material>("Material")
 		.constructor()
+		.property("Shader", &Resources::Material::shader)
+		.property("Ambient", &Resources::Material::ambientColor)
+		.property("Diffuse", &Resources::Material::diffuseColor)
+		.property("Specular", &Resources::Material::specularColor)
+		.property("Shininess", &Resources::Material::shininess)
+		.property("Shininess Strenght", &Resources::Material::shininessStrength)
 		.property("Variants Uniform", &Resources::Material::variants)
 		;
 	}
@@ -281,6 +287,9 @@ namespace Resources
 	void  Material::SaveMaterial(const std::string& pathMaterial, const std::string& shaderPath)
 	{
 		std::ofstream o(pathMaterial);
+		if (!o.is_open())
+			return;
+
 		json save;
 
 		json color;
@@ -309,6 +318,12 @@ namespace Resources
 			color["a"] = temp.b;
 			save["Specular"] = color;
 
+			if (textures.size() >= 1)
+				save["BaseTexture"] = textures[0]->name;
+			if(textures.size() >= 2)
+				save["NormalMap"] = textures[1]->name;
+
+
 			save["shininess"] = shininess;
 			save["shininessS"] = shininessStrength;
 		}
@@ -324,12 +339,12 @@ namespace Resources
 
 	bool  Material::LoadMaterialFromJSON(const std::string& pathMaterial, Resources::Loader::ResourcesManager* resources)
 	{
-		std::ifstream inputScene(pathMaterial);
-		if (!inputScene.is_open())
+		std::ifstream load(pathMaterial);
+		if (!load.is_open())
 			return false;
 
 		json data;
-		inputScene >> data;
+		load >> data;
 
 		{
 			if (resources->GetCountShader(data["Shader"]) > 0)
@@ -344,6 +359,17 @@ namespace Resources
 			ambientColor.g = data["Ambient"]["g"];
 			ambientColor.b = data["Ambient"]["b"];
 			ambientColor.a = data["Ambient"]["a"];
+
+			if (!data["BaseTexture"].is_null())
+			{
+				textures.resize(1);
+				resources->LoadTexture(data["BaseTexture"], textures[0]);
+			}
+			if (!data["NormalMap"].is_null())
+			{
+				textures.resize(2);
+				resources->LoadTexture(data["NormalMap"], textures[1]);
+			}
 
 			specularColor.r = data["Specular"]["r"];
 			specularColor.g = data["Specular"]["g"];

@@ -13,8 +13,6 @@ struct aiMesh;
 struct aiBone;
 struct aiScene;
 
- 
-
 namespace Resources
 {
 	namespace Loader

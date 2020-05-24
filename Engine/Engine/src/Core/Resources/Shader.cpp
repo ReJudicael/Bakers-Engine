@@ -1,11 +1,24 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
+#include "json.hpp"
+using nlohmann::json;
 
 #include "Shader.h"
 
 namespace Resources
 {
+	RTTR_PLUGIN_REGISTRATION
+	{
+		registration::class_<Resources::Shader>("Shader")
+		.constructor()
+		.property("Vertex", &Resources::Shader::GetVertName, &Resources::Shader::SetVertName)
+		.property("Fragment", &Resources::Shader::GetFragName, &Resources::Shader::SetFragName)
+		//.property("Header", &Resources::Material::variants)
+		;
+	}
+
 	std::vector<Core::Renderer::Light*>	Shader::lights;
 
 	Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath, EShaderHeaderType header)
@@ -20,6 +33,33 @@ namespace Resources
 
 	Shader::~Shader()
 	{
+	}
+
+	void Shader::SetFragName(std::string name)
+	{
+		if (name.find(".frag") == std::string::npos)
+			return;
+		
+		m_fragmentFile = name;
+
+		LoadFromFile(m_fragmentFile.c_str(), EShaderType::FRAGMENT);
+
+		Compile();
+		StoreAllUniforms();
+
+	}
+
+	void Shader::SetVertName(std::string name)
+	{
+		if (name.find(".vert") == std::string::npos)
+			return;
+
+		m_vertexFile = name;
+
+		LoadFromFile(m_vertexFile.c_str(), EShaderType::VERTEX);
+
+		Compile();
+		StoreAllUniforms();
 	}
 
 	void	Shader::Delete()
@@ -71,6 +111,41 @@ namespace Resources
 
 		m_locations[uniformName] = glGetUniformLocation(m_programID, uniformName.c_str());
 		return m_locations[uniformName];
+	}
+
+	void Shader::SaveShader(const std::string& path)
+	{
+		std::ofstream save(path.c_str());
+		if (!save.is_open())
+			return;
+
+		json jsave;
+		jsave["Vertex File"] = m_vertexFile;
+		jsave["Fragment File"] = m_fragmentFile;
+
+		jsave["Shader Header"] = static_cast<int>(m_shaderHeader);
+
+		save << std::setw(4) << jsave;
+
+	}
+
+	bool Shader::LoadShader(const std::string& path)
+	{
+		std::ifstream load(path.c_str());
+		if(!load.is_open())
+			return false;
+		json jload;
+
+		load >> jload;
+
+		m_vertexFile = jload["Vertex File"];
+		m_fragmentFile = jload["Fragment File"];
+		m_shaderHeader = static_cast<Shader::EShaderHeaderType>(static_cast<int>(jload["Shader Header"]));
+
+		Load();
+
+		return true;
+
 	}
 
 	void Shader::Compile()

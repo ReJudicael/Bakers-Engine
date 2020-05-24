@@ -8,24 +8,13 @@ namespace Resources::Animation
 		{
 			if (weights[i] == 0.f)
 			{
-				boneIDs[i] = boneIndex;
-				/*if (weight == 1.f && i != 0)
-				{
-					for (int j{ 0 }; j < i; j++)
-					{
-						weights[j] =  1.f / (i + 1);
-					}
-					weights[i] = 1.f / (i + 1);
-				}
-				else*/
+				boneIDs[i] = static_cast<float>(boneIndex);
 				weights[i] = weight;
-					//weights[i] = static_cast<int>(weight * 100) / 100.f;
-
 				return;
 			}
 			else if (weights[i] == 1.f)
 			{
-				boneIDs[i] = boneIndex;
+				boneIDs[i] = static_cast<float>(boneIndex);
 				weights[i] = weight;
 				return;
 			}

@@ -68,7 +68,10 @@ namespace Editor::Window
 	void WindowFileBrowser::ApplyNameToItem(const std::string& itemName)
 	{
 		if (m_fs->RenameContent(m_fs->GetLocalAbsolute(itemName), m_name))
+		{
 			RenameMaterial(m_fs->GetLocalAbsolute(itemName));
+			RenameShader(m_fs->GetLocalAbsolute(itemName));
+		}
 		m_renamePath.clear();
 		m_scrollSetted = false;
 		m_canRename = false;
@@ -76,9 +79,16 @@ namespace Editor::Window
 
 	void WindowFileBrowser::RenameMaterial(const std::string& itemPath)
 	{
-		const std::string& newNamePath = m_fs->GetLocalAbsolute(m_name);
-		if (m_fs->GetExtensionWithoutDotStr(newNamePath) == "bmat")
-			GetEngine()->GetResourcesManager()->ReplaceMaterial(itemPath, newNamePath);
+		const std::string& newItemPath = m_fs->GetLocalAbsolute(m_name);
+		if (m_fs->GetExtensionWithoutDotStr(newItemPath) == "bmat")
+			GetEngine()->GetResourcesManager()->ReplaceMaterial(itemPath, newItemPath);
+	}
+
+	void WindowFileBrowser::RenameShader(const std::string& itemName)
+	{
+		const std::string& newItemPath = m_fs->GetLocalAbsolute(m_name);
+		if (m_fs->GetExtensionWithoutDotStr(newItemPath) == "bshader")
+			GetEngine()->GetResourcesManager()->ReplaceMaterial(itemName, newItemPath);
 	}
 
 	void WindowFileBrowser::RenameContent(const std::string& itemName)
@@ -121,6 +131,13 @@ namespace Editor::Window
 				GetEngine()->GetResourcesManager()->CreateNewMaterial(path);
 				m_renamePath = path;
 			}
+
+			//if (ImGui::MenuItem("Shader"))
+			//{
+			//	const std::string& path = m_fs->CreateFile("Shader", "bshader");
+			//	GetEngine()->GetResourcesManager()->CreateNewShader(path);
+			//	m_renamePath = path;
+			//}
 
 			ImGui::EndMenu();
 		}

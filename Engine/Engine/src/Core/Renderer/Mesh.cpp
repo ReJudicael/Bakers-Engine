@@ -66,20 +66,29 @@ bool Core::Renderer::Mesh::ChangeOneMaterial(std::string newMaterial, int iD)
 	if (manager->GetCountMaterials(newMaterial))
 	{
 		m_materialsModel[iD] = manager->GetMaterial(newMaterial);
-		m_materialsModel[iD]->UpdateNameMaterial.AddListener(
+		// delete the event in the material for change the name
+		m_destroyMaterialEvent[iD]();
+		// create new event for rename the material
+		int index = m_materialsModel[iD]->UpdateNameMaterial.AddListener(
 			std::bind(&Core::Renderer::Mesh::UpdateNameMaterial, this, iD, std::placeholders::_1));
+		// change the event who destroy the event of the material
+		m_destroyMaterialEvent[iD] = std::bind(&Core::Renderer::Mesh::DeleteMaterialEvent, this, iD, index);
 		return true;
 	}
 
-	//load the JSON
 	if (newMaterial.find(".bmat"))	
 	{ 
 		if (manager->GetMaterial(newMaterial))
 		{
 			m_materialsModel[iD] = manager->GetMaterial(newMaterial);
-			return true;
-			m_materialsModel[iD]->UpdateNameMaterial.AddListener(
+			// delete the event in the material for change the name
+			m_destroyMaterialEvent[iD]();
+			// create new event for rename the material
+			int index = m_materialsModel[iD]->UpdateNameMaterial.AddListener(
 				std::bind(&Core::Renderer::Mesh::UpdateNameMaterial, this, iD, std::placeholders::_1));
+			// change the event who destroy the event of the material
+			m_destroyMaterialEvent[iD] = std::bind(&Core::Renderer::Mesh::DeleteMaterialEvent, this, iD, index);
+			return true;
 		}
 		return false;
 	}
@@ -166,6 +175,8 @@ void Core::Renderer::Mesh::OnInit()
 
 void Core::Renderer::Mesh::OnDestroy()
 {
+	for (size_t i{ 0 }; i < m_destroyMaterialEvent.size(); i++)
+		m_destroyMaterialEvent[i]();
 	m_destroyActorEvent.Invoke();
 	IRenderable::OnDestroy();
 }
@@ -286,12 +297,16 @@ void  Core::Renderer::Mesh::AddMaterials(Resources::Loader::ResourcesManager& re
 	else
 	{
 		m_materialsNames = namesMaterial;
+		m_destroyMaterialEvent.clear();
 		for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
 		{
 			m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
 			if (m_materialsModel[i])
-				m_materialsModel[i]->UpdateNameMaterial.AddListener(
-					std::bind(&Core::Renderer::Mesh::UpdateNameMaterial, this, i, std::placeholders::_1));
+			{
+				int index = m_materialsModel[i]->UpdateNameMaterial.AddListener(
+								std::bind(&Core::Renderer::Mesh::UpdateNameMaterial, this, i, std::placeholders::_1));
+				m_destroyMaterialEvent.push_back(std::bind(&Core::Renderer::Mesh::DeleteMaterialEvent, this, i, index));
+			}
 			else
 			{
 				m_materialsModel[i] = resources.GetMaterial("Default");

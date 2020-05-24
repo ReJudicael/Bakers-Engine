@@ -132,8 +132,10 @@ namespace Editor::Window
 
 		if (m_material)
 		{
-			LockSelectedMaterialButton();;
+			LockSelectedMaterialButton();
+			ImGui::Spacing();
 			ImGui::Separator();
+			ImGui::Spacing();
 			MaterialInspector(m_material);
 		}
 	}

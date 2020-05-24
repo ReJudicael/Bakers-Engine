@@ -46,6 +46,7 @@ namespace Core::Renderer
 		std::vector<std::string>							m_materialsNames;
 
 		Core::SystemManagement::EventSystem<>				m_destroyActorEvent;
+		std::vector<std::function<void()>>					m_destroyMaterialEvent;
 
 		virtual void	OnReset() override;
 		virtual void	OnCopy(IComponent* copyTo) const override;
@@ -56,9 +57,6 @@ namespace Core::Renderer
 	public:
 
 		int		m_vertexCount = 0;
-
-		std::vector<float> m_vertices;
-		std::vector<int> m_indices;
 
 	protected:
 		bool ChangeOneMaterial(std::string newMaterial, int iD);
@@ -180,6 +178,15 @@ namespace Core::Renderer
 		inline void AddMaterial(std::shared_ptr<Resources::Material> material)
 		{
 			m_materialsModel.push_back(material);
+		}
+		/**
+		 * Delete the event attached the material
+		 * @param indexMaterial: the index of the material
+		 * @param indexEvent: the index of the event in the map of EventSystem
+		 */
+		inline void DeleteMaterialEvent(const int indexMaterial, const int indexEvent)
+		{
+			m_materialsModel[indexMaterial]->UpdateNameMaterial.RemoveListener(indexEvent);
 		}
 
 		/**
