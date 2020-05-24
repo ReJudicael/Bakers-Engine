@@ -54,6 +54,11 @@ namespace Resources
 
 	public:
 		/**
+		 * default constructor
+		 */
+		Shader() = default;
+
+		/**
 		 * Value constructor
 		 * @param vertexFilePath: Path to the vertex shader file
 		 * @param fragmentFilePath: Path to the fragment shader file
@@ -91,15 +96,31 @@ namespace Resources
 		 */
 		GLint	GetLocation(std::string uniformName);
 
+		/**
+		 * Save the shader in a file
+		 * @param path: the path of the file
+		 */
+		void SaveShader(const std::string& path);
+
+		/**
+		 * Load the shader in a file
+		 * @param path: the path of the file
+		 */
+		bool LoadShader(const std::string& path);
+
 		inline std::string GetFragName()
 		{
 			return m_fragmentFile;
 		}
 
+		void SetFragName(std::string name);
+
 		inline std::string GetVertName()
 		{
 			return m_vertexFile;
 		}
+
+		void SetVertName(std::string name);
 
 		inline GLuint	GetProgram()
 		{

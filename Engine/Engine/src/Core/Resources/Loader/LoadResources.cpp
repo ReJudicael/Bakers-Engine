@@ -47,8 +47,8 @@ namespace Resources::Loader
 
 	void ResourcesManager::DefaultConstruct()
 	{
-		CreateShader("Default", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("DefaultNoTexture", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultNoTexture.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("Default", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("SkeletDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("NormalMapDefault", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("SkeletNormalMapDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
@@ -104,7 +104,6 @@ namespace Resources::Loader
 	void ResourcesManager::ReplaceMaterial(const std::string& path, const std::string& newPath)
 	{
 		auto it = m_materials.find(path);
-		//m_materials[newPath] = std::make_shared<Resources::Material>();
 		if (it != m_materials.end())
 		{
 			(it->second)->UpdateNameMaterial(newPath);
@@ -124,6 +123,38 @@ namespace Resources::Loader
 		return nullptr;
 	}
 
+	void ResourcesManager::CreateNewShader(const std::string& path)
+	{
+		//shared_ptr<Resources::Shader>
+		auto shader = CreateShader(path.c_str(), "Resources\\Shaders\\DefaultShader.vert", 
+									"Resources\\Shaders\\DefaultNoTexture.frag",
+									Resources::Shader::EShaderHeaderType::LIGHT);
+
+		shader->SaveShader(path);
+	}
+
+	void ResourcesManager::ReplaceShader(const std::string& path, const std::string& newPath)
+	{
+		auto it = m_shaders.find(path);
+		if (it != m_shaders.end())
+		{
+			//(it->second)->UpdateNameMaterial(newPath);
+			std::swap(m_shaders[newPath], it->second);
+			m_shaders.erase(it);
+		}
+	}
+
+	std::shared_ptr<Resources::Shader> ResourcesManager::LoadBShaderShader(const std::string& string)
+	{
+		std::shared_ptr<Resources::Shader> shader = std::make_shared<Resources::Shader>();
+		if (shader->LoadShader(string))
+		{
+			m_shaders.emplace(string, shader);
+			return shader;
+		}
+		return nullptr;
+	}
+
 	Object3DInfo ResourcesManager::Load3DObject(const char* fileName, const bool graphInMulti)
 	{
 		std::string Name = fileName;
@@ -139,7 +170,6 @@ namespace Resources::Loader
 	{
 		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
 
-		//aiImportFile
 		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
 			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
 			| aiProcess_SplitLargeMeshes
@@ -706,5 +736,25 @@ namespace Resources::Loader
 
 		for (const auto& script : scripts)
 			script->LoadLuaScript();
+	}
+
+	void ResourcesManager::SaveMaterial()
+	{
+		for (auto mat : m_materials)
+		{
+			if (mat.first.find(".bmat") != std::string::npos)
+			{
+				std::string nameShader;
+				for (auto shader : m_shaders)
+				{
+					if (shader.second == mat.second->shader)
+					{
+						nameShader = shader.first;
+						break;
+					}
+				}
+				mat.second->SaveMaterial(mat.first, nameShader);
+			}
+		}
 	}
 }

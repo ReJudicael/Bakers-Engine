@@ -39,16 +39,7 @@ namespace Core::Physics
 		root->GetEngine()->GetPhysicsScene()->CreatePhysicsShape(*this);
 
 		CreateActor();
-		/*
-		// create the collider RigidActor as a StaticActor
-		root->GetEngine()->GetPhysicsScene()->CreateRigidStatic(m_pxRigidActor, m_pxShape, GetParent()->GetUpdatedTransform());
-		// init the user data of the actor
-		m_pxRigidActor->userData = static_cast<void*>(dynamic_cast<Core::Datastructure::IComponent*>(
-									dynamic_cast<Core::Physics::Collider*>(this)));
 
-		m_IDFunctionSetTRS = GetParent()->SetAnEventTransformChange(std::bind(&Collider::SetPhysicsTransformParent, this));*/
-		
-		//Core::Datastructure::IRenderable::OnInit();
 		Core::Datastructure::IComponent::OnInit();
 	}
 
@@ -93,21 +84,24 @@ namespace Core::Physics
 		// release teh actor if it's possible
 		if(m_pxRigidActor->isReleasable())
 			m_pxRigidActor->release();
+
+		m_pxRigidActor = nullptr;
 	}
 
 	void Collider::OnDestroy()
 	{
 		Core::Datastructure::IComponent::OnDestroy();
-		/*if (IsStarted())
-		{*/
-			DestroyRigidActor();
-			GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
-		//}
+		DestroyRigidActor();
+		std::list<Core::Physics::RigidBody*> colliders;
+		GetParent()->GetComponentsOfBaseTypeInObject(colliders);
+		if (colliders.size() > 0)
+			// if he find one he init the collider as a RigidBody
+			GetParent()->EraseComponent((*colliders.begin()));
+		GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
 	}
 
 	void Collider::OnReset()
 	{
-		//Core::Datastructure::IRenderable::OnReset();
 		Core::Datastructure::IComponent::OnReset();
 	}
 

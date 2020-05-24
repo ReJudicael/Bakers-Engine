@@ -232,7 +232,7 @@ namespace Resources
 			{
 				if (GetCountMaterials(keyName) > 0)
 					return m_materials[keyName];
-				else if (keyName.find(".bmat"))
+				else if (keyName.find(".bmat") != std::string::npos)
 					return LoadBMatMaterial(keyName);
 				return nullptr;
 			}
@@ -266,7 +266,11 @@ namespace Resources
 			 */
 			inline std::shared_ptr<Shader> GetShader(std::string keyName)
 			{
-				return m_shaders[keyName];
+				if (GetCountShader(keyName) > 0)
+					return m_shaders[keyName];
+				else if (keyName.find(".bshader") != std::string::npos)
+					return LoadBShaderShader(keyName);
+				return nullptr;
 			}
 
 			/**
@@ -351,6 +355,7 @@ namespace Resources
 			 * Replace the material in the materials map
 			 * changing the path
 			 * @param path: the path of the material
+			 * @param newPath: the newPath who replace path
 			 */
 			void ReplaceMaterial(const std::string& path, const std::string& newPath);
 
@@ -359,6 +364,25 @@ namespace Resources
 			 * @param path: the path of the file
 			 */
 			std::shared_ptr<Resources::Material> LoadBMatMaterial(const std::string& path);
+
+			/**
+			 * Create a new Shader as a default shader
+			 * @param path: the path of the Shader
+			 */
+			void CreateNewShader(const std::string& path);
+
+			/**
+			 * Replace the material in the shader map
+			 * changing the path
+			 * @param path: the path of the shader
+			 */
+			void ReplaceShader(const std::string& path, const std::string& newPath);
+
+			/**
+			 * Load a material with a .bmat
+			 * @param path: the path of the file
+			 */
+			std::shared_ptr<Resources::Shader> LoadBShaderShader(const std::string& path);
 
 			/**
 			 * Check if the 3D object hasn't been already load (or try), and load it if not.
@@ -487,6 +511,8 @@ namespace Resources
 			 * Reload lua scripts linked to each scripted component
 			 */
 			void ReloadScripts();
+
+			void SaveMaterial();
 		};
 
 		/**

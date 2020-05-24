@@ -133,6 +133,8 @@ namespace Core
 			{
 				GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
 			}
+			if (m_pxRigidBody->isSleeping())
+				return;
 
 			physx::PxVec3 pos = m_pxRigidBody->getGlobalPose().p;
 			physx::PxQuat rot = m_pxRigidBody->getGlobalPose().q;
@@ -151,6 +153,7 @@ namespace Core
 				return;
 			}
 
+			m_pxRigidBody->wakeUp();
 			Maths::Vec3 vec = GetParent()->GetGlobalPos();
 			physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
 			Maths::Quat quat = GetParent()->GetGlobalRot();

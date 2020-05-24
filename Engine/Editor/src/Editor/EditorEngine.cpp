@@ -432,6 +432,7 @@ namespace Editor
 		std::ofstream o(m_currScene + ".json");
 		o << std::setw(4) << m_savedScene << std::endl;
 		m_navMesh->SaveNavMesh(m_currScene);
+		GetResourcesManager()->SaveMaterial();
 	}
 
 	void EditorEngine::ReloadScene()

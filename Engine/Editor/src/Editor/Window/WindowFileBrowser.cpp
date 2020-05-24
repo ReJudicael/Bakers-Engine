@@ -71,6 +71,7 @@ namespace Editor::Window
 		// for the resources manager replace the material in his map
 		// with the new path create
 		RenameMaterial(m_fs->GetLocalAbsolute(itemName));
+		RenameShader(m_fs->GetLocalAbsolute(itemName));
 		m_renamePath.clear();
 		m_scrollSetted = false;
 		m_canRename = false;
@@ -82,7 +83,22 @@ namespace Editor::Window
 
 		// check if the new name have ".bmat"
 		// and if the last have this too
-		if (str.find(".bmat") && itemName.find(".bmat"))
+		if (str.find(".bmat") != std::string::npos && itemName.find(".bmat") != std::string::npos)
+		{
+			// get the new local path
+			std::string newPath = itemName.substr(0, itemName.find_last_of("\\") + 1) + m_name;
+			// replace the material in the map
+			GetEngine()->GetResourcesManager()->ReplaceMaterial(itemName, newPath);
+		}
+	}
+
+	void WindowFileBrowser::RenameShader(const std::string& itemName)
+	{
+		const std::string& str{ m_name };
+
+		// check if the new name have ".bmat"
+		// and if the last have this too
+		if (str.find(".bshader") != std::string::npos && itemName.find(".bshader") != std::string::npos)
 		{
 			// get the new local path
 			std::string newPath = itemName.substr(0, itemName.find_last_of("\\") + 1) + m_name;
@@ -132,6 +148,16 @@ namespace Editor::Window
 				// create a new material in the resources manager with the local path of the new file created
 				GetEngine()->GetResourcesManager()->CreateNewMaterial(path);
 				// this new material file is the one who need to be rename
+				m_renamePath = path;
+			}
+
+			if (ImGui::MenuItem("Shader"))
+			{
+				// create a new shader file
+				const std::string& path = m_fs->CreateFile("NewShader", ".bshader");
+				// create a new shader in the resources manager with the local path of the new file created
+				//GetEngine()->GetResourcesManager()->CreateNewShader(path);
+				// this new shader file is the one who need to be rename
 				m_renamePath = path;
 			}
 
@@ -343,7 +369,7 @@ namespace Editor::Window
 					Resources::Loader::ResourcesManager* resources = GetEngine()->GetResourcesManager();
 
 					// check if the file is cliked and if it's a .bmat
-					if (ImGui::IsItemClicked() && n.find(".bmat"))
+					if (ImGui::IsItemClicked() && n.find(".bmat") != std::string::npos)
 					{
 						// try to load if it's not
 						GetEngine()->materialSelected = resources->LoadBMatMaterial(n);
@@ -355,8 +381,10 @@ namespace Editor::Window
 						// diplay materials
 						for (auto i{ 0 }; i < info->materialsName.size(); i++)
 						{
-							int index = info->materialsName[i].find_last_of('\\');
-							std::string name = info->materialsName[i].substr(index + 1, n.size());
+							size_t index = info->materialsName[i].find_last_of('\\');
+							std::string name = info->materialsName[i];
+							if(index != std::string::npos)
+								name = info->materialsName[i].substr(index + 1, n.size());
 							ShowItem(name);
 
 							if (ImGui::IsItemClicked())
