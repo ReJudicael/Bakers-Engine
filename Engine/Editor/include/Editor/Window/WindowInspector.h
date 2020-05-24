@@ -37,7 +37,7 @@ namespace Editor::Window
 		/**
 		 * Inspector object
 		 */
-		Core::Datastructure::Object* m_inspectorObject{ nullptr };
+		Core::Datastructure::Object* m_object{ nullptr };
 
 		/**
 		 * Wheter the game object is locked or not
@@ -139,7 +139,13 @@ namespace Editor::Window
 		 */
 		void DrawProperty(rttr::property prop, rttr::instance component);
 
-		bool DisplayVectorDragAndDrop(rttr::property prop, std::vector<std::string> & strs, unsigned int index);
+		/**
+		 * Display a string property in window with drag and drop option
+		 * @param prop: Property to draw
+		 * @param str: Value of property
+		 * @return True if the drop was successful, false otherwise
+		 */
+		bool DisplayStringDD(rttr::property prop, std::string& str);
 
 		/**
 		 * Display the properties of the given instance
@@ -177,7 +183,5 @@ namespace Editor::Window
 		 * Draw elements in window
 		 */
 		void Tick() override;
-
-		void DrawShader(std::shared_ptr<Resources::Material>& mat);
 	};
 }

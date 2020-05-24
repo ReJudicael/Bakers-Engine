@@ -190,6 +190,12 @@ namespace Core::SystemManagement
 		std::string GetFilename(const Path& path) const noexcept;
 
 		/**
+		 * Get the name of the file at the given path
+		 * @param path: Path to be the file from which the name is get
+		 */
+		std::string GetFilenameStr(const std::string& fileName) const noexcept;
+
+		/**
 		 * Get the extension of the given path
 		 * @param path: Path to the file from which the extension is get
 		 * @return Extension of the given file with a dot
@@ -201,7 +207,21 @@ namespace Core::SystemManagement
 		 * @param itemPath: Path to the file from which the extension is get
 		 * @return Extension of the given file without a dot
 		 */
-		std::string GetExtensionWithoutDot(const std::string& itemPath) const noexcept;
+		std::string GetExtensionWithoutDotStr(const std::string& itemPath) const noexcept;
+
+		/**
+		 * Whether the extension is an image extension or not
+		 * @param extensionWithoutDot: Extension without dot
+		 * @return True if the extension is an image extension, false otherwise
+		 */
+		bool IsImageExtension(const std::string& extWithoutDot) const noexcept;
+
+		/**
+		 * Whether the extension is an object extension or not
+		 * @param extensionWithoutDot: Extension without dot
+		 * @return True if the extension is an object extension, false otherwise
+		 */
+		bool IsObjectExtension(const std::string& extWithoutDot) const noexcept;
 
 		/**
 		 * Get the parent directory of the given path
@@ -286,14 +306,15 @@ namespace Core::SystemManagement
 		 * @param extWithDot: File extension with dot
 		 * @return Path of the new file
 		 */
-		std::string CreateFile(const std::string& fileNameWithoutExt = "New File", const std::string& extWithDot = "") noexcept;
+		std::string CreateFile(const std::string& fileNameWithoutExt = "New File", const std::string& extWithoutDot = "") noexcept;
 
 		/**
 		 * Rename file or directory
 		 * @param itemPath: Path to the file or directory to rename
 		 * @param newName: New name for the given file or directory
+		 * @return True if the file was renamed, false otherwise
 		 */
-		void RenameContent(const std::string& itemPath, char newName[64]) noexcept;
+		bool RenameContent(const std::string& itemPath, char newName[64]) noexcept;
 
 		/**
 		 * Delete file or directory
@@ -428,15 +449,31 @@ namespace Core::SystemManagement
 		return path.filename().string();
 	}
 
+	inline std::string FileSystem::GetFilenameStr(const std::string& fileName) const noexcept
+	{
+		return fileName.substr(fileName.find_last_of('\\') + 1, fileName.size());
+	}
+
 	inline std::string FileSystem::GetExtension(const Path& path) const noexcept
 	{
 		return path.extension().string();
 	}
 
-	inline std::string FileSystem::GetExtensionWithoutDot(const std::string& itemPath) const noexcept
+	inline std::string FileSystem::GetExtensionWithoutDotStr(const std::string& itemPath) const noexcept
 	{
 		size_t offset{ itemPath.find_last_of(".") };
 		return itemPath.substr(offset + 1, itemPath.size() - offset);
+	}
+
+	inline bool FileSystem::IsImageExtension(const std::string& extWithoutDot) const noexcept
+	{
+		return extWithoutDot == "jpeg" || extWithoutDot == "jpg" || extWithoutDot == "png" ||
+			extWithoutDot == "tga" || extWithoutDot == "bmp";
+	}
+
+	inline bool FileSystem::IsObjectExtension(const std::string& extWithoutDot) const noexcept
+	{
+		return extWithoutDot == "obj" || extWithoutDot == "fbx" || extWithoutDot == "dae";
 	}
 
 	inline std::string FileSystem::GetParentPath(const Path& path) const noexcept
@@ -541,9 +578,9 @@ namespace Core::SystemManagement
 		system(cmd.c_str());
 	}
 
-	inline std::string FileSystem::CreateFile(const std::string& fileNameWithoutExt, const std::string& extWithDot) noexcept
+	inline std::string FileSystem::CreateFile(const std::string& fileNameWithoutExt, const std::string& extWithoutDot) noexcept
 	{
-		std::string filePath{ GetLocalAbsolute(fileNameWithoutExt + extWithDot) };
+		std::string filePath{ GetLocalAbsolute(fileNameWithoutExt + extWithoutDot) };
 		if (!Exists(filePath))
 		{
 			CreateFileCMD(filePath);
@@ -552,7 +589,7 @@ namespace Core::SystemManagement
 		{
 			for (int i{ 0 }; true; ++i)
 			{
-				std::string nameNewFile = fileNameWithoutExt + " (" + std::to_string(i) + ")" + extWithDot;
+				std::string nameNewFile = fileNameWithoutExt + " (" + std::to_string(i) + ")." + extWithoutDot;
 				filePath = GetLocalAbsolute(nameNewFile);
 
 				if (!Exists(filePath))
@@ -567,7 +604,7 @@ namespace Core::SystemManagement
 		return filePath;
 	}
 
-	inline void FileSystem::RenameContent(const std::string& itemPath, char newName[64]) noexcept
+	inline bool FileSystem::RenameContent(const std::string& itemPath, char newName[64]) noexcept
 	{
 		bool isValidName = true;
 		constexpr char forbiddenChar[10] = "<>:\"/\\|?*";
@@ -588,7 +625,10 @@ namespace Core::SystemManagement
 		{
 			std::filesystem::rename(itemPath, newNamePath);
 			m_refreshContentsInCurrentPath = true;
+			return true;
 		}
+
+		return false;
 	}
 
 	inline void FileSystem::DeleteContent(const std::string& itemPath) noexcept

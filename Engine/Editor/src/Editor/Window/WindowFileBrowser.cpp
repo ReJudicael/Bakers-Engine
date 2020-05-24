@@ -67,28 +67,18 @@ namespace Editor::Window
 
 	void WindowFileBrowser::ApplyNameToItem(const std::string& itemName)
 	{
-		m_fs->RenameContent(m_fs->GetLocalAbsolute(itemName), m_name);
-		// for the resources manager replace the material in his map
-		// with the new path create
-		RenameMaterial(m_fs->GetLocalAbsolute(itemName));
+		if (m_fs->RenameContent(m_fs->GetLocalAbsolute(itemName), m_name))
+			RenameMaterial(m_fs->GetLocalAbsolute(itemName));
 		m_renamePath.clear();
 		m_scrollSetted = false;
 		m_canRename = false;
 	}
 
-	void WindowFileBrowser::RenameMaterial(const std::string& itemName)
+	void WindowFileBrowser::RenameMaterial(const std::string& itemPath)
 	{
-		const std::string& str{ m_name };
-
-		// check if the new name have ".bmat"
-		// and if the last have this too
-		if (str.find(".bmat") && itemName.find(".bmat"))
-		{
-			// get the new local path
-			std::string newPath = itemName.substr(0, itemName.find_last_of("\\") + 1) + m_name;
-			// replace the material in the map
-			GetEngine()->GetResourcesManager()->ReplaceMaterial(itemName, newPath);
-		}
+		const std::string& newNamePath = m_fs->GetLocalAbsolute(m_name);
+		if (m_fs->GetExtensionWithoutDotStr(newNamePath) == "bmat")
+			GetEngine()->GetResourcesManager()->ReplaceMaterial(itemPath, newNamePath);
 	}
 
 	void WindowFileBrowser::RenameContent(const std::string& itemName)
@@ -120,18 +110,15 @@ namespace Editor::Window
 
 			if (ImGui::MenuItem("Script"))
 			{
-				const std::string& path = m_fs->CreateFile("Script", ".lua");
+				const std::string& path = m_fs->CreateFile("Script", "lua");
 				Core::Datastructure::ScriptedComponent::CreateScript(path);
 				m_renamePath = path;
 			}
 
 			if (ImGui::MenuItem("Material"))
 			{
-				// create a new material file
-				const std::string& path = m_fs->CreateFile("NewMaterial", ".bmat");
-				// create a new material in the resources manager with the local path of the new file created
+				const std::string& path = m_fs->CreateFile("Material", "bmat");
 				GetEngine()->GetResourcesManager()->CreateNewMaterial(path);
-				// this new material file is the one who need to be rename
 				m_renamePath = path;
 			}
 
@@ -205,9 +192,12 @@ namespace Editor::Window
 			else if (m_fs->IsDirectory(itemPath))
 				ext = "folder";
 			else
-				ext = m_fs->GetExtensionWithoutDot(itemPath);
+				ext = m_fs->GetExtensionWithoutDotStr(itemPath);
 
-			const std::string iconsPath{ "Resources\\Images\\FileBrowserIcons\\icon_" + ext + ".png" };
+			std::string iconsPath{ itemPath };
+			if (!m_fs->IsImageExtension(ext))
+				iconsPath = "Resources\\Images\\FileBrowserIcons\\icon_" + ext + ".png";
+
 			std::shared_ptr<Resources::Texture> icon;
 			if (m_fs->Exists(iconsPath))
 				GetEngine()->GetResourcesManager()->LoadTexture(iconsPath, icon);
@@ -254,12 +244,13 @@ namespace Editor::Window
 
 	void WindowFileBrowser::DragDropSourceItem(const std::string& itemName, const std::string& itemPath)
 	{
-		if (itemName != ".." && ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+		if (itemName != ".." && !m_canRename && ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 		{
 			ImGui::ImageUV(GetIcon(itemPath));
 			ImGui::SameLine();
 			ImGui::Text(itemName.c_str());
-			ImGui::SetDragDropPayload("DRAGDROP_PATH", itemPath.c_str(), itemPath.size() + 1, ImGuiCond_Once);
+			ImGui::SetDragDropPayload(m_fs->GetExtensionWithoutDotStr(itemPath) == "bmat" ? "DRAGDROP_MAT" : "DRAGDROP_PATH",
+				itemPath.c_str(), itemPath.size() + 1, ImGuiCond_Once);
 			ImGui::EndDragDropSource();
 		}
 	}
@@ -271,10 +262,10 @@ namespace Editor::Window
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
 			{
 				const char* path{ reinterpret_cast<const char*>(payload->Data) };
-
-				m_fs->MovePath(path, itemPath.c_str());
-				ImGui::EndDragDropTarget();
+				if (m_fs->Exists(path));
+					m_fs->MovePath(path, itemPath.c_str());
 			}
+			ImGui::EndDragDropTarget();
 		}
 	}
 
@@ -285,9 +276,7 @@ namespace Editor::Window
 		{
 			ImGui::ImageButtonUV(GetIcon(itemPath), { m_contentPathSize - 20.f });
 			if (m_renamePath == itemPath)
-			{
 				RenameContent(itemName);
-			}
 			else
 				ImGui::TextWrapped(itemName.c_str());
 		}
@@ -298,8 +287,36 @@ namespace Editor::Window
 
 		PopupMenuOnDirectoryContentItem(itemPath);
 
+		if (ImGui::IsItemClicked() && m_fs->GetExtensionWithoutDotStr(itemPath) == "bmat")
+			GetEngine()->materialSelected = GetEngine()->GetResourcesManager()->LoadBMatMaterial(itemPath);
+
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			m_fs->OpenContent(itemPath);
+	}
+
+	void WindowFileBrowser::ShowVirtualMaterial(const std::string& materialPath)
+	{
+		const unsigned int materialIcon = GetIcon("mat");
+		const std::string& fileName = m_fs->GetFilenameStr(materialPath);
+
+		ImGui::BeginGroup();
+		{
+			ImGui::ImageButtonUV(materialIcon, { m_contentPathSize - 20.f });
+			ImGui::TextWrapped(fileName.c_str());
+		}
+		ImGui::EndGroup();
+
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+		{
+			ImGui::ImageUV(materialIcon);
+			ImGui::SameLine();
+			ImGui::Text(fileName.c_str());
+			ImGui::SetDragDropPayload("DRAGDROP_MAT", materialPath.c_str(), materialPath.size() + 1, ImGuiCond_Once);
+			ImGui::EndDragDropSource();
+		}
+
+		if (ImGui::IsItemClicked())
+			GetEngine()->materialSelected = GetEngine()->GetResourcesManager()->GetMaterial(materialPath);
 	}
 
 	void WindowFileBrowser::ShowDirectoryContent(std::vector<std::filesystem::path> contents)
@@ -328,7 +345,7 @@ namespace Editor::Window
 						break;
 					}
 
-					itemName = contents[i].filename().string();
+					itemName = m_fs->GetFilename(contents[i]);
 
 					if (itemName != ".." && (m_fs->FileHasExcludedExtension(itemName, excludedExtensions) ||
 						!m_pathFilter.PassFilter(itemName.c_str())))
@@ -337,38 +354,24 @@ namespace Editor::Window
 					ImGui::TableNextCell();
 					ImGui::PushID(static_cast<int>(i));
 					ShowItem(itemName);
+					ImGui::PopID();
 
-					std::string n = m_fs->GetLocalAbsolute(itemName);
-					std::shared_ptr<Resources::Loader::Object3DInfo> info = GetEngine()->GetObject3DInfo(n);
-					Resources::Loader::ResourcesManager* resources = GetEngine()->GetResourcesManager();
+					if (itemName != "..")
+						++nbItems;
 
-					// check if the file is cliked and if it's a .bmat
-					if (ImGui::IsItemClicked() && n.find(".bmat"))
+					if (m_fs->IsObjectExtension(m_fs->GetExtensionWithoutDotStr(itemName)))
 					{
-						// try to load if it's not
-						GetEngine()->materialSelected = resources->LoadBMatMaterial(n);
-					}
-
-
-					if (info)
-					{
-						// diplay materials
-						for (auto i{ 0 }; i < info->materialsName.size(); i++)
+						if (const auto& info = GetEngine()->GetObject3DInfo(m_fs->GetLocalAbsolute(itemName)))
 						{
-							int index = info->materialsName[i].find_last_of('\\');
-							std::string name = info->materialsName[i].substr(index + 1, n.size());
-							ShowItem(name);
-
-							if (ImGui::IsItemClicked())
+							for (size_t i{ 0 }; i < info->materialsName.size(); ++i)
 							{
-								GetEngine()->materialSelected = resources->GetMaterial(info->materialsName[i]);
+								ImGui::TableNextCell();
+								ImGui::PushID(static_cast<int>(i));
+								ShowVirtualMaterial(info->materialsName[i]);
+								ImGui::PopID();
 							}
 						}
 					}
-
-					ImGui::PopID();
-					if (itemName != "..")
-						++nbItems;
 				}
 				ImGui::EndTable();
 			}
@@ -421,8 +424,8 @@ namespace Editor::Window
 		ImVec2 regionSize{ ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y - 2 };
 		ImGui::BeginChild("## ShowDirectoryTree", regionSize);
 		{
-			ShowAllFoldersRecursive(tdp);
 			PopupMenuOnNavigationPanelWindow();
+			ShowAllFoldersRecursive(tdp);
 		}
 		ImGui::EndChild();
 	}

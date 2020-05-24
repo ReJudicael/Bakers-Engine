@@ -178,6 +178,11 @@ namespace Editor::Window
 		void ShowDirectoryContent(std::vector<std::filesystem::path> contents);
 
 		/**
+		 * Show virtual materials
+		 */
+		void ShowVirtualMaterial(const std::string& materialName);
+
+		/**
 		 * Show all folders of a path in recursive
 		 * @param path: Folder path
 		 */

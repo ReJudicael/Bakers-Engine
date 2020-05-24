@@ -9,6 +9,7 @@
 #include "WindowFileBrowser.h"
 #include "WindowConsole.h"
 #include "WindowInspector.h"
+#include "WindowMaterial.h"
 #include "WindowViewport.h"
 #include "WindowScene.h"
 #include "WindowHierarchy.h"
@@ -96,13 +97,13 @@ namespace Editor
 
 		canvas->Add<Editor::Window::WindowHierarchy>();
 		canvas->Add<Editor::Window::WindowInspector>();
-		canvas->Add<Editor::Window::WindowInspector>();
+		canvas->Add<Editor::Window::WindowMaterial>();
 		canvas->Add<Editor::Window::WindowViewport>();
 		canvas->Add<Editor::Window::WindowScene>();
 		canvas->Add<Editor::Window::WindowConsole>();
 		canvas->Add<Editor::Window::WindowFileBrowser>();
 		canvas->Add<Editor::Window::WindowProfiler>(false);
-		
+
 		INIT_TRACY_GL_IMAGE(320, 180)
 
 		return 0;

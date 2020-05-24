@@ -297,6 +297,7 @@
     <ClCompile Include="src\Editor\Window\WindowFileBrowser.cpp" />
     <ClCompile Include="src\Editor\Window\WindowHierarchy.cpp" />
     <ClCompile Include="src\Editor\Window\WindowInspector.cpp" />
+    <ClCompile Include="src\Editor\Window\WindowMaterial.cpp" />
     <ClCompile Include="src\Editor\Window\WindowProfiler.cpp" />
     <ClCompile Include="src\Editor\Window\WindowScene.cpp" />
     <ClCompile Include="src\Editor\Window\WindowViewport.cpp" />
@@ -334,6 +335,7 @@
     <ClInclude Include="include\Editor\Window\WindowFileBrowser.h" />
     <ClInclude Include="include\Editor\Window\WindowHierarchy.h" />
     <ClInclude Include="include\Editor\Window\WindowInspector.h" />
+    <ClInclude Include="include\Editor\Window\WindowMaterial.h" />
     <ClInclude Include="include\Editor\Window\WindowProfiler.h" />
     <ClInclude Include="include\Editor\Window\WindowScene.h" />
     <ClInclude Include="include\Editor\Window\WindowViewport.h" />

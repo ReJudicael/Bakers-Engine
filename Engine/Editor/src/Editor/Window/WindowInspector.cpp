@@ -152,7 +152,6 @@ namespace Editor::Window
 	void WindowInspector::DrawProperty(rttr::property prop, rttr::instance component)
 	{
 		const rttr::type propType{ prop.get_type() };
-		const rttr::variant variantVec{ prop.get_value(component) };
 		rttr::variant needDisplay{ prop.get_metadata(MetaData_Type::SHOW_IN_EDITOR) };
 		if (needDisplay.is_valid())
 		{
@@ -229,39 +228,23 @@ namespace Editor::Window
 			if (ImGui::RColorEdit4(prop.get_name().to_string().c_str(), c.rgba) && !prop.is_readonly())
 				prop.set_value(component, c);
 		}
-		else if (variantVec.is_type<std::vector<std::string>>())
+		else if (propType == rttr::type::get<std::vector<std::string>>())
 		{
-			std::vector<std::string> vector = variantVec.get_value<std::vector<std::string>>();
-			// if after the for toChange is true the vector need to be set
-			bool toChange{ false };
-			// display all the value of the vector
-			for (auto i = 0; i < vector.size(); i++)
+			std::vector<std::string> vectorStr = prop.get_value(component).get_value<std::vector<std::string>>();
+			bool needToUpdate{ false };
+			for (size_t i{ 0 }; i < vectorStr.size(); i++)
 			{
-				// if one of the value has been change the vector need to be set
-				if (DisplayVectorDragAndDrop(prop, vector, i))
-					toChange = true;
+				if (DisplayStringDD(prop, vectorStr[i]))
+					needToUpdate = true;
 			}
-			// if the vector has been changed set the value
-			if(toChange)
-				prop.set_value(component, vector);
+			if(needToUpdate)
+				prop.set_value(component, vectorStr);
 		}
 		else if (propType == rttr::type::get<std::string>())
 		{
-			const std::string str{ prop.get_value(component).get_value<std::string>() };
-			ImGui::RButtonDD(prop.get_name().to_string().c_str(),
-				!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
-			if (!str.empty())
-				ImGui::HelpMarkerItem(str.c_str());
-
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
-				{
-					const std::string& path{ reinterpret_cast<const char*>(payload->Data) };
-					prop.set_value(component, path);
-					ImGui::EndDragDropTarget();
-				}
-			}
+			std::string str{ prop.get_value(component).get_value<std::string>() };
+			if (DisplayStringDD(prop, str))
+				prop.set_value(component, str);
 		}
 		else if (propType.is_class())
 		{
@@ -279,14 +262,9 @@ namespace Editor::Window
 		}
 	}
 
-	bool WindowInspector::DisplayVectorDragAndDrop(rttr::property prop, std::vector<std::string>& strs, unsigned int index)
+	bool WindowInspector::DisplayStringDD(rttr::property prop, std::string& str)
 	{
-		// the name int ht evector
-		const std::string str{ strs[index] };
-		// the name of the property
-		std::string nameprop{ prop.get_name().to_string() };
-		// put the indexof the material in the name
-		ImGui::RButtonDD((prop.get_name().to_string() + std::to_string(index)).c_str(),
+		ImGui::RButtonDD(prop.get_name().to_string().c_str(),
 			!str.empty() ? (ICON_FA_FILE "  " + std::filesystem::path(str).filename().string()).c_str() : "");
 		if (!str.empty())
 			ImGui::HelpMarkerItem(str.c_str());
@@ -295,15 +273,21 @@ namespace Editor::Window
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
 			{
-				const std::string& path{ reinterpret_cast<const char*>(payload->Data) };
-				// if there is a drop change the value in the vector
-				strs[index] = path;
+				const std::string& data = reinterpret_cast<const char*>(payload->Data);
+				str = data;
 				ImGui::EndDragDropTarget();
-				// return true because the vector has been changed
 				return true;
 			}
+			else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_MAT", ImGuiDragDropFlags_SourceAllowNullID))
+			{
+				const std::string& data = reinterpret_cast<const char*>(payload->Data);
+				str = data;
+				ImGui::EndDragDropTarget();
+				return true;
+			}
+			ImGui::EndDragDropTarget();
 		}
-		// nothing changed in the vector
+
 		return false;
 	}
 
@@ -362,7 +346,7 @@ namespace Editor::Window
 		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.88f, 0.70f, 0.17f, 1.00f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.88f, 0.70f, 0.17f, 0.70f });
 
-		ImGui::Indent(ImGui::GetWindowContentRegionWidth() * ((1 - 0.7f) / 2));
+		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionWidth() * ((1 - 0.7f) / 2));
 		if (ImGui::BeginComboButton("Add component", { ImGui::GetWindowContentRegionWidth() * 0.7f, 0 }))
 		{
 			rttr::array_range possibleComponents{ rttr::type::get<Core::Datastructure::ComponentBase>().get_derived_classes() };
@@ -421,41 +405,14 @@ namespace Editor::Window
 
 	void WindowInspector::Tick()
 	{
-		if (!m_isLocked && m_inspectorObject != GetEngine()->objectSelected)
-			m_inspectorObject = GetEngine()->objectSelected;
+		if (!m_isLocked && m_object != GetEngine()->objectSelected)
+			m_object = GetEngine()->objectSelected;
 
-		if (m_inspectorObject)
+		if (m_object)
 		{
 			LockSelectedObjectButton();
 			ImGui::SameLine();
-			ObjectInspector(m_inspectorObject);
-		}
-	}
-
-	void WindowInspector::DrawShader(std::shared_ptr<Resources::Material>& mat)
-	{
-		const Resources::unorderedmapShader& shader = GetEngine()->GetResourcesManager()->GetShaderMap();
-
-		std::string nameShader;
-		for (auto it = shader.begin();
-			it != shader.end(); ++it)
-		{
-			if (it->second == mat->shader)
-				nameShader = it->first;
-		}
-
-		if (ImGui::BeginCombo("Type Shader", nameShader.c_str()))
-		{
-			for (auto it = shader.begin();
-				it != shader.end(); ++it)
-			{
-				bool is;
-				if (ImGui::Selectable(it->first.c_str()))
-				{
-					mat->UpdateMaterialShader(it->second);
-				}
-			}
-			ImGui::EndCombo();
+			ObjectInspector(m_object);
 		}
 	}
 }

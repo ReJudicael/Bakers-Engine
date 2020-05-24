@@ -30,7 +30,7 @@ namespace ImGui
     IMGUI_API bool ImageButtonUV(unsigned int user_texture_id, const ImVec2& size = { 16.f, 16.f });
     IMGUI_API bool ImageButtonUVWithText(unsigned int user_texture_id, const char* label, const ImVec2& icon_size = { 16.f, 16.f });
 
-    IMGUI_API bool CollapsingHeaderWithImageUV(unsigned int user_texture_id, const char* label, ImGuiTreeNodeFlags flags);
+    IMGUI_API bool CollapsingHeaderWithImageUV(unsigned int user_texture_id, const char* label, ImGuiTreeNodeFlags flags = 0);
 
     IMGUI_API bool BeginComboButton(const char* label, const ImVec2& size_arg = { 0.f, 0.f });
 

@@ -162,9 +162,8 @@ namespace Editor::Window
 					dObject->SetParent(object);
 				else
 					BAKERS_LOG_WARNING("Hierarchy: Can't set a GameObject in child of child");
-
-				ImGui::EndDragDropTarget();
 			}
+			ImGui::EndDragDropTarget();
 		}
 	}
 
