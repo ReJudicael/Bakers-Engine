@@ -95,8 +95,9 @@ namespace Core::Physics
 		std::list<Core::Physics::RigidBody*> colliders;
 		GetParent()->GetComponentsOfBaseTypeInObject(colliders);
 		if (colliders.size() > 0)
-			// if he find one he init the collider as a RigidBody
-			GetParent()->EraseComponent((*colliders.begin()));
+			(*colliders.begin())->ToNull();
+		// if he find one he init the collider as a RigidBody
+	//    GetParent()->EraseComponent((*colliders.begin()));*/
 		GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
 	}
 

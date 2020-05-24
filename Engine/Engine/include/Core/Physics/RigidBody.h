@@ -202,6 +202,7 @@ namespace Core
 			 */
 			virtual bool GetUseGravity() const;
 
+			void ToNull() { m_pxRigidBody = nullptr; }
 
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IUpdatable)
 		};
