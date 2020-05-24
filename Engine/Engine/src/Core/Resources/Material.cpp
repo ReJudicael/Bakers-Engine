@@ -373,14 +373,16 @@ namespace Resources
 				textures.resize(1);
 				if (data["BaseTexture"] != "nothing")
 					resources->LoadTexture(data["BaseTexture"], textures[0]);
-				textures[0] = std::make_shared<Resources::Texture>();
+				else
+					textures[0] = std::make_shared<Resources::Texture>();
 			}
 			if (!data["NormalMap"].is_null())
 			{
 				textures.resize(2);
-				if(data["NormalMap"] != "nothing")
+				if (data["NormalMap"] != "nothing")
 					resources->LoadTexture(data["NormalMap"], textures[1]);
-				textures[1] = std::make_shared<Resources::Texture>();
+				else
+					textures[1] = std::make_shared<Resources::Texture>();
 			}
 
 			specularColor.r = data["Specular"]["r"];

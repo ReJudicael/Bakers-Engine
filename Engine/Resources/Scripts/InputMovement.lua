@@ -1,6 +1,6 @@
 --Move object with WASD inputs
 
-speed = 100;
+speed = 1;
 
 function Start()
 	
@@ -10,16 +10,16 @@ function Update(deltaTime)
 	move = Vec3.new();
 
 	if (Input:IsKeyDown(Key.W)) then
-		move.z = 1;
+		move = move + object.Transform:Forward();
 	end
 	if (Input:IsKeyDown(Key.A)) then
-		move.x = 1
+		move = move + object.Transform:Right();
 	end
 	if (Input:IsKeyDown(Key.S)) then
-		move.z = -1
+		move = move - object.Transform:Forward();
 	end
 	if (Input:IsKeyDown(Key.D)) then
-		move.x = -1
+		move = move - object.Transform:Right();
 	end
 	
 	

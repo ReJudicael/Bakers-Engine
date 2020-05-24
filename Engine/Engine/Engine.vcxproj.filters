@@ -228,6 +228,9 @@
     <ClCompile Include="src\Core\Animation\SkeletalMesh.cpp">
       <Filter>Source Files\Core\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Renderer\ParticleSystem.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\Physics\BoxCollider.cpp">
       <Filter>Source Files\Core\Physics</Filter>
     </ClCompile>
@@ -263,6 +266,12 @@
     </ClCompile>
     <ClCompile Include="src\Core\Audio\AudioClip.cpp">
       <Filter>Source Files\Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Switch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Door.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -488,6 +497,9 @@
     <ClInclude Include="include\Core\Animation\SkeletalMesh.h">
       <Filter>Header Files\Core\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Renderer\ParticleSystem.h">
+      <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="include\Core\Resources\Animation\AnimationVertexData.h">
       <Filter>Header Files\Core\Resources\Animation</Filter>
     </ClInclude>
@@ -499,6 +511,12 @@
     </ClInclude>
     <ClInclude Include="include\Core\Audio\AudioClip.h">
       <Filter>Header Files\Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Switch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Door.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

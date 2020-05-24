@@ -108,6 +108,37 @@ namespace Core::Maths
 			return !operator==(c);
 		}
 
+		/**
+		 * Computes the sum of the components of two colors
+		 * @param c: Color to add
+		 * @return The result of the sum
+		 */
+		inline constexpr Color		operator+ (const Color& c) const noexcept
+		{
+			Color	newCol{ };
+			newCol.r = r + c.r;
+			newCol.g = g + c.g;
+			newCol.b = b + c.b;
+			newCol.a = a + c.a;
+			return newCol;
+		}
+
+		/**
+		 * Computes the multiplication of the components
+		 * of the current color by the given scalar
+		 * @param f: Scalar to multiply by
+		 * @return The result of the multiplication
+		 */
+		inline constexpr Color		operator* (const float& f) const noexcept
+		{
+			Color	newCol{ };
+			newCol.r = r * f;
+			newCol.g = g * f;
+			newCol.b = b * f;
+			newCol.a = a * f;
+			return newCol;
+		}
+
 		inline	std::string ToString() const noexcept
 		{
 			return std::to_string(r) + " " + std::to_string(g) + " " + std::to_string(b) + " " + std::to_string(a);

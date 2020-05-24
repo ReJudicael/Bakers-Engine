@@ -54,6 +54,7 @@ namespace Resources::Loader
 		CreateShader("SkeletNormalMapDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("Wireframe", "Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
 		CreateShader("Skybox", "Resources\\Shaders\\SkyboxShader.vert", "Resources\\Shaders\\SkyboxShader.frag");
+		CreateShader("Particle", "Resources\\Shaders\\BillboardShader.vert", "Resources\\Shaders\\ParticleShader.frag");
 
 		Shader SkeletalShadow("Resources\\Shaders\\SkeletalShadow.vert", "Resources\\Shaders\\SkeletalShadow.frag");
 		m_shaders.emplace("SkeletalShadow", std::make_shared<Shader>(SkeletalShadow));

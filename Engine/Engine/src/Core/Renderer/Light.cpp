@@ -140,7 +140,7 @@ namespace Core::Renderer
         else
         {
             Datastructure::Transform view;
-            view.SetLocalPos(GetDirection() * 10.f);
+            view.SetLocalPos(GetDirection() * 15.f);
             view.SetLocalRot(m_parent->GetRot());
             return view.GetLocalTrs().Inversed();
         }
