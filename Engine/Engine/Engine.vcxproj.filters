@@ -267,6 +267,12 @@
     <ClCompile Include="src\Core\Audio\AudioClip.cpp">
       <Filter>Source Files\Core\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\Switch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Door.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -505,6 +511,12 @@
     </ClInclude>
     <ClInclude Include="include\Core\Audio\AudioClip.h">
       <Filter>Header Files\Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Switch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Door.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,7 @@ namespace Core::Renderer
 			std::shared_ptr<Resources::Shader> GetShader() { return mesh->GetMainMaterial()->shader; };
 		};
 
+		bool m_active{ true };
 		std::vector<Particle> m_particles;
 		int m_maxParticlesNb{ 10 };
 		float m_particlesLifeTime{ 2.f };
@@ -124,6 +125,12 @@ namespace Core::Renderer
 		 * @param deltaTime: Time elapsed between two frames, sent to Lua Update
 		 */
 		virtual void OnUpdate(float deltaTime) override;
+
+		/**
+		 * Activate or deactivate the particle system
+		 * @param active: True to activate the particles, false to deactive them
+		 */
+		void Activate(bool active = true) { m_active = active; };
 
 		REGISTER_CLASS(ComponentUpdatable, IRenderable)
 	};

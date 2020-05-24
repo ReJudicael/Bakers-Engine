@@ -49,7 +49,7 @@
                         "Type": {
                             "Name": "Type",
                             "Type": "Skybox type",
-                            "Value": 2
+                            "Value": 1
                         },
                         "Up Quad Tex": {
                             "Name": "Up Quad Tex",
@@ -76,142 +76,6 @@
                 "x": 50.0,
                 "y": 50.0,
                 "z": 50.0
-            }
-        },
-        {
-            "Childs": [],
-            "Components": [
-                {
-                    "Type": "Player Camera",
-                    "Values": {
-                        "Black and White": {
-                            "Name": "Black and White",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Blur": {
-                            "Name": "Blur",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Color custom": {
-                            "Name": "Color custom",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Min move length": {
-                            "Name": "Min move length",
-                            "Type": "float",
-                            "Value": 0.0010000000474974513
-                        },
-                        "Move lerp speed": {
-                            "Name": "Move lerp speed",
-                            "Type": "float",
-                            "Value": 0.5
-                        },
-                        "Perspective": {
-                            "Name": "Perspective",
-                            "Type": "Perspective",
-                            "Value": {
-                                "Type": "Perspective",
-                                "Values": {
-                                    "FOV": {
-                                        "Name": "FOV",
-                                        "Type": "float",
-                                        "Value": 60.0
-                                    },
-                                    "Far": {
-                                        "Name": "Far",
-                                        "Type": "float",
-                                        "Value": 100.0
-                                    },
-                                    "Height": {
-                                        "Name": "Height",
-                                        "Type": "float",
-                                        "Value": 385.0
-                                    },
-                                    "Near": {
-                                        "Name": "Near",
-                                        "Type": "float",
-                                        "Value": 0.10000000149011612
-                                    },
-                                    "Width": {
-                                        "Name": "Width",
-                                        "Type": "float",
-                                        "Value": 421.0
-                                    }
-                                }
-                            }
-                        },
-                        "Postprocess Color": {
-                            "Name": "Postprocess Color",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.5,
-                                0.5,
-                                0.5
-                            ]
-                        },
-                        "Running speed": {
-                            "Name": "Running speed",
-                            "Type": "float",
-                            "Value": 20.0
-                        },
-                        "Speed": {
-                            "Name": "Speed",
-                            "Type": "float",
-                            "Value": 5.0
-                        }
-                    }
-                },
-                {
-                    "Type": "Audio Listener",
-                    "Values": {
-                        "Active": {
-                            "Name": "Active",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        }
-                    }
-                }
-            ],
-            "Flags": 0,
-            "Name": "Camera",
-            "Pos": {
-                "x": 3.0970704555511475,
-                "y": 10.98732852935791,
-                "z": 37.4427375793457
-            },
-            "Rot": {
-                "w": 0.9902049899101257,
-                "x": -0.1391541212797165,
-                "y": -0.011304828338325024,
-                "z": -0.001588674494996667
-            },
-            "Scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
             }
         },
         {
@@ -546,81 +410,6 @@
         },
         {
             "Childs": [
-                {
-                    "Childs": [],
-                    "Components": [
-                        {
-                            "Type": "Mesh",
-                            "Values": {
-                                "Cast Shadows": {
-                                    "Name": "Cast Shadows",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsChild": {
-                                    "Name": "IsChild",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsRoot": {
-                                    "Name": "IsRoot",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Materials": {
-                                    "Name": "Materials",
-                                    "Type": "ArraySequential",
-                                    "Value": [
-                                        {
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\DiningRoom\\aaa"
-                                        }
-                                    ],
-                                    "Wrapped type": "std::string"
-                                },
-                                "MaterialsNames": {
-                                    "Name": "MaterialsNames",
-                                    "Type": "ArraySequential",
-                                    "Value": [
-                                        {
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\DiningRoom\\aaa"
-                                        }
-                                    ],
-                                    "Wrapped type": "std::string"
-                                },
-                                "Model": {
-                                    "Name": "Model",
-                                    "Type": "std::string",
-                                    "Value": ".\\Resources\\Models\\DiningRoom\\Sphere001"
-                                }
-                            }
-                        }
-                    ],
-                    "Flags": 1,
-                    "Name": "Sphere001",
-                    "Pos": {
-                        "x": -1.7230510711669922,
-                        "y": 0.0,
-                        "z": 67.55381774902344
-                    },
-                    "Rot": {
-                        "w": 7.549790126404332e-08,
-                        "x": 1.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "Scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    }
-                },
                 {
                     "Childs": [],
                     "Components": [
@@ -1807,9 +1596,9 @@
                             "Name": "Box Half Extent",
                             "Type": "Vec3",
                             "Value": [
-                                5.0,
-                                1.0,
-                                2.0
+                                14.729999542236328,
+                                0.5,
+                                4.800000190734863
                             ]
                         },
                         "IsActive": {
@@ -1855,9 +1644,9 @@
             "Flags": 0,
             "Name": "GameObject",
             "Pos": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
+                "x": -0.16550326347351074,
+                "y": 0.002148270606994629,
+                "z": 10.162776947021484
             },
             "Rot": {
                 "w": 1.0,
@@ -1969,12 +1758,12 @@
                         "Angle": {
                             "Name": "Angle",
                             "Type": "float",
-                            "Value": 0.7850000262260437
+                            "Value": 1.6449999809265137
                         },
                         "AngleSmoothness": {
                             "Name": "AngleSmoothness",
                             "Type": "float",
-                            "Value": 0.0010000000474974513
+                            "Value": 0.8410000205039978
                         },
                         "Attenuation": {
                             "Name": "Attenuation",
@@ -2008,7 +1797,7 @@
                         "Range": {
                             "Name": "Range",
                             "Type": "float",
-                            "Value": 1000.0
+                            "Value": 1000.0900268554688
                         },
                         "Specular": {
                             "Name": "Specular",
@@ -2033,7 +1822,7 @@
             "Pos": {
                 "x": -6.381313323974609,
                 "y": 10.548004150390625,
-                "z": 1.986636996269226
+                "z": 1.495600700378418
             },
             "Rot": {
                 "w": 0.7071067690849304,
@@ -2053,13 +1842,18 @@
                 {
                     "Type": "Particle System",
                     "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
                         "Birth Color": {
                             "Name": "Birth Color",
                             "Type": "Color",
                             "Value": [
-                                0.15834558010101318,
-                                0.14065086841583252,
-                                0.7142857313156128,
+                                0.9575290679931641,
+                                1.0,
+                                0.0,
                                 1.0
                             ]
                         },
@@ -2067,9 +1861,9 @@
                             "Name": "Death Color",
                             "Type": "Color",
                             "Value": [
-                                0.05791503190994263,
-                                0.9890906810760498,
                                 1.0,
+                                0.9982855319976807,
+                                0.5559845566749573,
                                 1.0
                             ]
                         },
@@ -2109,19 +1903,733 @@
                             "Value": 0.10000000149011612
                         }
                     }
+                },
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "LocalPositon": {
+                            "Name": "LocalPositon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "LocalRotation": {
+                            "Name": "LocalRotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Mat: S D R": {
+                            "Name": "Mat: S D R",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                },
+                {
+                    "Type": "Switch",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
                 }
             ],
             "Flags": 0,
             "Name": "Particles",
             "Pos": {
-                "x": 0.0,
-                "y": 1.661167025566101,
-                "z": 7.183152675628662
+                "x": -1.5743706226348877,
+                "y": 0.557172954082489,
+                "z": 12.262499809265137
             },
             "Rot": {
                 "w": 1.0,
                 "x": 0.0,
                 "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Particle System",
+                            "Values": {
+                                "Active": {
+                                    "Name": "Active",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Birth Color": {
+                                    "Name": "Birth Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.2625482678413391,
+                                        0.23469340801239014,
+                                        0.20578107237815857,
+                                        1.0
+                                    ]
+                                },
+                                "Death Color": {
+                                    "Name": "Death Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.5289574861526489,
+                                        0.5140777826309204,
+                                        0.47994211316108704,
+                                        1.0
+                                    ]
+                                },
+                                "Gravity": {
+                                    "Name": "Gravity",
+                                    "Type": "float",
+                                    "Value": 0.0
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Life time": {
+                                    "Name": "Life time",
+                                    "Type": "float",
+                                    "Value": 2.0
+                                },
+                                "Particle texture": {
+                                    "Name": "Particle texture",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Textures\\Particle.png"
+                                },
+                                "Particles number": {
+                                    "Name": "Particles number",
+                                    "Type": "int",
+                                    "Value": 10
+                                },
+                                "Time Before Spawn": {
+                                    "Name": "Time Before Spawn",
+                                    "Type": "float",
+                                    "Value": 0.20000000298023224
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Dust",
+                    "Pos": {
+                        "x": -0.668556809425354,
+                        "y": -0.46405303478240967,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 3.0199999809265137,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            ],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Materials": {
+                            "Name": "Materials",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\cube.obj"
+                        }
+                    }
+                },
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                1.8899999856948853,
+                                3.819999933242798
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "LocalPositon": {
+                            "Name": "LocalPositon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "LocalRotation": {
+                            "Name": "LocalRotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Mat: S D R": {
+                            "Name": "Mat: S D R",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
+                },
+                {
+                    "Type": "Rigid Body",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Mass": {
+                            "Name": "Mass",
+                            "Type": "float",
+                            "Value": 100.0
+                        },
+                        "Rotation XLock": {
+                            "Name": "Rotation XLock",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Rotation YLock": {
+                            "Name": "Rotation YLock",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Rotation ZLock": {
+                            "Name": "Rotation ZLock",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Use Gravity": {
+                            "Name": "Use Gravity",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Velocity": {
+                            "Name": "Velocity",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        }
+                    }
+                },
+                {
+                    "Type": "Door",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Movement": {
+                            "Name": "Movement",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                1.0
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Time moving": {
+                            "Name": "Time moving",
+                            "Type": "float",
+                            "Value": 10.0
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Door",
+            "Pos": {
+                "x": 1.9167901277542114,
+                "y": 2.51497220993042,
+                "z": 11.356697082519531
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 3.7769432067871094,
+                "z": 7.656619548797607
+            }
+        },
+        {
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsChild": {
+                                    "Name": "IsChild",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsRoot": {
+                                    "Name": "IsRoot",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Materials": {
+                                    "Name": "Materials",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\aaa"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "MaterialsNames": {
+                                    "Name": "MaterialsNames",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DiningRoom\\aaa"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\DiningRoom\\Sphere001"
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 1,
+                    "Name": "Player",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 3.178652008273275e-08,
+                        "x": 0.9999999403953552,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 0.009999999776482582,
+                        "y": 0.009999999776482582,
+                        "z": 0.009999999776482582
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Player Camera",
+                            "Values": {
+                                "Black and White": {
+                                    "Name": "Black and White",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Blur": {
+                                    "Name": "Blur",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Color custom": {
+                                    "Name": "Color custom",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Min move length": {
+                                    "Name": "Min move length",
+                                    "Type": "float",
+                                    "Value": 0.0010000000474974513
+                                },
+                                "Move lerp speed": {
+                                    "Name": "Move lerp speed",
+                                    "Type": "float",
+                                    "Value": 0.5
+                                },
+                                "Perspective": {
+                                    "Name": "Perspective",
+                                    "Type": "Perspective",
+                                    "Value": {
+                                        "Type": "Perspective",
+                                        "Values": {
+                                            "FOV": {
+                                                "Name": "FOV",
+                                                "Type": "float",
+                                                "Value": 60.0
+                                            },
+                                            "Far": {
+                                                "Name": "Far",
+                                                "Type": "float",
+                                                "Value": 100.0
+                                            },
+                                            "Height": {
+                                                "Name": "Height",
+                                                "Type": "float",
+                                                "Value": 385.0
+                                            },
+                                            "Near": {
+                                                "Name": "Near",
+                                                "Type": "float",
+                                                "Value": 0.10000000149011612
+                                            },
+                                            "Width": {
+                                                "Name": "Width",
+                                                "Type": "float",
+                                                "Value": 421.0
+                                            }
+                                        }
+                                    }
+                                },
+                                "Postprocess Color": {
+                                    "Name": "Postprocess Color",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.5,
+                                        0.5,
+                                        0.5
+                                    ]
+                                },
+                                "Running speed": {
+                                    "Name": "Running speed",
+                                    "Type": "float",
+                                    "Value": 20.0
+                                },
+                                "Speed": {
+                                    "Name": "Speed",
+                                    "Type": "float",
+                                    "Value": 5.0
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Audio Listener",
+                            "Values": {
+                                "Active": {
+                                    "Name": "Active",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Camera",
+                    "Pos": {
+                        "x": -0.23639678955078125,
+                        "y": 3.020484447479248,
+                        "z": -2.382671356201172
+                    },
+                    "Rot": {
+                        "w": 0.034760117530822754,
+                        "x": -0.003041129559278488,
+                        "y": -0.9955880641937256,
+                        "z": -0.08710314333438873
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            ],
+            "Components": [
+                {
+                    "Type": "Script",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Lua Script": {
+                            "Name": "Lua Script",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Scripts\\InputMovement.lua"
+                        }
+                    }
+                },
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                1.5099999904632568,
+                                0.5
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "LocalPositon": {
+                            "Name": "LocalPositon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                1.4700000286102295,
+                                0.0
+                            ]
+                        },
+                        "LocalRotation": {
+                            "Name": "LocalRotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Mat: S D R": {
+                            "Name": "Mat: S D R",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
+                },
+                {
+                    "Type": "Rigid Body",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Mass": {
+                            "Name": "Mass",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Rotation XLock": {
+                            "Name": "Rotation XLock",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Rotation YLock": {
+                            "Name": "Rotation YLock",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Rotation ZLock": {
+                            "Name": "Rotation ZLock",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Use Gravity": {
+                            "Name": "Use Gravity",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Velocity": {
+                            "Name": "Velocity",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "PlayerAnchor",
+            "Pos": {
+                "x": -7.172719955444336,
+                "y": 0.6200000047683716,
+                "z": 10.181260108947754
+            },
+            "Rot": {
+                "w": 0.7071067690849304,
+                "x": 0.0,
+                "y": 0.7071067690849304,
                 "z": 0.0
             },
             "Scale": {

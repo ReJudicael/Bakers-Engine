@@ -6,6 +6,7 @@ RTTR_PLUGIN_REGISTRATION
 {
 	registration::class_<Core::Renderer::ParticleSystem>("Particle System")
 		.constructor()
+		.property("Active", &Core::Renderer::ParticleSystem::m_active)
 		.property("Particle texture", &Core::Renderer::ParticleSystem::GetParticleTexture, &Core::Renderer::ParticleSystem::SetParticleTexture)
 		.property("Birth Color", &Core::Renderer::ParticleSystem::m_birthColor)
 		.property("Death Color", &Core::Renderer::ParticleSystem::m_deathColor)
@@ -110,6 +111,9 @@ namespace Core::Renderer
 
 	void ParticleSystem::OnUpdate(float deltaTime)
 	{
+		if (!m_active)
+			return;
+
 		if (m_currentTime > 0)
 			m_currentTime -= deltaTime;
 		else
@@ -138,6 +142,9 @@ namespace Core::Renderer
 
 	void	ParticleSystem::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
+		if (!m_active)
+			return;
+
 		Core::Maths::Mat4 transform = m_parent->GetGlobalTRS();
 		Core::Maths::Vec3 particleScale = m_parent->GetGlobalScale() * 0.1;
 
