@@ -2,13 +2,20 @@
 
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
-#include "Collider.h"
+#include "Vec3.hpp"
+#include "Switch.h"
+#include "ParticleSystem.h"
 
-// Switch to handle mechanism when player enter triggers
-BAKERS_API_CLASS Switch : public Core::Datastructure::ComponentBase
+// Moving object connected to a switch
+BAKERS_GAME_CLASS Door : public Core::Datastructure::ComponentUpdatable
 {
-	Core::Physics::Collider* m_collider = nullptr;
-	bool m_switchActivated{ false };
+	std::list<Switch*> m_switches;
+	Core::Renderer::ParticleSystem* m_particles;
+	Core::Maths::Vec3 m_movement{ 0, 0, 1 };
+	bool m_isMoving{ false };
+	float m_speed{ 1.f };
+	float m_timeMoving{ 2.f };
+	float m_currentTime{ 0.f };
 
 	protected:
 		/**
@@ -41,12 +48,12 @@ public:
 	/**
 	 * Default Constructor
 	 */
-	Switch();
+	Door();
 
 	/**
 	 * Destructor
 	 */
-	~Switch();
+	~Door();
 
 	/**
 	 * Init event
@@ -54,24 +61,14 @@ public:
 	void	OnInit() override;
 
 	/**
-	 * Activate switch, called by trigger enter
-	 * @param collider: Collider of the object entering the trigger
+	 * Call Update function in Lua script
+	 * @param deltaTime: Time elapsed between two frames, sent to Lua Update
 	 */
-	void	Activate(Core::Physics::Collider* collider);
+	 virtual void OnUpdate(float deltaTime) override;
 
-	/**
-	 * Deactivate switch, called by trigger exit
-	 * @param collider: Collider of the object going out of the trigger
-	 */
-	void	Deactivate(Core::Physics::Collider* collider);
-
-	/**
-	 * Indicate whether the switch has been activated or not
-	 * @return True if the switch is activated, false otherwise
-	 */
-	bool	IsActivated() { return m_switchActivated; };
-
-	REGISTER_CLASS(ComponentBase)
+	 REGISTER_CLASS(ComponentUpdatable)
 };
+
+
 
 

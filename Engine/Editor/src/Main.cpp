@@ -21,11 +21,15 @@
 int main()
 {
 	{
-		rttr::library lib{ "Engine" };
-		lib.load();
+		rttr::library libEngine{ "Engine" };
+		rttr::library libGame{ "Game" };
+		libEngine.load();
 
-		if (!lib.is_loaded())
-			std::cout << lib.get_error_string() << std::endl;
+		if (!libEngine.is_loaded())
+			std::cout << "Engine lib failed to load:" << std::endl << libEngine.get_error_string() << std::endl;
+		libGame.load();
+		if (!libGame.is_loaded())
+			std::cout << "Game lib failed to load:" << std::endl << libEngine.get_error_string() << std::endl;
 		{
 			Editor::EditorEngine engine;
 			int temp;
@@ -34,7 +38,8 @@ int main()
 			engine.MainLoop();
 		}
 		//std::cin.ignore();
-		lib.unload();
+		libEngine.unload();
+		libGame.unload();
 	}
 	//std::cin.ignore();
 	return 0;
