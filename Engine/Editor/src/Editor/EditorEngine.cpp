@@ -151,39 +151,54 @@ namespace Editor
 			UpdateSavedScene();
 		case (Core::Datastructure::EngineState::RUNNING):
 		case (Core::Datastructure::EngineState::CLOSING):
-			if (m_paused && !m_step)
-			{
-				Render();
-				EndFrame();
-				break;
-			}
+		{
+			ZoneScopedN("EngineRunning")
+				if (m_paused && !m_step)
+				{
+					Render();
+					EndFrame();
+					break;
+				}
 			m_step = false;
 
 			EngineCore::OnLoop();
 			break;
+		}
 		case (Core::Datastructure::EngineState::CLOSED):
-			ReloadScene();
+		{
+			ZoneScopedN("EngineClosed")
+				ReloadScene();
 			m_paused = false;
 			m_state = Core::Datastructure::EngineState::INITIALIZED;
 			Render();
 			EndFrame();
 			break;
+		}
 		case (Core::Datastructure::EngineState::INITIALIZED):
-			m_manager->UpdateResourcesManager();
+		{
+			ZoneScopedN("EngineInitialized")
+				m_manager->UpdateResourcesManager();
 			if (!m_navMesh->IsNavmeshUpdated())
 				m_navMesh->Build();
 			Render();
 			EndFrame();
 			break;
+		}
 		default:
+		{
+			ZoneScopedN("Unknown engine state")
 			break;
 		}
+		}
 
-		int display_w, display_h;
-		glfwGetFramebufferSize(m_window, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
+		{
+			ZoneScopedN("Display and swap")
+			int display_w, display_h;
+			glfwGetFramebufferSize(m_window, &display_w, &display_h);
+			glViewport(0, 0, display_w, display_h);
 
-		glfwSwapBuffers(m_window);
+			glfwSwapBuffers(m_window);
+		}
 	}
 
 	void	EditorEngine::Render()

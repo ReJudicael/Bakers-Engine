@@ -386,8 +386,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Datastructure\ComponentUpdatable.cpp" />
     <ClCompile Include="src\Core\Datastructure\Object.cpp" />
     <ClCompile Include="src\Core\Datastructure\Transform.cpp" />
-    <ClCompile Include="src\Door.cpp" />
-    <ClCompile Include="src\Switch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Animation\Animation.h" />
@@ -469,8 +467,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClInclude Include="include\Core\Types\StringExtension.hpp" />
     <ClInclude Include="include\Core\Renderer\Camera.h" />
     <ClInclude Include="include\Core\Physics\Collider.h" />
-    <ClInclude Include="include\Door.h" />
-    <ClInclude Include="include\Switch.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\DefaultShader.frag" />

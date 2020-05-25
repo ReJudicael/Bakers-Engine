@@ -267,12 +267,6 @@
     <ClCompile Include="src\Core\Audio\AudioClip.cpp">
       <Filter>Source Files\Core\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\Switch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Door.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -428,9 +422,6 @@
     <ClInclude Include="include\Core\Datastructure\ScriptedComponent.h">
       <Filter>Header Files\Core\Datastructure</Filter>
     </ClInclude>
-    <ClInclude Include="include\Core\Maths\MathMinimal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Core\Navigation\NavMesh.h">
       <Filter>Header Files\Core\Navigation</Filter>
     </ClInclude>
@@ -512,11 +503,8 @@
     <ClInclude Include="include\Core\Audio\AudioClip.h">
       <Filter>Header Files\Core\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="include\Switch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Door.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Core\Maths\MathMinimal.h">
+      <Filter>Header Files\Core\Maths</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
