@@ -2364,22 +2364,12 @@
                     "Childs": [],
                     "Components": [
                         {
-                            "Type": "Player Camera",
+                            "Type": "Audio Listener",
                             "Values": {
-                                "Black and White": {
-                                    "Name": "Black and White",
+                                "Active": {
+                                    "Name": "Active",
                                     "Type": "bool",
-                                    "Value": false
-                                },
-                                "Blur": {
-                                    "Name": "Blur",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Color custom": {
-                                    "Name": "Color custom",
-                                    "Type": "bool",
-                                    "Value": false
+                                    "Value": true
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -2390,16 +2380,21 @@
                                     "Name": "IsUpdating",
                                     "Type": "bool",
                                     "Value": true
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Camera",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
                                 },
-                                "Min move length": {
-                                    "Name": "Min move length",
-                                    "Type": "float",
-                                    "Value": 0.0010000000474974513
-                                },
-                                "Move lerp speed": {
-                                    "Name": "Move lerp speed",
-                                    "Type": "float",
-                                    "Value": 0.5
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
                                 },
                                 "Perspective": {
                                     "Name": "Perspective",
@@ -2420,7 +2415,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 573.0
+                                                "Value": 592.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -2430,49 +2425,10 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 662.0
+                                                "Value": 609.0
                                             }
                                         }
                                     }
-                                },
-                                "Postprocess Color": {
-                                    "Name": "Postprocess Color",
-                                    "Type": "Vec3",
-                                    "Value": [
-                                        0.5,
-                                        0.5,
-                                        0.5
-                                    ]
-                                },
-                                "Running speed": {
-                                    "Name": "Running speed",
-                                    "Type": "float",
-                                    "Value": 20.0
-                                },
-                                "Speed": {
-                                    "Name": "Speed",
-                                    "Type": "float",
-                                    "Value": 5.0
-                                }
-                            }
-                        },
-                        {
-                            "Type": "Audio Listener",
-                            "Values": {
-                                "Active": {
-                                    "Name": "Active",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsUpdating": {
-                                    "Name": "IsUpdating",
-                                    "Type": "bool",
-                                    "Value": true
                                 }
                             }
                         }
