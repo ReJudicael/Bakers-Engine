@@ -266,7 +266,7 @@ namespace Editor::Window
 			ImGui::ImageUV(GetIcon(itemPath));
 			ImGui::SameLine();
 			ImGui::Text(itemName.c_str());
-			ImGui::SetDragDropPayload(m_fs->GetExtensionWithoutDotStr(itemPath) == "bmat" ? "DRAGDROP_MAT" : "DRAGDROP_PATH",
+			ImGui::SetDragDropPayload("DRAGDROP_PATH",
 				itemPath.c_str(), itemPath.size() + 1, ImGuiCond_Once);
 			ImGui::EndDragDropSource();
 		}
@@ -279,7 +279,7 @@ namespace Editor::Window
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_PATH", ImGuiDragDropFlags_SourceAllowNullID))
 			{
 				const char* path{ reinterpret_cast<const char*>(payload->Data) };
-				if (m_fs->Exists(path));
+				if (m_fs->Exists(path))
 					m_fs->MovePath(path, itemPath.c_str());
 			}
 			ImGui::EndDragDropTarget();
@@ -328,7 +328,7 @@ namespace Editor::Window
 			ImGui::ImageUV(materialIcon);
 			ImGui::SameLine();
 			ImGui::Text(fileName.c_str());
-			ImGui::SetDragDropPayload("DRAGDROP_MAT", materialPath.c_str(), materialPath.size() + 1, ImGuiCond_Once);
+			ImGui::SetDragDropPayload("DRAGDROP_PATH", materialPath.c_str(), materialPath.size() + 1, ImGuiCond_Once);
 			ImGui::EndDragDropSource();
 		}
 

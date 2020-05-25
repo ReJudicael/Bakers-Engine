@@ -278,13 +278,6 @@ namespace Editor::Window
 				ImGui::EndDragDropTarget();
 				return true;
 			}
-			else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGDROP_MAT", ImGuiDragDropFlags_SourceAllowNullID))
-			{
-				const std::string& data = reinterpret_cast<const char*>(payload->Data);
-				str = data;
-				ImGui::EndDragDropTarget();
-				return true;
-			}
 			ImGui::EndDragDropTarget();
 		}
 
