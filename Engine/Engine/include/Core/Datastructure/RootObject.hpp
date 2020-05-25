@@ -23,6 +23,7 @@ namespace Core::Datastructure
 	protected:
 		std::list<IUpdatable*>	m_updatables;
 		std::list<IRenderable*>	m_renderables;
+		size_t					m_renderPriorityBegin{ 0 };
 		std::list<IComponent*>	m_componentsToStart;
 		std::list<ICamera*>		m_cameras;
 		std::list<IComponent*>	m_destroyedComponents;
@@ -71,8 +72,9 @@ namespace Core::Datastructure
 		/**
 		 * Adds a component to be rendered
 		 * @param i: Component to be rendered
+		 * @param priority: Position indicator for renderable list
 		 */
-		void		AddRenderable(IRenderable* i) noexcept;
+		void		AddRenderable(IRenderable* i, size_t priority = 0) noexcept;
 		/**
 		 * Adds a component to be started
 		 * @param i: Component to be started
@@ -106,8 +108,9 @@ namespace Core::Datastructure
 		/**
 		 * removes a component from the rendered ones
 		 * @param i: Component to be removed
+		 * @param priority: Part of the list in which the renderable was stored
 		 */
-		void		RemoveRenderable(IRenderable* i) noexcept;
+		void		RemoveRenderable(IRenderable* i, size_t priority = 0) noexcept;
 		/**
 		 * removes a camera
 		 * @param i: Camera to be removed

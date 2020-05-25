@@ -75,9 +75,17 @@ namespace Core::Datastructure
 	{
 		m_updatables.emplace_back(i);
 	}
-	void RootObject::AddRenderable(IRenderable* i) noexcept
+	void RootObject::AddRenderable(IRenderable* i, size_t priority) noexcept
 	{
-		m_renderables.emplace_back(i);
+		if (priority == 0)
+		{
+			auto it = m_renderables.begin();
+			std::advance(it, m_renderPriorityBegin);
+			m_renderables.emplace(it, i);
+			m_renderPriorityBegin++;
+		}
+		else
+			m_renderables.emplace_back(i);
 	}
 	void RootObject::AddStart(IComponent* i) noexcept
 	{
@@ -97,9 +105,13 @@ namespace Core::Datastructure
 	{
 		m_updatables.remove(i);
 	}
-	void RootObject::RemoveRenderable(IRenderable* i) noexcept
+
+	void RootObject::RemoveRenderable(IRenderable* i, size_t priority) noexcept
 	{
 		m_renderables.remove(i);
+
+		if (priority == 0 && m_renderPriorityBegin > 0)
+			m_renderPriorityBegin--;
 	}
 
 	void RootObject::RemoveCamera(ICamera* i) noexcept

@@ -20,12 +20,19 @@ namespace Core::Renderer
 			Maths::Vec3		movement;
 			Maths::Color	color;
 			float			lifeTime;
+			float			distToCamera;
 
 			/**
 			 * Give access to shader used by particle quad (called to send particle color to fragment shader)
 			 * @return Shader of first material of particle mesh
 			 */
 			std::shared_ptr<Resources::Shader> GetShader() { return mesh->GetMainMaterial()->shader; };
+
+			/**
+			 * Overload comparison operator, used to sort particles by distance from far to near
+			 * @return True if left particle is farther from camera than right particle, false otherwise
+			 */
+			bool operator<(Particle& other) { return distToCamera > other.distToCamera; };
 		};
 
 		bool m_active{ true };
@@ -68,6 +75,13 @@ namespace Core::Renderer
 		 * @return Path of the current texture used for particles
 		 */
 		const std::string& GetParticleTexture() { return m_particleTexture; };
+
+		/**
+		 * Get all active particle sorted by how far from the camera they are
+		 * @param cameraPos: Position of the camera currently rendering
+		 * @return Sorted vector of all active particle
+		 */
+		std::vector<Particle> GetSortedParticles(const Maths::Vec3& cameraPos);
 
 		protected:
 			/**

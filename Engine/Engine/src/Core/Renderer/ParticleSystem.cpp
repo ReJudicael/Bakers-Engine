@@ -78,7 +78,9 @@ namespace Core::Renderer
 	void    ParticleSystem::OnReset()
 	{
 		ComponentUpdatable::OnReset();
-		IRenderable::OnReset();
+		
+		IComponent::OnReset();
+		GetRoot()->RemoveRenderable(this, 1);
 
 		for (size_t i{ 0 }; i < m_particles.size(); ++i)
 		{
@@ -103,7 +105,11 @@ namespace Core::Renderer
 
 	void	ParticleSystem::OnInit()
 	{
-		IRenderable::OnInit();
+		if (GetRoot() == nullptr)
+			return;
+		GetRoot()->AddRenderable(this, 1);
+		IComponent::OnInit();
+
 		ComponentUpdatable::OnInit();
 
 		CreateParticle();
@@ -148,28 +154,28 @@ namespace Core::Renderer
 		Core::Maths::Mat4 transform = m_parent->GetGlobalTRS();
 		Core::Maths::Vec3 particleScale = m_parent->GetGlobalScale() * 0.1;
 
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		if (m_particles.size() > 0)
 		{
 			m_particles[0].GetShader()->UseProgram();
 			glUniform3fv(m_particles[0].GetShader()->GetLocation("uScale"), 1, particleScale.xyz);
 		}
 
-		for (size_t i{ 0 }; i < m_particles.size(); ++i)
+		Maths::Vec3 cameraPos(-view(0, 3), -view(1, 3), -view(2, 3));
+		std::vector<Particle> toDraw = GetSortedParticles(cameraPos);
+
+		for (size_t i{ 0 }; i < toDraw.size(); ++i)
 		{
-			if (m_particles[i].lifeTime > 0)
-			{
-				transform(0, 3) += m_particles[i].position.x * particleScale.x;
-				transform(1, 3) += m_particles[i].position.y * particleScale.y;
-				transform(2, 3) += m_particles[i].position.z * particleScale.z;
-				glUniform4fv(m_particles[i].GetShader()->GetLocation("uParticleColor"), 1, m_particles[i].color.rgba);
-				m_particles[i].mesh->DrawFixedMesh(view, proj, transform);
-				transform(0, 3) -= m_particles[i].position.x * particleScale.x;
-				transform(1, 3) -= m_particles[i].position.y * particleScale.y;
-				transform(2, 3) -= m_particles[i].position.z * particleScale.z;
-			}
+			transform(0, 3) += toDraw[i].position.x * particleScale.x;
+			transform(1, 3) += toDraw[i].position.y * particleScale.y;
+			transform(2, 3) += toDraw[i].position.z * particleScale.z;
+			glUniform4fv(toDraw[i].GetShader()->GetLocation("uParticleColor"), 1, toDraw[i].color.rgba);
+			toDraw[i].mesh->DrawFixedMesh(view, proj, transform);
+			transform(0, 3) -= toDraw[i].position.x * particleScale.x;
+			transform(1, 3) -= toDraw[i].position.y * particleScale.y;
+			transform(2, 3) -= toDraw[i].position.z * particleScale.z;
 		}
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	Core::Maths::Vec3 ParticleSystem::GenerateRandomMovement()
@@ -239,5 +245,24 @@ namespace Core::Renderer
 			for (size_t i{0}; i < m_particles.size(); ++i)
 				m_particles[i].mesh->SetMainTexture(texture);
 		}
+	}
+
+	std::vector<ParticleSystem::Particle> ParticleSystem::GetSortedParticles(const Maths::Vec3& cameraPos)
+	{
+		std::vector<Particle> sortedParticles;
+
+		for (size_t i{ 0 }; i < m_particles.size(); ++i)
+		{
+			if (m_particles[i].lifeTime > 0)
+			{
+				Maths::Vec3 dist = cameraPos - (m_parent->GetGlobalPos() + m_particles[i].position);
+				m_particles[i].distToCamera = dist.SquaredLength();
+				sortedParticles.push_back(m_particles[i]);
+			}
+		}
+
+		std::sort(sortedParticles.begin(), sortedParticles.end());
+
+		return sortedParticles;
 	}
 }

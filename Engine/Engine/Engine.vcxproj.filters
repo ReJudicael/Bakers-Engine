@@ -55,12 +55,6 @@
     <Filter Include="Header Files\Core\Types">
       <UniqueIdentifier>{97b376be-4406-43d0-99b4-4669211c3232}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Core\Resources">
-      <UniqueIdentifier>{546aa436-de03-44d7-9c65-83132a275d6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Core\Resources\Loader">
-      <UniqueIdentifier>{70e1fdf5-c1da-4588-ac9a-bb3677a024a7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Internal Dependencies">
       <UniqueIdentifier>{57fddb2c-6e1c-4f2a-aa74-12a467094913}</UniqueIdentifier>
     </Filter>
@@ -94,7 +88,13 @@
     <Filter Include="Source Files\Core\Physics">
       <UniqueIdentifier>{1ddb9362-088e-4e6b-bd24-831056d62806}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Core\Resources\Animation">
+    <Filter Include="Source Files\Core\Renderer\Resources">
+      <UniqueIdentifier>{546aa436-de03-44d7-9c65-83132a275d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Renderer\Resources\Loader">
+      <UniqueIdentifier>{70e1fdf5-c1da-4588-ac9a-bb3677a024a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Renderer\Resources\Animation">
       <UniqueIdentifier>{7531a19a-3a54-4167-ab46-c127a659f84b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -142,19 +142,19 @@
       <Filter>Source Files\Core\SystemManagement</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Resources\Material.cpp">
-      <Filter>Source Files\Core\Resources</Filter>
+      <Filter>Source Files\Core\Renderer\Resources</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Resources\ModelData.cpp">
-      <Filter>Source Files\Core\Resources</Filter>
+      <Filter>Source Files\Core\Renderer\Resources</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Resources\Shader.cpp">
-      <Filter>Source Files\Core\Resources</Filter>
+      <Filter>Source Files\Core\Renderer\Resources</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Resources\TextureData.cpp">
-      <Filter>Source Files\Core\Resources</Filter>
+      <Filter>Source Files\Core\Renderer\Resources</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Resources\Loader\LoadResources.cpp">
-      <Filter>Source Files\Core\Resources\Loader</Filter>
+      <Filter>Source Files\Core\Renderer\Resources\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Internal Dependencies</Filter>
@@ -175,7 +175,7 @@
       <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Resources\Object3DGraph.cpp">
-      <Filter>Source Files\Core\Resources</Filter>
+      <Filter>Source Files\Core\Renderer\Resources</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Renderer\Light.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
@@ -253,22 +253,16 @@
       <Filter>Source Files\Core\Physics</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Resources\Animation\AnimationVertexData.cpp">
-      <Filter>Source Files\Core\Resources\Animation</Filter>
+      <Filter>Source Files\Core\Renderer\Resources\Animation</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Resources\Animation\BoneData.cpp">
-      <Filter>Source Files\Core\Resources\Animation</Filter>
+      <Filter>Source Files\Core\Renderer\Resources\Animation</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Resources\Texture.cpp">
-      <Filter>Source Files\Core\Resources</Filter>
+      <Filter>Source Files\Core\Renderer\Resources</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Audio\AudioClip.cpp">
       <Filter>Source Files\Core\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Switch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Door.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Physics\RigidBody.cpp">
       <Filter>Source Files\Core\Physics</Filter>

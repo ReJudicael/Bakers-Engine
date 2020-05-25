@@ -28,12 +28,12 @@ namespace Core
 
 		void RigidBody::OnInit()
 		{
-			// try to find the collider attached to the Object
+			// Try to find the collider attached to the Object
 			std::list<Core::Physics::Collider*> colliders;
 			GetParent()->GetComponentsOfBaseTypeInObject(colliders);
 
 			if (colliders.size() > 0)
-				// if he find one he init the collider as a RigidBody
+				// If one collider is found, init the collider as a RigidBody
 				(*colliders.begin())->InitRigidBody(this, m_IDFunctionSetTRS, m_pxRigidBody);
 
 			Core::Datastructure::IUpdatable::OnInit();

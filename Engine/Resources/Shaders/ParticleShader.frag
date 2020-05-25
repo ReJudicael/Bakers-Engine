@@ -11,6 +11,4 @@ in vec2 vUV;
 void main()
 {
 	oColor = texture(uColorTexture, vUV) * uParticleColor;
-	if (oColor.a < 0.2)
-		discard;
 }
