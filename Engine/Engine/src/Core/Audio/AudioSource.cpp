@@ -141,13 +141,9 @@ namespace Core::Audio
 
 	void AudioSource::Stop()
 	{
-		if (IsPlaying())
-		{
-			FMOD_RESULT result = m_fmodChannel->stop();
-			m_fmodChannel = nullptr;
-
-			CHECK_ERR_FMOD(result);
-		}
+		FMOD_RESULT result = m_fmodChannel->stop();
+		CHECK_ERR_FMOD(result);
+		m_fmodChannel = nullptr;
 	}
 
 	void AudioSource::Update()
@@ -172,10 +168,7 @@ namespace Core::Audio
 
 			FMOD_RESULT result = m_fmodChannel->set3DAttributes(&f_mod_pos, &f_mod_vel);
 			if (result != FMOD_OK)
-			{
-				m_fmodChannel = nullptr;
-				CHECK_ERR_FMOD(result);
-			}
+				Stop();
 		}
 	}
 
@@ -187,7 +180,7 @@ namespace Core::Audio
 		bool isPlaying;
 		FMOD_RESULT result = m_fmodChannel->isPlaying(&isPlaying);
 
-		if (CHECK_ERR_FMOD(result))
+		if (!isPlaying)
 		{
 			Stop();
 			return false;
