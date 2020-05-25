@@ -542,7 +542,7 @@ namespace Core::Navigation
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(NavVertex), (void*)offsetof(NavVertex, pos));
-		glVertexAttribPointer(1, 1, GL_UNSIGNED_INT, GL_FALSE, sizeof(NavVertex), (void*)offsetof(NavVertex, color));
+		glVertexAttribIPointer(1, 1, GL_UNSIGNED_INT, sizeof(NavVertex), (void*)offsetof(NavVertex, color));
 
 		m_VAO = VAO;
 		m_VAOSize = static_cast<unsigned>(vertex.size());
@@ -568,6 +568,8 @@ namespace Core::Navigation
 			return;
 		}
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glBindVertexArray(m_VAO);
 
