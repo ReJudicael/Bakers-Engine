@@ -202,6 +202,11 @@ namespace Editor::Window
 		void PopupMenuOnNavigationPanelWindow();
 
 		/**
+		 *
+		 */
+		//void SpecialDeleteFile(const std::string& itemName);
+
+		/**
 		 * Show directory tree
 		 * @param path: Path where recursive starts for display
 		 */

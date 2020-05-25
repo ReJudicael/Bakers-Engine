@@ -88,7 +88,7 @@ namespace Editor::Window
 	{
 		const std::string& newItemPath = m_fs->GetLocalAbsolute(m_name);
 		if (m_fs->GetExtensionWithoutDotStr(newItemPath) == "bshader")
-			GetEngine()->GetResourcesManager()->ReplaceMaterial(itemName, newItemPath);
+			GetEngine()->GetResourcesManager()->ReplaceShader(itemName, newItemPath);
 	}
 
 	void WindowFileBrowser::RenameContent(const std::string& itemName)
@@ -178,7 +178,9 @@ namespace Editor::Window
 					m_renamePath = itemPath;
 
 				if (ImGui::MenuItem("Delete"))
+				{
 					m_fs->DeleteContent(itemPath);
+				}
 			}
 			ImGui::Separator();
 
@@ -305,7 +307,15 @@ namespace Editor::Window
 		PopupMenuOnDirectoryContentItem(itemPath);
 
 		if (ImGui::IsItemClicked() && m_fs->GetExtensionWithoutDotStr(itemPath) == "bmat")
+		{
 			GetEngine()->materialSelected = GetEngine()->GetResourcesManager()->GetMaterial(itemPath);
+			GetEngine()->nameMaterialSelected = itemPath;
+		}
+		else if(ImGui::IsItemClicked() && m_fs->GetExtensionWithoutDotStr(itemPath) == "bshader")
+		{
+			GetEngine()->shaderSelected = GetEngine()->GetResourcesManager()->GetShader(itemPath);
+			GetEngine()->nameShaderSelected = itemPath;
+		}
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			m_fs->OpenContent(itemPath);
@@ -333,7 +343,10 @@ namespace Editor::Window
 		}
 
 		if (ImGui::IsItemClicked())
+		{
 			GetEngine()->materialSelected = GetEngine()->GetResourcesManager()->GetMaterial(materialPath);
+			GetEngine()->nameMaterialSelected = materialPath;
+		}
 	}
 
 	void WindowFileBrowser::ShowDirectoryContent(std::vector<std::filesystem::path> contents)

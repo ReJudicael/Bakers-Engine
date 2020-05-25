@@ -39,6 +39,9 @@ namespace Editor
 	public:
 		Core::Datastructure::Object* objectSelected{ nullptr };
 		std::shared_ptr<Resources::Material> materialSelected{ nullptr };
+		std::string nameMaterialSelected = "";
+		std::shared_ptr<Resources::Shader> shaderSelected;
+		std::string nameShaderSelected;
 		SelectionMode operation{ SelectionMode::TRANSLATION };
 		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::WORLD };
 		bool isTestingRay{ false };
@@ -46,6 +49,7 @@ namespace Editor
 		std::list<Core::Physics::Collider*>											m_BoxCollider;
 		std::list<Core::Physics::Collider*>											m_SphereCollider;
 		std::list<Core::Physics::Collider*>											m_CapsuleCollider;
+		// the information of the Object3D loaded
 		std::map<std::string, std::shared_ptr<Resources::Loader::Object3DInfo>>		m_info3DObject;
 
 		Core::SystemManagement::InputSystem* m_editorInput{ nullptr };

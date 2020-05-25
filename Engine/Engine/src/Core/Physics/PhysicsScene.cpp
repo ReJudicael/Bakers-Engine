@@ -3,6 +3,7 @@
 
 //#include "PhysicsSceneSimulationEventCallback.h"
 #include "PxPhysicsAPI.h"
+#include "PxSceneDesc.h"
 #include "PxMaterial.h"
 #include "PxDefaultSimulationFilterShader.h"
 #include "PxRigidActor.h"
@@ -431,15 +432,12 @@ namespace Core::Physics
 
 	void PhysicsScene::EndSimulate()
 	{
-		if(m_IsSimulating)
-			m_pxScene->fetchResults(m_IsSimulating);
+		m_pxScene->fetchResults(m_IsSimulating);
 	}
 
 	void PhysicsScene::ReleasePhysXSDK()
 	{
 		BeginSimulate(0.1f);
-
-		m_IsSimulating = true;
 
 		EndSimulate();
 
