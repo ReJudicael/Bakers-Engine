@@ -25,6 +25,7 @@ namespace Core
 			bool	YLock;
 			bool	ZLock;
 			bool	Gravity;
+			//bool	Kinematic;
 		};
 
 		/**
@@ -189,6 +190,10 @@ namespace Core
 			 * @return true if the axis z is lock
 			 */
 			virtual bool GetPhysicsLockZRotation() const;
+
+			virtual bool IsKinematic() const;
+
+			virtual void SetIsKinematic(bool isKinematic);
 
 			/**
 			 * Lock or delock the rotation for the axis x during the physics simulation

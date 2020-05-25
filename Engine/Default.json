@@ -1192,7 +1192,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\cDrole.bmat"
+                                            "Value": ".\\Resources\\Models\\Default.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -1203,7 +1203,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\cDrole.bmat"
+                                            "Value": ".\\Resources\\Models\\Default.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
