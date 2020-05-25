@@ -153,12 +153,12 @@ namespace Editor
 		case (Core::Datastructure::EngineState::CLOSING):
 		{
 			ZoneScopedN("EngineRunning")
-				if (m_paused && !m_step)
-				{
-					Render();
-					EndFrame();
-					break;
-				}
+			if (m_paused && !m_step)
+			{
+				Render();
+				EndFrame();
+				break;
+			}
 			m_step = false;
 
 			EngineCore::OnLoop();
