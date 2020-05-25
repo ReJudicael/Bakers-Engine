@@ -2341,7 +2341,7 @@
                             }
                         }
                     ],
-                    "Flags": 1,
+                    "Flags": 0,
                     "Name": "Player",
                     "Pos": {
                         "x": 0.0,
@@ -2420,7 +2420,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 385.0
+                                                "Value": 573.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -2430,7 +2430,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 421.0
+                                                "Value": 662.0
                                             }
                                         }
                                     }
