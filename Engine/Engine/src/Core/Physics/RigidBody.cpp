@@ -16,18 +16,14 @@ namespace Core
 		RTTR_PLUGIN_REGISTRATION
 		{
 			ZoneScopedN("Registering RTTR")
-			registration::class_<Core::Physics::RigidBody>("Rigid Body")
-			.constructor()
-			.property("Velocity", &Core::Physics::RigidBody::GetVelocity, &Core::Physics::RigidBody::SetLinearVelocity)
-			.property("Mass", &Core::Physics::RigidBody::GetMass, &Core::Physics::RigidBody::SetMass)
-			.property("Use Gravity", &Core::Physics::RigidBody::GetUseGravity, &Core::Physics::RigidBody::SetUseGravity)
-			.property("Rotation XLock", &Core::Physics::RigidBody::GetPhysicsLockXRotation,
-						&Core::Physics::RigidBody::SetPhysicsLockXRotation)
-			.property("Rotation YLock", &Core::Physics::RigidBody::GetPhysicsLockYRotation,
-						&Core::Physics::RigidBody::SetPhysicsLockYRotation)
-			.property("Rotation ZLock", &Core::Physics::RigidBody::GetPhysicsLockZRotation,
-						&Core::Physics::RigidBody::SetPhysicsLockZRotation)
-			;
+			Datastructure::RegisterDefaultClassConstructor<RigidBody>("Rigidbody");
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Velocity", &RigidBody::GetVelocity, &RigidBody::SetLinearVelocity);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Mass", &RigidBody::GetMass, &RigidBody::SetMass);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Use Gravity", &RigidBody::GetUseGravity, &RigidBody::SetUseGravity);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation XLock", &RigidBody::GetPhysicsLockXRotation, &RigidBody::SetPhysicsLockXRotation);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation YLock", &RigidBody::GetPhysicsLockYRotation, &RigidBody::SetPhysicsLockYRotation);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation ZLock", &RigidBody::GetPhysicsLockZRotation, &RigidBody::SetPhysicsLockZRotation);
+			Datastructure::RegisterClassMethod<RigidBody>("Rigidbody", "AddVelocity", &RigidBody::AddVelocity);
 		}
 
 		void RigidBody::OnInit()

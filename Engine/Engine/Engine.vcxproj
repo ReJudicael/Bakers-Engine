@@ -356,7 +356,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Physics\BoxCollider.cpp" />
     <ClCompile Include="src\Core\Physics\CapsuleCollider.cpp" />
     <ClCompile Include="src\Core\Physics\Collider.cpp" />
-    <ClCompile Include="src\Core\Physics\DynamicMesh.cpp" />
+    <ClCompile Include="src\Core\Physics\RigidBody.cpp" />
     <ClCompile Include="src\Core\Physics\PhysicsScene.cpp" />
     <ClCompile Include="src\Core\Physics\PhysicsSceneSimulationEventCallback.cpp" />
     <ClCompile Include="src\Core\Physics\SphereCollider.cpp" />

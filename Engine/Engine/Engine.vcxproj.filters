@@ -261,9 +261,6 @@
     <ClCompile Include="src\Core\Resources\Texture.cpp">
       <Filter>Source Files\Core\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Physics\DynamicMesh.cpp">
-      <Filter>Source Files\Core\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Audio\AudioClip.cpp">
       <Filter>Source Files\Core\Audio</Filter>
     </ClCompile>
@@ -272,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="src\Door.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Physics\RigidBody.cpp">
+      <Filter>Source Files\Core\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

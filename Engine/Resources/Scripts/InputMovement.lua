@@ -1,6 +1,6 @@
 --Move object with WASD inputs
 
-speed = 1;
+speed = 10;
 
 function Start()
 	
@@ -26,6 +26,6 @@ function Update(deltaTime)
 	if (move:SquaredLength() > 0.0) then
 		move:Normalize();
 		move = move * speed * deltaTime;
-		object:Translate(move);
+		Body:AddVelocity(move);
 	end;
 end
