@@ -580,7 +580,7 @@ namespace Core::SystemManagement
 
 	inline std::string FileSystem::CreateFile(const std::string& fileNameWithoutExt, const std::string& extWithoutDot) noexcept
 	{
-		std::string filePath{ GetLocalAbsolute(fileNameWithoutExt + extWithoutDot) };
+		std::string filePath{ GetLocalAbsolute(fileNameWithoutExt + "." + extWithoutDot) };
 		if (!Exists(filePath))
 		{
 			CreateFileCMD(filePath);

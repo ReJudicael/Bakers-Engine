@@ -189,7 +189,7 @@ namespace Editor
 		ImGui::HelpMarkerItem("Pause");
 
 		ImGui::SameLine();
-		ImGui::Button(ICON_FA_STEP_FORWARD);
+		if (ImGui::Button(ICON_FA_STEP_FORWARD))
 			GetEngine()->Step();
 		ImGui::HelpMarkerItem("Next");
 
