@@ -4,6 +4,7 @@
 #include "Maths.hpp"
 #include "Object.hpp"
 #include "InputSystem.hpp"
+#include "RigidBody.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -82,6 +83,11 @@ namespace Core::Datastructure
 	{
 		m_env["object"] = m_parent;
 		m_env["Input"] = Input();
+
+		std::list<Physics::RigidBody*> body;
+		m_parent->GetComponentsOfTypeInObject<Physics::RigidBody>(body);
+		if (body.size() > 0)
+			m_env["Body"] = *body.begin();
 
 		if (m_start.valid())
 			m_start();

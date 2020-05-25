@@ -191,9 +191,9 @@ namespace Core
 			 */
 			virtual bool GetPhysicsLockZRotation() const;
 
-			virtual bool IsKinematic() const;
+			//virtual bool IsKinematic() const;
 
-			virtual void SetIsKinematic(bool isKinematic);
+			//virtual void SetIsKinematic(bool isKinematic);
 
 			/**
 			 * Lock or delock the rotation for the axis x during the physics simulation
