@@ -28,6 +28,11 @@ namespace Editor::Window
 		std::shared_ptr<Resources::Material> m_material{ nullptr };
 
 		/**
+		 * Name material
+		 */
+		std::string m_nameMaterial;
+
+		/**
 		 * Property icon
 		 */
 		std::shared_ptr<Resources::Texture> m_propertyIcon;

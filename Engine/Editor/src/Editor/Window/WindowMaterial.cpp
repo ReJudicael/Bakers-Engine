@@ -97,13 +97,13 @@ namespace Editor::Window
 		{
 			ImGui::Spacing();
 			ShowMaterialShaders();
-			ImGui::RDragFloat("Shininess", &GetEngine()->materialSelected->shininess, 0.01f);
-			ImGui::RColorEdit4("Ambient", GetEngine()->materialSelected->ambientColor.rgba);
-			ImGui::RColorEdit4("Diffuse", GetEngine()->materialSelected->diffuseColor.rgba);
-			ImGui::RColorEdit4("Specular", GetEngine()->materialSelected->specularColor.rgba);
-			for (auto& varUniform : GetEngine()->materialSelected->variants)
+			ImGui::RDragFloat("Shininess", &material->shininess, 0.01f);
+			ImGui::RColorEdit4("Ambient", material->ambientColor.rgba);
+			ImGui::RColorEdit4("Diffuse", material->diffuseColor.rgba);
+			ImGui::RColorEdit4("Specular", material->specularColor.rgba);
+			for (auto& varUniform : material->variants)
 				ShowMaterialVariant(varUniform);
-			for (auto& texture : GetEngine()->materialSelected->textures)
+			for (auto& texture : material->textures)
 				ShowMaterialTexture(texture);
 		}
 	}
@@ -130,15 +130,20 @@ namespace Editor::Window
 	void WindowMaterial::Tick()
 	{
 		if (!m_isLocked && m_material != GetEngine()->materialSelected)
+		{
 			m_material = GetEngine()->materialSelected;
+			m_nameMaterial = GetEngine()->nameMaterialSelected;
+		}
 
 		if (m_material)
 		{
 			LockSelectedMaterialButton();
+			ImGui::SameLine();
+			ImGui::Text(m_nameMaterial.c_str());
 			ImGui::Spacing();
 			ImGui::Separator();
 			ImGui::Spacing();
-			MaterialInspector(GetEngine()->materialSelected);
+			MaterialInspector(m_material);
 		}
 	}
 }

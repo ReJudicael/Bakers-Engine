@@ -236,7 +236,6 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 	for (auto i{ 0 }; i < m_model->offsetsMesh.size(); i++)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
-
 		Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
 
 		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material.shader);

@@ -16,19 +16,14 @@ namespace Core
 		RTTR_PLUGIN_REGISTRATION
 		{
 			ZoneScopedN("Registering RTTR")
-			registration::class_<Core::Physics::RigidBody>("Rigid Body")
-			.constructor()
-			.property("Velocity", &Core::Physics::RigidBody::GetVelocity, &Core::Physics::RigidBody::SetLinearVelocity)
-			.property("Mass", &Core::Physics::RigidBody::GetMass, &Core::Physics::RigidBody::SetMass)
-			.property("Use Gravity", &Core::Physics::RigidBody::GetUseGravity, &Core::Physics::RigidBody::SetUseGravity)
-			//.property("Kinematic", &Core::Physics::RigidBody::IsKinematic, &Core::Physics::RigidBody::SetIsKinematic)
-			.property("Rotation XLock", &Core::Physics::RigidBody::GetPhysicsLockXRotation,
-						&Core::Physics::RigidBody::SetPhysicsLockXRotation)
-			.property("Rotation YLock", &Core::Physics::RigidBody::GetPhysicsLockYRotation,
-						&Core::Physics::RigidBody::SetPhysicsLockYRotation)
-			.property("Rotation ZLock", &Core::Physics::RigidBody::GetPhysicsLockZRotation,
-						&Core::Physics::RigidBody::SetPhysicsLockZRotation)
-			;
+			Datastructure::RegisterDefaultClassConstructor<RigidBody>("Rigidbody");
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Velocity", &RigidBody::GetVelocity, &RigidBody::SetLinearVelocity);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Mass", &RigidBody::GetMass, &RigidBody::SetMass);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Use Gravity", &RigidBody::GetUseGravity, &RigidBody::SetUseGravity);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation XLock", &RigidBody::GetPhysicsLockXRotation, &RigidBody::SetPhysicsLockXRotation);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation YLock", &RigidBody::GetPhysicsLockYRotation, &RigidBody::SetPhysicsLockYRotation);
+			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation ZLock", &RigidBody::GetPhysicsLockZRotation, &RigidBody::SetPhysicsLockZRotation);
+			Datastructure::RegisterClassMethod<RigidBody>("Rigidbody", "AddVelocity", &RigidBody::AddVelocity);
 		}
 
 		void RigidBody::OnInit()
@@ -134,7 +129,6 @@ namespace Core
 			{
 				GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
 			}
-
 			if (m_pxRigidBody->isSleeping())
 				return;
 
@@ -155,16 +149,15 @@ namespace Core
 				return;
 			}
 
-			
+			m_pxRigidBody->wakeUp();
 			Maths::Vec3 vec = GetParent()->GetGlobalPos();
 			physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
 			Maths::Quat quat = GetParent()->GetGlobalRot();
 			physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
 
-			if (!IsKinematic())
-				m_pxRigidBody->setGlobalPose(physx::PxTransform(position, rotation));
-			else
-				m_pxRigidBody->setKinematicTarget(physx::PxTransform(position, rotation));
+			m_pxRigidBody->setGlobalPose(physx::PxTransform(position, rotation));
+
+			ClearForces();
 		}
 
 		void RigidBody::SetLinearVelocity(Core::Maths::Vec3 newVelocity)
@@ -285,27 +278,6 @@ namespace Core
 			if (m_pxRigidBody == nullptr)
 				return false;
 			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
-		}
-
-		void RigidBody::SetIsKinematic(bool isKinematic)
-		{
-			// if there is already a shape put the value in the shape
-			// if the object isn't going to be destroyed save the value
-			if (m_pxRigidBody)
-				m_pxRigidBody->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, isKinematic);
-			else if (!IsDestroyed())
-			{
-				if (!m_tmpRigidBodySave)
-					m_tmpRigidBodySave = new RigidBodySave();
-				//m_tmpRigidBodySave->Kinematic = isKinematic;
-			}
-		}
-
-		bool RigidBody::IsKinematic() const
-		{
-			if (m_pxRigidBody == nullptr)
-				return false;
-			return m_pxRigidBody->getRigidBodyFlags().isSet(physx::PxRigidBodyFlag::eKINEMATIC);
 		}
 
 		void RigidBody::SetUseGravity(bool use)
