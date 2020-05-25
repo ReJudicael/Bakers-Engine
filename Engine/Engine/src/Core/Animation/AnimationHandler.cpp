@@ -235,4 +235,9 @@ namespace Core::Animation
 		animationFinish = true;
 	}
 
+	void AnimationHandler::PlayAnimation(std::shared_ptr<AnimationNode> animation)
+	{
+		m_currentAnimationNode = animation;
+	}
+
 }

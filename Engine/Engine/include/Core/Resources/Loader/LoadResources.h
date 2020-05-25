@@ -264,7 +264,7 @@ namespace Resources
 			 * @param keyName: the key of the shader with which we try to find
 			 * @return the shared_ptr of the shader we try to find with the keyName
 			 */
-			inline std::shared_ptr<Shader> GetShader(std::string keyName)
+			std::shared_ptr<Shader> GetShader(std::string keyName)
 			{
 				if (GetCountShader(keyName) > 0)
 					return m_shaders[keyName];
@@ -512,7 +512,28 @@ namespace Resources
 			 */
 			void ReloadScripts();
 
+			/**
+			 * Save all the special materials
+			 * @param shaderPTR: the shader we want to find the path
+			 */
+			std::string FindShaderFromShared(std::shared_ptr<Resources::Shader> shaderPTR);
+			/**
+			 * Save all the special materials
+			 * @param materialPTR: the material we want to find the path
+			 */
+			std::string FindMaterialFromShared(std::shared_ptr<Resources::Material> materialPTR);
+			/**
+			 * Save all the special materials
+			 * @param texturePTR: the texture we want to find the path
+			 */
+			std::string FindTextureFromShared(std::shared_ptr<Resources::Texture> texturePTR);
+
+			/**
+			 * Save all the special materials
+			 */
 			void SaveMaterial();
+
+			void DeleteSpecialMaterialShader(const std::string& path);
 		};
 
 		/**

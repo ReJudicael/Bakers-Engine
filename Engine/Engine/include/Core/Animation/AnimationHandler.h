@@ -177,6 +177,8 @@ namespace Core::Animation
 		 */
 		void UpdateSkeletalMeshBones(	std::shared_ptr<Bone> rootBone, 
 										std::vector<Core::Maths::Mat4>& finalTransform, float deltaTime);
+
+		void PlayAnimation(std::shared_ptr<AnimationNode> animation);
 	};
 }
 

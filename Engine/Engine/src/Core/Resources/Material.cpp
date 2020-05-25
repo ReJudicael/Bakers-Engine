@@ -286,7 +286,7 @@ namespace Resources
 		textures.resize(numberOfBasicTexture);
 	}
 
-	void  Material::SaveMaterial(const std::string& pathMaterial, const std::string& shaderPath)
+	void  Material::SaveMaterial(const std::string& pathMaterial, Resources::Loader::ResourcesManager* resources)
 	{
 		std::ofstream o(pathMaterial);
 		if (!o.is_open())
@@ -297,7 +297,7 @@ namespace Resources
 		json color;
 
 		{
-			save["Shader"] = shaderPath;
+			save["Shader"] = resources->FindShaderFromShared(shader);
 
 			Core::Maths::Color temp{ diffuseColor };
 			color["r"] = temp.r;
@@ -321,16 +321,9 @@ namespace Resources
 			save["Specular"] = color;
 
 			if (textures.size() >= 1)
-				if (textures[0])
-					save["BaseTexture"] = textures[0]->name;
-				else
-					save["BaseTexture"] = "nothing";
+				save["BaseTexture"] = resources->FindTextureFromShared(textures[0]);
 			if(textures.size() >= 2)
-				if (textures[1])
-					save["BaseTexture"] = textures[0]->name;
-				else
-					save["BaseTexture"] = "nothing";
-
+				save["BaseTexture"] = resources->FindTextureFromShared(textures[1]);
 
 			save["shininess"] = shininess;
 			save["shininessS"] = shininessStrength;

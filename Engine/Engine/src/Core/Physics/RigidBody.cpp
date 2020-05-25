@@ -156,8 +156,6 @@ namespace Core
 			physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
 
 			m_pxRigidBody->setGlobalPose(physx::PxTransform(position, rotation));
-
-			ClearForces();
 		}
 
 		void RigidBody::SetLinearVelocity(Core::Maths::Vec3 newVelocity)

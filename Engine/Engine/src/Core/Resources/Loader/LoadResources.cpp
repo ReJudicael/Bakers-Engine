@@ -98,7 +98,7 @@ namespace Resources::Loader
 	{
 		std::shared_ptr<Material> material = std::make_shared<Material>();
 		material->CreateDefaultMaterial(this);
-		material->SaveMaterial(path, "DefaultNoTexture");
+		material->SaveMaterial(path, this);
 		m_materials.emplace(path, material);
 	}
 
@@ -107,7 +107,8 @@ namespace Resources::Loader
 		auto it = m_materials.find(path);
 		if (it != m_materials.end())
 		{
-			(it->second)->UpdateNameMaterial(newPath);
+			if(!it->second.use_count() > 1)
+				it->second->UpdateNameMaterial(newPath);
 			std::swap(m_materials[newPath], it->second);
 			m_materials.erase(it);
 		}
@@ -139,7 +140,6 @@ namespace Resources::Loader
 		auto it = m_shaders.find(path);
 		if (it != m_shaders.end())
 		{
-			//(it->second)->UpdateNameMaterial(newPath);
 			std::swap(m_shaders[newPath], it->second);
 			m_shaders.erase(it);
 		}
@@ -739,23 +739,72 @@ namespace Resources::Loader
 			script->LoadLuaScript();
 	}
 
+	std::string ResourcesManager::FindShaderFromShared(std::shared_ptr<Resources::Shader> shaderPTR)
+	{
+		std::string nameShader = "nothing";
+		for (auto shader : m_shaders)
+		{
+			if (shader.second == shaderPTR)
+			{
+				nameShader = shader.first;
+				break;
+			}
+		}
+
+		return nameShader;
+	}
+
+	std::string ResourcesManager::FindMaterialFromShared(std::shared_ptr<Resources::Material> materialPTR)
+	{
+		std::string nameMaterial = "nothing";
+		for (auto material : m_materials)
+		{
+			if (material.second == materialPTR)
+			{
+				nameMaterial = material.first;
+				break;
+			}
+		}
+
+		return nameMaterial;
+	}
+
+	std::string ResourcesManager::FindTextureFromShared(std::shared_ptr<Resources::Texture> texturePTR)
+	{
+		std::string nameTexture = "nothing";
+		for (auto texture : m_textures)
+		{
+			if (texture.second == texturePTR)
+			{
+				nameTexture = texture.first;
+				break;
+			}
+		}
+
+		return nameTexture;
+	}
+
 	void ResourcesManager::SaveMaterial()
 	{
 		for (auto mat : m_materials)
 		{
 			if (mat.first.find(".bmat") != std::string::npos)
 			{
-				std::string nameShader;
-				for (auto shader : m_shaders)
-				{
-					if (shader.second == mat.second->shader)
-					{
-						nameShader = shader.first;
-						break;
-					}
-				}
-				mat.second->SaveMaterial(mat.first, nameShader);
+				mat.second->SaveMaterial(mat.first, this);
 			}
+		}
+	}
+
+	void ResourcesManager::DeleteSpecialMaterialShader(const std::string& path)
+	{
+		if (path.find(".bmat") != std::string::npos)
+		{
+			m_materials[path]->IsDelete = true;
+			m_materials.erase(path);
+		}
+		else if (path.find(".bshader") != std::string::npos)
+		{
+			m_shaders.erase(path);
 		}
 	}
 }
