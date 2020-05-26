@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ComponentUpdatable.h"
+#include "ComponentBase.h"
 #include "Collider.h"
 
 // Switch to handle mechanism when player enter triggers
