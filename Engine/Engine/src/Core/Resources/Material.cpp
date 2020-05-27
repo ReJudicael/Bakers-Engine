@@ -42,8 +42,10 @@ namespace Resources
 		LoadTextureMaterial(mat, textures[0], aiTextureType_DIFFUSE, directory, resources);
 		LoadTextureMaterial(mat, textures[textures.size()- 1], aiTextureType_NORMALS, directory, resources);
 
-		if(textures.size() <= 0)
+		if(textures.size() <= 0 && !IsSkeletal)
 			shader = resources->GetShader("DefaultNoTexture");
+		else if (IsSkeletal)
+			shader = resources->GetShader("Skeletal");
 
 		aiColor3D color;
 		mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
