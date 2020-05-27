@@ -135,9 +135,7 @@ namespace Core::Animation
 			}
 		}
 		else
-		{
 			nodeTransform = transitionsAnimation[indexTransition]->UpdateBoneTransition(currentBone);
-		}
 
 		Core::Maths::Mat4 globalTransform = parent * nodeTransform;
 
@@ -151,7 +149,6 @@ namespace Core::Animation
 
 	void AnimationNode::UpdateAnimationNode(float deltaTime)
 	{
-		UpdateTimer(deltaTime);
 
 		if (m_inTransition)
 		{
@@ -163,6 +160,8 @@ namespace Core::Animation
 		}
 		else
 		{
+			UpdateTimer(deltaTime);
+
 			for (auto i{ 0 }; i < transitionsAnimation.size(); i++)
 			{
 				if (transitionsAnimation[i] && transitionsAnimation[i]->m_conditionTransition())
@@ -177,19 +176,18 @@ namespace Core::Animation
 
 	void AnimationNode::UpdateTimer(float deltaTime)
 	{
-		m_currentTime += deltaTime * speed;
+		if (reset)
+			m_currentTime = 0.f;
+
+		m_currentTime = m_currentTime + deltaTime * speed;
 
 		if (m_currentTime > nodeAnimation->Time)
 		{
 			if (Loop)
 			{
 				reset = true;
-				m_currentTime = 0.f;
 			}
-			else
-			{
-				m_currentTime = nodeAnimation->Time;
-			}
+			m_currentTime = nodeAnimation->Time;
 		}
 	}
 
@@ -222,14 +220,16 @@ namespace Core::Animation
 	{
 		if (m_currentAnimationNode)
 		{
-			m_currentAnimationNode->UpdateAnimationNode(deltaTime);
-
-			constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
-
-			for (auto i{ 0 }; i < rootBone->child.size(); i++)
+			if (m_currentAnimationNode->IsAnimationCurrentTimeIsMax())
 			{
-				m_currentAnimationNode->UpdateAnimationBone(rootBone->child[i], identity, finalTransform);
+				constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
+				for (auto i{ 0 }; i < rootBone->child.size(); i++)
+				{
+					m_currentAnimationNode->UpdateAnimationBone(rootBone->child[i], identity, finalTransform);
+				}
 			}
+
+			m_currentAnimationNode->UpdateAnimationNode(deltaTime);
 
 			// check if the Transition of the currentAniation is finish
 			if (m_currentAnimationNode->IsTransitionFinish())

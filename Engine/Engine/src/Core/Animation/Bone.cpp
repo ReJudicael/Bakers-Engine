@@ -5,7 +5,7 @@
 
 namespace Core::Animation
 {
-	void Bone::InitBone(const aiNode* node, const std::shared_ptr<Resources::unorderedmapBonesIndex>& bonesIndex, Core::Datastructure::Transform offsetP)
+	void Bone::InitBone(const aiNode* node, const std::shared_ptr<Resources::unorderedmapBonesIndex>& bonesIndex)
 	{
 		Resources::Animation::BoneData currBoneData = bonesIndex->operator[](node->mName.data);
 
@@ -17,8 +17,7 @@ namespace Core::Animation
 		aiQuaternion rot;
 		aiVector3D sca;
 		node->mTransformation.Decompose(sca, rot, pos);
-		baseTransform = Core::Datastructure::Transform{ /*offsetP,*/
-														{ pos.x, pos.y, pos.z }, 
+		baseTransform = Core::Datastructure::Transform{ { pos.x, pos.y, pos.z }, 
 														{ rot.w, rot.x, rot.y, rot.z },
 														{ sca.x, sca.y, sca.z } };
 
@@ -29,7 +28,7 @@ namespace Core::Animation
 			const aiNode* childNode{ node->mChildren[i] };
 			if (bonesIndex->count(childNode->mName.data) > 0)
 			{
-				childBone->InitBone(childNode, bonesIndex, baseTransform);
+				childBone->InitBone(childNode, bonesIndex);
 				child.push_back(childBone);
 			}
 		}

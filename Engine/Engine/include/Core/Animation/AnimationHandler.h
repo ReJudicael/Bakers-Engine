@@ -84,7 +84,7 @@ namespace Core::Animation
 	{
 
 	private:
-		float m_currentTime;
+		std::atomic<float> m_currentTime;
 		std::atomic<bool> m_inTransition{ false };
 		unsigned int indexTransition;
 
@@ -154,6 +154,15 @@ namespace Core::Animation
 				return transitionsAnimation[indexTransition]->IsTransitionFinish();
 			else
 				return false;
+		}
+		/**
+		 * check if the current time of the AnimationNode is the max
+		 * of the Animation time
+		 * @return true if the times are the same
+		 */
+		bool IsAnimationCurrentTimeIsMax()
+		{
+			return { m_currentTime == nodeAnimation->Time };
 		}
 
 		/*

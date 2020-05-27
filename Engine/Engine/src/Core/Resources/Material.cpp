@@ -195,7 +195,7 @@ namespace Resources
 		GLenum type;
 
 		int numberOfBasicTexture{ 0 };
-
+		bool skeletalShader{ false };
 		// get all the uniform used of the shader
 		glGetProgramiv(shader->GetProgram(), GL_ACTIVE_UNIFORMS, &count);
 		for (auto i{ 0 }; i < count; i++)
@@ -208,81 +208,85 @@ namespace Resources
 				VariantUniform uni;
 				uni.name = name;
 
+				// try to find the type among the managed types 
 				switch (type)
 				{
-					case GL_BOOL:
-					{
-						uni.var = false;
-						variants.push_back(uni);
-						break;
-					}
+				case GL_BOOL:
+				{
+					uni.var = false;
+					variants.push_back(uni);
+					break;
+				}
 
-					case GL_INT:
-					{
-						uni.var = 0;
-						variants.push_back(uni);
-						break;
-					}
+				case GL_INT:
+				{
+					uni.var = 0;
+					variants.push_back(uni);
+					break;
+				}
 
-					case GL_FLOAT:
-					{
-						uni.var = 0.f;
-						variants.push_back(uni);
-						break;
-					}
+				case GL_FLOAT:
+				{
+					uni.var = 0.f;
+					variants.push_back(uni);
+					break;
+				}
 
-					case GL_UNSIGNED_INT:
-					{
-						uni.var = static_cast<unsigned int>(0);
-						variants.push_back(uni);
-						break;
-					}
+				case GL_UNSIGNED_INT:
+				{
+					uni.var = static_cast<unsigned int>(0);
+					variants.push_back(uni);
+					break;
+				}
 
-					case GL_FLOAT_VEC2:
-					{
-						uni.var = Core::Maths::Vec2();
-						variants.push_back(uni);
-						break;
-					}
+				case GL_FLOAT_VEC2:
+				{
+					uni.var = Core::Maths::Vec2();
+					variants.push_back(uni);
+					break;
+				}
 
-					case GL_FLOAT_VEC3:
-					{
-						uni.var = Core::Maths::Vec3();
-						variants.push_back(uni);
-						break;
-					}
+				case GL_FLOAT_VEC3:
+				{
+					uni.var = Core::Maths::Vec3();
+					variants.push_back(uni);
+					break;
+				}
 
-					case GL_FLOAT_VEC4:
-					{
-						if (name[0] == 'c')
-							uni.var = Core::Maths::Color(1.f, 1.f, 1.f, 1.f);
-						else
-							uni.var = Core::Maths::Vec4();
-						variants.push_back(uni);
-						break;
-					}
+				case GL_FLOAT_VEC4:
+				{
+					if (name[0] == 'c')
+						uni.var = Core::Maths::Color(1.f, 1.f, 1.f, 1.f);
+					else
+						uni.var = Core::Maths::Vec4();
+					variants.push_back(uni);
+					break;
+				}
 
-					case GL_COLOR:
-					{
-						uni.var = Core::Maths::Color();
-						variants.push_back(uni);
-						break;
-					}
+				case GL_COLOR:
+				{
+					uni.var = Core::Maths::Color();
+					variants.push_back(uni);
+					break;
+				}
 
-					case GL_SAMPLER_2D:
-					{
-						uni.var = std::shared_ptr<Texture>();
-						variants.push_back(uni);
-						break;
-					}
+				case GL_SAMPLER_2D:
+				{
+					uni.var = std::shared_ptr<Texture>();
+					variants.push_back(uni);
+					break;
+				}
 				}
 			}
 			else if (std::string(name) == "uColorTexture")
 				numberOfBasicTexture++;
 			else if (std::string(name) == "uNormalMap")
 				numberOfBasicTexture++;
+			else if (std::string(name) == "uBones")
+				skeletalShader = true;
 		}
 
+		IsSkeletal = skeletalShader;;
 		textures.resize(numberOfBasicTexture);
 	}
 

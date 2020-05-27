@@ -271,8 +271,6 @@ namespace Core
 
 		void RigidBody::SetPhysicsLockZRotation(bool Axisz)
 		{
-			// if there is already a shape put the value in the shape
-			// if the object isn't going to be destroyed save the value
 			if (m_pxRigidBody)
 				m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, Axisz);
 			else if (!IsDestroyed())

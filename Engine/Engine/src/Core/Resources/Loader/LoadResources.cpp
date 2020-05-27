@@ -9,7 +9,6 @@
 
 #include "Assimp/cimport.h"
 #include "Assimp/scene.h"
-//#include "Assimp/Importer.hpp"
 #include "Assimp/postprocess.h"
 #include "Assimp/material.h"
 #include "Assimp/texture.h"
@@ -20,10 +19,6 @@
 #include "Object.hpp"
 #include "ScriptedComponent.h"
 #include "Model.h"
-//#include "Material.h"
-//#include "Texture.h"
-//#include "TextureData.h"
-
 #include "AudioClip.h"
 #include "Object3DGraph.h"
 #include "BoneData.h"
@@ -394,7 +389,7 @@ namespace Resources::Loader
 		Core::Datastructure::Transform t{};
 		
 		tree->rootBone = std::make_shared<Core::Animation::Bone>();
-		tree->rootBone->InitBone(firstBoneNode->mParent, bonesIndex, t);
+		tree->rootBone->InitBone(firstBoneNode->mParent, bonesIndex);
 		tree->numBone = numBones;
 
 		m_BoneHierarchies.emplace(directory, tree);

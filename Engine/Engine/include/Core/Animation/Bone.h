@@ -12,7 +12,6 @@ struct aiNode;
 namespace Resources
 {
 	using unorderedmapBonesIndex = std::unordered_map<std::string, Animation::BoneData>;
-	//using unorderedmapSkeletalIndex = std::unordered_map<std::string, std::shared_ptr<unorderedmapBonesIndex>>;
 }
 
 
@@ -34,7 +33,12 @@ namespace Core
 
 			std::vector<std::shared_ptr<Bone>>		child;
 
-			void InitBone(const aiNode* node, const std::shared_ptr<Resources::unorderedmapBonesIndex>& bonesIndex, Core::Datastructure::Transform offsetP);
+			/**
+			 * Init a bone with the node of assimp
+			 * @param node: the current node
+			 * @param bonesIndex: the map of the bone information
+			 */
+			void InitBone(const aiNode* node, const std::shared_ptr<Resources::unorderedmapBonesIndex>& bonesIndex);
 
 		};
 
