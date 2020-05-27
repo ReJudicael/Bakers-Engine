@@ -23,7 +23,10 @@ namespace Core::Datastructure
 		unsigned			m_cameraHeight{800};
 
 		Core::Renderer::Framebuffer* m_fbo{ nullptr };
+		Core::Renderer::Framebuffer* m_effectFbo{ nullptr };
+		Core::Renderer::Framebuffer* m_secondEffectFbo{ nullptr };
 		std::shared_ptr<Resources::Shader> m_shadowShader{ nullptr };
+		std::shared_ptr<Resources::Shader> m_bloomShader{ nullptr };
 
 		/**
 		 * Generate and return camera matrix

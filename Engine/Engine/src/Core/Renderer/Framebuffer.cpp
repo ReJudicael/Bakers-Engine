@@ -34,6 +34,13 @@ namespace Core::Renderer
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+		glGenTextures(1, &EffectTexture);
+		glBindTexture(GL_TEXTURE_2D, EffectTexture);
+		glObjectLabel(GL_TEXTURE, EffectTexture, -1, "EffectTexture");
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 		// Note: Here we store the depth stencil in a renderbuffer object, 
 		// but we can as well store it in a texture if we want to display it later
 		glGenRenderbuffers(1, &DepthStencilRenderbuffer);
@@ -43,6 +50,7 @@ namespace Core::Renderer
 
 		// Setup attachements
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, ColorTexture, 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 1, GL_TEXTURE_2D, EffectTexture, 0);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, DepthStencilRenderbuffer);
 
 		unsigned int DrawAttachments[1] = { GL_COLOR_ATTACHMENT0 + 0 };
@@ -109,6 +117,10 @@ namespace Core::Renderer
 	void	Framebuffer::Resize(int width, int height) noexcept
 	{
 		glBindTexture(GL_TEXTURE_2D, ColorTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glBindTexture(GL_TEXTURE_2D, EffectTexture);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		

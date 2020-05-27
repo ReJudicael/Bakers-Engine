@@ -24,6 +24,7 @@ namespace Core::Renderer
 		FramebufferData data;
 		GLuint	FBO;
 		GLuint	ColorTexture;
+		GLuint	EffectTexture;
 		GLuint	DepthStencilRenderbuffer;
 		int		Size[4];
 		void*	userPtr;
