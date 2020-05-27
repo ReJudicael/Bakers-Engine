@@ -195,7 +195,11 @@ namespace Core
 		float RigidBody::GetMass() const
 		{
 			if (m_pxRigidBody == nullptr)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->Mass;
 				return 0;
+			}
 			return m_pxRigidBody->getMass();
 		}
 
@@ -232,7 +236,11 @@ namespace Core
 		bool RigidBody::GetPhysicsLockXRotation() const
 		{
 			if (m_pxRigidBody == nullptr)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->XLock;
 				return false;
+			}
 			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X);
 		}
 
@@ -253,7 +261,11 @@ namespace Core
 		bool RigidBody::GetPhysicsLockYRotation() const
 		{
 			if (m_pxRigidBody == nullptr)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->YLock;
 				return false;
+			}
 			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y);
 		}
 
@@ -274,7 +286,11 @@ namespace Core
 		bool RigidBody::GetPhysicsLockZRotation() const
 		{
 			if (m_pxRigidBody == nullptr)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->ZLock;
 				return false;
+			}
 			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
 		}
 
@@ -294,10 +310,13 @@ namespace Core
 
 		bool RigidBody::GetUseGravity() const
 		{
-			if (m_pxRigidBody)
-				return !m_pxRigidBody->getActorFlags().isSet(physx::PxActorFlag::eDISABLE_GRAVITY);
-
-			return false;
+			if (!m_pxRigidBody)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->Gravity;
+				return false;
+			}
+			return !m_pxRigidBody->getActorFlags().isSet(physx::PxActorFlag::eDISABLE_GRAVITY);
 		}
 
 		RigidBody::~RigidBody()

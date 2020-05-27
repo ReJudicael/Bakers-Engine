@@ -65,13 +65,37 @@ namespace Editor::Window
 		}
 	}
 
-	void WindowMaterial::ShowMaterialVariant(Resources::VariantUniform varUniform)
+	void WindowMaterial::ShowMaterialVariant(Resources::VariantUniform& varUniform)
 	{
-		if (varUniform.var.can_convert<float>())
+		if (varUniform.var.get_type() == rttr::type::get<bool>())
+		{
+			bool b{ varUniform.var.to_bool() };
+		}
+		else if (varUniform.var.get_type() == rttr::type::get<int>())
+		{
+			ImGui::DragInt(varUniform.name.c_str(), &varUniform.var.get_value<int>());
+		}
+		else if (varUniform.var.get_type() == rttr::type::get<float>())
 		{
 			ImGui::RDragFloat(varUniform.name.c_str(), &varUniform.var.get_value<float>(), 0.01f);
 		}
-		else if (varUniform.var.can_convert<std::shared_ptr<Resources::Texture>>())
+		else if (varUniform.var.get_type() == rttr::type::get<Core::Maths::Vec2>())
+		{
+			ImGui::RDragFloat2(varUniform.name.c_str(), varUniform.var.get_value<Core::Maths::Vec2>().xy);
+		}
+		else if (varUniform.var.get_type() == rttr::type::get<Core::Maths::Vec3>())
+		{
+			ImGui::RDragFloat3(varUniform.name.c_str(), varUniform.var.get_value<Core::Maths::Vec3>().xyz);
+		}
+		else if (varUniform.var.get_type() == rttr::type::get<Core::Maths::Vec4>())
+		{
+			ImGui::RDragFloat4(varUniform.name.c_str(), varUniform.var.get_value<Core::Maths::Vec4>().xyzw);
+		}
+		else if (varUniform.var.get_type() == rttr::type::get<Core::Maths::Color>())
+		{
+			ImGui::RColorEdit4(varUniform.name.c_str(), varUniform.var.get_value<Core::Maths::Color>().rgba);
+		}
+		else if (varUniform.var.get_type() == rttr::type::get<std::shared_ptr<Resources::Texture>>())
 		{
 			std::shared_ptr<Resources::Texture> text = varUniform.var.get_value<std::shared_ptr<Resources::Texture>>();
 			std::string str;
@@ -101,10 +125,46 @@ namespace Editor::Window
 			ImGui::RColorEdit4("Ambient", material->ambientColor.rgba);
 			ImGui::RColorEdit4("Diffuse", material->diffuseColor.rgba);
 			ImGui::RColorEdit4("Specular", material->specularColor.rgba);
-			for (auto& varUniform : material->variants)
-				ShowMaterialVariant(varUniform);
-			for (auto& texture : material->textures)
-				ShowMaterialTexture(texture);
+
+			if (material->textures.size() > 0)
+			{
+				ImGui::Text("Base Texture : ");
+				for (auto& texture : material->textures)
+					ShowMaterialTexture(texture);
+			}
+
+			ImGui::Spacing();
+			ImGui::Spacing();
+			if (material->variants.size() > 0)
+			{
+				if (ImGui::TreeNodeEx("Uniform Personnal : ", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					for (auto& varUniform : material->variants)
+						ShowMaterialVariant(varUniform);
+					ImGui::TreePop();	
+				}
+			}
+
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 100.f);
+			if (ImGui::Button("Save"))
+			{
+				material->SaveMaterial(m_nameMaterial, GetEngine()->GetResourcesManager());
+			}
+			ImGui::HelpMarkerItem("Save the material");
+			ImGui::PopStyleColor();
+			ImGui::SameLine();
+			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
+			ImGui::SetNextItemWidth(100.f);
+			if (ImGui::Button("Discard"))
+			{
+				material->LoadMaterialFromJSON(m_nameMaterial, GetEngine()->GetResourcesManager());
+			}
+			ImGui::HelpMarkerItem("Discard all changes");
+			ImGui::PopStyleColor();
 		}
 	}
 
@@ -135,8 +195,10 @@ namespace Editor::Window
 			m_nameMaterial = GetEngine()->nameMaterialSelected;
 		}
 
+
 		if (m_material)
 		{
+			m_nameMaterial = GetEngine()->GetResourcesManager()->FindMaterialFromShared(m_material);
 			LockSelectedMaterialButton();
 			ImGui::SameLine();
 			ImGui::Text(m_nameMaterial.c_str());

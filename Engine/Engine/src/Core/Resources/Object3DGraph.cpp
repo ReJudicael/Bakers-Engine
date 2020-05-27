@@ -116,7 +116,7 @@ namespace Resources
 					{
 						skeletal->InitBones(resources.GetSkeleton(nameMesh));
 
-						std::shared_ptr<Core::Animation::AnimationNode> anim1 = std::make_shared<Core::Animation::AnimationNode>();
+						/*std::shared_ptr<Core::Animation::AnimationNode> anim1 = std::make_shared<Core::Animation::AnimationNode>();
 						anim1->nodeAnimation = resources.LoadAsAnAnimation("Resources/Models/Combo01_SwordShieldAnim.FBX");
 
 						std::shared_ptr<Core::Animation::AnimationNode> anim2 = std::make_shared<Core::Animation::AnimationNode>();
@@ -132,7 +132,7 @@ namespace Resources
 
 						Core::Animation::AnimationHandler test(anim1);
 
-						skeletal->animationHandler = test;
+						skeletal->animationHandler = test;*/
 					}
 					mesh = skeletal;
 				}

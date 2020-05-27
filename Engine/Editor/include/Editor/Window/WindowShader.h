@@ -1,20 +1,15 @@
 #pragma once
-
 #include "AWindow.h"
 
 namespace Resources
 {
-	struct Material;
-	struct VariantUniform;
+	class Shader;
 	struct Texture;
 }
 
 namespace Editor::Window
 {
-	/**
-	 * Window Material
-	 */
-	class WindowMaterial : public AWindow
+	class WindowShader : public AWindow
 	{
 	private:
 		/**
@@ -25,12 +20,12 @@ namespace Editor::Window
 		/**
 		 * Inspector material
 		 */
-		std::shared_ptr<Resources::Material> m_material{ nullptr };
+		std::shared_ptr<Resources::Shader> m_shader{ nullptr };
 
 		/**
 		 * Name material
 		 */
-		std::string m_nameMaterial;
+		std::string m_nameShader;
 
 		/**
 		 * Property icon
@@ -46,12 +41,12 @@ namespace Editor::Window
 		/**
 		 * Constructor which set title of window ("Material")
 		 */
-		WindowMaterial(Canvas* canvas, bool visible = true);
+		WindowShader(Canvas* canvas, bool visible = true);
 
 		/**
 		 * Default destructor
 		 */
-		~WindowMaterial() = default;
+		~WindowShader() = default;
 
 	private:
 		/**
@@ -65,40 +60,32 @@ namespace Editor::Window
 		void PopWindowStyle() override;
 
 	private:
-		/**
-		 * Show material shaders
-		 */
-		void ShowMaterialShaders();
 
 		/**
 		 * Drop an item
 		 * @param itemPath: Path of the dragged file / folder
 		 * @param Texture: Texture to send
 		 */
-		void DragDropTargetItem(const std::string& itemPath, std::shared_ptr<Resources::Texture>& texture);
-
-		/**
-		 * Show Material variant
-		 * @param varUniform: VariantUniform of Material
-		 */
-		void ShowMaterialVariant(Resources::VariantUniform& varUniform);
-
-		/**
-		 * Show Material texture
-		 * @param texture: Texture of Material
-		 */
-		void ShowMaterialTexture(std::shared_ptr<Resources::Texture>& texture);
+		void DragDropTargetItem(const std::string & itemPath, std::shared_ptr<Resources::Texture> & texture);
 
 		/**
 		 * Display the names and current values of the properties
 		 * The user can be modify these values
 		 */
-		void MaterialInspector(std::shared_ptr<Resources::Material>& material);
+		void ShaderInspector(std::shared_ptr<Resources::Shader>& shader);
+
+		/**
+		 * Display the vertex or the frament shader path
+		 * @param shader: the shader of the WindowShader
+		 * @param isVertex: if true diplay the vertex shader path 
+		 * else display the fragment shader path 
+		 */
+		void DisplayVertAndFragShader(std::shared_ptr<Resources::Shader>& shader, bool isVertex);
 
 		/**
 		 * Button to lock / unlock the selected material
 		 */
-		void LockSelectedMaterialButton();
+		void LockSelectedShaderButton();
 
 	private:
 		/**
@@ -106,4 +93,6 @@ namespace Editor::Window
 		 */
 		void Tick() override;
 	};
+	
 }
+

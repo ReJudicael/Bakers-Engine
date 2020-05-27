@@ -379,6 +379,11 @@ namespace Resources
 			void ReplaceShader(const std::string& path, const std::string& newPath);
 
 			/**
+			 *
+			 */
+			void UpdateShaderPathInMaterials(std::shared_ptr<Resources::Shader> shader);
+
+			/**
 			 * Load a material with a .bmat
 			 * @param path: the path of the file
 			 */
@@ -532,6 +537,13 @@ namespace Resources
 			 * Save all the special materials
 			 */
 			void SaveMaterial();
+
+			/**
+			 * Update all materials who have this shader who is going to be deleted
+			 * and change the material shader as default
+			 * @param shaderDeleted: the shader deleted
+			 */
+			void UpdateDeletedShaderMaterials(const std::shared_ptr<Resources::Shader>& shaderDeleted);
 
 			void DeleteSpecialMaterialShader(const std::string& path);
 		};

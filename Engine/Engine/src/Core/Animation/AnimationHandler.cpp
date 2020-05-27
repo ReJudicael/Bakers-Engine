@@ -5,11 +5,17 @@ namespace Core::Animation
 {
 	Core::Maths::Quat Nlerp(const Core::Maths::Quat& Q1, const Core::Maths::Quat& Q2, const float& t)
 	{
-		float bias = Q1.Dot(Q2) >= 0 ? 1 : -1;
+		float bias = Q1.Dot(Q2) >= 0 ? 1.f : -1.f;
 		return (Q1 * (1 - t) * bias + Q2 * t).Normalized();
 	}
 
-
+	TransitionNode::TransitionNode(std::shared_ptr<AnimationNode> currentAnimationNode,
+		std::shared_ptr<AnimationNode> nextAnimationNode, float speedTrans,
+		std::function<bool()> conditionTransition):
+		speed{ speedTrans }
+	{
+		InitTransition(currentAnimationNode, nextAnimationNode, conditionTransition);
+	}
 	void TransitionNode::InitTransition(std::shared_ptr<AnimationNode> currentAnimationNode,
 		std::shared_ptr<AnimationNode> nextAnimationNode, std::function<bool()> conditionTransition)
 	{

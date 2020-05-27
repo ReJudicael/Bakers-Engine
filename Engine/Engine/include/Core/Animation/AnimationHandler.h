@@ -22,7 +22,17 @@ namespace Core::Animation
 		float speed{ 20.f };
 
 	public:
+		/**
+		 * The default constructor
+		 */
+		TransitionNode() = default;
 
+		/**
+		 * constructor for create a transition
+		 */
+		TransitionNode(std::shared_ptr<AnimationNode> currentAnimationNode,
+			std::shared_ptr<AnimationNode> nextAnimationNode, float speedTrans,
+			std::function<bool()> conditionTransition = nullptr);
 		/**
 		 * init the transition
 		 * @param currentAnimationNode: the AnimationNode who have the transition
@@ -86,6 +96,11 @@ namespace Core::Animation
 		std::vector<std::shared_ptr<TransitionNode>>	transitionsAnimation;
 
 	public:
+
+		/**
+		 * The default constructor
+		 */
+		AnimationNode() = default;
 
 		/*
 		 * Update the TRS matrix of the bone with the animation

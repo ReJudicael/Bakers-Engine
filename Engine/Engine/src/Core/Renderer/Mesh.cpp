@@ -245,8 +245,8 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 			m_materialsNames[i] = "Default";
 		}
 
-		Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
-		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material.shader);
+		std::shared_ptr<Resources::Material> material = m_materialsModel[currOffsetMesh.materialIndices];
+		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material->shader);
 
 		usedShader->UseProgram();
 		{
@@ -258,7 +258,7 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 			for (int j{0}; j < 10; ++j)
 				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + i);
 
-			material.SendMaterial();
+			material->SendMaterial();
 			glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs);
 			glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
 			glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
