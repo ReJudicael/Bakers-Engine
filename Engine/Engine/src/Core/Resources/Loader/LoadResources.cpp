@@ -49,6 +49,7 @@ namespace Resources::Loader
 	{
 		CreateShader("DefaultNoTexture", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultNoTexture.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("Default", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("Text", "Resources\\Shaders\\Text.vert", "Resources\\Shaders\\Text.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("SkeletDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("NormalMapDefault", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("SkeletNormalMapDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
@@ -74,6 +75,9 @@ namespace Resources::Loader
 		LoadObjInModel("Quad", ".\\Resources\\Models\\quad.obj");
 		LoadObjInModel("Skybox", ".\\Resources\\Models\\skybox.obj");
 		LoadObjInModel("Sphere", ".\\Resources\\Models\\sphere.obj");
+
+		if (FT_Init_FreeType(&m_ft))
+			BAKERS_LOG_ERROR("FREETYPE: Could not init FreeType Library");
 	}
 
 	ResourcesManager::~ResourcesManager()
@@ -92,6 +96,14 @@ namespace Resources::Loader
 		for (unorderedmapShader::iterator itshader = m_shaders.begin();
 			itshader != m_shaders.end(); ++itshader)
 			itshader->second->Delete();
+
+		for (auto it = m_fontMap.begin(); it != m_fontMap.end(); it++)
+		{
+			FT_Done_Face(it->second->second);
+			for (auto it2 = it->second->first.begin(); it2 != it->second->first.end(); ++it2)
+				delete it2->second;
+			delete it->second;
+		}
 	}
 
 	void ResourcesManager::CreateNewMaterial(const std::string& path)
@@ -757,5 +769,36 @@ namespace Resources::Loader
 				mat.second->SaveMaterial(mat.first, nameShader);
 			}
 		}
+	}
+
+	Character* ResourcesManager::GetCharacter(const std::string& fontPath, char c)
+	{
+		std::pair<std::map<GLchar, Character*>, FT_Face>* font = GetFont(fontPath);
+
+		/* search for character and use it if already exist */
+		std::map<GLchar, Character*>::iterator  it = font->first.find(c);
+		if (it != font->first.end())
+		{
+			return it->second;
+		}
+		Character* newChar{ new Character(font->second, c) };
+		font->first.insert(std::pair<GLchar, Character*>({ c, newChar }));
+
+		return newChar;
+	}
+
+	std::pair<std::map<GLchar, Character*>, FT_Face>* ResourcesManager::GetFont(const std::string& fontPath)
+	{
+		auto    it{ m_fontMap.find(fontPath) };
+		if (it != m_fontMap.end())
+			return it->second;
+
+		std::pair<std::map<GLchar, Character*>, FT_Face>* newFont{ new std::pair<std::map<GLchar, Character*>, FT_Face>() };
+		if (FT_New_Face(m_ft, fontPath.c_str(), 0, &newFont->second))
+			BAKERS_LOG_ERROR("FREETYPE: Failed to load font");
+		FT_Set_Pixel_Sizes(newFont->second, 64, 0);
+
+		m_fontMap.insert(std::make_pair(fontPath, newFont));
+		return newFont;
 	}
 }

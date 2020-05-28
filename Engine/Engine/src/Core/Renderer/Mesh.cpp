@@ -248,7 +248,7 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 			glUniform1i(usedShader->GetLocation("uNormalMap"), 1);
 			// Init value of higher texture for shadow maps
 			for (int j{0}; j < 10; ++j)
-				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + i);
+				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + j);
 
 			material.SendMaterial();
 			glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs);

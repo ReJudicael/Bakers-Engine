@@ -4,6 +4,7 @@
 #include <memory>
 #include "Assimp/Importer.hpp"
 
+#include "CoreMinimal.h"
 #include "Mesh.h"
 #include "Vec3.hpp"
 #include "Vec2.hpp"
@@ -17,10 +18,10 @@
 #include "Shader.h"
 #include "TaskSystem.hpp"
 #include "Audio/AudioClip.h"
-#include "CoreMinimal.h"
 #include "BoneData.h"
 #include "Bone.h"
 #include "Animation.h"
+#include "Character.h"
 
 struct aiScene;
 struct aiNode;
@@ -84,9 +85,11 @@ namespace Resources
 			unorderedmapSkeletalIndex		m_skeletalIndex;
 			unorderedmapBonesHierarchy		m_BoneHierarchies;
 			unorderedmapAudioClip			m_audioClips;
-			Core::Datastructure::RootObject* m_rootNode;
+			Core::Datastructure::RootObject* m_rootNode; 
+			
+			std::map<std::string, std::pair<std::map<GLchar, Character*>, FT_Face>*>	m_fontMap;
 
-
+			FT_Library																	m_ft;
 		public:
 			Core::SystemManagement::TaskSystem*			m_task;
 			unorderedmapAnimations						m_animations;
@@ -513,10 +516,13 @@ namespace Resources
 			void ReloadScripts();
 
 			void SaveMaterial();
+
+			Character* GetCharacter(const std::string& fontPath, char c);
+			std::pair<std::map<GLchar, Character*>, FT_Face>* GetFont(const std::string& fontPath);
 		};
 
 		/**
-		 * cointains an assimp importer for the multiThread
+		 * contains an assimp importer for the multiThread
 		 * and a value for kill or let him be
 		 */
 		struct ImporterData

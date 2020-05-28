@@ -264,14 +264,14 @@
     <ClCompile Include="src\Core\Audio\AudioClip.cpp">
       <Filter>Source Files\Core\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\Switch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Door.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Physics\RigidBody.cpp">
       <Filter>Source Files\Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Renderer\TextRenderer.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\Character.cpp">
+      <Filter>Source Files\Core\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -511,6 +511,12 @@
     </ClInclude>
     <ClInclude Include="include\Core\Maths\MathMinimal.h">
       <Filter>Header Files\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\TextRenderer.h">
+      <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Resources\Character.h">
+      <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

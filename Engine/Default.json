@@ -1516,55 +1516,6 @@
                             "Value": false
                         }
                     }
-                },
-                {
-                    "Type": "Rigid Body",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Mass": {
-                            "Name": "Mass",
-                            "Type": "float",
-                            "Value": 1.0
-                        },
-                        "Rotation XLock": {
-                            "Name": "Rotation XLock",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Rotation YLock": {
-                            "Name": "Rotation YLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation ZLock": {
-                            "Name": "Rotation ZLock",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Use Gravity": {
-                            "Name": "Use Gravity",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Velocity": {
-                            "Name": "Velocity",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
-                        }
-                    }
                 }
             ],
             "Flags": 0,
@@ -2074,6 +2025,54 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "TextRenderer",
+                            "Values": {
+                                "Font": {
+                                    "Name": "Font",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Fonts\\Lato-Regular.ttf"
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Size": {
+                                    "Name": "Size",
+                                    "Type": "int",
+                                    "Value": 12
+                                },
+                                "Text": {
+                                    "Name": "Text",
+                                    "Type": "std::string",
+                                    "Value": "Add text here"
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Text",
+                    "Pos": {
+                        "x": -0.554684042930603,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 0.7071067690849304,
+                        "x": 0.0,
+                        "y": 0.7071067690849304,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 0.26476436853408813,
+                        "z": 0.13060593605041504
+                    }
                 }
             ],
             "Components": [
@@ -2177,55 +2176,6 @@
                             "Name": "Trigger",
                             "Type": "bool",
                             "Value": false
-                        }
-                    }
-                },
-                {
-                    "Type": "Rigid Body",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Mass": {
-                            "Name": "Mass",
-                            "Type": "float",
-                            "Value": 100.0
-                        },
-                        "Rotation XLock": {
-                            "Name": "Rotation XLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation YLock": {
-                            "Name": "Rotation YLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation ZLock": {
-                            "Name": "Rotation ZLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Use Gravity": {
-                            "Name": "Use Gravity",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Velocity": {
-                            "Name": "Velocity",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
                         }
                     }
                 },
@@ -2522,55 +2472,6 @@
                             "Name": "Trigger",
                             "Type": "bool",
                             "Value": false
-                        }
-                    }
-                },
-                {
-                    "Type": "Rigid Body",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Mass": {
-                            "Name": "Mass",
-                            "Type": "float",
-                            "Value": 1.0
-                        },
-                        "Rotation XLock": {
-                            "Name": "Rotation XLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation YLock": {
-                            "Name": "Rotation YLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation ZLock": {
-                            "Name": "Rotation ZLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Use Gravity": {
-                            "Name": "Use Gravity",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Velocity": {
-                            "Name": "Velocity",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
                         }
                     }
                 }
