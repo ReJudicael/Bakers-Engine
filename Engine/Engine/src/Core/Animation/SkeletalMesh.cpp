@@ -74,6 +74,8 @@ namespace Core::Animation
 		 m_rootBone = inBone->rootBone;
 		 constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
 		 m_finalTransforms.resize(inBone->numBone);
+		 m_numberBones = static_cast<GLuint>(inBone->numBone);
+		 m_finalBonesTRSfloat.resize(static_cast<size_t>(m_numberBones * static_cast <GLuint>(16)));
 
 		 InitBonePos(m_rootBone, identity);
 	}
@@ -81,7 +83,13 @@ namespace Core::Animation
 	void SkeletalMesh::InitBonePos(std::shared_ptr<Bone> currBone, Core::Maths::Mat4 parent)
 	{
 		Core::Maths::Mat4 curr = parent * currBone->baseTransform.GetLocalTrs();
-		m_finalTransforms[currBone->boneIndex] = curr * currBone->offsetBone;
+		Core::Maths::Mat4 finalTRS = curr * currBone->offsetBone;
+
+		int currentPosInArrayFloat = currBone->boneIndex * 16;
+		for (int i = 0; i < 16; i++)
+		{
+			m_finalBonesTRSfloat[currentPosInArrayFloat + i] = finalTRS.array[i];
+		}
 
 		for (auto i = 0; i < currBone->child.size(); i++)
 		{
@@ -112,33 +120,36 @@ namespace Core::Animation
 		for (int i = 0; i < m_model->offsetsMesh.size(); i++)
 		{
 			Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
+			FindMaterialToDelete(currOffsetMesh);
 
-			Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
-			std::shared_ptr<Resources::Shader> usedShader = (givenShader ? 
-												GetRoot()->GetEngine()->GetResourcesManager()->GetShader("SkeletalShadow") : material.shader);
+			int matIndice = currOffsetMesh.materialIndices;
 
+			if (m_materialsModel[matIndice]->IsDelete)
+			{
+				m_materialsModel[matIndice] = GetRoot()->GetEngine()->GetResourcesManager()->GetMaterial("Default");
+				m_materialsNames[i] = "Default";
+			}
+
+			std::shared_ptr<Resources::Material> material = m_materialsModel[matIndice];
+			std::shared_ptr<Resources::Shader> usedShader;
+			if (material->IsSkeletal)
+			{
+				usedShader = (givenShader ? GetRoot()->GetEngine()->GetResourcesManager()->GetShader("SkeletalShadow") 
+								: material->shader);
+			}
+			else
+			{
+				usedShader = (givenShader ? givenShader : material->shader);
+			}
 			usedShader->UseProgram();
 			{
-				// init the value of the texture1
-				glUniform1i(usedShader->GetLocation("uColorTexture"), 0);
-				// init the value of the texture2
-				glUniform1i(usedShader->GetLocation("uNormalMap"), 1);
+				MaterialSendToOpengGL(view, proj, trs.array, material, usedShader);
 
-				//material.shader->SendLights();
-
-				material.SendMaterial();
-				glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
-				glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
-				glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
-
-//				if (material.IsSkeletal)
+				if (material->IsSkeletal)
 				{
 					// Send to the shader the transform matrix of bones
-					for (auto j{ 0 }; j < m_finalTransforms.size(); j++)
-					{
-						std::string loc = "uBones[" + std::to_string(j) + "]";
-						glUniformMatrix4fv(usedShader->GetLocation(loc), 1, GL_TRUE, m_finalTransforms[j].array);
-					}
+					glUniformMatrix4fv(	usedShader->GetLocation("uBones"), m_numberBones, GL_TRUE, 
+										static_cast<GLfloat*>(m_finalBonesTRSfloat.data()));
 				}
 			}
 
@@ -154,6 +165,6 @@ namespace Core::Animation
 	{
 		GetParent()->GetScene()->GetEngine()->GetResourcesManager()->
 					m_task->AddTask(&Core::Animation::AnimationHandler::UpdateSkeletalMeshBones,
-					&animationHandler, m_rootBone, std::ref(m_finalTransforms), deltaTime);
+					&animationHandler, m_rootBone, std::ref(m_finalBonesTRSfloat), deltaTime);
 	}
 }

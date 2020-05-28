@@ -14,8 +14,10 @@ namespace Core::Animation
 	BAKERS_API_CLASS SkeletalMesh : public Core::Renderer::Mesh, public virtual Core::Datastructure::IUpdatable
 	{
 	protected:
-		std::shared_ptr<Bone>			m_rootBone;
-		std::vector<Core::Maths::Mat4> m_finalTransforms;
+		std::shared_ptr<Bone>			m_rootBone { nullptr };
+		GLuint							m_numberBones{0};
+		std::vector<Core::Maths::Mat4>	m_finalTransforms;
+		std::vector<float>				m_finalBonesTRSfloat;
 
 	public:
 

@@ -239,34 +239,20 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 	for (auto i{ 0 }; i < m_model->offsetsMesh.size(); i++)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
-		if (m_materialsModel[currOffsetMesh.materialIndices]->IsDelete)
-		{
-			m_materialsModel[currOffsetMesh.materialIndices] = GetRoot()->GetEngine()->GetResourcesManager()->GetMaterial("Default");
-			m_materialsNames[i] = "Default";
-		}
-
+		FindMaterialToDelete(currOffsetMesh);
 		std::shared_ptr<Resources::Material> material = m_materialsModel[currOffsetMesh.materialIndices];
 		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material->shader);
 
 		usedShader->UseProgram();
 		{
-			// Init value of texture1 for mesh texture
-			glUniform1i(usedShader->GetLocation("uColorTexture"), 0);
-			// Init value of texture2 for normal map
-			glUniform1i(usedShader->GetLocation("uNormalMap"), 1);
+			MaterialSendToOpengGL(view, proj, trs, material, usedShader);
 			// Init value of higher texture for shadow maps
-			for (int j{0}; j < 10; ++j)
-				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + i);
-
-			material->SendMaterial();
-			glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs);
-			glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
-			glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
-			
+			/*for (int j{ 0 }; j < 10; ++j)
+				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + j);
 			std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
 			for (auto j{ 0 }; j < lights.size(); ++j)
 				glUniformMatrix4fv(usedShader->GetLocation("uLightView[" + std::to_string(j) + "]"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
-			glUniform1i(usedShader->GetLocation("uShadowCount"), lights.size());
+			glUniform1i(usedShader->GetLocation("uShadowCount"), lights.size());*/
 		}
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,
@@ -275,6 +261,30 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
+}
+
+void Core::Renderer::Mesh::FindMaterialToDelete(const Resources::OffsetMesh& currOffsetMesh)
+{
+	if (m_materialsModel[currOffsetMesh.materialIndices]->IsDelete)
+	{
+		m_materialsModel[currOffsetMesh.materialIndices] = GetRoot()->GetEngine()->GetResourcesManager()->GetMaterial("Default");
+		m_materialsNames[currOffsetMesh.materialIndices] = "Default";
+	}
+}
+
+void Core::Renderer::Mesh::MaterialSendToOpengGL(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs, 
+													std::shared_ptr<Resources::Material> mat, std::shared_ptr<Resources::Shader> shader)
+{
+	// Init value of texture1 for mesh texture
+	glUniform1i(shader->GetLocation("uColorTexture"), 0);
+	// Init value of texture2 for normal map
+	glUniform1i(shader->GetLocation("uNormalMap"), 1);
+	mat->SendMaterial();
+
+	glUniformMatrix4fv(shader->GetLocation("uModel"), 1, GL_TRUE, trs);
+	glUniformMatrix4fv(shader->GetLocation("uCam"), 1, GL_TRUE, view.array);
+	glUniformMatrix4fv(shader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
+
 }
 
 void  Core::Renderer::Mesh::AddToNavMesh()

@@ -60,6 +60,10 @@ namespace Core::Renderer
 
 	protected:
 		bool ChangeOneMaterial(std::string newMaterial, int iD);
+
+		void MaterialSendToOpengGL(	const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs,
+									std::shared_ptr<Resources::Material> mat, std::shared_ptr<Resources::Shader> shader);
+
 	public:
 
 		std::string					GetModel() { return m_modelName; };
@@ -134,6 +138,8 @@ namespace Core::Renderer
 		 * @param givenShader: Shader to use instead of material shader if provided
 		 */
 		void Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs, std::shared_ptr<Resources::Shader> givenShader = nullptr);
+
+		void FindMaterialToDelete(const Resources::OffsetMesh& currOffsetMesh);
 
 		/**
 		 * Draw mesh with given transform instead of parent transform

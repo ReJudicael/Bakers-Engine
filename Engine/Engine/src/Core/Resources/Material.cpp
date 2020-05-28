@@ -284,7 +284,7 @@ namespace Resources
 				numberOfBasicTexture++;
 			else if (std::string(name) == "uNormalMap")
 				numberOfBasicTexture++;
-			else if (std::string(name) == "uBones")
+			else if (std::string(name).find("uBones") != std::string::npos)
 				skeletalShader = true;
 		}
 
