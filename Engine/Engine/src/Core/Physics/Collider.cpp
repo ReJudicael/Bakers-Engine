@@ -78,7 +78,6 @@ namespace Core::Physics
 	{
 		// detach the actor from the physics scene
 		GetRoot()->GetEngine()->GetPhysicsScene()->RemoveActorFromPhysicsScene(m_pxRigidActor);
-		//m_pxRigidActor->detachShape(*m_pxShape);
 		// detroy the shape
 		DestroyShape();
 		// release teh actor if it's possible
@@ -96,8 +95,6 @@ namespace Core::Physics
 		GetParent()->GetComponentsOfBaseTypeInObject(colliders);
 		if (colliders.size() > 0)
 			(*colliders.begin())->ToNull();
-		// if he find one he init the collider as a RigidBody
-	//    GetParent()->EraseComponent((*colliders.begin()));*/
 		GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
 	}
 

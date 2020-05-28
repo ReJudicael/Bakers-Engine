@@ -132,12 +132,12 @@ namespace Editor::Window
 				m_renamePath = path;
 			}
 
-			//if (ImGui::MenuItem("Shader"))
-			//{
-			//	const std::string& path = m_fs->CreateFile("Shader", "bshader");
-			//	GetEngine()->GetResourcesManager()->CreateNewShader(path);
-			//	m_renamePath = path;
-			//}
+			if (ImGui::MenuItem("Shader"))
+			{
+				const std::string& path = m_fs->CreateFile("Shader", "bshader");
+				GetEngine()->GetResourcesManager()->CreateNewShader(path);
+				m_renamePath = path;
+			}
 
 			ImGui::EndMenu();
 		}
@@ -178,7 +178,10 @@ namespace Editor::Window
 					m_renamePath = itemPath;
 
 				if (ImGui::MenuItem("Delete"))
+				{
 					m_fs->DeleteContent(itemPath);
+					DeleteSpecialFile(itemPath);
+				}
 			}
 			ImGui::Separator();
 
@@ -456,6 +459,11 @@ namespace Editor::Window
 			ShowAllFoldersRecursive(tdp);
 		}
 		ImGui::EndChild();
+	}
+
+	void WindowFileBrowser::DeleteSpecialFile(const std::string& itemPath)
+	{
+		GetEngine()->GetResourcesManager()->DeleteSpecialMaterialShader(itemPath);
 	}
 
 	void WindowFileBrowser::Tick()

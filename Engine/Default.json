@@ -1192,7 +1192,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\Default.bmat"
+                                            "Value": ".\\Resources\\Models\\cDrole.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -1203,7 +1203,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\Default.bmat"
+                                            "Value": ".\\Resources\\Models\\cDrole.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -1514,55 +1514,6 @@
                             "Name": "Trigger",
                             "Type": "bool",
                             "Value": false
-                        }
-                    }
-                },
-                {
-                    "Type": "Rigid Body",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Mass": {
-                            "Name": "Mass",
-                            "Type": "float",
-                            "Value": 1.0
-                        },
-                        "Rotation XLock": {
-                            "Name": "Rotation XLock",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Rotation YLock": {
-                            "Name": "Rotation YLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation ZLock": {
-                            "Name": "Rotation ZLock",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Use Gravity": {
-                            "Name": "Use Gravity",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Velocity": {
-                            "Name": "Velocity",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
                         }
                     }
                 }
@@ -2181,55 +2132,6 @@
                     }
                 },
                 {
-                    "Type": "Rigid Body",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Mass": {
-                            "Name": "Mass",
-                            "Type": "float",
-                            "Value": 100.0
-                        },
-                        "Rotation XLock": {
-                            "Name": "Rotation XLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation YLock": {
-                            "Name": "Rotation YLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation ZLock": {
-                            "Name": "Rotation ZLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Use Gravity": {
-                            "Name": "Use Gravity",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Velocity": {
-                            "Name": "Velocity",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
-                        }
-                    }
-                },
-                {
                     "Type": "Door",
                     "Values": {
                         "IsActive": {
@@ -2420,7 +2322,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 573.0
+                                                "Value": 582.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -2430,7 +2332,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 662.0
+                                                "Value": 609.0
                                             }
                                         }
                                     }
@@ -2570,7 +2472,7 @@
                     }
                 },
                 {
-                    "Type": "Rigid Body",
+                    "Type": "Rigidbody",
                     "Values": {
                         "IsActive": {
                             "Name": "IsActive",

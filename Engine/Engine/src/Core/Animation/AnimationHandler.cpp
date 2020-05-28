@@ -5,11 +5,17 @@ namespace Core::Animation
 {
 	Core::Maths::Quat Nlerp(const Core::Maths::Quat& Q1, const Core::Maths::Quat& Q2, const float& t)
 	{
-		float bias = Q1.Dot(Q2) >= 0 ? 1 : -1;
+		float bias = Q1.Dot(Q2) >= 0 ? 1.f : -1.f;
 		return (Q1 * (1 - t) * bias + Q2 * t).Normalized();
 	}
 
-
+	TransitionNode::TransitionNode(std::shared_ptr<AnimationNode> currentAnimationNode,
+		std::shared_ptr<AnimationNode> nextAnimationNode, float speedTrans,
+		std::function<bool()> conditionTransition):
+		speed{ speedTrans }
+	{
+		InitTransition(currentAnimationNode, nextAnimationNode, conditionTransition);
+	}
 	void TransitionNode::InitTransition(std::shared_ptr<AnimationNode> currentAnimationNode,
 		std::shared_ptr<AnimationNode> nextAnimationNode, std::function<bool()> conditionTransition)
 	{
@@ -129,9 +135,7 @@ namespace Core::Animation
 			}
 		}
 		else
-		{
 			nodeTransform = transitionsAnimation[indexTransition]->UpdateBoneTransition(currentBone);
-		}
 
 		Core::Maths::Mat4 globalTransform = parent * nodeTransform;
 
@@ -145,7 +149,6 @@ namespace Core::Animation
 
 	void AnimationNode::UpdateAnimationNode(float deltaTime)
 	{
-		UpdateTimer(deltaTime);
 
 		if (m_inTransition)
 		{
@@ -157,6 +160,8 @@ namespace Core::Animation
 		}
 		else
 		{
+			UpdateTimer(deltaTime);
+
 			for (auto i{ 0 }; i < transitionsAnimation.size(); i++)
 			{
 				if (transitionsAnimation[i] && transitionsAnimation[i]->m_conditionTransition())
@@ -171,19 +176,18 @@ namespace Core::Animation
 
 	void AnimationNode::UpdateTimer(float deltaTime)
 	{
-		m_currentTime += deltaTime * speed;
+		if (reset)
+			m_currentTime = 0.f;
+
+		m_currentTime = m_currentTime + deltaTime * speed;
 
 		if (m_currentTime > nodeAnimation->Time)
 		{
 			if (Loop)
 			{
 				reset = true;
-				m_currentTime = 0.f;
 			}
-			else
-			{
-				m_currentTime = nodeAnimation->Time;
-			}
+			m_currentTime = nodeAnimation->Time;
 		}
 	}
 
@@ -216,14 +220,16 @@ namespace Core::Animation
 	{
 		if (m_currentAnimationNode)
 		{
-			m_currentAnimationNode->UpdateAnimationNode(deltaTime);
-
-			constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
-
-			for (auto i{ 0 }; i < rootBone->child.size(); i++)
+			if (m_currentAnimationNode->IsAnimationCurrentTimeIsMax())
 			{
-				m_currentAnimationNode->UpdateAnimationBone(rootBone->child[i], identity, finalTransform);
+				constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
+				for (auto i{ 0 }; i < rootBone->child.size(); i++)
+				{
+					m_currentAnimationNode->UpdateAnimationBone(rootBone->child[i], identity, finalTransform);
+				}
 			}
+
+			m_currentAnimationNode->UpdateAnimationNode(deltaTime);
 
 			// check if the Transition of the currentAniation is finish
 			if (m_currentAnimationNode->IsTransitionFinish())
@@ -233,6 +239,11 @@ namespace Core::Animation
 		}
 
 		animationFinish = true;
+	}
+
+	void AnimationHandler::PlayAnimation(std::shared_ptr<AnimationNode> animation)
+	{
+		m_currentAnimationNode = animation;
 	}
 
 }

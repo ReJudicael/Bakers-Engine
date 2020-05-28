@@ -41,12 +41,7 @@ namespace Resources
 			return;
 		
 		m_fragmentFile = name;
-
-		LoadFromFile(m_fragmentFile.c_str(), EShaderType::FRAGMENT);
-
-		Compile();
-		StoreAllUniforms();
-
+		Load();
 	}
 
 	void Shader::SetVertName(std::string name)
@@ -55,11 +50,7 @@ namespace Resources
 			return;
 
 		m_vertexFile = name;
-
-		LoadFromFile(m_vertexFile.c_str(), EShaderType::VERTEX);
-
-		Compile();
-		StoreAllUniforms();
+		Load();
 	}
 
 	void	Shader::Delete()

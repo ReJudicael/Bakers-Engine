@@ -9,7 +9,6 @@
 
 #include "Assimp/cimport.h"
 #include "Assimp/scene.h"
-//#include "Assimp/Importer.hpp"
 #include "Assimp/postprocess.h"
 #include "Assimp/material.h"
 #include "Assimp/texture.h"
@@ -20,10 +19,6 @@
 #include "Object.hpp"
 #include "ScriptedComponent.h"
 #include "Model.h"
-//#include "Material.h"
-//#include "Texture.h"
-//#include "TextureData.h"
-
 #include "AudioClip.h"
 #include "Object3DGraph.h"
 #include "BoneData.h"
@@ -47,22 +42,19 @@ namespace Resources::Loader
 
 	void ResourcesManager::DefaultConstruct()
 	{
-		CreateShader("DefaultNoTexture", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultNoTexture.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("Default", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("SkeletDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("NormalMapDefault", "Resources\\Shaders\\DefaultShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("SkeletNormalMapDefault", "Resources\\Shaders\\SkeletalShader.vert", "Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("Wireframe", "Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
-		CreateShader("Skybox", "Resources\\Shaders\\SkyboxShader.vert", "Resources\\Shaders\\SkyboxShader.frag");
-		CreateShader("Particle", "Resources\\Shaders\\BillboardShader.vert", "Resources\\Shaders\\ParticleShader.frag");
+		CreateShader("DefaultNoTexture", ".\\Resources\\Shaders\\DefaultShader.vert", ".\\Resources\\Shaders\\DefaultNoTexture.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("Default", ".\\Resources\\Shaders\\DefaultShader.vert", ".\\Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("SkeletDefault", ".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("NormalMapDefault", ".\\Resources\\Shaders\\DefaultShader.vert", ".\\Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("SkeletNormalMapDefault", ".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("Wireframe", ".\\Resources\\Shaders\\WireframeShader.vert", ".\\Resources\\Shaders\\WireframeShader.frag");
+		CreateShader("Skybox", ".\\Resources\\Shaders\\SkyboxShader.vert", ".\\Resources\\Shaders\\SkyboxShader.frag");
+		CreateShader("Particle", ".\\Resources\\Shaders\\BillboardShader.vert", ".\\Resources\\Shaders\\ParticleShader.frag");
 
-		Shader SkeletalShadow("Resources\\Shaders\\SkeletalShadow.vert", "Resources\\Shaders\\SkeletalShadow.frag");
+		Shader SkeletalShadow(".\\Resources\\Shaders\\SkeletalShadow.vert", ".\\Resources\\Shaders\\SkeletalShadow.frag");
 		m_shaders.emplace("SkeletalShadow", std::make_shared<Shader>(SkeletalShadow));
 
-		Shader wireframeShader("Resources\\Shaders\\WireframeShader.vert", "Resources\\Shaders\\WireframeShader.frag");
-		m_shaders.emplace("Wireframe", std::make_shared<Shader>(wireframeShader));
-
-		Shader skeletal("./Resources/Shaders/SkeletalShader.vert", "./Resources/Shaders/SkeletalShader.frag");
+		Shader skeletal(".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\SkeletalShader.frag");
 		m_shaders.emplace("Skeletal", std::make_shared<Shader>(skeletal));
 
 		std::shared_ptr<Material> material = std::make_shared<Material>();
@@ -98,7 +90,7 @@ namespace Resources::Loader
 	{
 		std::shared_ptr<Material> material = std::make_shared<Material>();
 		material->CreateDefaultMaterial(this);
-		material->SaveMaterial(path, "DefaultNoTexture");
+		material->SaveMaterial(path, this);
 		m_materials.emplace(path, material);
 	}
 
@@ -107,7 +99,8 @@ namespace Resources::Loader
 		auto it = m_materials.find(path);
 		if (it != m_materials.end())
 		{
-			(it->second)->UpdateNameMaterial(newPath);
+			if(!it->second.use_count() > 1)
+				it->second->UpdateNameMaterial(newPath);
 			std::swap(m_materials[newPath], it->second);
 			m_materials.erase(it);
 		}
@@ -126,9 +119,8 @@ namespace Resources::Loader
 
 	void ResourcesManager::CreateNewShader(const std::string& path)
 	{
-		//shared_ptr<Resources::Shader>
-		auto shader = CreateShader(path.c_str(), "Resources\\Shaders\\DefaultShader.vert", 
-									"Resources\\Shaders\\DefaultNoTexture.frag",
+		auto shader = CreateShader(path.c_str(), ".\\Resources\\Shaders\\DefaultShader.vert", 
+									".\\Resources\\Shaders\\DefaultShader.frag",
 									Resources::Shader::EShaderHeaderType::LIGHT);
 
 		shader->SaveShader(path);
@@ -139,9 +131,19 @@ namespace Resources::Loader
 		auto it = m_shaders.find(path);
 		if (it != m_shaders.end())
 		{
-			//(it->second)->UpdateNameMaterial(newPath);
+			if(it->second.use_count() > 1)
+				UpdateShaderPathInMaterials(it->second);
 			std::swap(m_shaders[newPath], it->second);
 			m_shaders.erase(it);
+		}
+	}
+
+	void ResourcesManager::UpdateShaderPathInMaterials(std::shared_ptr<Resources::Shader> shader)
+	{
+		for (auto it = m_materials.begin(); it != m_materials.end(); ++it)
+		{
+			if ((*it).second->shader == shader)
+				(*it).second->SaveMaterial(it->first, this);
 		}
 	}
 
@@ -180,7 +182,6 @@ namespace Resources::Loader
 			| aiProcess_GenBoundingBoxes // generate the AABB of the meshs aiProcess_Gen
 			| aiProcess_GenNormals
 			| aiProcess_LimitBoneWeights
-			//| aiProcess_FlipUVs
 		);
 
 		return scene;
@@ -348,9 +349,6 @@ namespace Resources::Loader
 			unsigned int currBoneIndex{ 0 };
 			std::string nameBone = mesh->mBones[i]->mName.data;
 			aiBone* currBone = mesh->mBones[i];
-
-			// TO DO maybe delete because mesh have his own skelet
-			//if (bonesIndex->count(nameBone) <= 0)
 			{
 				currBoneIndex = numBones;
 				Animation::BoneData boneData;
@@ -359,14 +357,12 @@ namespace Resources::Loader
 				aiQuaternion rot;
 				aiVector3D sca;
 				currBone->mOffsetMatrix.Decompose(sca, rot, pos);
-				boneData.offsetMesh = Core::Datastructure::Transform({ pos.x, pos.y, pos.z }, { rot.w, rot.x, rot.y, rot.z }, { sca.x, sca.y, sca.z }).GetLocalTrs();
+				boneData.offsetMesh = Core::Datastructure::Transform({ pos.x, pos.y, pos.z }, 
+																	{ rot.w, rot.x, rot.y, rot.z }, 
+																	{ sca.x, sca.y, sca.z }).GetLocalTrs();
 				bonesIndex->emplace(nameBone, boneData);
 				numBones++;
 			}
-			// TO DO maybe delete because mesh have his own skelet
-			/*else
-				currBoneIndex = bonesIndex->operator[](nameBone).boneIndex;*/
-			//modelData->LoadAnimationVertexData(mesh, currBoneIndex, currBone, numVertices);
 		}
 
 		if (modelData->modelAnimationData.size() - numVertices == mesh->mNumVertices)
@@ -393,7 +389,7 @@ namespace Resources::Loader
 		Core::Datastructure::Transform t{};
 		
 		tree->rootBone = std::make_shared<Core::Animation::Bone>();
-		tree->rootBone->InitBone(firstBoneNode->mParent, bonesIndex, t);
+		tree->rootBone->InitBone(firstBoneNode->mParent, bonesIndex);
 		tree->numBone = numBones;
 
 		m_BoneHierarchies.emplace(directory, tree);
@@ -529,30 +525,15 @@ namespace Resources::Loader
 
 		std::shared_ptr<TextureData> textureData = std::make_shared<TextureData>();
 
-		/*if (!texture)
-			texture = std::make_shared<Texture>();*/
-
 		if (!texture)
-		{
-			// just create a simple texture
 			texture = std::make_shared<Texture>();
-			textureData->oldTextureptr = texture;
-		}
-		else
-		{
-			// link the current texture we want to change
-			textureData->oldTextureptr = texture;
-			// texture is make_skared for create a new one
-			texture = std::make_shared<Texture>();
-		}
+
 		m_textures.emplace(keyName, texture);
 
 		texture->name = keyName;
 		textureData->nameTexture = keyName;
 		PushTextureToLink(textureData);
 		textureData->textureptr = texture;
-		//m_task.AddTask(&Resources::TextureData::CreateTextureFromImage, textureData, keyName, this, true);	
-		//textureData->CreateTextureFromImage(keyName, this);
 
 	}
 
@@ -571,11 +552,6 @@ namespace Resources::Loader
 				sceneData->SceneLoad(importer, scene, rootNode, directory, true);
 			
 		}
-		/*else if (isSkeletal)
-		{
-			sceneData->haveSkeletal = true;
-			sceneData->rootNodeScene.Skeletal3DObjectLoad(scene, rootNode, directory, indexFirstMesh);
-		}*/
 		else
 		{
 			if (inMultiThread)
@@ -597,7 +573,6 @@ namespace Resources::Loader
 			{
 				case EOpenGLLinkState::LOADPROBLEM:
 					m_textures.erase((*it)->nameTexture);
-					//(*it)->textureptr.reset((*it)->oldTextureptr.get());
 					it = m_texturesToLink.erase(it);
 					break;
 				case EOpenGLLinkState::CANTLINK:
@@ -739,23 +714,82 @@ namespace Resources::Loader
 			script->LoadLuaScript();
 	}
 
+	std::string ResourcesManager::FindShaderFromShared(std::shared_ptr<Resources::Shader> shaderPTR)
+	{
+		std::string nameShader = "nothing";
+		for (auto shader : m_shaders)
+		{
+			if (shader.second == shaderPTR)
+			{
+				nameShader = shader.first;
+				break;
+			}
+		}
+
+		return nameShader;
+	}
+
+	std::string ResourcesManager::FindMaterialFromShared(std::shared_ptr<Resources::Material> materialPTR)
+	{
+		std::string nameMaterial = "nothing";
+		for (auto material : m_materials)
+		{
+			if (material.second == materialPTR)
+			{
+				nameMaterial = material.first;
+				break;
+			}
+		}
+
+		return nameMaterial;
+	}
+
+	std::string ResourcesManager::FindTextureFromShared(std::shared_ptr<Resources::Texture> texturePTR)
+	{
+		std::string nameTexture = "nothing";
+		for (auto texture : m_textures)
+		{
+			if (texture.second == texturePTR)
+			{
+				nameTexture = texture.first;
+				break;
+			}
+		}
+
+		return nameTexture;
+	}
+
 	void ResourcesManager::SaveMaterial()
 	{
 		for (auto mat : m_materials)
 		{
 			if (mat.first.find(".bmat") != std::string::npos)
 			{
-				std::string nameShader;
-				for (auto shader : m_shaders)
-				{
-					if (shader.second == mat.second->shader)
-					{
-						nameShader = shader.first;
-						break;
-					}
-				}
-				mat.second->SaveMaterial(mat.first, nameShader);
+				mat.second->SaveMaterial(mat.first, this);
 			}
+		}
+	}
+
+	void ResourcesManager::UpdateDeletedShaderMaterials(const std::shared_ptr<Resources::Shader>& shaderDeleted)
+	{
+		for (auto it = m_materials.begin(); it != m_materials.end(); ++it)
+		{
+			if ((*it).second->shader == shaderDeleted)
+				(*it).second->shader = m_shaders["DefaultNoTexture"];
+		}
+	}
+
+	void ResourcesManager::DeleteSpecialMaterialShader(const std::string& path)
+	{
+		if (path.find(".bmat") != std::string::npos)
+		{
+			m_materials[path]->IsDelete = true;
+			m_materials.erase(path);
+		}
+		else if (path.find(".bshader") != std::string::npos)
+		{
+			UpdateDeletedShaderMaterials(m_shaders[path]);
+			m_shaders.erase(path);
 		}
 	}
 }

@@ -1,0 +1,5 @@
+{
+    "Fragment File": ".\\Resources\\Shaders\\DefaultShader.frag",
+    "Shader Header": 1,
+    "Vertex File": ".\\Resources\\Shaders\\DefaultShader.vert"
+}

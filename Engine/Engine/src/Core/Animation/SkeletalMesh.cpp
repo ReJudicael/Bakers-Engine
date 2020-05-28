@@ -18,7 +18,6 @@ namespace Core::Animation
 	{
 		if (IsModelLoaded())
 		{
-			//CreateAABBMesh();
 			Mesh::OnStart();
 			Core::Datastructure::IUpdatable::OnStart();
 			return true;
@@ -131,11 +130,15 @@ namespace Core::Animation
 				glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs.array);
 				glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
 				glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
-				// Send to the shader the transform matrix of bones
-				for (auto j{ 0 }; j < m_finalTransforms.size(); j++)
+
+				if (material.IsSkeletal)
 				{
-					std::string loc = "uBones[" + std::to_string(j) + "]";
-					glUniformMatrix4fv(usedShader->GetLocation(loc), 1, GL_TRUE, m_finalTransforms[j].array);
+					// Send to the shader the transform matrix of bones
+					for (auto j{ 0 }; j < m_finalTransforms.size(); j++)
+					{
+						std::string loc = "uBones[" + std::to_string(j) + "]";
+						glUniformMatrix4fv(usedShader->GetLocation(loc), 1, GL_TRUE, m_finalTransforms[j].array);
+					}
 				}
 			}
 
@@ -152,20 +155,5 @@ namespace Core::Animation
 		GetParent()->GetScene()->GetEngine()->GetResourcesManager()->
 					m_task->AddTask(&Core::Animation::AnimationHandler::UpdateSkeletalMeshBones,
 					&animationHandler, m_rootBone, std::ref(m_finalTransforms), deltaTime);
-	}
-
-	void SkeletalMesh::AddMaterials(Resources::Loader::ResourcesManager& resources, const std::vector<std::string>& namesMaterial)
-	{
-		if (!m_model)
-		{
-			m_materialsNames = namesMaterial;
-		}
-		else
-		{
-			for (int i{ 0 }; i < m_model->offsetsMesh.size(); i++)
-			{
-				m_materialsModel.push_back(resources.GetMaterial(namesMaterial[i]));
-			}
-		}
 	}
 }

@@ -50,6 +50,7 @@ namespace Resources
 		std::vector<VariantUniform>				variants{};
 		bool									shaderChoose{ false };
 		bool									IsSkeletal{ false };
+		bool									IsDelete{ false };
 		std::shared_ptr<Shader>					shader{};
 
 		Material() = default;
@@ -113,7 +114,7 @@ namespace Resources
 		 * @param pathMaterial: the local path of the file
 		 * @param shaderPath: the shader path
 		 */
-		void  SaveMaterial(const std::string& pathMaterial, const std::string& shaderPath);
+		void  SaveMaterial(const std::string& pathMaterial, Resources::Loader::ResourcesManager* shaderPath);
 
 		/**
 		 * Load the values of the material in a file .bmat
