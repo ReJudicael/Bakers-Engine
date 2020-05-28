@@ -30,25 +30,22 @@ namespace Core::Renderer
 
 	void TextRenderer::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
+		ZoneScoped
+			TracyGpuZone("Render text")
 		if (givenShader)
 			return;
 		if (m_text.size() == 0 || m_font.size() == 0 || GetRoot()->GetEngine()->GetResourcesManager()->GetFont(m_font) == nullptr || m_quad->stateVAO != Resources::EOpenGLLinkState::ISLINK)
 			return;
 
-		int highest = 0;
 		float len = 0;
 		std::map<GLchar, Resources::Character*>::iterator  it;
 		Resources::Character* c = nullptr;
 		for (unsigned i{ 0 }; i < m_text.size(); ++i)
 		{
 			c = GetRoot()->GetEngine()->GetResourcesManager()->GetCharacter(m_font, m_text[i]);
-
-			//A glyph uses 2^6 pixels
 			len += (c->advance >> 6);
-			if (highest < c->bearingY)
-				highest = c->bearingY;
 		}
-		len *= m_size / 5000.f;
+		len *= m_size / 9000.f;
 
 		m_shader->UseProgram(); 
 		glBindVertexArray(m_quad->VAOModel);
@@ -64,6 +61,11 @@ namespace Core::Renderer
 		for (int j{ 0 }; j < 10; ++j)
 			glUniform1i(m_shader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + j);
 		
+		std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
+		for (auto j{ 0 }; j < lights.size(); ++j)
+			glUniformMatrix4fv(m_shader->GetLocation("uLightView[" + std::to_string(j) + "]"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
+		glUniform1i(m_shader->GetLocation("uShadowCount"), lights.size());
+
 		glActiveTexture(GL_TEXTURE0);
 		glUniform1i(m_shader->GetLocation("uColorTexture"), 0);
 		glUniformMatrix4fv(m_shader->GetLocation("uCam"), 1, GL_TRUE, view.array);
@@ -71,25 +73,27 @@ namespace Core::Renderer
 
 		Core::Datastructure::Transform pos;
 		pos.Translate(GetParent()->Forward() * len);
-		pos.SetLocalScale(pos.GetLocalScale() * Core::Maths::Vec3(m_size / 100.f));
+		Vec3 scale{ pos.GetLocalScale() * Core::Maths::Vec3(m_size / 100.f) };
 
 		for (unsigned i{ 0 }; i < m_text.size(); ++i)
 		{
-			Resources::Character* c{ GetRoot()->GetEngine()->GetResourcesManager()->GetCharacter(m_font, m_text[i]) };
+			ZoneScopedN("Render single char")
+				TracyGpuZone("Render single character")
+			c = GetRoot()->GetEngine()->GetResourcesManager()->GetCharacter(m_font, m_text[i]);
 			glBindTexture(GL_TEXTURE_2D, c->textureID);
 
 			//material.SendMaterial();
 
-			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * m_size) / 5000.f);
+			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * m_size) / 9000.f);
+			pos.Translate((GetParent()->Up() * (float)(c->sizeY - c->bearingY) * m_size) / 9000.f);
+			pos.SetLocalScale(scale);
+			pos.Scale({ c->sizeX / 48.f, c->sizeY / 48.f, 1 });
 
 			pos.UpdatePos(GetParent()->GetUpdatedTransform());
-			glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, pos.GetGlobalTrs().array);
-			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * m_size) / 5000.f);
 
-			std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
-			for (auto j{ 0 }; j < lights.size(); ++j)
-				glUniformMatrix4fv(m_shader->GetLocation("uLightView[" + std::to_string(j) + "]"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
-			glUniform1i(m_shader->GetLocation("uShadowCount"), lights.size());
+			glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, pos.GetGlobalTrs().array);
+			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * m_size) / 9000.f);
+			pos.Translate((GetParent()->Up() * -(float)(c->sizeY - c->bearingY) * m_size) / 9000.f);
 
 			glDrawElements(GL_TRIANGLES, m_quad->offsetsMesh[0].count, GL_UNSIGNED_INT,
 				(GLvoid*)(m_quad->offsetsMesh[0].beginIndices * sizeof(GLuint)));
