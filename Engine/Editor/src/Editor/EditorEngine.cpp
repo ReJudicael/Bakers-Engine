@@ -10,6 +10,7 @@
 #include "WindowConsole.h"
 #include "WindowInspector.h"
 #include "WindowMaterial.h"
+#include "WindowShader.h"
 #include "WindowViewport.h"
 #include "WindowScene.h"
 #include "WindowHierarchy.h"
@@ -98,6 +99,7 @@ namespace Editor
 		canvas->Add<Editor::Window::WindowHierarchy>();
 		canvas->Add<Editor::Window::WindowInspector>();
 		canvas->Add<Editor::Window::WindowMaterial>();
+		canvas->Add<Editor::Window::WindowShader>();
 		canvas->Add<Editor::Window::WindowViewport>();
 		canvas->Add<Editor::Window::WindowScene>();
 		canvas->Add<Editor::Window::WindowConsole>();

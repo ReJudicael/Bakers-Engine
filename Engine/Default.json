@@ -549,9 +549,9 @@
                         "z": 220.2821044921875
                     },
                     "Rot": {
-                        "w": 0.7071067690849304,
+                        "w": 0.7071068286895752,
                         "x": -0.7071067690849304,
-                        "y": -0.0,
+                        "y": 0.0,
                         "z": 0.0
                     },
                     "Scale": {
@@ -1192,7 +1192,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\Default.bmat"
+                                            "Value": "Default"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -1203,7 +1203,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\Default.bmat"
+                                            "Value": "Default"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -2243,7 +2243,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 634.0
+                                                "Value": 638.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -2253,7 +2253,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 647.0
+                                                "Value": 596.0
                                             }
                                         }
                                     }
@@ -2459,7 +2459,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GreenMat"
+                                            "Value": ".\\Resources\\Models\\DragonTheSoulEater\\DragonTheSoulEater.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -2470,7 +2470,7 @@
                                     "Value": [
                                         {
                                             "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GreenMat"
+                                            "Value": ".\\Resources\\Models\\DragonTheSoulEater\\DragonTheSoulEater.bmat"
                                         }
                                     ],
                                     "Wrapped type": "std::string"
@@ -2493,7 +2493,7 @@
                                 "Brioche Animation": {
                                     "Name": "Brioche Animation",
                                     "Type": "Brioche Animation",
-                                    "Value": 1819279360
+                                    "Value": -859045888
                                 },
                                 "Die Animation": {
                                     "Name": "Die Animation",
@@ -2536,15 +2536,15 @@
                         "z": 0.0
                     },
                     "Rot": {
-                        "w": 1.0,
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
+                        "w": 0.7071068286895752,
+                        "x": -0.7071067690849304,
+                        "y": -2.390667930285417e-07,
+                        "z": 2.3906682145025115e-07
                     },
                     "Scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
+                        "x": 0.004999999888241291,
+                        "y": 0.004999999888241291,
+                        "z": 0.004999999888241291
                     }
                 },
                 {
@@ -3931,6 +3931,78 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Camera",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Perspective": {
+                                    "Name": "Perspective",
+                                    "Type": "Perspective",
+                                    "Value": {
+                                        "Type": "Perspective",
+                                        "Values": {
+                                            "FOV": {
+                                                "Name": "FOV",
+                                                "Type": "float",
+                                                "Value": 60.0
+                                            },
+                                            "Far": {
+                                                "Name": "Far",
+                                                "Type": "float",
+                                                "Value": 100.0
+                                            },
+                                            "Height": {
+                                                "Name": "Height",
+                                                "Type": "float",
+                                                "Value": 638.0
+                                            },
+                                            "Near": {
+                                                "Name": "Near",
+                                                "Type": "float",
+                                                "Value": 0.10000000149011612
+                                            },
+                                            "Width": {
+                                                "Name": "Width",
+                                                "Type": "float",
+                                                "Value": 607.0
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Eyes",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": 2.0999999046325684,
+                        "z": 1.1699999570846558
+                    },
+                    "Rot": {
+                        "w": 1.910685465164705e-15,
+                        "x": -4.371138828673793e-08,
+                        "y": -1.0,
+                        "z": 4.371138828673793e-08
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ],
             "Components": [
@@ -3982,7 +4054,7 @@
                         "AgentHeight": {
                             "Name": "AgentHeight",
                             "Type": "float",
-                            "Value": 1.0
+                            "Value": -0.10000000149011612
                         },
                         "IsActive": {
                             "Name": "IsActive",
@@ -3997,7 +4069,7 @@
                         "Speed": {
                             "Name": "Speed",
                             "Type": "float",
-                            "Value": 0.5
+                            "Value": 0.10000000149011612
                         },
                         "Target": {
                             "Name": "Target",
@@ -4014,20 +4086,20 @@
             "Flags": 0,
             "Name": "Brioche",
             "Pos": {
-                "x": -2.008829355239868,
-                "y": 0.544127881526947,
-                "z": 9.811753273010254
+                "x": -2.0,
+                "y": 0.5,
+                "z": 10.0
             },
             "Rot": {
-                "w": 0.5274049043655396,
-                "x": -0.5036866068840027,
-                "y": -0.49480822682380676,
-                "z": -0.4725554883480072
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "Scale": {
-                "x": 0.004999999888241291,
-                "y": 0.004999999888241291,
-                "z": 0.004999999888241291
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
             }
         }
     ]

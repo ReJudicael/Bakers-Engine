@@ -205,7 +205,9 @@ namespace Editor::Window
 		 * Show directory tree
 		 * @param path: Path where recursive starts for display
 		 */
-		void ShowNavigationPanel(const Core::SystemManagement::TreeDirectoryPath& tdp);
+		void ShowNavigationPanel(const Core::SystemManagement::TreeDirectoryPath& tdp);  
+
+		void DeleteSpecialFile(const std::string& itemPath);
 
 	private:
 		/**

@@ -89,14 +89,6 @@ namespace Core::Animation
 		 */
 		virtual void OnDestroy() override;
 
-		/**
-		 * Add all the materials in the model
-		 * @param resources: the resources manager
-		 * @param namesMaterial: all the names of the materials
-		 */
-		virtual void AddMaterials(	Resources::Loader::ResourcesManager& resources, 
-									const std::vector<std::string>& namesMaterial) override;
-
 		REGISTER_CLASS(Core::Renderer::Mesh, Core::Datastructure::IUpdatable)
 	};
 

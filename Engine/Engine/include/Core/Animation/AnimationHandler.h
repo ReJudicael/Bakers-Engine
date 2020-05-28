@@ -22,7 +22,17 @@ namespace Core::Animation
 		float speed{ 20.f };
 
 	public:
+		/**
+		 * The default constructor
+		 */
+		TransitionNode() = default;
 
+		/**
+		 * constructor for create a transition
+		 */
+		TransitionNode(std::shared_ptr<AnimationNode> currentAnimationNode,
+			std::shared_ptr<AnimationNode> nextAnimationNode, float speedTrans,
+			std::function<bool()> conditionTransition = nullptr);
 		/**
 		 * init the transition
 		 * @param currentAnimationNode: the AnimationNode who have the transition
@@ -74,7 +84,7 @@ namespace Core::Animation
 	{
 
 	private:
-		float m_currentTime;
+		std::atomic<float> m_currentTime;
 		std::atomic<bool> m_inTransition{ false };
 		unsigned int indexTransition;
 
@@ -86,6 +96,11 @@ namespace Core::Animation
 		std::vector<std::shared_ptr<TransitionNode>>	transitionsAnimation;
 
 	public:
+
+		/**
+		 * The default constructor
+		 */
+		AnimationNode() = default;
 
 		/*
 		 * Update the TRS matrix of the bone with the animation
@@ -140,6 +155,15 @@ namespace Core::Animation
 			else
 				return false;
 		}
+		/**
+		 * check if the current time of the AnimationNode is the max
+		 * of the Animation time
+		 * @return true if the times are the same
+		 */
+		bool IsAnimationCurrentTimeIsMax()
+		{
+			return { m_currentTime == nodeAnimation->Time };
+		}
 
 		/*
 		 * Set the new currentAnimationNode in the AnimationHandler
@@ -177,6 +201,8 @@ namespace Core::Animation
 		 */
 		void UpdateSkeletalMeshBones(	std::shared_ptr<Bone> rootBone, 
 										std::vector<Core::Maths::Mat4>& finalTransform, float deltaTime);
+
+		void PlayAnimation(std::shared_ptr<AnimationNode> animation);
 	};
 }
 

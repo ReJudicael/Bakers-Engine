@@ -162,6 +162,9 @@
     <ClCompile Include="src\Editor\Window\WindowMaterial.cpp">
       <Filter>Source Files\Editor\Window</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Window\WindowShader.cpp">
+      <Filter>Source Files\Editor\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\GUIManager.h">
@@ -267,6 +270,9 @@
       <Filter>Header Files\Editor\Datastructure</Filter>
     </ClInclude>
     <ClInclude Include="include\Editor\Window\WindowMaterial.h">
+      <Filter>Header Files\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Window\WindowShader.h">
       <Filter>Header Files\Editor\Window</Filter>
     </ClInclude>
   </ItemGroup>

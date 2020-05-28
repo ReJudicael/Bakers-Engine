@@ -156,8 +156,6 @@ namespace Core
 			physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
 
 			m_pxRigidBody->setGlobalPose(physx::PxTransform(position, rotation));
-
-			ClearForces();
 		}
 
 		void RigidBody::SetLinearVelocity(Core::Maths::Vec3 newVelocity)
@@ -197,7 +195,11 @@ namespace Core
 		float RigidBody::GetMass() const
 		{
 			if (m_pxRigidBody == nullptr)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->Mass;
 				return 0;
+			}
 			return m_pxRigidBody->getMass();
 		}
 
@@ -234,7 +236,11 @@ namespace Core
 		bool RigidBody::GetPhysicsLockXRotation() const
 		{
 			if (m_pxRigidBody == nullptr)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->XLock;
 				return false;
+			}
 			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X);
 		}
 
@@ -255,14 +261,16 @@ namespace Core
 		bool RigidBody::GetPhysicsLockYRotation() const
 		{
 			if (m_pxRigidBody == nullptr)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->YLock;
 				return false;
+			}
 			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y);
 		}
 
 		void RigidBody::SetPhysicsLockZRotation(bool Axisz)
 		{
-			// if there is already a shape put the value in the shape
-			// if the object isn't going to be destroyed save the value
 			if (m_pxRigidBody)
 				m_pxRigidBody->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, Axisz);
 			else if (!IsDestroyed())
@@ -276,7 +284,11 @@ namespace Core
 		bool RigidBody::GetPhysicsLockZRotation() const
 		{
 			if (m_pxRigidBody == nullptr)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->ZLock;
 				return false;
+			}
 			return m_pxRigidBody->getRigidDynamicLockFlags().isSet(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
 		}
 
@@ -296,10 +308,13 @@ namespace Core
 
 		bool RigidBody::GetUseGravity() const
 		{
-			if (m_pxRigidBody)
-				return !m_pxRigidBody->getActorFlags().isSet(physx::PxActorFlag::eDISABLE_GRAVITY);
-
-			return false;
+			if (!m_pxRigidBody)
+			{
+				if (m_tmpRigidBodySave)
+					return m_tmpRigidBodySave->Gravity;
+				return false;
+			}
+			return !m_pxRigidBody->getActorFlags().isSet(physx::PxActorFlag::eDISABLE_GRAVITY);
 		}
 
 		RigidBody::~RigidBody()

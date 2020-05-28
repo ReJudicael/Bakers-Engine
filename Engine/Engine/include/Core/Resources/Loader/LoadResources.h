@@ -53,7 +53,6 @@ namespace Resources
 	using unorderedmapMaterial = std::unordered_map<std::string, std::shared_ptr<Material>>;
 	using unorderedmapObject3DGraph = std::unordered_map<std::string, std::shared_ptr<Object3DGraph>>;
 	using unorderedmapBonesIndex = std::unordered_map<std::string, Animation::BoneData>;
-	using unorderedmapSkeletalIndex = std::unordered_map<std::string, std::shared_ptr<unorderedmapBonesIndex>>;
 	using unorderedmapBonesHierarchy = std::unordered_map<std::string, std::shared_ptr<Core::Animation::BoneTree>>;
 	using unorderedmapAnimations = std::unordered_map<std::string, std::shared_ptr<Core::Animation::Animation>>;
 	using unorderedmapAudioClip = std::unordered_map<std::string, std::shared_ptr<Core::Audio::AudioClip>>;
@@ -75,16 +74,15 @@ namespace Resources
 
 		private:
 			/* the resources load*/
-			unorderedmapShader				m_shaders;
-			unorderedmapTexture				m_textures;
-			unorderedmapMaterial			m_materials;
-			unorderedmapModel				m_models;
-			unorderedmapObject3DGraph		m_scenes;
-			unorderedmapBonesIndex			m_bonesID;
-			unorderedmapSkeletalIndex		m_skeletalIndex;
-			unorderedmapBonesHierarchy		m_BoneHierarchies;
-			unorderedmapAudioClip			m_audioClips;
-			Core::Datastructure::RootObject* m_rootNode;
+			unorderedmapShader					m_shaders;
+			unorderedmapTexture					m_textures;
+			unorderedmapMaterial				m_materials;
+			unorderedmapModel					m_models;
+			unorderedmapObject3DGraph			m_scenes;
+			unorderedmapBonesIndex				m_bonesID;
+			unorderedmapBonesHierarchy			m_BoneHierarchies;
+			unorderedmapAudioClip				m_audioClips;
+			Core::Datastructure::RootObject*	m_rootNode;
 
 
 		public:
@@ -264,7 +262,7 @@ namespace Resources
 			 * @param keyName: the key of the shader with which we try to find
 			 * @return the shared_ptr of the shader we try to find with the keyName
 			 */
-			inline std::shared_ptr<Shader> GetShader(std::string keyName)
+			std::shared_ptr<Shader> GetShader(std::string keyName)
 			{
 				if (GetCountShader(keyName) > 0)
 					return m_shaders[keyName];
@@ -377,6 +375,11 @@ namespace Resources
 			 * @param path: the path of the shader
 			 */
 			void ReplaceShader(const std::string& path, const std::string& newPath);
+
+			/**
+			 *
+			 */
+			void UpdateShaderPathInMaterials(std::shared_ptr<Resources::Shader> shader);
 
 			/**
 			 * Load a material with a .bmat
@@ -512,7 +515,39 @@ namespace Resources
 			 */
 			void ReloadScripts();
 
+			/**
+			 * Save all the special materials
+			 * @param shaderPTR: the shader we want to find the path
+			 */
+			std::string FindShaderFromShared(std::shared_ptr<Resources::Shader> shaderPTR);
+			/**
+			 * Save all the special materials
+			 * @param materialPTR: the material we want to find the path
+			 */
+			std::string FindMaterialFromShared(std::shared_ptr<Resources::Material> materialPTR);
+			/**
+			 * Save all the special materials
+			 * @param texturePTR: the texture we want to find the path
+			 */
+			std::string FindTextureFromShared(std::shared_ptr<Resources::Texture> texturePTR);
+
+			/**
+			 * Save all the special materials
+			 */
 			void SaveMaterial();
+
+			/**
+			 * Update all materials who have this shader who is going to be deleted
+			 * and change the material shader as default
+			 * @param shaderDeleted: the shader deleted
+			 */
+			void UpdateDeletedShaderMaterials(const std::shared_ptr<Resources::Shader>& shaderDeleted);
+
+			/**
+			 * Delete the material and the shader create by ".bmat" and ".bshader"
+			 * @param path: the path of the shader othe material to delete
+			*/
+			void DeleteSpecialMaterialShader(const std::string& path);
 		};
 
 		/**

@@ -468,7 +468,7 @@ namespace Core::SystemManagement
 	inline bool FileSystem::IsImageExtension(const std::string& extWithoutDot) const noexcept
 	{
 		return extWithoutDot == "jpeg" || extWithoutDot == "jpg" || extWithoutDot == "png" ||
-			extWithoutDot == "tga" || extWithoutDot == "bmp";
+			extWithoutDot == "bmp";
 	}
 
 	inline bool FileSystem::IsObjectExtension(const std::string& extWithoutDot) const noexcept

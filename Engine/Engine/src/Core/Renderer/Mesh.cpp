@@ -67,10 +67,13 @@ bool Core::Renderer::Mesh::ChangeOneMaterial(std::string newMaterial, int iD)
 	{
 		m_materialsModel[iD] = manager->GetMaterial(newMaterial);
 		// delete the event in the material for change the name
-		m_destroyMaterialEvent[iD]();
 		// create new event for rename the material
 		int index = m_materialsModel[iD]->UpdateNameMaterial.AddListener(
 			std::bind(&Core::Renderer::Mesh::UpdateNameMaterial, this, iD, std::placeholders::_1));
+		if (iD < m_destroyMaterialEvent.size())
+		{
+			m_destroyMaterialEvent[iD]();
+		}
 		// change the event who destroy the event of the material
 		m_destroyMaterialEvent[iD] = std::bind(&Core::Renderer::Mesh::DeleteMaterialEvent, this, iD, index);
 		return true;
@@ -236,9 +239,14 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 	for (auto i{ 0 }; i < m_model->offsetsMesh.size(); i++)
 	{
 		Resources::OffsetMesh currOffsetMesh = m_model->offsetsMesh[i];
-		Resources::Material material = *m_materialsModel[currOffsetMesh.materialIndices];
+		if (m_materialsModel[currOffsetMesh.materialIndices]->IsDelete)
+		{
+			m_materialsModel[currOffsetMesh.materialIndices] = GetRoot()->GetEngine()->GetResourcesManager()->GetMaterial("Default");
+			m_materialsNames[i] = "Default";
+		}
 
-		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material.shader);
+		std::shared_ptr<Resources::Material> material = m_materialsModel[currOffsetMesh.materialIndices];
+		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material->shader);
 
 		usedShader->UseProgram();
 		{
@@ -250,7 +258,7 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 			for (int j{0}; j < 10; ++j)
 				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + i);
 
-			material.SendMaterial();
+			material->SendMaterial();
 			glUniformMatrix4fv(usedShader->GetLocation("uModel"), 1, GL_TRUE, trs);
 			glUniformMatrix4fv(usedShader->GetLocation("uCam"), 1, GL_TRUE, view.array);
 			glUniformMatrix4fv(usedShader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
@@ -310,6 +318,7 @@ void  Core::Renderer::Mesh::AddMaterials(Resources::Loader::ResourcesManager& re
 			{
 				m_materialsModel[i] = resources.GetMaterial("Default");
 				m_materialsNames[i] = "Default";
+				m_destroyMaterialEvent.push_back(std::bind(&Core::Renderer::Mesh::DeleteMaterialEvent, this, i, 0));
 			}
 		}
 	}

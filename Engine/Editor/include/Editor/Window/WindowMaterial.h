@@ -81,7 +81,7 @@ namespace Editor::Window
 		 * Show Material variant
 		 * @param varUniform: VariantUniform of Material
 		 */
-		void ShowMaterialVariant(Resources::VariantUniform varUniform);
+		void ShowMaterialVariant(Resources::VariantUniform& varUniform);
 
 		/**
 		 * Show Material texture
