@@ -33,7 +33,7 @@ namespace Core::Animation
 			m_conditionTransition = std::bind(&AnimationNode::DefaultConditionAnimationNode, m_currentAnimationNode);
 	}
 
-	Core::Maths::Mat4 TransitionNode::TransitionAnimation(std::shared_ptr<Bone> bone)
+	Core::Maths::Mat4 TransitionNode::TransitionAnimation(const std::shared_ptr<Bone>& bone)
 	{
 		// calculate the animation blend of the currentAnimation
 		Core::Datastructure::Transform TRS1;
@@ -52,7 +52,7 @@ namespace Core::Animation
 		return Core::Datastructure::Transform{ position, rotation, TRS1.GetLocalScale() }.GetLocalTrs();
 	}
 
-	Core::Maths::Mat4 TransitionNode::UpdateBoneTransition(std::shared_ptr<Bone> bone)
+	Core::Maths::Mat4 TransitionNode::UpdateBoneTransition(const std::shared_ptr<Bone>& bone)
 	{
 		if (m_currentAnimationNode->nodeAnimation->animationTree.count(bone->boneName) > 0 
 			&& m_nextAnimationNode->nodeAnimation->animationTree.count(bone->boneName) > 0)
@@ -78,7 +78,7 @@ namespace Core::Animation
 		isFinish = false;
 	}
 
-	Core::Maths::Mat4 AnimationNode::BlendAnimation(std::shared_ptr<Bone> bone, Core::Datastructure::Transform& out)
+	Core::Maths::Mat4 AnimationNode::BlendAnimation(const std::shared_ptr<Bone>& bone, Core::Datastructure::Transform& out)
 	{
 
 		std::shared_ptr<BoneAnimation> boneAnim = nodeAnimation->animationTree[bone->boneName];
@@ -110,7 +110,7 @@ namespace Core::Animation
 	}
 
 
-	unsigned int AnimationNode::FindBoneAnimationIndex(std::shared_ptr<BoneAnimation> boneAnim)
+	unsigned int AnimationNode::FindBoneAnimationIndex(const std::shared_ptr<BoneAnimation>& boneAnim)
 	{
 		unsigned int index;
 		for (index = 0; index < boneAnim->timeKey.size() - 1; index++)
@@ -121,8 +121,7 @@ namespace Core::Animation
 		return index;
 	}
 
-	void AnimationNode::UpdateAnimationBone(std::shared_ptr<Bone> currentBone, Core::Maths::Mat4 parent, 
-											std::vector<Core::Maths::Mat4>& finalTransform)
+	void AnimationNode::UpdateAnimationBone(const std::shared_ptr<Bone>& currentBone, const Core::Maths::Mat4& parent, std::vector<float>& finalTRSfloat)
 	{
 		Core::Maths::Mat4 nodeTransform{ currentBone->baseTransform.GetLocalTrs() };
 
@@ -139,11 +138,17 @@ namespace Core::Animation
 
 		Core::Maths::Mat4 globalTransform = parent * nodeTransform;
 
-		finalTransform[currentBone->boneIndex] = (globalTransform * (currentBone->offsetBone));
+		Core::Maths::Mat4 finalTransform = (globalTransform * (currentBone->offsetBone));
+
+		int currentPosInArrayFloat = currentBone->boneIndex * 16;
+		for (int i = 0; i < 16; i++)
+		{
+			finalTRSfloat[currentPosInArrayFloat + i] = finalTransform.array[i];
+		}
 
 		for (auto i{ 0 }; i < currentBone->child.size(); i++)
 		{
-			UpdateAnimationBone(currentBone->child[i], globalTransform, finalTransform);
+			UpdateAnimationBone(currentBone->child[i], globalTransform, finalTRSfloat);
 		}
 	}
 
@@ -153,10 +158,11 @@ namespace Core::Animation
 		if (m_inTransition)
 		{
 			transitionsAnimation[indexTransition]->UpdateTimer(deltaTime);
-			//if (transitionsAnimation[indexTransition]->m_nextAnimationNode)
-				//transitionsAnimation[indexTransition]->m_nextAnimationNode->UpdateTimer(deltaTime);
 			if (!transitionsAnimation[indexTransition]->m_nextAnimationNode)
+			{
 				transitionsAnimation[indexTransition]->Reset();
+				m_inTransition = false;
+			}
 		}
 		else
 		{
@@ -218,17 +224,16 @@ namespace Core::Animation
 		m_currentAnimationNode{ animationNode }
 	{}
 
-	void AnimationHandler::UpdateSkeletalMeshBones(std::shared_ptr<Bone> rootBone, 
-													std::vector<Core::Maths::Mat4>& finalTransform, float deltaTime)
+	void AnimationHandler::UpdateSkeletalMeshBones(const std::shared_ptr<Bone>& rootBone, std::vector<float>& finalTRSfloat, float deltaTime)
 	{
-		if (m_currentAnimationNode)
+		if (m_currentAnimationNode && m_currentAnimationNode->nodeAnimation)
 		{
-			// if (m_currentAnimationNode->IsAnimationCurrentTimeIsMax())
+			if (!m_currentAnimationNode->IsTimeIsTheSame() || m_currentAnimationNode->IsInTransition())
 			{
-				constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
+				Core::Maths::Mat4 identity{ identity.Identity() };
 				for (auto i{ 0 }; i < rootBone->child.size(); i++)
 				{
-					m_currentAnimationNode->UpdateAnimationBone(rootBone->child[i], identity, finalTransform);
+					m_currentAnimationNode->UpdateAnimationBone(rootBone->child[i], identity, finalTRSfloat);
 				}
 			}
 
@@ -244,7 +249,7 @@ namespace Core::Animation
 		animationFinish = true;
 	}
 
-	void AnimationHandler::PlayAnimation(std::shared_ptr<AnimationNode> animation)
+	void AnimationHandler::PlayAnimation(const std::shared_ptr<AnimationNode>& animation)
 	{
 		m_currentAnimationNode = animation;
 	}

@@ -688,8 +688,15 @@ namespace Resources::Loader
 			itshader != m_shaders.end(); ++itshader)
 		{
 			ZoneScopedN("ShaderUpdateLoop")
-			itshader->second->UseProgram();
-			itshader->second->SendLights();
+			std::shared_ptr<Resources::Shader> shader = itshader->second;
+			shader->UseProgram();
+			shader->SendLights();
+			for (int j{ 0 }; j < 10; ++j)
+				glUniform1i(shader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + j);
+			std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
+			for (auto j{ 0 }; j < lights.size(); ++j)
+				glUniformMatrix4fv(shader->GetLocation("uLightView[" + std::to_string(j) + "]"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
+			glUniform1i(shader->GetLocation("uShadowCount"), lights.size());
 		}
 	}
 

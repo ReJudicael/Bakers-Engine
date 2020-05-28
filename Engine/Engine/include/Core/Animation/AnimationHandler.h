@@ -49,14 +49,14 @@ namespace Core::Animation
 		 * @param bone: the current bone
 		 * @return the blended matrix
 		 */
-		Core::Maths::Mat4 TransitionAnimation(std::shared_ptr<Bone> bone);
+		Core::Maths::Mat4 TransitionAnimation(const std::shared_ptr<Bone>& bone);
 		
 		/**
 		 * Check if the bone can be blend
 		 * @param bone: the current bone
 		 * @return the blended matrix
 		 */
-		Core::Maths::Mat4 UpdateBoneTransition(std::shared_ptr<Bone> bone);
+		Core::Maths::Mat4 UpdateBoneTransition(const std::shared_ptr<Bone>& bone);
 
 		/**
 		 * update the transition time
@@ -85,6 +85,7 @@ namespace Core::Animation
 
 	private:
 		std::atomic<float> m_currentTime;
+		std::atomic<float> m_lastTime;
 		std::atomic<bool> m_inTransition{ false };
 		unsigned int indexTransition;
 
@@ -103,28 +104,28 @@ namespace Core::Animation
 		AnimationNode() = default;
 
 		/*
-		 * Update the TRS matrix of the bone with the animation
-		 * @param currentBone: the current bone
-		 * @param parent: the parent TRS matrix
-		 * @param finalTransform: the matrix vector wich is send to the shader
-		 */
-		void UpdateAnimationBone(	std::shared_ptr<Bone> currentBone, Core::Maths::Mat4 parent, 
-									std::vector<Core::Maths::Mat4>& finalTransform);
-		
-		/*
 		 * Blend the rotation and the position of the bone
 		 * @param boneAnim: the current bone
 		 * @param out: the Transform of the blend
 		 * @return the blended matrix
 		 */
-		Core::Maths::Mat4 BlendAnimation(std::shared_ptr<Bone> boneAnim, Core::Datastructure::Transform& out);
-		
+		Core::Maths::Mat4 BlendAnimation(const std::shared_ptr<Bone>& boneAnim, Core::Datastructure::Transform& out);
+
 		/*
 		 * Find the current keyBone of the bone in the animation
 		 * @param boneAnim: the current bone
 		 * @return the keyBone in the animation
 		 */
-		unsigned int FindBoneAnimationIndex(std::shared_ptr<BoneAnimation> boneAnim);
+		unsigned int FindBoneAnimationIndex(const std::shared_ptr<BoneAnimation>& boneAnim);
+
+		/*
+		 * Update the TRS matrix of the bone with the animation
+		 * @param currentBone: the current bone
+		 * @param parent: the parent TRS matrix
+		 * @param finalTransform: the float vector wich is send to the shader
+		 */
+		void UpdateAnimationBone(const std::shared_ptr<Bone>& currentBone, const Core::Maths::Mat4& parent, std::vector<float> & finalTRSfloat);
+		
 
 		/*
 		 * Update the AnimationBone
@@ -158,11 +159,20 @@ namespace Core::Animation
 		/**
 		 * check if the current time of the AnimationNode is the max
 		 * of the Animation time
-		 * @return true if the times are the same
+		 * @return true if the current Time is the same as the last update
 		 */
-		bool IsAnimationCurrentTimeIsMax()
+		inline bool IsTimeIsTheSame()
 		{
-			return { m_currentTime == nodeAnimation->Time };
+			return { m_currentTime == m_lastTime };
+		}
+
+		/**
+		 * Check if the AnimationNode is playing a transition
+		 * @return true if the AnimationNode is playing a transition
+		 */
+		inline bool IsInTransition()
+		{
+			return m_inTransition;
 		}
 
 		/*
@@ -199,10 +209,9 @@ namespace Core::Animation
 		 * Set the new currentAnimationNode in the AnimationHandler
 		 * @param currentAnimation: the currentAnimationNode in the AnimationHandler
 		 */
-		void UpdateSkeletalMeshBones(	std::shared_ptr<Bone> rootBone, 
-										std::vector<Core::Maths::Mat4>& finalTransform, float deltaTime);
+		void UpdateSkeletalMeshBones(const std::shared_ptr<Bone>& rootBone, std::vector<float>& finalTRSfloat, float deltaTime);
 
-		void PlayAnimation(std::shared_ptr<AnimationNode> animation);
+		void PlayAnimation(const std::shared_ptr<AnimationNode>& animation);
 	};
 }
 
