@@ -38,7 +38,8 @@ RTTR_PLUGIN_REGISTRATION
 		"Transform", &Object::m_transform,
 		"Translate", &Object::Translate,
 		"Rotate", &Object::Rotate,
-		"Scale", &Object::Scale);
+		"Scale", &Object::Scale,
+		"RotateTowards", &Object::RotateTowards);
 }
 
 namespace Core::Datastructure

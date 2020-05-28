@@ -217,6 +217,18 @@ namespace Core::Datastructure
 			RequireUpdate();
 			return temp;
 		}
+
+		/**
+		 * Rotate object towards given direction
+		 * @param target: New forward at the end of the rotation
+		 * @param rotation: Slerp value to determine the rotation between current and target (must be between 0 and 1)
+		 */
+		void	RotateTowards(const Maths::Vec3& target, const float& rotation)
+		{
+			m_transform.RotateTowards(target, rotation);
+			RequireUpdate();
+		}
+
 		/**
 		 * Scales the object in local space by given vector
 		 * @param v: Vector to scale by

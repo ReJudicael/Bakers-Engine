@@ -277,6 +277,13 @@ namespace Core::Datastructure
 		 */
 		const Maths::Mat4& GetGlobalTrs() noexcept;
 
+		/**
+		 * Set rotation so the forward vector becomes target vector
+		 * @param target: Future forward of the transform
+		 * @param rotation: Slerp value to determine the rotation between current and target (must be between 0 and 1)
+		 */
+		void RotateTowards(const Maths::Vec3& target, const float& rotation);
+
 		REGISTER_CLASS()
 	};
 

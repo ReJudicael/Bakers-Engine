@@ -589,6 +589,20 @@ namespace Core::Maths
 
 			return q.Normalized();
 		}
+
+		/**
+		 * Create quaternion representing the rotation from first vector to second vector
+		 * @param from: Begin vector
+		 * @param to: Desired direction of vector after rotation
+		 * @return Quaternion for asked rotation
+		 */
+		static Quaternion			FromToRotation(const Vec3& from, const Vec3& to)
+		{
+			float angle = acos(from.Dot(to));
+			Vec3 axis = from.Cross(to);
+
+			return Quaternion::AngleAxis(angle, axis);
+		}
 	};
 
 	/**
