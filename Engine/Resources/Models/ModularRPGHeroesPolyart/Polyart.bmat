@@ -1,0 +1,25 @@
+{
+    "Ambient": {
+        "a": 1.0,
+        "b": 0.9999899864196777,
+        "g": 0.9999899864196777,
+        "r": 1.0
+    },
+    "BaseTexture": ".\\Resources\\Models\\ModularRPGHeroesPolyart\\PolyArtTex.TGA",
+    "Diffuse": {
+        "a": 0.6399999856948853,
+        "b": 0.6399999856948853,
+        "g": 0.6399999856948853,
+        "r": 0.6399999856948853
+    },
+    "Shader": "SkeletDefault",
+    "Specular": {
+        "a": 0.9999899864196777,
+        "b": 0.9999899864196777,
+        "g": 0.9999899864196777,
+        "r": 1.0
+    },
+    "Variant": [],
+    "shininess": 1.0,
+    "shininessS": 0.5
+}

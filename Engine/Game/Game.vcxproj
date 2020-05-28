@@ -138,12 +138,16 @@
     <ClCompile Include="src\Brioche.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\Door.cpp" />
+    <ClCompile Include="src\Owen.cpp" />
+    <ClCompile Include="src\Salt.cpp" />
     <ClCompile Include="src\Switch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Brioche.h" />
     <ClInclude Include="include\Door.h" />
     <ClInclude Include="include\framework.h" />
+    <ClInclude Include="include\Owen.h" />
+    <ClInclude Include="include\Salt.h" />
     <ClInclude Include="include\Switch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

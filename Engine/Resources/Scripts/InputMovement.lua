@@ -1,6 +1,6 @@
 --Move object with WASD inputs
 
-speed = 10;
+speed = 50;
 
 function Start()
 	

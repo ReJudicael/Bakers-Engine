@@ -3,7 +3,9 @@
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
 
-
+/**
+ * Brioche animation
+ */
 enum class EBriocheAnimation : unsigned short
 {
 	IDLE = 0,
@@ -26,7 +28,6 @@ private:
 	std::string m_getHitAnimation;
 	std::string m_dieAnimation;
 	EBriocheAnimation m_briocheAnimation{ EBriocheAnimation::IDLE };
-	float m_health{ 100.f };
 
 protected:
 	/**
