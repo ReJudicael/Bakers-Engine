@@ -45,21 +45,17 @@ void Core::Datastructure::ICamera::OnInit()
 	m_fbo = GetRoot()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Core::Renderer::FBOType::CAMERA);
 	m_fbo->userPtr = this;
 
-	m_effectFbo = GetRoot()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Renderer::FBOType::POSTPROCESSING);
-	m_effectFbo->userPtr = this;
-
-	m_secondEffectFbo = GetRoot()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Renderer::FBOType::POSTPROCESSING);
-	m_secondEffectFbo->userPtr = this;
-
-	m_effectFbo->InitPostProcess(GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessAddition", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessAdditionShader.frag"));
-
 	m_shadowShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("Shadow", "Resources\\Shaders\\ShadowShader.vert", "Resources\\Shaders\\ShadowShader.frag");
-	m_bloomShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessBlur", "Resources\\Shaders\\PostprocessBlurShader.vert", "Resources\\Shaders\\PostprocessBlurShader.frag");
 }
 
 bool Core::Datastructure::ICamera::OnStart()
 {
 	ZoneScoped
+	std::list<Renderer::Postprocess*> components;
+	m_parent->GetComponentsOfTypeInObject<Renderer::Postprocess>(components);
+	if (components.size() > 0)
+		m_postProcessHandler = *components.begin();
+
 	return IComponent::OnStart();
 }
 
@@ -103,7 +99,7 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 		DrawDepth(renderables);
 
 		// Draw scene
-		glBindFramebuffer(GL_FRAMEBUFFER, m_secondEffectFbo->FBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
 		glDrawBuffers(2, attachments);
@@ -111,30 +107,12 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
 			(*it)->Draw(this->GetCameraMatrix(), this->GetPerspectiveMatrix());
 
-		// Blur bright parts of the scene to create bloom effect
-		glBindFramebuffer(GL_FRAMEBUFFER, m_effectFbo->FBO);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		m_bloomShader->UseProgram();
-		glBindTexture(GL_TEXTURE_2D, m_secondEffectFbo->EffectTexture);
-		glBindVertexArray(m_effectFbo->data.VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		if (m_postProcessHandler)
+		{
+			m_postProcessHandler->Resize(m_fbo->Size[2], m_fbo->Size[3]);
+			m_postProcessHandler->DrawPostProcess(m_fbo);
+		}
 		
-		// Add scene and bright parts to create final display
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		m_effectFbo->data.s->UseProgram();
-		// Init value of texture1 for mesh texture
-		glUniform1i(m_effectFbo->data.s->GetLocation("uColorTexture"), 0);
-		// Init value of texture2 for normal map
-		glUniform1i(m_effectFbo->data.s->GetLocation("uSecondTexture"), 1);
-		glUniform3fv(m_effectFbo->data.s->GetLocation("uColor"), 1, Maths::Vec3(1, 0, 0).xyz);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_secondEffectFbo->ColorTexture);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, m_effectFbo->ColorTexture);
-		glBindVertexArray(m_effectFbo->data.VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
 	}
@@ -158,8 +136,8 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 	SetRatio(width, height);
 	
 	m_fbo->Resize(width, height);
-	m_effectFbo->Resize(width, height);
-	m_secondEffectFbo->Resize(width, height);
+	if (m_postProcessHandler)
+		m_postProcessHandler->Resize(width, height);
 	for (size_t i{ 0 }; i < Resources::Shader::lights.size(); ++i)
 		Resources::Shader::lights[i]->ResizeShadowTexture(width, height);
 }
@@ -168,8 +146,6 @@ void Core::Datastructure::ICamera::OnDestroy()
 {
 	GetRoot()->RemoveCamera(this);
 	GetRoot()->GetEngine()->DeleteFBO(m_fbo);
-	GetRoot()->GetEngine()->DeleteFBO(m_effectFbo);
-	GetRoot()->GetEngine()->DeleteFBO(m_secondEffectFbo);
 }
 
 void	Core::Datastructure::ICamera::OnReset()
@@ -183,15 +159,5 @@ void	Core::Datastructure::ICamera::OnReset()
 	{
 		GetRoot()->GetEngine()->DeleteFBO(m_fbo);
 		m_fbo = nullptr;
-	}
-	if (m_effectFbo != nullptr)
-	{
-		GetRoot()->GetEngine()->DeleteFBO(m_effectFbo);
-		m_effectFbo = nullptr;
-	}
-	if (m_secondEffectFbo != nullptr)
-	{
-		GetRoot()->GetEngine()->DeleteFBO(m_secondEffectFbo);
-		m_secondEffectFbo = nullptr;
 	}
 }
