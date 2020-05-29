@@ -5,6 +5,7 @@
 #include "IComponent.hpp"
 #include "Framebuffer.h"
 #include "CoreMinimal.h"
+#include "Postprocess.h"
 
 namespace Core::Datastructure
 {
@@ -22,8 +23,10 @@ namespace Core::Datastructure
 		unsigned			m_cameraWidth{1280};
 		unsigned			m_cameraHeight{800};
 
-		Core::Renderer::Framebuffer* m_fbo{ nullptr };
+		Renderer::Framebuffer* m_fbo{ nullptr };
 		std::shared_ptr<Resources::Shader> m_shadowShader{ nullptr };
+
+		Renderer::Postprocess* m_postProcessHandler{ nullptr };
 
 		/**
 		 * Generate and return camera matrix

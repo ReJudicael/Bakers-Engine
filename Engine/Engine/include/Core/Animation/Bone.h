@@ -23,6 +23,7 @@ namespace Core
 		struct Bone
 		{
 
+		public:
 			Core::Datastructure::Transform			baseTransform;
 			Core::Datastructure::Transform			LocalTRS;
 
@@ -31,8 +32,11 @@ namespace Core
 			std::string								boneName;
 			unsigned int							boneIndex;
 
-			std::vector<std::shared_ptr<Bone>>		child;
+			bool									activeBone{ false };
 
+			std::vector<std::shared_ptr<Bone>>		child;
+		
+		public:
 			/**
 			 * Init a bone with the node of assimp
 			 * @param node: the current node
@@ -44,8 +48,9 @@ namespace Core
 
 		struct BoneTree
 		{
+		public:
 			std::shared_ptr<Bone> rootBone{};
-			unsigned int numBone;
+			unsigned int numActiveBones;
 		};
 	}
 }

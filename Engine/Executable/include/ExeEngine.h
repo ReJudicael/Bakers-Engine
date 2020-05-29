@@ -8,6 +8,8 @@ namespace Executable
 	class ExeEngine : public Core::Datastructure::EngineCore
 	{
 	public:
+		ExeEngine();
+		ExeEngine(int width, int height);
 		~ExeEngine();
 
 		int		OnInit(const int width, const int height) override;
@@ -22,5 +24,7 @@ namespace Executable
 		GLFWmousebuttonfun	SetMouseButtonCallBackToGLFW();
 		GLFWscrollfun		SetScrollCallBackToGLFW();
 		GLFWwindowsizefun	SetWindowSizeToGLFW();
+
+		GLuint				m_VAO{ 0 };
 	};
 }

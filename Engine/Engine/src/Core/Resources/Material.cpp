@@ -99,27 +99,14 @@ namespace Resources
 		glUniform1f(shader->GetLocation("umat.shininessStrength"), shininessStrength);
 
 		GLuint unit{ 0 };
-		// send all the texture
-		for (auto i{ 0 }; i < textures.size(); i++)
+		// Send each texture
+		for (size_t i{ 0 }; i < textures.size(); ++i)
 		{
-			switch (i)
+			if (textures[i])
 			{
-			case 0:
-				if (textures[i])
-				{
-					glActiveTexture(GL_TEXTURE0);
-					glBindTexture(GL_TEXTURE_2D, textures[0]->texture);
-					unit++;
-				}
-				break;
-			case 1:
-				if (textures[i])
-				{
-					glActiveTexture(GL_TEXTURE1);
-					glBindTexture(GL_TEXTURE_2D, textures[1]->texture);
-					unit++;
-				}
-				break;
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, textures[i]->texture);
+				unit++;
 			}
 		}
 
@@ -288,7 +275,7 @@ namespace Resources
 				skeletalShader = true;
 		}
 
-		IsSkeletal = skeletalShader;;
+		IsSkeletal = skeletalShader;
 		textures.resize(numberOfBasicTexture);
 	}
 
@@ -338,7 +325,7 @@ namespace Resources
 		save["Variant"] = json::array();
 		{
 			for (auto i = 0; i < variants.size();)
-				save["Variant"][i++] = SaveVariants(i);
+				save["Variant"][i++] = SaveVariants(i, resources);
 		}
 
 		o << std::setw(4) << save << std::endl;
@@ -403,7 +390,7 @@ namespace Resources
 		return true;
 	}
 
-	json Material::SaveVariants(const int& index)
+	json Material::SaveVariants(const int& index, Resources::Loader::ResourcesManager* resources)
 	{
 		json out;
 		if (variants[index].var.get_type() == rttr::type::get<bool>())
@@ -461,7 +448,7 @@ namespace Resources
 		else if (variants[index].var.get_type() == rttr::type::get<std::shared_ptr<Texture>>())
 		{
 			std::shared_ptr<Texture> text{ variants[index].var.get_value<std::shared_ptr<Texture>>() };
-			out["Value"] = text->name;
+			out["Value"] = resources->FindTextureFromShared(text);
 		}
 
 		return out;

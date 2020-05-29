@@ -45,13 +45,17 @@ void Core::Datastructure::ICamera::OnInit()
 	m_fbo = GetRoot()->GetEngine()->CreateFBO(m_cameraWidth, m_cameraHeight, Core::Renderer::FBOType::CAMERA);
 	m_fbo->userPtr = this;
 
-
 	m_shadowShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("Shadow", "Resources\\Shaders\\ShadowShader.vert", "Resources\\Shaders\\ShadowShader.frag");
 }
 
 bool Core::Datastructure::ICamera::OnStart()
 {
 	ZoneScoped
+	std::list<Renderer::Postprocess*> components;
+	m_parent->GetComponentsOfTypeInObject<Renderer::Postprocess>(components);
+	if (components.size() > 0)
+		m_postProcessHandler = *components.begin();
+
 	return IComponent::OnStart();
 }
 
@@ -68,18 +72,23 @@ void Core::Datastructure::ICamera::DrawDepth(const std::list<IRenderable*>& rend
 
 	for (size_t i{ 0 }; i < lights.size(); ++i)
 	{
-		lights[i]->ResizeShadowTexture(m_fbo->Size[2], m_fbo->Size[3]);
+		if (!lights[i]->GetShadowDrawn())
+		{
+			lights[i]->ResizeShadowTexture(m_fbo->Size[2], m_fbo->Size[3]);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, lights[i]->ShadowBuffer());
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glBindFramebuffer(GL_FRAMEBUFFER, lights[i]->ShadowBuffer());
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glCullFace(GL_FRONT);
-		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
-			(*it)->Draw(lights[i]->GetViewFromLight(), this->GetPerspectiveMatrix(), m_shadowShader);
-		glCullFace(GL_BACK);
+			glCullFace(GL_FRONT);
+			for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
+				(*it)->Draw(lights[i]->GetViewFromLight(), this->GetPerspectiveMatrix(), m_shadowShader);
+			glCullFace(GL_BACK);
 
-		glActiveTexture(GL_TEXTURE2 + i);
-		glBindTexture(GL_TEXTURE_2D, lights[i]->ShadowTexture());
+			lights[i]->SetShadowDrawn(true);
+
+			glActiveTexture(GL_TEXTURE2 + i);
+			glBindTexture(GL_TEXTURE_2D, lights[i]->ShadowTexture());
+		}
 	}
 }
 
@@ -94,12 +103,21 @@ void Core::Datastructure::ICamera::Draw(const std::list<Core::Datastructure::IRe
 		
 		DrawDepth(renderables);
 
+		// Draw scene
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo->FBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+		glDrawBuffers(2, attachments);
 
 		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
 			(*it)->Draw(this->GetCameraMatrix(), this->GetPerspectiveMatrix());
 
+		if (m_postProcessHandler)
+		{
+			m_postProcessHandler->Resize(m_fbo->Size[2], m_fbo->Size[3]);
+			m_postProcessHandler->DrawPostProcess(m_fbo);
+		}
+		
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
 	}
@@ -123,8 +141,10 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 	SetRatio(width, height);
 	
 	m_fbo->Resize(width, height);
-	if(Resources::Shader::lights.size() > 0)
-		Resources::Shader::lights[0]->ResizeShadowTexture(width, height);
+	if (m_postProcessHandler)
+		m_postProcessHandler->Resize(width, height);
+	for (size_t i{ 0 }; i < Resources::Shader::lights.size(); ++i)
+		Resources::Shader::lights[i]->ResizeShadowTexture(width, height);
 }
 
 void Core::Datastructure::ICamera::OnDestroy()

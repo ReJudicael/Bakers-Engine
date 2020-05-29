@@ -36,6 +36,7 @@ namespace Core::Renderer
 		Core::Maths::Vec3	m_attenuation = { 1.f, 0.f, 0.f };
 
 		// Shadow mapping variables
+		bool			m_shadowDrawn{ false };
 		bool			m_castShadow{ true };
 		unsigned int	m_depthBuffer{ 0 };
 		unsigned int	m_depthTexture{ 0 };
@@ -129,6 +130,11 @@ namespace Core::Renderer
 		 * @return Current light attenuation vector
 		 */
 		inline Core::Maths::Vec3 GetAttenuation() const { return m_attenuation; };
+		/**
+		 * Shadow draw state getter
+		 * @return True if the shadow depth of this light has already been computed this frame
+		 */
+		inline bool GetShadowDrawn() const { return m_shadowDrawn; };
 
 		/**
 		 * Light type setter
@@ -171,6 +177,11 @@ namespace Core::Renderer
 		 * @param value: New attenuation vector for the light
 		 */
 		inline void SetAttenuation(const Core::Maths::Vec3& value) { m_attenuation = value; };
+		/**
+		 * Shadow draw state setter
+		 * @param value: New state for shadow drawing
+		 */
+		inline void SetShadowDrawn(const bool value) { m_shadowDrawn = value; };
 
 		/**
 		 * Return FBO storing depth for shadow mapping

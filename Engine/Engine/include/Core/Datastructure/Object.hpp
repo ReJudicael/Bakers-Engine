@@ -217,6 +217,18 @@ namespace Core::Datastructure
 			RequireUpdate();
 			return temp;
 		}
+
+		/**
+		 * Rotate object towards given direction
+		 * @param target: New forward at the end of the rotation
+		 * @param rotation: Slerp value to determine the rotation between current and target (must be between 0 and 1)
+		 */
+		void	RotateTowards(const Maths::Vec3& target, const float& rotation)
+		{
+			m_transform.RotateTowards(target, rotation);
+			RequireUpdate();
+		}
+
 		/**
 		 * Scales the object in local space by given vector
 		 * @param v: Vector to scale by
@@ -320,7 +332,12 @@ namespace Core::Datastructure
 		const Maths::Vec3&	GetGlobalPos() noexcept
 		{
 			if (!m_transform.IsGPosUpdated())
-				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+			{
+				if (m_parent)
+					m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+				else
+					m_transform.UpdatePos();
+			}
 			return m_transform.GetGlobalPos();
 		}
 		/**
@@ -330,7 +347,12 @@ namespace Core::Datastructure
 		const Maths::Quat&	GetGlobalRot() noexcept
 		{
 			if (!m_transform.IsGPosUpdated())
-				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+			{
+				if (m_parent)
+					m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+				else
+					m_transform.UpdatePos();
+			}
 			return m_transform.GetGlobalRot();
 		}
 		/**
@@ -340,7 +362,12 @@ namespace Core::Datastructure
 		const Maths::Vec3&	GetGlobalScale() noexcept
 		{
 			if (!m_transform.IsGPosUpdated())
-				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+			{
+				if (m_parent)
+					m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+				else
+					m_transform.UpdatePos();
+			}
 			return m_transform.GetGlobalScale();
 		}
 

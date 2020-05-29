@@ -48,7 +48,9 @@ namespace Editor::Window
 				glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
 				glBindFramebuffer(GL_FRAMEBUFFER, fbo->FBO);
 				glViewport(fbo->Size[0], fbo->Size[1], fbo->Size[2], fbo->Size[3]);
-				GetEngine()->GetNavMesh()->DrawNavMesh(m_cam);
+				ImGui::Checkbox("Show Nav Mesh", &m_showNavMesh);
+				if (m_showNavMesh)
+					GetEngine()->GetNavMesh()->DrawNavMesh(m_cam);
 				std::list<Core::Physics::Collider*> box = GetEngine()->m_BoxCollider;
 				for (auto it = box.begin(); it != box.end();)
 				{

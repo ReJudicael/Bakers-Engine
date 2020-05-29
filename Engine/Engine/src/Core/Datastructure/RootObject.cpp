@@ -70,6 +70,8 @@ namespace Core::Datastructure
 			(*it)->Draw(m_renderables);
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
+
+		Resources::Shader::ResetShadowCastingLights();
 	}
 	void RootObject::AddUpdatable(IUpdatable* i) noexcept
 	{

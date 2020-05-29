@@ -71,7 +71,7 @@ namespace Core::Maths
 		 * @param Y: The Y component of the vector
 		 * @param Z: The Z component of the vector
 		 */
-		inline constexpr		Vec3(const float X, const float Y = 0.f, const float Z = 0.f) noexcept : x {X}, y {Y}, z {Z}
+		inline constexpr		Vec3(const float X, const float Y, const float Z) noexcept : x {X}, y {Y}, z {Z}
 		{
 		}
 

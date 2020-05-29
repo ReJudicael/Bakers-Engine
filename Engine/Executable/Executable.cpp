@@ -14,20 +14,25 @@
 
 int main()
 {
-	rttr::library lib{ "Engine" };
-	lib.load();
+	rttr::library libEngine{ "Engine" };
+	rttr::library libGame{ "Game" };
+	libEngine.load();
+	if (!libEngine.is_loaded())
+		std::cout << "Engine lib failed to load:" << std::endl << libEngine.get_error_string() << std::endl;
+	libGame.load();
+	if (!libGame.is_loaded())
+		std::cout << "Game lib failed to load:" << std::endl << libEngine.get_error_string() << std::endl;
 
-	if (!lib.is_loaded())
-		std::cout << lib.get_error_string() << std::endl;
+	{
+		Executable::ExeEngine engine;
+		int temp;
+		if (temp = engine.Init())
+			return temp;
+		engine.MainLoop();
+	}
 
-	Executable::ExeEngine* engine = new Executable::ExeEngine();
-	int temp;
-	if (temp = engine->Init())
-		return temp;
-	engine->MainLoop();
-	delete engine;
-
-	lib.unload();
+	libEngine.unload();
+	libGame.unload();
 
 	return 0;
 }

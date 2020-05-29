@@ -7,8 +7,7 @@ uniform int uLightCount;
 uniform Material umat;
 
 // Shader outputs
-layout (location = 0) out vec4 oColor;
-layout (location = 1) out vec4 oBrightColor;
+out vec4 oColor;
 
 // Varyings
 in vec2 vUV;
@@ -20,7 +19,9 @@ in vec3 normal;
 
 void main()
 {
-	oColor = texture(uColorTexture, vUV);
+	oColor = texture(uColorTexture, vec2(1 - vUV.x, 1 - vUV.y));
+	if (oColor.r == 0 && oColor.g == 0 && oColor.b == 0)
+		oColor.a = 0;
 	if (uLightCount == 0)
 		return;
 
@@ -31,9 +32,4 @@ void main()
 	for (int i = 0; i < uLightCount; i++)
 		lightContribution += getLightContribution(uLight[i], umat, unprojectedPos, normal, view, shadow);
 	oColor *= vec4(lightContribution, 1.0);
-	
-	if (oColor.r > 1.0 || oColor.g > 1.0 || oColor.b > 1.0)
-		oBrightColor = oColor;
-	else
-		oBrightColor = vec4(0.0, 0.0, 0.0, 1.0);
 }

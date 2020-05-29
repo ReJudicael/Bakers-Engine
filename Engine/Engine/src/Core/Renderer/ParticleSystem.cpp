@@ -11,9 +11,13 @@ RTTR_PLUGIN_REGISTRATION
 		.property("Birth Color", &Core::Renderer::ParticleSystem::m_birthColor)
 		.property("Death Color", &Core::Renderer::ParticleSystem::m_deathColor)
 		.property("Particles number", &Core::Renderer::ParticleSystem::m_maxParticlesNb)
+		.property("Spawn zone", &Core::Renderer::ParticleSystem::m_spawnZone)
 		.property("Time Before Spawn", &Core::Renderer::ParticleSystem::m_timeBeforeSpawn)
 		.property("Life time", &Core::Renderer::ParticleSystem::m_particlesLifeTime)
-		.property("Gravity", &Core::Renderer::ParticleSystem::m_gravity);
+		.property("Gravity", &Core::Renderer::ParticleSystem::m_gravity)
+		.property("Speed", &Core::Renderer::ParticleSystem::m_particleSpeed)
+		.property("Dispersion", &Core::Renderer::ParticleSystem::m_dispersion)
+		.property("Loop", &Core::Renderer::ParticleSystem::m_loop);
 }
 
 namespace Core::Renderer
@@ -38,12 +42,17 @@ namespace Core::Renderer
 
 		ParticleSystem* copy{ dynamic_cast<ParticleSystem*>(copyTo) };
 
+		copy->m_active = m_active;
+		copy->m_loop = m_loop;
 		copy->m_particles = m_particles;
 		copy->m_maxParticlesNb = m_maxParticlesNb;
+		copy->m_spawnZone = m_spawnZone;
 		copy->m_particlesLifeTime = m_particlesLifeTime;
 		copy->m_timeBeforeSpawn = m_timeBeforeSpawn;
 		copy->m_currentTime = m_currentTime;
 		copy->m_gravity = m_gravity;
+		copy->m_particleSpeed = m_particleSpeed;
+		copy->m_dispersion = m_dispersion;
 		copy->m_birthColor = m_birthColor;
 		copy->m_deathColor = m_deathColor;
 		copy->m_particleTexture = m_particleTexture;
@@ -90,11 +99,16 @@ namespace Core::Renderer
 
 		m_particles.clear();
 
+		m_active = true;
+		m_loop = true;
 		m_maxParticlesNb = 10;
+		m_spawnZone = { 0, 0, 0 };
 		m_particlesLifeTime = 2.f;
 		m_timeBeforeSpawn = 0.2f;
 		m_currentTime = 0.f;
 		m_gravity = 0.f;
+		m_particleSpeed = 0.1f;
+		m_dispersion = { 0.5f, 0.5f };
 		
 		m_birthColor = { 1, 1, 1, 1 };
 		m_deathColor = { 1, 1, 1, 1 };
@@ -111,8 +125,6 @@ namespace Core::Renderer
 		IComponent::OnInit();
 
 		ComponentUpdatable::OnInit();
-
-		CreateParticle();
 	}
 
 	void ParticleSystem::OnUpdate(float deltaTime)
@@ -140,15 +152,15 @@ namespace Core::Renderer
 					m_particles[i].lifeTime = 0;
 				float ratio = m_particles[i].lifeTime / m_particlesLifeTime;
 				m_particles[i].color = m_birthColor * ratio + m_deathColor * (1 - ratio);
-				m_particles[i].position += m_particles[i].movement * deltaTime * 1;
-				m_particles[i].movement.y -= m_gravity * deltaTime;
+				m_particles[i].position += m_particles[i].movement * deltaTime * m_particleSpeed;
+				m_particles[i].movement.y -= m_gravity * deltaTime * m_parent->GetGlobalScale().y;
 			}
 		}
 	}
 
 	void	ParticleSystem::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
-		if (!m_active)
+		if (!m_active || givenShader)
 			return;
 
 		Core::Maths::Mat4 transform = m_parent->GetGlobalTRS();
@@ -156,40 +168,54 @@ namespace Core::Renderer
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDepthMask(GL_FALSE);
 		if (m_particles.size() > 0)
 		{
 			m_particles[0].GetShader()->UseProgram();
 			glUniform3fv(m_particles[0].GetShader()->GetLocation("uScale"), 1, particleScale.xyz);
 		}
 
-		Maths::Vec3 cameraPos(-view(0, 3), -view(1, 3), -view(2, 3));
-		std::vector<Particle> toDraw = GetSortedParticles(cameraPos);
-
-		for (size_t i{ 0 }; i < toDraw.size(); ++i)
+		for (size_t i{ 0 }; i < m_particles.size(); ++i)
 		{
-			transform(0, 3) += toDraw[i].position.x * particleScale.x;
-			transform(1, 3) += toDraw[i].position.y * particleScale.y;
-			transform(2, 3) += toDraw[i].position.z * particleScale.z;
-			glUniform4fv(toDraw[i].GetShader()->GetLocation("uParticleColor"), 1, toDraw[i].color.rgba);
-			toDraw[i].mesh->DrawFixedMesh(view, proj, transform);
-			transform(0, 3) -= toDraw[i].position.x * particleScale.x;
-			transform(1, 3) -= toDraw[i].position.y * particleScale.y;
-			transform(2, 3) -= toDraw[i].position.z * particleScale.z;
+			if (m_particles[i].lifeTime > 0)
+			{
+				transform(0, 3) = m_particles[i].position.x;
+				transform(1, 3) = m_particles[i].position.y;
+				transform(2, 3) = m_particles[i].position.z;
+				glUniform4fv(m_particles[i].GetShader()->GetLocation("uParticleColor"), 1, m_particles[i].color.rgba);
+				m_particles[i].mesh->DrawFixedMesh(view, proj, transform);
+			}
 		}
+
+		glDepthMask(GL_TRUE);
+	}
+
+	Core::Maths::Vec3 ParticleSystem::GenerateRandomPosition()
+	{
+		float x = m_parent->GetGlobalScale().x * ((float(rand() % int(m_spawnZone.x * 200 + 1))) / 100.f - m_spawnZone.x);
+		float y = m_parent->GetGlobalScale().y * ((float(rand() % int(m_spawnZone.y * 200 + 1))) / 100.f - m_spawnZone.y);
+		float z = m_parent->GetGlobalScale().z * ((float(rand() % int(m_spawnZone.z * 200 + 1))) / 100.f - m_spawnZone.z);
+
+		return m_parent->GetGlobalPos() + Maths::Vec3(x, y, z);
 	}
 
 	Core::Maths::Vec3 ParticleSystem::GenerateRandomMovement()
 	{
-		float x = (float(rand() % 201) / 100.f) - 1.f;
-		float z = (float(rand() % 201) / 100.f) - 1.f;
+		Maths::Vec3 up = m_parent->Up();
+		float x = float(rand() % int(m_dispersion.x * 200 + 1)) / 100.f - m_dispersion.x;
+		float z = float(rand() % int(m_dispersion.y * 200 + 1)) / 100.f - m_dispersion.y;
+		Maths::Quat RotateX = Maths::Quat::AngleAxis(x, m_parent->Right());
+		Maths::Quat RotateZ = Maths::Quat::AngleAxis(z, m_parent->Forward());
+		Maths::Quat FullRotation = RotateX * RotateZ;
 
-		return Core::Maths::Vec3(x, 1, z).Normalized();
+		return FullRotation.Rotate(up) * m_parent->GetGlobalScale();
 	}
 
 	void ParticleSystem::CreateParticle()
 	{
 		Particle newParticle;
 		
+		newParticle.position = GenerateRandomPosition();
 		newParticle.movement = GenerateRandomMovement();
 		newParticle.color = m_birthColor;
 		newParticle.lifeTime = m_particlesLifeTime;
@@ -219,12 +245,15 @@ namespace Core::Renderer
 
 	bool ParticleSystem::ResetParticle()
 	{
+		if (!m_loop)
+			return false;
+
 		for (size_t i{ 0 }; i < m_particles.size(); ++i)
 		{
 			if (m_particles[i].lifeTime <= 0)
 			{
 				m_particles[i].lifeTime = m_particlesLifeTime;
-				m_particles[i].position = { 0, 0, 0 };
+				m_particles[i].position = GenerateRandomPosition();
 				m_particles[i].movement = GenerateRandomMovement();
 				m_particles[i].color = m_birthColor;
 				return true;
@@ -247,22 +276,20 @@ namespace Core::Renderer
 		}
 	}
 
-	std::vector<ParticleSystem::Particle> ParticleSystem::GetSortedParticles(const Maths::Vec3& cameraPos)
+	void ParticleSystem::Restart()
 	{
-		std::vector<Particle> sortedParticles;
+		m_active = true;
+		Clear();
+	}
 
+	void ParticleSystem::Clear()
+	{
 		for (size_t i{ 0 }; i < m_particles.size(); ++i)
 		{
-			if (m_particles[i].lifeTime > 0)
-			{
-				Maths::Vec3 dist = cameraPos - (m_parent->GetGlobalPos() + m_particles[i].position);
-				m_particles[i].distToCamera = dist.SquaredLength();
-				sortedParticles.push_back(m_particles[i]);
-			}
+			if (m_particles[i].mesh)
+				delete m_particles[i].mesh;
 		}
 
-		std::sort(sortedParticles.begin(), sortedParticles.end());
-
-		return sortedParticles;
+		m_particles.clear();
 	}
 }

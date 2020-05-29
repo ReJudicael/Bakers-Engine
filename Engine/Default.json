@@ -5469,6 +5469,16 @@
                                     }
                                 }
                             }
+                        },
+                        {
+                            "Type": "Postprocess",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
                         }
                     ],
                     "Flags": 0,

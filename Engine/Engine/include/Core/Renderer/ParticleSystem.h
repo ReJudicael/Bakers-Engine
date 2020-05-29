@@ -20,28 +20,28 @@ namespace Core::Renderer
 			Maths::Vec3		movement;
 			Maths::Color	color;
 			float			lifeTime;
-			float			distToCamera;
 
 			/**
 			 * Give access to shader used by particle quad (called to send particle color to fragment shader)
 			 * @return Shader of first material of particle mesh
 			 */
 			std::shared_ptr<Resources::Shader> GetShader() { return mesh->GetMainMaterial()->shader; };
-
-			/**
-			 * Overload comparison operator, used to sort particles by distance from far to near
-			 * @return True if left particle is farther from camera than right particle, false otherwise
-			 */
-			bool operator<(Particle& other) { return distToCamera > other.distToCamera; };
 		};
 
 		bool m_active{ true };
+		bool m_loop{ true };
+
 		std::vector<Particle> m_particles;
 		int m_maxParticlesNb{ 10 };
+		Maths::Vec3 m_spawnZone;
+
 		float m_particlesLifeTime{ 2.f };
 		float m_timeBeforeSpawn{ 0.2f };
 		float m_currentTime{ 0.f };
 		float m_gravity{ 0.f };
+		float m_particleSpeed{ 0.1f };
+
+		Maths::Vec2	m_dispersion{ 0.5f, 0.5f };
 
 		Maths::Color	m_birthColor;
 		Maths::Color	m_deathColor;
@@ -49,7 +49,14 @@ namespace Core::Renderer
 		std::string	m_particleTexture{ "" };
 		
 		/**
+		 * Generate random position for particle
+		 * @return Initial position to give to a particle
+		 */
+		Core::Maths::Vec3 GenerateRandomPosition();
+
+		/**
 		 * Generate random movement vector for particle
+		 * @return Initial movement to give to a particle
 		 */
 		Core::Maths::Vec3 GenerateRandomMovement();
 
@@ -75,13 +82,6 @@ namespace Core::Renderer
 		 * @return Path of the current texture used for particles
 		 */
 		const std::string& GetParticleTexture() { return m_particleTexture; };
-
-		/**
-		 * Get all active particle sorted by how far from the camera they are
-		 * @param cameraPos: Position of the camera currently rendering
-		 * @return Sorted vector of all active particle
-		 */
-		std::vector<Particle> GetSortedParticles(const Maths::Vec3& cameraPos);
 
 		protected:
 			/**
@@ -145,6 +145,16 @@ namespace Core::Renderer
 		 * @param active: True to activate the particles, false to deactive them
 		 */
 		void Activate(bool active = true) { m_active = active; };
+
+		/**
+		 * Activate and clear particle system
+		 */
+		void Restart();
+
+		/**
+		 * Clear all particles generated
+		 */
+		void Clear();
 
 		REGISTER_CLASS(ComponentUpdatable, IRenderable)
 	};

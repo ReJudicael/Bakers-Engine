@@ -48,7 +48,7 @@ namespace Core::Physics
 		CapsuleCollider* col = dynamic_cast<CapsuleCollider*>(copyTo);
 
 		if(col->m_tmpColliderSave)
-			col->m_tmpColliderSave->extent = { GetCapsuleHalfExtent().x, GetCapsuleHalfExtent().y };
+			col->m_tmpColliderSave->extent = { GetCapsuleHalfExtent().x, GetCapsuleHalfExtent().y , 0.f};
 	}
 
 	void CapsuleCollider::OnDestroy()

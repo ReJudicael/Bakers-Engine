@@ -35,7 +35,8 @@ RTTR_PLUGIN_REGISTRATION
 		"Scale", &Transform::Scale,
 		"Right", &Transform::GetRight,
 		"Up", &Transform::GetUp,
-		"Forward", &Transform::GetForward);
+		"Forward", &Transform::GetForward,
+		"RotateTowards", &Transform::RotateTowards);
 }
 
 namespace Core::Datastructure
@@ -164,6 +165,17 @@ namespace Core::Datastructure
 		m_gTRS = trans * rot * scale;
 		m_isGTrsUpdated = true;
 		return m_gTRS;
+	}
+
+	void Transform::RotateTowards(const Maths::Vec3& target, const float& rotation)
+	{
+		Maths::Vec3 forward = GetForward();
+
+		if ((forward - target).SquaredLength() < 0.001)
+			return;
+
+		Maths::Quat targetRotation = m_rot * Maths::Quat::FromToRotation(forward, target);
+		SetLocalRot(m_rot.Slerp(targetRotation, rotation));
 	}
 
 	Transform::Transform(const Maths::Vec3& pos, const Maths::Quat& rot, const Maths::Vec3& scale) noexcept : m_pos {pos}, m_rot {rot}, m_scale {scale}
