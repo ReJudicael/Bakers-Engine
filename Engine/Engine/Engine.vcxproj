@@ -371,6 +371,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Renderer\ParticleSystem.cpp" />
     <ClCompile Include="src\Core\Renderer\PlayerCamera.cpp" />
     <ClCompile Include="src\Core\Renderer\TextRenderer.cpp" />
+    <ClCompile Include="src\Core\Renderer\Postprocess.cpp" />
     <ClCompile Include="src\Core\Resources\Animation\AnimationVertexData.cpp" />
     <ClCompile Include="src\Core\Resources\Animation\BoneData.cpp" />
     <ClCompile Include="src\Core\Resources\Character.cpp" />
@@ -450,6 +451,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClInclude Include="include\Core\Renderer\ParticleSystem.h" />
     <ClInclude Include="include\Core\Renderer\PlayerCamera.h" />
     <ClInclude Include="include\Core\Renderer\TextRenderer.h" />
+    <ClInclude Include="include\Core\Renderer\Postprocess.h" />
     <ClInclude Include="include\Core\Resources\Animation\AnimationVertexData.h" />
     <ClInclude Include="include\Core\Resources\Animation\BoneData.h" />
     <ClInclude Include="include\Core\Resources\Character.h" />

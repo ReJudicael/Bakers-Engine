@@ -185,7 +185,7 @@ namespace Resources::Loader
 	{
 		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
 		//importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_OPTIMIZE_EMPTY_ANIMATION_CURVES, false);
-		importer.SetPropertyBool(AI_CONFIG_PP_SBBC_MAX_BONES, 100);
+		//importer.SetPropertyBool(AI_CONFIG_PP_SBBC_MAX_BONES, 100);
 
 
 
@@ -360,7 +360,7 @@ namespace Resources::Loader
 												, unsigned int& numBones,  const unsigned int& numVertices, 
 												std::shared_ptr<unorderedmapBonesIndex>& bonesIndex)
 	{
-		for (auto i{ 0 }; i < mesh->mNumBones; i++)
+		for (size_t i{ 0 }; i < mesh->mNumBones; i++)
 		{
 			unsigned int currBoneIndex{ 0 };
 			std::string nameBone = mesh->mBones[i]->mName.data;

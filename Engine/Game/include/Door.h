@@ -61,8 +61,8 @@ public:
 	void	OnInit() override;
 
 	/**
-	 * Call Update function in Lua script
-	 * @param deltaTime: Time elapsed between two frames, sent to Lua Update
+	 * Update event
+	 * @param deltaTime: Time elapsed between two frames
 	 */
 	 virtual void OnUpdate(float deltaTime) override;
 

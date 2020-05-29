@@ -264,6 +264,9 @@
     <ClCompile Include="src\Core\Physics\RigidBody.cpp">
       <Filter>Source Files\Core\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Renderer\Postprocess.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\Renderer\TextRenderer.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
@@ -514,6 +517,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Resources\Character.h">
       <Filter>Header Files\Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\Postprocess.h">
+      <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

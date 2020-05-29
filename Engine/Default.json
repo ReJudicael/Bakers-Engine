@@ -1744,6 +1744,14 @@
                                 1.0
                             ]
                         },
+                        "Dispersion": {
+                            "Name": "Dispersion",
+                            "Type": "Vec2",
+                            "Value": [
+                                0.5,
+                                0.5
+                            ]
+                        },
                         "Gravity": {
                             "Name": "Gravity",
                             "Type": "float",
@@ -1773,6 +1781,20 @@
                             "Name": "Particles number",
                             "Type": "int",
                             "Value": 100
+                        },
+                        "Spawn zone": {
+                            "Name": "Spawn zone",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 0.10000000149011612
                         },
                         "Time Before Spawn": {
                             "Name": "Time Before Spawn",
@@ -1895,6 +1917,14 @@
                                         1.0
                                     ]
                                 },
+                                "Dispersion": {
+                                    "Name": "Dispersion",
+                                    "Type": "Vec2",
+                                    "Value": [
+                                        0.5,
+                                        0.5
+                                    ]
+                                },
                                 "Gravity": {
                                     "Name": "Gravity",
                                     "Type": "float",
@@ -1924,6 +1954,20 @@
                                     "Name": "Particles number",
                                     "Type": "int",
                                     "Value": 10
+                                },
+                                "Spawn zone": {
+                                    "Name": "Spawn zone",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Speed": {
+                                    "Name": "Speed",
+                                    "Type": "float",
+                                    "Value": 0.10000000149011612
                                 },
                                 "Time Before Spawn": {
                                     "Name": "Time Before Spawn",
@@ -7525,6 +7569,16 @@
                                             }
                                         }
                                     }
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Postprocess",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
                                 }
                             }
                         }

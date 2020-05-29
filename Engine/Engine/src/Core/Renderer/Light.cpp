@@ -55,6 +55,13 @@ namespace Core::Renderer
         copy->m_diffuse = m_diffuse;
         copy->m_specular = m_specular;
         copy->m_attenuation = m_attenuation;
+
+        copy->m_shadowDrawn = m_shadowDrawn;
+        copy->m_castShadow = m_castShadow;
+        copy->m_depthBuffer = m_depthBuffer;
+        copy->m_depthTexture = m_depthTexture;
+        copy->m_depthWidth = m_depthWidth;
+        copy->m_depthHeight = m_depthHeight;
     }
 
     void Light::StartCopy(IComponent*& copyTo) const
@@ -184,6 +191,8 @@ namespace Core::Renderer
         m_diffuse = { 1.f, 1.f, 1.f };
         m_specular = { 1.f, 1.f, 1.f };
         m_attenuation = { 1.f, 0.f, 0.f };
+
+        m_shadowDrawn = false;
         m_castShadow = true;
     }
 

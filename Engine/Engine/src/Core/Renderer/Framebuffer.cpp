@@ -34,6 +34,13 @@ namespace Core::Renderer
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+		glGenTextures(1, &EffectTexture);
+		glBindTexture(GL_TEXTURE_2D, EffectTexture);
+		glObjectLabel(GL_TEXTURE, EffectTexture, -1, "EffectTexture");
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 		// Note: Here we store the depth stencil in a renderbuffer object, 
 		// but we can as well store it in a texture if we want to display it later
 		glGenRenderbuffers(1, &DepthStencilRenderbuffer);
@@ -43,6 +50,7 @@ namespace Core::Renderer
 
 		// Setup attachements
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, ColorTexture, 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 1, GL_TEXTURE_2D, EffectTexture, 0);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, DepthStencilRenderbuffer);
 
 		unsigned int DrawAttachments[1] = { GL_COLOR_ATTACHMENT0 + 0 };
@@ -70,45 +78,13 @@ namespace Core::Renderer
 		glDeleteFramebuffers(1, &FBO);
 	}
 
-	void	Framebuffer::InitPostProcess(const std::shared_ptr<Resources::Shader>& s)
-	{
-		ZoneScoped
-		GLuint VBO;
-
-		data.s = s;
-		// Gen unit quad
-		{
-			float Quad[24] =
-			{
-				 -1.f,-1.f ,  0.f, 0.f, // bl
-				  1.f,-1.f ,  1.f, 0.f, // br
-				  1.f, 1.f,  1.f, 1.f, // tr
-
-				-1.f, 1.f ,  0.f, 1.f , // tl
-				-1.f,-1.f,   0.f, 0.f, // bl
-				 1.f, 1.f ,  1.f, 1.f, // tr
-			};
-
-			// Upload mesh to gpu
-			glGenBuffers(1, &VBO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), Quad, GL_STATIC_DRAW);
-		}
-
-		// Create a vertex array and bind it
-		glGenVertexArrays(1, &data.VAO);
-		glBindVertexArray(data.VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-		glBindVertexArray(0);
-	}
-
 	void	Framebuffer::Resize(int width, int height) noexcept
 	{
 		glBindTexture(GL_TEXTURE_2D, ColorTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glBindTexture(GL_TEXTURE_2D, EffectTexture);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		
