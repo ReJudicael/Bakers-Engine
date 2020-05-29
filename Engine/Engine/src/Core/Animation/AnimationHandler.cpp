@@ -124,26 +124,30 @@ namespace Core::Animation
 	void AnimationNode::UpdateAnimationBone(const std::shared_ptr<Bone>& currentBone, const Core::Maths::Mat4& parent, std::vector<float>& finalTRSfloat)
 	{
 		Core::Maths::Mat4 nodeTransform{ currentBone->baseTransform.GetLocalTrs() };
-
-		if (!m_inTransition)
+		if (currentBone->activeBone)
 		{
-			if (nodeAnimation->animationTree.count(currentBone->boneName) > 0)
+			if (!m_inTransition)
 			{
-				Core::Datastructure::Transform TRS;
-				nodeTransform = BlendAnimation(currentBone, TRS);
+				if (nodeAnimation->animationTree.count(currentBone->boneName) > 0)
+				{
+					Core::Datastructure::Transform TRS;
+					nodeTransform = BlendAnimation(currentBone, TRS);
+				}
 			}
+			else
+				nodeTransform = transitionsAnimation[indexTransition]->UpdateBoneTransition(currentBone);
 		}
-		else
-			nodeTransform = transitionsAnimation[indexTransition]->UpdateBoneTransition(currentBone);
 
 		Core::Maths::Mat4 globalTransform = parent * nodeTransform;
-
-		Core::Maths::Mat4 finalTransform = (globalTransform * (currentBone->offsetBone));
-
-		int currentPosInArrayFloat = currentBone->boneIndex * 16;
-		for (int i = 0; i < 16; i++)
+		if (currentBone->activeBone)
 		{
-			finalTRSfloat[currentPosInArrayFloat + i] = finalTransform.array[i];
+			Core::Maths::Mat4 finalTransform = (globalTransform * (currentBone->offsetBone));
+
+			int currentPosInArrayFloat = currentBone->boneIndex * 16;
+			for (int i = 0; i < 16; i++)
+			{
+				finalTRSfloat[currentPosInArrayFloat + i] = finalTransform.array[i];
+			}
 		}
 
 		for (auto i{ 0 }; i < currentBone->child.size(); i++)

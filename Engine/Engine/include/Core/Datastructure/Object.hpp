@@ -320,7 +320,12 @@ namespace Core::Datastructure
 		const Maths::Vec3&	GetGlobalPos() noexcept
 		{
 			if (!m_transform.IsGPosUpdated())
-				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+			{
+				if (m_parent)
+					m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+				else
+					m_transform.UpdatePos();
+			}
 			return m_transform.GetGlobalPos();
 		}
 		/**
@@ -330,7 +335,12 @@ namespace Core::Datastructure
 		const Maths::Quat&	GetGlobalRot() noexcept
 		{
 			if (!m_transform.IsGPosUpdated())
-				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+			{
+				if (m_parent)
+					m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+				else
+					m_transform.UpdatePos();
+			}
 			return m_transform.GetGlobalRot();
 		}
 		/**
@@ -340,7 +350,12 @@ namespace Core::Datastructure
 		const Maths::Vec3&	GetGlobalScale() noexcept
 		{
 			if (!m_transform.IsGPosUpdated())
-				m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+			{
+				if (m_parent)
+					m_transform.UpdatePos(m_parent->GetUpdatedTransform());
+				else
+					m_transform.UpdatePos();
+			}
 			return m_transform.GetGlobalScale();
 		}
 

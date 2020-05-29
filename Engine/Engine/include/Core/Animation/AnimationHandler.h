@@ -19,7 +19,7 @@ namespace Core::Animation
 		std::shared_ptr<AnimationNode>	m_currentAnimationNode;
 		std::function<bool()>			m_conditionTransition;
 		std::shared_ptr<AnimationNode>	m_nextAnimationNode;
-		float speed{ 20.f };
+		float speed{ 10.f };
 
 	public:
 		/**

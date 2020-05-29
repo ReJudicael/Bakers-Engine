@@ -110,7 +110,7 @@
                             "Value": [
                                 {
                                     "Type": "std::string",
-                                    "Value": ".\\Resources\\Models\\Dog\\Dog"
+                                    "Value": ".\\Resources\\Models\\Material (0).bmat"
                                 }
                             ],
                             "Wrapped type": "std::string"
@@ -121,7 +121,7 @@
                             "Value": [
                                 {
                                     "Type": "std::string",
-                                    "Value": ".\\Resources\\Models\\Dog\\Dog"
+                                    "Value": ".\\Resources\\Models\\Material (0).bmat"
                                 }
                             ],
                             "Wrapped type": "std::string"
@@ -3613,7 +3613,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 550.0
+                                                "Value": 627.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -3623,7 +3623,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 640.0
+                                                "Value": 538.0
                                             }
                                         }
                                     }
@@ -3705,7 +3705,7 @@
                         "Brioche Animation": {
                             "Name": "Brioche Animation",
                             "Type": "Brioche Animation",
-                            "Value": 928514048
+                            "Value": -859045888
                         },
                         "Die Animation": {
                             "Name": "Die Animation",
@@ -5860,7 +5860,7 @@
                         "Salt Animation": {
                             "Name": "Salt Animation",
                             "Type": "salt Animation",
-                            "Value": 928514048
+                            "Value": -859045888
                         }
                     }
                 },
@@ -7575,7 +7575,7 @@
                         "Owen Animation": {
                             "Name": "Owen Animation",
                             "Type": "Owen Animation",
-                            "Value": 928514048
+                            "Value": -859045888
                         },
                         "Punch Animation": {
                             "Name": "Punch Animation",

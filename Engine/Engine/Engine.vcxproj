@@ -374,7 +374,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Resources\ModelData.cpp" />
     <ClCompile Include="src\Core\Resources\Object3DGraph.cpp" />
     <ClCompile Include="src\Core\Resources\Shader.cpp" />
-    <ClCompile Include="src\Core\Resources\Texture.cpp" />
     <ClCompile Include="src\Core\Resources\TextureData.cpp" />
     <ClCompile Include="src\Core\SystemManagement\InputSystem.cpp" />
     <ClCompile Include="src\Core\SystemManagement\ShellFileAPI.cpp" />

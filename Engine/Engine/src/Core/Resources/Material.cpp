@@ -288,7 +288,7 @@ namespace Resources
 				skeletalShader = true;
 		}
 
-		IsSkeletal = skeletalShader;;
+		IsSkeletal = skeletalShader;
 		textures.resize(numberOfBasicTexture);
 	}
 
@@ -338,7 +338,7 @@ namespace Resources
 		save["Variant"] = json::array();
 		{
 			for (auto i = 0; i < variants.size();)
-				save["Variant"][i++] = SaveVariants(i);
+				save["Variant"][i++] = SaveVariants(i, resources);
 		}
 
 		o << std::setw(4) << save << std::endl;
@@ -403,7 +403,7 @@ namespace Resources
 		return true;
 	}
 
-	json Material::SaveVariants(const int& index)
+	json Material::SaveVariants(const int& index, Resources::Loader::ResourcesManager* resources)
 	{
 		json out;
 		if (variants[index].var.get_type() == rttr::type::get<bool>())
@@ -461,7 +461,7 @@ namespace Resources
 		else if (variants[index].var.get_type() == rttr::type::get<std::shared_ptr<Texture>>())
 		{
 			std::shared_ptr<Texture> text{ variants[index].var.get_value<std::shared_ptr<Texture>>() };
-			out["Value"] = text->name;
+			out["Value"] = resources->FindTextureFromShared(text);
 		}
 
 		return out;

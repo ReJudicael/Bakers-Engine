@@ -73,8 +73,8 @@ namespace Core::Animation
 	{
 		 m_rootBone = inBone->rootBone;
 		 constexpr Core::Maths::Mat<4, 4> identity{ identity.Identity() };
-		 m_finalTransforms.resize(inBone->numBone);
-		 m_numberBones = static_cast<GLuint>(inBone->numBone);
+		 m_finalTransforms.resize(inBone->numActiveBones);
+		 m_numberBones = static_cast<GLuint>(inBone->numActiveBones);
 		 m_finalBonesTRSfloat.resize(static_cast<size_t>(m_numberBones * static_cast <GLuint>(16)));
 
 		 InitBonePos(m_rootBone, identity);
@@ -83,12 +83,15 @@ namespace Core::Animation
 	void SkeletalMesh::InitBonePos(std::shared_ptr<Bone> currBone, Core::Maths::Mat4 parent)
 	{
 		Core::Maths::Mat4 curr = parent * currBone->baseTransform.GetLocalTrs();
-		Core::Maths::Mat4 finalTRS = curr * currBone->offsetBone;
-
-		int currentPosInArrayFloat = currBone->boneIndex * 16;
-		for (int i = 0; i < 16; i++)
+		if (currBone->activeBone)
 		{
-			m_finalBonesTRSfloat[currentPosInArrayFloat + i] = finalTRS.array[i];
+			Core::Maths::Mat4 finalTRS = curr * currBone->offsetBone;
+
+			int currentPosInArrayFloat = currBone->boneIndex * 16;
+			for (int i = 0; i < 16; i++)
+			{
+				m_finalBonesTRSfloat[currentPosInArrayFloat + i] = finalTRS.array[i];
+			}
 		}
 
 		for (auto i = 0; i < currBone->child.size(); i++)

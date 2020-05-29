@@ -172,6 +172,10 @@ namespace Resources::Loader
 	const aiScene* ResourcesManager::LoadSceneFromImporter(Assimp::Importer& importer,const char* fileName)
 	{
 		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
+		//importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_OPTIMIZE_EMPTY_ANIMATION_CURVES, false);
+		importer.SetPropertyBool(AI_CONFIG_PP_SBBC_MAX_BONES, 100);
+
+
 
 		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
 			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
@@ -360,6 +364,8 @@ namespace Resources::Loader
 				boneData.offsetMesh = Core::Datastructure::Transform({ pos.x, pos.y, pos.z }, 
 																	{ rot.w, rot.x, rot.y, rot.z }, 
 																	{ sca.x, sca.y, sca.z }).GetLocalTrs();
+				if (bonesIndex->count(nameBone) > 0)
+					BAKERS_LOG_MESSAGE("WTF la vie" + nameBone);
 				bonesIndex->emplace(nameBone, boneData);
 				numBones++;
 			}
@@ -390,7 +396,7 @@ namespace Resources::Loader
 		
 		tree->rootBone = std::make_shared<Core::Animation::Bone>();
 		tree->rootBone->InitBone(firstBoneNode->mParent, bonesIndex);
-		tree->numBone = numBones;
+		tree->numActiveBones = numBones;
 
 		m_BoneHierarchies.emplace(directory, tree);
 	}
@@ -530,7 +536,7 @@ namespace Resources::Loader
 
 		m_textures.emplace(keyName, texture);
 
-		texture->name = keyName;
+		//texture->name = keyName;
 		textureData->nameTexture = keyName;
 		PushTextureToLink(textureData);
 		textureData->textureptr = texture;
@@ -635,8 +641,6 @@ namespace Resources::Loader
 			}
 		}
 	}
-
-
 
 	void ResourcesManager::CheckDeleteAssimpImporter()
 	{
@@ -790,13 +794,19 @@ namespace Resources::Loader
 	{
 		if (path.find(".bmat") != std::string::npos)
 		{
-			m_materials[path]->IsDelete = true;
-			m_materials.erase(path);
+			if (m_materials.count(path) > 0)
+			{
+				m_materials[path]->IsDelete = true;
+				m_materials.erase(path);
+			}
 		}
 		else if (path.find(".bshader") != std::string::npos)
 		{
-			UpdateDeletedShaderMaterials(m_shaders[path]);
-			m_shaders.erase(path);
+			if (m_shaders.count(path) > 0)
+			{
+				UpdateDeletedShaderMaterials(m_shaders[path]);
+				m_shaders.erase(path);
+			}
 		}
 	}
 }

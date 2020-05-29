@@ -100,7 +100,7 @@ namespace Editor::Window
 			std::shared_ptr<Resources::Texture> text = varUniform.var.get_value<std::shared_ptr<Resources::Texture>>();
 			std::string str;
 			if (text)
-				str = text->name;
+				str = GetEngine()->GetResourcesManager()->FindTextureFromShared(text);
 
 			DragDropTargetItem(str, varUniform.var.get_value<std::shared_ptr<Resources::Texture>>());
 		}
@@ -110,7 +110,7 @@ namespace Editor::Window
 	{
 		std::string str;
 		if (texture)
-			str = texture->name;
+			str = GetEngine()->GetResourcesManager()->FindTextureFromShared(texture);
 
 		DragDropTargetItem(str, texture);
 	}
@@ -121,10 +121,11 @@ namespace Editor::Window
 		{
 			ImGui::Spacing();
 			ShowMaterialShaders();
-			ImGui::RDragFloat("Shininess", &material->shininess, 0.01f);
 			ImGui::RColorEdit4("Ambient", material->ambientColor.rgba);
 			ImGui::RColorEdit4("Diffuse", material->diffuseColor.rgba);
 			ImGui::RColorEdit4("Specular", material->specularColor.rgba);
+			ImGui::RDragFloat("Shininess", &material->shininess, 0.01f);
+			ImGui::RDragFloat("Shininess Strength", &material->shininessStrength, 0.01f);
 
 			if (material->textures.size() > 0)
 			{
@@ -145,27 +146,32 @@ namespace Editor::Window
 				}
 			}
 
-			ImGui::Spacing();
-			ImGui::Spacing();
-			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
-			ImGui::SetNextItemWidth(100.f);
-			ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 100.f);
-			if (ImGui::Button("Save"))
-			{
-				material->SaveMaterial(m_nameMaterial, GetEngine()->GetResourcesManager());
-			}
-			ImGui::HelpMarkerItem("Save the material");
-			ImGui::PopStyleColor();
-			ImGui::SameLine();
-			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
-			ImGui::SetNextItemWidth(100.f);
-			if (ImGui::Button("Discard"))
-			{
-				material->LoadMaterialFromJSON(m_nameMaterial, GetEngine()->GetResourcesManager());
-			}
-			ImGui::HelpMarkerItem("Discard all changes");
-			ImGui::PopStyleColor();
+			MaterialSaveDiscardInInspector(material);
 		}
+	}
+
+	void WindowMaterial::MaterialSaveDiscardInInspector(std::shared_ptr<Resources::Material>& material)
+	{
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 100.f);
+		if (ImGui::Button("Save"))
+		{
+			material->SaveMaterial(m_nameMaterial, GetEngine()->GetResourcesManager());
+		}
+		ImGui::HelpMarkerItem("Save the material");
+		ImGui::PopStyleColor();
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
+		ImGui::SetNextItemWidth(100.f);
+		if (ImGui::Button("Discard"))
+		{
+			material->LoadMaterialFromJSON(m_nameMaterial, GetEngine()->GetResourcesManager());
+		}
+		ImGui::HelpMarkerItem("Discard all changes");
+		ImGui::PopStyleColor();
 	}
 
 	void WindowMaterial::LockSelectedMaterialButton()
@@ -195,9 +201,13 @@ namespace Editor::Window
 			m_nameMaterial = GetEngine()->nameMaterialSelected;
 		}
 
-
 		if (m_material)
 		{
+			if (m_material->IsDelete)
+			{
+				m_material = nullptr;
+				return;
+			}
 			m_nameMaterial = GetEngine()->GetResourcesManager()->FindMaterialFromShared(m_material);
 			LockSelectedMaterialButton();
 			ImGui::SameLine();

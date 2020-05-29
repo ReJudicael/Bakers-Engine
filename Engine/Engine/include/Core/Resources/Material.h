@@ -129,7 +129,7 @@ namespace Resources
 		 * @param index: the index in the array of variant
 		 * @return the json create
 		 */
-		json SaveVariants(const int& index);
+		json SaveVariants(const int& index, Resources::Loader::ResourcesManager* resources);
 
 		/**
 		 * Load all the variant in the .bmat

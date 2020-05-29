@@ -25,8 +25,6 @@ namespace Resources
 			BAKERS_LOG_WARNING("Failed to load: " + filename);
 			stbi_image_free(data);
 			stateTexture = EOpenGLLinkState::LOADPROBLEM;
-			textureptr->stateTexture = EOpenGLLinkState::LOADPROBLEM;
-			//textureptr.~shared_ptr();
 		}
 		resources->EmplaceTextures(filename, textureptr);
 	}
@@ -54,7 +52,6 @@ namespace Resources
 
 	void TextureData::EmplaceInTexture()
 	{
-		textureptr->stateTexture = stateTexture;
 		textureptr->texture = ID;
 	}
 }

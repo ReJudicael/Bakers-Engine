@@ -21,9 +21,6 @@ namespace Resources
 	struct Texture
 	{
 		GLuint texture;
-		std::string name;
-		EOpenGLLinkState stateTexture{EOpenGLLinkState::CANTLINK};
-
-		~Texture() = default;
+		//std::string name;
 	};
 }
