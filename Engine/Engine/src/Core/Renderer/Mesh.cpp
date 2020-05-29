@@ -39,6 +39,9 @@ void Core::Renderer::Mesh::SetModel(std::string newModel)
 	m_modelName = newModel;
 	if (!IsInit())
 		return;
+	
+	m_materialsModel.clear();
+	m_materialsNames.clear();
 	UpdateModel();
 }
 
@@ -138,7 +141,10 @@ void Core::Renderer::Mesh::UpdateModel()
 		{
 			m_isRoot = false;
 			AddModel(manager->GetModel(scene->rootNodeScene.nameMesh));
-			AddMaterials(*manager, scene->rootNodeScene.namesMaterial);
+			if (m_materialsNames.size() > 0)
+				AddMaterials(*manager, m_materialsNames);
+			else
+				AddMaterials(*manager, scene->rootNodeScene.namesMaterial);
 		}
 		else
 		{
