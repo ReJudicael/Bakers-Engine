@@ -264,6 +264,12 @@
     <ClCompile Include="src\Core\Physics\RigidBody.cpp">
       <Filter>Source Files\Core\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Renderer\TextRenderer.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Resources\Character.cpp">
+      <Filter>Source Files\Core\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -502,6 +508,12 @@
     </ClInclude>
     <ClInclude Include="include\Core\Maths\MathMinimal.h">
       <Filter>Header Files\Core\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\TextRenderer.h">
+      <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Resources\Character.h">
+      <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

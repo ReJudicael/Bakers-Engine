@@ -24,7 +24,6 @@ int main()
 		rttr::library libEngine{ "Engine" };
 		rttr::library libGame{ "Game" };
 		libEngine.load();
-
 		if (!libEngine.is_loaded())
 			std::cout << "Engine lib failed to load:" << std::endl << libEngine.get_error_string() << std::endl;
 		libGame.load();

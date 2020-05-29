@@ -69,6 +69,8 @@ namespace Core::Debug
 
 	void Logger::AddLog(ELogType type, const std::string& messageLog, const char* file, const char* function, int line) noexcept
 	{
+		ZoneScoped
+			TracyMessage(messageLog.c_str(), messageLog.size());
 		if (messageLog.size() <= 0)
 			return;
 

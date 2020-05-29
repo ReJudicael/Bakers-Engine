@@ -23,6 +23,8 @@ namespace Editor::Window
 		std::shared_ptr<Resources::Shader>					m_shader;
 
 		Core::Maths::Mat<4, 4> m_cube{ m_cube.Identity() };
+
+		bool												m_showNavMesh{ true };
 	public:
 		/**
 		 * Constructor which set title of window ("Scene")

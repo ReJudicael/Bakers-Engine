@@ -1951,6 +1951,54 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "TextRenderer",
+                            "Values": {
+                                "Font": {
+                                    "Name": "Font",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Fonts\\Lato-Regular.ttf"
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Size": {
+                                    "Name": "Size",
+                                    "Type": "int",
+                                    "Value": 12
+                                },
+                                "Text": {
+                                    "Name": "Text",
+                                    "Type": "std::string",
+                                    "Value": "Add text here"
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Text",
+                    "Pos": {
+                        "x": -0.554684042930603,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 0.7071067690849304,
+                        "x": 0.0,
+                        "y": 0.7071067690849304,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 0.26476436853408813,
+                        "z": 0.13060593605041504
+                    }
                 }
             ],
             "Components": [
