@@ -29,6 +29,8 @@ namespace Core::Renderer
 		};
 
 		bool m_active{ true };
+		bool m_loop{ true };
+
 		std::vector<Particle> m_particles;
 		int m_maxParticlesNb{ 10 };
 		Maths::Vec3 m_spawnZone;
@@ -143,6 +145,16 @@ namespace Core::Renderer
 		 * @param active: True to activate the particles, false to deactive them
 		 */
 		void Activate(bool active = true) { m_active = active; };
+
+		/**
+		 * Activate and clear particle system
+		 */
+		void Restart();
+
+		/**
+		 * Clear all particles generated
+		 */
+		void Clear();
 
 		REGISTER_CLASS(ComponentUpdatable, IRenderable)
 	};

@@ -16,7 +16,8 @@ RTTR_PLUGIN_REGISTRATION
 		.property("Life time", &Core::Renderer::ParticleSystem::m_particlesLifeTime)
 		.property("Gravity", &Core::Renderer::ParticleSystem::m_gravity)
 		.property("Speed", &Core::Renderer::ParticleSystem::m_particleSpeed)
-		.property("Dispersion", &Core::Renderer::ParticleSystem::m_dispersion);
+		.property("Dispersion", &Core::Renderer::ParticleSystem::m_dispersion)
+		.property("Loop", &Core::Renderer::ParticleSystem::m_loop);
 }
 
 namespace Core::Renderer
@@ -41,6 +42,8 @@ namespace Core::Renderer
 
 		ParticleSystem* copy{ dynamic_cast<ParticleSystem*>(copyTo) };
 
+		copy->m_active = m_active;
+		copy->m_loop = m_loop;
 		copy->m_particles = m_particles;
 		copy->m_maxParticlesNb = m_maxParticlesNb;
 		copy->m_spawnZone = m_spawnZone;
@@ -96,6 +99,8 @@ namespace Core::Renderer
 
 		m_particles.clear();
 
+		m_active = true;
+		m_loop = true;
 		m_maxParticlesNb = 10;
 		m_spawnZone = { 0, 0, 0 };
 		m_particlesLifeTime = 2.f;
@@ -240,6 +245,9 @@ namespace Core::Renderer
 
 	bool ParticleSystem::ResetParticle()
 	{
+		if (!m_loop)
+			return false;
+
 		for (size_t i{ 0 }; i < m_particles.size(); ++i)
 		{
 			if (m_particles[i].lifeTime <= 0)
@@ -266,5 +274,22 @@ namespace Core::Renderer
 			for (size_t i{0}; i < m_particles.size(); ++i)
 				m_particles[i].mesh->SetMainTexture(texture);
 		}
+	}
+
+	void ParticleSystem::Restart()
+	{
+		m_active = true;
+		Clear();
+	}
+
+	void ParticleSystem::Clear()
+	{
+		for (size_t i{ 0 }; i < m_particles.size(); ++i)
+		{
+			if (m_particles[i].mesh)
+				delete m_particles[i].mesh;
+		}
+
+		m_particles.clear();
 	}
 }
