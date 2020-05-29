@@ -3,19 +3,31 @@
 #include "CoreMinimal.h"
 #include "ComponentBase.h"
 #include "Framebuffer.h"
+#include "Shader.h"
+#include "Color.hpp"
 
 namespace Core::Renderer
 {
 	// Class handling post process effects. Only works on objects that also have a camera component
 	BAKERS_API_CLASS Postprocess : public Core::Datastructure::ComponentBase
 	{
+		bool	m_useBlur{ false };
+		bool	m_useColorCustom{ false };
+		bool	m_useBW{ false };
+		bool	m_useBloom{ false };
+
+		GLuint	m_VAO;
+
+		Maths::Color m_correctedColor;
 
 		Framebuffer* m_effectFbo{ nullptr };
 		Framebuffer* m_addedFbo{ nullptr }; // Extra fbo for effects that can't be done with a single one
 
+		std::shared_ptr<Resources::Shader> m_defaultShader;
 		std::shared_ptr<Resources::Shader> m_blurShader;
 		std::shared_ptr<Resources::Shader> m_colorCustomShader;
-		std::shared_ptr<Resources::Shader> m_colorBWShader;
+		std::shared_ptr<Resources::Shader> m_colorBWShader;	
+		std::shared_ptr<Resources::Shader> m_additionShader;	
 
 
 		protected:
@@ -45,6 +57,24 @@ namespace Core::Renderer
 			 */
 			virtual void	OnReset() override;
 
+			/**
+			 * Effect check for variable display in editor
+			 * @return True if blur effect is checked
+			 */
+			bool	IsUsingBlur() { return CanUseEffects() && m_useBlur; }
+
+			/**
+			 * Effect check for variable display in editor
+			 * @return True if color customization effect is checked
+			 */
+			bool	IsUsingColor() { return CanUseEffects() && m_useColorCustom; }
+
+			/**
+			 * Effect check for variable display in editor
+			 * @return True if bloom is not activated (when bloom is used, other effects cannot be activated)
+			 */
+			bool	CanUseEffects() { return !m_useBloom; }
+
 	public:
 		/**
 		 * Default Constructor
@@ -62,8 +92,27 @@ namespace Core::Renderer
 		void	OnInit() override;
 
 		/**
+		 * Init VAO with which postprocess will be drawn
+		 */
+		void	InitPostprocessVAO();
+
+		/**
+		 * Draw single effect on framebuffer
+		 * @param from: Framebuffer from which the color texture is used
+		 * @param to: Framebuffer binded to draw color texture after effect
+		 * @param effect: Shader with postprocess effect to draw
+		 */
+		void	DrawEffect(Framebuffer* from, Framebuffer* to, std::shared_ptr<Resources::Shader> effect);
+
+		/**
+		 * Draw for specific behavior of bloom effect
+		 * @param drawFbo: Framebuffer with scene drawn on its color texture
+		 */
+		void	DrawBloom(Framebuffer* drawFbo);
+
+		/**
 		 * Draw all active effects in given framebuffer
-		 * @param drawFBO: Framebuffer with scene drawn on its color texture
+		 * @param drawFbo: Framebuffer with scene drawn on its color texture
 		 */
 		void	DrawPostProcess(Framebuffer* drawFbo);
 

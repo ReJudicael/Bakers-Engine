@@ -13,7 +13,6 @@ namespace Core::Renderer
 	{
 	private:
 		// Post process demonstration data
-		std::vector<Core::Renderer::Framebuffer*> m_postProcessFBO;
 		Core::Maths::Vec3 m_color{ 0.5f, 0.5f, 0.5 };
 		bool m_colorActivated{ false };
 		bool m_blurActivated{ false };
@@ -55,12 +54,6 @@ namespace Core::Renderer
 		 * Destroy event
 		 */
 		virtual void	OnDestroy() override;
-
-		/**
-		 * Create a vector with all postprocess framebuffers that are activated
-		 * @return Vector with active postprocess framebuffers
-		 */
-		std::vector<Core::Renderer::Framebuffer*> GetActiveFramebuffers();
 
 	public:
 		/**

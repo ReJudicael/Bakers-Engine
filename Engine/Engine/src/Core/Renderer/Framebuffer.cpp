@@ -78,42 +78,6 @@ namespace Core::Renderer
 		glDeleteFramebuffers(1, &FBO);
 	}
 
-	void	Framebuffer::InitPostProcess(const std::shared_ptr<Resources::Shader>& s)
-	{
-		ZoneScoped
-		GLuint VBO;
-
-		data.s = s;
-		// Gen unit quad
-		{
-			float Quad[24] =
-			{
-				 -1.f,-1.f ,  0.f, 0.f, // bl
-				  1.f,-1.f ,  1.f, 0.f, // br
-				  1.f, 1.f,  1.f, 1.f, // tr
-
-				-1.f, 1.f ,  0.f, 1.f , // tl
-				-1.f,-1.f,   0.f, 0.f, // bl
-				 1.f, 1.f ,  1.f, 1.f, // tr
-			};
-
-			// Upload mesh to gpu
-			glGenBuffers(1, &VBO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), Quad, GL_STATIC_DRAW);
-		}
-
-		// Create a vertex array and bind it
-		glGenVertexArrays(1, &data.VAO);
-		glBindVertexArray(data.VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-		glBindVertexArray(0);
-	}
-
 	void	Framebuffer::Resize(int width, int height) noexcept
 	{
 		glBindTexture(GL_TEXTURE_2D, ColorTexture);

@@ -1516,55 +1516,6 @@
                             "Value": false
                         }
                     }
-                },
-                {
-                    "Type": "Rigid Body",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Mass": {
-                            "Name": "Mass",
-                            "Type": "float",
-                            "Value": 1.0
-                        },
-                        "Rotation XLock": {
-                            "Name": "Rotation XLock",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Rotation YLock": {
-                            "Name": "Rotation YLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation ZLock": {
-                            "Name": "Rotation ZLock",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Use Gravity": {
-                            "Name": "Use Gravity",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Velocity": {
-                            "Name": "Velocity",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
-                        }
-                    }
                 }
             ],
             "Flags": 0,
@@ -1867,6 +1818,14 @@
                                 1.0
                             ]
                         },
+                        "Dispersion": {
+                            "Name": "Dispersion",
+                            "Type": "Vec2",
+                            "Value": [
+                                0.5,
+                                0.5
+                            ]
+                        },
                         "Gravity": {
                             "Name": "Gravity",
                             "Type": "float",
@@ -1896,6 +1855,20 @@
                             "Name": "Particles number",
                             "Type": "int",
                             "Value": 100
+                        },
+                        "Spawn zone": {
+                            "Name": "Spawn zone",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 0.10000000149011612
                         },
                         "Time Before Spawn": {
                             "Name": "Time Before Spawn",
@@ -2018,6 +1991,14 @@
                                         1.0
                                     ]
                                 },
+                                "Dispersion": {
+                                    "Name": "Dispersion",
+                                    "Type": "Vec2",
+                                    "Value": [
+                                        0.5,
+                                        0.5
+                                    ]
+                                },
                                 "Gravity": {
                                     "Name": "Gravity",
                                     "Type": "float",
@@ -2047,6 +2028,20 @@
                                     "Name": "Particles number",
                                     "Type": "int",
                                     "Value": 10
+                                },
+                                "Spawn zone": {
+                                    "Name": "Spawn zone",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Speed": {
+                                    "Name": "Speed",
+                                    "Type": "float",
+                                    "Value": 0.10000000149011612
                                 },
                                 "Time Before Spawn": {
                                     "Name": "Time Before Spawn",
@@ -2177,55 +2172,6 @@
                             "Name": "Trigger",
                             "Type": "bool",
                             "Value": false
-                        }
-                    }
-                },
-                {
-                    "Type": "Rigid Body",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Mass": {
-                            "Name": "Mass",
-                            "Type": "float",
-                            "Value": 100.0
-                        },
-                        "Rotation XLock": {
-                            "Name": "Rotation XLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation YLock": {
-                            "Name": "Rotation YLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Rotation ZLock": {
-                            "Name": "Rotation ZLock",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Use Gravity": {
-                            "Name": "Use Gravity",
-                            "Type": "bool",
-                            "Value": false
-                        },
-                        "Velocity": {
-                            "Name": "Velocity",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
                         }
                     }
                 },
@@ -2415,7 +2361,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 592.0
+                                                "Value": 391.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -2425,10 +2371,20 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 609.0
+                                                "Value": 293.0
                                             }
                                         }
                                     }
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Postprocess",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
                                 }
                             }
                         }
@@ -2526,7 +2482,7 @@
                     }
                 },
                 {
-                    "Type": "Rigid Body",
+                    "Type": "Rigidbody",
                     "Values": {
                         "IsActive": {
                             "Name": "IsActive",
