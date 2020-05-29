@@ -292,4 +292,10 @@ namespace Resources
 
 		return selectedLights;
 	}
+
+	void Shader::ResetShadowCastingLights()
+	{
+		for (size_t i{ 0 }; i < Shader::lights.size(); ++i)
+			Shader::lights[i]->SetShadowDrawn(false);
+	}
 }
