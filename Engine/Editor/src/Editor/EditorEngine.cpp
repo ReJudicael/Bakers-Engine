@@ -178,8 +178,6 @@ namespace Editor
 		{
 			ZoneScopedN("EngineInitialized")
 				m_manager->UpdateResourcesManager();
-			if (!m_navMesh->IsNavmeshUpdated())
-				m_navMesh->Build();
 			Render();
 			EndFrame();
 			break;
