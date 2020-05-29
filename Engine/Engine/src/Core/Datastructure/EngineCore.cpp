@@ -486,11 +486,6 @@ namespace Core::Datastructure
 	{
 		ZoneScoped
 			m_root->Render(m_fbo);
-
-		TRACY_GL_IMAGE_SEND(m_width, m_height)
-			TracyGpuCollect
-
-		FrameMark
 	}
 	
 	void		EngineCore::EndFrame()

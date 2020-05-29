@@ -17,6 +17,14 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Tracy|Win32">
+      <Configuration>Tracy</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Tracy|x64">
+      <Configuration>Tracy</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -39,6 +47,13 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -46,6 +61,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
@@ -63,10 +85,16 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -79,7 +107,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -91,7 +125,7 @@
       <PreprocessorDefinitions>SOL_SAFE_FUNCTION;_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;SOL_NO_EXCEPTIONS;_WIN32_WINNT=_WIN32_WINNT_WINBLUE;_USE_MATH_DEFINES;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\freetype\include\;$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RecastNavigation\include;$(SolutionDir)Dependencies\RTTR\include;$(SolutionDir)Dependencies\Lualib\include;$(SolutionDir)Dependencies\sol;$(SolutionDir)Dependencies\PhysX\source\geomUtils\src;$(SolutionDir)Dependencies\PhysX\source\physx\src;$(SolutionDir)Dependencies\PhysX\source\physx\src\buffering;$(SolutionDir)Dependencies\PhysX\source\pvdruntime\src;$(SolutionDir)Dependencies\PhysX\source\geomutils\headers;$(SolutionDir)Dependencies\PhysX\source\geomutils\include;$(SolutionDir)Dependencies\PhysX\source\geomutils\opcode;$(SolutionDir)Dependencies\PhysX\source\repx\include;$(SolutionDir)Dependencies\PhysX\source\repxupgrader\include;$(SolutionDir)Dependencies\PhysX\source\foundation\source;$(SolutionDir)Dependencies\PhysX\source\foundation\include;$(SolutionDir)Dependencies\PhysX\source\common\src;$(SolutionDir)Dependencies\PhysX\source\lowlevel\software\include;$(SolutionDir)Dependencies\PhysX\source\lowlevel\api\include;$(SolutionDir)Dependencies\PhysX\source\simulationcontroller\include;$(SolutionDir)Dependencies\PhysX\source\scenequery;$(SolutionDir)Dependencies\PhysX\include;$(SolutionDir)Dependencies\PhysX\include\characterkinematic;$(SolutionDir)Dependencies\PhysX\include\common;$(SolutionDir)Dependencies\PhysX\include\cooking;$(SolutionDir)Dependencies\PhysX\include\extensions;$(SolutionDir)Dependencies\PhysX\include\foundation;$(SolutionDir)Dependencies\PhysX\include\geometry;$(SolutionDir)Dependencies\PhysX\include\gpu;$(SolutionDir)Dependencies\PhysX\include\physxprofilesdk;$(SolutionDir)Dependencies\PhysX\include\physxvisualdebuggersdk;$(SolutionDir)Dependencies\PhysX\include\pvd;$(SolutionDir)Dependencies\PhysX\include\pxtask;$(SolutionDir)Dependencies\PhysX\include\repx;$(SolutionDir)Dependencies\PhysX\include\repxUpgrader;$(SolutionDir)Dependencies\PhysX\source;$(SolutionDir)Dependencies\json;$(SolutionDir)Engine/include/Core/;$(SolutionDir)Engine/include/Core/Maths;$(SolutionDir)Engine/include/Core/Physics;$(SolutionDir)Engine/include/Core/Datastructure;$(SolutionDir)Engine/include/Core/Resources;$(SolutionDir)Engine/include/Core/Resources/Loader;$(SolutionDir)Engine/include/Core/Debug;$(SolutionDir)Engine/include/Core/Renderer;$(SolutionDir)Engine/include/Core/SystemManagement;$(SolutionDir)Engine/include/Core/Navigation;$(SolutionDir)Engine/include/Core/Types;include;include/Executable;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\freetype\include\;$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\RecastNavigation\include;$(SolutionDir)Dependencies\imgui-1.76\include\;$(SolutionDir)Dependencies\imgui-1.76\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Lualib\include;$(SolutionDir)Dependencies\json\;$(SolutionDir)Dependencies\PhysX\include;$(SolutionDir)Dependencies\PhysX\include\characterkinematic;$(SolutionDir)Dependencies\PhysX\include\common;$(SolutionDir)Dependencies\PhysX\include\cooking;$(SolutionDir)Dependencies\PhysX\include\extensions;$(SolutionDir)Dependencies\PhysX\include\foundation;$(SolutionDir)Dependencies\PhysX\include\geometry;$(SolutionDir)Dependencies\PhysX\include\gpu;$(SolutionDir)Dependencies\PhysX\include\physxprofilesdk;$(SolutionDir)Dependencies\PhysX\include\physxvisualdebuggersdk;$(SolutionDir)Dependencies\PhysX\include\pvd;$(SolutionDir)Dependencies\PhysX\include\pxtask;$(SolutionDir)Dependencies\PhysX\include\repx;$(SolutionDir)Dependencies\PhysX\include\repxUpgrader;$(SolutionDir)Dependencies\PhysX\source;$(SolutionDir)Dependencies\sol;include;include\Executable;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Animation;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Animation;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;$(SolutionDir)Engine\include/Core/Navigation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -133,6 +167,24 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>
@@ -143,7 +195,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SOL_SAFE_FUNCTION;_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;SOL_NO_EXCEPTIONS;_WIN32_WINNT=_WIN32_WINNT_WINBLUE;_USE_MATH_DEFINES;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\freetype\include\;$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\imgui-1.75\include\;$(SolutionDir)Dependencies\imgui-1.75\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Dependencies\RecastNavigation\include;$(SolutionDir)Dependencies\RTTR\include;$(SolutionDir)Dependencies\Lualib\include;$(SolutionDir)Dependencies\sol;$(SolutionDir)Dependencies\PhysX\source\geomUtils\src;$(SolutionDir)Dependencies\PhysX\source\physx\src;$(SolutionDir)Dependencies\PhysX\source\physx\src\buffering;$(SolutionDir)Dependencies\PhysX\source\pvdruntime\src;$(SolutionDir)Dependencies\PhysX\source\geomutils\headers;$(SolutionDir)Dependencies\PhysX\source\geomutils\include;$(SolutionDir)Dependencies\PhysX\source\geomutils\opcode;$(SolutionDir)Dependencies\PhysX\source\repx\include;$(SolutionDir)Dependencies\PhysX\source\repxupgrader\include;$(SolutionDir)Dependencies\PhysX\source\foundation\source;$(SolutionDir)Dependencies\PhysX\source\foundation\include;$(SolutionDir)Dependencies\PhysX\source\common\src;$(SolutionDir)Dependencies\PhysX\source\lowlevel\software\include;$(SolutionDir)Dependencies\PhysX\source\lowlevel\api\include;$(SolutionDir)Dependencies\PhysX\source\simulationcontroller\include;$(SolutionDir)Dependencies\PhysX\source\scenequery;$(SolutionDir)Dependencies\PhysX\include;$(SolutionDir)Dependencies\PhysX\include\characterkinematic;$(SolutionDir)Dependencies\PhysX\include\common;$(SolutionDir)Dependencies\PhysX\include\cooking;$(SolutionDir)Dependencies\PhysX\include\extensions;$(SolutionDir)Dependencies\PhysX\include\foundation;$(SolutionDir)Dependencies\PhysX\include\geometry;$(SolutionDir)Dependencies\PhysX\include\gpu;$(SolutionDir)Dependencies\PhysX\include\physxprofilesdk;$(SolutionDir)Dependencies\PhysX\include\physxvisualdebuggersdk;$(SolutionDir)Dependencies\PhysX\include\pvd;$(SolutionDir)Dependencies\PhysX\include\pxtask;$(SolutionDir)Dependencies\PhysX\include\repx;$(SolutionDir)Dependencies\PhysX\include\repxUpgrader;$(SolutionDir)Dependencies\PhysX\source;$(SolutionDir)Dependencies\json;$(SolutionDir)Engine/include/Core/;$(SolutionDir)Engine/include/Core/Maths;$(SolutionDir)Engine/include/Core/Physics;$(SolutionDir)Engine/include/Core/Datastructure;$(SolutionDir)Engine/include/Core/Resources;$(SolutionDir)Engine/include/Core/Resources/Loader;$(SolutionDir)Engine/include/Core/Debug;$(SolutionDir)Engine/include/Core/Renderer;$(SolutionDir)Engine/include/Core/SystemManagement;$(SolutionDir)Engine/include/Core/Navigation;$(SolutionDir)Engine/include/Core/Types;include;include/Executable;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\freetype\include\;$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\RecastNavigation\include;$(SolutionDir)Dependencies\imgui-1.76\include\;$(SolutionDir)Dependencies\imgui-1.76\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Lualib\include;$(SolutionDir)Dependencies\json\;$(SolutionDir)Dependencies\PhysX\include;$(SolutionDir)Dependencies\PhysX\include\characterkinematic;$(SolutionDir)Dependencies\PhysX\include\common;$(SolutionDir)Dependencies\PhysX\include\cooking;$(SolutionDir)Dependencies\PhysX\include\extensions;$(SolutionDir)Dependencies\PhysX\include\foundation;$(SolutionDir)Dependencies\PhysX\include\geometry;$(SolutionDir)Dependencies\PhysX\include\gpu;$(SolutionDir)Dependencies\PhysX\include\physxprofilesdk;$(SolutionDir)Dependencies\PhysX\include\physxvisualdebuggersdk;$(SolutionDir)Dependencies\PhysX\include\pvd;$(SolutionDir)Dependencies\PhysX\include\pxtask;$(SolutionDir)Dependencies\PhysX\include\repx;$(SolutionDir)Dependencies\PhysX\include\repxUpgrader;$(SolutionDir)Dependencies\PhysX\source;$(SolutionDir)Dependencies\sol;include;include\Executable;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Animation;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Animation;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;$(SolutionDir)Engine\include/Core/Navigation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -152,8 +204,31 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine.lib;lua53.lib;glfw3dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;rttr_core.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\RTTR\lib\$(Configuration)\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;Game.lib;lua53.lib;glfw3dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)Dependencies\RTTR\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>SOL_SAFE_FUNCTION;_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;SOL_NO_EXCEPTIONS;_WIN32_WINNT=_WIN32_WINNT_WINBLUE;_USE_MATH_DEFINES;_CRT_SECURE_NO_WARNINGS;TRACY_ENABLE;TRACY_IMPORTS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\freetype\include\;$(SolutionDir)Dependencies\GLFW-3.3.2\include\;$(SolutionDir)Dependencies\RecastNavigation\include;$(SolutionDir)Dependencies\imgui-1.76\include\;$(SolutionDir)Dependencies\imgui-1.76\include\imgui\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\RTTR\include\;$(SolutionDir)Dependencies\glad-4.6\include\;$(SolutionDir)Dependencies\Lualib\include;$(SolutionDir)Dependencies\json\;$(SolutionDir)Dependencies\PhysX\include;$(SolutionDir)Dependencies\PhysX\include\characterkinematic;$(SolutionDir)Dependencies\PhysX\include\common;$(SolutionDir)Dependencies\PhysX\include\cooking;$(SolutionDir)Dependencies\PhysX\include\extensions;$(SolutionDir)Dependencies\PhysX\include\foundation;$(SolutionDir)Dependencies\PhysX\include\geometry;$(SolutionDir)Dependencies\PhysX\include\gpu;$(SolutionDir)Dependencies\PhysX\include\physxprofilesdk;$(SolutionDir)Dependencies\PhysX\include\physxvisualdebuggersdk;$(SolutionDir)Dependencies\PhysX\include\pvd;$(SolutionDir)Dependencies\PhysX\include\pxtask;$(SolutionDir)Dependencies\PhysX\include\repx;$(SolutionDir)Dependencies\PhysX\include\repxUpgrader;$(SolutionDir)Dependencies\PhysX\source;$(SolutionDir)Dependencies\sol;include;include\Executable;$(SolutionDir)Dependencies\Assimp\;$(SolutionDir)Dependencies\Tracy\;$(SolutionDir)Engine\include/Core/;$(SolutionDir)Engine\include/Core/Animation;$(SolutionDir)Engine\include/Core/Maths;$(SolutionDir)Engine\include/Core/Physics;$(SolutionDir)Engine\include/Core/Datastructure;$(SolutionDir)Engine\include/Core/Resources;$(SolutionDir)Engine\include/Core/Resources/Animation;$(SolutionDir)Engine\include/Core/Resources/Loader;$(SolutionDir)Engine\include/Core/Debug;$(SolutionDir)Engine\include/Core/Renderer;$(SolutionDir)Engine\include/Core/SystemManagement;$(SolutionDir)Engine\include/Core/Types;$(SolutionDir)Engine\include/Core/Navigation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Engine.lib;Game.lib;TracyClient.lib;lua53.lib;glfw3dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glfw-3.3.2\lib-vc2019\;$(SolutionDir)Dependencies\RTTR\lib\Release\;$(SolutionDir)Dependencies\Lualib;$(SolutionDir)$(Platform)\Tracy\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

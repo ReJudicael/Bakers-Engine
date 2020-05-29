@@ -8,6 +8,12 @@
 
 namespace Executable
 {
+	ExeEngine::ExeEngine() : ExeEngine(1280, 800)
+	{
+	}
+	ExeEngine::ExeEngine(int width, int height) : EngineCore(width, height)
+	{
+	}
 	ExeEngine::~ExeEngine()
 	{
 
@@ -31,11 +37,32 @@ namespace Executable
 		glfwPollEvents();
 		EngineCore::OnLoop();
 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		int display_w, display_h;
 		glfwGetFramebufferSize(m_window, &display_w, &display_h);
+		
 		glViewport(0, 0, display_w, display_h);
 
+		auto shader = m_manager->GetShader("TextureToQuad");
+		shader->UseProgram();
+
+		float f[3]{ 1.f, 1.f, 1.f };
+		glUniform3fv(shader->GetLocation("uColor"), 1, f);
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glBindVertexArray(m_VAO); 
+		glBindTexture(GL_TEXTURE_2D, GetFBO(0, Core::Renderer::FBOType::CAMERA)->ColorTexture);
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindVertexArray(0);
+
+		TRACY_GL_IMAGE_SEND(m_width, m_height)
+			TracyGpuCollect
 		glfwSwapBuffers(m_window);
+
+		FrameMark
 	}
 
 	void ExeEngine::SetSizeWindow(const int width, const int height)
@@ -75,6 +102,40 @@ namespace Executable
 
 		if (!gladLoadGL())
 			return 202;
+
+		{
+			GLuint VBO;
+			ZoneScopedN("Init rendering quad")
+			{
+				float Quad[24] =
+				{
+					 -1.f,-1.f ,  0.f, 0.f, // bl
+					  1.f,-1.f ,  1.f, 0.f, // br
+					  1.f, 1.f,  1.f, 1.f, // tr
+
+					-1.f, 1.f ,  0.f, 1.f , // tl
+					-1.f,-1.f,   0.f, 0.f, // bl
+					 1.f, 1.f ,  1.f, 1.f, // tr
+				};
+
+				// Upload mesh to gpu
+				glGenBuffers(1, &VBO);
+				glBindBuffer(GL_ARRAY_BUFFER, VBO);
+				glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), Quad, GL_STATIC_DRAW);
+			}
+
+			// Create a vertex array and bind it
+			glGenVertexArrays(1, &m_VAO);
+			glBindVertexArray(m_VAO);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+			glBindVertexArray(0);
+
+			m_manager->CreateShader("TextureToQuad", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessShader.frag");
+		}
 
 		glDebugMessageCallback(MessageCallback, 0);
 
