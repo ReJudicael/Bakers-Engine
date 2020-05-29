@@ -20,6 +20,8 @@ in vec3 normal;
 void main()
 {
 	oColor = texture(uColorTexture, vec2(1 - vUV.x, 1 - vUV.y));
+	if (oColor.r == 0 && oColor.g == 0 && oColor.b == 0)
+		oColor.a = 0;
 	if (uLightCount == 0)
 		return;
 
