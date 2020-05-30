@@ -105,7 +105,7 @@ namespace Core::Datastructure
 		int init{ OnInit(width, height) };
 		if (init)
 			return init;
-		init = !LoadScene(m_currScene);
+		LoadScene(m_currScene);
 		m_state = Core::Datastructure::EngineState::INITIALIZED;
 		return init;
 	}
