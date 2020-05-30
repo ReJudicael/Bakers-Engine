@@ -15,10 +15,13 @@ namespace Core::Renderer
 		bool	m_useColorCustom{ false };
 		bool	m_useBW{ false };
 		bool	m_useBloom{ false };
+		bool	m_useCartoon{ false };
 
 		GLuint	m_VAO;
 
-		Maths::Color m_correctedColor;
+		float			m_linesThreshold{ 0.75f };
+		Maths::Color	m_linesColor{ 0, 0, 0, 1 };
+		Maths::Color	m_correctedColor{ 1, 1, 1, 1 };
 
 		Framebuffer* m_effectFbo{ nullptr };
 		Framebuffer* m_addedFbo{ nullptr }; // Extra fbo for effects that can't be done with a single one
@@ -27,7 +30,8 @@ namespace Core::Renderer
 		std::shared_ptr<Resources::Shader> m_blurShader;
 		std::shared_ptr<Resources::Shader> m_colorCustomShader;
 		std::shared_ptr<Resources::Shader> m_colorBWShader;	
-		std::shared_ptr<Resources::Shader> m_additionShader;	
+		std::shared_ptr<Resources::Shader> m_additionShader;
+		std::shared_ptr<Resources::Shader> m_cartoonShader;
 
 
 		protected:
@@ -68,6 +72,12 @@ namespace Core::Renderer
 			 * @return True if color customization effect is checked
 			 */
 			bool	IsUsingColor() { return CanUseEffects() && m_useColorCustom; }
+
+			/**
+			 * Effect check for variable display in editor
+			 * @return True if Toy effect is checked
+			 */
+			bool	IsUsingCartoon() { return CanUseEffects() && m_useCartoon; }
 
 			/**
 			 * Effect check for variable display in editor

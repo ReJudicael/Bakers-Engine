@@ -23,8 +23,25 @@ RTTR_PLUGIN_REGISTRATION
 		(
 			rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "CanUseEffect")
 		)
+		.property("Black & White", &Core::Renderer::Postprocess::m_useBW)
+		(
+			rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "CanUseEffect")
+		)
+		.property("Cartoon effect", &Core::Renderer::Postprocess::m_useCartoon)
+		(
+			rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "CanUseEffect")
+		)
+		.property("Line intensity", &Core::Renderer::Postprocess::m_linesThreshold)
+		(
+			rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsUsingCartoon")
+		)
+		.property("Line color", &Core::Renderer::Postprocess::m_linesColor)
+		(
+			rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsUsingCartoon")
+		)
 		.method("IsUsingBlur", &Core::Renderer::Postprocess::IsUsingBlur)
 		.method("IsUsingColor", &Core::Renderer::Postprocess::IsUsingColor)
+		.method("IsUsingCartoon", &Core::Renderer::Postprocess::IsUsingCartoon)
 		.method("CanUseEffect", &Core::Renderer::Postprocess::CanUseEffects);
 }
 
@@ -112,6 +129,7 @@ namespace Core::Renderer
 		m_blurShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessBlur", "Resources\\Shaders\\PostprocessBlurShader.vert", "Resources\\Shaders\\PostprocessBlurShader.frag");
 		m_colorBWShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessBW", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessBlackWhiteShader.frag");
 		m_additionShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessAddition", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessAdditionShader.frag");
+		m_cartoonShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessToyEffect", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessCartoonShader.frag");
 	}
 
 	void	Postprocess::InitPostprocessVAO()
@@ -156,6 +174,13 @@ namespace Core::Renderer
 		effect->UseProgram();
 		if (effect == m_colorCustomShader)
 			glUniform3fv(effect->GetLocation("uColor"), 1, m_correctedColor.rgb);
+		else if (effect == m_cartoonShader)
+		{
+			Maths::Vec2 resolution{ (float)m_effectFbo->Size[2],(float)m_effectFbo->Size[3] };
+			glUniform2fv(effect->GetLocation("uResolution"), 1, resolution.xy);
+			glUniform1f(effect->GetLocation("uThresold"), 1.f - m_linesThreshold);
+			glUniform3fv(effect->GetLocation("uLineColor"), 1, m_linesColor.rgb);
+		}
 		glBindTexture(GL_TEXTURE_2D, from->ColorTexture);
 		glBindVertexArray(m_VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -213,6 +238,12 @@ namespace Core::Renderer
 		if (m_useBW)
 		{
 			DrawEffect(drawFbo, m_effectFbo, m_colorBWShader);
+			DrawEffect(m_effectFbo, drawFbo, m_defaultShader);
+		}
+
+		if (m_useCartoon)
+		{
+			DrawEffect(drawFbo, m_effectFbo, m_cartoonShader);
 			DrawEffect(m_effectFbo, drawFbo, m_defaultShader);
 		}
 	}
