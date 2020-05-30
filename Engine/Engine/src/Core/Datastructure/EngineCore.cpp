@@ -192,6 +192,8 @@ namespace Core::Datastructure
 		if (m_window == nullptr)
 			return 2;
 
+		glfwGetWindowSize(m_window, &m_width, &m_height);
+
 		glfwMakeContextCurrent(m_window);
 		glfwSetWindowUserPointer(m_window, this);
 		glfwSwapInterval(1);
