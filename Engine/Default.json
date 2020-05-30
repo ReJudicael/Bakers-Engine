@@ -5463,7 +5463,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 677.0
+                                                "Value": 546.0
                                             }
                                         }
                                     }
@@ -5488,6 +5488,11 @@
                                     "Type": "bool",
                                     "Value": false
                                 },
+                                "Cartoon effect": {
+                                    "Name": "Cartoon effect",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Color": {
                                     "Name": "Color",
                                     "Type": "Color",
@@ -5507,6 +5512,21 @@
                                     "Name": "IsActive",
                                     "Type": "bool",
                                     "Value": true
+                                },
+                                "Line color": {
+                                    "Name": "Line color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                "Line intensity": {
+                                    "Name": "Line intensity",
+                                    "Type": "float",
+                                    "Value": 0.800000011920929
                                 }
                             }
                         }
@@ -5620,17 +5640,28 @@
                     }
                 },
                 {
-                    "Type": "Box Collider",
+                    "Type": "Script",
                     "Values": {
-                        "Box Half Extent": {
-                            "Name": "Box Half Extent",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.5,
-                                1.7999999523162842,
-                                0.5
-                            ]
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
                         },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Lua Script": {
+                            "Name": "Lua Script",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Scripts\\InputMovement.lua"
+                        }
+                    }
+                },
+                {
+                    "Type": "Sphere Collider",
+                    "Values": {
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
@@ -5641,7 +5672,7 @@
                             "Type": "Vec3",
                             "Value": [
                                 0.0,
-                                1.7999999523162842,
+                                1.0,
                                 0.0
                             ]
                         },
@@ -5662,6 +5693,11 @@
                                 1.5,
                                 0.0
                             ]
+                        },
+                        "Radius": {
+                            "Name": "Radius",
+                            "Type": "float",
+                            "Value": 1.0
                         },
                         "Trigger": {
                             "Name": "Trigger",
@@ -5718,33 +5754,13 @@
                             ]
                         }
                     }
-                },
-                {
-                    "Type": "Script",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Lua Script": {
-                            "Name": "Lua Script",
-                            "Type": "std::string",
-                            "Value": ".\\Resources\\Scripts\\InputMovement.lua"
-                        }
-                    }
                 }
             ],
             "Flags": 0,
             "Name": "Owen",
             "Pos": {
                 "x": -32.73313903808594,
-                "y": 7.024786472320557,
+                "y": 7.028131008148193,
                 "z": -4.717764377593994
             },
             "Rot": {
@@ -6781,7 +6797,7 @@
                     "Flags": 1,
                     "Name": "13",
                     "Pos": {
-                        "x": -4.146244525909424,
+                        "x": -4.632965564727783,
                         "y": 0.949999988079071,
                         "z": 8.000652313232422
                     },
@@ -6957,7 +6973,7 @@
                                     "Value": [
                                         5.0,
                                         2.0,
-                                        1.0
+                                        5.0
                                     ]
                                 },
                                 "IsActive": {
@@ -7003,9 +7019,9 @@
                     "Flags": 1,
                     "Name": "16",
                     "Pos": {
-                        "x": -5.307097911834717,
+                        "x": -6.636506080627441,
                         "y": 7.0269999504089355,
-                        "z": -9.797410011291504
+                        "z": -13.078060150146484
                     },
                     "Rot": {
                         "w": 0.9487711191177368,
@@ -7447,9 +7463,9 @@
                     "Flags": 1,
                     "Name": "22",
                     "Pos": {
-                        "x": 6.5929999351501465,
+                        "x": 6.1123433113098145,
                         "y": 0.49774646759033203,
-                        "z": 3.4572155475616455
+                        "z": 3.5166015625
                     },
                     "Rot": {
                         "w": 0.9981116056442261,
@@ -7623,7 +7639,7 @@
                                     "Value": [
                                         6.5,
                                         3.0,
-                                        1.0
+                                        5.0
                                     ]
                                 },
                                 "IsActive": {
@@ -7669,14 +7685,14 @@
                     "Flags": 1,
                     "Name": "25",
                     "Pos": {
-                        "x": 10.26625919342041,
+                        "x": 10.98446273803711,
                         "y": 5.490893840789795,
-                        "z": -8.778128623962402
+                        "z": -12.086546897888184
                     },
                     "Rot": {
-                        "w": 1.0,
+                        "w": 0.9993710517883301,
                         "x": 0.0,
-                        "y": 0.0,
+                        "y": -0.035460419952869415,
                         "z": 0.0
                     },
                     "Scale": {
@@ -8853,9 +8869,9 @@
                     "Flags": 1,
                     "Name": "41",
                     "Pos": {
-                        "x": -3.6469497680664063,
-                        "y": -1.5463151931762695,
-                        "z": 23.600173950195313
+                        "x": -3.073349952697754,
+                        "y": -1.6610956192016602,
+                        "z": 23.447662353515625
                     },
                     "Rot": {
                         "w": 0.9849973320960999,
@@ -8924,7 +8940,7 @@
                             }
                         }
                     ],
-                    "Flags": 0,
+                    "Flags": 1,
                     "Name": "42",
                     "Pos": {
                         "x": -7.8379807472229,
@@ -8998,17 +9014,17 @@
                             }
                         }
                     ],
-                    "Flags": 0,
+                    "Flags": 1,
                     "Name": "43",
                     "Pos": {
-                        "x": -11.576006889343262,
-                        "y": -1.4152811765670776,
-                        "z": 12.548798561096191
+                        "x": -12.027827262878418,
+                        "y": -1.6169155836105347,
+                        "z": 9.220316886901855
                     },
                     "Rot": {
-                        "w": 0.9953632950782776,
+                        "w": 0.997835636138916,
                         "x": 0.0,
-                        "y": 0.09618675708770752,
+                        "y": 0.06575720012187958,
                         "z": 0.0
                     },
                     "Scale": {
@@ -9027,8 +9043,8 @@
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
                                     "Value": [
-                                        1.0,
-                                        2.0,
+                                        1.5,
+                                        1.5,
                                         0.5
                                     ]
                                 },
@@ -9072,18 +9088,18 @@
                             }
                         }
                     ],
-                    "Flags": 0,
+                    "Flags": 1,
                     "Name": "44",
                     "Pos": {
-                        "x": -13.286872863769531,
-                        "y": -1.1751210689544678,
-                        "z": 6.834667682647705
+                        "x": -10.833880424499512,
+                        "y": -1.7313342094421387,
+                        "z": 15.659613609313965
                     },
                     "Rot": {
-                        "w": 0.9222577810287476,
-                        "x": 0.0,
-                        "y": -0.38657549023628235,
-                        "z": 0.0
+                        "w": 0.6111787557601929,
+                        "x": -1.3613313143423511e-08,
+                        "y": 0.7914925813674927,
+                        "z": -1.3613313143423511e-08
                     },
                     "Scale": {
                         "x": 1.0,
@@ -9146,12 +9162,234 @@
                             }
                         }
                     ],
-                    "Flags": 0,
+                    "Flags": 1,
                     "Name": "45",
                     "Pos": {
                         "x": -38.04898452758789,
                         "y": 7.13571310043335,
                         "z": 2.9291927814483643
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        5.0,
+                                        3.0,
+                                        5.5
+                                    ]
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "LocalPositon": {
+                                    "Name": "LocalPositon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "LocalRotation": {
+                                    "Name": "LocalRotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Mat: S D R": {
+                                    "Name": "Mat: S D R",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": false
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "46",
+                    "Pos": {
+                        "x": 13.249709129333496,
+                        "y": 7.030646324157715,
+                        "z": 4.82463264465332
+                    },
+                    "Rot": {
+                        "w": 0.9970728754997253,
+                        "x": 0.0,
+                        "y": 0.0764574334025383,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        4.0,
+                                        5.0,
+                                        0.5
+                                    ]
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "LocalPositon": {
+                                    "Name": "LocalPositon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "LocalRotation": {
+                                    "Name": "LocalRotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Mat: S D R": {
+                                    "Name": "Mat: S D R",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": false
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "47",
+                    "Pos": {
+                        "x": 11.893643379211426,
+                        "y": 4.864567756652832,
+                        "z": -1.291172981262207
+                    },
+                    "Rot": {
+                        "w": 0.9812189340591431,
+                        "x": 0.0,
+                        "y": 0.19289731979370117,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        3.440000057220459,
+                                        1.0,
+                                        3.0
+                                    ]
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "LocalPositon": {
+                                    "Name": "LocalPositon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "LocalRotation": {
+                                    "Name": "LocalRotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Mat: S D R": {
+                                    "Name": "Mat: S D R",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": false
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "48",
+                    "Pos": {
+                        "x": 12.085227966308594,
+                        "y": 3.1429998874664307,
+                        "z": -4.207484722137451
                     },
                     "Rot": {
                         "w": 1.0,
