@@ -1580,7 +1580,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 634.0
+                                                "Value": 623.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -5631,6 +5631,11 @@
                                 0.5
                             ]
                         },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 1
+                        },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
@@ -5776,6 +5781,11 @@
                                         10.0
                                     ]
                                 },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -5849,6 +5859,11 @@
                                         3.0,
                                         1.659999966621399
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -5924,6 +5939,11 @@
                                         8.59000015258789
                                     ]
                                 },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -5997,6 +6017,11 @@
                                         2.0,
                                         6.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -6072,6 +6097,11 @@
                                         7.300000190734863
                                     ]
                                 },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -6145,6 +6175,11 @@
                                         1.0,
                                         10.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -6220,6 +6255,11 @@
                                         8.0
                                     ]
                                 },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -6293,6 +6333,11 @@
                                         1.0,
                                         1.7300000190734863
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -6368,6 +6413,11 @@
                                         4.730000019073486
                                     ]
                                 },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -6442,6 +6492,11 @@
                                         0.5
                                     ]
                                 },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
                                 "IsActive": {
                                     "Name": "IsActive",
                                     "Type": "bool",
@@ -6515,6 +6570,11 @@
                                         2.0,
                                         0.20000000298023224
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",

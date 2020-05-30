@@ -77,6 +77,9 @@ namespace Core
 
 			virtual void OnCopy(IComponent* copyTo) const override;
 
+			/**
+			 * Create a save of the collider 
+			 */
 			virtual ColliderSave* SaveCollider() const;
 
 			/**
@@ -85,13 +88,15 @@ namespace Core
 			 */
 			virtual void OnDestroy() override;
 
-
 			virtual void OnReset() override;
 
 			virtual void SetToDefault();
 
-
 			virtual bool OnStart() override;
+
+			virtual void InitShapeSave();
+			
+
 		public:
 			Collider() = default;
 
@@ -100,16 +105,35 @@ namespace Core
 			 * override for create the collider from the PhysicsScene
 			 */
 			virtual void OnInit() override;
-			
+			/**
+			 * Draw the collider
+			 * @param cam: the information of the camera
+			 * @param shader: the shader to draw with
+			 * @param model: the model to draw with
+			 */
 			virtual void DrawCollider(Core::Datastructure::ICamera* cam, std::shared_ptr<Resources::Shader> shader,
 										std::shared_ptr<Resources::Model> model) = 0;
-
+			/**
+			 * Destroy the m_pxRigidActor of the collider
+			 */
 			void DestroyRigidActor();
-			
+
+			/**
+			 * destach the shape of the m_pxRigidActor of the collider
+			 */
 			void DetachShape();
 
-			void CreateActor();
+			/**
+			 * Create m_pxRigidActor of the collider
+			 */
+			void CreateRigidActor();
 
+			/**
+			 * Init the m_pxRigidActor as an PxRigidDynamic wit the component RigidBody
+			 * @param rigidBody: the component RigidBody
+			 * @param ID: the ID of the RigidBody for have the Id of the event in the Parent Object
+			 * @param pxRigidBody: the PxRigidDynamic of the RigidBody
+			 */
 			void InitRigidBody(Core::Physics::RigidBody* rigidBody, int& ID, physx::PxRigidDynamic*& pxRigidBody);
 
 
@@ -206,18 +230,16 @@ namespace Core
 			 */
 			virtual void SimulationCollider();
 
-			/*virtual void InitShader(std::shared_ptr<Resources::Shader> shader)
-			{
-				m_shader = shader;
-			}
+			/**
+			 * Set the raycast filter of the shape
+			 * @param filter: the filter we to give to the shape
+			 */
+			virtual void SetRaycastFilter(EFilterRaycast filter);
 
-			virtual void InitModel(std::shared_ptr<Resources::Model> model)
-			{
-				m_model = model;
-			}*/
-
-			virtual void SetRaycastFilter(const EFilterRaycast& filter);
-
+			/**
+			 * Get the raycast filter of the shape
+			 * @return the current filter of the shape
+			 */
 			virtual EFilterRaycast GetRaycastFilter() const;
 
 			/*
@@ -227,8 +249,8 @@ namespace Core
 
 			virtual void SetPhysicsTransformParent();
 
-
 			virtual ~Collider();
+
 			REGISTER_CLASS(Core::Datastructure::IComponent)
 		};
 	}

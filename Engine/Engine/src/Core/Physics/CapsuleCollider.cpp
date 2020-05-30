@@ -80,23 +80,16 @@ namespace Core::Physics
 		physx::PxReal halfHeight{ 0.5 };
 
 		if (m_tmpColliderSave)
-		{
-			localPosition = { m_tmpColliderSave->localPosition.x, m_tmpColliderSave->localPosition.y, m_tmpColliderSave->localPosition.z };
-			localRotation = { m_tmpColliderSave->localRotation.x, m_tmpColliderSave->localRotation.y,
-								m_tmpColliderSave->localRotation.z, m_tmpColliderSave->localRotation.w };
 			radius = m_tmpColliderSave->extent.x;
 			halfHeight = m_tmpColliderSave->extent.y;
 
-			mat = { m_tmpColliderSave->physicsMaterial.x, m_tmpColliderSave->physicsMaterial.y, m_tmpColliderSave->physicsMaterial.z };
-		}
-
 		m_pxMaterial = physics->createMaterial(mat.x, mat.y, mat.z);
-
 		m_pxShape = physics->createShape(physx::PxCapsuleGeometry(radius, halfHeight), *m_pxMaterial, true);
-		m_pxShape->setLocalPose(physx::PxTransform(localPosition, localRotation));
+		SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
+		//m_pxShape->setLocalPose(physx::PxTransform(localPosition, localRotation));
 
 
-		if (m_tmpColliderSave)
+		/*if (m_tmpColliderSave)
 		{
 			SetRaycastFilter(m_tmpColliderSave->raycastFilter);
 			Trigger(m_tmpColliderSave->isTrigger);
@@ -104,14 +97,15 @@ namespace Core::Physics
 			m_tmpColliderSave = nullptr;
 		}
 		else
-			SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
-
-
+			SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);*/
 	}
 
 	void CapsuleCollider::SetCapsuleHalfExtent(Core::Maths::Vec2 halfExtent)
 	{
-		if (m_pxShape && halfExtent.x > 0.f && halfExtent.y > 0.f)
+		if (halfExtent.x <= 0.f || halfExtent.y <= 0.f)
+			return;
+
+		if (m_pxShape)
 			m_pxShape->setGeometry(physx::PxCapsuleGeometry(halfExtent.x, halfExtent.y));
 		else if (!IsDestroyed())
 		{

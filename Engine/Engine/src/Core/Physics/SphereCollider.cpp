@@ -78,20 +78,14 @@ namespace Core::Physics
 		physx::PxReal radius{ 0.5f };
 
 		if (m_tmpColliderSave)
-		{
-			localPosition = { m_tmpColliderSave->localPosition.x, m_tmpColliderSave->localPosition.y, m_tmpColliderSave->localPosition.z };
-			localRotation = { m_tmpColliderSave->localRotation.x, m_tmpColliderSave->localRotation.y, 
-								m_tmpColliderSave->localRotation.z, m_tmpColliderSave->localRotation.w };
 			radius = m_tmpColliderSave->extent.x;
-
-			mat = { m_tmpColliderSave->physicsMaterial.x, m_tmpColliderSave->physicsMaterial.y, m_tmpColliderSave->physicsMaterial.z };
-		}
 
 		m_pxMaterial = physics->createMaterial(mat.x, mat.y, mat.z);
 		m_pxShape = physics->createShape(physx::PxSphereGeometry(radius), *m_pxMaterial, true);
-		m_pxShape->setLocalPose(physx::PxTransform(localPosition, localRotation));
+		SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
+		//m_pxShape->setLocalPose(physx::PxTransform(localPosition, localRotation));
 		
-		if (m_tmpColliderSave)
+		/*if (m_tmpColliderSave)
 		{
 			SetRaycastFilter(m_tmpColliderSave->raycastFilter);
 			Trigger(m_tmpColliderSave->isTrigger);
@@ -99,12 +93,15 @@ namespace Core::Physics
 			m_tmpColliderSave = nullptr;
 		}
 		else
-			SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
+			SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);*/
 	}
 
 	void SphereCollider::SetSphereHalfExtent(float halfExtent)
 	{
-		if (m_pxShape && halfExtent > 0.f)
+		if (halfExtent <= 0.f)
+			return;
+
+		if (m_pxShape)
 			m_pxShape->setGeometry(physx::PxSphereGeometry(halfExtent));
 		else if (!IsDestroyed())
 		{

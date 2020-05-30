@@ -55,6 +55,13 @@ namespace Core
 			GROUPE4 = (1<<3),
 		};
 
+		enum class EGeometry : int
+		{
+			BOX = 0,
+			CAPSULE,
+			SPHERE,
+		};
+
 		struct HitResultQuery
 		{
 			Core::Datastructure::Object*		objectHit;
@@ -98,6 +105,8 @@ namespace Core
 			 * Release all the scene create by physX
 			 */
 			void ReleaseAllScene();
+
+			physx::PxGeometry ChooseGeometry(const EGeometry& geometry, const Core::Maths::Vec3& halfExtent);
 		public:
 			/**
 			 * Default constructor
@@ -246,20 +255,22 @@ namespace Core
 			/**
 			 * Do an overlap check in the physics scene with a gemotry gived
 			 * @param overlapGeometry: the geomtry of object to check for overlap
+			 * @param halfextent: the half extent of the geometry choose
 			 * @param transform: the global position of the geometry
 			 * @param overlapResult: the nearest hit result of the overlap
 			 */
-			bool CheckOverlap(const physx::PxGeometry& overlapGeometry, 
+			bool CheckOverlap(const EGeometry& overlapGeometry, const Core::Maths::Vec3& halfextent,
 								const Core::Datastructure::Transform& transform,
 								HitResultQuery& overlapResult);
 
 			/**
 			 * Do an overlap check in the physics scene with a gemotry gived
 			 * @param overlapGeometry: the geomtry of object to check for overlap
+			 * @param halfextent: the half extent of the geometry choose
 			 * @param transform: the global position of the geometry
 			 * @param overlapResult: all the hit result of the overlap
 			 */
-			bool CheckOverlap(const physx::PxGeometry& overlapGeometry, 
+			bool CheckOverlap(const EGeometry& overlapGeometry, const Core::Maths::Vec3& halfextent,
 								const Core::Datastructure::Transform& transform, 
 								std::vector<HitResultQuery>& overlapResults);
 			/*

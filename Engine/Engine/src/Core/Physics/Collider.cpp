@@ -17,13 +17,14 @@ namespace Core::Physics
 	{
 		ZoneScopedN("Registering RTTR")
 		registration::class_<Core::Physics::Collider>("Collider")
-		.enumeration<Core::Physics::EFilterRaycast>("Layout")
+		.enumeration<Core::Physics::EFilterRaycast>("FilterRaycast")
 			(
 			value("GROUPE1", Core::Physics::EFilterRaycast::GROUPE1),
 			value("GROUPE2", Core::Physics::EFilterRaycast::GROUPE2),
 			value("GROUPE3", Core::Physics::EFilterRaycast::GROUPE3),
 			value("GROUPE4", Core::Physics::EFilterRaycast::GROUPE4)
 			)
+		.property("Filter", &Core::Physics::Collider::GetRaycastFilter, &Core::Physics::Collider::SetRaycastFilter)
 		.property("LocalPositon", &Core::Physics::Collider::GetLocalPosition, &Core::Physics::Collider::SetLocalPosition)
 		.property("LocalRotation", &Core::Physics::Collider::GetLocalRotationEuler, &Core::Physics::Collider::SetLocalRotationEuler)
 		.property("Mat: S D R", &Core::Physics::Collider::GetMaterial, &Core::Physics::Collider::SetMaterial)
@@ -38,7 +39,9 @@ namespace Core::Physics
 		// create the shape of the collider
 		root->GetEngine()->GetPhysicsScene()->CreatePhysicsShape(*this);
 
-		CreateActor();
+		InitShapeSave();
+
+		CreateRigidActor();
 
 		Core::Datastructure::IComponent::OnInit();
 	}
@@ -46,6 +49,21 @@ namespace Core::Physics
 	bool Collider::OnStart()
 	{
 		return Core::Datastructure::IComponent::OnStart();
+	}
+
+	void Collider::InitShapeSave()
+	{
+		if (!m_tmpColliderSave)
+			return;
+
+		SetLocalPosition(m_tmpColliderSave->localPosition);
+		SetLocalRotationQuat(m_tmpColliderSave->localRotation);
+		SetMaterial(m_tmpColliderSave->physicsMaterial);
+		SetRaycastFilter(m_tmpColliderSave->raycastFilter);
+		Trigger(m_tmpColliderSave->isTrigger);
+
+		delete m_tmpColliderSave;
+		m_tmpColliderSave = nullptr;
 	}
 
 	void Collider::OnCopy(IComponent* copyTo) const
@@ -128,7 +146,7 @@ namespace Core::Physics
 		}
 	}
 
-	void Collider::CreateActor()
+	void Collider::CreateRigidActor()
 	{
 		Core::Datastructure::RootObject* root = GetRoot();
 
@@ -307,7 +325,7 @@ namespace Core::Physics
 		m_pxShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
 	}
 
-	void Collider::SetRaycastFilter(const EFilterRaycast& filter)
+	void Collider::SetRaycastFilter(EFilterRaycast filter)
 	{
 		// if there is already a shape put the value in the shape
 		// if the object isn't going to be destroyed save the value

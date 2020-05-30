@@ -126,12 +126,7 @@ namespace Core::Animation
 			FindMaterialToDelete(currOffsetMesh);
 
 			int matIndice = currOffsetMesh.materialIndices;
-
-			if (m_materialsModel[matIndice]->IsDelete)
-			{
-				m_materialsModel[matIndice] = GetRoot()->GetEngine()->GetResourcesManager()->GetMaterial("Default");
-				m_materialsNames[i] = "Default";
-			}
+			FindMaterialToDelete(currOffsetMesh);
 
 			std::shared_ptr<Resources::Material> material = m_materialsModel[matIndice];
 			std::shared_ptr<Resources::Shader> usedShader;

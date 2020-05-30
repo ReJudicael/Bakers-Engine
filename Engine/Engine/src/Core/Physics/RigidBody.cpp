@@ -89,7 +89,7 @@ namespace Core
 			GetParent()->GetComponentsOfBaseTypeInObject(colliders);
 
 			if (colliders.size() > 0 && !(*colliders.begin())->IsDestroyed())
-				(*colliders.begin())->CreateActor();
+				(*colliders.begin())->CreateRigidActor();
 
 			GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
 		}
