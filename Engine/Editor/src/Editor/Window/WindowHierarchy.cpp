@@ -196,7 +196,7 @@ namespace Editor::Window
 
 	void WindowHierarchy::DisplaySceneHierarchy(Core::Datastructure::RootObject* scene)
 	{
-		bool isOpen = ImGui::CollapsingHeader(scene->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+		bool isOpen = ImGui::CollapsingHeader(GetEngine()->GetSceneName().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
 		DragDropTargetItem(scene);
 
 		if (isOpen)
