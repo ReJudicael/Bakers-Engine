@@ -1,6 +1,6 @@
 --Move object with WASD inputs
 
-speed = 10;
+speed = 50;
 maxVelocity = 50;
 angularSpeed = 0.1; --value used for quaternion slerp. Must be between 0 and 1
 
