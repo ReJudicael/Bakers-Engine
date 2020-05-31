@@ -63,7 +63,11 @@ namespace Resources
 	{
 		if (shaderType == EShaderType::VERTEX)
 		{
-			std::string content = version + GetCodeFromFile(file);
+			std::string content = version;
+			if (m_shaderHeader == EShaderHeaderType::LIGHT)
+				content += GetCodeFromFile(lightShaderSource);
+
+			content += GetCodeFromFile(file);
 			m_vertex = content.c_str();
 		}
 		else
@@ -282,11 +286,5 @@ namespace Resources
 		}
 
 		return selectedLights;
-	}
-
-	void Shader::ResetShadowCastingLights()
-	{
-		for (size_t i{ 0 }; i < Shader::lights.size(); ++i)
-			Shader::lights[i]->SetShadowDrawn(false);
 	}
 }

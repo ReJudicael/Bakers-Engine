@@ -476,10 +476,6 @@ namespace Core::Datastructure
 		ZoneScoped
 			m_root->StartFrame();
 			m_manager->UpdateResourcesManager();
-			/*m_manager->CheckDeleteAssimpImporter();
-			m_manager->LinkAllTextureToOpenGl();
-			m_manager->LinkAllModelToOpenGl();
-			m_manager->ShaderUpdate();*/
 	}
 
 	void		EngineCore::Render()

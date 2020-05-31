@@ -63,7 +63,7 @@ namespace Core::Renderer
 		
 		std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
 		for (auto j{ 0 }; j < lights.size(); ++j)
-			glUniformMatrix4fv(m_shader->GetLocation("uLightView[" + std::to_string(j) + "]"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
+			glUniformMatrix4fv(m_shader->GetLocation("uLightPOV[" + std::to_string(j) + "].view"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
 		glUniform1i(m_shader->GetLocation("uShadowCount"), lights.size());
 
 		glActiveTexture(GL_TEXTURE0);

@@ -4,6 +4,7 @@
 #include "Shader.h"
 #include "Object.hpp"
 #include "Quaternion.hpp"
+#include "Camera.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -56,7 +57,6 @@ namespace Core::Renderer
         copy->m_specular = m_specular;
         copy->m_attenuation = m_attenuation;
 
-        copy->m_shadowDrawn = m_shadowDrawn;
         copy->m_castShadow = m_castShadow;
         copy->m_depthBuffer = m_depthBuffer;
         copy->m_depthTexture = m_depthTexture;
@@ -153,6 +153,22 @@ namespace Core::Renderer
         }
     }
 
+    Core::Maths::Mat4 Light::GetProjFromLight()
+    {
+        switch (m_type)
+        {
+            case ELightType::DIRECTION:
+                return Camera::CreateOrthographicMatrix(m_depthWidth, m_depthHeight, 0.1f, 100.f);
+                break;
+            case ELightType::POINT:
+                return Core::Maths::Mat4::Identity();
+                break;
+            case ELightType::SPOT:
+                return Camera::CreatePerspectiveMatrix(m_depthWidth, m_depthHeight, 60.f, 0.1f, 100.f);
+                break;
+        }
+    }
+
     void    Light::OnDestroy()
     {
         ComponentBase::OnDestroy();
@@ -192,7 +208,6 @@ namespace Core::Renderer
         m_specular = { 1.f, 1.f, 1.f };
         m_attenuation = { 1.f, 0.f, 0.f };
 
-        m_shadowDrawn = false;
         m_castShadow = true;
     }
 

@@ -51,12 +51,8 @@ namespace Resources::Loader
 		CreateShader("Wireframe", ".\\Resources\\Shaders\\WireframeShader.vert", ".\\Resources\\Shaders\\WireframeShader.frag");
 		CreateShader("Skybox", ".\\Resources\\Shaders\\SkyboxShader.vert", ".\\Resources\\Shaders\\SkyboxShader.frag");
 		CreateShader("Particle", ".\\Resources\\Shaders\\BillboardShader.vert", ".\\Resources\\Shaders\\ParticleShader.frag");
-
-		Shader SkeletalShadow(".\\Resources\\Shaders\\SkeletalShadow.vert", ".\\Resources\\Shaders\\SkeletalShadow.frag");
-		m_shaders.emplace("SkeletalShadow", std::make_shared<Shader>(SkeletalShadow));
-
-		Shader skeletal(".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\SkeletalShader.frag");
-		m_shaders.emplace("Skeletal", std::make_shared<Shader>(skeletal));
+		CreateShader("SkeletalShadow", ".\\Resources\\Shaders\\SkeletalShadow.vert", ".\\Resources\\Shaders\\SkeletalShadow.frag");
+		CreateShader("Skeletal", ".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\SkeletalShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
 
 		std::shared_ptr<Material> material = std::make_shared<Material>();
 		material->CreateDefaultMaterial(this);
@@ -711,7 +707,7 @@ namespace Resources::Loader
 				glUniform1i(shader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + j);
 			std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
 			for (auto j{ 0 }; j < lights.size(); ++j)
-				glUniformMatrix4fv(shader->GetLocation("uLightView[" + std::to_string(j) + "]"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
+				glUniformMatrix4fv(shader->GetLocation("uLightPOV[" + std::to_string(j) + "].view"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
 			glUniform1i(shader->GetLocation("uShadowCount"), lights.size());
 		}
 	}
