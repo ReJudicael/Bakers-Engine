@@ -47,7 +47,7 @@ namespace Editor::Window
 		 */
 		bool m_clearOnPlay{ false };
 
-		int  m_listenerId;
+		int  m_listenerID;
 
 	public:
 		/**

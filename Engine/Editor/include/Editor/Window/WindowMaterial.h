@@ -95,7 +95,10 @@ namespace Editor::Window
 		 */
 		void MaterialInspector(std::shared_ptr<Resources::Material>& material);
 
-		void MaterialSaveDiscardInInspector(std::shared_ptr<Resources::Material>& material);
+		/**
+		 * Save / Discard a material
+		 */
+		void SaveDiscard(std::shared_ptr<Resources::Material>& material);
 
 		/**
 		 * Button to lock / unlock the selected material

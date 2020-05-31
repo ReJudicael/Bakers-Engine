@@ -69,6 +69,12 @@ namespace Editor::Window
 		void DragDropTargetItem(const std::string & itemPath, std::shared_ptr<Resources::Texture> & texture);
 
 		/**
+		 * Save / Discard a bshader
+		 * @param shader: Shader wanted
+		 */
+		void SaveDiscard(std::shared_ptr<Resources::Shader>& shader);
+
+		/**
 		 * Display the names and current values of the properties
 		 * The user can be modify these values
 		 */
@@ -78,7 +84,7 @@ namespace Editor::Window
 		 * Display the vertex or the frament shader path
 		 * @param shader: the shader of the WindowShader
 		 * @param isVertex: if true diplay the vertex shader path 
-		 * else display the fragment shader path 
+		 * Else display the fragment shader path 
 		 */
 		void DisplayVertAndFragShader(std::shared_ptr<Resources::Shader>& shader, bool isVertex);
 

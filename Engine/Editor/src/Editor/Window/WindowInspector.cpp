@@ -344,7 +344,7 @@ namespace Editor::Window
 		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.88f, 0.70f, 0.17f, 1.00f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered,	{ 0.88f, 0.70f, 0.17f, 0.70f });
 
-		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionWidth() * ((1 - 0.7f) / 2));
+		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionWidth() * ((1.f - 0.7f) * 0.5f));
 		if (ImGui::BeginComboButton("Add component", { ImGui::GetWindowContentRegionWidth() * 0.7f, 0 }))
 		{
 			rttr::array_range possibleComponents{ rttr::type::get<Core::Datastructure::ComponentBase>().get_derived_classes() };
@@ -391,11 +391,9 @@ namespace Editor::Window
 	{
 		if (m_isLocked)
 		{
-			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
 			if (ImGui::Button(ICON_FA_LOCK))
 				m_isLocked = false;
 			ImGui::HelpMarkerItem("Locked");
-			ImGui::PopStyleColor();
 		}
 		else
 		{

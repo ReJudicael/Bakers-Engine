@@ -69,7 +69,7 @@ namespace Editor::Window
 	{
 		if (varUniform.var.get_type() == rttr::type::get<bool>())
 		{
-			bool b{ varUniform.var.to_bool() };
+			ImGui::Checkbox(varUniform.name.c_str(), &varUniform.var.get_value<bool>());
 		}
 		else if (varUniform.var.get_type() == rttr::type::get<int>())
 		{
@@ -97,26 +97,29 @@ namespace Editor::Window
 		}
 		else if (varUniform.var.get_type() == rttr::type::get<std::shared_ptr<Resources::Texture>>())
 		{
-			std::shared_ptr<Resources::Texture> text = varUniform.var.get_value<std::shared_ptr<Resources::Texture>>();
-			std::string str;
-			if (text)
-				str = GetEngine()->GetResourcesManager()->FindTextureFromShared(text);
-
-			DragDropTargetItem(str, varUniform.var.get_value<std::shared_ptr<Resources::Texture>>());
+			ShowMaterialTexture(varUniform.var.get_value<std::shared_ptr<Resources::Texture>>());
 		}
 	}
 
 	void WindowMaterial::ShowMaterialTexture(std::shared_ptr<Resources::Texture>& texture)
 	{
-		std::string str;
+		std::string nameTexture;
 		if (texture)
-			str = GetEngine()->GetResourcesManager()->FindTextureFromShared(texture);
+			nameTexture = GetEngine()->GetResourcesManager()->FindTextureFromShared(texture);
 
-		DragDropTargetItem(str, texture);
+		DragDropTargetItem(nameTexture, texture);
 	}
 
 	void WindowMaterial::MaterialInspector(std::shared_ptr<Resources::Material>& material)
 	{
+		m_nameMaterial = GetEngine()->GetResourcesManager()->FindMaterialFromShared(m_material);
+		ImGui::SetNextItemWidth(-FLT_MIN);
+		ImGui::InputText("## DisplayMaterialName", (char*)m_nameMaterial.c_str(), m_nameMaterial.size(), ImGuiInputTextFlags_ReadOnly);
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
 		if (ImGui::CollapsingHeaderWithImageUV(m_propertyIcon->texture, "Properties", m_treeNodeFlags))
 		{
 			ImGui::Spacing();
@@ -129,60 +132,55 @@ namespace Editor::Window
 
 			if (material->textures.size() > 0)
 			{
-				ImGui::Text("Base Texture : ");
-				for (auto& texture : material->textures)
-					ShowMaterialTexture(texture);
-			}
-
-			ImGui::Spacing();
-			ImGui::Spacing();
-			if (material->variants.size() > 0)
-			{
-				if (ImGui::TreeNodeEx("Uniform Personnal : ", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen))
+				ImGui::Spacing();
+				if (ImGui::TreeNodeEx("Base Texture", ImGuiTreeNodeFlags_DefaultOpen))
 				{
-					for (auto& varUniform : material->variants)
-						ShowMaterialVariant(varUniform);
-					ImGui::TreePop();	
+					for (auto& texture : material->textures)
+						ShowMaterialTexture(texture);
+					ImGui::TreePop();
 				}
 			}
 
-			MaterialSaveDiscardInInspector(material);
+			if (material->variants.size() > 0)
+			{
+				ImGui::Spacing();
+				if (ImGui::TreeNodeEx("Uniform Personnal", ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					for (auto& varUniform : material->variants)
+						ShowMaterialVariant(varUniform);
+					ImGui::TreePop();
+				}
+			}
 		}
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		SaveDiscard(material);
+		ImGui::Spacing();
 	}
 
-	void WindowMaterial::MaterialSaveDiscardInInspector(std::shared_ptr<Resources::Material>& material)
+	void WindowMaterial::SaveDiscard(std::shared_ptr<Resources::Material>& material)
 	{
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
-		ImGui::SetNextItemWidth(100.f);
-		ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 100.f);
-		if (ImGui::Button("Save"))
-		{
+		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionWidth() - 120.f);
+
+		if (ImGui::Button("Save", { 60.f, 0.f }))
 			material->SaveMaterial(m_nameMaterial, GetEngine()->GetResourcesManager());
-		}
-		ImGui::HelpMarkerItem("Save the material");
-		ImGui::PopStyleColor();
+
 		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
-		ImGui::SetNextItemWidth(100.f);
-		if (ImGui::Button("Discard"))
-		{
+
+		if (ImGui::Button("Discard", { 60.f, 0.f }))
 			material->LoadMaterialFromJSON(m_nameMaterial, GetEngine()->GetResourcesManager());
-		}
-		ImGui::HelpMarkerItem("Discard all changes");
-		ImGui::PopStyleColor();
 	}
 
 	void WindowMaterial::LockSelectedMaterialButton()
 	{
 		if (m_isLocked)
 		{
-			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
 			if (ImGui::Button(ICON_FA_LOCK))
 				m_isLocked = false;
 			ImGui::HelpMarkerItem("Locked");
-			ImGui::PopStyleColor();
 		}
 		else
 		{
@@ -193,6 +191,7 @@ namespace Editor::Window
 			ImGui::PopStyleColor();
 		}
 	}
+
 	void WindowMaterial::Tick()
 	{
 		if (!m_isLocked && m_material != GetEngine()->materialSelected)
@@ -208,13 +207,9 @@ namespace Editor::Window
 				m_material = nullptr;
 				return;
 			}
-			m_nameMaterial = GetEngine()->GetResourcesManager()->FindMaterialFromShared(m_material);
+
 			LockSelectedMaterialButton();
 			ImGui::SameLine();
-			ImGui::Text(m_nameMaterial.c_str());
-			ImGui::Spacing();
-			ImGui::Separator();
-			ImGui::Spacing();
 			MaterialInspector(m_material);
 		}
 	}

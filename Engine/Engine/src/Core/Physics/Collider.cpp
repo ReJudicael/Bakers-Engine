@@ -20,10 +20,10 @@ namespace Core::Physics
 		.property("Activate", &Core::Physics::Collider::IsActive, &Core::Physics::Collider::SetActivateCollider)
 		.enumeration<Core::Physics::EFilterRaycast>("FilterRaycast")
 			(
-			value("GROUPE1", Core::Physics::EFilterRaycast::GROUPE1),
-			value("GROUPE2", Core::Physics::EFilterRaycast::GROUPE2),
-			value("GROUPE3", Core::Physics::EFilterRaycast::GROUPE3),
-			value("GROUPE4", Core::Physics::EFilterRaycast::GROUPE4)
+			value("Groupe 1", Core::Physics::EFilterRaycast::GROUPE1),
+			value("Groupe 2", Core::Physics::EFilterRaycast::GROUPE2),
+			value("Groupe 3", Core::Physics::EFilterRaycast::GROUPE3),
+			value("Groupe 4", Core::Physics::EFilterRaycast::GROUPE4)
 			)
 		.property("Filter", &Core::Physics::Collider::GetRaycastFilter, &Core::Physics::Collider::SetRaycastFilter)
 		.property("Local positon", &Core::Physics::Collider::GetLocalPosition, &Core::Physics::Collider::SetLocalPosition)

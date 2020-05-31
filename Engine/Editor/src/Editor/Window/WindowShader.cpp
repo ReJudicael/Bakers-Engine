@@ -41,37 +41,43 @@ namespace Editor::Window
 		}
 	}
 
+	void WindowShader::SaveDiscard(std::shared_ptr<Resources::Shader>& shader)
+	{
+		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionWidth() - 120.f);
+		if (ImGui::Button("Save", { 60.f, 0.f }))
+			shader->SaveShader(m_nameShader);
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Discard", { 60.f, 0.f }))
+			shader->LoadShader(m_nameShader);
+	}
+
 	void WindowShader::ShaderInspector(std::shared_ptr<Resources::Shader>& shader)
 	{
+		m_nameShader = GetEngine()->GetResourcesManager()->FindShaderFromShared(m_shader);
+		ImGui::SetNextItemWidth(-FLT_MIN);
+		ImGui::InputText("## DisplayShaderName", (char*)m_nameShader.c_str(), m_nameShader.size(), ImGuiInputTextFlags_ReadOnly);
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
 		if (ImGui::CollapsingHeaderWithImageUV(m_propertyIcon->texture, "Properties", m_treeNodeFlags))
 		{
 			ImGui::Spacing();
 
 			DisplayVertAndFragShader(shader, true);
-
 			DisplayVertAndFragShader(shader, false);
-
-			ImGui::Spacing();
-			ImGui::Spacing();
-			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
-			ImGui::SetNextItemWidth(100.f);
-			ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 100.f);
-			if (ImGui::Button("Save"))
-			{
-				shader->SaveShader(m_nameShader);
-			}
-			ImGui::HelpMarkerItem("Save the material");
-			ImGui::PopStyleColor();
-			ImGui::SameLine();
-			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
-			ImGui::SetNextItemWidth(100.f);
-			if (ImGui::Button("Discard"))
-			{
-				shader->LoadShader(m_nameShader);
-			}
-			ImGui::HelpMarkerItem("Discard all changes");
-			ImGui::PopStyleColor();
 		}
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		SaveDiscard(shader);
+
+		ImGui::Spacing();
 	}
 
 	void WindowShader::DisplayVertAndFragShader(std::shared_ptr<Resources::Shader>& shader, bool isVertex)
@@ -104,8 +110,6 @@ namespace Editor::Window
 					shader->SetVertName(data);
 				else
 					shader->SetFragName(data);
-
-				//ImGui::EndDragDropTarget();
 			}
 			ImGui::EndDragDropTarget();
 		}
@@ -115,11 +119,9 @@ namespace Editor::Window
 	{
 		if (m_isLocked)
 		{
-			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_Button]);
 			if (ImGui::Button(ICON_FA_LOCK))
 				m_isLocked = false;
 			ImGui::HelpMarkerItem("Locked");
-			ImGui::PopStyleColor();
 		}
 		else
 		{
@@ -138,16 +140,10 @@ namespace Editor::Window
 			m_nameShader = GetEngine()->nameShaderSelected;
 		}
 
-
 		if (m_shader)
 		{
-			m_nameShader = GetEngine()->GetResourcesManager()->FindShaderFromShared(m_shader);
 			LockSelectedShaderButton();
 			ImGui::SameLine();
-			ImGui::Text(m_nameShader.c_str());
-			ImGui::Spacing();
-			ImGui::Separator();
-			ImGui::Spacing();
 			ShaderInspector(m_shader);
 		}
 	}

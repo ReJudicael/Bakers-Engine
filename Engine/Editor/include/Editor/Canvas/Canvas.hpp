@@ -154,7 +154,7 @@ namespace Editor
 		 * @param state: Condition (Whether the button should be active or inactive)
 		 * @param helpMarker: Text written when the mouse is over the button
 		 */
-		bool ToolbarButton(const char* label, bool state, const char* helpMarker);
+		bool ToolbarButton(const char* label, bool state, const char* helpMarker = (const char*)0);
 
 #pragma endregion
 	};

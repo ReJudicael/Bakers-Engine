@@ -26,7 +26,7 @@ namespace Editor::Window
 
 		bool												m_showNavMesh{ true };
 
-		bool m_showAllColliders{ true };
+		bool m_showColliders{ true };
 	public:
 		/**
 		 * Constructor which set title of window ("Scene")

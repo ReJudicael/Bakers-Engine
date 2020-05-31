@@ -66,9 +66,19 @@ namespace Editor::Window
 
 	void WindowScene::DrawOptions()
 	{
-		ImGui::Checkbox("Show Navigation Mesh", &m_showNavMesh);
-		ImGui::SetCursorPos({ ImGui::GetWindowContentRegionWidth() - 178.f, ImGui::GetCursorPosY() + GImGui->Style.ItemSpacing.y * 0.5f });
-		ImGui::Checkbox("Show All Colliders", &m_showAllColliders);
+		ImGui::PushStyleColor(ImGuiCol_Button, GImGui->Style.Colors[ImGuiCol_FrameBg]);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 4.f, 4.f });
+		bool isClicked = ImGui::BeginComboButton(ICON_FA_COG "  Show Gizmos", { 125.f, 0.f });
+		ImGui::PopStyleColor();
+
+		if (isClicked)
+		{
+			ImGui::MenuItem("Nav Mesh", (const char*)0, &m_showNavMesh);
+			ImGui::MenuItem("Colliders", (const char*)0, &m_showColliders);
+			ImGui::EndCombo();
+		}
+
+		ImGui::PopStyleVar();
 	}
 
 	void WindowScene::DisplayScene()
@@ -85,13 +95,14 @@ namespace Editor::Window
 				glViewport(fbo->Size[0], fbo->Size[1], fbo->Size[2], fbo->Size[3]);
 				if (m_showNavMesh)
 					GetEngine()->GetNavMesh()->DrawNavMesh(m_cam);
-				if (m_showAllColliders)
+				if (m_showColliders)
 					DrawAllColliders();
 				glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
 			}
+
 			float cursorY{ ImGui::GetCursorPosY() };
 			ImGui::ImageUV(fbo->ColorTexture, windowSize);
-			ImGui::SetCursorPos({ ImGui::GetWindowContentRegionWidth() - 178.f, cursorY + GImGui->Style.ItemSpacing.y });
+			ImGui::SetCursorPos({ ImGui::GetWindowContentRegionWidth() - 128.f, cursorY + GImGui->Style.ItemSpacing.y });
 			DrawOptions();
 
 			if (ImGui::IsWindowHovered())

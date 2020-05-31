@@ -162,11 +162,11 @@ namespace Editor
 			GetEngine()->operation = SelectionMode::SCALE;
 		ImGui::SameLine(140.f);
 
-		if (ToolbarButton(ICON_FA_MAP_MARKER_ALT "  Local", GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL, "Local"))
+		if (ToolbarButton(ICON_FA_MAP_MARKER_ALT "  Local", GetEngine()->gizmoMode == ImGuizmo::MODE::LOCAL))
 			GetEngine()->gizmoMode = ImGuizmo::MODE::LOCAL;
 		ImGui::SameLine();
 
-		if (ToolbarButton(ICON_FA_GLOBE "  World", GetEngine()->gizmoMode == ImGuizmo::MODE::WORLD, "World"))
+		if (ToolbarButton(ICON_FA_GLOBE "  World", GetEngine()->gizmoMode == ImGuizmo::MODE::WORLD))
 			GetEngine()->gizmoMode = ImGuizmo::MODE::WORLD;
 		ImGui::SameLine({ ImGui::GetWindowWidth() / 2 - 54.f });
 
@@ -207,7 +207,9 @@ namespace Editor
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button, state ? ImGui::GetStyle().Colors[ImGuiCol_Button] : ImGui::GetStyle().Colors[ImGuiCol_FrameBg]);
 		bool isPressed = ImGui::Button(label);
-		ImGui::HelpMarkerItem(helpMarker);	ImGui::SameLine();
+		if (helpMarker)
+			ImGui::HelpMarkerItem(helpMarker);
+		ImGui::SameLine();
 		ImGui::PopStyleColor();
 		return isPressed;
 	}
