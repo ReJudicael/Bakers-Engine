@@ -168,10 +168,5 @@ namespace Resources
 		 * @return Vector storing each usable light
 		 */
 		static std::vector<Core::Renderer::Light*> GetShadowCastingLights();
-
-		/**
-		 * Reset shadow draw state for each light, allowing shadow computing for next frame
-		 */
-		static void ResetShadowCastingLights();
 	};
 }

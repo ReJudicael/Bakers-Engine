@@ -256,16 +256,7 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material->shader);
 
 		usedShader->UseProgram();
-		{
-			MaterialSendToOpengGL(view, proj, trs, material, usedShader);
-			// Init value of higher texture for shadow maps
-			/*for (int j{ 0 }; j < 10; ++j)
-				glUniform1i(usedShader->GetLocation("uShadowMap[" + std::to_string(j) + "]"), 2 + j);
-			std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
-			for (auto j{ 0 }; j < lights.size(); ++j)
-				glUniformMatrix4fv(usedShader->GetLocation("uLightView[" + std::to_string(j) + "]"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
-			glUniform1i(usedShader->GetLocation("uShadowCount"), lights.size());*/
-		}
+		MaterialSendToOpengGL(view, proj, trs, material, usedShader);
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,
 			(GLvoid*)(currOffsetMesh.beginIndices * sizeof(GLuint)));

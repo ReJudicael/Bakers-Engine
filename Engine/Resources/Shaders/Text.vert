@@ -8,7 +8,7 @@ layout(location = 3) in vec3 aTangent;
 uniform mat4 uModel;
 uniform mat4 uProj;
 uniform mat4 uCam;
-uniform mat4[10] uLightView;
+uniform lightPOV[10] uLightPOV;
 uniform int uShadowCount;
 uniform vec4 cColor;
 
@@ -32,7 +32,7 @@ void main()
 	gl_Position = uProj * uCam * pos;
 	
 	for (int i = 0; i < uShadowCount; ++i)
-		lightSpacePos[i] = uProj * uLightView[i] * pos;
+		lightSpacePos[i] = uProj * uLightPOV[i].view * pos;
 
 	color = cColor;
 }

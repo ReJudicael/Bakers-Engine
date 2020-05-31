@@ -13,7 +13,7 @@ uniform mat4 uModel;
 uniform mat4 uProj;
 uniform mat4 uCam;
 uniform mat4 uBones[MAX_BONES];
-uniform mat4[10] uLightView;
+uniform lightPOV[10] uLightPOV;
 uniform int uShadowCount;
 
 // Varyings (variables that are passed to fragment shader with perspective interpolation)
@@ -61,5 +61,5 @@ void main()
 	tangent = boneTangent.xyz; 
 
 	for (int i = 0; i < uShadowCount; ++i)
-		lightSpacePos[i] = uProj * uLightView[i] * pos;
+		lightSpacePos[i] = uProj * uLightPOV[i].view * pos;
 }

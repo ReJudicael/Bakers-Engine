@@ -72,23 +72,16 @@ void Core::Datastructure::ICamera::DrawDepth(const std::list<IRenderable*>& rend
 
 	for (size_t i{ 0 }; i < lights.size(); ++i)
 	{
-		if (!lights[i]->GetShadowDrawn())
-		{
-			lights[i]->ResizeShadowTexture(m_fbo->Size[2], m_fbo->Size[3]);
+		glBindFramebuffer(GL_FRAMEBUFFER, lights[i]->ShadowBuffer());
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glBindFramebuffer(GL_FRAMEBUFFER, lights[i]->ShadowBuffer());
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glCullFace(GL_FRONT);
+		for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
+			(*it)->Draw(lights[i]->GetViewFromLight(), this->GetPerspectiveMatrix(), m_shadowShader);
+		glCullFace(GL_BACK);
 
-			glCullFace(GL_FRONT);
-			for (auto it{ renderables.begin() }; it != renderables.end(); ++it)
-				(*it)->Draw(lights[i]->GetViewFromLight(), this->GetPerspectiveMatrix(), m_shadowShader);
-			glCullFace(GL_BACK);
-
-			lights[i]->SetShadowDrawn(true);
-
-			glActiveTexture(GL_TEXTURE2 + i);
-			glBindTexture(GL_TEXTURE_2D, lights[i]->ShadowTexture());
-		}
+		glActiveTexture(GL_TEXTURE2 + i);
+		glBindTexture(GL_TEXTURE_2D, lights[i]->ShadowTexture());
 	}
 }
 

@@ -7,6 +7,12 @@ struct Material
 	float	shininessStrength;
 };
 
+struct lightPOV
+{
+	mat4 view;
+	mat4 proj;
+};
+
 struct light
 {
 	int type;
