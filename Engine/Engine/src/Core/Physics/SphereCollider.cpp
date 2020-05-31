@@ -83,17 +83,6 @@ namespace Core::Physics
 		m_pxMaterial = physics->createMaterial(mat.x, mat.y, mat.z);
 		m_pxShape = physics->createShape(physx::PxSphereGeometry(radius), *m_pxMaterial, true);
 		SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);
-		//m_pxShape->setLocalPose(physx::PxTransform(localPosition, localRotation));
-		
-		/*if (m_tmpColliderSave)
-		{
-			SetRaycastFilter(m_tmpColliderSave->raycastFilter);
-			Trigger(m_tmpColliderSave->isTrigger);
-			delete m_tmpColliderSave;
-			m_tmpColliderSave = nullptr;
-		}
-		else
-			SetRaycastFilter(Core::Physics::EFilterRaycast::GROUPE1);*/
 	}
 
 	void SphereCollider::SetSphereHalfExtent(float halfExtent)

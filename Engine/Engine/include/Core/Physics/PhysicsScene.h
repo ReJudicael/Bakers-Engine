@@ -297,8 +297,14 @@ namespace Core
 			void ReleasePhysXSDK();
 
 			/*
+			 * Attach an Actor to the physics scene
+			 * @param actor: the actor wich will be attach to the physics scene
+			 */
+			void AttachActorToPhysicsScene(physx::PxRigidActor* actor);
+
+			/*
 			 * Remove an Actor from the physics Scene
-			 * @param actor: the actor wich will be destroyed
+			 * @param actor: the actor wich will be remove from the physics scene
 			 */
 			void RemoveActorFromPhysicsScene(physx::PxRigidActor* actor);
 

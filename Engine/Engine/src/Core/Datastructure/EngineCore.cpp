@@ -375,11 +375,6 @@ namespace Core::Datastructure
 		inputScene >> data;
 
 		LoadSceneFromJson(data);
-		//Core::Datastructure::Object* umbreon{ m_root->CreateChild("Umbreon", {}) };
-		//m_manager->Load3DObject("Resources/Models/cavaleiro.fbx");
-		//m_manager->Load3DObject("Resources/Models/fbx(ONLYIMPORT).fbx");
-		//m_manager->Load3DObject("Resources/Models/Combo01_SwordShieldAnim.FBX");
-		//m_manager->Load3DObject("Resources/Models/CommonerSK.FBX");
 
 		m_navMesh->LoadNavMesh(m_currScene);
 
@@ -476,10 +471,6 @@ namespace Core::Datastructure
 		ZoneScoped
 			m_root->StartFrame();
 			m_manager->UpdateResourcesManager();
-			/*m_manager->CheckDeleteAssimpImporter();
-			m_manager->LinkAllTextureToOpenGl();
-			m_manager->LinkAllModelToOpenGl();
-			m_manager->ShaderUpdate();*/
 	}
 
 	void		EngineCore::Render()

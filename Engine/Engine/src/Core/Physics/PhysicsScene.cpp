@@ -326,8 +326,6 @@ namespace Core::Physics
 
 		dynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
 
-		// usefull if we don't want to do the update every time if the rigid doesn't move
-		//m_dynamicMesh->setActorFlag(physx::PxActorFlag::eSEND_SLEEP_NOTIFIES);
 		actor = dynamic;
 
 		m_pxScene->addActor(*actor);
@@ -444,7 +442,11 @@ namespace Core::Physics
 
 	void PhysicsScene::EndSimulate()
 	{
-		m_pxScene->fetchResults(m_IsSimulating);
+		if (m_IsSimulating)
+		{
+			m_pxScene->fetchResults(m_IsSimulating);
+			m_IsSimulating = false;
+		}
 	}
 
 	void PhysicsScene::ReleasePhysXSDK()
@@ -476,6 +478,11 @@ namespace Core::Physics
 			m_pxCooking = nullptr;
 			m_pxFoundation = nullptr;
 		}
+	}
+
+	void PhysicsScene::AttachActorToPhysicsScene(physx::PxRigidActor* actor)
+	{
+		m_pxScene->addActor(*actor);
 	}
 
 	void PhysicsScene::RemoveActorFromPhysicsScene(physx::PxRigidActor* actor)

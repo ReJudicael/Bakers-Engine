@@ -50,7 +50,7 @@ namespace Core
 			Core::Maths::Quat	localRotation;
 			Core::Maths::Vec3	extent;
 			Core::Maths::Vec3	physicsMaterial;
-			bool				isTrigger;
+			bool				isTrigger{ false };
 			EFilterRaycast		raycastFilter;
 		};
 
@@ -141,10 +141,11 @@ namespace Core
 			 * Get the PhysX shape of the collider
 			 * @return the PhysX shape of the collider 
 			 */
-			physx::PxShape* GetShape()
-			{
-				return m_pxShape;
-			}
+			physx::PxShape* GetShape() { return m_pxShape; }
+
+			inline bool IsActive() { return m_isActive; }
+
+			void SetActivateCollider(bool activate);
 
 			/**
 			 * Set the local position of the shape compared to 

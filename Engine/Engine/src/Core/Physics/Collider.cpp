@@ -17,6 +17,7 @@ namespace Core::Physics
 	{
 		ZoneScopedN("Registering RTTR")
 		registration::class_<Core::Physics::Collider>("Collider")
+		.property("Activate", &Core::Physics::Collider::IsActive, &Core::Physics::Collider::SetActivateCollider)
 		.enumeration<Core::Physics::EFilterRaycast>("FilterRaycast")
 			(
 			value("GROUPE1", Core::Physics::EFilterRaycast::GROUPE1),
@@ -179,6 +180,22 @@ namespace Core::Physics
 
 		// Init the actor as his save
 		rigidBody->InitPhysic();
+	}
+
+	void Collider::SetActivateCollider(bool activate)
+	{
+		if (!m_pxRigidActor)
+			return;
+		if (activate)
+		{
+			m_pxRigidActor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+			m_isActive = activate;
+		}
+		else
+		{
+			m_pxRigidActor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+			m_isActive = activate;
+		}
 	}
 
 	void Collider::SetLocalPosition(Core::Maths::Vec3 pos)
