@@ -359,6 +359,9 @@ namespace Editor::Window
 		if (object->IsDestroyed())
 			return;
 
+		if (object == nullptr)
+			return;
+
 		DisplayObjectName(object);
 
 		ImGui::Spacing();
