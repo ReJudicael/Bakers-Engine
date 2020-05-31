@@ -169,7 +169,8 @@ namespace Editor
 		case (Core::Datastructure::EngineState::CLOSED):
 		{
 			ZoneScopedN("EngineClosed")
-				ReloadScene();
+			objectSelected = nullptr;
+			ReloadScene();
 			m_paused = false;
 			m_state = Core::Datastructure::EngineState::INITIALIZED;
 			Render();
