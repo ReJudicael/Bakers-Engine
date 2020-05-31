@@ -16,6 +16,7 @@ namespace Core::Renderer
 		bool	m_useBW{ false };
 		bool	m_useBloom{ false };
 		bool	m_useCartoon{ false };
+		bool	m_useVision{ false };
 
 		GLuint	m_VAO;
 
@@ -32,6 +33,7 @@ namespace Core::Renderer
 		std::shared_ptr<Resources::Shader> m_colorBWShader;	
 		std::shared_ptr<Resources::Shader> m_additionShader;
 		std::shared_ptr<Resources::Shader> m_cartoonShader;
+		std::shared_ptr<Resources::Shader> m_visionShader;
 
 
 		protected:

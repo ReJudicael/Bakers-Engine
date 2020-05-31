@@ -39,6 +39,10 @@ RTTR_PLUGIN_REGISTRATION
 		(
 			rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "IsUsingCartoon")
 		)
+		.property("Colored vision", &Core::Renderer::Postprocess::m_useVision)
+		(
+			rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "CanUseEffect")
+		)
 		.method("IsUsingBlur", &Core::Renderer::Postprocess::IsUsingBlur)
 		.method("IsUsingColor", &Core::Renderer::Postprocess::IsUsingColor)
 		.method("IsUsingCartoon", &Core::Renderer::Postprocess::IsUsingCartoon)
@@ -129,7 +133,8 @@ namespace Core::Renderer
 		m_blurShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessBlur", "Resources\\Shaders\\PostprocessBlurShader.vert", "Resources\\Shaders\\PostprocessBlurShader.frag");
 		m_colorBWShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessBW", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessBlackWhiteShader.frag");
 		m_additionShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessAddition", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessAdditionShader.frag");
-		m_cartoonShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessToyEffect", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessCartoonShader.frag");
+		m_cartoonShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessCartoonEffect", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessCartoonShader.frag");
+		m_visionShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("PostProcessVisionEffect", "Resources\\Shaders\\PostprocessShader.vert", "Resources\\Shaders\\PostprocessVisionShader.frag");
 	}
 
 	void	Postprocess::InitPostprocessVAO()
@@ -244,6 +249,12 @@ namespace Core::Renderer
 		if (m_useCartoon)
 		{
 			DrawEffect(drawFbo, m_effectFbo, m_cartoonShader);
+			DrawEffect(m_effectFbo, drawFbo, m_defaultShader);
+		}
+
+		if (m_useVision)
+		{
+			DrawEffect(drawFbo, m_effectFbo, m_visionShader);
 			DrawEffect(m_effectFbo, drawFbo, m_defaultShader);
 		}
 	}

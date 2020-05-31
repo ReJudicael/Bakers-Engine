@@ -1580,7 +1580,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 634.0
+                                                "Value": 643.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1590,7 +1590,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 670.0
+                                                "Value": 693.0
                                             }
                                         }
                                     }
@@ -1630,6 +1630,11 @@
                                         1.0
                                     ]
                                 },
+                                "Colored vision": {
+                                    "Name": "Colored vision",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Custom Color": {
                                     "Name": "Custom Color",
                                     "Type": "bool",
@@ -1653,7 +1658,7 @@
                                 "Line intensity": {
                                     "Name": "Line intensity",
                                     "Type": "float",
-                                    "Value": 0.75
+                                    "Value": 0.699999988079071
                                 }
                             }
                         }
@@ -5513,7 +5518,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 675.0
+                                                "Value": 643.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -5523,7 +5528,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 550.0
+                                                "Value": 693.0
                                             }
                                         }
                                     }
@@ -5563,6 +5568,11 @@
                                         1.0
                                     ]
                                 },
+                                "Colored vision": {
+                                    "Name": "Colored vision",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
                                 "Custom Color": {
                                     "Name": "Custom Color",
                                     "Type": "bool",
@@ -5586,7 +5596,7 @@
                                 "Line intensity": {
                                     "Name": "Line intensity",
                                     "Type": "float",
-                                    "Value": 750.0
+                                    "Value": 0.699999988079071
                                 }
                             }
                         }
