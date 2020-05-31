@@ -1,10 +1,12 @@
 #include "WindowProfiler.h"
 #include <glad\glad.h>
 
+#include "IconsFontAwesome5.h"
+
 namespace Editor::Window
 {
 	WindowProfiler::WindowProfiler(Canvas* canvas, bool visible) :
-		AWindow{ canvas, "Profiler", visible }
+		AWindow{ canvas, ICON_FA_CHART_BAR "  Profiler", visible }
 	{
 	}
 

@@ -1,13 +1,15 @@
+#include <string>
+
 #include "WindowViewport.h"
 #include "EditorEngine.h"
 #include "ICamera.h"
 
-#include <string>
+#include "IconsFontAwesome5.h"
 
 namespace Editor::Window
 {
 	WindowViewport::WindowViewport(Canvas* canvas, bool visible) :
-		AWindow{ canvas, "Viewport", visible }
+		AWindow{ canvas, ICON_FA_GAMEPAD "  Viewport", visible }
 	{
 		m_flags |= ImGuiWindowFlags_NoScrollbar;
 	}
@@ -30,6 +32,7 @@ namespace Editor::Window
 		if (m_cameraNum >= camNum)
 			m_cameraNum = camNum - 1;
 
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 4.f, 4.f });
 		if (camNum > 0 && ImGui::BeginCombo("## Camera", ("Viewport " + std::to_string(m_cameraNum)).c_str()))
 		{
 			for (int i{ 0 }; i < camNum; ++i)
@@ -39,6 +42,7 @@ namespace Editor::Window
 			}
 			ImGui::EndCombo();
 		}
+		ImGui::PopStyleVar();
 	}
 
 	void WindowViewport::DisplayFBO(Core::Renderer::Framebuffer* fbo)
@@ -58,17 +62,14 @@ namespace Editor::Window
 
 	void WindowViewport::DisplayViewport()
 	{
-		float cursorY{ ImGui::GetCursorPosY() };
 		Core::Renderer::Framebuffer* fbo{ GetEngine()->GetFBO(m_cameraNum, Core::Renderer::FBOType::CAMERA) };
-
 		if (fbo)
 		{
+			float cursorY{ ImGui::GetCursorPosY() };
 			DisplayFBO(fbo);
 
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 4.f, 4.f });
-			ImGui::SetCursorPos({ ImGui::GetWindowContentRegionWidth() - 128.f, cursorY + 3.f });
+			ImGui::SetCursorPos({ ImGui::GetWindowContentRegionWidth() - 128.f, cursorY + GImGui->Style.ItemSpacing.y });
 			ChooseViewport();
-			ImGui::PopStyleVar();
 		}
 		else
 		{

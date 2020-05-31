@@ -43,12 +43,12 @@ namespace Editor
 		std::shared_ptr<Resources::Shader> shaderSelected;
 		std::string nameShaderSelected;
 		SelectionMode operation{ SelectionMode::TRANSLATION };
-		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::WORLD };
+		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::LOCAL };
 		bool isTestingRay{ false };
 
-		std::list<Core::Physics::Collider*>											m_BoxCollider;
-		std::list<Core::Physics::Collider*>											m_SphereCollider;
-		std::list<Core::Physics::Collider*>											m_CapsuleCollider;
+		std::list<Core::Physics::Collider*>											m_boxCollider;
+		std::list<Core::Physics::Collider*>											m_sphereCollider;
+		std::list<Core::Physics::Collider*>											m_capsuleCollider;
 		// The information of the Object3D loaded
 		std::map<std::string, std::shared_ptr<Resources::Loader::Object3DInfo>>		m_info3DObject;
 

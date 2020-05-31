@@ -7,7 +7,7 @@ using namespace Core::Maths;
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Core::Renderer;
-	rttr::registration::class_<TextRenderer>("TextRenderer")
+	rttr::registration::class_<TextRenderer>("Text Renderer")
 		.constructor()
 		.property("Text", &TextRenderer::m_text)
 		.property("Font", &TextRenderer::m_font)

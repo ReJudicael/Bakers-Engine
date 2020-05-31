@@ -24,9 +24,9 @@ namespace Core::Physics
 			value("GROUPE3", Core::Physics::EFilterRaycast::GROUPE3),
 			value("GROUPE4", Core::Physics::EFilterRaycast::GROUPE4)
 			)
-		.property("LocalPositon", &Core::Physics::Collider::GetLocalPosition, &Core::Physics::Collider::SetLocalPosition)
-		.property("LocalRotation", &Core::Physics::Collider::GetLocalRotationEuler, &Core::Physics::Collider::SetLocalRotationEuler)
-		.property("Mat: S D R", &Core::Physics::Collider::GetMaterial, &Core::Physics::Collider::SetMaterial)
+		.property("Local positon", &Core::Physics::Collider::GetLocalPosition, &Core::Physics::Collider::SetLocalPosition)
+		.property("Local rotation", &Core::Physics::Collider::GetLocalRotationEuler, &Core::Physics::Collider::SetLocalRotationEuler)
+		.property("S/D Frict - Restitut", &Core::Physics::Collider::GetMaterial, &Core::Physics::Collider::SetMaterial)
 		.property("Trigger", &Core::Physics::Collider::IsTrigger, &Core::Physics::Collider::Trigger)
 		;
 	}

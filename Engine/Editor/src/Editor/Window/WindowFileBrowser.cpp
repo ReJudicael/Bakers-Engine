@@ -23,7 +23,7 @@ namespace Editor::Window
 	};
 
 	WindowFileBrowser::WindowFileBrowser(Canvas* canvas, bool visible) :
-		AWindow{ canvas, "File Browser", visible }
+		AWindow{ canvas, ICON_FA_FOLDER_OPEN "  File Browser", visible }
 	{
 		m_fs = new Core::SystemManagement::FileSystem();
 		m_treeNodeFlags		= ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;

@@ -7,7 +7,7 @@
 namespace Editor::Window
 {
 	WindowMaterial::WindowMaterial(Canvas* canvas, bool visible) :
-		AWindow{ canvas, "Material", visible }
+		AWindow{ canvas, ICON_FA_FILL "  Material", visible }
 	{
 		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 

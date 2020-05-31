@@ -6,7 +6,7 @@
 namespace Editor::Window
 {
 	WindowConsole::WindowConsole(Canvas* canvas, bool visible) :
-		AWindow{ canvas, "Console", visible }
+		AWindow{ canvas, ICON_FA_TERMINAL "  Console", visible }
 	{
 		for (auto& [icon, isEnabled] : m_logsIcon)
 			isEnabled = true;

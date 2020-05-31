@@ -13,7 +13,7 @@
 namespace Editor::Window
 {
 	WindowInspector::WindowInspector(Canvas* canvas, bool visible) :
-		AWindow{ canvas, "Inspector", visible }
+		AWindow{ canvas, ICON_FA_INFO_CIRCLE "  Inspector", visible }
 	{
 		m_treeNodeFlags		= ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 		m_inputTextFlags	= ImGuiInputTextFlags_AutoSelectAll;
@@ -368,9 +368,6 @@ namespace Editor::Window
 	void WindowInspector::ObjectInspector(Core::Datastructure::Object* object)
 	{
 		if (object->IsDestroyed())
-			return;
-
-		if (object == nullptr)
 			return;
 
 		DisplayObjectName(object);

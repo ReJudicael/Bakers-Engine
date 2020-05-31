@@ -7,10 +7,12 @@
 #include "ImGuizmo.h"
 #include "Maths.hpp"
 
+#include "IconsFontAwesome5.h"
+
 namespace Editor::Window
 {
 	WindowScene::WindowScene(Canvas* canvas, bool visible) :
-		AWindow{ canvas, "Scene", visible }
+		AWindow{ canvas, ICON_FA_BORDER_ALL "  Scene", visible }
 	{
 		m_flags |= ImGuiWindowFlags_NoScrollbar;
 
@@ -36,6 +38,39 @@ namespace Editor::Window
 		ImGui::PopStyleVar(1);
 	}
 
+	void WindowScene::DrawAllColliders()
+	{
+		std::list<Core::Physics::Collider*> box = GetEngine()->m_boxCollider;
+		for (auto it = box.begin(); it != box.end(); ++it)
+			(*it)->DrawCollider(m_cam, m_shader, m_model[0]);
+
+		std::list<Core::Physics::Collider*> sphere = GetEngine()->m_sphereCollider;
+		for (auto it = sphere.begin(); it != sphere.end(); ++it)
+			(*it)->DrawCollider(m_cam, m_shader, m_model[1]);
+
+		std::list<Core::Physics::Collider*> capsule = GetEngine()->m_capsuleCollider;
+		for (auto it = capsule.begin(); it != capsule.end(); ++it)
+			(*it)->DrawCollider(m_cam, m_shader, m_model[2]);
+	}
+
+	void WindowScene::DrawGuizmo(ImVec2 windowSize)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		ImGuizmo::SetDrawlist();
+		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowSize.x, windowSize.y);
+
+		CheckGizmoUse();
+		GizmoViewManipulateResult();
+		GizmoManipulateResult();
+	}
+
+	void WindowScene::DrawOptions()
+	{
+		ImGui::Checkbox("Show Navigation Mesh", &m_showNavMesh);
+		ImGui::SetCursorPos({ ImGui::GetWindowContentRegionWidth() - 178.f, ImGui::GetCursorPosY() + GImGui->Style.ItemSpacing.y * 0.5f });
+		ImGui::Checkbox("Show All Colliders", &m_showAllColliders);
+	}
+
 	void WindowScene::DisplayScene()
 	{
 		if (m_cam)
@@ -48,32 +83,16 @@ namespace Editor::Window
 				glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &PreviousFramebuffer);
 				glBindFramebuffer(GL_FRAMEBUFFER, fbo->FBO);
 				glViewport(fbo->Size[0], fbo->Size[1], fbo->Size[2], fbo->Size[3]);
-				ImGui::Checkbox("Show Nav Mesh", &m_showNavMesh);
 				if (m_showNavMesh)
 					GetEngine()->GetNavMesh()->DrawNavMesh(m_cam);
-				std::list<Core::Physics::Collider*> box = GetEngine()->m_BoxCollider;
-				for (auto it = box.begin(); it != box.end();)
-				{
-					(*it)->DrawCollider(m_cam, m_shader, m_model[0]);
-					it++;
-				}
-
-				std::list<Core::Physics::Collider*> sphere = GetEngine()->m_SphereCollider;
-				for (auto it = sphere.begin(); it != sphere.end();)
-				{
-					(*it)->DrawCollider(m_cam, m_shader, m_model[1]);
-					it++;
-				}
-				std::list<Core::Physics::Collider*> capsule = GetEngine()->m_CapsuleCollider;
-				for (auto it = capsule.begin(); it != capsule.end();)
-				{
-					(*it)->DrawCollider(m_cam, m_shader, m_model[2]);
-					it++;
-				}
+				if (m_showAllColliders)
+					DrawAllColliders();
 				glBindFramebuffer(GL_FRAMEBUFFER, PreviousFramebuffer);
-
 			}
+			float cursorY{ ImGui::GetCursorPosY() };
 			ImGui::ImageUV(fbo->ColorTexture, windowSize);
+			ImGui::SetCursorPos({ ImGui::GetWindowContentRegionWidth() - 178.f, cursorY + GImGui->Style.ItemSpacing.y });
+			DrawOptions();
 
 			if (ImGui::IsWindowHovered())
 				m_cam->Update(ImGui::GetIO().DeltaTime, GetEngine()->m_editorInput);
@@ -81,20 +100,10 @@ namespace Editor::Window
 				GetEngine()->m_editorInput->SetMouseAppearance(Core::SystemManagement::ECursorAppearance::DEFAULT);
 
 			if (fbo->Size[2] != windowSize.x || fbo->Size[3] != windowSize.y)
-			{
-				//To redo with the scene camera;
 				m_cam->Resize(static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
-			}
+
 			if (GetEngine()->objectSelected && GetEngine()->operation != SelectionMode::MOVEMENT)
-			{
-				ImGuiIO& io = ImGui::GetIO();
-				ImGuizmo::SetDrawlist();
-				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowSize.x, windowSize.y);
-				
-				CheckGizmoUse();
-				GizmoViewManipulateResult();
-				GizmoManipulateResult();
-			}
+				DrawGuizmo(windowSize);
 		}
 		else
 		{
@@ -108,13 +117,10 @@ namespace Editor::Window
 		if (ImGuizmo::IsUsing())
 			return;
 
-		Core::Maths::Vec2 mouse = GetEngine()->GetMousePos();
-
-		if (mouse.x < ImGui::GetWindowPos().x || mouse.x > ImGui::GetWindowPos().x + ImGui::GetWindowSize().x
-			|| mouse.y < ImGui::GetWindowPos().y || mouse.y > ImGui::GetWindowPos().y + ImGui::GetWindowSize().y)
-			ImGuizmo::Enable(false);
-		else
+		if (ImGui::IsWindowHovered())
 			ImGuizmo::Enable(true);
+		else
+			ImGuizmo::Enable(false);
 	}
 
 	void WindowScene::GizmoViewManipulateResult()

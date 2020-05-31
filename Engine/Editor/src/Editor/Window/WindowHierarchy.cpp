@@ -7,7 +7,7 @@
 namespace Editor::Window
 {
 	WindowHierarchy::WindowHierarchy(Canvas* canvas, bool visible) :
-		AWindow{ canvas, "Hierarchy", visible }
+		AWindow{ canvas, ICON_FA_SITEMAP "  Hierarchy", visible }
 	{
 		m_treeNodeFlags		= ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		m_inputTextFlags	= ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;

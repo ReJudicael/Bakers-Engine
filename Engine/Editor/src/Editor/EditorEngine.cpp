@@ -242,32 +242,32 @@ namespace Editor
 
 	void EditorEngine::PutBoxCollider(Core::Physics::Collider* coll)
 	{
-		m_BoxCollider.push_back(coll);
+		m_boxCollider.push_back(coll);
 	}
 
 	void EditorEngine::DeleteBoxCollider(Core::Physics::Collider* coll)
 	{
-		m_BoxCollider.remove(coll);
+		m_boxCollider.remove(coll);
 	}
 
 	void EditorEngine::PutSphereCollider(Core::Physics::Collider* coll)
 	{
-		m_SphereCollider.push_back(coll);
+		m_sphereCollider.push_back(coll);
 	}
 
 	void EditorEngine::DeleteSphereCollider(Core::Physics::Collider* coll)
 	{
-		m_SphereCollider.remove(coll);
+		m_sphereCollider.remove(coll);
 	}
 
 	void EditorEngine::PutCapsuleCollider(Core::Physics::Collider* coll)
 	{
-		m_CapsuleCollider.push_back(coll);
+		m_capsuleCollider.push_back(coll);
 	}
 
 	void EditorEngine::DeleteCapsuleCollider(Core::Physics::Collider* coll)
 	{
-		m_CapsuleCollider.remove(coll);
+		m_capsuleCollider.remove(coll);
 	}
 
 	void EditorEngine::SaveObject3DInfo(const char* fileName, const Resources::Loader::Object3DInfo& Object3D)

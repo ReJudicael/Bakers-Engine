@@ -26,8 +26,10 @@ namespace Editor
 	{
 		if (Begin())
 		{
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 8.f, 4.f });
 			for (auto& menu : m_contents)
 				menu->Draw();
+			ImGui::PopStyleVar();
 			End();
 		}
 	}

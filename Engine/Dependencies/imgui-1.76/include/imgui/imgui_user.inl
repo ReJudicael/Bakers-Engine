@@ -193,7 +193,7 @@ namespace ImGui
         return (g.FontSize + g.Style.ItemSpacing.y) * items_count - g.Style.ItemSpacing.y + (g.Style.WindowPadding.y * 2);
     }
 
-    bool BeginComboButton(const char* label, const ImVec2& size_arg)
+    bool BeginComboButton(const char* label, const ImVec2& size_arg, int popup_max_height_in_items)
     {
         ImGuiWindow* window = GetCurrentWindow();
         if (window->SkipItems)
@@ -233,7 +233,6 @@ namespace ImGui
         if (!popup_open)
             return false;
 
-        int popup_max_height_in_items = 4;
         SetNextWindowSizeConstraints(ImVec2(w, 0.0f), ImVec2(FLT_MAX, CalcMaxPopupHeightFromItemCount(popup_max_height_in_items)));
 
         char name[16];

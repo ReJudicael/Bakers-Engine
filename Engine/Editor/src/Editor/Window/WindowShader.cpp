@@ -2,12 +2,13 @@
 
 #include "WindowShader.h"
 #include "EditorEngine.h"
+
 #include "IconsFontAwesome5.h"
 
 namespace Editor::Window
 {
 	WindowShader::WindowShader(Canvas* canvas, bool visible) :
-		AWindow{ canvas, "Shader", visible }
+		AWindow{ canvas, ICON_FA_ADJUST "  Shader", visible }
 	{
 		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 

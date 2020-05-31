@@ -25,6 +25,8 @@ namespace Editor::Window
 		Core::Maths::Mat<4, 4> m_cube{ m_cube.Identity() };
 
 		bool												m_showNavMesh{ true };
+
+		bool m_showAllColliders{ true };
 	public:
 		/**
 		 * Constructor which set title of window ("Scene")
@@ -46,6 +48,22 @@ namespace Editor::Window
 		 * Pop window style
 		 */
 		void PopWindowStyle() override;
+
+		/**
+		 * Draw physX collider
+		 */
+		void DrawAllColliders();
+
+		/**
+		 * Draw Guizmo
+		 * @param windowSize: Window Size
+		 */
+		void DrawGuizmo(ImVec2 windowSize);
+
+		/**
+		 * Draw Options
+		 */
+		void DrawOptions();
 
 		/**
 		 * Display Scene

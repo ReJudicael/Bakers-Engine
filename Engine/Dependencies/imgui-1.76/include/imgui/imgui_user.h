@@ -32,7 +32,7 @@ namespace ImGui
 
     IMGUI_API bool CollapsingHeaderWithImageUV(unsigned int user_texture_id, const char* label, ImGuiTreeNodeFlags flags = 0);
 
-    IMGUI_API bool BeginComboButton(const char* label, const ImVec2& size_arg = { 0.f, 0.f });
+    IMGUI_API bool BeginComboButton(const char* label, const ImVec2& size_arg = { 0.f, 0.f }, int popup_max_height_in_items = 6);
 
     IMGUI_API void HelpMarkerItem(const char* help_marker);
 
