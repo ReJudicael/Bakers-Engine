@@ -334,6 +334,11 @@ namespace Editor::Window
 		ImGui::Spacing();
 	}
 
+	bool CompareType(const rttr::type& first, const rttr::type& second)
+	{
+		return first.get_name() < second.get_name();
+	}
+
 	void WindowInspector::AddComponentToObjectButton(Core::Datastructure::Object* object)
 	{
 		ImGui::PushStyleColor(ImGuiCol_Button,			{ 0.88f, 0.70f, 0.17f, 1.00f });
@@ -343,7 +348,13 @@ namespace Editor::Window
 		if (ImGui::BeginComboButton("Add component", { ImGui::GetWindowContentRegionWidth() * 0.7f, 0 }))
 		{
 			rttr::array_range possibleComponents{ rttr::type::get<Core::Datastructure::ComponentBase>().get_derived_classes() };
+			std::list<rttr::type>	sortedComponents;
 			for (auto it : possibleComponents)
+			{
+				sortedComponents.push_back(it);
+			}
+			sortedComponents.sort(CompareType);
+			for (auto it : sortedComponents)
 			{
 				if (ImGui::MenuItem(it.get_name().to_string().c_str()))
 					object->AddComponent(it.invoke("GetCopy", it.create(), {}).get_value<Core::Datastructure::ComponentBase*>());

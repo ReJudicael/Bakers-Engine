@@ -105,7 +105,7 @@ namespace Core::Datastructure
 		int init{ OnInit(width, height) };
 		if (init)
 			return init;
-		init = !LoadScene(m_currScene);
+		LoadScene(m_currScene);
 		m_state = Core::Datastructure::EngineState::INITIALIZED;
 		return init;
 	}
@@ -191,6 +191,8 @@ namespace Core::Datastructure
 		m_window = glfwCreateWindow(width, height, "Bakers Engine", nullptr, nullptr);
 		if (m_window == nullptr)
 			return 2;
+
+		glfwGetWindowSize(m_window, &m_width, &m_height);
 
 		glfwMakeContextCurrent(m_window);
 		glfwSetWindowUserPointer(m_window, this);

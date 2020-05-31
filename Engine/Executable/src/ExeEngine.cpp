@@ -51,11 +51,17 @@ namespace Executable
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindVertexArray(m_VAO); 
-		glBindTexture(GL_TEXTURE_2D, GetFBO(0, Core::Renderer::FBOType::CAMERA)->ColorTexture);
-
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
+		Core::Renderer::Framebuffer* cam = GetFBO(0, Core::Renderer::FBOType::CAMERA);
+		if (cam == nullptr)
+			BAKERS_LOG_ERROR("No camera found");
+		else
+		{
+			glBindTexture(GL_TEXTURE_2D, GetFBO(0, Core::Renderer::FBOType::CAMERA)->ColorTexture);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			if (cam->Size[2] != m_width || cam->Size[3] != m_height)
+				cam->Resize(m_width, m_height);
+		}
 		glBindVertexArray(0);
 
 		TRACY_GL_IMAGE_SEND(m_width, m_height)
@@ -229,7 +235,7 @@ namespace Executable
 			ExeEngine* this_window = reinterpret_cast<ExeEngine*>(glfwGetWindowUserPointer(window));
 			if (this_window)
 			{
-				//this_window->OnResizeWindow(width, height);
+				this_window->OnResizeWindow(width, height);
 			}
 		};
 		return glfwSetWindowSizeCallback(m_window, window_size_callback);
