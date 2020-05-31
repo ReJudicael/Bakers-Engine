@@ -24,6 +24,8 @@ namespace Core
 			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation YLock", &RigidBody::GetPhysicsLockYRotation, &RigidBody::SetPhysicsLockYRotation);
 			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation ZLock", &RigidBody::GetPhysicsLockZRotation, &RigidBody::SetPhysicsLockZRotation);
 			Datastructure::RegisterClassMethod<RigidBody>("Rigidbody", "AddVelocity", &RigidBody::AddVelocity);
+			Datastructure::RegisterClassMethod<RigidBody>("Rigidbody", "SetAngularVelocity", &RigidBody::SetAngularVelocity);
+			Datastructure::RegisterClassMethod<RigidBody>("Rigidbody", "GetAngularVelocity", &RigidBody::GetAngularVelocity);
 		}
 
 		void RigidBody::OnInit()
@@ -89,7 +91,7 @@ namespace Core
 			GetParent()->GetComponentsOfBaseTypeInObject(colliders);
 
 			if (colliders.size() > 0 && !(*colliders.begin())->IsDestroyed())
-				(*colliders.begin())->CreateActor();
+				(*colliders.begin())->CreateRigidActor();
 
 			GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS);
 		}
@@ -160,16 +162,31 @@ namespace Core
 
 		void RigidBody::SetLinearVelocity(Core::Maths::Vec3 newVelocity)
 		{
-			if (m_pxRigidBody == nullptr)
+			if (!m_pxRigidBody)
 				return;
 			m_pxRigidBody->setLinearVelocity({ newVelocity.x, newVelocity.y, newVelocity.z });
 		}
 
 		Core::Maths::Vec3 RigidBody::GetVelocity() const
 		{
-			if (m_pxRigidBody == nullptr)
+			if (!m_pxRigidBody)
 				return { 0.f, 0.f, 0.f };
 			physx::PxVec3 vec{ m_pxRigidBody->getLinearVelocity() };
+			return { vec.x, vec.y, vec.z };
+		}
+
+		void RigidBody::SetAngularVelocity(Core::Maths::Vec3 angularVelocity)
+		{
+			if (!m_pxRigidBody)
+				return;
+			m_pxRigidBody->setAngularVelocity({ angularVelocity.x, angularVelocity.y, angularVelocity.z });
+		}
+
+		Core::Maths::Vec3 RigidBody::GetAngularVelocity() const
+		{
+			if (!m_pxRigidBody)
+				return { 0.f, 0.f, 0.f };
+			physx::PxVec3 vec{ m_pxRigidBody->getAngularVelocity() };
 			return { vec.x, vec.y, vec.z };
 		}
 

@@ -33,7 +33,7 @@ namespace Editor
 
 		json				m_savedScene;
 
-		std::vector<Core::Renderer::Mesh*>	m_meshesNeedInit;
+		std::list<Core::Renderer::Mesh*>	m_meshesNeedInit;
 
 
 	public:
@@ -151,5 +151,7 @@ namespace Editor
 		GLFWmousebuttonfun	SetMouseButtonCallBackToGLFW();
 		GLFWscrollfun		SetScrollCallBackToGLFW();
 		GLFWwindowsizefun	SetWindowSizeToGLFW();
+
+		void UpdateMeshNeedToInit();
 	};
 }

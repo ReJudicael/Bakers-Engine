@@ -100,8 +100,9 @@ namespace Core::Renderer
 
 		/**
 		 * Create the AABB box of the mesh in the physics scene
+		 * @param scene: the physx scene to put the AABB mesh
 		 */
-		void CreateAABBMesh(physx::PxScene*& scene);
+		bool CreateAABBMesh(physx::PxScene*& scene);
 
 		inline Core::Maths::Vec3 GetAABBMaxModel()
 		{

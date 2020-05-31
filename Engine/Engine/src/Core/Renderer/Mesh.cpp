@@ -161,6 +161,8 @@ void Core::Renderer::Mesh::UpdateModel()
 			}
 		}
 	}
+	m_destroyActorEvent.Invoke();
+	GetRoot()->GetEngine()->InitMesh(this);
 }
 
 Core::Renderer::Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
@@ -200,8 +202,10 @@ bool Core::Renderer::Mesh::IsModelLoaded()
 	return m_model && m_model->stateVAO == Resources::EOpenGLLinkState::ISLINK;
 }
 
-void Core::Renderer::Mesh::CreateAABBMesh(physx::PxScene*& scene)
+bool Core::Renderer::Mesh::CreateAABBMesh(physx::PxScene*& scene)
 {
+	if (!m_model || m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+		return false;
 	Core::Datastructure::Object* object = GetParent();
 	
 	Core::Datastructure::IComponent* component = dynamic_cast<Core::Datastructure::IComponent*>(this);
@@ -215,6 +219,8 @@ void Core::Renderer::Mesh::CreateAABBMesh(physx::PxScene*& scene)
 
 	GetParent()->SetAnEventTransformChange(std::bind(&Core::Physics::PhysicsScene::UpdatePoseOfActor, object->GetScene()
 											->GetEngine()->GetPhysicsScene(), actor));
+
+	return true;
 }
 
 void Core::Renderer::Mesh::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
@@ -377,7 +383,6 @@ bool  Core::Renderer::Mesh::OnStart()
 		GetRoot()->GetEngine()->AddMeshToNav(m_model->vertices.data(), static_cast<int>(m_model->vertices.size()),
 												m_model->indices.data(), static_cast<int>(m_model->indices.size()), 
 												object->GetUpdatedTransform());
-		GetRoot()->GetEngine()->InitMesh(this);
 
 		IRenderable::OnStart();
 		ComponentBase::OnStart();

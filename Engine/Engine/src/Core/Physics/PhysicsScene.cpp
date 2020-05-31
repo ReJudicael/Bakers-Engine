@@ -113,6 +113,21 @@ namespace Core::Physics
 		
 	}
 
+	physx::PxGeometry PhysicsScene::ChooseGeometry(const EGeometry& geometry, const Core::Maths::Vec3& halfExtent)
+	{
+		
+		switch (geometry)
+		{
+		case EGeometry::BOX:
+			return physx::PxBoxGeometry(halfExtent.x, halfExtent.y, halfExtent.z);
+		case EGeometry::CAPSULE:
+			return physx::PxCapsuleGeometry(halfExtent.x, halfExtent.y);
+		case EGeometry::SPHERE:
+			return physx::PxSphereGeometry(halfExtent.x);
+		}
+
+	}
+
 	void PhysicsScene::CreatePhysicsShape(Collider& collider)
 	{
 		collider.CreateShape(m_pxPhysics);
@@ -216,7 +231,7 @@ namespace Core::Physics
 		return status;
 	}
 
-	bool PhysicsScene::CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& transform, HitResultQuery& overlapResult)
+	bool PhysicsScene::CheckOverlap(const EGeometry& overlapGeometry, const Core::Maths::Vec3& halfextent, const Core::Datastructure::Transform& transform, HitResultQuery& overlapResult)
 	{
 
 		physx::PxTransform pose;
@@ -226,14 +241,15 @@ namespace Core::Physics
 		pose.q = { globalRot.x, globalRot.y, globalRot.z, globalRot.w };
 
 		physx::PxOverlapCallback* result{};
-		bool status = m_pxScene->overlap(overlapGeometry, pose, *result);
+		physx::PxGeometry geometry = ChooseGeometry(overlapGeometry, halfextent);
+		bool status = m_pxScene->overlap(geometry, pose, *result);
 		if (status)
 			overlapResult.initHitResult(result->block);
 
 		return status;
 	}
 	
-	bool PhysicsScene::CheckOverlap(const physx::PxGeometry& overlapGeometry, const Core::Datastructure::Transform& transform, std::vector<HitResultQuery>& overlapResults)
+	bool PhysicsScene::CheckOverlap(const EGeometry& overlapGeometry, const Core::Maths::Vec3& halfextent, const Core::Datastructure::Transform& transform, std::vector<HitResultQuery>& overlapResults)
 	{
 		physx::PxTransform pose;
 		Core::Maths::Vec3 globalPos{ transform.GetGlobalPos() };
@@ -242,7 +258,8 @@ namespace Core::Physics
 		pose.q = { globalRot.x, globalRot.y, globalRot.z, globalRot.w };
 
 		physx::PxOverlapCallback* overlapCallback{};
-		bool status = m_pxScene->overlap(overlapGeometry, pose, *overlapCallback);
+		physx::PxGeometry geometry = ChooseGeometry(overlapGeometry, halfextent);
+		bool status = m_pxScene->overlap(geometry, pose, *overlapCallback);
 		if (status)
 		{
 			for (physx::PxU32 i{ 0 }; i < overlapCallback->nbTouches; i++)
@@ -281,11 +298,6 @@ namespace Core::Physics
 		}
 	}
 
-	/*void PhysicsScene::AttachActor(Core::Datastructure::IPhysics* physics)
-	{
-		physics->CreateActor(m_pxPhysics, m_pxScene);
-	}*/
-
 	physx::PxRigidStatic* PhysicsScene::CreateRigidStatic(physx::PxRigidActor*& actor, physx::PxShape* shape, Core::Datastructure::Transform parentTRS)
 	{
 		Maths::Vec3 vec = parentTRS.GetGlobalPos();
@@ -314,8 +326,6 @@ namespace Core::Physics
 
 		dynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
 
-		// usefull if we don't want to do the update every time if the rigid doesn't move
-		//m_dynamicMesh->setActorFlag(physx::PxActorFlag::eSEND_SLEEP_NOTIFIES);
 		actor = dynamic;
 
 		m_pxScene->addActor(*actor);
@@ -432,7 +442,11 @@ namespace Core::Physics
 
 	void PhysicsScene::EndSimulate()
 	{
-		m_pxScene->fetchResults(m_IsSimulating);
+		if (m_IsSimulating)
+		{
+			m_pxScene->fetchResults(m_IsSimulating);
+			m_IsSimulating = false;
+		}
 	}
 
 	void PhysicsScene::ReleasePhysXSDK()
@@ -464,6 +478,11 @@ namespace Core::Physics
 			m_pxCooking = nullptr;
 			m_pxFoundation = nullptr;
 		}
+	}
+
+	void PhysicsScene::AttachActorToPhysicsScene(physx::PxRigidActor* actor)
+	{
+		m_pxScene->addActor(*actor);
 	}
 
 	void PhysicsScene::RemoveActorFromPhysicsScene(physx::PxRigidActor* actor)

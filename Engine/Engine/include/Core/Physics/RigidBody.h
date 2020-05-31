@@ -120,12 +120,23 @@ namespace Core
 			 * @param newVelocity: the new velocity
 			 */
 			inline virtual void SetLinearVelocity(Core::Maths::Vec3 newVelocity);
-
 			/**
 			 * Get the linear velocity of the PxRigidDynamic
 			 * @return the current velocity
 			 */
 			virtual Core::Maths::Vec3 GetVelocity() const;
+
+			/**
+			 * Set the angular velocity of the PxRigidDynamic
+			 * @param angularVelocity: the new angular velocity
+			 */
+			virtual void SetAngularVelocity(Core::Maths::Vec3 angularVelocity);
+			/**
+			 * Get the angular velocity of the PxRigidDynamic
+			 * @return the current angular velocity
+			 */
+			virtual Core::Maths::Vec3 GetAngularVelocity() const;
+
 			
 			/**
 			 * Add a vector to the linear velocity of the PxRigidDynamic
@@ -138,7 +149,6 @@ namespace Core
 			 * @param mass: the new mass
 			 */
 			void SetMass(const float mass);
-
 			/**
 			 * Get the mass of the PxRigidDynamic
 			 * @return the current mass
@@ -157,7 +167,6 @@ namespace Core
 			 * @param Axisz: true for lock the axis z
 			 */
 			virtual void PhysicsLockRotation(bool Axisx, bool Axisy, bool Axisz);
-
 			/**
 			 * Lock or delock the rotation for the axis x during the physics simulation
 			 * @param Axisx: true for lock the axis x
@@ -168,7 +177,6 @@ namespace Core
 			 * @return true if the axis x is lock
 			 */
 			virtual bool GetPhysicsLockXRotation() const;
-
 			/**
 			 * Lock or delock the rotation for the axis x during the physics simulation
 			 * @param Axisx: true for lock the axis y
@@ -179,7 +187,6 @@ namespace Core
 			 * @return true if the axis y is lock
 			 */
 			virtual bool GetPhysicsLockYRotation() const;
-
 			/**
 			 * Lock or delock the rotation for the axis x during the physics simulation
 			 * @param Axisx: true for lock the axis z
@@ -191,16 +198,11 @@ namespace Core
 			 */
 			virtual bool GetPhysicsLockZRotation() const;
 
-			//virtual bool IsKinematic() const;
-
-			//virtual void SetIsKinematic(bool isKinematic);
-
 			/**
 			 * Lock or delock the rotation for the axis x during the physics simulation
 			 * @param use: true use the gravity
 			 */
 			virtual void SetUseGravity(bool use);
-
 			/**
 			 * Lock or delock the rotation for the axis x during the physics simulation
 			 * @return true if the RigidBody use the gravity
