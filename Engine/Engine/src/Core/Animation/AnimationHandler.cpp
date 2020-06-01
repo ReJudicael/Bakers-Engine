@@ -59,6 +59,7 @@ namespace Core::Animation
 		{
 			return TransitionAnimation(bone);
 		}
+		return bone->baseTransform.GetLocalTrs();
 	}
 
 	void TransitionNode::UpdateTimer(float deltaTime)

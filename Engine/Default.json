@@ -1580,7 +1580,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 639.0
+                                                "Value": 628.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1590,7 +1590,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 630.0
+                                                "Value": 651.0
                                             }
                                         }
                                     }
@@ -10490,6 +10490,89 @@
                 "x": 0.2685375213623047,
                 "y": -0.0381338931620121,
                 "z": 0.1893089860677719
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Capsule Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Capsule Half Extent": {
+                            "Name": "Capsule Half Extent",
+                            "Type": "Vec2",
+                            "Value": [
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 1
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                90.00000762939453,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "GameObject",
+            "Pos": {
+                "x": -36.01262283325195,
+                "y": 10.24625015258789,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "Scale": {
                 "x": 1.0,

@@ -520,18 +520,21 @@ namespace Resources
 			/**
 			 * Save all the special materials
 			 * @param shaderPTR: the shader we want to find the path
+			 * @return the path of the Shader
 			 */
-			std::string FindShaderFromShared(std::shared_ptr<Resources::Shader> shaderPTR);
+			std::string FindPathFromShared(std::shared_ptr<Resources::Shader> shaderPTR);
 			/**
 			 * Save all the special materials
 			 * @param materialPTR: the material we want to find the path
+			 * @return the path of the Material
 			 */
-			std::string FindMaterialFromShared(std::shared_ptr<Resources::Material> materialPTR);
+			std::string FindPathFromShared(std::shared_ptr<Resources::Material> materialPTR);
 			/**
 			 * Save all the special materials
 			 * @param texturePTR: the texture we want to find the path
+			 * @return the path of the texture
 			 */
-			std::string FindTextureFromShared(std::shared_ptr<Resources::Texture> texturePTR);
+			std::string FindPathFromShared(std::shared_ptr<Resources::Texture> texturePTR);
 
 			/**
 			 * Save all the special materials

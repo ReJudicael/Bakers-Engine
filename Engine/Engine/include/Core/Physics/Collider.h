@@ -74,7 +74,10 @@ namespace Core
 			Core::SystemManagement::EventSystem<Collider*, Core::Maths::Vec3, Core::Physics::HitResult>	OnContactEvent;
 		
 		protected:
-
+			/**
+			 * Function inheritated from IComponent,
+			 * override for copy as a collider
+			 */
 			virtual void OnCopy(IComponent* copyTo) const override;
 
 			/**
@@ -88,12 +91,25 @@ namespace Core
 			 */
 			virtual void OnDestroy() override;
 
+			/**
+			 * Function inheritated from IComponent,
+			 * override for reset the collider
+			 */
 			virtual void OnReset() override;
 
+			/**
+			 * set the collider as default
+			 */
 			virtual void SetToDefault();
 
+			/**
+			 * Function inheritated from IComponent,
+			 */
 			virtual bool OnStart() override;
 
+			/**
+			 * init the save of the shape
+			 */
 			virtual void InitShapeSave();
 			
 

@@ -124,6 +124,8 @@ namespace Core::Physics
 			return physx::PxCapsuleGeometry(halfExtent.x, halfExtent.y);
 		case EGeometry::SPHERE:
 			return physx::PxSphereGeometry(halfExtent.x);
+		default:
+			return physx::PxBoxGeometry(0.5f, 0.5f, 0.5f);
 		}
 
 	}
@@ -151,8 +153,6 @@ namespace Core::Physics
 		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(overlapHit.actor->userData) };
 		objectHit = physicsMesh->GetParent();
 		physicsMeshHit = dynamic_cast<Core::Physics::Collider*>(physicsMesh);
-
-		//physx::PxU32 face{ overlapHit.faceIndex };
 	}
 
 	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResultQuery& result, const float Distance)

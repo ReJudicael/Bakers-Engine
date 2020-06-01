@@ -25,7 +25,6 @@ namespace Core
 			bool	YLock;
 			bool	ZLock;
 			bool	Gravity;
-			//bool	Kinematic;
 		};
 
 		/**
@@ -209,6 +208,9 @@ namespace Core
 			 */
 			virtual bool GetUseGravity() const;
 
+			/**
+			 * Put the rigidBody to nullptr do not use it in your own code
+			 */
 			void ToNull() { m_pxRigidBody = nullptr; }
 
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IUpdatable)

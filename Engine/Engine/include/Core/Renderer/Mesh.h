@@ -77,7 +77,13 @@ namespace Core::Renderer
 		float* m_projection;
 
 	public:
+		/**
+		 * Default constructor
+		 */
 		Mesh();
+		/**
+		 * Default destructor
+		 */
 		~Mesh();
 
 		/**
@@ -85,6 +91,9 @@ namespace Core::Renderer
 		 */
 		virtual void OnDestroy() override;
 
+		/**
+		 * Function inheritated from IRenderable and ComponentBase,
+		 */
 		virtual void OnInit() override;
 
 		/**
@@ -103,15 +112,23 @@ namespace Core::Renderer
 		 * @param scene: the physx scene to put the AABB mesh
 		 */
 		bool CreateAABBMesh(physx::PxScene*& scene);
-
+		/**
+		 * Get the max point of the AABB of the model
+		 * @return the max point
+		 */
 		inline Core::Maths::Vec3 GetAABBMaxModel()
 		{
 			return m_model->max;
 		}
+		/**
+		 * Get the min point of the AABB of the model
+		 * @return the min point
+		 */
 		inline Core::Maths::Vec3 GetAABBMinModel()
 		{
 			return m_model->min;
 		}
+
 		/**
 		 * Update the mesh namesMaterial
 		 * @param index: the index of the material in this mesh
@@ -140,6 +157,10 @@ namespace Core::Renderer
 		 */
 		void Display(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs, std::shared_ptr<Resources::Shader> givenShader = nullptr);
 
+		/**
+		 * Find if the material of the offsetMesh need to be delete
+		 * @param currOffsetMesh: the offset mesh to test
+		 */
 		void FindMaterialToDelete(const Resources::OffsetMesh& currOffsetMesh);
 
 		/**
