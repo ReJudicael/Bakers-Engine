@@ -152,26 +152,19 @@ void Brioche::AnimGraph()
 
 	Core::Animation::TransitionNode* transIdleRun{ new Core::Animation::TransitionNode() };
 	transIdleRun->InitTransition(animIdle, animRun, [this] { return m_briocheAnimation == EBriocheAnimation::RUN; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transIdleBite{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transIdleBite{ new Core::Animation::TransitionNode() };
 	transIdleBite->InitTransition(animIdle, animBite, [this] { return m_briocheAnimation == EBriocheAnimation::BITE; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transIdleGetHit{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transIdleGetHit{ new Core::Animation::TransitionNode() };
 	transIdleGetHit->InitTransition(animIdle, animGetHit, [this] { return m_briocheAnimation == EBriocheAnimation::GETHIT; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transIdleDie{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transIdleDie{ new Core::Animation::TransitionNode() };
 	transIdleDie->InitTransition(animIdle, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 
-	//std::shared_ptr<Core::Animation::TransitionNode> transRunIdle{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transRunIdle{ new Core::Animation::TransitionNode() };
 	transRunIdle->InitTransition(animRun, animIdle, [this] { return m_briocheAnimation == EBriocheAnimation::IDLE; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transRunBite{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transRunBite{ new Core::Animation::TransitionNode() };
 	transRunBite->InitTransition(animRun, animBite, [this] { return m_briocheAnimation == EBriocheAnimation::BITE; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transRunGetHit{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transRunGetHit{ new Core::Animation::TransitionNode() };
 	transRunGetHit->InitTransition(animRun, animGetHit, [this] { return m_briocheAnimation == EBriocheAnimation::GETHIT; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transRunDie{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transRunDie{ new Core::Animation::TransitionNode() };
 	transRunDie->InitTransition(animRun, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 
@@ -179,10 +172,8 @@ void Brioche::AnimGraph()
 	transBiteIdle->InitTransition(animBite, animIdle);
 	Core::Animation::TransitionNode* transBiteRun{ new Core::Animation::TransitionNode() };
 	transBiteRun->InitTransition(animBite, animRun, [this] { return m_briocheAnimation == EBriocheAnimation::RUN; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transBiteGetHit{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transBiteGetHit{ new Core::Animation::TransitionNode() };
 	transBiteGetHit->InitTransition(animBite, animGetHit, [this] { return m_briocheAnimation == EBriocheAnimation::GETHIT; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transBiteDie{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transBiteDie{ new Core::Animation::TransitionNode() };
 	transBiteDie->InitTransition(animBite, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 
@@ -190,10 +181,8 @@ void Brioche::AnimGraph()
 	transGetHitIdle->InitTransition(animGetHit, animIdle);
 	Core::Animation::TransitionNode* transGetHitRun{ new Core::Animation::TransitionNode() };
 	transGetHitRun->InitTransition(animGetHit, animRun, [this] { return m_briocheAnimation == EBriocheAnimation::RUN; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transGetHitBite{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transGetHitBite{ new Core::Animation::TransitionNode() };
 	transGetHitBite->InitTransition(animGetHit, animBite, [this] { return m_briocheAnimation == EBriocheAnimation::BITE; });
-	//std::shared_ptr<Core::Animation::TransitionNode> transGetHitDie{ std::make_shared<Core::Animation::TransitionNode>() };
 	Core::Animation::TransitionNode* transGetHitDie{ new Core::Animation::TransitionNode() };
 	transGetHitDie->InitTransition(animGetHit, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 

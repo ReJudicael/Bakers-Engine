@@ -1716,7 +1716,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 694.0
+                                                "Value": 571.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1726,7 +1726,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 726.0
+                                                "Value": 638.0
                                             }
                                         }
                                     }
@@ -1817,6 +1817,90 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.5,
+                                        0.5,
+                                        0.5
+                                    ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Local positon": {
+                                    "Name": "Local positon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Local rotation": {
+                                    "Name": "Local rotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "S/D Frict - Restitut": {
+                                    "Name": "S/D Frict - Restitut",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "HitBoxPunch",
+                    "Pos": {
+                        "x": 1.4901161193847656e-06,
+                        "y": 1.119493007659912,
+                        "z": 1.6317996978759766
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ],
             "Components": [
@@ -1874,6 +1958,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\ModularRPGHeroesPolyart\\GetHit_noWeaponAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 100
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -3723,6 +3812,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 100
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -5948,6 +6042,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheTerrorBringer\\GetHitAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "float",
+                            "Value": -431602080.0
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -10724,7 +10823,7 @@
                                             "Value": [
                                                 0.0,
                                                 0.0,
-                                                60.333248138427734
+                                                -159.99246215820313
                                             ]
                                         },
                                         "S/D Frict - Restitut": {
@@ -13174,6 +13273,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
                         },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 50
+                        },
                         "Idle Animation": {
                             "Name": "Idle Animation",
                             "Type": "std::string",
@@ -14750,6 +14854,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
                         },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 50
+                        },
                         "Idle Animation": {
                             "Name": "Idle Animation",
                             "Type": "std::string",
@@ -16325,6 +16434,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 50
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",

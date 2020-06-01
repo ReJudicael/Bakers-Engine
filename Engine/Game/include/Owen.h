@@ -45,6 +45,9 @@ private:
 	std::string m_getHitAnimation;
 	std::string m_dieAnimation;
 	EOwenAnimation m_owenAnimation{ EOwenAnimation::IDLE };
+	float			m_attackTimer;
+	float			m_AttackMaxTime;
+	float			m_AttackSpeed;
 	Core::Physics::Collider* colliderPunch;
 
 protected:
