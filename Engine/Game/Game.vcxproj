@@ -141,6 +141,7 @@
     <ClCompile Include="src\Owen.cpp" />
     <ClCompile Include="src\Salt.cpp" />
     <ClCompile Include="src\Switch.cpp" />
+    <ClCompile Include="src\Target.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Brioche.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="include\Owen.h" />
     <ClInclude Include="include\Salt.h" />
     <ClInclude Include="include\Switch.h" />
+    <ClInclude Include="include\Target.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

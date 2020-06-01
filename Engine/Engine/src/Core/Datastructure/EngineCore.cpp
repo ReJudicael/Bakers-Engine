@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <fstream>
 
 #include "RootObject.hpp"
 #include "LoadResources.h"
@@ -16,7 +17,7 @@
 
 #include "json.hpp"
 using nlohmann::json;
-#include <fstream>
+
 
 RTTR_PLUGIN_REGISTRATION
 {
