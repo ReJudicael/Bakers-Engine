@@ -85,10 +85,12 @@ void	Target::SetTargetPosition()
 		Core::Physics::HitResultQuery query;
 
 		Core::Maths::Vec3 origin = m_playerCamera->GetParent()->GetGlobalPos();
-		Core::Maths::Vec3 forward = m_playerCamera->GetParent()->Forward() * -1;
-		forward.Normalize();
+		Core::Maths::Vec2 mouse = Input()->GetMousePosInWindow();
 
-		if (m_physicsScenePtr->Raycast(origin, forward, query))
+		Core::Maths::Vec3 dir = m_playerCamera->GetPerspectiveDirection(mouse.x, mouse.y);
+		dir.Normalize();
+
+		if (m_physicsScenePtr->Raycast(origin, dir, query))
 			m_parent->SetGlobalPos(query.hitPoint);
 	}
 	else

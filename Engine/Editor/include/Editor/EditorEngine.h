@@ -45,6 +45,7 @@ namespace Editor
 		SelectionMode operation{ SelectionMode::TRANSLATION };
 		ImGuizmo::MODE gizmoMode{ ImGuizmo::MODE::LOCAL };
 		bool isTestingRay{ false };
+		Core::Maths::Vec2 relativeMousePos;
 
 		std::list<Core::Physics::Collider*>											m_boxCollider;
 		std::list<Core::Physics::Collider*>											m_sphereCollider;
@@ -129,6 +130,7 @@ namespace Editor
 		}
 
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
+		virtual Core::Maths::Vec2	GetMousePosInWindow() noexcept override;
 
 		void	Play() { m_state = Core::Datastructure::EngineState::STARTING; }
 		void	EndPlay() { m_state = Core::Datastructure::EngineState::CLOSING; }

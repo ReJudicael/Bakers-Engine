@@ -221,7 +221,8 @@ namespace Editor::Window
 			return Core::Maths::Vec3(0, 0, 0);
 
 		Core::Maths::Vec3 dir = m_cam->GetPerspectiveDirection(mouse.x, mouse.y);
-		dir.z *= -1; // Reverse direction for raycast use
+		dir.Normalize();
+		BAKERS_LOG_MESSAGE(dir.ToString());
 
 		return dir;
 	}

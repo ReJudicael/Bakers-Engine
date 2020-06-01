@@ -114,6 +114,14 @@ namespace Core::Renderer
 		}
 
 		/**
+		 * Get the camera forward rotated with given ratios
+		 * @param ratioX: Proportion of fov angle used for rotation around up axis
+		 * @param ratioY: Proportion of fov angle used for rotation around right axis
+		 * @return: Direction from camera
+		 */
+		Core::Maths::Vec3 GetPerspectiveDirection(const float ratioX, const float ratioY);
+
+		/**
 		 * Create Perspective projection Matrix
 		 * @param width: Width of the window
 		 * @param height: Height of the window

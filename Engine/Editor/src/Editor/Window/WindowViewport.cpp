@@ -78,9 +78,23 @@ namespace Editor::Window
 		}
 	}
 
+	void WindowViewport::UpdateGameMousePos()
+	{
+		ImVec2 windowSize{ ImGui::GetContentRegionMax() };
+		Core::Maths::Vec2 mouse = ImGui::GetMousePos();
+		mouse -= ImGui::GetWindowPos();
+		mouse.x -= windowSize.x / 2;
+		mouse.x /= (windowSize.x / 2);
+		mouse.y -= windowSize.y / 2;
+		mouse.y /= (windowSize.y / 2);
+
+		GetEngine()->relativeMousePos = mouse;
+	}
+
 	void WindowViewport::Tick()
 	{
 		DisplayViewport();
 		GetEngine()->SetGameInputState(ImGui::IsWindowHovered());
+		UpdateGameMousePos();
 	}
 }

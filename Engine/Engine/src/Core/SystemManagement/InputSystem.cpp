@@ -45,6 +45,13 @@ namespace Core::SystemManagement
 		return m_core->GetMousePos();
 	}
 
+	Core::Maths::Vec2 InputSystem::GetMousePosInWindow() const noexcept
+	{
+		if (!m_isActive)
+			return { 0, 0 };
+		return m_core->GetMousePosInWindow();
+	}
+
 	void InputSystem::SetMousePos(Core::Maths::Vec2 pos) const noexcept
 	{
 		if (!m_isActive)

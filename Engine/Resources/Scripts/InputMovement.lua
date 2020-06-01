@@ -37,11 +37,12 @@ function HandleMovement(deltaTime)
 	if (move:SquaredLength() > 0.0) then
 		move:Normalize();
 		move = move * speed * deltaTime;
-		velocity = Body:getVelocity();
-		move.y = velocity.y;
-		Body:setVelocity(move);
-		
 	end
+	
+	velocity = Body:getVelocity();
+	move.y = velocity.y;
+	Body:setVelocity(move);	
+	
 end
 
 function Update(deltaTime)

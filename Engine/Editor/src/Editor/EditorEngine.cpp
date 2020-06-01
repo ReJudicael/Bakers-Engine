@@ -17,7 +17,6 @@
 #include "WindowProfiler.h"
 #include "MenuGroup.h"
 #include "RootObject.hpp"
-#include "CoreMinimal.h"
 #include "LoadResources.h"
 #include "Mesh.h"
 #include "PhysicsScene.h"
@@ -283,6 +282,12 @@ namespace Editor
 		double pos[2];
 		glfwGetCursorPos(GetWindow(), &pos[0], &pos[1]);
 		return Core::Maths::Vec2(static_cast<float>(pos[0]), static_cast<float>(pos[1]));
+	}
+
+	Core::Maths::Vec2 EditorEngine::GetMousePosInWindow() noexcept
+	{
+		ZoneScoped
+			return relativeMousePos;
 	}
 
 	json	ClassToJson(rttr::type t, rttr::instance i);

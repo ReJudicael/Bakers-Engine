@@ -57,9 +57,6 @@ bool Brioche::OnStart()
 	if (components.size() > 0)
 		m_navigator = *components.begin();
 
-	if (m_navigator)
-		BAKERS_LOG_MESSAGE("NAVIGATOR FOUND");
-
 	return ComponentUpdatable::OnStart();
 }
 

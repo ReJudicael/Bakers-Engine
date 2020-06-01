@@ -252,6 +252,12 @@ namespace Core::SystemManagement
 		Core::Maths::Vec2 GetMousePos() const noexcept;
 
 		/**
+		 * Get cursor position relative to selected area
+		 * @return The position of the cursor, in screen coordinates, relative to the middle of the selected content area
+		 */
+		Core::Maths::Vec2 GetMousePosInWindow() const noexcept;
+
+		/**
 		 * Set cursor position
 		 * @param pos: The desired position for the mouse cursor
 		 */
