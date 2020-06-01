@@ -3,12 +3,22 @@
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
 #include "Vec3.hpp"
+#include "BoxCollider.h"
+#include "ParticleSystem.h"
+#include "AudioSource.h"
 
 BAKERS_GAME_CLASS Warp : public Core::Datastructure::ComponentUpdatable
 {
 private:
-	Core::Maths::Vec3 m_destination;
+	bool m_canTeleport{ false };
 	float m_countdown{ 0.f };
+	float m_currentTime{ 0.f };
+	Core::Maths::Vec3 m_destination;
+
+	Core::Audio::AudioSource* m_audioSource{ nullptr };
+	Core::Renderer::ParticleSystem* m_particles{ nullptr };
+	Core::Physics::BoxCollider* m_collider{ nullptr };
+	Core::Datastructure::Object* m_objectToMove{ nullptr };
 
 protected:
 	/**
@@ -59,6 +69,17 @@ public:
 	 * Destructor
 	 */
 	~Warp();
+
+private:
+	/**
+	 * The parent can use the warp
+	 */
+	void Activate(Core::Physics::Collider* collider);
+
+	/**
+	 * The parent can't use the warp
+	 */
+	void Deactivate(Core::Physics::Collider* collider);
 
 	REGISTER_CLASS(ComponentUpdatable)
 };

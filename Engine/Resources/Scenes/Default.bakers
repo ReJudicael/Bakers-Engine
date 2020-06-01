@@ -1676,9 +1676,9 @@
                         "z": 0.0
                     },
                     "Scale": {
-                        "x": 0.014999999664723873,
-                        "y": 0.014999999664723873,
-                        "z": 0.014999999664723873
+                        "x": 0.010999999940395355,
+                        "y": 0.010999999940395355,
+                        "z": 0.010999999940395355
                     }
                 },
                 {
@@ -1716,7 +1716,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 694.0
+                                                "Value": 574.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1726,7 +1726,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 726.0
+                                                "Value": 557.0
                                             }
                                         }
                                     }
@@ -1802,15 +1802,128 @@
                     "Flags": 0,
                     "Name": "Camera",
                     "Pos": {
-                        "x": -1.9073486328125e-06,
-                        "y": 5.131802082061768,
-                        "z": -11.04819107055664
+                        "x": 0.0,
+                        "y": 3.0,
+                        "z": -5.5
                     },
                     "Rot": {
-                        "w": 5.699933306244206e-15,
-                        "x": 7.549790126404332e-08,
-                        "y": -1.0,
-                        "z": -7.549790126404332e-08
+                        "w": -1.3314611635451001e-08,
+                        "x": 7.661331125063953e-08,
+                        "y": 0.9975640773773193,
+                        "z": 0.06975650787353516
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [
+                        {
+                            "Childs": [],
+                            "Components": [
+                                {
+                                    "Type": "Mesh",
+                                    "Values": {
+                                        "Cast Shadows": {
+                                            "Name": "Cast Shadows",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsActive": {
+                                            "Name": "IsActive",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsChild": {
+                                            "Name": "IsChild",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "IsRoot": {
+                                            "Name": "IsRoot",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "Material": {
+                                            "Name": "Material",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\cube"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "MaterialsNames": {
+                                            "Name": "MaterialsNames",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\cube"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "Model": {
+                                            "Name": "Model",
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\cube.obj"
+                                        }
+                                    }
+                                },
+                                {
+                                    "Type": "Target",
+                                    "Values": {
+                                        "IsActive": {
+                                            "Name": "IsActive",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsUpdating": {
+                                            "Name": "IsUpdating",
+                                            "Type": "bool",
+                                            "Value": true
+                                        }
+                                    }
+                                }
+                            ],
+                            "Flags": 0,
+                            "Name": "Target",
+                            "Pos": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Rot": {
+                                "w": 1.0,
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    ],
+                    "Components": [],
+                    "Flags": 0,
+                    "Name": "TargetAnchor",
+                    "Pos": {
+                        "x": 1.5417476892471313,
+                        "y": 0.07059860229492188,
+                        "z": 1.3828277587890625e-05
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
                     },
                     "Scale": {
                         "x": 1.0,
@@ -1874,6 +1987,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\ModularRPGHeroesPolyart\\GetHit_noWeaponAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 100
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -2000,7 +2118,7 @@
                         "Mass": {
                             "Name": "Mass",
                             "Type": "float",
-                            "Value": 0.5
+                            "Value": 5.0
                         },
                         "Rotation XLock": {
                             "Name": "Rotation XLock",
@@ -2130,9 +2248,9 @@
                         "z": 2.3906682145025115e-07
                     },
                     "Scale": {
-                        "x": 0.003000000026077032,
-                        "y": 0.003000000026077032,
-                        "z": 0.003000000026077032
+                        "x": 0.0024999999441206455,
+                        "y": 0.0024999999441206455,
+                        "z": 0.0024999999441206455
                     }
                 },
                 {
@@ -3555,7 +3673,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 694.0
+                                                "Value": 734.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -3565,7 +3683,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 712.0
+                                                "Value": 557.0
                                             }
                                         }
                                     }
@@ -3641,9 +3759,9 @@
                     "Flags": 0,
                     "Name": "Eyes",
                     "Pos": {
-                        "x": -5.960464477539063e-08,
-                        "y": 1.25,
-                        "z": 0.800000011920929
+                        "x": 1.3977289199829102e-05,
+                        "y": 1.0397158861160278,
+                        "z": 0.6570546627044678
                     },
                     "Rot": {
                         "w": 1.910685465164705e-15,
@@ -3724,6 +3842,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
                         },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 100
+                        },
                         "Idle Animation": {
                             "Name": "Idle Animation",
                             "Type": "std::string",
@@ -3743,40 +3866,6 @@
                             "Name": "Run Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\RunAnim.FBX"
-                        }
-                    }
-                },
-                {
-                    "Type": "Path Following",
-                    "Values": {
-                        "AgentHeight": {
-                            "Name": "AgentHeight",
-                            "Type": "float",
-                            "Value": -0.20000000298023224
-                        },
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "IsUpdating": {
-                            "Name": "IsUpdating",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Speed": {
-                            "Name": "Speed",
-                            "Type": "float",
-                            "Value": 0.009999999776482582
-                        },
-                        "Target": {
-                            "Name": "Target",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
                         }
                     }
                 },
@@ -3889,6 +3978,40 @@
                             ]
                         }
                     }
+                },
+                {
+                    "Type": "Path Following",
+                    "Values": {
+                        "AgentHeight": {
+                            "Name": "AgentHeight",
+                            "Type": "float",
+                            "Value": -0.20000000298023224
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 0.10000000149011612
+                        },
+                        "Target": {
+                            "Name": "Target",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        }
+                    }
                 }
             ],
             "Flags": 0,
@@ -3899,9 +4022,9 @@
                 "z": -1.663093090057373
             },
             "Rot": {
-                "w": 0.7734341621398926,
+                "w": 0.773434042930603,
                 "x": 0.0,
-                "y": 0.6338766813278198,
+                "y": 0.6338767409324646,
                 "z": 0.0
             },
             "Scale": {
@@ -5948,6 +6071,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheTerrorBringer\\GetHitAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "float",
+                            "Value": -431602080.0
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -10724,7 +10852,7 @@
                                             "Value": [
                                                 0.0,
                                                 0.0,
-                                                60.333248138427734
+                                                56.43842315673828
                                             ]
                                         },
                                         "S/D Frict - Restitut": {
@@ -13174,6 +13302,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
                         },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 50
+                        },
                         "Idle Animation": {
                             "Name": "Idle Animation",
                             "Type": "std::string",
@@ -14749,6 +14882,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 50
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -16326,6 +16464,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
                         },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 50
+                        },
                         "Idle Animation": {
                             "Name": "Idle Animation",
                             "Type": "std::string",
@@ -16366,6 +16509,444 @@
                 "x": -4.8053419021698573e-08,
                 "y": -0.949687123298645,
                 "z": 4.8053419021698573e-08
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Particle System",
+                            "Values": {
+                                "Active": {
+                                    "Name": "Active",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Birth Color": {
+                                    "Name": "Birth Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.0,
+                                        0.3137255012989044,
+                                        1.0,
+                                        1.0
+                                    ]
+                                },
+                                "Death Color": {
+                                    "Name": "Death Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        1.0,
+                                        0.0,
+                                        1.0,
+                                        1.0
+                                    ]
+                                },
+                                "Dispersion": {
+                                    "Name": "Dispersion",
+                                    "Type": "Vec2",
+                                    "Value": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                },
+                                "Gravity": {
+                                    "Name": "Gravity",
+                                    "Type": "float",
+                                    "Value": 0.0
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Life time": {
+                                    "Name": "Life time",
+                                    "Type": "float",
+                                    "Value": 2.0
+                                },
+                                "Loop": {
+                                    "Name": "Loop",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Particle texture": {
+                                    "Name": "Particle texture",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Textures\\Particle2.png"
+                                },
+                                "Particles number": {
+                                    "Name": "Particles number",
+                                    "Type": "int",
+                                    "Value": 50
+                                },
+                                "Spawn zone": {
+                                    "Name": "Spawn zone",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Speed": {
+                                    "Name": "Speed",
+                                    "Type": "float",
+                                    "Value": 0.5
+                                },
+                                "Time Before Spawn": {
+                                    "Name": "Time Before Spawn",
+                                    "Type": "float",
+                                    "Value": 0.20000000298023224
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Particles",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 5.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsChild": {
+                                    "Name": "IsChild",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "IsRoot": {
+                                    "Name": "IsRoot",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Material": {
+                                    "Name": "Material",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert2SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert5SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert3SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert4SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\initialShadingGroup"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\initialShadingGroup"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert6SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\initialShadingGroup.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\initialShadingGroup.bmat"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "MaterialsNames": {
+                                    "Name": "MaterialsNames",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert2SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert5SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert3SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert4SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\initialShadingGroup"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\initialShadingGroup"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\lambert6SG.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\initialShadingGroup.bmat"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Warp\\initialShadingGroup.bmat"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Warp\\Warp_Core_low.obj"
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Mesh",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": -0.5338473320007324,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 0.016939999535679817,
+                        "y": 0.016939999535679817,
+                        "z": 0.016939999535679817
+                    }
+                }
+            ],
+            "Components": [
+                {
+                    "Type": "Warp",
+                    "Values": {
+                        "Countdown": {
+                            "Name": "Countdown",
+                            "Type": "float",
+                            "Value": 3.0
+                        },
+                        "Destination": {
+                            "Name": "Destination",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                10.0,
+                                0.0
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                },
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 1
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                },
+                {
+                    "Type": "Audio Source",
+                    "Values": {
+                        "Audio Clip": {
+                            "Name": "Audio Clip",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Sounds\\Teleport.wav"
+                        },
+                        "Audio Mode": {
+                            "Name": "Audio Mode",
+                            "Type": "Audio Mode",
+                            "Value": 8
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Max Distance": {
+                            "Name": "Max Distance",
+                            "Type": "float",
+                            "Value": 10000.0
+                        },
+                        "Min Distance": {
+                            "Name": "Min Distance",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Mute": {
+                            "Name": "Mute",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Pan": {
+                            "Name": "Pan",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Pitch": {
+                            "Name": "Pitch",
+                            "Type": "float",
+                            "Value": 1.5
+                        },
+                        "Play On Awake": {
+                            "Name": "Play On Awake",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Priority": {
+                            "Name": "Priority",
+                            "Type": "int",
+                            "Value": 128
+                        },
+                        "Volume": {
+                            "Name": "Volume",
+                            "Type": "float",
+                            "Value": 0.30000001192092896
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Warp",
+            "Pos": {
+                "x": -16.778728485107422,
+                "y": -2.742501735687256,
+                "z": 8.526312828063965
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "Scale": {
                 "x": 1.0,
