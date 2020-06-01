@@ -21,7 +21,7 @@ namespace Core::Animation
 
 	public:
 
-		AnimationHandler animationHandler;
+		AnimationHandler* animationHandler{ nullptr };
 
 	protected:
 		/**

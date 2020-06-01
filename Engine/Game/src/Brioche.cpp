@@ -50,7 +50,7 @@ void Brioche::StartCopy(IComponent*& copyTo) const
 
 bool Brioche::OnStart()
 {
-	AnimGraph();
+	//AnimGraph();
 	return ComponentUpdatable::OnStart();
 }
 
@@ -75,7 +75,7 @@ void Brioche::OnUpdate(float deltaTime)
 
 void Brioche::AnimGraph()
 {
-	std::shared_ptr<Core::Animation::AnimationNode> animIdle{ std::make_shared<Core::Animation::AnimationNode>() };
+	/*std::shared_ptr<Core::Animation::AnimationNode> animIdle{ std::make_shared<Core::Animation::AnimationNode>() };
 	animIdle->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_idleAnimation);
 
 	std::shared_ptr<Core::Animation::AnimationNode> animRun{ std::make_shared<Core::Animation::AnimationNode>() };
@@ -158,5 +158,5 @@ void Brioche::AnimGraph()
 	{
 		Core::Animation::SkeletalMesh* sktmesh = *skeletalMesh.begin();
 		sktmesh->animationHandler = { animIdle };
-	}
+	}*/
 }

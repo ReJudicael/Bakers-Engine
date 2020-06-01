@@ -16,9 +16,9 @@ namespace Core::Animation
 		std::atomic<bool> isFinish{ false };
 
 	public:
-		std::shared_ptr<AnimationNode>	m_currentAnimationNode;
+		AnimationNode*					m_currentAnimationNode{ nullptr };
 		std::function<bool()>			m_conditionTransition;
-		std::shared_ptr<AnimationNode>	m_nextAnimationNode;
+		AnimationNode*					m_nextAnimationNode;
 		float speed{ 10.f };
 
 	public:
@@ -30,8 +30,8 @@ namespace Core::Animation
 		/**
 		 * constructor for create a transition
 		 */
-		TransitionNode(std::shared_ptr<AnimationNode> currentAnimationNode,
-			std::shared_ptr<AnimationNode> nextAnimationNode, float speedTrans,
+		TransitionNode(AnimationNode* currentAnimationNode,
+			AnimationNode* nextAnimationNode, float speedTrans,
 			std::function<bool()> conditionTransition = nullptr);
 		/**
 		 * init the transition
@@ -40,8 +40,8 @@ namespace Core::Animation
 		 * and who replace the current
 		 * @param conditionTransition: the condition for the transition
 		 */
-		void InitTransition(std::shared_ptr<AnimationNode> currentAnimationNode, 
-							std::shared_ptr<AnimationNode> nextAnimationNode, 
+		void InitTransition(AnimationNode* currentAnimationNode, 
+							AnimationNode* nextAnimationNode, 
 							std::function<bool()> conditionTransition = nullptr);
 
 		/**
@@ -76,6 +76,8 @@ namespace Core::Animation
 		 * reset the transition
 		 */
 		void Reset();
+
+		void Destroy(std::vector<AnimationNode*>& nodeToDestroy);
 	};
 
 
@@ -91,10 +93,10 @@ namespace Core::Animation
 
 	public:
 		bool Loop{ true };
-		std::atomic<bool> reset{ false };
-		float speed{ 20.f };
-		std::shared_ptr<Animation>						nodeAnimation;
-		std::vector<std::shared_ptr<TransitionNode>>	transitionsAnimation;
+		std::atomic<bool>				reset{ false };
+		float							speed{ 20.f };
+		std::shared_ptr<Animation>	nodeAnimation{ nullptr };
+		std::vector<TransitionNode*>	transitionsAnimation;
 
 	public:
 
@@ -179,7 +181,9 @@ namespace Core::Animation
 		 * Set the new currentAnimationNode in the AnimationHandler
 		 * @param currentAnimation: the currentAnimationNode in the AnimationHandler
 		 */
-		void SetNextAnimation(std::shared_ptr<AnimationNode>& currentAnimation);
+		void SetNextAnimation(AnimationNode*& currentAnimation);
+
+		void Destroy(std::vector<AnimationNode*>& nodeToDestroy);
 	};
 
 
@@ -187,7 +191,7 @@ namespace Core::Animation
 	BAKERS_API_CLASS AnimationHandler
 	{
 	private:
-		std::shared_ptr<AnimationNode> m_currentAnimationNode;
+		AnimationNode* m_currentAnimationNode{nullptr};
 
 	public:
 		bool animationFinish{ true };
@@ -199,11 +203,18 @@ namespace Core::Animation
 		AnimationHandler() = default;
 
 		/*
+		 * The default construtor
+		 */
+		~AnimationHandler();
+
+		/*
 		 * Set the new currentAnimationNode in the AnimationHandler
 		 * @param animationNode: the animationNode who is going
 		 * the currentAnimationNode in the AnimationHandler
 		 */
-		AnimationHandler(std::shared_ptr<AnimationNode> animationNode);
+		AnimationHandler(AnimationNode* animationNode);
+
+		AnimationHandler& operator=(const AnimationHandler& animation);
 
 		/*
 		 * Set the new currentAnimationNode in the AnimationHandler
@@ -211,7 +222,9 @@ namespace Core::Animation
 		 */
 		void UpdateSkeletalMeshBones(const std::shared_ptr<Bone>& rootBone, std::vector<float>& finalTRSfloat, float deltaTime);
 
-		void PlayAnimation(const std::shared_ptr<AnimationNode>& animation);
+		void PlayAnimation(AnimationNode* animation);
+
+		void DestroyHandler();
 	};
 }
 

@@ -3,6 +3,20 @@
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
 
+
+
+namespace Core
+{
+	namespace Physics
+	{
+		class Collider;
+	}
+
+	namespace Animation
+	{
+		class AnimationNode;
+	}
+}
 /**
  * Owen animation
  */
@@ -27,6 +41,7 @@ private:
 	std::string m_getHitAnimation;
 	std::string m_dieAnimation;
 	EOwenAnimation m_owenAnimation{ EOwenAnimation::IDLE };
+	Core::Physics::Collider* colliderPunch;
 
 protected:
 	/**
@@ -77,6 +92,10 @@ public:
 	 * Destructor
 	 */
 	~Owen();
+
+	void OnEnterCollider(Core::Physics::Collider* collider);
+
+	bool TransitionPunch(Core::Animation::AnimationNode* node);
 
 private:
 	void AnimGraph();

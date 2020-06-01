@@ -106,7 +106,7 @@ namespace Core
 			 */
 			void ReleaseAllScene();
 
-			physx::PxGeometry ChooseGeometry(const EGeometry& geometry, const Core::Maths::Vec3& halfExtent);
+			const physx::PxGeometry& ChooseGeometry(const EGeometry& geometry, const Core::Maths::Vec3& halfExtent);
 		public:
 			/**
 			 * Default constructor

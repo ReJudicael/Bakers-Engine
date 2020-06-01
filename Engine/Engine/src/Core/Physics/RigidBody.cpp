@@ -151,7 +151,6 @@ namespace Core
 				return;
 			}
 
-			m_pxRigidBody->wakeUp();
 			Maths::Vec3 vec = GetParent()->GetGlobalPos();
 			physx::PxVec3 position = physx::PxVec3{ vec.x, vec.y, vec.z };
 			Maths::Quat quat = GetParent()->GetGlobalRot();

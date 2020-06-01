@@ -53,7 +53,7 @@ void Salt::StartCopy(IComponent*& copyTo) const
 
 bool Salt::OnStart()
 {
-	AnimGraph();
+	//AnimGraph();
 	return ComponentUpdatable::OnStart();
 }
 
@@ -78,7 +78,7 @@ void Salt::OnUpdate(float deltaTime)
 
 void Salt::AnimGraph()
 {
-	std::shared_ptr<Core::Animation::AnimationNode> animFlyIdle{ std::make_shared<Core::Animation::AnimationNode>() };
+	/*std::shared_ptr<Core::Animation::AnimationNode> animFlyIdle{ std::make_shared<Core::Animation::AnimationNode>() };
 	animFlyIdle->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_flyIdleAnimation);
 
 	std::shared_ptr<Core::Animation::AnimationNode> animLanding{ std::make_shared<Core::Animation::AnimationNode>() };
@@ -187,5 +187,5 @@ void Salt::AnimGraph()
 	{
 		Core::Animation::SkeletalMesh* sktmesh = *skeletalMesh.begin();
 		sktmesh->animationHandler = { animFlyIdle };
-	}
+	}*/
 }

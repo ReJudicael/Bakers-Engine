@@ -1804,6 +1804,67 @@
                             ]
                         }
                     }
+                },
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 0
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
                 }
             ],
             "Flags": 0,
@@ -5518,7 +5579,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 643.0
+                                                "Value": 628.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -5528,7 +5589,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 693.0
+                                                "Value": 651.0
                                             }
                                         }
                                     }
@@ -5613,6 +5674,139 @@
                         "x": 7.549790126404332e-08,
                         "y": -1.0,
                         "z": -7.549790126404332e-08
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.5,
+                                        0.5,
+                                        0.5
+                                    ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Local positon": {
+                                    "Name": "Local positon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Local rotation": {
+                                    "Name": "Local rotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "S/D Frict - Restitut": {
+                                    "Name": "S/D Frict - Restitut",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Rigidbody",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Mass": {
+                                    "Name": "Mass",
+                                    "Type": "float",
+                                    "Value": 1.0
+                                },
+                                "Rotation XLock": {
+                                    "Name": "Rotation XLock",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Rotation YLock": {
+                                    "Name": "Rotation YLock",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Rotation ZLock": {
+                                    "Name": "Rotation ZLock",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Use Gravity": {
+                                    "Name": "Use Gravity",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Velocity": {
+                                    "Name": "Velocity",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "HitBoxPunch",
+                    "Pos": {
+                        "x": 2.1457672119140625e-06,
+                        "y": 0.9050068855285645,
+                        "z": 2.0600101947784424
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
                     },
                     "Scale": {
                         "x": 1.0,
@@ -9912,7 +10106,7 @@
                                 "Filter": {
                                     "Name": "Filter",
                                     "Type": "FilterRaycast",
-                                    "Value": 1
+                                    "Value": 2
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -10539,7 +10733,7 @@
                             "Name": "Local rotation",
                             "Type": "Vec3",
                             "Value": [
-                                90.00000762939453,
+                                -54.59069061279297,
                                 0.0,
                                 0.0
                             ]
