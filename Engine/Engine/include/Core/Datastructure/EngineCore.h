@@ -154,6 +154,7 @@ namespace Core
 			void							DeleteFBO(Core::Renderer::Framebuffer* fbo);
 
 			virtual Core::Maths::Vec2		GetMousePos() noexcept = 0;
+			virtual Core::Maths::Vec2		GetMousePosInWindow() noexcept = 0;
 
 			void							AddMeshToNav(Vertex* verts, int nverts, GLuint* tris, int ntris, const Core::Datastructure::Transform& position);
 			Navigation::NavMeshBuilder*		GetNavMesh() { return m_navMesh; }

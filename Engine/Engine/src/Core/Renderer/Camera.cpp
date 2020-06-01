@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Object.hpp"
+#include "Maths.hpp"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -59,6 +60,21 @@ namespace Core::Renderer
 	{
 		ZoneScoped
 		return ICamera::OnStart() && IUpdatable::OnStart();
+	}
+
+	Core::Maths::Vec3 Camera::GetPerspectiveDirection(const float ratioX, const float ratioY)
+	{
+		// Get camera forward and change it for camera ray use
+		Core::Maths::Vec3 forward = Core::Maths::Vec3(0, 0, 1.f);
+
+		// Rotate forward towards fov limits with given ratios
+		float radFOV = Core::Maths::ToRadiansf(m_persp.fov);
+		Core::Maths::Quat RotateY = Core::Maths::Quat::AngleAxis(-radFOV * ratioX * 0.5f, { 0, 1.f, 0 });
+		Core::Maths::Quat RotateX = Core::Maths::Quat::AngleAxis(-radFOV * ratioY * 0.5f, { 1.f, 0, 0 });
+		Core::Maths::Quat FullRotation = RotateY * RotateX;
+
+		Core::Maths::Vec3 localDirection = FullRotation.Rotate(forward);
+		return m_parent->GetGlobalRot().Rotate(localDirection) * -1.f;
 	}
 
 	Core::Maths::Mat4 Camera::CreatePerspectiveMatrix(const float width, const float height, const float fov, const float near, const float far)

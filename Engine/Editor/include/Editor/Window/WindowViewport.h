@@ -58,6 +58,11 @@ namespace Editor::Window
 		 */
 		void DisplayViewport();
 
+		/**
+		 * Update mouse pos relative to game window stored in editor engine
+		 */
+		void UpdateGameMousePos();
+
 	private:
 		/**
 		 * Draw elements in window

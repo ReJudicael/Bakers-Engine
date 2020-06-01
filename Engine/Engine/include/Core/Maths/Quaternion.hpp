@@ -264,7 +264,7 @@ namespace Core::Maths
 		 * @param v: Vector to rotate
 		 * @return Result rotated vector
 		 */
-		inline constexpr Vec3 Rotate(const Vec3& v) noexcept
+		inline constexpr Vec3 Rotate(const Vec3& v) const noexcept
 		{
 			return (*this * Quaternion(0, v) * Inversed()).GetVec();
 		}
@@ -577,6 +577,7 @@ namespace Core::Maths
 		 */
 		static Quaternion			AngleAxis(float angle, Core::Maths::Vec3 axis)
 		{
+			axis.Normalize();
 			Quaternion q;
 			float halfAngle = angle * 0.5f;
 			float s = sin(halfAngle);
