@@ -1,7 +1,7 @@
 --Move object with WASD inputs
 
-speed = 100;
-angularSpeed = 0.1; --value used for quaternion slerp. Must be between 0 and 1
+speed = 200;
+angularSpeed = 0.03; --value used for quaternion slerp. Must be between 0 and 1
 
 function Start()
 	
@@ -37,11 +37,12 @@ function HandleMovement(deltaTime)
 	if (move:SquaredLength() > 0.0) then
 		move:Normalize();
 		move = move * speed * deltaTime;
-		velocity = Body:getVelocity();
-		move.y = velocity.y;
-		Body:setVelocity(move);
-		
 	end
+	
+	velocity = Body:getVelocity();
+	move.y = velocity.y;
+	Body:setVelocity(move);
+		
 end
 
 function Update(deltaTime)

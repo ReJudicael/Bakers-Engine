@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
 #include "PathFollowingComponent.h"
+#include "RigidBody.h"
 
 /**
  * Brioche animation
@@ -30,6 +31,9 @@ enum class EBriocheBehavior : unsigned short
 BAKERS_GAME_CLASS Brioche : public Core::Datastructure::ComponentUpdatable
 {
 private:
+	Core::Physics::RigidBody* m_rigidbody;
+	int m_health{ 100 };
+
 	std::string m_idleAnimation;
 	std::string m_runAnimation;
 	std::string m_biteAnimation;

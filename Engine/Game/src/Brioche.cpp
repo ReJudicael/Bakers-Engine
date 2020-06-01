@@ -57,8 +57,10 @@ bool Brioche::OnStart()
 	if (components.size() > 0)
 		m_navigator = *components.begin();
 
-	if (m_navigator)
-		BAKERS_LOG_MESSAGE("NAVIGATOR FOUND");
+	std::list<Core::Physics::RigidBody*> rigidBodies;
+	m_parent->GetComponentsOfTypeInObject<Core::Physics::RigidBody>(rigidBodies);
+	if (rigidBodies.size() > 0)
+		m_rigidbody = *rigidBodies.begin();
 
 	return ComponentUpdatable::OnStart();
 }
@@ -80,6 +82,26 @@ void Brioche::OnInit()
 
 void Brioche::OnUpdate(float deltaTime)
 {
+	if (m_health <= 0)
+	{
+		m_briocheAnimation = EBriocheAnimation::DIE;
+		return;
+	}
+
+	if (m_rigidbody->GetVelocity().SquaredLength() > 0.5f)
+		m_briocheAnimation = EBriocheAnimation::RUN;
+	else
+		m_briocheAnimation = EBriocheAnimation::IDLE;
+
+
+	if (Input()->IsMouseButtonPressed(EMouseButton::LEFT))
+	{
+		m_briocheAnimation = EBriocheAnimation::BITE;
+		m_rigidbody->SetLinearVelocity({ 0.f, m_rigidbody->GetVelocity().y, 0.f });
+	}
+
+	if (Input()->IsMouseButtonPressed(EMouseButton::RIGHT))
+		m_health = 0;
 }
 
 void Brioche::SetTarget(Core::Maths::Vec3 target)
@@ -98,9 +120,11 @@ void Brioche::AnimGraph()
 
 	std::shared_ptr<Core::Animation::AnimationNode> animBite{ std::make_shared<Core::Animation::AnimationNode>() };
 	animBite->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_biteAnimation);
+	animBite->Loop = false;
 
 	std::shared_ptr<Core::Animation::AnimationNode> animGetHit{ std::make_shared<Core::Animation::AnimationNode>() };
 	animGetHit->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_getHitAnimation);
+	animGetHit->Loop = false;
 
 	std::shared_ptr<Core::Animation::AnimationNode> animDie{ std::make_shared<Core::Animation::AnimationNode>() };
 	animDie->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_dieAnimation);
@@ -125,7 +149,7 @@ void Brioche::AnimGraph()
 	transRunDie->InitTransition(animRun, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 
 	std::shared_ptr<Core::Animation::TransitionNode> transBiteIdle{ std::make_shared<Core::Animation::TransitionNode>() };
-	transBiteIdle->InitTransition(animBite, animIdle, [this] { return m_briocheAnimation == EBriocheAnimation::IDLE; });
+	transBiteIdle->InitTransition(animBite, animIdle);
 	std::shared_ptr<Core::Animation::TransitionNode> transBiteRun{ std::make_shared<Core::Animation::TransitionNode>() };
 	transBiteRun->InitTransition(animBite, animRun, [this] { return m_briocheAnimation == EBriocheAnimation::RUN; });
 	std::shared_ptr<Core::Animation::TransitionNode> transBiteGetHit{ std::make_shared<Core::Animation::TransitionNode>() };
@@ -134,7 +158,7 @@ void Brioche::AnimGraph()
 	transBiteDie->InitTransition(animBite, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 
 	std::shared_ptr<Core::Animation::TransitionNode> transGetHitIdle{ std::make_shared<Core::Animation::TransitionNode>() };
-	transGetHitIdle->InitTransition(animGetHit, animIdle, [this] { return m_briocheAnimation == EBriocheAnimation::IDLE; });
+	transGetHitIdle->InitTransition(animGetHit, animIdle);
 	std::shared_ptr<Core::Animation::TransitionNode> transGetHitRun{ std::make_shared<Core::Animation::TransitionNode>() };
 	transGetHitRun->InitTransition(animGetHit, animRun, [this] { return m_briocheAnimation == EBriocheAnimation::RUN; });
 	std::shared_ptr<Core::Animation::TransitionNode> transGetHitBite{ std::make_shared<Core::Animation::TransitionNode>() };
@@ -143,7 +167,7 @@ void Brioche::AnimGraph()
 	transGetHitDie->InitTransition(animGetHit, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 
 	std::shared_ptr<Core::Animation::TransitionNode> transDieIdle{ std::make_shared<Core::Animation::TransitionNode>() };
-	transDieIdle->InitTransition(animDie, animIdle, [this] { return m_briocheAnimation == EBriocheAnimation::IDLE; });
+	transDieIdle->InitTransition(animDie, animIdle, [this] { return m_briocheAnimation == EBriocheAnimation::IDLE && m_health > 0; });
 
 	animIdle->transitionsAnimation.push_back(transIdleRun);
 	animIdle->transitionsAnimation.push_back(transIdleBite);

@@ -140,8 +140,6 @@ namespace Editor::Window
 		Core::Maths::Vec3 t, r, s;
 		ImGuizmo::DecomposeMatrixToComponents(m_cube.array, t.xyz, r.xyz, s.xyz);
 
-		ImGuizmo::ViewManipulate(m_cube.array, 0.1f, ImGui::GetWindowPos(), ImVec2(128, 128), 0x10101010);
-		
 		// Get new values
 		Core::Maths::Vec3 t2, r2, s2;
 		ImGuizmo::DecomposeMatrixToComponents(m_cube.array, t2.xyz, r2.xyz, s2.xyz);

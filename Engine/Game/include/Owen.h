@@ -22,8 +22,8 @@ enum class EOwenAnimation : unsigned short
 BAKERS_GAME_CLASS Owen : public Core::Datastructure::ComponentUpdatable
 {
 private:
-	Core::Physics::RigidBody* m_rigidBody;
-	int m_health = 100;
+	Core::Physics::RigidBody* m_rigidbody;
+	int m_health{ 100 };
 
 	std::string m_idleAnimation;
 	std::string m_runAnimation;
