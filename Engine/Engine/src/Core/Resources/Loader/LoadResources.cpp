@@ -59,7 +59,7 @@ namespace Resources::Loader
 		m_materials.emplace("Default", material);
 
 		LoadObjInModel("Cube", ".\\Resources\\Models\\cube.obj");
-		LoadObjInModel("Capsule", ".\\Resources\\Models\\capsule.obj");
+		LoadObjInModel("Capsule", ".\\Resources\\Models\\capsuleB.obj");
 		LoadObjInModel("Quad", ".\\Resources\\Models\\quad.obj");
 		LoadObjInModel("Skybox", ".\\Resources\\Models\\skybox.obj");
 		LoadObjInModel("Sphere", ".\\Resources\\Models\\sphere.obj");
@@ -107,7 +107,7 @@ namespace Resources::Loader
 		auto it = m_materials.find(path);
 		if (it != m_materials.end())
 		{
-			if(!it->second.use_count() > 1)
+			if(it->second.use_count() > 1)
 				it->second->UpdateNameMaterial(newPath);
 			std::swap(m_materials[newPath], it->second);
 			m_materials.erase(it);
@@ -734,7 +734,7 @@ namespace Resources::Loader
 			script->LoadLuaScript();
 	}
 
-	std::string ResourcesManager::FindShaderFromShared(std::shared_ptr<Resources::Shader> shaderPTR)
+	std::string ResourcesManager::FindPathFromShared(std::shared_ptr<Resources::Shader> shaderPTR)
 	{
 		std::string nameShader = "nothing";
 		for (auto shader : m_shaders)
@@ -749,7 +749,7 @@ namespace Resources::Loader
 		return nameShader;
 	}
 
-	std::string ResourcesManager::FindMaterialFromShared(std::shared_ptr<Resources::Material> materialPTR)
+	std::string ResourcesManager::FindPathFromShared(std::shared_ptr<Resources::Material> materialPTR)
 	{
 		std::string nameMaterial = "nothing";
 		for (auto material : m_materials)
@@ -764,7 +764,7 @@ namespace Resources::Loader
 		return nameMaterial;
 	}
 
-	std::string ResourcesManager::FindTextureFromShared(std::shared_ptr<Resources::Texture> texturePTR)
+	std::string ResourcesManager::FindPathFromShared(std::shared_ptr<Resources::Texture> texturePTR)
 	{
 		std::string nameTexture = "nothing";
 		for (auto texture : m_textures)

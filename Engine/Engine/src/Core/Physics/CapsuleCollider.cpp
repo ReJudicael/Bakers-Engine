@@ -80,8 +80,10 @@ namespace Core::Physics
 		physx::PxReal halfHeight{ 0.5 };
 
 		if (m_tmpColliderSave)
+		{
 			radius = m_tmpColliderSave->extent.x;
 			halfHeight = m_tmpColliderSave->extent.y;
+		}
 
 		m_pxMaterial = physics->createMaterial(mat.x, mat.y, mat.z);
 		m_pxShape = physics->createShape(physx::PxCapsuleGeometry(radius, halfHeight), *m_pxMaterial, true);

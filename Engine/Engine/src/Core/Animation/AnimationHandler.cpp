@@ -9,15 +9,15 @@ namespace Core::Animation
 		return (Q1 * (1 - t) * bias + Q2 * t).Normalized();
 	}
 
-	TransitionNode::TransitionNode(std::shared_ptr<AnimationNode> currentAnimationNode,
-		std::shared_ptr<AnimationNode> nextAnimationNode, float speedTrans,
+	TransitionNode::TransitionNode(AnimationNode* currentAnimationNode,
+		AnimationNode* nextAnimationNode, float speedTrans,
 		std::function<bool()> conditionTransition):
 		speed{ speedTrans }
 	{
 		InitTransition(currentAnimationNode, nextAnimationNode, conditionTransition);
 	}
-	void TransitionNode::InitTransition(std::shared_ptr<AnimationNode> currentAnimationNode,
-		std::shared_ptr<AnimationNode> nextAnimationNode, std::function<bool()> conditionTransition)
+	void TransitionNode::InitTransition(AnimationNode* currentAnimationNode,
+										AnimationNode* nextAnimationNode, std::function<bool()> conditionTransition)
 	{
 		if (!currentAnimationNode || !nextAnimationNode)
 			return;
@@ -59,6 +59,7 @@ namespace Core::Animation
 		{
 			return TransitionAnimation(bone);
 		}
+		return bone->baseTransform.GetLocalTrs();
 	}
 
 	void TransitionNode::UpdateTimer(float deltaTime)
@@ -76,6 +77,12 @@ namespace Core::Animation
 	{
 		m_currentTime = 0.f;
 		isFinish = false;
+	}
+
+	void TransitionNode::Destroy(std::vector<AnimationNode*>& nodeToDestroy)
+	{
+		if (m_nextAnimationNode)
+			m_nextAnimationNode->Destroy(nodeToDestroy);
 	}
 
 	Core::Maths::Mat4 AnimationNode::BlendAnimation(const std::shared_ptr<Bone>& bone, Core::Datastructure::Transform& out)
@@ -212,7 +219,7 @@ namespace Core::Animation
 			return false;
 	}
 
-	void AnimationNode::SetNextAnimation(std::shared_ptr<AnimationNode>& currentAnimation)
+	void AnimationNode::SetNextAnimation(AnimationNode*& currentAnimation)
 	{
 		//reset the currentAnimation and his transition
 		reset = false;
@@ -224,9 +231,58 @@ namespace Core::Animation
 		indexTransition = 0;
 	}
 
-	AnimationHandler::AnimationHandler(std::shared_ptr<AnimationNode> animationNode):
+	void AnimationNode::Destroy(std::vector<AnimationNode*>& nodeToDestroy)
+	{
+		for (size_t i = 0; i < nodeToDestroy.size(); i++)
+		{
+			if (nodeToDestroy[i] == this)
+				return;
+		}
+		nodeToDestroy.push_back(this);
+		for (auto it = transitionsAnimation.begin(); it != transitionsAnimation.end();)
+		{
+			if ((*it))
+			{
+				(*it)->Destroy(nodeToDestroy);
+				delete (*it);
+				(*it) = nullptr;
+				it = transitionsAnimation.erase(it);
+			}
+			else
+				++it;
+		}
+	}
+
+	AnimationHandler::AnimationHandler(AnimationNode* animationNode):
 		m_currentAnimationNode{ animationNode }
 	{}
+
+	AnimationHandler::~AnimationHandler()
+	{
+		if (m_currentAnimationNode)
+		{
+			std::vector<AnimationNode*> toDestroy;
+			m_currentAnimationNode->Destroy(toDestroy);
+
+			for (size_t i{ 0 }; i < toDestroy.size(); i++)
+			{
+				if (toDestroy[i])
+				{
+					delete toDestroy[i];
+					toDestroy[i] = nullptr;
+				}
+			}
+			toDestroy.clear();
+		}
+	}
+
+	AnimationHandler& AnimationHandler::operator=(const AnimationHandler& animation)
+	{
+		m_currentAnimationNode = animation.m_currentAnimationNode;
+		animationFinish = animation.animationFinish;
+
+		return *this;
+	}
 
 	void AnimationHandler::UpdateSkeletalMeshBones(const std::shared_ptr<Bone>& rootBone, std::vector<float>& finalTRSfloat, float deltaTime)
 	{
@@ -253,7 +309,7 @@ namespace Core::Animation
 		animationFinish = true;
 	}
 
-	void AnimationHandler::PlayAnimation(const std::shared_ptr<AnimationNode>& animation)
+	void AnimationHandler::PlayAnimation(AnimationNode* animation)
 	{
 		m_currentAnimationNode = animation;
 	}

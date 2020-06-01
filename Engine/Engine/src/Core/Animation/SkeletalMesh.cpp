@@ -33,6 +33,11 @@ namespace Core::Animation
 
 	void SkeletalMesh::OnDestroy()
 	{
+		if (animationHandler)
+		{
+			delete animationHandler;
+			animationHandler = nullptr;
+		}
 		Mesh::OnDestroy();
 		Core::Datastructure::IUpdatable::OnDestroy();
 	}
@@ -103,11 +108,11 @@ namespace Core::Animation
 	void SkeletalMesh::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
 		Core::Maths::Mat4 trs{ (m_parent->GetGlobalTRS()) };
-
-		while (!animationHandler.animationFinish)
-		{
-			trs = (m_parent->GetGlobalTRS());
-		}
+		if(animationHandler)
+			while (!animationHandler->animationFinish)
+			{
+				trs = (m_parent->GetGlobalTRS());
+			}
 
 		// check if the mesh have a modelMesh
 		if (m_model == nullptr)
@@ -161,8 +166,9 @@ namespace Core::Animation
 
 	void SkeletalMesh::OnUpdate(float deltaTime)
 	{
-		GetParent()->GetScene()->GetEngine()->GetResourcesManager()->
-					m_task->AddTask(&Core::Animation::AnimationHandler::UpdateSkeletalMeshBones,
-					&animationHandler, m_rootBone, std::ref(m_finalBonesTRSfloat), deltaTime);
+		if(animationHandler)
+			GetParent()->GetScene()->GetEngine()->GetResourcesManager()->
+						m_task->AddTask(&Core::Animation::AnimationHandler::UpdateSkeletalMeshBones,
+						animationHandler, m_rootBone, std::ref(m_finalBonesTRSfloat), deltaTime);
 	}
 }

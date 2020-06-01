@@ -76,11 +76,10 @@ namespace Core::Physics
 		m_eventCallBack = new PhysicsSceneSimulationEventCallback();
 		sceneDesc.filterShader = &Core::Physics::PhysicsSceneSimulationEventCallback::filterShader;
 
-		sceneDesc.sceneQueryUpdateMode = physx::PxSceneQueryUpdateMode::eBUILD_ENABLED_COMMIT_ENABLED;
 		sceneDesc.simulationEventCallback = m_eventCallBack;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD;
-		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_PCM;
+		//sceneDesc.flags |= physx::PxSceneFlag::eENABLE_PCM;
 		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
 
 		m_pxScene = m_pxPhysics->createScene(sceneDesc);
@@ -113,17 +112,23 @@ namespace Core::Physics
 		
 	}
 
-	physx::PxGeometry PhysicsScene::ChooseGeometry(const EGeometry& geometry, const Core::Maths::Vec3& halfExtent)
+	const physx::PxGeometry& PhysicsScene::ChooseGeometry(const EGeometry& geometry, const Core::Maths::Vec3& halfExtent)
 	{
-		
+		physx::PxGeometry geo = physx::PxBoxGeometry(0.5f, 0.5f, 0.5f);
 		switch (geometry)
 		{
 		case EGeometry::BOX:
-			return physx::PxBoxGeometry(halfExtent.x, halfExtent.y, halfExtent.z);
+			 geo = physx::PxBoxGeometry(halfExtent.x, halfExtent.y, halfExtent.z);
+			return geo;
 		case EGeometry::CAPSULE:
-			return physx::PxCapsuleGeometry(halfExtent.x, halfExtent.y);
+			geo = physx::PxCapsuleGeometry(halfExtent.x, halfExtent.y);
+			return geo;
 		case EGeometry::SPHERE:
-			return physx::PxSphereGeometry(halfExtent.x);
+			geo = physx::PxSphereGeometry(halfExtent.x);
+			return geo;
+		default:
+			geo = physx::PxBoxGeometry(0.5f, 0.5f, 0.5f);
+			return geo;
 		}
 
 	}
@@ -151,8 +156,6 @@ namespace Core::Physics
 		Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(overlapHit.actor->userData) };
 		objectHit = physicsMesh->GetParent();
 		physicsMeshHit = dynamic_cast<Core::Physics::Collider*>(physicsMesh);
-
-		//physx::PxU32 face{ overlapHit.faceIndex };
 	}
 
 	bool PhysicsScene::Raycast(const Core::Maths::Vec3& OriginPos, const Core::Maths::Vec3& Direction, HitResultQuery& result, const float Distance)
@@ -240,11 +243,15 @@ namespace Core::Physics
 		Core::Maths::Quat globalRot{ transform.GetGlobalRot() };
 		pose.q = { globalRot.x, globalRot.y, globalRot.z, globalRot.w };
 
-		physx::PxOverlapCallback* result{};
+		physx::PxOverlapBuffer result;
 		physx::PxGeometry geometry = ChooseGeometry(overlapGeometry, halfextent);
-		bool status = m_pxScene->overlap(geometry, pose, *result);
+		physx::PxQueryFilterData data;
+		for (int i = 0; i < 4; i++)
+			data.data.word0 |= 1 << i;
+		data.flags |= physx::PxQueryFlag::eANY_HIT;
+		bool status = m_pxScene->overlap(physx::PxBoxGeometry(halfextent.x, halfextent.y, halfextent.z), pose, result, data);
 		if (status)
-			overlapResult.initHitResult(result->block);
+			overlapResult.initHitResult(result.block);
 
 		return status;
 	}
@@ -257,15 +264,19 @@ namespace Core::Physics
 		Core::Maths::Quat globalRot{ transform.GetGlobalRot() };
 		pose.q = { globalRot.x, globalRot.y, globalRot.z, globalRot.w };
 
-		physx::PxOverlapCallback* overlapCallback{};
+		physx::PxOverlapBuffer overlapCallback;
 		physx::PxGeometry geometry = ChooseGeometry(overlapGeometry, halfextent);
-		bool status = m_pxScene->overlap(geometry, pose, *overlapCallback);
+		physx::PxQueryFilterData data;
+		for (int i = 0; i < 4; i++)
+			data.data.word0 |= 1 << i;
+		data.flags |= physx::PxQueryFlag::eANY_HIT;
+		bool status = m_pxScene->overlap(physx::PxBoxGeometry(halfextent.x, halfextent.y, halfextent.z), pose, overlapCallback, data);
 		if (status)
 		{
-			for (physx::PxU32 i{ 0 }; i < overlapCallback->nbTouches; i++)
+			for (physx::PxU32 i{ 0 }; i < overlapCallback.nbTouches; i++)
 			{
 				HitResultQuery result;
-				result.initHitResult(overlapCallback->touches[i]);
+				result.initHitResult(overlapCallback.touches[i]);
 				overlapResults.push_back(result);
 			}
 		}
@@ -451,10 +462,6 @@ namespace Core::Physics
 
 	void PhysicsScene::ReleasePhysXSDK()
 	{
-		BeginSimulate(0.1f);
-
-		EndSimulate();
-
 		if (m_pxPhysics != nullptr)
 		{
 			PxCloseExtensions();

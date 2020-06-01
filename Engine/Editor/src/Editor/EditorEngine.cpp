@@ -129,7 +129,7 @@ namespace Editor
 		ZoneScoped
 		if (objectSelected != nullptr && objectSelected->IsDestroyed())
 			objectSelected = nullptr;
-
+		UpdateMeshNeedToInit();
 		EngineCore::EndFrame();
 		m_editorInput->ClearRegisteredInputs();
 	}
@@ -145,7 +145,6 @@ namespace Editor
 			ImGui::SetMouseCursor(-1);
 		if (m_editorInput->IsMouseButtonPressed(EMouseButton::LEFT))
 			isTestingRay = true;
-		UpdateMeshNeedToInit();
 		switch (m_state)
 		{
 		case (Core::Datastructure::EngineState::STARTING):
@@ -556,7 +555,7 @@ namespace Editor
 	{
 		for (auto it = m_meshesNeedInit.begin(); it != m_meshesNeedInit.end();)
 		{
-			if ((*it)->CreateAABBMesh(m_editorScene))
+			if (!(*it) || (*it)->IsDestroyed() || (*it)->CreateAABBMesh(m_editorScene))
 				it = m_meshesNeedInit.erase(it);
 			else
 				++it;

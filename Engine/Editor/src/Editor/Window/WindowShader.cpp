@@ -55,7 +55,7 @@ namespace Editor::Window
 
 	void WindowShader::ShaderInspector(std::shared_ptr<Resources::Shader>& shader)
 	{
-		m_nameShader = GetEngine()->GetResourcesManager()->FindShaderFromShared(m_shader);
+		m_nameShader = GetEngine()->GetResourcesManager()->FindPathFromShared(m_shader);
 		ImGui::SetNextItemWidth(-FLT_MIN);
 		ImGui::InputText("## DisplayShaderName", (char*)m_nameShader.c_str(), m_nameShader.size(), ImGuiInputTextFlags_ReadOnly);
 
@@ -142,6 +142,13 @@ namespace Editor::Window
 
 		if (m_shader)
 		{
+			if (m_shader.use_count() <= 2)
+			{
+				m_shader = nullptr;
+				if (GetEngine()->shaderSelected == m_shader)
+					GetEngine()->shaderSelected = nullptr;
+				return;
+			}
 			LockSelectedShaderButton();
 			ImGui::SameLine();
 			ShaderInspector(m_shader);

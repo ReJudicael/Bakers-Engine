@@ -290,7 +290,7 @@ namespace Resources
 		json color;
 
 		{
-			save["Shader"] = resources->FindShaderFromShared(shader);
+			save["Shader"] = resources->FindPathFromShared(shader);
 
 			Core::Maths::Color temp{ diffuseColor };
 			color["r"] = temp.r;
@@ -314,9 +314,9 @@ namespace Resources
 			save["Specular"] = color;
 
 			if (textures.size() >= 1)
-				save["BaseTexture"] = resources->FindTextureFromShared(textures[0]);
+				save["BaseTexture"] = resources->FindPathFromShared(textures[0]);
 			if(textures.size() >= 2)
-				save["BaseTexture"] = resources->FindTextureFromShared(textures[1]);
+				save["BaseTexture"] = resources->FindPathFromShared(textures[1]);
 
 			save["shininess"] = shininess;
 			save["shininessS"] = shininessStrength;
@@ -448,7 +448,7 @@ namespace Resources
 		else if (variants[index].var.get_type() == rttr::type::get<std::shared_ptr<Texture>>())
 		{
 			std::shared_ptr<Texture> text{ variants[index].var.get_value<std::shared_ptr<Texture>>() };
-			out["Value"] = resources->FindTextureFromShared(text);
+			out["Value"] = resources->FindPathFromShared(text);
 		}
 
 		return out;

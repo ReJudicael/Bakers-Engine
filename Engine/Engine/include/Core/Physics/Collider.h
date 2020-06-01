@@ -51,6 +51,7 @@ namespace Core
 			Core::Maths::Vec3	extent;
 			Core::Maths::Vec3	physicsMaterial;
 			bool				isTrigger{ false };
+			bool				isActive{ true };
 			EFilterRaycast		raycastFilter;
 		};
 
@@ -74,7 +75,10 @@ namespace Core
 			Core::SystemManagement::EventSystem<Collider*, Core::Maths::Vec3, Core::Physics::HitResult>	OnContactEvent;
 		
 		protected:
-
+			/**
+			 * Function inheritated from IComponent,
+			 * override for copy as a collider
+			 */
 			virtual void OnCopy(IComponent* copyTo) const override;
 
 			/**
@@ -88,12 +92,25 @@ namespace Core
 			 */
 			virtual void OnDestroy() override;
 
+			/**
+			 * Function inheritated from IComponent,
+			 * override for reset the collider
+			 */
 			virtual void OnReset() override;
 
+			/**
+			 * set the collider as default
+			 */
 			virtual void SetToDefault();
 
+			/**
+			 * Function inheritated from IComponent,
+			 */
 			virtual bool OnStart() override;
 
+			/**
+			 * init the save of the shape
+			 */
 			virtual void InitShapeSave();
 			
 
@@ -141,9 +158,9 @@ namespace Core
 			 * Get the PhysX shape of the collider
 			 * @return the PhysX shape of the collider 
 			 */
-			physx::PxShape* GetShape() { return m_pxShape; }
+			inline physx::PxShape* GetShape() { return m_pxShape; }
 
-			inline bool IsActive() { return m_isActive; }
+			inline bool IsActive() const { return m_isActive; }
 
 			void SetActivateCollider(bool activate);
 

@@ -26,15 +26,7 @@ namespace Editor::Window
 	{
 		const auto& shader = GetEngine()->GetResourcesManager()->GetShaderMap();
 
-		std::string nameShader;
-		for (auto it = shader.begin(); it != shader.end(); ++it)
-		{
-			if (it->second == m_material->shader)
-			{
-				nameShader = it->first;
-				break;
-			}
-		}
+		std::string nameShader = GetEngine()->GetResourcesManager()->FindPathFromShared(m_material->shader);
 
 		if (ImGui::RBeginCombo("Type Shader", nameShader.c_str()))
 		{
@@ -105,14 +97,14 @@ namespace Editor::Window
 	{
 		std::string nameTexture;
 		if (texture)
-			nameTexture = GetEngine()->GetResourcesManager()->FindTextureFromShared(texture);
+			nameTexture = GetEngine()->GetResourcesManager()->FindPathFromShared(texture);
 
 		DragDropTargetItem(nameTexture, texture);
 	}
 
 	void WindowMaterial::MaterialInspector(std::shared_ptr<Resources::Material>& material)
 	{
-		m_nameMaterial = GetEngine()->GetResourcesManager()->FindMaterialFromShared(m_material);
+		m_nameMaterial = GetEngine()->GetResourcesManager()->FindPathFromShared(m_material);
 		ImGui::SetNextItemWidth(-FLT_MIN);
 		ImGui::InputText("## DisplayMaterialName", (char*)m_nameMaterial.c_str(), m_nameMaterial.size(), ImGuiInputTextFlags_ReadOnly);
 
