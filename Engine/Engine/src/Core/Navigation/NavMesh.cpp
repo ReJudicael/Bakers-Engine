@@ -598,7 +598,7 @@ namespace Core::Navigation
 		const dtNavMesh* mesh = m_navMesh;
 
 		FILE* fp;
-		fopen_s(&fp, (path + +".nav").c_str(), "wb");
+		fopen_s(&fp, (path + ".nav").c_str(), "wb");
 		if (!fp)
 			return false;
 
