@@ -139,6 +139,6 @@ namespace Editor::Datastructure
 		 */
 		void	Rotate(Core::Maths::Vec3 move);
 
-		REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera)
+		REGISTER_CLASS(Core::Datastructure::ICamera)
 	};
 }
