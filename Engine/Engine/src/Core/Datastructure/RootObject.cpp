@@ -165,6 +165,7 @@ namespace Core::Datastructure
 	{
 		for (auto it{ m_childs.begin() }; it != m_childs.end(); ++it)
 			(*it)->Destroy();
+		m_componentsToStart.clear();
 	}
 
 	RootObject* RootObject::CreateRootNode(SystemManagement::InputSystem* inputSystem, EngineCore* engine) noexcept

@@ -259,6 +259,7 @@ namespace Core::Datastructure
 	{
 		ZoneScoped
 		m_currScene = scene;
+		m_root->Clear();
 		return OnLoadScene();
 	}
 

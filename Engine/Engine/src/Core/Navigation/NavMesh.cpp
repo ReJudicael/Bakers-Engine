@@ -55,7 +55,14 @@ namespace Core::Navigation
 	{
 		ZoneScoped
 		if (m_mesh.size() == 0 || m_maxTris == 0)
+		{
+
+			rcFreePolyMesh(m_pmesh);
+			m_pmesh = nullptr;
+			dtFreeNavMesh(m_navMesh);
+			m_navMesh = nullptr;
 			return false;
+		}
 
 		m_isUpdated = true;
 
@@ -590,20 +597,25 @@ namespace Core::Navigation
 	bool NavMeshBuilder::SaveNavMesh(const std::string& path) const
 	{
 		ZoneScoped
-		if (!m_navMesh)
-			return false;
-
-		const dtNavMesh* mesh = m_navMesh;
-
-		FILE* fp;
-		fopen_s(&fp, (path + ".nav").c_str(), "wb");
-		if (!fp)
-			return false;
 
 		NavMeshSetHeader header;
 		header.magic = NAVMESHSET_MAGIC;
 		header.version = NAVMESHSET_VERSION;
 		header.numTiles = 0;
+
+		FILE* fp;
+		fopen_s(&fp, (path + ".nav").c_str(), "wb+");
+		if (!fp)
+			return false;
+
+		if (!m_navMesh)
+		{
+			fwrite(&header, sizeof(NavMeshSetHeader), 1, fp);
+			fclose(fp);
+			return true;
+		}
+
+		const dtNavMesh* mesh = m_navMesh;
 
 		for (int i = 0; i < mesh->getMaxTiles(); ++i)
 		{
@@ -668,6 +680,7 @@ namespace Core::Navigation
 		dtStatus status = m_navMesh->init(&header.params);
 		if (dtStatusFailed(status))
 		{
+			BuildNavMeshRenderer();
 			fclose(fp);
 			return 0;
 		}
