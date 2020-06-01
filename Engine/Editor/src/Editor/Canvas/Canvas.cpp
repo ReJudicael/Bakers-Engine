@@ -184,9 +184,15 @@ namespace Editor
 		}
 
 		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, GetEngine()->IsPaused() ?
+			GImGui->Style.Colors[ImGuiCol_FrameBg] : GImGui->Style.Colors[ImGuiCol_Button]);
+
 		if (ImGui::Button(ICON_FA_PAUSE))
 			GetEngine()->TogglePause();
 		ImGui::HelpMarkerItem("Pause");
+
+		ImGui::PopStyleColor();
 
 		ImGui::SameLine();
 		if (ImGui::Button(ICON_FA_STEP_FORWARD))

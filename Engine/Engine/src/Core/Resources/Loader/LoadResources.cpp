@@ -787,6 +787,7 @@ namespace Resources::Loader
 				mat.second->SaveMaterial(mat.first, this);
 			}
 		}
+		BAKERS_LOG_MESSAGE("Materials saved");
 	}
 
 	void ResourcesManager::UpdateDeletedShaderMaterials(const std::shared_ptr<Resources::Shader>& shaderDeleted)

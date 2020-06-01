@@ -50,6 +50,11 @@ void Owen::StartCopy(IComponent*& copyTo) const
 
 bool Owen::OnStart()
 {
+	std::list<Core::Physics::RigidBody*> rigidBodies;
+	m_parent->GetComponentsOfTypeInObject<Core::Physics::RigidBody>(rigidBodies);
+	if (rigidBodies.size() > 0)
+		m_rigidBody = *rigidBodies.begin();
+
 	AnimGraph();
 	return ComponentUpdatable::OnStart();
 }
@@ -71,6 +76,22 @@ void Owen::OnInit()
 
 void Owen::OnUpdate(float deltaTime)
 {
+	if (m_health <= 0)
+		m_owenAnimation = EOwenAnimation::DIE;
+	else if (m_rigidBody->GetVelocity().SquaredLength() > 0.5f)
+		m_owenAnimation = EOwenAnimation::RUN;
+	else
+		m_owenAnimation = EOwenAnimation::IDLE;
+		
+
+	if (Input()->IsMouseButtonPressed(EMouseButton::LEFT))
+	{
+		m_owenAnimation = EOwenAnimation::PUNCH;
+		m_rigidBody->SetLinearVelocity({ 0.f, 0.f, 0.f });
+	}
+
+	if (Input()->IsMouseButtonPressed(EMouseButton::RIGHT))
+		m_health = 0;
 }
 
 void Owen::AnimGraph()
@@ -80,12 +101,15 @@ void Owen::AnimGraph()
 
 	std::shared_ptr<Core::Animation::AnimationNode> animRun{ std::make_shared<Core::Animation::AnimationNode>() };
 	animRun->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_runAnimation);
+	animRun->Loop = false;
 
 	std::shared_ptr<Core::Animation::AnimationNode> animPunch{ std::make_shared<Core::Animation::AnimationNode>() };
 	animPunch->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_punchAnimation);
+	animPunch->Loop = false;
 
 	std::shared_ptr<Core::Animation::AnimationNode> animGetHit{ std::make_shared<Core::Animation::AnimationNode>() };
 	animGetHit->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_getHitAnimation);
+	animGetHit->Loop = false;
 
 	std::shared_ptr<Core::Animation::AnimationNode> animDie{ std::make_shared<Core::Animation::AnimationNode>() };
 	animDie->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_dieAnimation);
@@ -101,7 +125,7 @@ void Owen::AnimGraph()
 	transIdleDie->InitTransition(animIdle, animDie, [this] { return m_owenAnimation == EOwenAnimation::DIE; });
 
 	std::shared_ptr<Core::Animation::TransitionNode> transRunIdle{ std::make_shared<Core::Animation::TransitionNode>() };
-	transRunIdle->InitTransition(animRun, animIdle, [this] { return m_owenAnimation == EOwenAnimation::IDLE; });
+	transRunIdle->InitTransition(animRun, animIdle);
 	std::shared_ptr<Core::Animation::TransitionNode> transRunPunch{ std::make_shared<Core::Animation::TransitionNode>() };
 	transRunPunch->InitTransition(animRun, animPunch, [this] { return m_owenAnimation == EOwenAnimation::PUNCH; });
 	std::shared_ptr<Core::Animation::TransitionNode> transRunGetHit{ std::make_shared<Core::Animation::TransitionNode>() };
@@ -110,7 +134,7 @@ void Owen::AnimGraph()
 	transRunDie->InitTransition(animRun, animDie, [this] { return m_owenAnimation == EOwenAnimation::DIE; });
 
 	std::shared_ptr<Core::Animation::TransitionNode> transPunchIdle{ std::make_shared<Core::Animation::TransitionNode>() };
-	transPunchIdle->InitTransition(animPunch, animIdle, [this] { return m_owenAnimation == EOwenAnimation::IDLE; });
+	transPunchIdle->InitTransition(animPunch, animIdle);
 	std::shared_ptr<Core::Animation::TransitionNode> transPunchRun{ std::make_shared<Core::Animation::TransitionNode>() };
 	transPunchRun->InitTransition(animPunch, animRun, [this] { return m_owenAnimation == EOwenAnimation::RUN; });
 	std::shared_ptr<Core::Animation::TransitionNode> transPunchGetHit{ std::make_shared<Core::Animation::TransitionNode>() };
@@ -119,7 +143,7 @@ void Owen::AnimGraph()
 	transPunchDie->InitTransition(animPunch, animDie, [this] { return m_owenAnimation == EOwenAnimation::DIE; });
 
 	std::shared_ptr<Core::Animation::TransitionNode> transGetHitIdle{ std::make_shared<Core::Animation::TransitionNode>() };
-	transGetHitIdle->InitTransition(animGetHit, animIdle, [this] { return m_owenAnimation == EOwenAnimation::IDLE; });
+	transGetHitIdle->InitTransition(animGetHit, animIdle);
 	std::shared_ptr<Core::Animation::TransitionNode> transGetHitRun{ std::make_shared<Core::Animation::TransitionNode>() };
 	transGetHitRun->InitTransition(animGetHit, animRun, [this] { return m_owenAnimation == EOwenAnimation::RUN; });
 	std::shared_ptr<Core::Animation::TransitionNode> transGetHitBite{ std::make_shared<Core::Animation::TransitionNode>() };
@@ -128,7 +152,7 @@ void Owen::AnimGraph()
 	transGetHitDie->InitTransition(animGetHit, animDie, [this] { return m_owenAnimation == EOwenAnimation::DIE; });
 
 	std::shared_ptr<Core::Animation::TransitionNode> transDieIdle{ std::make_shared<Core::Animation::TransitionNode>() };
-	transDieIdle->InitTransition(animDie, animIdle, [this] { return m_owenAnimation == EOwenAnimation::IDLE; });
+	transDieIdle->InitTransition(animDie, animIdle, [this] { return m_owenAnimation == EOwenAnimation::IDLE && m_health > 0; });
 
 	animIdle->transitionsAnimation.push_back(transIdleRun);
 	animIdle->transitionsAnimation.push_back(transIdleBite);

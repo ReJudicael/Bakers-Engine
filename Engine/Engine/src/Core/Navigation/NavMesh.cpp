@@ -630,6 +630,8 @@ namespace Core::Navigation
 		}
 
 		fclose(fp);
+
+		BAKERS_LOG_MESSAGE("Nav Mesh saved");
 		return true;
 	}
 

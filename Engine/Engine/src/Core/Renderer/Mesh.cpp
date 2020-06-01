@@ -22,7 +22,7 @@ RTTR_PLUGIN_REGISTRATION
 	registration::class_<Core::Renderer::Mesh>("Mesh")
 		.constructor()
 		.property("Model", &Core::Renderer::Mesh::GetModel, &Core::Renderer::Mesh::SetModel)
-		.property("Materials", &Core::Renderer::Mesh::GetMaterials, &Core::Renderer::Mesh::SetMaterials)
+		.property("Material", &Core::Renderer::Mesh::GetMaterials, &Core::Renderer::Mesh::SetMaterials)
 		.property("IsRoot", &Core::Renderer::Mesh::m_isRoot, detail::protected_access())
 		.property("MaterialsNames", &Core::Renderer::Mesh::m_materialsNames, detail::protected_access())
 		.property("IsChild", &Core::Renderer::Mesh::m_isChild, detail::protected_access())
