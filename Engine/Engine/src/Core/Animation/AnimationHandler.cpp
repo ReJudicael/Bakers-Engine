@@ -98,7 +98,7 @@ namespace Core::Animation
 		BoneLocalTransform currLocal = boneAnim->boneLocalTransforms[curr];
 		BoneLocalTransform nextLocal = boneAnim->boneLocalTransforms[next];
 
-		float weight = (m_currentTime - boneAnim->timeKey[curr]) / (boneAnim->timeKey[next] - boneAnim->timeKey[curr]);
+		float weight = static_cast<float>((m_currentTime - boneAnim->timeKey[curr]) / (boneAnim->timeKey[next] - boneAnim->timeKey[curr]));
 
 
 		Core::Maths::Vec3 position{ (currLocal.localPosition) * (1 - weight) + (nextLocal.localPosition) * weight };

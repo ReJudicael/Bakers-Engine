@@ -22,6 +22,13 @@ namespace Core::Datastructure
 {
 	void	IComponent::Init() noexcept
 	{
+		ZoneScoped
+#ifdef TRACY_ENABLE
+		{
+			std::string s {std::string("Init of a ") + get_type().get_name().to_string() + std::string(" component")};
+			ZoneText(s.c_str(), s.size())
+		}
+#endif
 		if (!m_isInit)
 			OnInit();
 		if (!m_isStarted)
@@ -31,10 +38,15 @@ namespace Core::Datastructure
 
 	void	IComponent::Start()
 	{
+		ZoneScoped
+#ifdef TRACY_ENABLE
+		{
+			std::string s {std::string("Start of a ") + get_type().get_name().to_string() + std::string(" component")};
+			ZoneText(s.c_str(), s.size())
+		}
+#endif
 		if (m_isStarted || !m_isActive || IsDestroyed() || !m_parent->IsActive())
 			return;
-		ZoneScoped
-			ZoneText("Start of a component", 21)
 		if (OnStart())
 			m_isStarted = true;
 	}

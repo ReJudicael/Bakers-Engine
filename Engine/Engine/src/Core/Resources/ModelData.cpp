@@ -131,7 +131,7 @@ namespace Resources
 
 	void ModelData::LoadAnimationVertexDatas(aiMesh* mesh, const unsigned int increaseIndices)
 	{
-		for (auto i{ 0 }; i < mesh->mNumBones; i++)
+		for (unsigned i{ 0 }; i < mesh->mNumBones; i++)
 		{
 			LoadAnimationVertexData(mesh, i, mesh->mBones[i], increaseIndices);
 		}

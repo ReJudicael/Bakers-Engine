@@ -185,7 +185,7 @@ namespace Resources::Loader
 
 
 
-		const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate // load the 3DObject with only triangle
+		const aiScene* scene = importer.ReadFile(fileName, static_cast<unsigned>(aiProcess_Triangulate // load the 3DObject with only triangle
 			| aiProcess_JoinIdenticalVertices // join all vertices wich are the same for use indices for draw
 			| aiProcess_SplitLargeMeshes
 			| aiProcess_SortByPType
@@ -194,7 +194,7 @@ namespace Resources::Loader
 			| aiProcess_GenBoundingBoxes // generate the AABB of the meshs aiProcess_Gen
 			| aiProcess_GenNormals
 			| aiProcess_LimitBoneWeights
-		);
+		));
 
 		return scene;
 	}
@@ -426,6 +426,7 @@ namespace Resources::Loader
 
 	std::shared_ptr<Core::Animation::Animation> ResourcesManager::LoadAsAnAnimation(const std::string& fileName)
 	{
+		ZoneScoped
 		if (m_animations.count(fileName) > 0)
 			return m_animations[fileName];
 
@@ -708,7 +709,7 @@ namespace Resources::Loader
 			std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
 			for (auto j{ 0 }; j < lights.size(); ++j)
 				glUniformMatrix4fv(shader->GetLocation("uLightPOV[" + std::to_string(j) + "].view"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
-			glUniform1i(shader->GetLocation("uShadowCount"), lights.size());
+			glUniform1i(shader->GetLocation("uShadowCount"), static_cast<GLint>(lights.size()));
 		}
 	}
 

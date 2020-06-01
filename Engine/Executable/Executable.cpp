@@ -25,8 +25,8 @@ int main()
 
 	{
 		Executable::ExeEngine engine;
-		int temp;
-		if (temp = engine.Init())
+		int temp = engine.Init();
+		if (temp)
 			return temp;
 		engine.MainLoop();
 	}

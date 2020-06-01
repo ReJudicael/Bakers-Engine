@@ -37,6 +37,7 @@ namespace Editor::Datastructure
 		float				m_speed{ 5 };
 
 		virtual void		OnInit() override;
+		virtual bool		OnStart() override;
 
 		Core::Maths::Mat4	OnGenerateCamera() override;
 		Core::Maths::Mat4	OnGeneratePerspective() override;
@@ -138,6 +139,6 @@ namespace Editor::Datastructure
 		 */
 		void	Rotate(Core::Maths::Vec3 move);
 
-		REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::ICamera)
+		REGISTER_CLASS(Core::Datastructure::ICamera)
 	};
 }

@@ -81,7 +81,7 @@ namespace Core::Navigation
 	void NavQuery::RemoveQuery(QueryResult* toRemove)
 	{
 		ZoneScoped
-		for (int i = m_queriesQueue.size(); i > 0; --i)
+		for (size_t i = m_queriesQueue.size(); i > 0; --i)
 		{
 			Core::Navigation::NavQuery::Query q{ m_queriesQueue.front() };
 			m_queriesQueue.pop();

@@ -99,8 +99,8 @@ namespace Executable
 	int ExeEngine::OnInit(const int width, const int height)
 	{
 		glfwSetErrorCallback(callback_error);
-		int temp;
-		if (temp = EngineCore::OnInit(width, height))
+		int temp = EngineCore::OnInit(width, height);
+		if (temp)
 			return temp;
 
 		if (!glfwInit())
@@ -153,8 +153,6 @@ namespace Executable
 			stbi_image_free(icons.pixels);
 		}
 		SetCallbackToGLFW();
-
-		INIT_TRACY_GL_IMAGE(320, 180)
 
 		return 0;
 	}

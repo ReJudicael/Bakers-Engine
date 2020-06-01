@@ -89,6 +89,7 @@ namespace Core::Renderer
 
     void    Light::OnInit()
     {
+        ZoneScoped
         Resources::Shader::lights.emplace_back(this);
 
         glGenTextures(1, &m_depthTexture);
@@ -115,7 +116,7 @@ namespace Core::Renderer
         return (m_type != ELightType::POINT && m_castShadow);
     }
 
-    void Light::ResizeShadowTexture(int width, int height)
+    void Light::ResizeShadowTexture(unsigned width, unsigned height)
     {
         if (width == m_depthWidth && height == m_depthHeight)
             return;
@@ -158,14 +159,16 @@ namespace Core::Renderer
         switch (m_type)
         {
             case ELightType::DIRECTION:
-                return Camera::CreateOrthographicMatrix(m_depthWidth, m_depthHeight, 0.1f, 100.f);
+                return Camera::CreateOrthographicMatrix(static_cast<float>(m_depthWidth), static_cast<float>(m_depthHeight), 0.1f, 100.f);
                 break;
             case ELightType::POINT:
                 return Core::Maths::Mat4::Identity();
                 break;
             case ELightType::SPOT:
-                return Camera::CreatePerspectiveMatrix(m_depthWidth, m_depthHeight, 60.f, 0.1f, 100.f);
+                return Camera::CreatePerspectiveMatrix(static_cast<float>(m_depthWidth), static_cast<float>(m_depthHeight), 60.f, 0.1f, 100.f);
                 break;
+            default:
+                return Core::Maths::Mat4::Identity();
         }
     }
 

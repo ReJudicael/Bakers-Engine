@@ -104,7 +104,7 @@ namespace Resources
 		{
 			if (textures[i])
 			{
-				glActiveTexture(GL_TEXTURE0 + i);
+				glActiveTexture(GL_TEXTURE0 + static_cast<GLenum>(i));
 				glBindTexture(GL_TEXTURE_2D, textures[i]->texture);
 				unit++;
 			}

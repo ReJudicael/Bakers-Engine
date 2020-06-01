@@ -194,7 +194,7 @@ namespace Core::Renderer
 		 * @param width: New width of the window
 		 * @param height: New height of the window
 		 */
-		void ResizeShadowTexture(int width, int height);
+		void ResizeShadowTexture(unsigned width, unsigned height);
 
 		/**
 		 * Get Light position in World Space

@@ -64,7 +64,7 @@ namespace Core::Renderer
 		std::vector<Core::Renderer::Light*> lights = Resources::Shader::GetShadowCastingLights();
 		for (auto j{ 0 }; j < lights.size(); ++j)
 			glUniformMatrix4fv(m_shader->GetLocation("uLightPOV[" + std::to_string(j) + "].view"), 1, GL_TRUE, lights[j]->GetViewFromLight().array);
-		glUniform1i(m_shader->GetLocation("uShadowCount"), lights.size());
+		glUniform1i(m_shader->GetLocation("uShadowCount"), static_cast<GLint>(lights.size()));
 
 		glActiveTexture(GL_TEXTURE0);
 		glUniform1i(m_shader->GetLocation("uColorTexture"), 0);
@@ -84,16 +84,16 @@ namespace Core::Renderer
 
 			//material.SendMaterial();
 
-			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * m_size) / 9000.f);
-			pos.Translate((GetParent()->Up() * (float)(c->sizeY - c->bearingY) * m_size) / 9000.f);
+			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * static_cast<float>(m_size)) / 9000.f);
+			pos.Translate((GetParent()->Up() * (float)(c->sizeY - c->bearingY) * static_cast<float>(m_size)) / 9000.f);
 			pos.SetLocalScale(scale);
 			pos.Scale({ c->sizeX / 48.f, c->sizeY / 48.f, 1 });
 
 			pos.UpdatePos(GetParent()->GetUpdatedTransform());
 
 			glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, pos.GetGlobalTrs().array);
-			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * m_size) / 9000.f);
-			pos.Translate((GetParent()->Up() * -(float)(c->sizeY - c->bearingY) * m_size) / 9000.f);
+			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * static_cast<float>(m_size)) / 9000.f);
+			pos.Translate((GetParent()->Up() * -(float)(c->sizeY - c->bearingY) * static_cast<float>(m_size)) / 9000.f);
 
 			glDrawElements(GL_TRIANGLES, m_quad->offsetsMesh[0].count, GL_UNSIGNED_INT,
 				(GLvoid*)(m_quad->offsetsMesh[0].beginIndices * sizeof(GLuint)));
