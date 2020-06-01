@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "WindowFileBrowser.h"
 #include "EditorEngine.h"
 #include "LoadResources.h"
@@ -121,6 +123,8 @@ namespace Editor::Window
 			if (ImGui::MenuItem("Scene"))
 			{
 				const std::string& path = m_fs->CreateFile("Scene", "bakers");
+				std::ofstream file(path);
+				file << "{\n\"Childs\": []\n}";
 				m_renamePath = path;
 			}
 

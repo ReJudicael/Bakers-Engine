@@ -1,0 +1,333 @@
+{
+    "Childs": [
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Environment",
+                    "Values": {
+                        "Back Quad Tex": {
+                            "Name": "Back Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Box Tex": {
+                            "Name": "Box Tex",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\skybox.jpg"
+                        },
+                        "Down Quad Tex": {
+                            "Name": "Down Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Front Quad Tex": {
+                            "Name": "Front Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Left Quad Tex": {
+                            "Name": "Left Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Right Quad Tex": {
+                            "Name": "Right Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Sphere Tex": {
+                            "Name": "Sphere Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "Skybox type",
+                            "Value": 0
+                        },
+                        "Up Quad Tex": {
+                            "Name": "Up Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Skybox",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Player Camera",
+                    "Values": {
+                        "Black and White": {
+                            "Name": "Black and White",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Blur": {
+                            "Name": "Blur",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Color custom": {
+                            "Name": "Color custom",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Min move length": {
+                            "Name": "Min move length",
+                            "Type": "float",
+                            "Value": 0.0010000000474974513
+                        },
+                        "Move lerp speed": {
+                            "Name": "Move lerp speed",
+                            "Type": "float",
+                            "Value": 0.5
+                        },
+                        "Perspective": {
+                            "Name": "Perspective",
+                            "Type": "Perspective",
+                            "Value": {
+                                "Type": "Perspective",
+                                "Values": {
+                                    "FOV": {
+                                        "Name": "FOV",
+                                        "Type": "float",
+                                        "Value": 60.0
+                                    },
+                                    "Far": {
+                                        "Name": "Far",
+                                        "Type": "float",
+                                        "Value": 100.0
+                                    },
+                                    "Height": {
+                                        "Name": "Height",
+                                        "Type": "float",
+                                        "Value": 694.0
+                                    },
+                                    "Near": {
+                                        "Name": "Near",
+                                        "Type": "float",
+                                        "Value": 0.10000000149011612
+                                    },
+                                    "Width": {
+                                        "Name": "Width",
+                                        "Type": "float",
+                                        "Value": 660.0
+                                    }
+                                }
+                            }
+                        },
+                        "Postprocess Color": {
+                            "Name": "Postprocess Color",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "Running speed": {
+                            "Name": "Running speed",
+                            "Type": "float",
+                            "Value": 20.0
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 5.0
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Camera",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\IronGolem\\iron_golem.obj"
+                        }
+                    }
+                },
+                {
+                    "Type": "Script",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Lua Script": {
+                            "Name": "Lua Script",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Scripts\\MoveForwardExample.lua"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Golem",
+            "Pos": {
+                "x": -7.659999847412109,
+                "y": -28.229999542236328,
+                "z": -30.0
+            },
+            "Rot": {
+                "w": 5.699933306244206e-15,
+                "x": -7.549790126404332e-08,
+                "y": 1.0,
+                "z": -7.549790126404332e-08
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        }
+    ]
+}

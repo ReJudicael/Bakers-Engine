@@ -1716,7 +1716,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 611.0
+                                                "Value": 694.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1726,7 +1726,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 665.0
+                                                "Value": 712.0
                                             }
                                         }
                                     }
@@ -3752,7 +3752,7 @@
                         "AgentHeight": {
                             "Name": "AgentHeight",
                             "Type": "float",
-                            "Value": 0.10000000149011612
+                            "Value": -0.20000000298023224
                         },
                         "IsActive": {
                             "Name": "IsActive",
@@ -10724,7 +10724,7 @@
                                             "Value": [
                                                 0.0,
                                                 0.0,
-                                                -149.6421661376953
+                                                -64.93673706054688
                                             ]
                                         },
                                         "S/D Frict - Restitut": {

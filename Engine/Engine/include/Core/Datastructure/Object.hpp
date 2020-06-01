@@ -100,11 +100,6 @@ namespace Core::Datastructure
 		{
 			if (m_parent != nullptr)
 				m_parent->RemoveChild(this);
-			for (auto it : m_components)
-			{
-				if (!it->IsDestroyed())
-					it->Destroy();
-			}
 		}
 
 		/**
