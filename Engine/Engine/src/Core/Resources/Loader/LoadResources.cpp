@@ -426,6 +426,7 @@ namespace Resources::Loader
 
 	std::shared_ptr<Core::Animation::Animation> ResourcesManager::LoadAsAnAnimation(const std::string& fileName)
 	{
+		ZoneScoped
 		if (m_animations.count(fileName) > 0)
 			return m_animations[fileName];
 

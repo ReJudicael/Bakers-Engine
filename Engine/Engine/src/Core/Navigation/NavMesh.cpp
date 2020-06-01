@@ -352,7 +352,7 @@ namespace Core::Navigation
 	Mesh* NavMeshBuilder::AddMesh(float* verts, int nverts, int* tris, int ntris, const Core::Datastructure::Transform& position)
 	{
 		ZoneScoped
-		float* newVerts{ (float*)malloc(nverts * sizeof(float*)) };
+		float* newVerts{ new float[nverts] };
 
 		Core::Maths::Quat	rot{ position.GetGlobalRot() };
 		Core::Maths::Quat	rotInv{ rot.Inversed() };
@@ -370,7 +370,7 @@ namespace Core::Navigation
 			newVerts[i * 3 + 2] = vert.z;
 		}
 
-		int* newTris{ (int*)malloc(ntris * sizeof(int*)) };
+		int* newTris{ new int[ntris] };
 		int max = 0;
 		for (int i{ 0 }; i < ntris; ++i)
 		{

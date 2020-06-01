@@ -67,11 +67,11 @@ namespace Core::Datastructure
 		if (m_physicsScene)
 			delete m_physicsScene;
 		delete m_navMesh;
-		Core::Debug::Logger::ClearLogs(); 
 		if (m_task)
 			delete m_task;
 		delete m_audioSystem;
 		FREE_TRACY_GL_IMAGE
+		Core::Debug::Logger::ClearLogs(); 
 	}
 
 	int EngineCore::Init()
@@ -207,7 +207,7 @@ namespace Core::Datastructure
 		glDebugMessageCallback(MessageCallback, 0);
 
 		TracyGpuContext
-
+			INIT_TRACY_GL_IMAGE(320, 180)
 		m_physicsScene = new Core::Physics::PhysicsScene();
 
 		if (!m_physicsScene->InitPhysX())
@@ -348,7 +348,6 @@ namespace Core::Datastructure
 			LoadProperty(prop, c, it);
 		}
 		
-
 		parent->AddComponent(c.get_value<ComponentBase*>());
 	}
 

@@ -154,8 +154,6 @@ namespace Executable
 		}
 		SetCallbackToGLFW();
 
-		INIT_TRACY_GL_IMAGE(320, 180)
-
 		return 0;
 	}
 

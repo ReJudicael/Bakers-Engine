@@ -6,6 +6,7 @@ namespace Core::Animation
 
 	void Animation::initAnimation(const aiAnimation* anim)
 	{
+		ZoneScoped
 		name = anim->mName.data;
 
 		Time = static_cast<float>(anim->mDuration);

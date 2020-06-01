@@ -89,6 +89,7 @@ namespace Core::Renderer
 
     void    Light::OnInit()
     {
+        ZoneScoped
         Resources::Shader::lights.emplace_back(this);
 
         glGenTextures(1, &m_depthTexture);

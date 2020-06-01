@@ -106,8 +106,6 @@ namespace Editor
 		canvas->Add<Editor::Window::WindowFileBrowser>();
 		canvas->Add<Editor::Window::WindowProfiler>(false);
 
-		INIT_TRACY_GL_IMAGE(320, 180)
-
 		return 0;
 	}
 
@@ -198,7 +196,11 @@ namespace Editor
 			glfwGetFramebufferSize(m_window, &display_w, &display_h);
 			glViewport(0, 0, display_w, display_h);
 
+			TRACY_GL_IMAGE_SEND(m_width, m_height)
+				TracyGpuCollect
 			glfwSwapBuffers(m_window);
+
+			FrameMark
 		}
 	}
 

@@ -96,6 +96,13 @@ namespace Core::Datastructure
 
 	void Object::AddComponent(ComponentBase* c) noexcept
 	{
+		ZoneScoped
+#ifdef TRACY_ENABLE
+		{
+			std::string s {std::string("Adding a ") + c->get_type().get_name().to_string() + std::string(" component")};
+			ZoneText(s.c_str(), s.size())
+		}
+#endif
 		c->SetParent(this);
 		c->SetRoot(m_root);
 		c->Init();
