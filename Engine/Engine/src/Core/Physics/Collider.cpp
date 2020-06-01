@@ -62,6 +62,7 @@ namespace Core::Physics
 		SetMaterial(m_tmpColliderSave->physicsMaterial);
 		SetRaycastFilter(m_tmpColliderSave->raycastFilter);
 		Trigger(m_tmpColliderSave->isTrigger);
+		SetActivateCollider(m_tmpColliderSave->isActive);
 
 		delete m_tmpColliderSave;
 		m_tmpColliderSave = nullptr;
@@ -89,6 +90,7 @@ namespace Core::Physics
 		colliderSave->localRotation = GetLocalRotationEuler();
 		colliderSave->physicsMaterial = GetMaterial();
 		colliderSave->raycastFilter = GetRaycastFilter();
+		colliderSave->isActive = IsActive();
 
 		return colliderSave;
 	}
@@ -184,17 +186,24 @@ namespace Core::Physics
 
 	void Collider::SetActivateCollider(bool activate)
 	{
-		if (!m_pxRigidActor)
-			return;
-		if (activate)
+		if (m_pxRigidActor)
 		{
-			m_pxRigidActor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
-			m_isActive = activate;
+			if (activate)
+			{
+				m_pxRigidActor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+				m_isActive = activate;
+			}
+			else
+			{
+				m_pxRigidActor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+				m_isActive = activate;
+			}
 		}
 		else
 		{
-			m_pxRigidActor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
-			m_isActive = activate;
+			if (!m_tmpColliderSave)
+				m_tmpColliderSave = new ColliderSave();
+			m_tmpColliderSave->isActive = activate;
 		}
 	}
 

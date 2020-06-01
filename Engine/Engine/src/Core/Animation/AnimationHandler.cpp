@@ -245,6 +245,7 @@ namespace Core::Animation
 			{
 				(*it)->Destroy(nodeToDestroy);
 				delete (*it);
+				(*it) = nullptr;
 				it = transitionsAnimation.erase(it);
 			}
 			else
@@ -263,7 +264,7 @@ namespace Core::Animation
 			std::vector<AnimationNode*> toDestroy;
 			m_currentAnimationNode->Destroy(toDestroy);
 
-			for (size_t i = 0; i < toDestroy.size(); i++)
+			for (size_t i{ 0 }; i < toDestroy.size(); i++)
 			{
 				if (toDestroy[i])
 				{
@@ -273,7 +274,6 @@ namespace Core::Animation
 			}
 			toDestroy.clear();
 		}
-
 	}
 
 	AnimationHandler& AnimationHandler::operator=(const AnimationHandler& animation)

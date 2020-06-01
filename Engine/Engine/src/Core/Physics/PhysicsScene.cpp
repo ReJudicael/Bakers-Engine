@@ -462,10 +462,6 @@ namespace Core::Physics
 
 	void PhysicsScene::ReleasePhysXSDK()
 	{
-		/*BeginSimulate(0.1f);
-
-		EndSimulate();*/
-
 		if (m_pxPhysics != nullptr)
 		{
 			PxCloseExtensions();

@@ -34,7 +34,10 @@ namespace Core::Animation
 	void SkeletalMesh::OnDestroy()
 	{
 		if (animationHandler)
+		{
 			delete animationHandler;
+			animationHandler = nullptr;
+		}
 		Mesh::OnDestroy();
 		Core::Datastructure::IUpdatable::OnDestroy();
 	}
