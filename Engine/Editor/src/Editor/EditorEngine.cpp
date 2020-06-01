@@ -447,7 +447,7 @@ namespace Editor
 		if (m_state >= Core::Datastructure::EngineState::STARTING && m_state <= Core::Datastructure::EngineState::CLOSING)
 			return;
 		UpdateSavedScene();
-		std::ofstream o(m_currScene + ".json");
+		std::ofstream o(m_currScene);
 		o << std::setw(4) << m_savedScene << std::endl;
 		m_navMesh->SaveNavMesh(m_currScene);
 		GetResourcesManager()->SaveMaterial();

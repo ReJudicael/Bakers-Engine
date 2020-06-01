@@ -370,7 +370,7 @@ namespace Core::Datastructure
 	bool	EngineCore::OnLoadScene()
 	{
 		ZoneScoped
-		std::ifstream inputScene(m_currScene + ".json");
+		std::ifstream inputScene(m_currScene);
 		if (!inputScene.is_open())
 			return false;
 		json data;

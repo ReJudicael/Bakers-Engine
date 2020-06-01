@@ -118,6 +118,12 @@ namespace Editor::Window
 
 			ImGui::Separator();
 
+			if (ImGui::MenuItem("Scene"))
+			{
+				const std::string& path = m_fs->CreateFile("Scene", "bakers");
+				m_renamePath = path;
+			}
+
 			if (ImGui::MenuItem("Script"))
 			{
 				const std::string& path = m_fs->CreateFile("Script", "lua");
@@ -165,6 +171,9 @@ namespace Editor::Window
 	{
 		if (ImGui::BeginPopupContextItem("## PopupMenuOnDirectoryContentItem", ImGuiMouseButton_Right))
 		{
+			if (m_fs->GetExtensionWithoutDotStr(itemPath) == "bakers" && ImGui::MenuItem("Load"))
+				GetEngine()->LoadScene(itemPath);
+
 			if (ImGui::MenuItem("Open"))
 				m_fs->OpenContent(itemPath);
 
@@ -289,6 +298,28 @@ namespace Editor::Window
 		}
 	}
 
+	void WindowFileBrowser::IsItemClicked(const std::string& itemPath)
+	{
+		if (ImGui::IsItemClicked() && m_fs->GetExtensionWithoutDotStr(itemPath) == "bmat")
+		{
+			GetEngine()->materialSelected = GetEngine()->GetResourcesManager()->GetMaterial(itemPath);
+			GetEngine()->nameMaterialSelected = itemPath;
+		}
+		else if (ImGui::IsItemClicked() && m_fs->GetExtensionWithoutDotStr(itemPath) == "bshader")
+		{
+			GetEngine()->shaderSelected = GetEngine()->GetResourcesManager()->GetShader(itemPath);
+			GetEngine()->nameShaderSelected = itemPath;
+		}
+
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		{
+			if (m_fs->GetExtensionWithoutDotStr(itemPath) == "bakers")
+				GetEngine()->LoadScene(itemPath);
+			else
+				m_fs->OpenContent(itemPath);
+		}
+	}
+
 	void WindowFileBrowser::ShowItem(const std::string& itemName)
 	{
 		const std::string& itemPath = m_fs->GetLocalAbsolute(itemName);
@@ -307,19 +338,7 @@ namespace Editor::Window
 
 		PopupMenuOnDirectoryContentItem(itemPath);
 
-		if (ImGui::IsItemClicked() && m_fs->GetExtensionWithoutDotStr(itemPath) == "bmat")
-		{
-			GetEngine()->materialSelected = GetEngine()->GetResourcesManager()->GetMaterial(itemPath);
-			GetEngine()->nameMaterialSelected = itemPath;
-		}
-		else if(ImGui::IsItemClicked() && m_fs->GetExtensionWithoutDotStr(itemPath) == "bshader")
-		{
-			GetEngine()->shaderSelected = GetEngine()->GetResourcesManager()->GetShader(itemPath);
-			GetEngine()->nameShaderSelected = itemPath;
-		}
-
-		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-			m_fs->OpenContent(itemPath);
+		IsItemClicked(itemPath);
 	}
 
 	void WindowFileBrowser::ShowVirtualMaterial(const std::string& materialPath)

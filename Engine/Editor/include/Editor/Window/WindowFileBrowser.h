@@ -174,6 +174,12 @@ namespace Editor::Window
 		void DragDropTargetItem(const std::string& itemPath);
 
 		/**
+		 * Action when an item is clicked
+		 * @param itemPath: Item path
+		 */
+		void IsItemClicked(const std::string& itemPath);
+
+		/**
 		 * Show the chosen file / folder
 		 * @param itemName: Name of the chosen file / folder
 		 */
@@ -205,7 +211,7 @@ namespace Editor::Window
 		 * Show directory tree
 		 * @param path: Path where recursive starts for display
 		 */
-		void ShowNavigationPanel(const Core::SystemManagement::TreeDirectoryPath& tdp);  
+		void ShowNavigationPanel(const Core::SystemManagement::TreeDirectoryPath& tdp);
 
 		void DeleteSpecialFile(const std::string& itemPath);
 

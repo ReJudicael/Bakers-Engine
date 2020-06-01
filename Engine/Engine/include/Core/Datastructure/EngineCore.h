@@ -53,7 +53,7 @@ namespace Core
 
 			Core::Navigation::NavMeshBuilder*		m_navMesh;
 
-			std::string								m_currScene{ "Default" };
+			std::string								m_currScene{ ".\\Resources\\Scenes\\Default.bakers" };
 
 			double									m_time{ 0 };
 

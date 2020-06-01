@@ -1580,7 +1580,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 639.0
+                                                "Value": 608.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1590,7 +1590,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 630.0
+                                                "Value": 651.0
                                             }
                                         }
                                     }
