@@ -8,7 +8,7 @@
 
 namespace Core::Navigation
 {
-	class PathFollowingComponent : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::INavAgent, public virtual Core::Datastructure::IUpdatable
+	BAKERS_API_CLASS PathFollowingComponent : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::INavAgent, public virtual Core::Datastructure::IUpdatable
 	{
 	protected:
 		virtual bool	OnStart() override;

@@ -1,44 +1,50 @@
 --Move object with WASD inputs
 
-speed = 50;
-maxVelocity = 50;
+speed = 100;
 angularSpeed = 0.1; --value used for quaternion slerp. Must be between 0 and 1
 
 function Start()
 	
 end
 
-function Update(deltaTime)
-	move = Vec3.new();
-	canRotate = false;
+function HandleRotation()
+	rotation = Vec3.new();
+
+	if (Input:IsKeyDown(Key.A)) then
+		rotation = rotation + object.Transform:Right();
+	end
+	if (Input:IsKeyDown(Key.D)) then
+		rotation = rotation - object.Transform:Right();
+	end
 	
-	target = Vec3.new(-1.0, 0, 0);
+	if (rotation:SquaredLength() > 0.0) then
+		rotation:Normalize();
+		object:RotateTowards(rotation, angularSpeed) 
+	end
+end
+
+function HandleMovement(deltaTime)
+	move = Vec3.new();
 	
 	if (Input:IsKeyDown(Key.W)) then
 		move = move + object.Transform:Forward();
 	end
-	if (Input:IsKeyDown(Key.A)) then
-		move = move + object.Transform:Right();
-		canRotate = true;
-	end
+	
 	if (Input:IsKeyDown(Key.S)) then
 		move = move - object.Transform:Forward();
 	end
-	if (Input:IsKeyDown(Key.D)) then
-		move = move - object.Transform:Right();
-		canRotate = true;
-	end
-	
-	velocity = Body:getVelocity();
-	if (velocity:SquaredLength() > maxVelocity) then
-		do return end
-	end
-
 	
 	if (move:SquaredLength() > 0.0) then
 		move:Normalize();
-		if (canRotate) then object:RotateTowards(move, angularSpeed) end;
 		move = move * speed * deltaTime;
-		Body:AddVelocity(move);
-	end;
+		velocity = Body:getVelocity();
+		move.y = velocity.y;
+		Body:setVelocity(move);
+		
+	end
+end
+
+function Update(deltaTime)
+	HandleRotation();
+	HandleMovement(deltaTime);
 end

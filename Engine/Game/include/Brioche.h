@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
+#include "PathFollowingComponent.h"
 
 /**
  * Brioche animation
@@ -13,6 +14,13 @@ enum class EBriocheAnimation : unsigned short
 	BITE,
 	GETHIT,
 	DIE
+};
+
+enum class EBriocheBehavior : unsigned short
+{
+	FOLLOW = 0,
+	GO,
+	ATTACK
 };
 
 /**
@@ -28,6 +36,9 @@ private:
 	std::string m_getHitAnimation;
 	std::string m_dieAnimation;
 	EBriocheAnimation m_briocheAnimation{ EBriocheAnimation::IDLE };
+	EBriocheBehavior m_behavior{ EBriocheBehavior::FOLLOW };
+
+	Core::Navigation::PathFollowingComponent* m_navigator;
 
 protected:
 	/**
@@ -78,6 +89,24 @@ public:
 	 * Destructor
 	 */
 	~Brioche();
+
+	/**
+	 * Set target of path following component
+	 * @param target: New position to reach
+	 */
+	void	SetTarget(Core::Maths::Vec3 target);
+
+	/**
+	 * Behavior setter
+	 * @param newBehavior: new behavior for ally, can be FOLLOW, GO or ATTACK
+	 */
+	void	SetBehavior(EBriocheBehavior newBehavior) { m_behavior = newBehavior; };
+
+	/**
+	 * Behavior getter
+	 * @return Current behavior for ally
+	 */
+	EBriocheBehavior GetBehavior() { return m_behavior; };
 
 private:
 	void AnimGraph();

@@ -1580,7 +1580,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 643.0
+                                                "Value": 402.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1590,7 +1590,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 693.0
+                                                "Value": 393.0
                                             }
                                         }
                                     }
@@ -5518,7 +5518,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 643.0
+                                                "Value": 402.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -5528,7 +5528,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 693.0
+                                                "Value": 393.0
                                             }
                                         }
                                     }
@@ -5613,6 +5613,119 @@
                         "x": 7.549790126404332e-08,
                         "y": -1.0,
                         "z": -7.549790126404332e-08
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [
+                        {
+                            "Childs": [],
+                            "Components": [
+                                {
+                                    "Type": "Target",
+                                    "Values": {
+                                        "IsActive": {
+                                            "Name": "IsActive",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsUpdating": {
+                                            "Name": "IsUpdating",
+                                            "Type": "bool",
+                                            "Value": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "Type": "Mesh",
+                                    "Values": {
+                                        "Cast Shadows": {
+                                            "Name": "Cast Shadows",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsActive": {
+                                            "Name": "IsActive",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsChild": {
+                                            "Name": "IsChild",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "IsRoot": {
+                                            "Name": "IsRoot",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "Materials": {
+                                            "Name": "Materials",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\cube"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "MaterialsNames": {
+                                            "Name": "MaterialsNames",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\cube"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "Model": {
+                                            "Name": "Model",
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\cube.obj"
+                                        }
+                                    }
+                                }
+                            ],
+                            "Flags": 0,
+                            "Name": "Target",
+                            "Pos": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Rot": {
+                                "w": 1.0,
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    ],
+                    "Components": [],
+                    "Flags": 0,
+                    "Name": "TargetAnchor",
+                    "Pos": {
+                        "x": -1.4113003015518188,
+                        "y": 0.0,
+                        "z": -1.2236452102661133
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
                     },
                     "Scale": {
                         "x": 1.0,
@@ -5732,6 +5845,16 @@
                 {
                     "Type": "Sphere Collider",
                     "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 0
+                        },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
@@ -5755,6 +5878,11 @@
                                 0.0
                             ]
                         },
+                        "Radius": {
+                            "Name": "Radius",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
                         "S/D Frict - Restitut": {
                             "Name": "S/D Frict - Restitut",
                             "Type": "Vec3",
@@ -5763,11 +5891,6 @@
                                 0.0,
                                 0.0
                             ]
-                        },
-                        "Radius": {
-                            "Name": "Radius",
-                            "Type": "float",
-                            "Value": 1.0
                         },
                         "Trigger": {
                             "Name": "Trigger",
@@ -5853,6 +5976,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -5932,6 +6060,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6011,6 +6144,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6090,6 +6228,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6169,6 +6312,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6248,6 +6396,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6327,6 +6480,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6406,6 +6564,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6485,6 +6648,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6564,6 +6732,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6643,6 +6816,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6722,6 +6900,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6730,6 +6913,11 @@
                                         2.0,
                                         0.6899999976158142
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -6796,6 +6984,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6804,6 +6997,11 @@
                                         5.5,
                                         9.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -6870,6 +7068,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6878,6 +7081,11 @@
                                         4.0,
                                         6.96999979019165
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -6944,6 +7152,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -6952,6 +7165,11 @@
                                         2.0,
                                         3.299999952316284
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7018,6 +7236,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7026,6 +7249,11 @@
                                         2.0,
                                         1.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7092,6 +7320,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7100,6 +7333,11 @@
                                         2.0,
                                         5.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7166,6 +7404,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7174,6 +7417,11 @@
                                         1.0,
                                         3.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7240,6 +7488,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7248,6 +7501,11 @@
                                         2.0,
                                         0.20000000298023224
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7314,6 +7572,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7322,6 +7585,11 @@
                                         1.0,
                                         0.20000000298023224
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7388,6 +7656,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7396,6 +7669,11 @@
                                         3.0,
                                         12.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7462,6 +7740,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7470,6 +7753,11 @@
                                         3.0,
                                         0.5
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7536,6 +7824,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7544,6 +7837,11 @@
                                         3.5,
                                         6.5
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7610,6 +7908,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7618,6 +7921,11 @@
                                         2.0,
                                         0.20000000298023224
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7684,6 +7992,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7692,6 +8005,11 @@
                                         1.0,
                                         3.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7758,6 +8076,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7766,6 +8089,11 @@
                                         3.0,
                                         5.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7832,6 +8160,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7840,6 +8173,11 @@
                                         0.5,
                                         10.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7906,6 +8244,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7914,6 +8257,11 @@
                                         0.5,
                                         10.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -7980,6 +8328,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -7988,6 +8341,11 @@
                                         0.5,
                                         7.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8054,6 +8412,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8062,6 +8425,11 @@
                                         0.5,
                                         5.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8128,6 +8496,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8136,6 +8509,11 @@
                                         0.5,
                                         4.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8202,6 +8580,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8210,6 +8593,11 @@
                                         0.5,
                                         5.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8276,6 +8664,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8284,6 +8677,11 @@
                                         0.5,
                                         2.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8350,6 +8748,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8358,6 +8761,11 @@
                                         1.0,
                                         5.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8424,6 +8832,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8432,6 +8845,11 @@
                                         1.0,
                                         1.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8498,6 +8916,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8506,6 +8929,11 @@
                                         1.0,
                                         5.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8572,6 +9000,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8580,6 +9013,11 @@
                                         1.5,
                                         3.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8646,6 +9084,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8654,6 +9097,11 @@
                                         1.0,
                                         3.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8720,6 +9168,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8728,6 +9181,11 @@
                                         1.5,
                                         0.20000000298023224
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8794,6 +9252,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8802,6 +9265,11 @@
                                         1.0,
                                         0.20000000298023224
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8868,6 +9336,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8876,6 +9349,11 @@
                                         1.0,
                                         0.20000000298023224
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -8942,6 +9420,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -8950,6 +9433,11 @@
                                         1.5,
                                         0.5
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9016,6 +9504,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9024,6 +9517,11 @@
                                         1.5,
                                         4.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9090,6 +9588,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9098,6 +9601,11 @@
                                         1.5,
                                         5.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9164,6 +9672,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9172,6 +9685,11 @@
                                         1.5,
                                         0.5
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9238,6 +9756,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9246,6 +9769,11 @@
                                         1.0,
                                         0.20000000298023224
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9312,6 +9840,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9320,6 +9853,11 @@
                                         3.0,
                                         5.5
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9386,6 +9924,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9394,6 +9937,11 @@
                                         5.0,
                                         0.5
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9460,6 +10008,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9468,6 +10021,11 @@
                                         1.0,
                                         3.0
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9534,6 +10092,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9542,6 +10105,11 @@
                                         1.0,
                                         2.2699999809265137
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9608,6 +10176,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9616,6 +10189,11 @@
                                         0.699999988079071,
                                         2.5299999713897705
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -9682,6 +10260,11 @@
                         {
                             "Type": "Box Collider",
                             "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
                                 "Box Half Extent": {
                                     "Name": "Box Half Extent",
                                     "Type": "Vec3",
@@ -9690,6 +10273,11 @@
                                         0.75,
                                         2.4200000762939453
                                     ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",

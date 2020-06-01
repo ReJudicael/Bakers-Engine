@@ -9,7 +9,7 @@
 
 namespace Core::Navigation
 {
-	class NavQuery
+	BAKERS_API_CLASS NavQuery
 	{
 	public:
 		struct QueryResult

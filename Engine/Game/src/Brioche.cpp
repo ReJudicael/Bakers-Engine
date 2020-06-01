@@ -51,6 +51,15 @@ void Brioche::StartCopy(IComponent*& copyTo) const
 bool Brioche::OnStart()
 {
 	AnimGraph();
+
+	std::list<Core::Navigation::PathFollowingComponent*> components;
+	m_parent->GetComponentsOfBaseType<Core::Navigation::PathFollowingComponent>(components);
+	if (components.size() > 0)
+		m_navigator = *components.begin();
+
+	if (m_navigator)
+		BAKERS_LOG_MESSAGE("NAVIGATOR FOUND");
+
 	return ComponentUpdatable::OnStart();
 }
 
@@ -71,6 +80,12 @@ void Brioche::OnInit()
 
 void Brioche::OnUpdate(float deltaTime)
 {
+}
+
+void Brioche::SetTarget(Core::Maths::Vec3 target)
+{
+	if (m_navigator)
+		m_navigator->SetTarget(target);
 }
 
 void Brioche::AnimGraph()
