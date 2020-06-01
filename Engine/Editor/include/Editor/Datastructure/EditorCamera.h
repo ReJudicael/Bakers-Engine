@@ -37,6 +37,7 @@ namespace Editor::Datastructure
 		float				m_speed{ 5 };
 
 		virtual void		OnInit() override;
+		virtual bool		OnStart() override;
 
 		Core::Maths::Mat4	OnGenerateCamera() override;
 		Core::Maths::Mat4	OnGeneratePerspective() override;

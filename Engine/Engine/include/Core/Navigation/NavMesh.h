@@ -67,14 +67,6 @@ namespace Core::Navigation
 		virtual void doResetLog();
 
 		virtual void doLog(const rcLogCategory category, const char* msg, const int len);
-
-		virtual void doResetTimers();
-
-		virtual void doStartTimer(const rcTimerLabel label);
-
-		virtual void doStopTimer(const rcTimerLabel label);
-
-		virtual int doGetAccumulatedTime(const rcTimerLabel label) const;
 	};
 
 	BAKERS_API_CLASS NavMeshBuilder

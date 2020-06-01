@@ -80,7 +80,7 @@ void Core::Datastructure::ICamera::DrawDepth(const std::list<IRenderable*>& rend
 			(*it)->Draw(lights[i]->GetViewFromLight(), this->GetPerspectiveMatrix(), m_shadowShader);
 		glCullFace(GL_BACK);
 
-		glActiveTexture(GL_TEXTURE2 + i);
+		glActiveTexture(GL_TEXTURE2 + static_cast<unsigned>(i));
 		glBindTexture(GL_TEXTURE_2D, lights[i]->ShadowTexture());
 	}
 }
@@ -131,7 +131,7 @@ void Core::Datastructure::ICamera::Resize(unsigned width, unsigned height)
 	m_cameraWidth = width;
 	m_cameraHeight = height;
 
-	SetRatio(width, height);
+	SetRatio(static_cast<float>(width), static_cast<float>(height));
 	
 	m_fbo->Resize(width, height);
 	if (m_postProcessHandler)

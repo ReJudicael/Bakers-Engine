@@ -62,6 +62,11 @@ namespace Editor::Datastructure
 		ICamera::OnInit();
 		m_fbo->type = Core::Renderer::FBOType::CUSTOM;
 	}
+
+	bool EditorCamera::OnStart()
+	{
+		return ComponentBase::OnStart();
+	}
 	
 	Core::Maths::Mat4 EditorCamera::OnGenerateCamera()
 	{

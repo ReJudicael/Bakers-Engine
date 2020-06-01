@@ -61,8 +61,7 @@ namespace Core::Navigation
 
 		rcCalcGridSize(m_cfg.bmin, m_cfg.bmax, m_cfg.cs, &m_cfg.width, &m_cfg.height);
 
-		m_ctx->resetTimers();
-		m_ctx->startTimer(RC_TIMER_TOTAL);
+		auto chrono{ std::chrono::high_resolution_clock::now() };
 
 		rcHeightfield* solid{ rcAllocHeightfield() };
 		if (!solid)
@@ -296,44 +295,47 @@ namespace Core::Navigation
 				return false;
 			}
 		}
-		
-		m_ctx->stopTimer(RC_TIMER_TOTAL);
-		int ns{ m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) % 1000 };
-		int us{ (m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) / 1000) % 1000 };
-		int ms{ (m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) / 1000000) % 1000 };
-		int s{ (m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) / 1000000000) % 1000 };
-		std::string time{ "Total build time for Navmesh: " };
+
+		const std::chrono::high_resolution_clock::time_point end{ std::chrono::high_resolution_clock::now() };
+		auto delta{ end - chrono };
+		std::chrono::steady_clock::duration time = delta;
+
+		long long ns{ time.count() % 1000ll };
+		long long us{ (time.count() / 1000ll) % 1000ll };
+		long long ms{ (time.count() / 1000000ll) % 1000ll };
+		long long s{ (time.count() / 1000000000ll) % 1000ll };
+		std::string timeStr{ "Total build time for Navmesh: " };
 		bool comma{ false }; //Put comma before text
 		if (s > 0)
 		{
 			if (comma)
-				time += ", ";
-			time += std::to_string(s) + " seconds";
+				timeStr += ", ";
+			timeStr += std::to_string(s) + " seconds";
 			comma = true;
 		}
 		if (ms > 0) 
 		{
 			if (comma)
-				time += ", ";
-			time += std::to_string(ms) + " miliseconds";
+				timeStr += ", ";
+			timeStr += std::to_string(ms) + " miliseconds";
 			comma = true;
 		}
 		if (us > 0)
 		{
 			if (comma)
-				time += ", ";
-			time += std::to_string(us) + " microseconds";
+				timeStr += ", ";
+			timeStr += std::to_string(us) + " microseconds";
 			comma = true;
 		}
 		if (ns > 0)
 		{
 			if (comma)
-				time += " and ";
-			time += std::to_string(ns) + " nanoseconds";
+				timeStr += " and ";
+			timeStr += std::to_string(ns) + " nanoseconds";
 			comma = true;
 		}
 
-		BAKERS_LOG_MESSAGE(time);
+		BAKERS_LOG_MESSAGE(timeStr);
 
 		BuildNavMeshRenderer();
 		
@@ -395,31 +397,27 @@ namespace Core::Navigation
 	{
 	}
 
-	void BuildContext::doLog(const rcLogCategory, const char*, const int)
+	void BuildContext::doLog(const rcLogCategory type, const char* message, const int length)
 	{
-	}
+		Core::Debug::ELogType logType;
+		switch (type)
+		{
+		default:
+		case RC_LOG_PROGRESS:
+			logType = Core::Debug::ELogType::LOG_MESSAGE;
+			break;
 
-	void BuildContext::doResetTimers()
-	{
-		for (int i = 0; i < RC_MAX_TIMERS; ++i)
-			m_accTime[i] = std::chrono::high_resolution_clock::duration(0);
-	}
+		case RC_LOG_WARNING:
+			logType = Core::Debug::ELogType::LOG_WARNING;
+			break;
 
-	void BuildContext::doStartTimer(const rcTimerLabel label)
-	{
-		m_startTime[label] = std::chrono::high_resolution_clock::now();
-	}
+		case RC_LOG_ERROR:
+			logType = Core::Debug::ELogType::LOG_ERROR;
+			break;
+		}
+		std::string s{ message, static_cast<size_t>(length) };
 
-	void BuildContext::doStopTimer(const rcTimerLabel label)
-	{
-		const std::chrono::high_resolution_clock::time_point end{ std::chrono::high_resolution_clock::now() };
-		auto delta{ end - m_startTime[label] };
-		m_accTime[label] += delta;
-	}
-
-	int BuildContext::doGetAccumulatedTime(const rcTimerLabel label) const
-	{
-		return m_accTime[label].count();
+		Core::Debug::Logger::AddLog(logType, s, "NavMeshBuilder::NavMesh.cpp", "Build", 0);
 	}
 	/*
 	dtStatus NavMeshBuilder::FindNearestPoly(const Core::Maths::Vec3& targetPos, const dtQueryFilter* filter, dtPolyRef* outRef, Core::Maths::Vec3& outPoint) const noexcept

@@ -99,8 +99,8 @@ namespace Executable
 	int ExeEngine::OnInit(const int width, const int height)
 	{
 		glfwSetErrorCallback(callback_error);
-		int temp;
-		if (temp = EngineCore::OnInit(width, height))
+		int temp = EngineCore::OnInit(width, height);
+		if (temp)
 			return temp;
 
 		if (!glfwInit())

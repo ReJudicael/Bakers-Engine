@@ -8,7 +8,7 @@ namespace Core::Animation
 	{
 		name = anim->mName.data;
 
-		Time = static_cast<double>(anim->mDuration);
+		Time = static_cast<float>(anim->mDuration);
 		
 		for (unsigned int i{ 0 }; i < anim->mNumChannels; i++)
 		{
@@ -17,7 +17,7 @@ namespace Core::Animation
 			std::shared_ptr<BoneAnimation> bone = std::make_shared<BoneAnimation>();
 			//BoneAnimation bone;
 
-			for (int j{ 0 }; j < nodeAnim->mNumPositionKeys; j++)
+			for (unsigned j{ 0 }; j < nodeAnim->mNumPositionKeys; j++)
 			{
 				BoneLocalTransform local;
 				aiVectorKey vect = nodeAnim->mPositionKeys[j];

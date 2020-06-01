@@ -178,7 +178,7 @@ namespace Core::Audio
 			return false;
 
 		bool isPlaying;
-		FMOD_RESULT result = m_fmodChannel->isPlaying(&isPlaying);
+		m_fmodChannel->isPlaying(&isPlaying);
 
 		if (!isPlaying)
 		{

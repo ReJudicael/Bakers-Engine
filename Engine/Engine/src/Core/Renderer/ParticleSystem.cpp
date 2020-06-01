@@ -164,7 +164,7 @@ namespace Core::Renderer
 			return;
 
 		Core::Maths::Mat4 transform = m_parent->GetGlobalTRS();
-		Core::Maths::Vec3 particleScale = m_parent->GetGlobalScale() * 0.1;
+		Core::Maths::Vec3 particleScale = m_parent->GetGlobalScale() * 0.1f;
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
