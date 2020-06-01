@@ -141,8 +141,7 @@ namespace Core::Audio
 
 	void AudioSource::Stop()
 	{
-		FMOD_RESULT result = m_fmodChannel->stop();
-		CHECK_ERR_FMOD(result);
+		m_fmodChannel->stop();
 		m_fmodChannel = nullptr;
 	}
 
@@ -178,7 +177,7 @@ namespace Core::Audio
 			return false;
 
 		bool isPlaying;
-		FMOD_RESULT result = m_fmodChannel->isPlaying(&isPlaying);
+		m_fmodChannel->isPlaying(&isPlaying);
 
 		if (!isPlaying)
 		{
@@ -186,6 +185,6 @@ namespace Core::Audio
 			return false;
 		}
 
-		return isPlaying;
+		return true;
 	}
 }

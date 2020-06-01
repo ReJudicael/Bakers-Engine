@@ -88,7 +88,7 @@ void Brioche::OnUpdate(float deltaTime)
 		return;
 	}
 
-	if (m_rigidbody->GetVelocity().SquaredLength() > 0.5f)
+	if (m_rigidbody->GetVelocity().SquaredLength() > 0.1f)
 		m_briocheAnimation = EBriocheAnimation::RUN;
 	else
 		m_briocheAnimation = EBriocheAnimation::IDLE;

@@ -54,6 +54,11 @@ bool	Door::OnStart()
 	if (particles.size() > 0)
 		m_particles = *particles.begin();
 
+	std::list<Core::Audio::AudioSource*> audioSources;
+	m_parent->GetComponentsOfBaseType<Core::Audio::AudioSource>(audioSources);
+	if (audioSources.size() > 0)
+		m_audioSource = *audioSources.begin();
+
 	if (m_particles)
 		m_particles->Activate(false);
 
@@ -119,5 +124,7 @@ void	Door::OnUpdate(float deltaTime)
 		m_isMoving = true;
 		if (m_particles)
 			m_particles->Activate();
+		if (m_audioSource)
+			m_audioSource->Play();
 	}
 }

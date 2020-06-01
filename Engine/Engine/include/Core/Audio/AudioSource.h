@@ -120,7 +120,7 @@ namespace Core::Audio
 		virtual bool OnStart() override;
 		virtual void OnUpdate(float deltaTime) override;
 
-	private:
+	public:
 		/**
 		 * Play sound
 		 */
@@ -136,6 +136,7 @@ namespace Core::Audio
 		 */
 		void Stop();
 
+	private:
 		/**
 		 * Update attributes 
 		 */

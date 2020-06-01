@@ -5,6 +5,7 @@
 #include "Vec3.hpp"
 #include "Switch.h"
 #include "ParticleSystem.h"
+#include "AudioSource.h"
 
 // Moving object connected to a switch
 BAKERS_GAME_CLASS Door : public Core::Datastructure::ComponentUpdatable
@@ -12,6 +13,7 @@ BAKERS_GAME_CLASS Door : public Core::Datastructure::ComponentUpdatable
 	std::list<Switch*> m_switches;
 	Core::Renderer::ParticleSystem* m_particles;
 	Core::Maths::Vec3 m_movement{ 0, 0, 1 };
+	Core::Audio::AudioSource* m_audioSource;
 	bool m_isMoving{ false };
 	float m_speed{ 1.f };
 	float m_timeMoving{ 2.f };

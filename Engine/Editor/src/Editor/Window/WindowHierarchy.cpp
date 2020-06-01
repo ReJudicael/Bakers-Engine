@@ -9,7 +9,7 @@ namespace Editor::Window
 	WindowHierarchy::WindowHierarchy(Canvas* canvas, bool visible) :
 		AWindow{ canvas, ICON_FA_SITEMAP "  Hierarchy", visible }
 	{
-		m_treeNodeFlags		= ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+		m_treeNodeFlags		= ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
 		m_inputTextFlags	= ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
 	}
 
@@ -143,7 +143,7 @@ namespace Editor::Window
 
 	void WindowHierarchy::DragDropSourceItem(Core::Datastructure::Object* object)
 	{
-		if (ImGui::BeginDragDropSource())
+		if (!m_canRename && ImGui::BeginDragDropSource())
 		{
 			ImGui::Text((ICON_FA_CUBE "  " + object->GetName()).c_str());
 			ImGui::SetDragDropPayload("DRAGDROP_GAMEOBJECT", &object, sizeof(Core::Datastructure::Object*), ImGuiCond_Once);

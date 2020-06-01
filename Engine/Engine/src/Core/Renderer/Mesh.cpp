@@ -204,8 +204,11 @@ bool Core::Renderer::Mesh::IsModelLoaded()
 
 bool Core::Renderer::Mesh::CreateAABBMesh(physx::PxScene*& scene)
 {
-	if (!m_model || m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+	if (!m_model)
 		return false;
+	if (m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
+		return false;
+
 	Core::Datastructure::Object* object = GetParent();
 	
 	Core::Datastructure::IComponent* component = dynamic_cast<Core::Datastructure::IComponent*>(this);

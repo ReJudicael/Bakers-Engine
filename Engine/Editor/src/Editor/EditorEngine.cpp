@@ -544,7 +544,7 @@ namespace Editor
 			EditorEngine* this_window = reinterpret_cast<EditorEngine*>(glfwGetWindowUserPointer(window));
 			if (this_window)
 			{
-				//this_window->OnResizeWindow(width, height);
+				this_window->OnResizeWindow(width, height);
 			}
 		};
 		return glfwSetWindowSizeCallback(m_window, window_size_callback);

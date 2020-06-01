@@ -82,7 +82,7 @@ void Owen::OnUpdate(float deltaTime)
 		return;
 	}
 
-	if (m_rigidbody->GetVelocity().SquaredLength() > 0.5f)
+	if (m_rigidbody->GetVelocity().SquaredLength() > 0.1f)
 		m_owenAnimation = EOwenAnimation::RUN;
 	else
 		m_owenAnimation = EOwenAnimation::IDLE;
