@@ -18,6 +18,7 @@ RTTR_PLUGIN_REGISTRATION
 		)
 
 		.constructor()
+		.property("Health", &Brioche::m_health)
 		.property("Idle Animation", &Brioche::m_idleAnimation)
 		.property("Run Animation", &Brioche::m_runAnimation)
 		.property("Bite Animation", &Brioche::m_biteAnimation)
@@ -40,6 +41,13 @@ void Brioche::OnCopy(IComponent* copyTo) const
 {
 	ComponentUpdatable::OnCopy(copyTo);
 	Brioche* copy{ dynamic_cast<Brioche*>(copyTo) };
+	copy->m_health = m_health;
+	copy->m_idleAnimation = m_idleAnimation;
+	copy->m_runAnimation = m_runAnimation;
+	copy->m_biteAnimation = m_biteAnimation;
+	copy->m_getHitAnimation = m_getHitAnimation;
+	copy->m_dieAnimation = m_dieAnimation;
+	copy->m_briocheAnimation = m_briocheAnimation;
 }
 
 void Brioche::StartCopy(IComponent*& copyTo) const
@@ -73,6 +81,13 @@ void Brioche::OnDestroy()
 void Brioche::OnReset()
 {
 	ComponentUpdatable::OnReset();
+	m_health = 0.f;
+	m_idleAnimation = "";
+	m_runAnimation = "";
+	m_biteAnimation = "";
+	m_getHitAnimation = "";
+	m_dieAnimation = "";
+	m_briocheAnimation = EBriocheAnimation::IDLE;
 }
 
 void Brioche::OnInit()

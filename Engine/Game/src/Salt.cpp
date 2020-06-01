@@ -19,6 +19,7 @@ RTTR_PLUGIN_REGISTRATION
 		)
 
 		.constructor()
+		.property("Health", &Salt::m_health)
 		.property("Fly Idle Animation", &Salt::m_flyIdleAnimation)
 		.property("Landing Animation", &Salt::m_landingAnimation)
 		.property("Idle Animation", &Salt::m_idleAnimation)
@@ -65,6 +66,13 @@ void Salt::OnDestroy()
 void Salt::OnReset()
 {
 	ComponentUpdatable::OnReset();
+	m_health = 0.f;
+	m_idleAnimation = "";
+	m_runAnimation = "";
+	m_biteAnimation = "";
+	m_getHitAnimation = "";
+	m_dieAnimation = "";
+	m_saltAnimation = ESaltAnimation::IDLE;
 }
 
 void Salt::OnInit()

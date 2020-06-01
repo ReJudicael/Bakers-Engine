@@ -18,6 +18,7 @@ RTTR_PLUGIN_REGISTRATION
 		)
 
 		.constructor()
+		.property("Health", &Minion::m_health)
 		.property("Idle Animation", &Minion::m_idleAnimation)
 		.property("Run Animation", &Minion::m_runAnimation)
 		.property("Bite Animation", &Minion::m_biteAnimation)
@@ -40,6 +41,13 @@ void Minion::OnCopy(IComponent* copyTo) const
 {
 	ComponentUpdatable::OnCopy(copyTo);
 	Minion* copy{ dynamic_cast<Minion*>(copyTo) };
+	copy->m_health = m_health;
+	copy->m_idleAnimation = m_idleAnimation;
+	copy->m_runAnimation = m_runAnimation;
+	copy->m_biteAnimation = m_biteAnimation;
+	copy->m_getHitAnimation = m_getHitAnimation;
+	copy->m_dieAnimation = m_dieAnimation;
+	copy->m_minionAnimation = m_minionAnimation;
 }
 
 void Minion::StartCopy(IComponent*& copyTo) const
@@ -62,6 +70,13 @@ void Minion::OnDestroy()
 void Minion::OnReset()
 {
 	ComponentUpdatable::OnReset();
+	m_health = 0.f;
+	m_idleAnimation = "";
+	m_runAnimation = "";
+	m_biteAnimation = "";
+	m_getHitAnimation = "";
+	m_dieAnimation = "";
+	m_minionAnimation = EMinionAnimation::IDLE;
 }
 
 void Minion::OnInit()

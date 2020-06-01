@@ -2,37 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
+#include "Vec3.hpp"
 
-/**
- * Salt animation
- */
-enum class ESaltAnimation : unsigned short
-{
-	FLYIDLE = 0,
-	LANDING,
-	IDLE,
-	RUN,
-	BITE,
-	GETHIT,
-	DIE
-};
-
-/**
- * Your enemy.
- * Too much salt affects the balance of the bread.
- */
-BAKERS_GAME_CLASS Salt : public Core::Datastructure::ComponentUpdatable
+BAKERS_GAME_CLASS Warp : public Core::Datastructure::ComponentUpdatable
 {
 private:
-	float m_health;
-	std::string m_flyIdleAnimation;
-	std::string m_idleAnimation;
-	std::string m_landingAnimation;
-	std::string m_runAnimation;
-	std::string m_biteAnimation;
-	std::string m_getHitAnimation;
-	std::string m_dieAnimation;
-	ESaltAnimation m_saltAnimation{ ESaltAnimation::FLYIDLE };
+	Core::Maths::Vec3 m_destination;
+	float m_countdown{ 0.f };
 
 protected:
 	/**
@@ -77,15 +53,12 @@ public:
 	/**
 	 * Default Constructor
 	 */
-	Salt();
+	Warp();
 
 	/**
 	 * Destructor
 	 */
-	~Salt();
-
-private:
-	void AnimGraph();
+	~Warp();
 
 	REGISTER_CLASS(ComponentUpdatable)
 };

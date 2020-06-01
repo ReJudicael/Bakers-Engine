@@ -18,6 +18,7 @@ RTTR_PLUGIN_REGISTRATION
 		)
 
 		.constructor()
+		.property("Health", &Owen::m_health)
 		.property("Idle Animation", &Owen::m_idleAnimation)
 		.property("Run Animation", &Owen::m_runAnimation)
 		.property("Punch Animation", &Owen::m_punchAnimation)
@@ -40,6 +41,13 @@ void Owen::OnCopy(IComponent* copyTo) const
 {
 	ComponentUpdatable::OnCopy(copyTo);
 	Owen* copy{ dynamic_cast<Owen*>(copyTo) };
+	copy->m_health = m_health;
+	copy->m_idleAnimation = m_idleAnimation;
+	copy->m_runAnimation = m_runAnimation;
+	copy->m_punchAnimation = m_punchAnimation;
+	copy->m_getHitAnimation = m_getHitAnimation;
+	copy->m_dieAnimation = m_dieAnimation;
+	copy->m_owenAnimation = m_owenAnimation;
 }
 
 void Owen::StartCopy(IComponent*& copyTo) const
@@ -67,6 +75,13 @@ void Owen::OnDestroy()
 void Owen::OnReset()
 {
 	ComponentUpdatable::OnReset();
+	m_health = 0.f;
+	m_idleAnimation = "";
+	m_runAnimation = "";
+	m_punchAnimation = "";
+	m_getHitAnimation = "";
+	m_dieAnimation = "";
+	m_owenAnimation = EOwenAnimation::IDLE;
 }
 
 void Owen::OnInit()
