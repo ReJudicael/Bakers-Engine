@@ -1685,55 +1685,6 @@
                     "Childs": [],
                     "Components": [
                         {
-                            "Type": "Camera",
-                            "Values": {
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsUpdating": {
-                                    "Name": "IsUpdating",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "Perspective": {
-                                    "Name": "Perspective",
-                                    "Type": "Perspective",
-                                    "Value": {
-                                        "Type": "Perspective",
-                                        "Values": {
-                                            "FOV": {
-                                                "Name": "FOV",
-                                                "Type": "float",
-                                                "Value": 60.0
-                                            },
-                                            "Far": {
-                                                "Name": "Far",
-                                                "Type": "float",
-                                                "Value": 100.0
-                                            },
-                                            "Height": {
-                                                "Name": "Height",
-                                                "Type": "float",
-                                                "Value": 609.0
-                                            },
-                                            "Near": {
-                                                "Name": "Near",
-                                                "Type": "float",
-                                                "Value": 0.10000000149011612
-                                            },
-                                            "Width": {
-                                                "Name": "Width",
-                                                "Type": "float",
-                                                "Value": 638.0
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        {
                             "Type": "Postprocess",
                             "Values": {
                                 "Black & White": {
@@ -1795,6 +1746,81 @@
                                     "Name": "Line intensity",
                                     "Type": "float",
                                     "Value": 0.699999988079071
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Camera with secondary view",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Perspective": {
+                                    "Name": "Perspective",
+                                    "Type": "Perspective",
+                                    "Value": {
+                                        "Type": "Perspective",
+                                        "Values": {
+                                            "FOV": {
+                                                "Name": "FOV",
+                                                "Type": "float",
+                                                "Value": 60.0
+                                            },
+                                            "Far": {
+                                                "Name": "Far",
+                                                "Type": "float",
+                                                "Value": 100.0
+                                            },
+                                            "Height": {
+                                                "Name": "Height",
+                                                "Type": "float",
+                                                "Value": 620.0
+                                            },
+                                            "Near": {
+                                                "Name": "Near",
+                                                "Type": "float",
+                                                "Value": 0.10000000149011612
+                                            },
+                                            "Width": {
+                                                "Name": "Width",
+                                                "Type": "float",
+                                                "Value": 639.0
+                                            }
+                                        }
+                                    }
+                                },
+                                "Secondary view pos": {
+                                    "Name": "Secondary view pos",
+                                    "Type": "Vec2",
+                                    "Value": [
+                                        0.699999988079071,
+                                        0.0
+                                    ]
+                                },
+                                "Secondary view size": {
+                                    "Name": "Secondary view size",
+                                    "Type": "Vec2",
+                                    "Value": [
+                                        0.30000001192092896,
+                                        0.30000001192092896
+                                    ]
+                                },
+                                "Target fbo": {
+                                    "Name": "Target fbo",
+                                    "Type": "int",
+                                    "Value": 1
+                                },
+                                "fbo type": {
+                                    "Name": "fbo type",
+                                    "Type": "FBO types",
+                                    "Value": 0
                                 }
                             }
                         }
@@ -3642,55 +3668,6 @@
                     "Childs": [],
                     "Components": [
                         {
-                            "Type": "Camera",
-                            "Values": {
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsUpdating": {
-                                    "Name": "IsUpdating",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "Perspective": {
-                                    "Name": "Perspective",
-                                    "Type": "Perspective",
-                                    "Value": {
-                                        "Type": "Perspective",
-                                        "Values": {
-                                            "FOV": {
-                                                "Name": "FOV",
-                                                "Type": "float",
-                                                "Value": 60.0
-                                            },
-                                            "Far": {
-                                                "Name": "Far",
-                                                "Type": "float",
-                                                "Value": 100.0
-                                            },
-                                            "Height": {
-                                                "Name": "Height",
-                                                "Type": "float",
-                                                "Value": 734.0
-                                            },
-                                            "Near": {
-                                                "Name": "Near",
-                                                "Type": "float",
-                                                "Value": 0.10000000149011612
-                                            },
-                                            "Width": {
-                                                "Name": "Width",
-                                                "Type": "float",
-                                                "Value": 557.0
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        {
                             "Type": "Postprocess",
                             "Values": {
                                 "Black & White": {
@@ -3752,6 +3729,120 @@
                                     "Name": "Line intensity",
                                     "Type": "float",
                                     "Value": 0.699999988079071
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Postprocess",
+                            "Values": {
+                                "Black & White": {
+                                    "Name": "Black & White",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Bloom": {
+                                    "Name": "Bloom",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Blur": {
+                                    "Name": "Blur",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Cartoon effect": {
+                                    "Name": "Cartoon effect",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Color": {
+                                    "Name": "Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        1.0,
+                                        1.0,
+                                        1.0,
+                                        1.0
+                                    ]
+                                },
+                                "Colored vision": {
+                                    "Name": "Colored vision",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Custom Color": {
+                                    "Name": "Custom Color",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Line color": {
+                                    "Name": "Line color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                "Line intensity": {
+                                    "Name": "Line intensity",
+                                    "Type": "float",
+                                    "Value": 0.75
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Camera",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Perspective": {
+                                    "Name": "Perspective",
+                                    "Type": "Perspective",
+                                    "Value": {
+                                        "Type": "Perspective",
+                                        "Values": {
+                                            "FOV": {
+                                                "Name": "FOV",
+                                                "Type": "float",
+                                                "Value": 60.0
+                                            },
+                                            "Far": {
+                                                "Name": "Far",
+                                                "Type": "float",
+                                                "Value": 100.0
+                                            },
+                                            "Height": {
+                                                "Name": "Height",
+                                                "Type": "float",
+                                                "Value": 186.0
+                                            },
+                                            "Near": {
+                                                "Name": "Near",
+                                                "Type": "float",
+                                                "Value": 0.10000000149011612
+                                            },
+                                            "Width": {
+                                                "Name": "Width",
+                                                "Type": "float",
+                                                "Value": 191.0
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -12215,7 +12306,7 @@
                                     }
                                 }
                             ],
-                            "Flags": 0,
+                            "Flags": 1,
                             "Name": "59",
                             "Pos": {
                                 "x": 54.53988265991211,
@@ -12299,7 +12390,7 @@
                                     }
                                 }
                             ],
-                            "Flags": 0,
+                            "Flags": 1,
                             "Name": "60",
                             "Pos": {
                                 "x": 56.32353210449219,
@@ -12553,7 +12644,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        -107.33187866210938
+                                                        -120.57464599609375
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {
