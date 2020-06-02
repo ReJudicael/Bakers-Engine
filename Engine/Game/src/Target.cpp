@@ -121,7 +121,7 @@ void	Target::SetTargetPosition()
 		physx::PxU32 filter = static_cast<physx::PxU32>(Core::Physics::EFilterRaycast::GROUPE2);
 		if (m_physicsScenePtr->Raycast(origin, dir, query, filter))
 		{
-			m_parent->SetGlobalPos(query.hitPoint);
+			m_globalTarget = query.hitPoint;
 			m_follower->SetEnemy(query.objectHit);
 			m_newTargetFind = true;
 		}
@@ -163,16 +163,16 @@ void	Target::OnInit()
 
 void	Target::OnUpdate(float deltaTime)
 {
-	
+	SetTargetPosition();
+
+	if (m_isLeading)
+		m_parent->SetGlobalPos(m_globalTarget);
+
 	if (m_newTargetFind)
-	{
 		m_follower->SetTarget(m_parent->GetGlobalPos());
-	}
 
 	if (!m_playerCamera || !m_follower || !m_physicsScenePtr)
 		return;
-
-	SetTargetPosition();
 
 	if (Input()->IsKeyDown(EKey::P))
 		WarpBack();
