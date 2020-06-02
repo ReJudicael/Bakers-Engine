@@ -1791,7 +1791,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 639.0
+                                                "Value": 637.0
                                             }
                                         }
                                     }
@@ -1971,6 +1971,90 @@
                         "x": 1.5417476892471313,
                         "y": 0.30000001192092896,
                         "z": 1.3828277587890625e-05
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.5,
+                                        0.5,
+                                        0.5
+                                    ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Local positon": {
+                                    "Name": "Local positon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Local rotation": {
+                                    "Name": "Local rotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "S/D Frict - Restitut": {
+                                    "Name": "S/D Frict - Restitut",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "HitBoxPunch",
+                    "Pos": {
+                        "x": 2.9653310775756836e-06,
+                        "y": 0.9206094741821289,
+                        "z": 0.4736030101776123
                     },
                     "Rot": {
                         "w": 1.0,
@@ -2213,9 +2297,9 @@
             "Flags": 0,
             "Name": "Owen",
             "Pos": {
-                "x": -32.73313903808594,
-                "y": 7.028131008148193,
-                "z": -4.717764377593994
+                "x": -16.211748123168945,
+                "y": -3.2672691345214844,
+                "z": 16.320205688476563
             },
             "Rot": {
                 "w": 0.7335718870162964,
@@ -3897,6 +3981,90 @@
                         "y": 0.0024999999441206455,
                         "z": 0.0024999999441206455
                     }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.5,
+                                        0.5,
+                                        0.5
+                                    ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Local positon": {
+                                    "Name": "Local positon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Local rotation": {
+                                    "Name": "Local rotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "S/D Frict - Restitut": {
+                                    "Name": "S/D Frict - Restitut",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "HitBoxPunch",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": 0.5,
+                        "z": 1.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ],
             "Components": [
@@ -4017,7 +4185,7 @@
                         "Filter": {
                             "Name": "Filter",
                             "Type": "FilterRaycast",
-                            "Value": 0
+                            "Value": 2
                         },
                         "IsActive": {
                             "Name": "IsActive",
@@ -4145,9 +4313,9 @@
             "Flags": 0,
             "Name": "Brioche",
             "Pos": {
-                "x": -33.2301025390625,
-                "y": 7.168000221252441,
-                "z": -1.663093090057373
+                "x": -17.379499435424805,
+                "y": -2.652291774749756,
+                "z": 12.654190063476563
             },
             "Rot": {
                 "w": 0.773434042930603,
@@ -12516,7 +12684,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        -155.27711486816406
+                                                        14.392931938171387
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {
@@ -15339,13 +15507,123 @@
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\RunAnim.FBX"
                         }
                     }
+                },
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 1
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.5,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
+                },
+                {
+                    "Type": "Rigidbody",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Mass": {
+                            "Name": "Mass",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Rotation XLock": {
+                            "Name": "Rotation XLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Rotation YLock": {
+                            "Name": "Rotation YLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Rotation ZLock": {
+                            "Name": "Rotation ZLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Use Gravity": {
+                            "Name": "Use Gravity",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Velocity": {
+                            "Name": "Velocity",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        }
+                    }
                 }
             ],
             "Flags": 0,
             "Name": "Minion #1",
             "Pos": {
                 "x": -15.0989351272583,
-                "y": -3.2619686126708984,
+                "y": -3.24753999710083,
                 "z": 11.679271697998047
             },
             "Rot": {
@@ -16923,6 +17201,116 @@
                             "Name": "Run Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\RunAnim.FBX"
+                        }
+                    }
+                },
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 1
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.5,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
+                },
+                {
+                    "Type": "Rigidbody",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Mass": {
+                            "Name": "Mass",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Rotation XLock": {
+                            "Name": "Rotation XLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Rotation YLock": {
+                            "Name": "Rotation YLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Rotation ZLock": {
+                            "Name": "Rotation ZLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Use Gravity": {
+                            "Name": "Use Gravity",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Velocity": {
+                            "Name": "Velocity",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
                         }
                     }
                 }
@@ -18509,6 +18897,116 @@
                             "Name": "Run Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\RunAnim.FBX"
+                        }
+                    }
+                },
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 1
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.5,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
+                },
+                {
+                    "Type": "Rigidbody",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Mass": {
+                            "Name": "Mass",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Rotation XLock": {
+                            "Name": "Rotation XLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Rotation YLock": {
+                            "Name": "Rotation YLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Rotation ZLock": {
+                            "Name": "Rotation ZLock",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Use Gravity": {
+                            "Name": "Use Gravity",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Velocity": {
+                            "Name": "Velocity",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
                         }
                     }
                 }

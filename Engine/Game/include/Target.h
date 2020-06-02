@@ -12,7 +12,9 @@
 // Raycast target to move ally
 BAKERS_GAME_CLASS Target : public Core::Datastructure::ComponentUpdatable
 {
+private:
 	Brioche*	m_follower;
+	bool		m_newTargetFind;
 
 	Core::Physics::PhysicsScene* m_physicsScenePtr{ nullptr };
 	Core::Renderer::Camera* m_playerCamera{ nullptr };

@@ -92,7 +92,7 @@ namespace Core
 			/**
 			 * Default Destructor
 			 */
-			~RigidBody();
+			virtual ~RigidBody();
 
 			virtual void OnInit() override;
 
@@ -211,7 +211,7 @@ namespace Core
 			/**
 			 * Put the rigidBody to nullptr do not use it in your own code
 			 */
-			void ToNull() { m_pxRigidBody = nullptr; }
+			void ToNull();
 
 			REGISTER_CLASS(Core::Datastructure::ComponentBase, Core::Datastructure::IUpdatable)
 		};

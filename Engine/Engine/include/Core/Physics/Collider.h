@@ -115,7 +115,14 @@ namespace Core
 			
 
 		public:
+			/**
+			 * Default constructor
+			 */
 			Collider() = default;
+			/**
+			 * Default destructor
+			 */
+			virtual ~Collider();
 
 			/**
 			 * Function inheritated from IComponent,
@@ -160,8 +167,16 @@ namespace Core
 			 */
 			inline physx::PxShape* GetShape() { return m_pxShape; }
 
+			/**
+			 * Get isActive value of the collider
+			 * @return if true the collider is active
+			 */
 			inline bool IsActive() const { return m_isActive; }
-
+			/**
+			 * Set isActive value of the collider
+			 * @param activate: the bool who set isActive
+			 * if true the collider is active
+			 */
 			void SetActivateCollider(bool activate);
 
 			/**
@@ -241,19 +256,18 @@ namespace Core
 			/**
 			 * Set the state trigger of the shape
 			 */
-			virtual void TriggerCollider();
+			virtual void TriggerShape();
 
 			/**
 			 * Set the state simulation of the shape
 			 */
-			virtual void SimulationCollider();
+			virtual void SimulationShape();
 
 			/**
 			 * Set the raycast filter of the shape
 			 * @param filter: the filter we to give to the shape
 			 */
 			virtual void SetRaycastFilter(EFilterRaycast filter);
-
 			/**
 			 * Get the raycast filter of the shape
 			 * @return the current filter of the shape
@@ -265,9 +279,12 @@ namespace Core
 			 */
 			virtual void DestroyShape();
 
+			/**
+			 * Function cal as an event for set the position of the collider
+			 * compared to the pasition of his parent
+			 */
 			virtual void SetPhysicsTransformParent();
 
-			virtual ~Collider();
 
 			REGISTER_CLASS(Core::Datastructure::IComponent)
 		};

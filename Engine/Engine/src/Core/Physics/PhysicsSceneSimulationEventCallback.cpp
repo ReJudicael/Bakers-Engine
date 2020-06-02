@@ -54,14 +54,16 @@ namespace Core::Physics
 	{
 		Core::Physics::Collider* triggered = dynamic_cast<Core::Physics::Collider*>(static_cast<Core::Datastructure::IComponent*>(pairs->triggerActor->userData));
 		Core::Physics::Collider* triggerWith = dynamic_cast<Core::Physics::Collider*>(static_cast<Core::Datastructure::IComponent*>(pairs->otherActor->userData));
-
-		if (pairs->status == physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
+		if (triggered)
 		{
-			triggered->OnTriggerEnterEvent.Invoke(triggerWith);
-		}
-		else if (pairs->status == physx::PxPairFlag::eNOTIFY_TOUCH_LOST)
-		{
-			triggered->OnTriggerExitEvent.Invoke(triggerWith);
+			if (pairs->status == physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
+			{
+				triggered->OnTriggerEnterEvent.Invoke(triggerWith);
+			}
+			else if (pairs->status == physx::PxPairFlag::eNOTIFY_TOUCH_LOST)
+			{
+				triggered->OnTriggerExitEvent.Invoke(triggerWith);
+			}
 		}
 	}
 

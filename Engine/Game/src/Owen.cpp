@@ -124,10 +124,12 @@ void Owen::OnUpdate(float deltaTime)
 		m_owenAnimation = EOwenAnimation::DIE;
 		return;
 	}
+	if (m_attackTimer >= m_AttackMaxTime)
+		m_attackTimer = 0.f;
 
 	if (m_rigidbody->GetVelocity().SquaredLength() > 0.1f)
 		m_owenAnimation = EOwenAnimation::RUN;
-	else
+	else if(m_owenAnimation == EOwenAnimation::RUN)
 		m_owenAnimation = EOwenAnimation::IDLE;
 		
 
@@ -135,6 +137,19 @@ void Owen::OnUpdate(float deltaTime)
 	{
 		m_owenAnimation = EOwenAnimation::PUNCH;
 		m_rigidbody->SetLinearVelocity({ 0.f, m_rigidbody->GetVelocity().y, 0.f });
+	}
+	if (m_owenAnimation == EOwenAnimation::PUNCH)
+		m_attackTimer += m_AttackSpeed * deltaTime;
+
+	if (colliderPunch)
+	{
+		if (m_owenAnimation == EOwenAnimation::PUNCH && m_attackTimer > 10.f && !colliderPunch->IsActive())
+			colliderPunch->SetActivateCollider(true);
+		else if (m_owenAnimation != EOwenAnimation::PUNCH && colliderPunch->IsActive())
+		{
+			m_attackTimer = 0;
+			colliderPunch->SetActivateCollider(false);
+		}
 	}
 
 	if (Input()->IsMouseButtonPressed(EMouseButton::RIGHT))
@@ -152,6 +167,8 @@ void Owen::AnimGraph()
 	Core::Animation::AnimationNode* animPunch{ new Core::Animation::AnimationNode() };
 	animPunch->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_punchAnimation);
 	animPunch->Loop = false;
+	m_AttackMaxTime = animPunch->nodeAnimation->Time;
+	m_AttackSpeed = animPunch->speed;
 
 	Core::Animation::AnimationNode* animGetHit{ new Core::Animation::AnimationNode() };
 	animGetHit->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_getHitAnimation);
@@ -180,7 +197,7 @@ void Owen::AnimGraph()
 	transRunDie->InitTransition(animRun, animDie, [this] { return m_owenAnimation == EOwenAnimation::DIE; });
 
 	Core::Animation::TransitionNode* transPunchIdle{ new Core::Animation::TransitionNode() };
-	transPunchIdle->InitTransition(animPunch, animIdle);
+	transPunchIdle->InitTransition(animPunch, animIdle, std::bind(&Owen::TransitionPunch, this, animPunch));
 	Core::Animation::TransitionNode* transPunchRun{ new Core::Animation::TransitionNode() };
 	transPunchRun->InitTransition(animPunch, animRun, [this] { return m_owenAnimation == EOwenAnimation::RUN; });
 	Core::Animation::TransitionNode* transPunchGetHit{ new Core::Animation::TransitionNode() };
@@ -238,8 +255,7 @@ bool Owen::TransitionPunch(Core::Animation::AnimationNode* node)
 {
 	if (node->DefaultConditionAnimationNode())
 	{
-		if (colliderPunch)
-			colliderPunch->SetActivateCollider(false);
+		m_attackTimer = 0;
 		m_owenAnimation = EOwenAnimation::IDLE;
 		return true;
 	}

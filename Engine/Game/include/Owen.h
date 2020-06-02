@@ -44,6 +44,9 @@ private:
 	std::string m_getHitAnimation;
 	std::string m_dieAnimation;
 	EOwenAnimation m_owenAnimation{ EOwenAnimation::IDLE };
+	float			m_attackTimer;
+	float			m_AttackMaxTime;
+	float			m_AttackSpeed;
 	Core::Physics::Collider* colliderPunch;
 
 protected:
@@ -96,8 +99,17 @@ public:
 	 */
 	~Owen();
 
+	/**
+	 * Function call as an event for the collision OnTriggerEnter
+	 * @param collider: the collider with wich he triggered 
+	 */
 	void OnEnterCollider(Core::Physics::Collider* collider);
 
+	/**
+	 * Function call as an event it's the transition between
+	 * the Punch animation and Idle
+	 * @param node: the AnimationNode Punch
+	 */
 	bool TransitionPunch(Core::Animation::AnimationNode* node);
 
 private:

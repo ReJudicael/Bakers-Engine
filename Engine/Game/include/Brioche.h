@@ -4,6 +4,19 @@
 #include "PathFollowingComponent.h"
 #include "RigidBody.h"
 
+
+namespace Core
+{
+	namespace Physics
+	{
+		class Collider;
+	}
+
+	namespace Animation
+	{
+		class AnimationNode;
+	}
+}
 /**
  * Brioche animation
  */
@@ -39,7 +52,12 @@ private:
 	std::string m_dieAnimation;
 	EBriocheAnimation m_briocheAnimation{ EBriocheAnimation::IDLE };
 	EBriocheBehavior m_behavior{ EBriocheBehavior::FOLLOW };
-
+	float			m_attackTimer;
+	float			m_AttackMaxTime;
+	float			m_AttackSpeed;
+	bool			m_stopAttack{ false };
+	Core::Physics::Collider* colliderPunch;
+	Core::Datastructure::Object* m_enemyToAttack{nullptr};
 	Core::Navigation::PathFollowingComponent* m_navigator;
 
 protected:
@@ -98,6 +116,8 @@ public:
 	 */
 	void	SetTarget(Core::Maths::Vec3 target);
 
+	void	SetEnemy(Core::Datastructure::Object* object);
+
 	/**
 	 * Behavior setter
 	 * @param newBehavior: new behavior for ally, can be FOLLOW, GO or ATTACK
@@ -109,6 +129,18 @@ public:
 	 * @return Current behavior for ally
 	 */
 	EBriocheBehavior GetBehavior() { return m_behavior; };
+
+	/**
+	 * Function call as an event for the collision OnTriggerEnter
+	 * @param collider: the collider with wich he triggered
+	 */
+	void OnEnterCollider(Core::Physics::Collider* collider);
+	/**
+	 * Function call as an event it's the transition between
+	 * the Punch animation and Idle
+	 * @param node: the AnimationNode Punch
+	 */
+	bool TransitionBiteToIdle(Core::Animation::AnimationNode* node);
 
 private:
 	void AnimGraph();

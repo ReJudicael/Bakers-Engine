@@ -42,17 +42,24 @@ namespace Resources::Loader
 
 	void ResourcesManager::DefaultConstruct()
 	{
-		CreateShader("DefaultNoTexture", ".\\Resources\\Shaders\\DefaultShader.vert", ".\\Resources\\Shaders\\DefaultNoTexture.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("Default", ".\\Resources\\Shaders\\DefaultShader.vert", ".\\Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("SkeletDefault", ".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\DefaultShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("Text", "Resources\\Shaders\\Text.vert", "Resources\\Shaders\\Text.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("NormalMapDefault", ".\\Resources\\Shaders\\DefaultShader.vert", ".\\Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
-		CreateShader("SkeletNormalMapDefault", ".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\DefaultShaderNormalMap.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("DefaultNoTexture", ".\\Resources\\Shaders\\DefaultShader.vert", ".\\Resources\\Shaders\\DefaultNoTexture.frag", 
+						Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("Default", ".\\Resources\\Shaders\\DefaultShader.vert", ".\\Resources\\Shaders\\DefaultShader.frag", 
+						Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("SkeletDefault", ".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\DefaultShader.frag", 
+						Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("Text", "Resources\\Shaders\\Text.vert", "Resources\\Shaders\\Text.frag", 
+						Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("NormalMapDefault", ".\\Resources\\Shaders\\DefaultShader.vert", ".\\Resources\\Shaders\\DefaultShaderNormalMap.frag", 
+						Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("SkeletNormalMapDefault", ".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\DefaultShaderNormalMap.frag", 
+						Resources::Shader::EShaderHeaderType::LIGHT);
 		CreateShader("Wireframe", ".\\Resources\\Shaders\\WireframeShader.vert", ".\\Resources\\Shaders\\WireframeShader.frag");
 		CreateShader("Skybox", ".\\Resources\\Shaders\\SkyboxShader.vert", ".\\Resources\\Shaders\\SkyboxShader.frag");
 		CreateShader("Particle", ".\\Resources\\Shaders\\BillboardShader.vert", ".\\Resources\\Shaders\\ParticleShader.frag");
 		CreateShader("SkeletalShadow", ".\\Resources\\Shaders\\SkeletalShadow.vert", ".\\Resources\\Shaders\\SkeletalShadow.frag");
-		CreateShader("Skeletal", ".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\SkeletalShader.frag", Resources::Shader::EShaderHeaderType::LIGHT);
+		CreateShader("Skeletal", ".\\Resources\\Shaders\\SkeletalShader.vert", ".\\Resources\\Shaders\\SkeletalShader.frag", 
+						Resources::Shader::EShaderHeaderType::LIGHT);
 
 		std::shared_ptr<Material> material = std::make_shared<Material>();
 		material->CreateDefaultMaterial(this);
@@ -180,8 +187,6 @@ namespace Resources::Loader
 	const aiScene* ResourcesManager::LoadSceneFromImporter(Assimp::Importer& importer,const char* fileName)
 	{
 		importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
-		//importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_OPTIMIZE_EMPTY_ANIMATION_CURVES, false);
-		//importer.SetPropertyBool(AI_CONFIG_PP_SBBC_MAX_BONES, 100);
 
 
 
@@ -202,14 +207,12 @@ namespace Resources::Loader
 	bool ResourcesManager::LoadAssimpScene(const char* fileName, Object3DInfo& info, const bool graphInMulti)
 	{
 		std::string Name = fileName;
-
 		std::shared_ptr<ImporterData> importer = std::make_shared<ImporterData>();
 		const aiScene* scene = LoadSceneFromImporter(importer->importer, fileName);
 
 		if (!scene)
-		{
 			return false;
-		}
+
 		m_importerToDelete.push_back(importer);
 
 		auto index = Name.find_last_of('/');
@@ -226,9 +229,7 @@ namespace Resources::Loader
 		else
 		{
 			if (scene->HasAnimations())
-			{
 				LoadAnimation(scene, directoryFile, fileName);
-			}
 
 			if (scene->mNumMeshes > 0)
 			{
@@ -251,13 +252,10 @@ namespace Resources::Loader
 
 			std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
 			std::shared_ptr<Model> model = std::make_shared<Model>();
-
 			std::string name = directory + mesh->mName.data;
 
 			unsigned int numberOfSameKey{ LoadMeshsSceneCheckModelIsLoaded(modelData, model, name) };
-
 			info.modelsName.push_back(name);
-
 			modelData->model = model;
 			modelData->SetArrays(scene, i);
 
@@ -268,9 +266,7 @@ namespace Resources::Loader
 					name, numBones, 0, bonesIndex);
 
 			if (scene->HasMaterials())
-			{
 				LoadaiMeshMaterial(importer, scene, mesh, directory, info, numberOfSameKey);
-			}
 		}
 	}
 
@@ -320,7 +316,6 @@ namespace Resources::Loader
 	{
 		std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
 		std::shared_ptr<Model> model = std::make_shared<Model>();
-
 		unsigned int indexLastMesh{ 0 };
 
 		modelData->model = model;
@@ -332,22 +327,16 @@ namespace Resources::Loader
 		modelData->ModelName = directory + scene->mMeshes[0]->mName.data;
 
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
-		{
 			modelData->SetArrays(scene, i);
-		}
 
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
 		{
 			aiMesh* mesh = scene->mMeshes[i];
-
 			m_task->AddTask(&Resources::ModelData::LoadaiMeshModel, modelData.get(), mesh, importer, i, indexLastMesh);
-
 			indexLastMesh += mesh->mNumVertices;
 
 			if (scene->HasMaterials())
-			{
 				LoadaiMeshMaterial(importer, scene, mesh, directory, info);
-			}
 		}
 	}
 
@@ -372,8 +361,6 @@ namespace Resources::Loader
 				boneData.offsetMesh = Core::Datastructure::Transform({ pos.x, pos.y, pos.z }, 
 																	{ rot.w, rot.x, rot.y, rot.z }, 
 																	{ sca.x, sca.y, sca.z }).GetLocalTrs();
-				if (bonesIndex->count(nameBone) > 0)
-					BAKERS_LOG_MESSAGE("WTF la vie" + nameBone);
 				bonesIndex->emplace(nameBone, boneData);
 				numBones++;
 			}
@@ -434,9 +421,7 @@ namespace Resources::Loader
 		const aiScene* scene = LoadSceneFromImporter(importer->importer, fileName.c_str());
 
 		if (!scene)
-		{
 			return nullptr;
-		}
 
 		if (!scene->HasAnimations())
 			return nullptr;
@@ -545,7 +530,6 @@ namespace Resources::Loader
 
 		m_textures.emplace(keyName, texture);
 
-		//texture->name = keyName;
 		textureData->nameTexture = keyName;
 		PushTextureToLink(textureData);
 		textureData->textureptr = texture;
@@ -633,7 +617,6 @@ namespace Resources::Loader
 			switch ((*it)->stateVAO)
 			{
 				case EOpenGLLinkState::LOADPROBLEM:
-					//it = m_modelsToLink.erase(it);
 					it++;
 					break;
 				case EOpenGLLinkState::CANTLINK:

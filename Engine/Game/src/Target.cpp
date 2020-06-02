@@ -117,9 +117,15 @@ void	Target::SetTargetPosition()
 
 		Core::Maths::Vec3 dir = m_playerCamera->GetPerspectiveDirection(mouse.x, mouse.y);
 		dir.Normalize();
-
-		if (m_physicsScenePtr->Raycast(origin, dir, query))
+		physx::PxU32 filter{ static_cast<physx::PxU32>(Core::Physics::EFilterRaycast::GROUPE2) };
+		if (m_physicsScenePtr->Raycast(origin, dir, query, filter))
+		{
 			m_parent->SetGlobalPos(query.hitPoint);
+			m_follower->SetEnemy(query.objectHit);
+			m_newTargetFind = true;
+		}
+		else
+			m_newTargetFind = false;
 	}
 	else if (!m_isLeading)
 	{
@@ -127,6 +133,10 @@ void	Target::SetTargetPosition()
 			m_signal->Activate(false);
 
 		m_parent->SetPos({ 0, 0, 0 });
+	}
+	else
+	{
+		m_newTargetFind = false;
 	}
 }
 
@@ -137,8 +147,11 @@ void	Target::OnInit()
 
 void	Target::OnUpdate(float deltaTime)
 {
-	if (m_follower->GetBehavior() != EBriocheBehavior::ATTACK)
+	
+	if (m_newTargetFind)
+	{
 		m_follower->SetTarget(m_parent->GetGlobalPos());
+	}
 
 	if (!m_playerCamera || !m_follower || !m_physicsScenePtr)
 		return;
