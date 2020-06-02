@@ -1762,6 +1762,16 @@
                                     "Type": "bool",
                                     "Value": true
                                 },
+                                "Max zoom": {
+                                    "Name": "Max zoom",
+                                    "Type": "float",
+                                    "Value": 3.0
+                                },
+                                "Min zoom": {
+                                    "Name": "Min zoom",
+                                    "Type": "float",
+                                    "Value": -3.0
+                                },
                                 "Perspective": {
                                     "Name": "Perspective",
                                     "Type": "Perspective",
@@ -1781,7 +1791,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 690.0
+                                                "Value": 457.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1795,6 +1805,11 @@
                                             }
                                         }
                                     }
+                                },
+                                "Scroll speed": {
+                                    "Name": "Scroll speed",
+                                    "Type": "float",
+                                    "Value": 2.0
                                 },
                                 "Secondary view pos": {
                                     "Name": "Secondary view pos",
@@ -2007,7 +2022,7 @@
                                 "Filter": {
                                     "Name": "Filter",
                                     "Type": "FilterRaycast",
-                                    "Value": 1
+                                    "Value": 2
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -2153,7 +2168,7 @@
                         "Owen Animation": {
                             "Name": "Owen Animation",
                             "Type": "Owen Animation",
-                            "Value": -1494220800
+                            "Value": -859045888
                         },
                         "Punch Animation": {
                             "Name": "Punch Animation",
@@ -3769,71 +3784,6 @@
                             }
                         },
                         {
-                            "Type": "Postprocess",
-                            "Values": {
-                                "Black & White": {
-                                    "Name": "Black & White",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Bloom": {
-                                    "Name": "Bloom",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Blur": {
-                                    "Name": "Blur",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Cartoon effect": {
-                                    "Name": "Cartoon effect",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Color": {
-                                    "Name": "Color",
-                                    "Type": "Color",
-                                    "Value": [
-                                        1.0,
-                                        1.0,
-                                        1.0,
-                                        1.0
-                                    ]
-                                },
-                                "Colored vision": {
-                                    "Name": "Colored vision",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Custom Color": {
-                                    "Name": "Custom Color",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "Line color": {
-                                    "Name": "Line color",
-                                    "Type": "Color",
-                                    "Value": [
-                                        0.0,
-                                        0.0,
-                                        0.0,
-                                        1.0
-                                    ]
-                                },
-                                "Line intensity": {
-                                    "Name": "Line intensity",
-                                    "Type": "float",
-                                    "Value": 0.75
-                                }
-                            }
-                        },
-                        {
                             "Type": "Camera",
                             "Values": {
                                 "IsActive": {
@@ -3865,7 +3815,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 207.0
+                                                "Value": 137.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -4005,7 +3955,7 @@
                                 "Filter": {
                                     "Name": "Filter",
                                     "Type": "FilterRaycast",
-                                    "Value": 1
+                                    "Value": 2
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -4121,7 +4071,7 @@
                         "Brioche Animation": {
                             "Name": "Brioche Animation",
                             "Type": "Brioche Animation",
-                            "Value": -1494220800
+                            "Value": -859045888
                         },
                         "Damage": {
                             "Name": "Damage",
@@ -6406,7 +6356,7 @@
                         "Salt Animation": {
                             "Name": "Salt Animation",
                             "Type": "salt Animation",
-                            "Value": -1494220800
+                            "Value": -859045888
                         }
                     }
                 },
@@ -12684,7 +12634,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        -108.78121185302734
+                                                        -112.70416259765625
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {
@@ -15499,7 +15449,7 @@
                         "Minion Animation": {
                             "Name": "Minion Animation",
                             "Type": "Minion Animation",
-                            "Value": -1494220800
+                            "Value": -859045888
                         },
                         "Run Animation": {
                             "Name": "Run Animation",
@@ -17195,7 +17145,7 @@
                         "Minion Animation": {
                             "Name": "Minion Animation",
                             "Type": "Minion Animation",
-                            "Value": -1494220800
+                            "Value": -859045888
                         },
                         "Run Animation": {
                             "Name": "Run Animation",
@@ -18891,7 +18841,7 @@
                         "Minion Animation": {
                             "Name": "Minion Animation",
                             "Type": "Minion Animation",
-                            "Value": -1494220800
+                            "Value": -859045888
                         },
                         "Run Animation": {
                             "Name": "Run Animation",
