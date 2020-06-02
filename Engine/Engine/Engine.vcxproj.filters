@@ -273,6 +273,9 @@
     <ClCompile Include="src\Core\Resources\Character.cpp">
       <Filter>Source Files\Core\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Renderer\CameraWithSecondaryView.cpp">
+      <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -519,6 +522,9 @@
       <Filter>Header Files\Core\Resources</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\Postprocess.h">
+      <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Renderer\CameraWithSecondaryView.h">
       <Filter>Header Files\Core\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
