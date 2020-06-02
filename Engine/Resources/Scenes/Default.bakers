@@ -4136,7 +4136,7 @@
             "Name": "Brioche",
             "Pos": {
                 "x": -33.2301025390625,
-                "y": 7.008129119873047,
+                "y": 7.168000221252441,
                 "z": -1.663093090057373
             },
             "Rot": {
@@ -18231,6 +18231,176 @@
                 "x": -4.8053419021698573e-08,
                 "y": -0.949687123298645,
                 "z": 4.8053419021698573e-08
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsChild": {
+                                    "Name": "IsChild",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "IsRoot": {
+                                    "Name": "IsRoot",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Material": {
+                                    "Name": "Material",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "MaterialsNames": {
+                                    "Name": "MaterialsNames",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube.obj"
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Cube",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": -0.6687641143798828,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            ],
+            "Components": [
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 1
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                },
+                {
+                    "Type": "Switch",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Switch2",
+            "Pos": {
+                "x": -17.386096954345703,
+                "y": 5.2170000076293945,
+                "z": -6.610836029052734
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "Scale": {
                 "x": 1.0,

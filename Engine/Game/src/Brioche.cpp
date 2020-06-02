@@ -48,6 +48,9 @@ void Brioche::OnCopy(IComponent* copyTo) const
 	copy->m_getHitAnimation = m_getHitAnimation;
 	copy->m_dieAnimation = m_dieAnimation;
 	copy->m_briocheAnimation = m_briocheAnimation;
+	copy->m_rigidbody = m_rigidbody;
+	copy->m_behavior = m_behavior;
+	copy->m_navigator = m_navigator;
 }
 
 void Brioche::StartCopy(IComponent*& copyTo) const
@@ -88,6 +91,10 @@ void Brioche::OnReset()
 	m_getHitAnimation = "";
 	m_dieAnimation = "";
 	m_briocheAnimation = EBriocheAnimation::IDLE;
+
+	m_rigidbody = nullptr;
+	m_behavior = EBriocheBehavior::FOLLOW;
+	m_navigator = nullptr;
 }
 
 void Brioche::OnInit()

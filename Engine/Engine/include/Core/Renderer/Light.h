@@ -173,6 +173,12 @@ namespace Core::Renderer
 		inline void SetAttenuation(const Core::Maths::Vec3& value) { m_attenuation = value; };
 
 		/**
+		 * Light activation setter
+		 * @param value: Activate or deactivate the light
+		 */
+		inline void Activate(bool value = true) { m_isActive = value; };
+
+		/**
 		 * Return FBO storing depth for shadow mapping
 		 */
 		inline unsigned int ShadowBuffer() { return m_depthBuffer; };

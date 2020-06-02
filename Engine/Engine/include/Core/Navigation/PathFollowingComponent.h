@@ -5,6 +5,7 @@
 #include "ComponentBase.h"
 #include "INavAgent.h"
 #include "IUpdatable.hpp"
+#include "RigidBody.h"
 
 namespace Core::Navigation
 {
@@ -26,6 +27,8 @@ namespace Core::Navigation
 		float				m_moveSpeed{ 0.5f };
 		float				m_destPrecision{ 0.2f };
 		float				m_agentHeight{ 1.f };
+
+		Physics::RigidBody* m_rigidbody;
 
 		void				UpdatePos();
 	public:

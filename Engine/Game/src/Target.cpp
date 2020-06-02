@@ -25,6 +25,15 @@ void	Target::OnCopy(IComponent* copyTo) const
 {
 	ZoneScoped
 		ComponentUpdatable::OnCopy(copyTo);
+
+	Target* copy = dynamic_cast<Target*>(copyTo);
+
+	copy->m_follower = m_follower;
+
+	copy->m_physicsScenePtr = m_physicsScenePtr;
+	copy->m_playerCamera = m_playerCamera;
+	copy->m_signal = m_signal;
+	copy->m_isLeading = m_isLeading;
 }
 
 void	Target::StartCopy(IComponent*& copyTo) const
@@ -44,6 +53,11 @@ bool	Target::OnStart()
 	if (components.size() > 0)
 		m_follower = *components.begin();
 
+	std::list<Core::Renderer::Light*> signals;
+	m_parent->GetComponentsOfType<Core::Renderer::Light>(signals);
+	if (signals.size() > 0)
+		m_signal = *signals.begin();
+
 	m_physicsScenePtr = GetRoot()->GetEngine()->GetPhysicsScene();
 
 	FindPlayerCamera();
@@ -60,7 +74,12 @@ void    Target::OnReset()
 {
 	ComponentUpdatable::OnReset();
 
-	
+	m_follower = nullptr;
+
+	m_physicsScenePtr = nullptr;
+	m_playerCamera = nullptr;
+	m_signal = nullptr;
+	m_isLeading = false;
 }
 
 void	Target::FindPlayerCamera()
@@ -81,8 +100,16 @@ void	Target::FindPlayerCamera()
 
 void	Target::SetTargetPosition()
 {
+	if (Input()->IsKeyDown(EKey::W))
+		m_isLeading = false;
+
 	if (Input()->IsKeyDown(EKey::LEFT_SHIFT) && Input()->IsMouseButtonDown(EMouseButton::LEFT))
 	{
+		m_isLeading = true;
+
+		if (m_signal)
+			m_signal->Activate(true);
+
 		Core::Physics::HitResultQuery query;
 
 		Core::Maths::Vec3 origin = m_playerCamera->GetParent()->GetGlobalPos();
@@ -94,8 +121,13 @@ void	Target::SetTargetPosition()
 		if (m_physicsScenePtr->Raycast(origin, dir, query))
 			m_parent->SetGlobalPos(query.hitPoint);
 	}
-	else
+	else if (!m_isLeading)
+	{
+		if (m_signal)
+			m_signal->Activate(false);
+
 		m_parent->SetPos({ 0, 0, 0 });
+	}
 }
 
 void	Target::OnInit()
@@ -105,7 +137,6 @@ void	Target::OnInit()
 
 void	Target::OnUpdate(float deltaTime)
 {
-	
 	if (m_follower->GetBehavior() != EBriocheBehavior::ATTACK)
 		m_follower->SetTarget(m_parent->GetGlobalPos());
 
