@@ -52,17 +52,7 @@ namespace Core::Navigation
 			UpdatePos();
 		}
 		else
-		{
-			// Uncomment to use rigidbody with velocity (need fixing)
-			/*if (m_rigidbody)
-			{
-				m_rigidbody->SetLinearVelocity(toDest.Normalized() * m_moveSpeed * 10);
-				m_parent->RotateTowards(m_parent->Forward(), 1);
-				return;
-			}
-			else*/
 			GetParent()->TranslateGlobal(toDest.Normalized() * m_moveSpeed);
-		}
 
 		toDest.y = 0;
 		toDest.Normalize();

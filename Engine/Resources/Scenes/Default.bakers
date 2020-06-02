@@ -1781,7 +1781,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 581.0
+                                                "Value": 383.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -2109,7 +2109,7 @@
                         "Filter": {
                             "Name": "Filter",
                             "Type": "FilterRaycast",
-                            "Value": 1
+                            "Value": 2
                         },
                         "IsActive": {
                             "Name": "IsActive",
@@ -2181,7 +2181,7 @@
                         "Rotation YLock": {
                             "Name": "Rotation YLock",
                             "Type": "bool",
-                            "Value": true
+                            "Value": false
                         },
                         "Rotation ZLock": {
                             "Name": "Rotation ZLock",
@@ -3856,7 +3856,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 174.0
+                                                "Value": 114.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -4007,7 +4007,7 @@
                         "Filter": {
                             "Name": "Filter",
                             "Type": "FilterRaycast",
-                            "Value": 0
+                            "Value": 2
                         },
                         "IsActive": {
                             "Name": "IsActive",
@@ -12671,7 +12671,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        118.29178619384766
+                                                        43.097293853759766
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {

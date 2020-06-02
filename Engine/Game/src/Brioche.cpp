@@ -110,7 +110,7 @@ void Brioche::OnUpdate(float deltaTime)
 		return;
 	}
 
-	if (m_rigidbody->GetVelocity().SquaredLength() > 0.01f)
+	if (m_rigidbody && m_rigidbody->GetVelocity().SquaredLength() > 0.01f)
 		m_briocheAnimation = EBriocheAnimation::RUN;
 	else
 		m_briocheAnimation = EBriocheAnimation::IDLE;
@@ -119,7 +119,8 @@ void Brioche::OnUpdate(float deltaTime)
 	if (Input()->IsMouseButtonPressed(EMouseButton::LEFT))
 	{
 		m_briocheAnimation = EBriocheAnimation::BITE;
-		m_rigidbody->SetLinearVelocity({ 0.f, m_rigidbody->GetVelocity().y, 0.f });
+		if (m_rigidbody)
+			m_rigidbody->SetLinearVelocity({ 0.f, m_rigidbody->GetVelocity().y, 0.f });
 	}
 
 	if (Input()->IsMouseButtonPressed(EMouseButton::RIGHT))

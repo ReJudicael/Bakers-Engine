@@ -100,7 +100,7 @@ void	Target::FindPlayerCamera()
 
 void	Target::SetTargetPosition()
 {
-	if (Input()->IsKeyDown(EKey::W))
+	if (Input()->IsKeyDown(EKey::Z))
 		m_isLeading = false;
 
 	if (Input()->IsKeyDown(EKey::LEFT_SHIFT) && Input()->IsMouseButtonDown(EMouseButton::LEFT))
@@ -118,7 +118,9 @@ void	Target::SetTargetPosition()
 		Core::Maths::Vec3 dir = m_playerCamera->GetPerspectiveDirection(mouse.x, mouse.y);
 		dir.Normalize();
 
-		if (m_physicsScenePtr->Raycast(origin, dir, query))
+		physx::PxU32 filter;
+		filter |= static_cast<physx::PxU32>(Core::Physics::EFilterRaycast::GROUPE2);
+		if (m_physicsScenePtr->Raycast(origin, dir, query, filter))
 			m_parent->SetGlobalPos(query.hitPoint);
 	}
 	else if (!m_isLeading)
