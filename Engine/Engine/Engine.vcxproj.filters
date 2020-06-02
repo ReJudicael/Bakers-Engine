@@ -132,9 +132,6 @@
     <ClCompile Include="src\Core\Renderer\Camera.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Debug\Debug.cpp">
-      <Filter>Source Files\Core\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Renderer\Mesh.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
     </ClCompile>
@@ -275,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="src\Core\Renderer\CameraWithSecondaryView.cpp">
       <Filter>Source Files\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Debug\Debug.cpp">
+      <Filter>Source Files\Core\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

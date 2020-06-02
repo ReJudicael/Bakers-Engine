@@ -162,6 +162,7 @@ namespace Editor
 	template<class T, class ...Args>
 	inline T& Canvas::Add(Args&& ...args)
 	{
+		ZoneScoped
 		T& output = Datastructure::Container<Window::AWindow>::Add<T, Canvas*, Args...>(this, std::forward<Args>(args)...);
 
 		m_view->Add<Widget::MenuItem>(output.GetName().c_str(), "", &output.isVisible, true).OnClick +=

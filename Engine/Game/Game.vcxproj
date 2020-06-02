@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Engine\src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Brioche.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\Door.cpp" />

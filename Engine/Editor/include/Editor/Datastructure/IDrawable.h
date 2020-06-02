@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CoreMinimal.h"
+
 namespace Editor::Datastructure
 {
 	/**
@@ -12,5 +14,7 @@ namespace Editor::Datastructure
 		 * Display window content
 		 */
 		virtual void Draw() = 0;
+
+		virtual ~IDrawable() = default;
 	};
 }

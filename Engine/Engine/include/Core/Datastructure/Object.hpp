@@ -507,6 +507,7 @@ namespace Core::Datastructure
 		template <class Component>
 		void	GetComponentsOfType(std::list<Component*>& components) const noexcept
 		{
+			ZoneScoped
 			GetComponentsOfTypeInObject<Component>(components);
 			GetComponentsOfTypeInChilds<Component>(components);
 		}
@@ -518,6 +519,7 @@ namespace Core::Datastructure
 		template <class Component>
 		void	GetComponentsOfTypeInChilds(std::list<Component*>& components) const noexcept
 		{
+			ZoneScoped
 			for (auto it : m_childs)
 			{
 				it->GetComponentsOfType(components);
@@ -531,6 +533,7 @@ namespace Core::Datastructure
 		template <class Component>
 		void	GetComponentsOfTypeInObject(std::list<Component*>& components) const noexcept
 		{
+			ZoneScoped
 			for (auto it : m_components)
 			{
 				if (rttr::type::get<Component>() == it->get_type())
@@ -545,6 +548,7 @@ namespace Core::Datastructure
 		template <class Component>
 		void	GetComponentsOfBaseType(std::list<Component*>& components) const noexcept
 		{
+			ZoneScoped
 			GetComponentsOfBaseTypeInObject<Component>(components);
 			GetComponentsOfBaseTypeInChilds<Component>(components);
 		}
@@ -556,6 +560,7 @@ namespace Core::Datastructure
 		template <class Component>
 		void	GetComponentsOfBaseTypeInChilds(std::list<Component*>& components) const noexcept
 		{
+			ZoneScoped
 			for (auto it : m_childs)
 			{
 				it->GetComponentsOfBaseType(components);
@@ -569,6 +574,7 @@ namespace Core::Datastructure
 		template <class Component>
 		void	GetComponentsOfBaseTypeInObject(std::list<Component*>& components) const noexcept
 		{
+			ZoneScoped
 			for (auto it : m_components)
 			{
 				if (rttr::type::get<Component>().is_base_of(it->get_type()))

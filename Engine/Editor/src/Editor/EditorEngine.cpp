@@ -84,6 +84,7 @@ namespace Editor
 
 		glfwMakeContextCurrent(m_window);
 		{
+			ZoneScopedN("SetIcon")
 			GLFWimage icons;
 			icons.pixels = stbi_load("Resources\\Images\\bread.png", &icons.width, &icons.height, 0, STBI_rgb_alpha);
 			glfwSetWindowIcon(m_window, 1, &icons);

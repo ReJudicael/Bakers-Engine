@@ -282,6 +282,7 @@
     <ClCompile Include="..\Dependencies\imGuizmo\src\ImGradient.cpp" />
     <ClCompile Include="..\Dependencies\imGuizmo\src\ImGuizmo.cpp" />
     <ClCompile Include="..\Dependencies\imGuizmo\src\ImSequencer.cpp" />
+    <ClCompile Include="..\Engine\src\Core\Debug\Debug.cpp" />
     <ClCompile Include="src\Editor\Canvas\Canvas.cpp" />
     <ClCompile Include="src\Editor\Canvas\MenuBar.cpp" />
     <ClCompile Include="src\Editor\Datastructure\DrawableUIComponent.cpp" />

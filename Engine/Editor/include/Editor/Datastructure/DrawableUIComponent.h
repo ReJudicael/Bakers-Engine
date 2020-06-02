@@ -42,7 +42,7 @@ namespace Editor
 			/**
 			 * Default destructor
 			 */
-			~DrawableUIComponent() = default;
+			virtual ~DrawableUIComponent() = default;
 
 			/**
 			 * Get ID of component

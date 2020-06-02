@@ -30,6 +30,9 @@
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\Engine\src\Core\Debug\Debug.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ExeEngine.h">

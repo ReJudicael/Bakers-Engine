@@ -92,6 +92,7 @@ namespace Core::Physics
 
 	void PhysicsScene::CreateQueryScene(physx::PxScene*& scene)
 	{
+		ZoneScoped
 		physx::PxSceneDesc sceneDesc(m_pxPhysics->getTolerancesScale());
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
 		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(4);

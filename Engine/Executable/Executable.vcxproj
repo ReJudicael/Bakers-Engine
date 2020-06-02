@@ -233,6 +233,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c" />
+    <ClCompile Include="..\Engine\src\Core\Debug\Debug.cpp" />
     <ClCompile Include="Executable.cpp" />
     <ClCompile Include="src\ExeEngine.cpp" />
   </ItemGroup>

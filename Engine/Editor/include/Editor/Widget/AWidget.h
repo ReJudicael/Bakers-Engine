@@ -24,7 +24,7 @@ namespace Editor
 			/**
 			 * Default destructor
 			 */
-			~AWidget() = default;
+			virtual ~AWidget() = default;
 		};
 	}
 }

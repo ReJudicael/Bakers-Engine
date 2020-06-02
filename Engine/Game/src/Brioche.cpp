@@ -134,6 +134,7 @@ void Brioche::SetTarget(Core::Maths::Vec3 target)
 
 void Brioche::AnimGraph()
 {
+	ZoneScoped
 	Core::Animation::AnimationNode* animIdle{ new Core::Animation::AnimationNode() };
 	animIdle->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_idleAnimation);
 

@@ -65,6 +65,8 @@ namespace Core::Datastructure
 			delete fbo;
 		if (m_manager)
 			delete m_manager;
+		Resources::Shader::lights.clear();
+		Resources::Shader::lights.shrink_to_fit();
 		if (m_physicsScene)
 			delete m_physicsScene;
 		delete m_navMesh;
