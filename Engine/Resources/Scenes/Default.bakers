@@ -1781,7 +1781,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 581.0
+                                                "Value": 690.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1791,7 +1791,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 637.0
+                                                "Value": 778.0
                                             }
                                         }
                                     }
@@ -2153,7 +2153,7 @@
                         "Owen Animation": {
                             "Name": "Owen Animation",
                             "Type": "Owen Animation",
-                            "Value": -859045888
+                            "Value": -1494220800
                         },
                         "Punch Animation": {
                             "Name": "Punch Animation",
@@ -3865,7 +3865,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 174.0
+                                                "Value": 207.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -3875,7 +3875,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 191.0
+                                                "Value": 233.0
                                             }
                                         }
                                     }
@@ -4121,7 +4121,7 @@
                         "Brioche Animation": {
                             "Name": "Brioche Animation",
                             "Type": "Brioche Animation",
-                            "Value": -859045888
+                            "Value": -1494220800
                         },
                         "Damage": {
                             "Name": "Damage",
@@ -4242,7 +4242,7 @@
                         "Mass": {
                             "Name": "Mass",
                             "Type": "float",
-                            "Value": 0.5
+                            "Value": 1.0
                         },
                         "Rotation XLock": {
                             "Name": "Rotation XLock",
@@ -4281,7 +4281,7 @@
                         "AgentHeight": {
                             "Name": "AgentHeight",
                             "Type": "float",
-                            "Value": -0.20000000298023224
+                            "Value": 0.10000000149011612
                         },
                         "IsActive": {
                             "Name": "IsActive",
@@ -4296,7 +4296,7 @@
                         "Speed": {
                             "Name": "Speed",
                             "Type": "float",
-                            "Value": 0.10000000149011612
+                            "Value": 3.0
                         },
                         "Target": {
                             "Name": "Target",
@@ -6406,7 +6406,7 @@
                         "Salt Animation": {
                             "Name": "Salt Animation",
                             "Type": "salt Animation",
-                            "Value": -859045888
+                            "Value": -1494220800
                         }
                     }
                 },
@@ -12684,7 +12684,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        14.392931938171387
+                                                        -108.78121185302734
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {
@@ -15499,7 +15499,7 @@
                         "Minion Animation": {
                             "Name": "Minion Animation",
                             "Type": "Minion Animation",
-                            "Value": -859045888
+                            "Value": -1494220800
                         },
                         "Run Animation": {
                             "Name": "Run Animation",
@@ -17195,7 +17195,7 @@
                         "Minion Animation": {
                             "Name": "Minion Animation",
                             "Type": "Minion Animation",
-                            "Value": -859045888
+                            "Value": -1494220800
                         },
                         "Run Animation": {
                             "Name": "Run Animation",
@@ -18891,7 +18891,7 @@
                         "Minion Animation": {
                             "Name": "Minion Animation",
                             "Type": "Minion Animation",
-                            "Value": -859045888
+                            "Value": -1494220800
                         },
                         "Run Animation": {
                             "Name": "Run Animation",

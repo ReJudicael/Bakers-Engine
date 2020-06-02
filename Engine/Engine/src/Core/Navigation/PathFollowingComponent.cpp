@@ -41,15 +41,19 @@ namespace Core::Navigation
 		IUpdatable::OnDestroy();
 	}
 
-	void PathFollowingComponent::UpdatePos()
+	void PathFollowingComponent::UpdatePos(float deltaTime)
 	{
 		if (m_pathIndex >= m_path.straightPathSize)
 			return;
+
+		if (m_rigidbody)
+			m_rigidbody->SetLinearVelocity({ 0.f, 0.f, 0.f });
+
 		Core::Maths::Vec3 toDest{ ((m_path.straightPath[m_pathIndex] + Core::Maths::Vec3(0, m_agentHeight, 0)) - GetParent()->GetGlobalPos()) };
-		if (toDest.SquaredLength() - m_moveSpeed * m_moveSpeed < m_destPrecision * m_destPrecision)
+		if (toDest.SquaredLength() - m_moveSpeed * m_moveSpeed * deltaTime  * deltaTime < m_destPrecision * m_destPrecision)
 		{
 			++m_pathIndex;
-			UpdatePos();
+			UpdatePos(deltaTime);
 		}
 		else
 		{
@@ -61,7 +65,7 @@ namespace Core::Navigation
 				return;
 			}
 			else*/
-			GetParent()->TranslateGlobal(toDest.Normalized() * m_moveSpeed);
+			GetParent()->TranslateGlobal(toDest.Normalized() * m_moveSpeed * deltaTime);
 		}
 
 		toDest.y = 0;
@@ -113,7 +117,7 @@ namespace Core::Navigation
 			m_pathIndex = 1;
 		}
 		if(!m_stopMoving)
-			UpdatePos();
+			UpdatePos(deltaTime);
 	}
 
 	void PathFollowingComponent::StartCopy(IComponent*& copyTo) const

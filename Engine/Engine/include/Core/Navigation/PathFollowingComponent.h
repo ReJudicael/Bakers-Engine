@@ -30,7 +30,7 @@ namespace Core::Navigation
 		virtual void	OnCopy(IComponent* copyTo) const override;
 		virtual void	OnReset() override;
 
-		void				UpdatePos();
+		void				UpdatePos(float deltaTime);
 	public:
 		PathFollowingComponent();
 
