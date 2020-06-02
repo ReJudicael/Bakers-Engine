@@ -16,6 +16,7 @@ namespace Executable
 		void	MainLoop();
 		void	SetSizeWindow(const int width, const int height) override;
 		virtual Core::Maths::Vec2	GetMousePos() noexcept override;
+		virtual Core::Maths::Vec2		GetMousePosInWindow() noexcept { return GetMousePos(); }
 		void	OnLoop() override;
 
 	private:
