@@ -11,6 +11,8 @@ namespace Resources
 {
 	RTTR_PLUGIN_REGISTRATION
 	{
+	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 		registration::class_<Resources::Shader>("Shader")
 		.constructor()
 		.property("Vertex", &Resources::Shader::GetVertName, &Resources::Shader::SetVertName)

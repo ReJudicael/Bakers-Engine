@@ -17,7 +17,8 @@ namespace Core::Physics
 {
 	RTTR_PLUGIN_REGISTRATION
 	{
-		ZoneScopedN("Registering RTTR")
+	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 		registration::class_<Core::Physics::BoxCollider>("Box Collider")
 		.constructor()
 		.property("Box Half Extent", &Core::Physics::BoxCollider::GetBoxHalfExtent ,&Core::Physics::BoxCollider::SetBoxHalfExtent)

@@ -5,6 +5,8 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 	rttr::registration::class_<Core::Renderer::CameraWithSecondaryView>("Camera with secondary view")
 	.constructor()
 	.property("Target fbo", &Core::Renderer::CameraWithSecondaryView::m_targetFbo)

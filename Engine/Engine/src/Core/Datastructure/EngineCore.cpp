@@ -22,6 +22,7 @@ using nlohmann::json;
 RTTR_PLUGIN_REGISTRATION
 {
 	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 	using namespace Core::Datastructure;
 	registration::class_<EngineCore>("EngineCore")
 		.method("Update", &EngineCore::Update)
@@ -59,6 +60,7 @@ namespace Core::Datastructure
 	EngineCore::~EngineCore()
 	{
 		ZoneScoped
+		m_root->RemoveDestroyed();
 		delete m_root;
 		delete m_inputSystem;
 		for (auto fbo : m_fbo)
@@ -340,6 +342,7 @@ namespace Core::Datastructure
 	void	AddComponent(json& j, Object* parent)
 	{
 		ZoneScoped
+			ZoneText("This zone might leak some data for next RTTR operations. This is intentional, and a purposeful leak.", 127)
 		rttr::type cType{ rttr::type::get_by_name(j["Type"]) };
 		if (!cType.is_valid() || !cType.is_derived_from<IComponent>())
 			return;
@@ -361,7 +364,11 @@ namespace Core::Datastructure
 			return;
 
 		Object* o{ parent->CreateChild(j["Name"], { {j["Pos"]["x"], j["Pos"]["y"], j["Pos"]["z"]}, {j["Rot"]["w"], j["Rot"]["x"], j["Rot"]["y"], j["Rot"]["z"]}, {j["Scale"]["x"], j["Scale"]["y"], j["Scale"]["z"]} }) };
-		rttr::type::get<Core::Datastructure::Object>().get_property("flags").set_value(o, static_cast<Core::Datastructure::ObjectFlag>(static_cast<int>(j["Flags"])));
+		{
+			ZoneScopedN("Setting values flag via RTTR")
+				ZoneText("This zone might leak some RTTR data once as it generates them. It is intended in RTTR, and is purposeful", 105)
+			rttr::type::get<Core::Datastructure::Object>().get_property("flags").set_value(o, static_cast<Core::Datastructure::ObjectFlag>(static_cast<int>(j["Flags"])));
+		}
 
 		for (auto& components : j["Components"])
 			AddComponent(components, o);

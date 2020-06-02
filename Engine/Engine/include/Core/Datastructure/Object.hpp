@@ -536,7 +536,17 @@ namespace Core::Datastructure
 			ZoneScoped
 			for (auto it : m_components)
 			{
+#ifdef TRACY_ENABLE
+				bool b;
+				{
+					ZoneScopedN("Testing type of component")
+						ZoneText("This zone might generate some leak, as it loads components types from RTTR. This is intended, and purposeful", 109)
+						b = rttr::type::get<Component>() == it->get_type();
+				}
+				if (b)
+#else
 				if (rttr::type::get<Component>() == it->get_type())
+#endif
 					components.push_back(dynamic_cast<Component*>(it));
 			}
 		}
@@ -577,7 +587,17 @@ namespace Core::Datastructure
 			ZoneScoped
 			for (auto it : m_components)
 			{
+#ifdef TRACY_ENABLE
+				bool b;
+				{
+					ZoneScopedN("Testing type of component")
+						ZoneText("This zone might generate some leak, as it loads components types from RTTR. This is intended, and purposeful", 109)
+						b = rttr::type::get<Component>().is_base_of(it->get_type());
+				}
+				if (b)
+#else
 				if (rttr::type::get<Component>().is_base_of(it->get_type()))
+#endif
 					components.push_back(dynamic_cast<Component*>(it));
 			}
 		}

@@ -7,6 +7,8 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 	registration::class_<Salt>("Salt")
 		.enumeration<ESaltAnimation>("salt Animation")
 		(
@@ -115,14 +117,6 @@ void Salt::AnimGraph()
 
 	Core::Animation::TransitionNode* transLandingIdle{ new Core::Animation::TransitionNode() };
 	transLandingIdle->InitTransition(animLanding, animIdle);
-	Core::Animation::TransitionNode* transLandingRun{ new Core::Animation::TransitionNode() };
-	transLandingRun->InitTransition(animLanding, animRun);
-	Core::Animation::TransitionNode* transLandingBite{ new Core::Animation::TransitionNode() };
-	transLandingBite->InitTransition(animLanding, animBite);
-	Core::Animation::TransitionNode* transLandingGetHit{ new Core::Animation::TransitionNode() };
-	transLandingGetHit->InitTransition(animLanding, animGetHit);
-	Core::Animation::TransitionNode* transLandingDie{ new Core::Animation::TransitionNode() };
-	transLandingDie->InitTransition(animLanding, animDie);
 
 	Core::Animation::TransitionNode* transIdleRun{ new Core::Animation::TransitionNode() };
 	transIdleRun->InitTransition(animIdle, animRun, [this] { return m_saltAnimation == ESaltAnimation::RUN; });
