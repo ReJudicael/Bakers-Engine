@@ -1716,7 +1716,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 694.0
+                                                "Value": 383.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1726,7 +1726,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 726.0
+                                                "Value": 556.0
                                             }
                                         }
                                     }
@@ -1817,6 +1817,154 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [
+                        {
+                            "Childs": [
+                                {
+                                    "Childs": [],
+                                    "Components": [
+                                        {
+                                            "Type": "Light",
+                                            "Values": {
+                                                "Active": {
+                                                    "Name": "Active",
+                                                    "Type": "bool",
+                                                    "Value": true
+                                                },
+                                                "Ambient": {
+                                                    "Name": "Ambient",
+                                                    "Type": "Color",
+                                                    "Value": [
+                                                        1.0,
+                                                        0.9285714626312256,
+                                                        0.0,
+                                                        1.0
+                                                    ]
+                                                },
+                                                "Angle": {
+                                                    "Name": "Angle",
+                                                    "Type": "float",
+                                                    "Value": 0.6549999713897705
+                                                },
+                                                "AngleSmoothness": {
+                                                    "Name": "AngleSmoothness",
+                                                    "Type": "float",
+                                                    "Value": 0.13099999725818634
+                                                },
+                                                "Attenuation": {
+                                                    "Name": "Attenuation",
+                                                    "Type": "Vec3",
+                                                    "Value": [
+                                                        1.0,
+                                                        0.0,
+                                                        0.0
+                                                    ]
+                                                },
+                                                "CastShadows": {
+                                                    "Name": "CastShadows",
+                                                    "Type": "bool",
+                                                    "Value": false
+                                                },
+                                                "Diffuse": {
+                                                    "Name": "Diffuse",
+                                                    "Type": "Color",
+                                                    "Value": [
+                                                        1.0,
+                                                        0.9687486290931702,
+                                                        0.0,
+                                                        1.0
+                                                    ]
+                                                },
+                                                "IsActive": {
+                                                    "Name": "IsActive",
+                                                    "Type": "bool",
+                                                    "Value": true
+                                                },
+                                                "Range": {
+                                                    "Name": "Range",
+                                                    "Type": "float",
+                                                    "Value": 100.0
+                                                },
+                                                "Specular": {
+                                                    "Name": "Specular",
+                                                    "Type": "Color",
+                                                    "Value": [
+                                                        1.0,
+                                                        1.0,
+                                                        1.0,
+                                                        1.0
+                                                    ]
+                                                },
+                                                "Type": {
+                                                    "Name": "Type",
+                                                    "Type": "LightType",
+                                                    "Value": 2
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "Flags": 0,
+                                    "Name": "Signal",
+                                    "Pos": {
+                                        "x": 0.0,
+                                        "y": 1.820451259613037,
+                                        "z": 0.0
+                                    },
+                                    "Rot": {
+                                        "w": 0.7071067690849304,
+                                        "x": -0.7071067690849304,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Scale": {
+                                        "x": 1.0,
+                                        "y": 1.0,
+                                        "z": 1.0
+                                    }
+                                }
+                            ],
+                            "Components": [],
+                            "Flags": 0,
+                            "Name": "Target",
+                            "Pos": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Rot": {
+                                "w": 1.0,
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    ],
+                    "Components": [],
+                    "Flags": 0,
+                    "Name": "TargetAnchor",
+                    "Pos": {
+                        "x": -1.6781187057495117,
+                        "y": 0.0,
+                        "z": -1.2752605676651
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ],
             "Components": [
@@ -1874,6 +2022,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\ModularRPGHeroesPolyart\\GetHit_noWeaponAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 100
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -3724,6 +3877,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
                         },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 100
+                        },
                         "Idle Animation": {
                             "Name": "Idle Animation",
                             "Type": "std::string",
@@ -3767,7 +3925,7 @@
                         "Speed": {
                             "Name": "Speed",
                             "Type": "float",
-                            "Value": 0.009999999776482582
+                            "Value": 0.5099999904632568
                         },
                         "Target": {
                             "Name": "Target",
@@ -3895,7 +4053,7 @@
             "Name": "Brioche",
             "Pos": {
                 "x": -33.2301025390625,
-                "y": 7.008129119873047,
+                "y": 7.168000221252441,
                 "z": -1.663093090057373
             },
             "Rot": {
@@ -5948,6 +6106,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheTerrorBringer\\GetHitAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "float",
+                            "Value": -431602080.0
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -10724,7 +10887,7 @@
                                             "Value": [
                                                 0.0,
                                                 0.0,
-                                                60.333248138427734
+                                                157.759033203125
                                             ]
                                         },
                                         "S/D Frict - Restitut": {
@@ -13174,6 +13337,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
                         },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 50
+                        },
                         "Idle Animation": {
                             "Name": "Idle Animation",
                             "Type": "std::string",
@@ -14749,6 +14917,11 @@
                             "Name": "Get Hit Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
+                        },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 50
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -16326,6 +16499,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\GetHitAnim.FBX"
                         },
+                        "Health": {
+                            "Name": "Health",
+                            "Type": "int",
+                            "Value": 50
+                        },
                         "Idle Animation": {
                             "Name": "Idle Animation",
                             "Type": "std::string",
@@ -16366,6 +16544,176 @@
                 "x": -4.8053419021698573e-08,
                 "y": -0.949687123298645,
                 "z": 4.8053419021698573e-08
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsChild": {
+                                    "Name": "IsChild",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "IsRoot": {
+                                    "Name": "IsRoot",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Material": {
+                                    "Name": "Material",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "MaterialsNames": {
+                                    "Name": "MaterialsNames",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube.obj"
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Cube",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": -0.6687641143798828,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            ],
+            "Components": [
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 1
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                },
+                {
+                    "Type": "Switch",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Switch2",
+            "Pos": {
+                "x": -17.386096954345703,
+                "y": 5.2170000076293945,
+                "z": -6.610836029052734
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "Scale": {
                 "x": 1.0,

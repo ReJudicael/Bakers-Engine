@@ -7,16 +7,18 @@
 #include "PhysicsScene.h"
 #include "Camera.h"
 #include "Owen.h"
+#include "Light.h"
 
 // Raycast target to move ally
 BAKERS_GAME_CLASS Target : public Core::Datastructure::ComponentUpdatable
 {
 	Brioche*	m_follower;
-	Core::Maths::Vec3 m_test{ 0, 0, 0 };
 
 	Core::Physics::PhysicsScene* m_physicsScenePtr{ nullptr };
 	Core::Renderer::Camera* m_playerCamera{ nullptr };
+	Core::Renderer::Light* m_signal{ nullptr };
 
+	bool	m_isLeading{ false };
 
 	protected:
 		/**

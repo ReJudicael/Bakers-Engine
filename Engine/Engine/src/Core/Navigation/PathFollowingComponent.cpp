@@ -25,6 +25,12 @@ namespace Core::Navigation
 		FindPath(m_target);
 		if (m_pathQuery == nullptr)
 			return false;
+
+		std::list<Core::Physics::RigidBody*> rigidBodies;
+		m_parent->GetComponentsOfTypeInObject<Core::Physics::RigidBody>(rigidBodies);
+		if (rigidBodies.size() > 0)
+			m_rigidbody = *rigidBodies.begin();
+
 		return IUpdatable::OnStart();
 	}
 
@@ -46,7 +52,17 @@ namespace Core::Navigation
 			UpdatePos();
 		}
 		else
+		{
+			// Uncomment to use rigidbody with velocity (need fixing)
+			/*if (m_rigidbody)
+			{
+				m_rigidbody->SetLinearVelocity(toDest.Normalized() * m_moveSpeed * 10);
+				m_parent->RotateTowards(m_parent->Forward(), 1);
+				return;
+			}
+			else*/
 			GetParent()->TranslateGlobal(toDest.Normalized() * m_moveSpeed);
+		}
 
 		toDest.y = 0;
 		toDest.Normalize();
@@ -94,6 +110,7 @@ namespace Core::Navigation
 			m_pathQuery = nullptr;
 			m_pathIndex = 1;
 		}
+
 		UpdatePos();
 	}
 
