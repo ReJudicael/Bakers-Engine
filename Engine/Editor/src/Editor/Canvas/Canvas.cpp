@@ -11,6 +11,7 @@ namespace Editor
 	Canvas::Canvas(Editor::GUIManager* manager) :
 		m_manager{ manager }
 	{
+		ZoneScoped
 		m_dockWindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar;
 		m_dockWindowFlags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		m_dockWindowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
@@ -27,6 +28,7 @@ namespace Editor
 
 	void Canvas::InitMenuBar()
 	{
+		ZoneScoped
 		m_menuBar = new MenuBar();
 		Widget::MenuGroup* file = &m_menuBar->Add<Widget::MenuGroup>(ICON_FA_FILE "  File");
 		file->Add<Widget::MenuItem>(ICON_FA_SAVE "  Save scene", "CTRL + S").OnClick += std::bind(&EditorEngine::SaveScene, GetEngine());

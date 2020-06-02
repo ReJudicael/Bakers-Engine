@@ -105,7 +105,7 @@ void Brioche::OnReset()
 	ComponentBase::OnReset();
 	AEntity::OnReset();
 
-	m_health = 0.f;
+	m_health = 0;
 	m_idleAnimation = "";
 	m_runAnimation = "";
 	m_biteAnimation = "";
@@ -196,6 +196,7 @@ void Brioche::SetEnemy(Core::Datastructure::Object* object)
 
 void Brioche::AnimGraph()
 {
+	ZoneScoped
 	Core::Animation::AnimationNode* animIdle{ new Core::Animation::AnimationNode() };
 	animIdle->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_idleAnimation);
 

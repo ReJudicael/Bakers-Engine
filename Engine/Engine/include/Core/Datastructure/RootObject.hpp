@@ -156,6 +156,7 @@ namespace Core::Datastructure
 		template <class Component>
 		std::list<Component*> GetComponentsOfType() const noexcept
 		{
+			ZoneScoped
 			std::list<Component*> components;
 			GetComponentsOfTypeInChilds(components);
 			return components;
@@ -168,6 +169,7 @@ namespace Core::Datastructure
 		template <class Component>
 		std::list<Component*> GetComponentsOfBaseType() const noexcept
 		{
+			ZoneScoped
 			std::list<Component*> components;
 			GetComponentsOfBaseTypeInChilds(components);
 			return components;

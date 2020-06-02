@@ -72,7 +72,7 @@ void	Deadzone::Activate(Core::Physics::Collider* collider)
 	std::list<AEntity*> entities;
 	collider->GetParent()->GetComponentsOfBaseTypeInObject<AEntity>(entities);
 	for (auto& entity : entities)
-		entity->m_health = 0.f;	
+		entity->m_health = 0;	
 }
 
 void	Deadzone::Deactivate(Core::Physics::Collider* collider)

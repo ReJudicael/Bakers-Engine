@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Debug.h"
 #include <Tracy.hpp>
 #include <glad/glad.h>
 #include <TracyOpenGL.hpp>
-#include <vector>
+#include <queue>
 
 #ifndef TRACY_ENABLE
 
@@ -32,7 +33,7 @@ namespace Core::Debug
 		GLuint m_fiPbo[4];
 		GLsync m_fiFence[4];
 		int m_fiIdx = 0;
-		std::vector <int> m_fiQueue;
+		std::queue<int> m_fiQueue;
 
 		uint16_t m_width, m_height;
 	public:
@@ -65,7 +66,8 @@ namespace Core::Debug
 	{
 		for (unsigned i = 0; i < m_fiQueue.size(); ++i)
 		{
-			glDeleteSync(m_fiFence[m_fiQueue[i]]);
+			glDeleteSync(m_fiFence[m_fiQueue.front()]);
+			m_fiQueue.pop();
 		}
 	}
 
@@ -82,7 +84,7 @@ namespace Core::Debug
 			auto ptr = glMapBufferRange(GL_PIXEL_PACK_BUFFER, 0, 320 * 180 * 4, GL_MAP_READ_BIT);
 			FrameImage(ptr, m_width, m_height, static_cast<uint8_t>(m_fiQueue.size()), true);
 			glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
-			m_fiQueue.erase(m_fiQueue.begin());
+			m_fiQueue.pop();
 		}
 		TracyGpuZone("Resizing frame data for capture sending")
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fiFramebuffer[m_fiIdx]);
@@ -93,7 +95,7 @@ namespace Core::Debug
 		glReadPixels(0, 0, 320, 180, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 		m_fiFence[m_fiIdx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
-		m_fiQueue.emplace_back(m_fiIdx);
+		m_fiQueue.push(m_fiIdx);
 		m_fiIdx = (m_fiIdx + 1) % 4;
 	}
 }

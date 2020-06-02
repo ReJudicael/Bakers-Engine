@@ -11,6 +11,7 @@ namespace Editor
 	GUIManager::GUIManager(EditorEngine* engine, const char* glsl_version, GUIStyle style) :
 		m_engine {engine}
 	{
+		ZoneScoped
 #if _DEBUG
 		IMGUI_CHECKVERSION();
 #endif

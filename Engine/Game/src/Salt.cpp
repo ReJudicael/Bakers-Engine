@@ -69,7 +69,7 @@ void Salt::OnReset()
 	ComponentBase::OnReset();
 	AEntity::OnReset();
 
-	m_health = 0.f;
+	m_health = 0;
 	m_idleAnimation = "";
 	m_runAnimation = "";
 	m_biteAnimation = "";

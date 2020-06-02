@@ -1,3 +1,5 @@
+#include "CoreMinimal.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -40,6 +42,5 @@ int main()
 		libEngine.unload();
 		libGame.unload();
 	}
-	//std::cin.ignore();
 	return 0;
 }
