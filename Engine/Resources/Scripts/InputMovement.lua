@@ -1,26 +1,29 @@
 --Move object with WASD inputs
 
 speed = 200;
-angularSpeed = 0.03; --value used for quaternion slerp. Must be between 0 and 1
+angularSpeed = 200;
 
 function Start()
 	
 end
 
-function HandleRotation()
+function HandleRotation(deltaTime)
 	rotation = Vec3.new();
-
+	
 	if (Input:IsKeyDown(Key.A)) then
-		rotation = rotation + object.Transform:Right();
+		rotation = rotation + Vec3.new(0, 1, 0);
 	end
 	if (Input:IsKeyDown(Key.D)) then
-		rotation = rotation - object.Transform:Right();
+		rotation = rotation - Vec3.new(0, 1, 0);
 	end
 	
 	if (rotation:SquaredLength() > 0.0) then
-		rotation:Normalize();
-		object:RotateTowards(rotation, angularSpeed) 
+		Body:SetRotationLock(1, false);
+	else
+		Body:SetRotationLock(1, true);
 	end
+	
+	Body:SetAngularVelocity(rotation * angularSpeed * deltaTime);
 end
 
 function HandleMovement(deltaTime)
@@ -46,6 +49,10 @@ function HandleMovement(deltaTime)
 end
 
 function Update(deltaTime)
-	HandleRotation();
+	if (Health <= 0) then 
+		do return end
+	end
+	
+	HandleRotation(deltaTime);
 	HandleMovement(deltaTime);
 end

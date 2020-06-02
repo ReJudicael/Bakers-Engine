@@ -86,10 +86,10 @@ namespace Core::Datastructure
 		/**
 		 * Set access to c++ variable in lua script
 		 * @param name: Name of the desired variable in Lua script
-		 * @param value: pointer to the variable
+		 * @param value: value of the variable
 		 */
 		template<class T>
-		void Set(const std::string& name, const T* value);
+		void Set(const std::string& name, const T value);
 
 		/**
 		 * Log system message wrapper for lua
@@ -129,12 +129,12 @@ namespace Core::Datastructure
 	}
 
 	template<class T>
-	void ScriptedComponent::Set(const std::string& name, const T* value)
+	void ScriptedComponent::Set(const std::string& name, const T value)
 	{
 		if (m_script.empty())
 			return;
 
-		Core::Datastructure::lua[name] = value;
+		m_env[name] = value;
 	}
 }
 

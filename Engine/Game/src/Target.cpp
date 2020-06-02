@@ -100,7 +100,7 @@ void	Target::FindPlayerCamera()
 
 void	Target::SetTargetPosition()
 {
-	if (Input()->IsKeyDown(EKey::W))
+	if (Input()->IsKeyDown(EKey::Z))
 		m_isLeading = false;
 
 	if (Input()->IsKeyDown(EKey::LEFT_SHIFT) && Input()->IsMouseButtonDown(EMouseButton::LEFT))
@@ -117,7 +117,8 @@ void	Target::SetTargetPosition()
 
 		Core::Maths::Vec3 dir = m_playerCamera->GetPerspectiveDirection(mouse.x, mouse.y);
 		dir.Normalize();
-		physx::PxU32 filter{ static_cast<physx::PxU32>(Core::Physics::EFilterRaycast::GROUPE2) };
+
+		physx::PxU32 filter = static_cast<physx::PxU32>(Core::Physics::EFilterRaycast::GROUPE2);
 		if (m_physicsScenePtr->Raycast(origin, dir, query, filter))
 		{
 			m_parent->SetGlobalPos(query.hitPoint);
@@ -131,12 +132,27 @@ void	Target::SetTargetPosition()
 	{
 		if (m_signal)
 			m_signal->Activate(false);
-
+		m_newTargetFind = true;
 		m_parent->SetPos({ 0, 0, 0 });
 	}
 	else
 	{
 		m_newTargetFind = false;
+	}
+}
+
+void	Target::WarpBack()
+{
+	if (m_follower)
+	{
+		m_isLeading = false;
+
+		if (m_signal)
+			m_signal->Activate(false);
+
+		m_parent->SetPos({ 0, 0, 0 });
+
+		m_follower->GetParent()->SetGlobalPos(m_parent->GetGlobalPos());
 	}
 }
 
@@ -157,4 +173,7 @@ void	Target::OnUpdate(float deltaTime)
 		return;
 
 	SetTargetPosition();
+
+	if (Input()->IsKeyDown(EKey::P))
+		WarpBack();
 }

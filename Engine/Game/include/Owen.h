@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
 #include "RigidBody.h"
+#include "ScriptedComponent.h"
 #include "AEntity.h"
 
 namespace Core
@@ -47,7 +48,9 @@ private:
 	float			m_attackTimer;
 	float			m_AttackMaxTime;
 	float			m_AttackSpeed;
-	Core::Physics::Collider* colliderPunch;
+	Core::Physics::Collider* m_colliderPunch;
+
+	Core::Datastructure::ScriptedComponent* m_controller;
 
 protected:
 	/**

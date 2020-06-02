@@ -23,6 +23,7 @@ namespace Core
 			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation XLock", &RigidBody::GetPhysicsLockXRotation, &RigidBody::SetPhysicsLockXRotation);
 			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation YLock", &RigidBody::GetPhysicsLockYRotation, &RigidBody::SetPhysicsLockYRotation);
 			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Rotation ZLock", &RigidBody::GetPhysicsLockZRotation, &RigidBody::SetPhysicsLockZRotation);
+			Datastructure::RegisterClassMethod<RigidBody>("Rigidbody", "SetRotationLock", &RigidBody::SetRotationLock);
 			Datastructure::RegisterClassMethod<RigidBody>("Rigidbody", "AddVelocity", &RigidBody::AddVelocity);
 			Datastructure::RegisterClassMethod<RigidBody>("Rigidbody", "SetAngularVelocity", &RigidBody::SetAngularVelocity);
 			Datastructure::RegisterClassMethod<RigidBody>("Rigidbody", "GetAngularVelocity", &RigidBody::GetAngularVelocity);
@@ -329,6 +330,18 @@ namespace Core
 		{ 
 			m_pxRigidBody = nullptr; 
 			GetParent()->DeleteAnEventTransformChange(m_IDFunctionSetTRS); 
+		}
+
+		void RigidBody::SetRotationLock(int rotation, bool lock)
+		{
+			switch (rotation)
+			{
+				case 0: SetPhysicsLockXRotation(lock); break;
+				case 1: SetPhysicsLockYRotation(lock); break;
+				case 2: SetPhysicsLockZRotation(lock); break;
+
+				default:break;
+			}
 		}
 
 		RigidBody::~RigidBody()

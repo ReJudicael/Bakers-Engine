@@ -2198,7 +2198,7 @@
                         "Filter": {
                             "Name": "Filter",
                             "Type": "FilterRaycast",
-                            "Value": 1
+                            "Value": 2
                         },
                         "IsActive": {
                             "Name": "IsActive",
@@ -2270,7 +2270,7 @@
                         "Rotation YLock": {
                             "Name": "Rotation YLock",
                             "Type": "bool",
-                            "Value": true
+                            "Value": false
                         },
                         "Rotation ZLock": {
                             "Name": "Rotation ZLock",

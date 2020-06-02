@@ -32,7 +32,6 @@ namespace Core::Navigation
 		m_cfg.bmax[2] = 100.f;
 
 		m_ctx = new BuildContext();
-		//m_crowd = dtAllocCrowd();
 	}
 
 	NavMeshBuilder::~NavMeshBuilder()
@@ -45,7 +44,6 @@ namespace Core::Navigation
 		}
 
 		rcFreePolyMesh(m_pmesh);
-		//dtFreeCrowd(m_crowd);
 
 		dtFreeNavMesh(m_navMesh);
 		delete m_ctx;
@@ -213,14 +211,6 @@ namespace Core::Navigation
 			params.detailVertsCount = m_dmesh->nverts;
 			params.detailTris = m_dmesh->tris;
 			params.detailTriCount = m_dmesh->ntris;
-			/*
-			params.offMeshConVerts = m_geom->getOffMeshConnectionVerts();
-			params.offMeshConRad = m_geom->get\OffMeshConnectionRads();
-			params.offMeshConDir = m_geom->getOffMeshConnectionDirs();
-			params.offMeshConAreas = m_geom->getOffMeshConnectionAreas();
-			params.offMeshConFlags = m_geom->getOffMeshConnectionFlags();
-			params.offMeshConUserID = m_geom->getOffMeshConnectionId();
-			*/
 			params.offMeshConCount = 0;
 			params.walkableHeight = m_cfg.walkableHeight * m_cfg.ch;
 			params.walkableRadius = m_cfg.walkableRadius * m_cfg.cs;
@@ -254,48 +244,7 @@ namespace Core::Navigation
 				BAKERS_LOG_ERROR("Could not init Detour navmesh");
 				return false;
 			}
-
-			//Generation of crowd
-			/*if (m_crowd->init(MAX_AGENTS, 2.0f, m_navMesh))
-			{
-				DEBUG_LOG_ERROR("Could not init Detour crowd");
-				return false;
-			}
-			else
-			{
-				dtObstacleAvoidanceParams params;
-				// Use mostly default settings, copy from dtCrowd.
-				memcpy(&params, m_crowd->getObstacleAvoidanceParams(0), sizeof(dtObstacleAvoidanceParams));
-
-				// Low (11)
-				params.velBias = 0.5f;
-				params.adaptiveDivs = 5;
-				params.adaptiveRings = 2;
-				params.adaptiveDepth = 1;
-				m_crowd->setObstacleAvoidanceParams(0, &params);
-
-				// Medium (22)
-				params.velBias = 0.5f;
-				params.adaptiveDivs = 5;
-				params.adaptiveRings = 2;
-				params.adaptiveDepth = 2;
-				m_crowd->setObstacleAvoidanceParams(1, &params);
-
-				// Good (45)
-				params.velBias = 0.5f;
-				params.adaptiveDivs = 7;
-				params.adaptiveRings = 2;
-				params.adaptiveDepth = 3;
-				m_crowd->setObstacleAvoidanceParams(2, &params);
-
-				// High (66)
-				params.velBias = 0.5f;
-				params.adaptiveDivs = 7;
-				params.adaptiveRings = 3;
-				params.adaptiveDepth = 3;
-
-				m_crowd->setObstacleAvoidanceParams(3, &params);
-			}*/
+			
 			if (!m_navQuery.Init(m_navMesh))
 			{
 				BAKERS_LOG_ERROR("Could not init Detour navmesh query");
@@ -426,26 +375,6 @@ namespace Core::Navigation
 
 		Core::Debug::Logger::AddLog(logType, s, "NavMeshBuilder::NavMesh.cpp", "Build", 0);
 	}
-	/*
-	dtStatus NavMeshBuilder::FindNearestPoly(const Core::Maths::Vec3& targetPos, const dtQueryFilter* filter, dtPolyRef* outRef, Core::Maths::Vec3& outPoint) const noexcept
-	{
-		if (m_navQuery == nullptr)
-			return DT_FAILURE;
-		constexpr float halfExtents[3]{ 100.f, 100.f, 100.f };
-		dtStatus status{ m_navQuery->findNearestPoly(targetPos.xyz, halfExtents, filter, outRef, outPoint.xyz) };
-		if (outRef == 0)
-			return DT_FAILURE;
-		return status;
-	}
-	
-	dtStatus NavMeshBuilder::FindPath(dtPolyRef startRef, dtPolyRef endRef, const Core::Maths::Vec3& startPos, const Core::Maths::Vec3& endPos, const dtQueryFilter* filter, NavPath& path) const noexcept
-	{
-		if (m_navQuery == nullptr)
-			return DT_FAILURE;
-		int pathCount{ 0 };
-		dtStatus status{ m_navQuery->findPath(startRef, endRef, startPos.xyz, endPos.xyz, filter, path.polyRefPath.data(), &pathCount, 64) };
-	}
-	*/
 
 	NavQuery::QueryResult* NavMeshBuilder::FindPath(const Core::Maths::Vec3& start, const Core::Maths::Vec3& end, unsigned short excludedAreaFlags) noexcept
 	{
@@ -455,6 +384,7 @@ namespace Core::Navigation
 
 		NavQuery::QueryResult* query = new NavQuery::QueryResult();
 		m_navQuery.AddQuery(start, end, m_queryFilter, query);
+		m_navQuery.Update(10);
 
 		return query;
 	}
@@ -725,14 +655,4 @@ namespace Core::Navigation
 
 		return true;
 	}
-	
-	/*
-	NavQuery*		NavMeshBuilder::GetNavQuery() const noexcept
-	{
-		NavQuery* query = new NavQuery();
-		if (!query->Init(m_navMesh))
-			return nullptr;
-		return query;
-	}
-	*/
 }

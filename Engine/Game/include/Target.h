@@ -59,6 +59,11 @@ private:
 		 */
 		void	SetTargetPosition();
 
+		/** Warp ally back to default position and stop moving to current target
+		 * Used for debugging ally behavior
+		 */
+		void	WarpBack();
+
 public:
 	/**
 	 * Default Constructor

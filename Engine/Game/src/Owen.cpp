@@ -66,6 +66,11 @@ bool Owen::OnStart()
 	if (rigidBodies.size() > 0)
 		m_rigidbody = *rigidBodies.begin();
 
+	std::list<Core::Datastructure::ScriptedComponent*> scripts;
+	m_parent->GetComponentsOfTypeInObject<Core::Datastructure::ScriptedComponent>(scripts);
+	if (scripts.size() > 0)
+		m_controller = *scripts.begin();
+
 	AnimGraph();
 
 	std::list<Core::Datastructure::Object*> childs = m_parent->GetChildren();
@@ -79,7 +84,7 @@ bool Owen::OnStart()
 			if (collider.size() > 0)
 			{
 				(*collider.begin())->OnTriggerEnterEvent.AddListener(BIND_EVENT(Owen::OnEnterCollider));
-				colliderPunch = (*collider.begin());
+				m_colliderPunch = (*collider.begin());
 			}
 		}
 	}
@@ -119,6 +124,9 @@ void Owen::OnUpdate(float deltaTime)
 		return;
 	}
 
+	if (m_controller)
+		m_controller->Set<int>("Health", m_health);
+
 	if (m_health <= 0)
 	{
 		m_owenAnimation = EOwenAnimation::DIE;
@@ -141,14 +149,14 @@ void Owen::OnUpdate(float deltaTime)
 	if (m_owenAnimation == EOwenAnimation::PUNCH)
 		m_attackTimer += m_AttackSpeed * deltaTime;
 
-	if (colliderPunch)
+	if (m_colliderPunch)
 	{
-		if (m_owenAnimation == EOwenAnimation::PUNCH && m_attackTimer > 10.f && !colliderPunch->IsActive())
-			colliderPunch->SetActivateCollider(true);
-		else if (m_owenAnimation != EOwenAnimation::PUNCH && colliderPunch->IsActive())
+		if (m_owenAnimation == EOwenAnimation::PUNCH && m_attackTimer > 10.f && !m_colliderPunch->IsActive())
+			m_colliderPunch->SetActivateCollider(true);
+		else if (m_owenAnimation != EOwenAnimation::PUNCH && m_colliderPunch->IsActive())
 		{
 			m_attackTimer = 0;
-			colliderPunch->SetActivateCollider(false);
+			m_colliderPunch->SetActivateCollider(false);
 		}
 	}
 
@@ -255,6 +263,8 @@ bool Owen::TransitionPunch(Core::Animation::AnimationNode* node)
 {
 	if (node->DefaultConditionAnimationNode())
 	{
+		if (m_colliderPunch)
+			m_colliderPunch->SetActivateCollider(false);
 		m_attackTimer = 0;
 		m_owenAnimation = EOwenAnimation::IDLE;
 		return true;
