@@ -149,7 +149,6 @@ namespace Editor
 		case (Core::Datastructure::EngineState::STARTING):
 			UpdateSavedScene();
 		case (Core::Datastructure::EngineState::RUNNING):
-			ZoneScopedN("EngineRunning")
 			if (m_paused && !m_step)
 			{
 				Render();
