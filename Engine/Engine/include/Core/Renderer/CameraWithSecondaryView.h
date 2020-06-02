@@ -17,6 +17,12 @@ namespace Core::Renderer
 		Core::Maths::Vec2		m_viewSize{ 0.25f, 0.25f };
 		GLuint					m_VAO;
 		GLuint					m_VBO;
+
+		float					m_speed{ 2 };
+		float					m_currentZoom{ 0 };
+		float					m_maxZoom{ 3 };
+		float					m_minZoom{ -3 };
+
 		bool					ShouldDisplayPosDataInInspector();
 
 		void					ResizeView();
@@ -34,6 +40,12 @@ namespace Core::Renderer
 
 		virtual void	OnCopy(IComponent* copyTo) const override;
 		virtual void	StartCopy(IComponent*& copyTo) const override;
+
+		/**
+		 * Update event
+		 * @param deltaTime: Time elapsed between two frames
+		 */
+		virtual void OnUpdate(float deltaTime) override;
 
 		REGISTER_CLASS(Camera);
 	};

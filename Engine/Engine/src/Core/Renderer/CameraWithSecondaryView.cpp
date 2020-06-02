@@ -17,6 +17,9 @@ RTTR_PLUGIN_REGISTRATION
 	(
 		rttr::metadata(MetaData_Type::SHOW_IN_EDITOR, "ShouldDisplayPosDataInInspector")
 	)
+	.property("Scroll speed", &Core::Renderer::CameraWithSecondaryView::m_speed)
+	.property("Max zoom", &Core::Renderer::CameraWithSecondaryView::m_maxZoom)
+	.property("Min zoom", &Core::Renderer::CameraWithSecondaryView::m_minZoom)
 	.method("ShouldDisplayPosDataInInspector", &Core::Renderer::CameraWithSecondaryView::ShouldDisplayPosDataInInspector);
 }
 
@@ -140,5 +143,24 @@ namespace Core::Renderer
 	{
 		copyTo = new CameraWithSecondaryView();
 		OnCopy(copyTo);
+	}
+
+	void CameraWithSecondaryView::OnUpdate(float deltaTime)
+	{
+		if (Input()->IsScrollUp())
+		{
+			float newMovement = m_speed * deltaTime;
+			float move = (m_currentZoom + newMovement <= m_maxZoom) ? newMovement : m_maxZoom - m_currentZoom;
+			m_parent->Translate(Maths::Vec3{ 0, 0, 1 } * move);
+			m_currentZoom += move;
+		}
+
+		if (Input()->IsScrollDown())
+		{
+			float newMovement = -1 * m_speed * deltaTime;
+			float move = (m_currentZoom + newMovement >= m_minZoom) ? newMovement : m_minZoom - m_currentZoom;
+			m_parent->Translate(Maths::Vec3{ 0, 0, 1 } * move);
+			m_currentZoom += move;
+		}
 	}
 }

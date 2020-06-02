@@ -209,6 +209,13 @@ namespace Core
 			virtual bool GetUseGravity() const;
 
 			/**
+			 * Set lock state of given rotation. Used by lua scripts
+			 * @param rotation: Rotation axis, values accepted are 0, 1 and 2 for x, y and z axis
+			 * @param lock: New state for rotation lock
+			 */
+			void SetRotationLock(int rotation, bool lock);
+
+			/**
 			 * Put the rigidBody to nullptr do not use it in your own code
 			 */
 			void ToNull() { m_pxRigidBody = nullptr; }

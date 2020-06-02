@@ -132,6 +132,21 @@ void	Target::SetTargetPosition()
 	}
 }
 
+void	Target::WarpBack()
+{
+	if (m_follower)
+	{
+		m_isLeading = false;
+
+		if (m_signal)
+			m_signal->Activate(false);
+
+		m_parent->SetPos({ 0, 0, 0 });
+
+		m_follower->GetParent()->SetGlobalPos(m_parent->GetGlobalPos());
+	}
+}
+
 void	Target::OnInit()
 {
 	ComponentUpdatable::OnInit();
@@ -146,4 +161,7 @@ void	Target::OnUpdate(float deltaTime)
 		return;
 
 	SetTargetPosition();
+
+	if (Input()->IsKeyDown(EKey::P))
+		WarpBack();
 }

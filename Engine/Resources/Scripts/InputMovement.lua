@@ -1,13 +1,13 @@
 --Move object with WASD inputs
 
 speed = 200;
-angularSpeed = 5;
+angularSpeed = 50;
 
 function Start()
 	
 end
 
-function HandleRotation()
+function HandleRotation(deltaTime)
 	rotation = Vec3.new();
 	
 	if (Input:IsKeyDown(Key.A)) then
@@ -17,7 +17,13 @@ function HandleRotation()
 		rotation = rotation - Vec3.new(0, 1, 0);
 	end
 	
-	Body:SetAngularVelocity(rotation * angularSpeed);
+	if (rotation:SquaredLength() > 0.0) then
+		Body:SetRotationLock(1, false);
+	else
+		Body:SetRotationLock(1, true);
+	end
+	
+	Body:SetAngularVelocity(rotation * angularSpeed * deltaTime);
 end
 
 function HandleMovement(deltaTime)
@@ -47,6 +53,6 @@ function Update(deltaTime)
 		do return end
 	end
 	
-	HandleRotation();
+	HandleRotation(deltaTime);
 	HandleMovement(deltaTime);
 end
