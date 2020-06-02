@@ -1901,6 +1901,119 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [
+                        {
+                            "Childs": [],
+                            "Components": [
+                                {
+                                    "Type": "Target",
+                                    "Values": {
+                                        "IsActive": {
+                                            "Name": "IsActive",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsUpdating": {
+                                            "Name": "IsUpdating",
+                                            "Type": "bool",
+                                            "Value": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "Type": "Mesh",
+                                    "Values": {
+                                        "Cast Shadows": {
+                                            "Name": "Cast Shadows",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsActive": {
+                                            "Name": "IsActive",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsChild": {
+                                            "Name": "IsChild",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "IsRoot": {
+                                            "Name": "IsRoot",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "Material": {
+                                            "Name": "Material",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\cube"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "MaterialsNames": {
+                                            "Name": "MaterialsNames",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\cube"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "Model": {
+                                            "Name": "Model",
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\cube.obj"
+                                        }
+                                    }
+                                }
+                            ],
+                            "Flags": 0,
+                            "Name": "GameObject",
+                            "Pos": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Rot": {
+                                "w": 1.0,
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    ],
+                    "Components": [],
+                    "Flags": 0,
+                    "Name": "MachinTarget",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ],
             "Components": [
@@ -2126,9 +2239,9 @@
             "Flags": 0,
             "Name": "Owen",
             "Pos": {
-                "x": -32.73313903808594,
-                "y": 7.028131008148193,
-                "z": -4.717764377593994
+                "x": -16.211748123168945,
+                "y": -3.2672691345214844,
+                "z": 16.320205688476563
             },
             "Rot": {
                 "w": 0.7335718870162964,
@@ -3745,6 +3858,90 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.4000000059604645,
+                                        0.4000000059604645,
+                                        0.4000000059604645
+                                    ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 0
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Local positon": {
+                                    "Name": "Local positon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Local rotation": {
+                                    "Name": "Local rotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "S/D Frict - Restitut": {
+                                    "Name": "S/D Frict - Restitut",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "HitBoxPunch",
+                    "Pos": {
+                        "x": 2.7418136596679688e-06,
+                        "y": 0.5899739861488342,
+                        "z": 1.49302339553833
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ],
             "Components": [
@@ -3880,7 +4077,7 @@
                         "Activate": {
                             "Name": "Activate",
                             "Type": "bool",
-                            "Value": true
+                            "Value": false
                         },
                         "Box Half Extent": {
                             "Name": "Box Half Extent",
@@ -3899,7 +4096,7 @@
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
-                            "Value": true
+                            "Value": false
                         },
                         "Local positon": {
                             "Name": "Local positon",
@@ -3988,9 +4185,9 @@
             "Flags": 0,
             "Name": "Brioche",
             "Pos": {
-                "x": -33.2301025390625,
-                "y": 7.008129119873047,
-                "z": -1.663093090057373
+                "x": -19.043058395385742,
+                "y": -3.201937198638916,
+                "z": 11.78390884399414
             },
             "Rot": {
                 "w": 0.7734341621398926,
@@ -10823,7 +11020,7 @@
                                             "Value": [
                                                 0.0,
                                                 0.0,
-                                                -159.99246215820313
+                                                155.7382049560547
                                             ]
                                         },
                                         "S/D Frict - Restitut": {
@@ -13304,13 +13501,74 @@
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\RunAnim.FBX"
                         }
                     }
+                },
+                {
+                    "Type": "Box Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Box Half Extent": {
+                            "Name": "Box Half Extent",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.5,
+                                0.5,
+                                0.5
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 1
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.5,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
+                        }
+                    }
                 }
             ],
             "Flags": 0,
             "Name": "Minion #1",
             "Pos": {
                 "x": -15.0989351272583,
-                "y": -3.2619686126708984,
+                "y": -3.24753999710083,
                 "z": 11.679271697998047
             },
             "Rot": {

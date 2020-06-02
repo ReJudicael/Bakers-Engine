@@ -69,6 +69,8 @@ namespace Core::Navigation
 		mat.Set<2, 2>(toDest.z);
 
 		GetParent()->SetRot(mat);
+
+
 	}
 
 	PathFollowingComponent::PathFollowingComponent() : ComponentBase(), INavAgent()
@@ -94,7 +96,8 @@ namespace Core::Navigation
 			m_pathQuery = nullptr;
 			m_pathIndex = 1;
 		}
-		UpdatePos();
+		if(!m_stopMoving)
+			UpdatePos();
 	}
 
 	void PathFollowingComponent::StartCopy(IComponent*& copyTo) const
@@ -115,5 +118,11 @@ namespace Core::Navigation
 	{
 		INavAgent::OnReset();
 		IUpdatable::OnReset();
+	}
+
+	void PathFollowingComponent::SetStopMoving(const bool stopMoving)
+	{
+		if (m_stopMoving != stopMoving)
+			m_stopMoving = stopMoving;
 	}
 }

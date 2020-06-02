@@ -37,6 +37,7 @@ namespace Core::Renderer
 		std::shared_ptr<Resources::Model> m_model;
 
 		std::string	m_modelName;
+		int			m_indexEditorActor{-1};
 
 		bool		m_isRoot{ false };
 		bool		m_isChild{ false };

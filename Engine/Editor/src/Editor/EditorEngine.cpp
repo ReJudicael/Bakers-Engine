@@ -216,13 +216,16 @@ namespace Editor
 	{
 		physx::PxRaycastBuffer hit;
 		Core::Datastructure::Object* result{ nullptr };
-
+		physx::PxHitFlags flag = physx::PxHitFlag::ePOSITION | physx::PxHitFlag::eNORMAL | physx::PxHitFlag::eUV;
 		if(m_editorScene->raycast(physx::PxVec3{ origin.x, origin.y, origin.z },
-								physx::PxVec3{ direction.x, direction.y, direction.z }.getNormalized(), FLT_MAX, hit))
+								physx::PxVec3{ direction.x, direction.y, direction.z }, FLT_MAX, hit, flag))
 		{
-			Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(hit.block.actor->userData) };
-			if (physicsMesh)
-				result = physicsMesh->GetParent();
+			if (hit.hasBlock)
+			{
+				Core::Datastructure::IComponent* physicsMesh{ static_cast<Core::Datastructure::IComponent*>(hit.block.actor->userData) };
+				if (physicsMesh)
+					result = physicsMesh->GetParent();
+			}
 		}
 		else
 		{

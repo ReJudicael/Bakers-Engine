@@ -1,7 +1,6 @@
 #include <iostream>
 #include "PhysicsScene.h"
 
-//#include "PhysicsSceneSimulationEventCallback.h"
 #include "PxPhysicsAPI.h"
 #include "PxSceneDesc.h"
 #include "PxMaterial.h"
@@ -77,9 +76,10 @@ namespace Core::Physics
 		sceneDesc.filterShader = &Core::Physics::PhysicsSceneSimulationEventCallback::filterShader;
 
 		sceneDesc.simulationEventCallback = m_eventCallBack;
+		//sceneDesc.sceneQueryUpdateMode = physx::PxSceneQueryUpdateMode::eBUILD_ENABLED_COMMIT_ENABLED;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
 		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD;
-		//sceneDesc.flags |= physx::PxSceneFlag::eENABLE_PCM;
+		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_PCM;
 		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
 
 		m_pxScene = m_pxPhysics->createScene(sceneDesc);
@@ -177,10 +177,17 @@ namespace Core::Physics
 		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
 		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
 
-		physx::PxRaycastBuffer hit;
+		physx::PxRaycastHit hitBuffer[10];
+		physx::PxRaycastBuffer hit(hitBuffer, 10);
 		bool status = m_pxScene->raycast(origin, dir, static_cast<physx::PxReal>(Distance), hit);
 		if (status)
 		{
+			if (hit.hasBlock)
+			{
+				HitResultQuery result;
+				result.initHitResult(hit.block);
+				results.push_back(result);
+			}
 			for (physx::PxU32 i{ 0 }; i < hit.nbTouches; i++)
 			{
 				HitResultQuery result;
@@ -215,7 +222,8 @@ namespace Core::Physics
 		physx::PxVec3 origin{ OriginPos.x, OriginPos.y, OriginPos.z };
 		physx::PxVec3 dir{ Direction.x, Direction.y, Direction.z };
 
-		physx::PxRaycastBuffer hit;
+		physx::PxRaycastHit hitBuffer[10];
+		physx::PxRaycastBuffer hit(hitBuffer, 10);
 		physx::PxQueryFilterData filterData{};
 		for (int i = 0; i < 4; i++)
 			filterData.data.word0 |= 1 << i;
@@ -224,6 +232,12 @@ namespace Core::Physics
 		bool status = m_pxScene->raycast(origin, dir, static_cast<physx::PxReal>(Distance), hit, physx::PxHitFlag::eDEFAULT, filterData);
 		if (status)
 		{
+			if (hit.hasBlock)
+			{
+				HitResultQuery result;
+				result.initHitResult(hit.block);
+				results.push_back(result);
+			}
 			for (physx::PxU32 i{ 0 }; i < hit.nbTouches; i++)
 			{
 				HitResultQuery result;
@@ -264,15 +278,17 @@ namespace Core::Physics
 		Core::Maths::Quat globalRot{ transform.GetGlobalRot() };
 		pose.q = { globalRot.x, globalRot.y, globalRot.z, globalRot.w };
 
-		physx::PxOverlapBuffer overlapCallback;
-		physx::PxGeometry geometry = ChooseGeometry(overlapGeometry, halfextent);
-		physx::PxQueryFilterData data;
-		for (int i = 0; i < 4; i++)
-			data.data.word0 |= 1 << i;
-		data.flags |= physx::PxQueryFlag::eANY_HIT;
-		bool status = m_pxScene->overlap(physx::PxBoxGeometry(halfextent.x, halfextent.y, halfextent.z), pose, overlapCallback, data);
+		physx::PxOverlapHit hitBuffer[10];
+		physx::PxOverlapBuffer overlapCallback(hitBuffer, 10);
+		bool status = m_pxScene->overlap(physx::PxBoxGeometry(halfextent.x, halfextent.y, halfextent.z), pose, overlapCallback);
 		if (status)
 		{
+			if (overlapCallback.hasBlock)
+			{
+				HitResultQuery result;
+				result.initHitResult(overlapCallback.block);
+				overlapResults.push_back(result);
+			}
 			for (physx::PxU32 i{ 0 }; i < overlapCallback.nbTouches; i++)
 			{
 				HitResultQuery result;
@@ -317,7 +333,6 @@ namespace Core::Physics
 		physx::PxQuat rotation = physx::PxQuat{ quat.x, quat.y, quat.z, quat.w };
 
 		physx::PxRigidStatic* rigid;
-
 		rigid = m_pxPhysics->createRigidStatic(physx::PxTransform(position, rotation));
 		rigid->attachShape(*shape);
 

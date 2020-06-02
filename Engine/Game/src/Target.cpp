@@ -89,12 +89,20 @@ void	Target::SetTargetPosition()
 
 		Core::Maths::Vec3 dir = m_playerCamera->GetPerspectiveDirection(mouse.x, mouse.y);
 		dir.Normalize();
-
 		if (m_physicsScenePtr->Raycast(origin, dir, query))
+		{
 			m_parent->SetGlobalPos(query.hitPoint);
+			m_follower->SetEnemy(query.objectHit);
+			m_newTargetFind = true;
+		}
+		else
+			m_newTargetFind = false;
 	}
 	else
-		m_parent->SetPos({ 0, 0, 0 });
+	{
+		//m_parent->SetPos({ 0, 0, 0 });
+		m_newTargetFind = false;
+	}
 }
 
 void	Target::OnInit()
@@ -105,8 +113,11 @@ void	Target::OnInit()
 void	Target::OnUpdate(float deltaTime)
 {
 	
-	if (m_follower->GetBehavior() != EBriocheBehavior::ATTACK)
+	if (m_newTargetFind)
+	{
+		BAKERS_LOG_MESSAGE("je passe Set " + m_parent->GetGlobalPos().ToString());
 		m_follower->SetTarget(m_parent->GetGlobalPos());
+	}
 
 	if (!m_playerCamera || !m_follower || !m_physicsScenePtr)
 		return;

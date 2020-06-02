@@ -125,6 +125,17 @@ void Owen::OnUpdate(float deltaTime)
 
 	if (Input()->IsMouseButtonPressed(EMouseButton::LEFT))
 	{
+		/*Core::Datastructure::Transform TRS{ GetParent()->GetUpdatedTransform(), {0.f, 1.119f, 1.632f} };
+		std::vector<Core::Physics::HitResultQuery> result;
+		if (GetParent()->GetScene()->GetEngine()->GetPhysicsScene()->CheckOverlap(Core::Physics::EGeometry::BOX, { 0.75f, 0.55f, 0.5f }, TRS, result))
+		{
+			for (size_t i = 0; i < result.size(); i++)
+			{
+				if (result[i].objectHit)
+					BAKERS_LOG_MESSAGE(result[i].objectHit->GetName());
+			}
+		}*/
+
 		m_owenAnimation = EOwenAnimation::PUNCH;
 		m_rigidbody->SetLinearVelocity({ 0.f, m_rigidbody->GetVelocity().y, 0.f });
 	}

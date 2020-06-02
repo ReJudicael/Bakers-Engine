@@ -189,6 +189,7 @@ void Core::Renderer::Mesh::OnDestroy()
 	for (size_t i{ 0 }; i < m_destroyMaterialEvent.size(); i++)
 		m_destroyMaterialEvent[i]();
 	m_destroyActorEvent.Invoke();
+	GetParent()->DeleteAnEventTransformChange(m_indexEditorActor);
 	IRenderable::OnDestroy();
 }
 
@@ -204,6 +205,8 @@ bool Core::Renderer::Mesh::IsModelLoaded()
 
 bool Core::Renderer::Mesh::CreateAABBMesh(physx::PxScene*& scene)
 {
+	if (m_isRoot)
+		return true;
 	if (!m_model)
 		return false;
 	if (m_model->stateVAO != Resources::EOpenGLLinkState::ISLINK)
@@ -220,7 +223,7 @@ bool Core::Renderer::Mesh::CreateAABBMesh(physx::PxScene*& scene)
 	m_destroyActorEvent += std::bind(&Core::Physics::PhysicsScene::DestroyEditorPhysicActor , object->GetScene()
 		->GetEngine()->GetPhysicsScene(), actor, scene);
 
-	GetParent()->SetAnEventTransformChange(std::bind(&Core::Physics::PhysicsScene::UpdatePoseOfActor, object->GetScene()
+	m_indexEditorActor = GetParent()->SetAnEventTransformChange(std::bind(&Core::Physics::PhysicsScene::UpdatePoseOfActor, object->GetScene()
 											->GetEngine()->GetPhysicsScene(), actor));
 
 	return true;

@@ -41,7 +41,7 @@ namespace Core::Physics
 		root->GetEngine()->GetPhysicsScene()->CreatePhysicsShape(*this);
 
 		InitShapeSave();
-
+		m_pxShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
 		CreateRigidActor();
 
 		Core::Datastructure::IComponent::OnInit();

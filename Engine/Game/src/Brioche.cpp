@@ -4,6 +4,8 @@
 #include "EngineCore.h"
 #include "LoadResources.h"
 #include "SkeletalMesh.h"
+#include "Collider.h"
+#include "Minion.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -70,6 +72,22 @@ bool Brioche::OnStart()
 	if (rigidBodies.size() > 0)
 		m_rigidbody = *rigidBodies.begin();
 
+	std::list<Core::Datastructure::Object*> childs = m_parent->GetChildren();
+
+	for (auto child = childs.begin(); child != childs.end(); ++child)
+	{
+		std::list<Core::Physics::Collider*> collider;
+		if ((*child)->GetName().find("HitBoxPunch") != std::string::npos)
+		{
+			(*child)->GetComponentsOfBaseType(collider);
+			if (collider.size() > 0)
+			{
+				(*collider.begin())->OnTriggerEnterEvent.AddListener(BIND_EVENT(Brioche::OnEnterCollider));
+				colliderPunch = (*collider.begin());
+			}
+		}
+	}
+
 	return ComponentUpdatable::OnStart();
 }
 
@@ -103,49 +121,86 @@ void Brioche::OnUpdate(float deltaTime)
 		return;
 	}
 
-	if (m_rigidbody->GetVelocity().SquaredLength() > 0.01f)
-		m_briocheAnimation = EBriocheAnimation::RUN;
-	else
-		m_briocheAnimation = EBriocheAnimation::IDLE;
-
-
-	if (Input()->IsMouseButtonPressed(EMouseButton::LEFT))
+	if (m_behavior == EBriocheBehavior::GO || m_behavior == EBriocheBehavior::FOLLOW)
 	{
-		m_briocheAnimation = EBriocheAnimation::BITE;
-		m_rigidbody->SetLinearVelocity({ 0.f, m_rigidbody->GetVelocity().y, 0.f });
+		if (/*m_rigidbody->GetVelocity().SquaredLength() > 0.001f*/m_navigator->IsEndOfThePath())
+			m_briocheAnimation = EBriocheAnimation::RUN;
+		else
+			m_briocheAnimation = EBriocheAnimation::IDLE;
 	}
 
 	if (Input()->IsMouseButtonPressed(EMouseButton::RIGHT))
 		m_health = 0;
+
+	if (m_enemyToAttack && m_behavior == EBriocheBehavior::GO)
+	{
+		if ((m_navigator->GetTarget() - m_parent->GetGlobalPos()).Length() <= 2.f)
+		{
+			m_stopAttack = false;
+			m_briocheAnimation = EBriocheAnimation::BITE;
+			m_behavior = EBriocheBehavior::ATTACK;
+			m_rigidbody->SetLinearVelocity({ 0.f, m_rigidbody->GetVelocity().y, 0.f });
+			m_navigator->SetStopMoving(true);
+		}
+	}
+	if (colliderPunch)
+	{
+		if (m_briocheAnimation == EBriocheAnimation::BITE && m_attackTimer >= m_AttackMaxTime/2.f && !colliderPunch->IsActive())
+		{
+			colliderPunch->SetActivateCollider(true);
+		}
+		else
+			m_attackTimer += m_AttackSpeed * deltaTime;
+	}
+
 }
 
 void Brioche::SetTarget(Core::Maths::Vec3 target)
 {
 	if (m_navigator)
+	{
 		m_navigator->SetTarget(target);
+		if (m_behavior != EBriocheBehavior::ATTACK)
+		{
+			m_navigator->SetStopMoving(false);
+			m_behavior = EBriocheBehavior::GO;
+		}
+	}
+}
+
+void Brioche::SetEnemy(Core::Datastructure::Object* object)
+{
+	if (object)
+	{
+		std::list<Minion*> components;
+		object->GetComponentsOfType<Minion>(components);
+		if (components.size() >= 1)
+			m_enemyToAttack = object;
+		else
+			m_enemyToAttack = nullptr;
+	}
+	else
+		m_enemyToAttack = nullptr;
 }
 
 void Brioche::AnimGraph()
 {
-	//std::shared_ptr<Core::Animation::AnimationNode> animIdle{ std::make_shared<Core::Animation::AnimationNode>() };
 	Core::Animation::AnimationNode* animIdle{ new Core::Animation::AnimationNode() };
 	animIdle->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_idleAnimation);
 
-	//std::shared_ptr<Core::Animation::AnimationNode> animRun{ std::make_shared<Core::Animation::AnimationNode>() };
 	Core::Animation::AnimationNode* animRun{ new Core::Animation::AnimationNode() };
 	animRun->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_runAnimation);
 
-	//std::shared_ptr<Core::Animation::AnimationNode> animBite{ std::make_shared<Core::Animation::AnimationNode>() };
 	Core::Animation::AnimationNode* animBite{ new Core::Animation::AnimationNode() };
 	animBite->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_biteAnimation);
 	animBite->Loop = false;
+	m_AttackMaxTime = animBite->nodeAnimation->Time;
+	m_AttackSpeed = animBite->speed;
 
-	//std::shared_ptr<Core::Animation::AnimationNode> animGetHit{ std::make_shared<Core::Animation::AnimationNode>() };
 	Core::Animation::AnimationNode* animGetHit{ new Core::Animation::AnimationNode() };
 	animGetHit->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_getHitAnimation);
 	animGetHit->Loop = false;
 
-	//std::shared_ptr<Core::Animation::AnimationNode> animDie{ std::make_shared<Core::Animation::AnimationNode>() };
 	Core::Animation::AnimationNode* animDie{ new Core::Animation::AnimationNode() };
 	animDie->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_dieAnimation);
 	animDie->Loop = false;
@@ -169,7 +224,7 @@ void Brioche::AnimGraph()
 	transRunDie->InitTransition(animRun, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 
 	Core::Animation::TransitionNode* transBiteIdle{ new Core::Animation::TransitionNode() };
-	transBiteIdle->InitTransition(animBite, animIdle);
+	transBiteIdle->InitTransition(animBite, animIdle, std::bind(&Brioche::TransitionPunchToIdle, this, animBite));
 	Core::Animation::TransitionNode* transBiteRun{ new Core::Animation::TransitionNode() };
 	transBiteRun->InitTransition(animBite, animRun, [this] { return m_briocheAnimation == EBriocheAnimation::RUN; });
 	Core::Animation::TransitionNode* transBiteGetHit{ new Core::Animation::TransitionNode() };
@@ -218,4 +273,23 @@ void Brioche::AnimGraph()
 		Core::Animation::SkeletalMesh* sktmesh = *skeletalMesh.begin();
 		sktmesh->animationHandler = new Core::Animation::AnimationHandler{ animIdle };
 	}
+}
+
+void Brioche::OnEnterCollider(Core::Physics::Collider* collider)
+{
+	BAKERS_LOG_MESSAGE("coucou");
+}
+
+bool Brioche::TransitionPunchToIdle(Core::Animation::AnimationNode* node)
+{
+	if (node->DefaultConditionAnimationNode())
+	{
+		m_attackTimer = 0;
+		m_behavior = EBriocheBehavior::GO;
+		m_briocheAnimation = EBriocheAnimation::IDLE;
+		colliderPunch->SetActivateCollider(false);
+		m_navigator->SetStopMoving(false);
+		return true;
+	}
+	return false;
 }
