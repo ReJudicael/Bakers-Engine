@@ -764,6 +764,7 @@ namespace Resources::Loader
 
 	void ResourcesManager::SaveMaterial()
 	{
+		ZoneScoped
 		for (auto mat : m_materials)
 		{
 			if (mat.first.find(".bmat") != std::string::npos)

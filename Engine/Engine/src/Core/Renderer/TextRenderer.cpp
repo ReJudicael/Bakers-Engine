@@ -6,6 +6,8 @@ using namespace Core::Maths;
 
 RTTR_PLUGIN_REGISTRATION
 {
+	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 	using namespace Core::Renderer;
 	rttr::registration::class_<TextRenderer>("Text Renderer")
 		.constructor()

@@ -17,7 +17,8 @@ namespace Core::Physics
 
 	RTTR_PLUGIN_REGISTRATION
 	{
-		ZoneScopedN("Registering RTTR")
+	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 		registration::class_<Core::Physics::CapsuleCollider>("Capsule Collider")
 		.constructor()
 		.property("Capsule Half Extent", &Core::Physics::CapsuleCollider::GetCapsuleHalfExtent ,&Core::Physics::CapsuleCollider::SetCapsuleHalfExtent)

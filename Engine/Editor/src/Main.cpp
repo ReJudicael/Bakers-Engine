@@ -38,7 +38,11 @@ int main()
 				return temp;
 			engine.MainLoop();
 		}
-		//std::cin.ignore();
+#ifdef TRACY_ENABLE
+		// Giving time for tracy to finish to track all memory allocations and zones
+		std::cout << "Press enter to continue" << std::endl;
+		std::cin.ignore();
+#endif
 		libEngine.unload();
 		libGame.unload();
 	}

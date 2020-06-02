@@ -6,6 +6,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 	using namespace Core::Datastructure;
 	registration::class_<ICamera>("ICamera")
 		.method("GetCameraPerspective", &ICamera::GetPerspectiveMatrix)

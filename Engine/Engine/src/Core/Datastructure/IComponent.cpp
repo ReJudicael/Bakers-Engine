@@ -6,6 +6,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 	using namespace Core::Datastructure;
 	registration::class_<IComponent>("IComponent")
 		.property_readonly("parent", &IComponent::GetParent, detail::protected_access())
@@ -25,7 +26,12 @@ namespace Core::Datastructure
 		ZoneScoped
 #ifdef TRACY_ENABLE
 		{
-			std::string s {std::string("Init of a ") + get_type().get_name().to_string() + std::string(" component")};
+			std::string s;
+			{
+				ZoneScopedN("Getting rttr name for tracy zones")
+					ZoneText("This zone might leak data from rttr to generate the required data. It is intended, and a purposeful leak", 105)
+				s = std::string("Init of a ") + get_type().get_name().to_string() + std::string(" component");
+			}
 			ZoneText(s.c_str(), s.size())
 		}
 #endif
@@ -40,8 +46,13 @@ namespace Core::Datastructure
 	{
 		ZoneScoped
 #ifdef TRACY_ENABLE
-		{
-			std::string s {std::string("Start of a ") + get_type().get_name().to_string() + std::string(" component")};
+		{ 
+			std::string s;
+			{
+			ZoneScopedN("Getting rttr name for tracy zones")
+				ZoneText("This zone might leak data from rttr to generate the required data. It is intended, and a purposeful leak", 105)
+				s = std::string("Start of a ") + get_type().get_name().to_string() + std::string(" component");
+			}
 			ZoneText(s.c_str(), s.size())
 		}
 #endif

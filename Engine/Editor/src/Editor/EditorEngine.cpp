@@ -454,8 +454,13 @@ namespace Editor
 		if (m_state >= Core::Datastructure::EngineState::STARTING && m_state <= Core::Datastructure::EngineState::CLOSING)
 			return;
 		UpdateSavedScene();
-		std::ofstream o(m_currScene);
-		o << std::setw(4) << m_savedScene << std::endl;
+		{
+			ZoneScopedN("Writing scene to file")
+				ZoneText("This might leak as std::ostream apparently leaks", 49)
+			std::ofstream o(m_currScene);
+			o << std::setw(4) << m_savedScene << std::endl;
+			o.close();
+		}
 		BAKERS_LOG_MESSAGE("Scene saved");
 		m_navMesh->SaveNavMesh(m_currScene);
 		GetResourcesManager()->SaveMaterial();

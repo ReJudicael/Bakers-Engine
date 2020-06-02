@@ -4,6 +4,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 	rttr::registration::class_<Core::Maths::Vec2>("Vec2")
 		.constructor()
 		.property("x", &Core::Maths::Vec2::x)

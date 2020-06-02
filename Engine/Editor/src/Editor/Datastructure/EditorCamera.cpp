@@ -5,14 +5,23 @@
 #include "EditorEngine.h"
 #include "Maths.hpp"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
+	rttr::registration::class_<Editor::Datastructure::EditorCamera>("Editor Camera");
+}
+
 namespace Editor::Datastructure
 {
 	EditorCamera::EditorCamera() : m_transform{ Core::Datastructure::Transform({0, 1, 0}) }
 	{
+		ZoneScoped
 	}
 
 	void EditorCamera::SetRatio(const float width, const float height)
 	{
+		ZoneScoped
 		m_persp.width = width;
 		m_persp.height = height;
 		m_isPerspectiveUpdated = false;
@@ -20,11 +29,13 @@ namespace Editor::Datastructure
 
 	Core::Renderer::Framebuffer* EditorCamera::GetFBO()
 	{
+		ZoneScoped
 		return m_fbo;
 	}
 	
 	Core::Maths::Vec3 EditorCamera::GetPerspectiveDirection(const float ratioX, const float ratioY)
 	{
+		ZoneScoped
 		// Get camera forward and change it for camera ray use
 		Core::Maths::Vec3 forward = Core::Maths::Vec3(0, 0, 1.f);
 
@@ -40,23 +51,27 @@ namespace Editor::Datastructure
 
 	void EditorCamera::SetRot(const Core::Maths::Vec3& v)
 	{
+		ZoneScoped
 		m_transform.SetLocalRot(v);
 		m_isCamUpdated = false;
 	}
 
 	void EditorCamera::SetPos(const Core::Maths::Vec3& v)
 	{
+		ZoneScoped
 		m_transform.SetLocalPos(v);
 		m_isCamUpdated = false;
 	}
 
 	const Core::Maths::Vec3& EditorCamera::GetPos()
 	{
+		ZoneScoped
 		return m_transform.GetLocalPos();
 	}
 
 	void EditorCamera::OnInit()
 	{
+		ZoneScoped
 		ComponentBase::OnInit();
 		ICamera::OnInit();
 		m_fbo->type = Core::Renderer::FBOType::CUSTOM;
@@ -64,16 +79,19 @@ namespace Editor::Datastructure
 
 	bool EditorCamera::OnStart()
 	{
+		ZoneScoped
 		return ComponentBase::OnStart();
 	}
 	
 	Core::Maths::Mat4 EditorCamera::OnGenerateCamera()
 	{
+		ZoneScoped
 		return m_transform.GetLocalTrs().Inversed();
 	}
 	
 	Core::Maths::Mat4 EditorCamera::OnGeneratePerspective()
 	{
+		ZoneScoped
 		return Core::Renderer::Camera::CreatePerspectiveMatrix(m_persp.width, m_persp.height, m_persp.fov, m_persp.near, m_persp.far);
 	}
 	
@@ -93,6 +111,7 @@ namespace Editor::Datastructure
 	
 	void EditorCamera::OnDestroy()
 	{
+		ZoneScoped
 		ComponentBase::OnDestroy();
 		ICamera::OnDestroy();
 
@@ -101,6 +120,7 @@ namespace Editor::Datastructure
 	
 	void EditorCamera::OnReset()
 	{
+		ZoneScoped
 		ComponentBase::OnReset();
 		ICamera::OnReset();
 
@@ -111,6 +131,7 @@ namespace Editor::Datastructure
 
 	void EditorCamera::MoveWithInput(Core::SystemManagement::InputSystem* input)
 	{
+		ZoneScoped
 		if (input->IsMouseButtonDown(EMouseButton::RIGHT))
 		{ 
 			if (!input->IsCursorHidden())
@@ -133,6 +154,7 @@ namespace Editor::Datastructure
 
 	bool EditorCamera::IsUsingMouseTranslation(Core::SystemManagement::InputSystem* input)
 	{
+		ZoneScoped
 		if (input->IsMouseButtonDown(EMouseButton::MIDDLE))
 			return true;
 
@@ -143,6 +165,7 @@ namespace Editor::Datastructure
 
 	void EditorCamera::ComputeInputTranslation(Core::SystemManagement::InputSystem* input)
 	{
+		ZoneScoped
 		Core::Maths::Vec3 move = { 0, 0, 0 };
 		constexpr Core::Maths::Vec3 forward{ 0, 0, 1 };
 		constexpr Core::Maths::Quat	forQuat{ 0, forward };
@@ -170,6 +193,7 @@ namespace Editor::Datastructure
 
 	void EditorCamera::ComputeMouseTranslation(Core::SystemManagement::InputSystem* input)
 	{
+		ZoneScoped
 		Core::Maths::Vec2 newPos = input->GetMousePos();
 		Core::Maths::Vec2 mouseMove = m_mousePos - newPos;
 
@@ -192,6 +216,7 @@ namespace Editor::Datastructure
 
 	void EditorCamera::ComputeRotation(Core::SystemManagement::InputSystem* input)
 	{
+		ZoneScoped
 		Core::Maths::Vec2 newPos = input->GetMousePos();
 		Core::Maths::Vec2 mouseMove = m_mousePos - newPos;
 
@@ -207,6 +232,7 @@ namespace Editor::Datastructure
 
 	void EditorCamera::Update(float deltaTime, Core::SystemManagement::InputSystem* input)
 	{
+		ZoneScoped
 		MoveWithInput(input);
 
 		UpdatePosition(deltaTime);
@@ -215,6 +241,7 @@ namespace Editor::Datastructure
 
 	void EditorCamera::UpdatePosition(float deltaTime)
 	{
+		ZoneScoped
 		float length = m_movement.SquaredLength();
 
 		if (length == 0) // Do not update transform if no movement has been made
@@ -232,6 +259,7 @@ namespace Editor::Datastructure
 
 	void EditorCamera::UpdateRotation(float deltaTime)
 	{
+		ZoneScoped
 		if (m_isRotating)
 		{
 			// Increase current rotation with new one
@@ -257,11 +285,13 @@ namespace Editor::Datastructure
 
 	void EditorCamera::Move(Core::Maths::Vec3 move, Core::SystemManagement::InputSystem* input)
 	{
+		ZoneScoped
 		m_movement = move.Normalized() * (input->IsKeyDown(EKey::LEFT_SHIFT) ? m_runSpeed : 1);
 	}
 
 	void EditorCamera::Rotate(Core::Maths::Vec3 move)
 	{
+		ZoneScoped
 		m_angularMovement = move;
 		m_isRotating = true;
 	}

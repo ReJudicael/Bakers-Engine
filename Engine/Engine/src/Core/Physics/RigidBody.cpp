@@ -15,7 +15,8 @@ namespace Core
 	{
 		RTTR_PLUGIN_REGISTRATION
 		{
-			ZoneScopedN("Registering RTTR")
+	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 			Datastructure::RegisterDefaultClassConstructor<RigidBody>("Rigidbody");
 			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Velocity", &RigidBody::GetVelocity, &RigidBody::SetLinearVelocity);
 			Datastructure::RegisterClassPropertyGS<RigidBody>("Rigidbody", "Mass", &RigidBody::GetMass, &RigidBody::SetMass);

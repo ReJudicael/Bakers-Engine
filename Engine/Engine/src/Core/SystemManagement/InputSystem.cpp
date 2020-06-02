@@ -5,6 +5,8 @@ namespace Core::SystemManagement
 {
 	RTTR_PLUGIN_REGISTRATION
 	{
+	ZoneScopedN("Registering RTTR")
+		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 		Core::Datastructure::lua.new_usertype<InputSystem>("InputSystem");
 		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsKeyPressed", &InputSystem::IsKeyPressed);
 		Core::Datastructure::RegisterClassMethod<InputSystem>("InputSystem", "IsKeyDown", &InputSystem::IsKeyDown);

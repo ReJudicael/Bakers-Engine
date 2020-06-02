@@ -7,6 +7,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
     ZoneScopedN("Registering RTTR")
+        ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
     registration::class_<Core::Audio::AudioListener>("Audio Listener")
         .constructor()
         .property("Active", &Core::Audio::AudioListener::m_isActive);
