@@ -49,6 +49,7 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>   // for glfwGetWin32Window
 #endif
+#include <stb_image.h>
 #define GLFW_HAS_WINDOW_TOPMOST       (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) // 3.2+ GLFW_FLOATING
 #define GLFW_HAS_WINDOW_HOVERED       (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ GLFW_HOVERED
 #define GLFW_HAS_WINDOW_ALPHA         (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ glfwSetWindowOpacity
@@ -550,6 +551,14 @@ static void ImGui_ImplGlfw_CreateWindow(ImGuiViewport* viewport)
     data->Window = glfwCreateWindow((int)viewport->Size.x, (int)viewport->Size.y, "No Title Yet", NULL, share_window);
     data->WindowOwned = true;
     viewport->PlatformHandle = (void*)data->Window;
+
+    {
+        GLFWimage icons;
+        icons.pixels = stbi_load("Resources\\Images\\bread.png", &icons.width, &icons.height, 0, STBI_rgb_alpha);
+        glfwSetWindowIcon(data->Window, 1, &icons);
+        stbi_image_free(icons.pixels);
+    }
+
 #ifdef _WIN32
     viewport->PlatformHandleRaw = glfwGetWin32Window(data->Window);
 #endif
