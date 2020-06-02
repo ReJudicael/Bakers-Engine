@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
 #include "RigidBody.h"
-
+#include "ScriptedComponent.h"
 
 
 namespace Core
@@ -45,7 +45,9 @@ private:
 	std::string m_getHitAnimation;
 	std::string m_dieAnimation;
 	EOwenAnimation m_owenAnimation{ EOwenAnimation::IDLE };
-	Core::Physics::Collider* colliderPunch;
+	Core::Physics::Collider* m_colliderPunch;
+
+	Core::Datastructure::ScriptedComponent* m_controller;
 
 protected:
 	/**

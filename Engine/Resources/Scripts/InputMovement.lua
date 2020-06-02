@@ -46,6 +46,10 @@ function HandleMovement(deltaTime)
 end
 
 function Update(deltaTime)
+	if (Health <= 0) then 
+		do return end
+	end
+	
 	HandleRotation();
 	HandleMovement(deltaTime);
 end

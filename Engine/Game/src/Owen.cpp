@@ -65,6 +65,11 @@ bool Owen::OnStart()
 	if (rigidBodies.size() > 0)
 		m_rigidbody = *rigidBodies.begin();
 
+	std::list<Core::Datastructure::ScriptedComponent*> scripts;
+	m_parent->GetComponentsOfTypeInObject<Core::Datastructure::ScriptedComponent>(scripts);
+	if (scripts.size() > 0)
+		m_controller = *scripts.begin();
+
 	AnimGraph();
 
 	std::list<Core::Datastructure::Object*> childs = m_parent->GetChildren();
@@ -78,7 +83,7 @@ bool Owen::OnStart()
 			if (collider.size() > 0)
 			{
 				(*collider.begin())->OnTriggerEnterEvent.AddListener(BIND_EVENT(Owen::OnEnterCollider));
-				colliderPunch = (*collider.begin());
+				m_colliderPunch = (*collider.begin());
 			}
 		}
 	}
@@ -114,6 +119,9 @@ void Owen::OnUpdate(float deltaTime)
 		BAKERS_LOG_ERROR("Owen doesn't have his rigidbody!");
 		return;
 	}
+
+	if (m_controller)
+		m_controller->Set<int>("Health", m_health);
 
 	if (m_health <= 0)
 	{
@@ -234,8 +242,8 @@ bool Owen::TransitionPunch(Core::Animation::AnimationNode* node)
 {
 	if (node->DefaultConditionAnimationNode())
 	{
-		if (colliderPunch)
-			colliderPunch->SetActivateCollider(false);
+		if (m_colliderPunch)
+			m_colliderPunch->SetActivateCollider(false);
 		m_owenAnimation = EOwenAnimation::IDLE;
 		return true;
 	}
