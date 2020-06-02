@@ -1781,7 +1781,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 620.0
+                                                "Value": 581.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -1791,7 +1791,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 639.0
+                                                "Value": 638.0
                                             }
                                         }
                                     }
@@ -1850,58 +1850,6 @@
                             "Childs": [],
                             "Components": [
                                 {
-                                    "Type": "Mesh",
-                                    "Values": {
-                                        "Cast Shadows": {
-                                            "Name": "Cast Shadows",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "IsActive": {
-                                            "Name": "IsActive",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "IsChild": {
-                                            "Name": "IsChild",
-                                            "Type": "bool",
-                                            "Value": false
-                                        },
-                                        "IsRoot": {
-                                            "Name": "IsRoot",
-                                            "Type": "bool",
-                                            "Value": false
-                                        },
-                                        "Material": {
-                                            "Name": "Material",
-                                            "Type": "ArraySequential",
-                                            "Value": [
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\cube"
-                                                }
-                                            ],
-                                            "Wrapped type": "std::string"
-                                        },
-                                        "MaterialsNames": {
-                                            "Name": "MaterialsNames",
-                                            "Type": "ArraySequential",
-                                            "Value": [
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\cube"
-                                                }
-                                            ],
-                                            "Wrapped type": "std::string"
-                                        },
-                                        "Model": {
-                                            "Name": "Model",
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\cube.obj"
-                                        }
-                                    }
-                                },
-                                {
                                     "Type": "Target",
                                     "Values": {
                                         "IsActive": {
@@ -1913,6 +1861,85 @@
                                             "Name": "IsUpdating",
                                             "Type": "bool",
                                             "Value": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "Type": "Light",
+                                    "Values": {
+                                        "Active": {
+                                            "Name": "Active",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "Ambient": {
+                                            "Name": "Ambient",
+                                            "Type": "Color",
+                                            "Value": [
+                                                1.0,
+                                                1.0,
+                                                1.0,
+                                                1.0
+                                            ]
+                                        },
+                                        "Angle": {
+                                            "Name": "Angle",
+                                            "Type": "float",
+                                            "Value": 0.7850000262260437
+                                        },
+                                        "AngleSmoothness": {
+                                            "Name": "AngleSmoothness",
+                                            "Type": "float",
+                                            "Value": 0.0010000000474974513
+                                        },
+                                        "Attenuation": {
+                                            "Name": "Attenuation",
+                                            "Type": "Vec3",
+                                            "Value": [
+                                                1.0,
+                                                0.0,
+                                                0.0
+                                            ]
+                                        },
+                                        "CastShadows": {
+                                            "Name": "CastShadows",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "Diffuse": {
+                                            "Name": "Diffuse",
+                                            "Type": "Color",
+                                            "Value": [
+                                                1.0,
+                                                1.0,
+                                                1.0,
+                                                1.0
+                                            ]
+                                        },
+                                        "IsActive": {
+                                            "Name": "IsActive",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "Range": {
+                                            "Name": "Range",
+                                            "Type": "float",
+                                            "Value": 0.5
+                                        },
+                                        "Specular": {
+                                            "Name": "Specular",
+                                            "Type": "Color",
+                                            "Value": [
+                                                1.0,
+                                                1.0,
+                                                1.0,
+                                                1.0
+                                            ]
+                                        },
+                                        "Type": {
+                                            "Name": "Type",
+                                            "Type": "LightType",
+                                            "Value": 1
                                         }
                                     }
                                 }
@@ -1942,7 +1969,7 @@
                     "Name": "TargetAnchor",
                     "Pos": {
                         "x": 1.5417476892471313,
-                        "y": 0.07059860229492188,
+                        "y": 0.30000001192092896,
                         "z": 1.3828277587890625e-05
                     },
                     "Rot": {
@@ -3829,7 +3856,7 @@
                                             "Height": {
                                                 "Name": "Height",
                                                 "Type": "float",
-                                                "Value": 186.0
+                                                "Value": 174.0
                                             },
                                             "Near": {
                                                 "Name": "Near",
@@ -12644,7 +12671,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        -120.57464599609375
+                                                        118.29178619384766
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {

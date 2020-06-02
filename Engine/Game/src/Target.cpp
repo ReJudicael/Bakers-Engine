@@ -5,6 +5,7 @@
 #include "EngineCore.h"
 #include "RootObject.hpp"
 #include "BoxCollider.h"
+#include "CameraWithSecondaryView.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -72,8 +73,8 @@ void	Target::FindPlayerCamera()
 	if (!player)
 		return;
 
-	std::list<Core::Renderer::Camera*> cameras;
-	player->GetParent()->GetComponentsOfType<Core::Renderer::Camera>(cameras);
+	std::list<Core::Renderer::CameraWithSecondaryView*> cameras;
+	player->GetParent()->GetComponentsOfType<Core::Renderer::CameraWithSecondaryView>(cameras);
 	if (cameras.size() > 0)
 		m_playerCamera = *cameras.begin();
 }
