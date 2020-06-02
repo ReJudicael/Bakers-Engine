@@ -100,8 +100,17 @@ public:
 	 */
 	~Owen();
 
+	/**
+	 * Function call as an event for the collision OnTriggerEnter
+	 * @param collider: the collider with wich he triggered 
+	 */
 	void OnEnterCollider(Core::Physics::Collider* collider);
 
+	/**
+	 * Function call as an event it's the transition between
+	 * the Punch animation and Idle
+	 * @param node: the AnimationNode Punch
+	 */
 	bool TransitionPunch(Core::Animation::AnimationNode* node);
 
 private:

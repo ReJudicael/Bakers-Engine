@@ -89,7 +89,8 @@ void	Target::SetTargetPosition()
 
 		Core::Maths::Vec3 dir = m_playerCamera->GetPerspectiveDirection(mouse.x, mouse.y);
 		dir.Normalize();
-		if (m_physicsScenePtr->Raycast(origin, dir, query))
+		physx::PxU32 filter{ static_cast<physx::PxU32>(Core::Physics::EFilterRaycast::GROUPE2) };
+		if (m_physicsScenePtr->Raycast(origin, dir, query, filter))
 		{
 			m_parent->SetGlobalPos(query.hitPoint);
 			m_follower->SetEnemy(query.objectHit);
@@ -100,7 +101,6 @@ void	Target::SetTargetPosition()
 	}
 	else
 	{
-		//m_parent->SetPos({ 0, 0, 0 });
 		m_newTargetFind = false;
 	}
 }

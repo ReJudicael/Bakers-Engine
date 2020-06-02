@@ -46,7 +46,7 @@ namespace Core
 		class StaticMesh;
 		class Collider;
 
-
+		constexpr unsigned int MAX_QUERY_HIT_BUFFER = 20;
 		enum class EFilterRaycast : int
 		{
 			GROUPE1 = (1<<0),
@@ -106,7 +106,6 @@ namespace Core
 			 */
 			void ReleaseAllScene();
 
-			const physx::PxGeometry& ChooseGeometry(const EGeometry& geometry, const Core::Maths::Vec3& halfExtent);
 		public:
 			/**
 			 * Default constructor
@@ -259,7 +258,7 @@ namespace Core
 			 * @param transform: the global position of the geometry
 			 * @param overlapResult: the nearest hit result of the overlap
 			 */
-			bool CheckOverlap(const EGeometry& overlapGeometry, const Core::Maths::Vec3& halfextent,
+			bool CheckBoxOverlap(const Core::Maths::Vec3& halfextent,
 								const Core::Datastructure::Transform& transform,
 								HitResultQuery& overlapResult);
 
@@ -270,7 +269,7 @@ namespace Core
 			 * @param transform: the global position of the geometry
 			 * @param overlapResult: all the hit result of the overlap
 			 */
-			bool CheckOverlap(const EGeometry& overlapGeometry, const Core::Maths::Vec3& halfextent,
+			bool CheckBoxOverlap(const Core::Maths::Vec3& halfextent,
 								const Core::Datastructure::Transform& transform, 
 								std::vector<HitResultQuery>& overlapResults);
 			/*

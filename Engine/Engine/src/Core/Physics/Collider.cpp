@@ -40,9 +40,9 @@ namespace Core::Physics
 		// create the shape of the collider
 		root->GetEngine()->GetPhysicsScene()->CreatePhysicsShape(*this);
 
-		InitShapeSave();
 		m_pxShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
 		CreateRigidActor();
+		InitShapeSave();
 
 		Core::Datastructure::IComponent::OnInit();
 	}
@@ -166,6 +166,8 @@ namespace Core::Physics
 
 	void Collider::InitRigidBody(Core::Physics::RigidBody* rigidBody, int& ID, physx::PxRigidDynamic*& pxRigidBody)
 	{
+		bool active = IsActive();
+
 		DetachShape();
 
 		// recreate the collider rigid actor as a dynamic actor
@@ -182,6 +184,7 @@ namespace Core::Physics
 
 		// Init the actor as his save
 		rigidBody->InitPhysic();
+		SetActivateCollider(active);
 	}
 
 	void Collider::SetActivateCollider(bool activate)
@@ -316,9 +319,9 @@ namespace Core::Physics
 		if (m_pxShape)
 		{
 			if (trigger)
-				TriggerCollider();
+				TriggerShape();
 			else
-				SimulationCollider();
+				SimulationShape();
 		}
 		else if (!IsDestroyed())
 		{
@@ -335,7 +338,7 @@ namespace Core::Physics
 		return m_pxShape->getFlags().isSet(physx::PxShapeFlag::eTRIGGER_SHAPE);
 	}
 
-	void Collider::TriggerCollider()
+	void Collider::TriggerShape()
 	{
 		if (!m_pxShape)
 			return;
@@ -343,7 +346,7 @@ namespace Core::Physics
 		m_pxShape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 	}
 
-	void Collider::SimulationCollider()
+	void Collider::SimulationShape()
 	{
 		if (!m_pxShape)
 			return;

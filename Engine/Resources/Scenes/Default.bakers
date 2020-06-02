@@ -4077,7 +4077,7 @@
                         "Activate": {
                             "Name": "Activate",
                             "Type": "bool",
-                            "Value": false
+                            "Value": true
                         },
                         "Box Half Extent": {
                             "Name": "Box Half Extent",
@@ -4091,12 +4091,12 @@
                         "Filter": {
                             "Name": "Filter",
                             "Type": "FilterRaycast",
-                            "Value": 0
+                            "Value": 2
                         },
                         "IsActive": {
                             "Name": "IsActive",
                             "Type": "bool",
-                            "Value": false
+                            "Value": true
                         },
                         "Local positon": {
                             "Name": "Local positon",
@@ -11020,7 +11020,7 @@
                                             "Value": [
                                                 0.0,
                                                 0.0,
-                                                155.7382049560547
+                                                -18.140819549560547
                                             ]
                                         },
                                         "S/D Frict - Restitut": {

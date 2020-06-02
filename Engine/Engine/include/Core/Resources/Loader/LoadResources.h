@@ -158,10 +158,14 @@ namespace Resources
 										const std::string& directory, Object3DInfo& info, const int numberOfSameKey = 0);
 		public:
 			/**
+			 * Default constructor 
 			 * Construct the ResourcesManager and create defaults shaders
 			 */
 			ResourcesManager();
-
+			/**
+			 * Constructor for link the task system to the ResourcesManager
+			 * @param task: a pointeur on the task system
+			 */
 			ResourcesManager(Core::SystemManagement::TaskSystem* task);
 
 			void DefaultConstruct();
@@ -339,7 +343,10 @@ namespace Resources
 				return m_BoneHierarchies[keyName];
 			}
 
-
+			/**
+			 * Push in the list of textureToLink a TextureData 
+			 * @param textureData: the textureData to push
+			 */
 			inline void PushTextureToLink(std::shared_ptr<TextureData> textureData)
 			{
 				m_texturesToLink.push_back(textureData);

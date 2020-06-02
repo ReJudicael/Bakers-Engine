@@ -123,7 +123,7 @@ void Brioche::OnUpdate(float deltaTime)
 
 	if (m_behavior == EBriocheBehavior::GO || m_behavior == EBriocheBehavior::FOLLOW)
 	{
-		if (/*m_rigidbody->GetVelocity().SquaredLength() > 0.001f*/m_navigator->IsEndOfThePath())
+		if (m_navigator->IsEndOfThePath())
 			m_briocheAnimation = EBriocheAnimation::RUN;
 		else
 			m_briocheAnimation = EBriocheAnimation::IDLE;
@@ -224,7 +224,7 @@ void Brioche::AnimGraph()
 	transRunDie->InitTransition(animRun, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 
 	Core::Animation::TransitionNode* transBiteIdle{ new Core::Animation::TransitionNode() };
-	transBiteIdle->InitTransition(animBite, animIdle, std::bind(&Brioche::TransitionPunchToIdle, this, animBite));
+	transBiteIdle->InitTransition(animBite, animIdle, std::bind(&Brioche::TransitionBiteToIdle, this, animBite));
 	Core::Animation::TransitionNode* transBiteRun{ new Core::Animation::TransitionNode() };
 	transBiteRun->InitTransition(animBite, animRun, [this] { return m_briocheAnimation == EBriocheAnimation::RUN; });
 	Core::Animation::TransitionNode* transBiteGetHit{ new Core::Animation::TransitionNode() };
@@ -280,7 +280,7 @@ void Brioche::OnEnterCollider(Core::Physics::Collider* collider)
 	BAKERS_LOG_MESSAGE("coucou");
 }
 
-bool Brioche::TransitionPunchToIdle(Core::Animation::AnimationNode* node)
+bool Brioche::TransitionBiteToIdle(Core::Animation::AnimationNode* node)
 {
 	if (node->DefaultConditionAnimationNode())
 	{
