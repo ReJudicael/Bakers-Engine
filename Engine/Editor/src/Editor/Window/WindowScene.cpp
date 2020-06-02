@@ -231,7 +231,6 @@ namespace Editor::Window
 
 		Core::Maths::Vec3 dir = m_cam->GetPerspectiveDirection(mouse.x, mouse.y);
 		dir.Normalize();
-		BAKERS_LOG_MESSAGE(dir.ToString());
 
 		return dir;
 	}
