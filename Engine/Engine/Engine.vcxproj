@@ -364,6 +364,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Physics\PhysicsSceneSimulationEventCallback.cpp" />
     <ClCompile Include="src\Core\Physics\SphereCollider.cpp" />
     <ClCompile Include="src\Core\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Core\Renderer\CameraWithSecondaryView.cpp" />
     <ClCompile Include="src\Core\Renderer\Environment.cpp" />
     <ClCompile Include="src\Core\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Core\Renderer\Light.cpp" />
@@ -444,6 +445,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClInclude Include="include\Core\Physics\PhysicsScene.h" />
     <ClInclude Include="include\Core\Physics\PhysicsSceneSimulationEventCallback.h" />
     <ClInclude Include="include\Core\Physics\SphereCollider.h" />
+    <ClInclude Include="include\Core\Renderer\CameraWithSecondaryView.h" />
     <ClInclude Include="include\Core\Renderer\Environment.h" />
     <ClInclude Include="include\Core\Renderer\Framebuffer.h" />
     <ClInclude Include="include\Core\Renderer\Light.h" />

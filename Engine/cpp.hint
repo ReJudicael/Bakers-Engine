@@ -1,3 +1,7 @@
 #define BAKERS_API
 #define BAKERS_API_CLASS class
 #define BAKERS_API_STRUCT struct
+
+#define BAKERS_GAME
+#define BAKERS_GAME_CLASS class
+#define BAKERS_GAME_STRUCT struct

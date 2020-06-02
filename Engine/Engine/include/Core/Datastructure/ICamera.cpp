@@ -46,15 +46,23 @@ void Core::Datastructure::ICamera::OnInit()
 	m_fbo->userPtr = this;
 
 	m_shadowShader = GetRoot()->GetEngine()->GetResourcesManager()->CreateShader("Shadow", "Resources\\Shaders\\ShadowShader.vert", "Resources\\Shaders\\ShadowShader.frag");
+
+	std::list<Renderer::Postprocess*> components;
+	m_parent->GetComponentsOfTypeInObject<Renderer::Postprocess>(components);
+	if (components.size() > 0)
+		m_postProcessHandler = *components.begin();
 }
 
 bool Core::Datastructure::ICamera::OnStart()
 {
 	ZoneScoped
-	std::list<Renderer::Postprocess*> components;
-	m_parent->GetComponentsOfTypeInObject<Renderer::Postprocess>(components);
-	if (components.size() > 0)
-		m_postProcessHandler = *components.begin();
+	if (!m_postProcessHandler)
+	{
+		std::list<Renderer::Postprocess*> components;
+		m_parent->GetComponentsOfTypeInObject<Renderer::Postprocess>(components);
+		if (components.size() > 0)
+			m_postProcessHandler = *components.begin();
+	}
 
 	return IComponent::OnStart();
 }
