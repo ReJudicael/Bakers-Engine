@@ -1791,7 +1791,7 @@
                                             "Width": {
                                                 "Name": "Width",
                                                 "Type": "float",
-                                                "Value": 638.0
+                                                "Value": 639.0
                                             }
                                         }
                                     }
@@ -2031,6 +2031,11 @@
                 {
                     "Type": "Owen",
                     "Values": {
+                        "Damage": {
+                            "Name": "Damage",
+                            "Type": "int",
+                            "Value": 10
+                        },
                         "Die Animation": {
                             "Name": "Die Animation",
                             "Type": "std::string",
@@ -2044,7 +2049,7 @@
                         "Health": {
                             "Name": "Health",
                             "Type": "int",
-                            "Value": 100
+                            "Value": 150
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -2226,86 +2231,6 @@
         },
         {
             "Childs": [
-                {
-                    "Childs": [],
-                    "Components": [
-                        {
-                            "Type": "Skeletal Mesh",
-                            "Values": {
-                                "Cast Shadows": {
-                                    "Name": "Cast Shadows",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsChild": {
-                                    "Name": "IsChild",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsRoot": {
-                                    "Name": "IsRoot",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "IsUpdating": {
-                                    "Name": "IsUpdating",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "Material": {
-                                    "Name": "Material",
-                                    "Type": "ArraySequential",
-                                    "Value": [
-                                        {
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\DragonTheSoulEater\\DragonTheSoulEater.bmat"
-                                        }
-                                    ],
-                                    "Wrapped type": "std::string"
-                                },
-                                "MaterialsNames": {
-                                    "Name": "MaterialsNames",
-                                    "Type": "ArraySequential",
-                                    "Value": [
-                                        {
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\DragonTheSoulEater\\DragonTheSoulEater.bmat"
-                                        }
-                                    ],
-                                    "Wrapped type": "std::string"
-                                },
-                                "Model": {
-                                    "Name": "Model",
-                                    "Type": "std::string",
-                                    "Value": ".\\Resources\\Models\\DragonTheSoulEater\\DragonTheSoulEaterSK"
-                                }
-                            }
-                        }
-                    ],
-                    "Flags": 0,
-                    "Name": "DragonTheSoulEaterSK",
-                    "Pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "Rot": {
-                        "w": 0.7071068286895752,
-                        "x": -0.7071067690849304,
-                        "y": -2.390667930285417e-07,
-                        "z": 2.3906682145025115e-07
-                    },
-                    "Scale": {
-                        "x": 0.0024999999441206455,
-                        "y": 0.0024999999441206455,
-                        "z": 0.0024999999441206455
-                    }
-                },
                 {
                     "Childs": [
                         {
@@ -3892,6 +3817,86 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Skeletal Mesh",
+                            "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsChild": {
+                                    "Name": "IsChild",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsRoot": {
+                                    "Name": "IsRoot",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Material": {
+                                    "Name": "Material",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DragonTheSoulEater\\DragonTheSoulEater.bmat"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "MaterialsNames": {
+                                    "Name": "MaterialsNames",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\DragonTheSoulEater\\DragonTheSoulEater.bmat"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\DragonTheSoulEater\\DragonTheSoulEaterSK"
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "DragonTheSoulEaterSK",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 0.7071068286895752,
+                        "x": -0.7071067690849304,
+                        "y": -2.390667930285417e-07,
+                        "z": 2.3906682145025115e-07
+                    },
+                    "Scale": {
+                        "x": 0.0024999999441206455,
+                        "y": 0.0024999999441206455,
+                        "z": 0.0024999999441206455
+                    }
                 }
             ],
             "Components": [
@@ -3949,6 +3954,11 @@
                             "Name": "Brioche Animation",
                             "Type": "Brioche Animation",
                             "Value": -859045888
+                        },
+                        "Damage": {
+                            "Name": "Damage",
+                            "Type": "int",
+                            "Value": 20
                         },
                         "Die Animation": {
                             "Name": "Die Animation",
@@ -6175,6 +6185,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheTerrorBringer\\AttackMouthAnim.FBX"
                         },
+                        "Damage": {
+                            "Name": "Damage",
+                            "Type": "int",
+                            "Value": 20
+                        },
                         "Die Animation": {
                             "Name": "Die Animation",
                             "Type": "std::string",
@@ -6192,8 +6207,8 @@
                         },
                         "Health": {
                             "Name": "Health",
-                            "Type": "float",
-                            "Value": -431602080.0
+                            "Type": "int",
+                            "Value": 80
                         },
                         "Idle Animation": {
                             "Name": "Idle Animation",
@@ -7127,176 +7142,6 @@
                         "x": -16.778728485107422,
                         "y": -2.742501735687256,
                         "z": 8.526312828063965
-                    },
-                    "Rot": {
-                        "w": 1.0,
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "Scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    }
-                },
-                {
-                    "Childs": [
-                        {
-                            "Childs": [],
-                            "Components": [
-                                {
-                                    "Type": "Mesh",
-                                    "Values": {
-                                        "Cast Shadows": {
-                                            "Name": "Cast Shadows",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "IsActive": {
-                                            "Name": "IsActive",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "IsChild": {
-                                            "Name": "IsChild",
-                                            "Type": "bool",
-                                            "Value": false
-                                        },
-                                        "IsRoot": {
-                                            "Name": "IsRoot",
-                                            "Type": "bool",
-                                            "Value": false
-                                        },
-                                        "Material": {
-                                            "Name": "Material",
-                                            "Type": "ArraySequential",
-                                            "Value": [
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
-                                                }
-                                            ],
-                                            "Wrapped type": "std::string"
-                                        },
-                                        "MaterialsNames": {
-                                            "Name": "MaterialsNames",
-                                            "Type": "ArraySequential",
-                                            "Value": [
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
-                                                }
-                                            ],
-                                            "Wrapped type": "std::string"
-                                        },
-                                        "Model": {
-                                            "Name": "Model",
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\cube.obj"
-                                        }
-                                    }
-                                }
-                            ],
-                            "Flags": 1,
-                            "Name": "Cube",
-                            "Pos": {
-                                "x": 0.0,
-                                "y": -0.20000000298023224,
-                                "z": 0.0
-                            },
-                            "Rot": {
-                                "w": 1.0,
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0
-                            },
-                            "Scale": {
-                                "x": 1.0,
-                                "y": 0.05000000074505806,
-                                "z": 1.0
-                            }
-                        }
-                    ],
-                    "Components": [
-                        {
-                            "Type": "Box Collider",
-                            "Values": {
-                                "Activate": {
-                                    "Name": "Activate",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "Box Half Extent": {
-                                    "Name": "Box Half Extent",
-                                    "Type": "Vec3",
-                                    "Value": [
-                                        0.5,
-                                        0.20000000298023224,
-                                        0.5
-                                    ]
-                                },
-                                "Filter": {
-                                    "Name": "Filter",
-                                    "Type": "FilterRaycast",
-                                    "Value": 1
-                                },
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "Local positon": {
-                                    "Name": "Local positon",
-                                    "Type": "Vec3",
-                                    "Value": [
-                                        0.0,
-                                        0.0,
-                                        0.0
-                                    ]
-                                },
-                                "Local rotation": {
-                                    "Name": "Local rotation",
-                                    "Type": "Vec3",
-                                    "Value": [
-                                        0.0,
-                                        0.0,
-                                        0.0
-                                    ]
-                                },
-                                "S/D Frict - Restitut": {
-                                    "Name": "S/D Frict - Restitut",
-                                    "Type": "Vec3",
-                                    "Value": [
-                                        1.5,
-                                        1.5,
-                                        0.0
-                                    ]
-                                },
-                                "Trigger": {
-                                    "Name": "Trigger",
-                                    "Type": "bool",
-                                    "Value": true
-                                }
-                            }
-                        },
-                        {
-                            "Type": "Switch",
-                            "Values": {
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                }
-                            }
-                        }
-                    ],
-                    "Flags": 1,
-                    "Name": "Switch",
-                    "Pos": {
-                        "x": -15.810629844665527,
-                        "y": 5.217063903808594,
-                        "z": -1.4679462909698486
                     },
                     "Rot": {
                         "w": 1.0,
@@ -12671,7 +12516,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        118.29178619384766
+                                                        -155.27711486816406
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {
@@ -13210,6 +13055,440 @@
                         "x": 0.0,
                         "y": 0.0,
                         "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        100.0,
+                                        0.5,
+                                        50.0
+                                    ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Local positon": {
+                                    "Name": "Local positon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Local rotation": {
+                                    "Name": "Local rotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "S/D Frict - Restitut": {
+                                    "Name": "S/D Frict - Restitut",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Deadzone",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 1,
+                    "Name": "DeadZone",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": -15.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [
+                        {
+                            "Childs": [],
+                            "Components": [
+                                {
+                                    "Type": "Mesh",
+                                    "Values": {
+                                        "Cast Shadows": {
+                                            "Name": "Cast Shadows",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsActive": {
+                                            "Name": "IsActive",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsChild": {
+                                            "Name": "IsChild",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "IsRoot": {
+                                            "Name": "IsRoot",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "Material": {
+                                            "Name": "Material",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "MaterialsNames": {
+                                            "Name": "MaterialsNames",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "Model": {
+                                            "Name": "Model",
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\cube.obj"
+                                        }
+                                    }
+                                }
+                            ],
+                            "Flags": 1,
+                            "Name": "Cube",
+                            "Pos": {
+                                "x": 0.0,
+                                "y": -0.20000000298023224,
+                                "z": 0.0
+                            },
+                            "Rot": {
+                                "w": 1.0,
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Scale": {
+                                "x": 1.0,
+                                "y": 0.05000000074505806,
+                                "z": 1.0
+                            }
+                        }
+                    ],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.5,
+                                        0.20000000298023224,
+                                        0.5
+                                    ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Local positon": {
+                                    "Name": "Local positon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Local rotation": {
+                                    "Name": "Local rotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "S/D Frict - Restitut": {
+                                    "Name": "S/D Frict - Restitut",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Switch",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 1,
+                    "Name": "Switch #1",
+                    "Pos": {
+                        "x": -15.991774559020996,
+                        "y": 5.194174289703369,
+                        "z": -0.313275009393692
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "Childs": [
+                        {
+                            "Childs": [],
+                            "Components": [
+                                {
+                                    "Type": "Mesh",
+                                    "Values": {
+                                        "Cast Shadows": {
+                                            "Name": "Cast Shadows",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsActive": {
+                                            "Name": "IsActive",
+                                            "Type": "bool",
+                                            "Value": true
+                                        },
+                                        "IsChild": {
+                                            "Name": "IsChild",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "IsRoot": {
+                                            "Name": "IsRoot",
+                                            "Type": "bool",
+                                            "Value": false
+                                        },
+                                        "Material": {
+                                            "Name": "Material",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "MaterialsNames": {
+                                            "Name": "MaterialsNames",
+                                            "Type": "ArraySequential",
+                                            "Value": [
+                                                {
+                                                    "Type": "std::string",
+                                                    "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
+                                                }
+                                            ],
+                                            "Wrapped type": "std::string"
+                                        },
+                                        "Model": {
+                                            "Name": "Model",
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\cube.obj"
+                                        }
+                                    }
+                                }
+                            ],
+                            "Flags": 1,
+                            "Name": "Cube",
+                            "Pos": {
+                                "x": 0.0,
+                                "y": -0.20000000298023224,
+                                "z": 0.0
+                            },
+                            "Rot": {
+                                "w": 1.0,
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "Scale": {
+                                "x": 1.0,
+                                "y": 0.05000000074505806,
+                                "z": 1.0
+                            }
+                        }
+                    ],
+                    "Components": [
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.5,
+                                        0.20000000298023224,
+                                        0.5
+                                    ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Local positon": {
+                                    "Name": "Local positon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Local rotation": {
+                                    "Name": "Local rotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "S/D Frict - Restitut": {
+                                    "Name": "S/D Frict - Restitut",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Switch",
+                            "Values": {
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 1,
+                    "Name": "Switch #2",
+                    "Pos": {
+                        "x": -15.991270065307617,
+                        "y": 5.230396270751953,
+                        "z": -5.845963478088379
                     },
                     "Rot": {
                         "w": 1.0,
@@ -15014,6 +15293,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\BiteAnim.FBX"
                         },
+                        "Damage": {
+                            "Name": "Damage",
+                            "Type": "int",
+                            "Value": 5
+                        },
                         "Die Animation": {
                             "Name": "Die Animation",
                             "Type": "std::string",
@@ -16594,6 +16878,11 @@
                             "Name": "Bite Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\BiteAnim.FBX"
+                        },
+                        "Damage": {
+                            "Name": "Damage",
+                            "Type": "int",
+                            "Value": 5
                         },
                         "Die Animation": {
                             "Name": "Die Animation",
@@ -18176,6 +18465,11 @@
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\BiteAnim.FBX"
                         },
+                        "Damage": {
+                            "Name": "Damage",
+                            "Type": "int",
+                            "Value": 5
+                        },
                         "Die Animation": {
                             "Name": "Die Animation",
                             "Type": "std::string",
@@ -18231,176 +18525,6 @@
                 "x": -4.8053419021698573e-08,
                 "y": -0.949687123298645,
                 "z": 4.8053419021698573e-08
-            },
-            "Scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        {
-            "Childs": [
-                {
-                    "Childs": [],
-                    "Components": [
-                        {
-                            "Type": "Mesh",
-                            "Values": {
-                                "Cast Shadows": {
-                                    "Name": "Cast Shadows",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsChild": {
-                                    "Name": "IsChild",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "IsRoot": {
-                                    "Name": "IsRoot",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Material": {
-                                    "Name": "Material",
-                                    "Type": "ArraySequential",
-                                    "Value": [
-                                        {
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
-                                        }
-                                    ],
-                                    "Wrapped type": "std::string"
-                                },
-                                "MaterialsNames": {
-                                    "Name": "MaterialsNames",
-                                    "Type": "ArraySequential",
-                                    "Value": [
-                                        {
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\Pressure Plate\\Pressure Plate.bmat"
-                                        }
-                                    ],
-                                    "Wrapped type": "std::string"
-                                },
-                                "Model": {
-                                    "Name": "Model",
-                                    "Type": "std::string",
-                                    "Value": ".\\Resources\\Models\\cube.obj"
-                                }
-                            }
-                        }
-                    ],
-                    "Flags": 0,
-                    "Name": "Cube",
-                    "Pos": {
-                        "x": 0.0,
-                        "y": -0.6687641143798828,
-                        "z": 0.0
-                    },
-                    "Rot": {
-                        "w": 1.0,
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "Scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    }
-                }
-            ],
-            "Components": [
-                {
-                    "Type": "Box Collider",
-                    "Values": {
-                        "Activate": {
-                            "Name": "Activate",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Box Half Extent": {
-                            "Name": "Box Half Extent",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.5,
-                                0.5,
-                                0.5
-                            ]
-                        },
-                        "Filter": {
-                            "Name": "Filter",
-                            "Type": "FilterRaycast",
-                            "Value": 1
-                        },
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Local positon": {
-                            "Name": "Local positon",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
-                        },
-                        "Local rotation": {
-                            "Name": "Local rotation",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
-                        },
-                        "S/D Frict - Restitut": {
-                            "Name": "S/D Frict - Restitut",
-                            "Type": "Vec3",
-                            "Value": [
-                                1.5,
-                                1.5,
-                                0.0
-                            ]
-                        },
-                        "Trigger": {
-                            "Name": "Trigger",
-                            "Type": "bool",
-                            "Value": true
-                        }
-                    }
-                },
-                {
-                    "Type": "Switch",
-                    "Values": {
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        }
-                    }
-                }
-            ],
-            "Flags": 0,
-            "Name": "Switch2",
-            "Pos": {
-                "x": -17.386096954345703,
-                "y": 5.2170000076293945,
-                "z": -6.610836029052734
-            },
-            "Rot": {
-                "w": 1.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
             },
             "Scale": {
                 "x": 1.0,

@@ -18,7 +18,6 @@ RTTR_PLUGIN_REGISTRATION
 		)
 
 		.constructor()
-		.property("Health", &Minion::m_health)
 		.property("Idle Animation", &Minion::m_idleAnimation)
 		.property("Run Animation", &Minion::m_runAnimation)
 		.property("Bite Animation", &Minion::m_biteAnimation)
@@ -29,7 +28,7 @@ RTTR_PLUGIN_REGISTRATION
 }
 
 
-Minion::Minion() : ComponentUpdatable()
+Minion::Minion() : ComponentBase(), AEntity()
 {
 }
 
@@ -39,7 +38,9 @@ Minion::~Minion()
 
 void Minion::OnCopy(IComponent* copyTo) const
 {
-	ComponentUpdatable::OnCopy(copyTo);
+	ComponentBase::OnCopy(copyTo);
+	AEntity::OnCopy(copyTo);
+
 	Minion* copy{ dynamic_cast<Minion*>(copyTo) };
 	copy->m_health = m_health;
 	copy->m_idleAnimation = m_idleAnimation;
@@ -59,17 +60,20 @@ void Minion::StartCopy(IComponent*& copyTo) const
 bool Minion::OnStart()
 {
 	AnimGraph();
-	return ComponentUpdatable::OnStart();
+	return 	ComponentBase::OnStart() && AEntity::OnStart();
 }
 
 void Minion::OnDestroy()
 {
-	ComponentUpdatable::OnDestroy();
+	ComponentBase::OnDestroy();
+	AEntity::OnDestroy();
 }
 
 void Minion::OnReset()
 {
-	ComponentUpdatable::OnReset();
+	ComponentBase::OnReset();
+	AEntity::OnReset();
+
 	m_health = 0.f;
 	m_idleAnimation = "";
 	m_runAnimation = "";
@@ -81,7 +85,8 @@ void Minion::OnReset()
 
 void Minion::OnInit()
 {
-	ComponentUpdatable::OnInit();
+	ComponentBase::OnInit();
+	AEntity::OnInit();
 }
 
 void Minion::OnUpdate(float deltaTime)

@@ -19,7 +19,6 @@ RTTR_PLUGIN_REGISTRATION
 		)
 
 		.constructor()
-		.property("Health", &Salt::m_health)
 		.property("Fly Idle Animation", &Salt::m_flyIdleAnimation)
 		.property("Landing Animation", &Salt::m_landingAnimation)
 		.property("Idle Animation", &Salt::m_idleAnimation)
@@ -32,7 +31,7 @@ RTTR_PLUGIN_REGISTRATION
 }
 
 
-Salt::Salt() : ComponentUpdatable()
+Salt::Salt() : ComponentBase(), AEntity()
 {
 }
 
@@ -42,7 +41,8 @@ Salt::~Salt()
 
 void Salt::OnCopy(IComponent* copyTo) const
 {
-	ComponentUpdatable::OnCopy(copyTo);
+	ComponentBase::OnCopy(copyTo);
+	AEntity::OnCopy(copyTo);
 	Salt* copy{ dynamic_cast<Salt*>(copyTo) };
 }
 
@@ -55,17 +55,20 @@ void Salt::StartCopy(IComponent*& copyTo) const
 bool Salt::OnStart()
 {
 	AnimGraph();
-	return ComponentUpdatable::OnStart();
+	return ComponentBase::OnStart() && AEntity::OnStart();
 }
 
 void Salt::OnDestroy()
 {
-	ComponentUpdatable::OnDestroy();
+	ComponentBase::OnDestroy();
+	AEntity::OnDestroy();
 }
 
 void Salt::OnReset()
 {
-	ComponentUpdatable::OnReset();
+	ComponentBase::OnReset();
+	AEntity::OnReset();
+
 	m_health = 0.f;
 	m_idleAnimation = "";
 	m_runAnimation = "";
@@ -77,7 +80,8 @@ void Salt::OnReset()
 
 void Salt::OnInit()
 {
-	ComponentUpdatable::OnInit();
+	ComponentBase::OnInit();
+	AEntity::OnInit();
 }
 
 void Salt::OnUpdate(float deltaTime)

@@ -1,39 +1,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ComponentUpdatable.h"
-#include "AEntity.h"
+#include "ComponentBase.h"
+#include "BoxCollider.h"
 
-/**
- * Minion animation
- */
-enum class EMinionAnimation : unsigned short
-{
-	IDLE = 0,
-	RUN,
-	BITE,
-	GETHIT,
-	DIE
-};
-
-/**
- * Little enemy
- */
-BAKERS_GAME_CLASS Minion : public Core::Datastructure::ComponentBase, public virtual AEntity
+BAKERS_GAME_CLASS Deadzone : public Core::Datastructure::ComponentBase
 {
 private:
-	std::string m_idleAnimation;
-	std::string m_runAnimation;
-	std::string m_biteAnimation;
-	std::string m_getHitAnimation;
-	std::string m_dieAnimation;
-	EMinionAnimation m_minionAnimation{ EMinionAnimation::IDLE };
+	Core::Physics::BoxCollider* m_collider = nullptr;
 
 protected:
 	/**
 	 * Init event
 	 */
 	virtual void OnInit() override;
+
 
 	/**
 	 * Copies the data of the component into the given component.
@@ -62,25 +43,22 @@ protected:
 	 */
 	virtual void OnReset() override;
 
-	/**
-	 * Call Update function
-	 * @param deltaTime: Time elapsed between two frames
-	 */
-	virtual void OnUpdate(float deltaTime) override;
-
 public:
 	/**
 	 * Default Constructor
 	 */
-	Minion();
+	Deadzone();
 
 	/**
 	 * Destructor
 	 */
-	~Minion();
+	~Deadzone();
 
 private:
-	void AnimGraph();
+	void Activate(Core::Physics::Collider* collider);
 
-	REGISTER_CLASS(ComponentBase, AEntity)
+	void Deactivate(Core::Physics::Collider* collider);
+
+	REGISTER_CLASS(ComponentBase)
 };
+

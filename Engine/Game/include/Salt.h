@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
+#include "AEntity.h"
 
 /**
  * Salt animation
@@ -21,10 +22,9 @@ enum class ESaltAnimation : unsigned short
  * Your enemy.
  * Too much salt affects the balance of the bread.
  */
-BAKERS_GAME_CLASS Salt : public Core::Datastructure::ComponentUpdatable
+BAKERS_GAME_CLASS Salt : public Core::Datastructure::ComponentBase, public virtual AEntity
 {
 private:
-	float m_health;
 	std::string m_flyIdleAnimation;
 	std::string m_idleAnimation;
 	std::string m_landingAnimation;
@@ -87,6 +87,6 @@ public:
 private:
 	void AnimGraph();
 
-	REGISTER_CLASS(ComponentUpdatable)
+	REGISTER_CLASS(ComponentBase, AEntity)
 };
 

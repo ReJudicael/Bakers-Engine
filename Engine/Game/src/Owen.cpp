@@ -20,7 +20,6 @@ RTTR_PLUGIN_REGISTRATION
 		)
 
 		.constructor()
-		.property("Health", &Owen::m_health)
 		.property("Idle Animation", &Owen::m_idleAnimation)
 		.property("Run Animation", &Owen::m_runAnimation)
 		.property("Punch Animation", &Owen::m_punchAnimation)
@@ -31,7 +30,7 @@ RTTR_PLUGIN_REGISTRATION
 }
 
 
-Owen::Owen() : ComponentUpdatable()
+Owen::Owen() : ComponentBase(), AEntity()
 {
 }
 
@@ -41,7 +40,9 @@ Owen::~Owen()
 
 void Owen::OnCopy(IComponent* copyTo) const
 {
-	ComponentUpdatable::OnCopy(copyTo);
+	ComponentBase::OnCopy(copyTo);
+	AEntity::OnCopy(copyTo);
+
 	Owen* copy{ dynamic_cast<Owen*>(copyTo) };
 	copy->m_health = m_health;
 	copy->m_idleAnimation = m_idleAnimation;
@@ -82,17 +83,19 @@ bool Owen::OnStart()
 			}
 		}
 	}
-	return ComponentUpdatable::OnStart();
+	return ComponentBase::OnStart() && AEntity::OnStart();
 }
 
 void Owen::OnDestroy()
 {
-	ComponentUpdatable::OnDestroy();
+	ComponentBase::OnDestroy();
+	AEntity::OnDestroy();
 }
 
 void Owen::OnReset()
 {
-	ComponentUpdatable::OnReset();
+	ComponentBase::OnReset();
+	AEntity::OnReset();
 	m_health = 0.f;
 	m_idleAnimation = "";
 	m_runAnimation = "";
@@ -104,7 +107,8 @@ void Owen::OnReset()
 
 void Owen::OnInit()
 {
-	ComponentUpdatable::OnInit();
+	ComponentBase::OnInit();
+	AEntity::OnInit();
 }
 
 void Owen::OnUpdate(float deltaTime)

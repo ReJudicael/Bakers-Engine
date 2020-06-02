@@ -3,8 +3,7 @@
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
 #include "RigidBody.h"
-
-
+#include "AEntity.h"
 
 namespace Core
 {
@@ -18,6 +17,7 @@ namespace Core
 		class AnimationNode;
 	}
 }
+
 /**
  * Owen animation
  */
@@ -33,11 +33,10 @@ enum class EOwenAnimation : unsigned short
 /**
  * The only knight in the region.
  */
-BAKERS_GAME_CLASS Owen : public Core::Datastructure::ComponentUpdatable
+BAKERS_GAME_CLASS Owen : public Core::Datastructure::ComponentBase, public virtual AEntity
 {
 private:
 	Core::Physics::RigidBody* m_rigidbody;
-	int m_health{ 100 };
 
 	std::string m_idleAnimation;
 	std::string m_runAnimation;
@@ -104,6 +103,6 @@ public:
 private:
 	void AnimGraph();
 
-	REGISTER_CLASS(ComponentUpdatable)
+	REGISTER_CLASS(ComponentBase, AEntity)
 };
 

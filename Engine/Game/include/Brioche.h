@@ -1,7 +1,6 @@
 #pragma once
 
-#include "CoreMinimal.h"
-#include "ComponentUpdatable.h"
+#include "AEntity.h"
 #include "PathFollowingComponent.h"
 #include "RigidBody.h"
 
@@ -28,11 +27,10 @@ enum class EBriocheBehavior : unsigned short
  * Your faithful companion.
  * He's not cute but he loves you to the point of sacrificing himself.
  */
-BAKERS_GAME_CLASS Brioche : public Core::Datastructure::ComponentUpdatable
+BAKERS_GAME_CLASS Brioche : public Core::Datastructure::ComponentBase, public virtual AEntity
 {
 private:
 	Core::Physics::RigidBody* m_rigidbody;
-	int m_health{ 100 };
 
 	std::string m_idleAnimation;
 	std::string m_runAnimation;
@@ -115,5 +113,5 @@ public:
 private:
 	void AnimGraph();
 
-	REGISTER_CLASS(ComponentUpdatable)
+	REGISTER_CLASS(ComponentBase, AEntity)
 };

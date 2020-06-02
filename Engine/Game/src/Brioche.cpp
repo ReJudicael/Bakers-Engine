@@ -18,7 +18,6 @@ RTTR_PLUGIN_REGISTRATION
 		)
 
 		.constructor()
-		.property("Health", &Brioche::m_health)
 		.property("Idle Animation", &Brioche::m_idleAnimation)
 		.property("Run Animation", &Brioche::m_runAnimation)
 		.property("Bite Animation", &Brioche::m_biteAnimation)
@@ -29,7 +28,7 @@ RTTR_PLUGIN_REGISTRATION
 }
 
 
-Brioche::Brioche() : ComponentUpdatable()
+Brioche::Brioche() : ComponentBase(), AEntity()
 {
 }
 
@@ -39,7 +38,8 @@ Brioche::~Brioche()
 
 void Brioche::OnCopy(IComponent* copyTo) const
 {
-	ComponentUpdatable::OnCopy(copyTo);
+	ComponentBase::OnCopy(copyTo);
+	AEntity::OnCopy(copyTo);
 	Brioche* copy{ dynamic_cast<Brioche*>(copyTo) };
 	copy->m_health = m_health;
 	copy->m_idleAnimation = m_idleAnimation;
@@ -73,17 +73,20 @@ bool Brioche::OnStart()
 	if (rigidBodies.size() > 0)
 		m_rigidbody = *rigidBodies.begin();
 
-	return ComponentUpdatable::OnStart();
+	return ComponentBase::OnStart() && AEntity::OnStart();
 }
 
 void Brioche::OnDestroy()
 {
-	ComponentUpdatable::OnDestroy();
+	ComponentBase::OnDestroy();
+	AEntity::OnDestroy();
 }
 
 void Brioche::OnReset()
 {
-	ComponentUpdatable::OnReset();
+	ComponentBase::OnReset();
+	AEntity::OnReset();
+
 	m_health = 0.f;
 	m_idleAnimation = "";
 	m_runAnimation = "";
@@ -99,7 +102,8 @@ void Brioche::OnReset()
 
 void Brioche::OnInit()
 {
-	ComponentUpdatable::OnInit();
+	ComponentBase::OnInit();
+	AEntity::OnInit();
 }
 
 void Brioche::OnUpdate(float deltaTime)
