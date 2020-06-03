@@ -8,6 +8,7 @@
 #include "NavMesh.h"
 
 #include "json.hpp"
+
 using nlohmann::json;
 
 namespace Core
@@ -36,36 +37,30 @@ namespace Core
 		
 		static const char* glsl_version = "#version 400";
 		class RootObject;
+
 		BAKERS_API_CLASS EngineCore
 		{
 		protected:
-			EngineState								m_state {EngineState::NONE};
-			Core::SystemManagement::InputSystem *	m_inputSystem{ nullptr };
-			Core::Audio::AudioSystem*				m_audioSystem{ nullptr };
-			Core::SystemManagement::TaskSystem*		m_task{ nullptr };
-			int m_width{ 0 };
-			int m_height{ 0 };
+			EngineState		m_state {EngineState::NONE};
+			GLFWwindow*		m_window{ nullptr };
+			int				m_width{ 0 };
+			int				m_height{ 0 };
+
+			double			m_time{ 0 };
+			std::string		m_currScene{ ".\\Resources\\Scenes\\Default.bakers" };
 			std::list<Core::Renderer::Framebuffer*>	m_fbo;
-			GLFWwindow* m_window;
-			Resources::Loader::ResourcesManager*	m_manager;
-
-			Core::Physics::PhysicsScene*			m_physicsScene;
-
-			Core::Navigation::NavMeshBuilder*		m_navMesh;
-
-			std::string								m_currScene{ ".\\Resources\\Scenes\\Default.bakers" };
-
-			double									m_time{ 0 };
 
 			TRACY_GL_IMAGE
 
-			double									GetDeltaTime();
-		public:
-			EngineCore();
-			EngineCore(const int width, const int height);
-			virtual ~EngineCore();
+			Core::SystemManagement::InputSystem *	m_inputSystem{ nullptr };
+			Core::Audio::AudioSystem*				m_audioSystem{ nullptr };
+			Core::SystemManagement::TaskSystem*		m_task{ nullptr };
+			Resources::Loader::ResourcesManager*	m_manager{ nullptr };
+			Core::Physics::PhysicsScene*			m_physicsScene{ nullptr };
+			Core::Navigation::NavMeshBuilder*		m_navMesh{ nullptr };
 
-			Core::Datastructure::RootObject* m_root;
+		public:
+			Core::Datastructure::RootObject* m_root{ nullptr };
 
 			Core::SystemManagement::EventSystem<EKey> OnPressKey;
 			Core::SystemManagement::EventSystem<EKey> OnReleaseKey;
@@ -74,18 +69,32 @@ namespace Core
 			Core::SystemManagement::EventSystem<double> OnScrollYAxis;
 			Core::SystemManagement::EventSystem<int, int> OnResizeWindow;
 
-			inline Resources::Loader::ResourcesManager* GetResourcesManager()
-			{
-				return m_manager;
-			}
+		protected:
+			double GetDeltaTime();
 
-			inline Core::Physics::PhysicsScene* GetPhysicsScene()
-			{
-				return m_physicsScene;
-			}
+		public:
+			/**
+			 * Constructor
+			 */
+			EngineCore();
 
-			int				Init();
-			int				Init(const int width, const int height);
+			/**
+			 * Value constructor
+			 * @param width
+			 * @param height
+			 */
+			EngineCore(const int width, const int height);
+
+			/**
+			 * Destructor
+			 */
+			virtual ~EngineCore();
+
+		public:
+
+
+			int	Init();
+			int	Init(const int width, const int height);
 			
 			/**
 			 * Create object with mesh and add it to hierarchy
@@ -97,7 +106,7 @@ namespace Core
 			 * @param parent: Parent of the mesh object (default is root)
 			 * @return Pointer to the created object
 			 */
-			Object* 	AddMesh(const char* name, 
+			Object* AddMesh(const char* name, 
 								const char* model, 
 								const char* shader, 
 								const char* tex, 
@@ -110,27 +119,27 @@ namespace Core
 			 */
 			void CreateSkybox(bool cube = true);
 
-			virtual void	SetSizeWindow(const int width, const int height) = 0;
+			virtual void		SetSizeWindow(const int width, const int height) = 0;
+			virtual void		StartFrame();
+			virtual void		Render();
+			virtual void		EndFrame();
 
-			virtual void	StartFrame();
-			virtual void	Render();
-			virtual void	EndFrame();
+			void				Update(double deltaTime); 
 
-			void			Update(double deltaTime); 
+			Object*				SearchObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& dir);
+			bool				LoadScene(const std::string& scene);
+			const std::string&	GetSceneName() const { return m_currScene; }
 
-			Object* SearchObjectInScene(const Core::Maths::Vec3& origin, const Core::Maths::Vec3& dir);
-			bool			LoadScene(const std::string& scene);
-			const std::string& GetSceneName() const { return m_currScene; }
 		protected:
-			virtual int		OnInit(const int width, const int height);
-			virtual void	OnLoop();
-			virtual void	OnStartFrame();
-			virtual void	OnUpdate(double deltaTime);
-			bool			OnLoadScene();
-			void			LoadSceneFromJson(json& scene);
-		public:
+			virtual int			OnInit(const int width, const int height);
+			virtual void		OnLoop();
+			virtual void		OnStartFrame();
+			virtual void		OnUpdate(double deltaTime);
+			bool				OnLoadScene();
+			void				LoadSceneFromJson(json& scene);
 
-			GLFWwindow* GetWindow();
+		public:
+			GLFWwindow*			GetWindow();
 
 			virtual void InitMesh(Core::Renderer::Mesh* mesh) {};
 
@@ -145,8 +154,11 @@ namespace Core
 
 			virtual std::shared_ptr<Resources::Object3DGraph> LoadObject(const char* fileName, const bool graphInMulti = false);
 
-			Core::SystemManagement::InputSystem* GetInputSystem();
-			Core::Audio::AudioSystem* GetAudioSystem();
+			Resources::Loader::ResourcesManager*	GetResourcesManager();
+			Core::Physics::PhysicsScene*			GetPhysicsScene();
+			Core::SystemManagement::InputSystem*	GetInputSystem();
+			Core::Audio::AudioSystem*				GetAudioSystem();
+
 			int								GetFBONum(Core::Renderer::FBOType t);
 			Core::Renderer::Framebuffer*	GetFBO(int num, Core::Renderer::FBOType t = Core::Renderer::FBOType::CUSTOM);
 			Core::Renderer::Framebuffer*	CreateFBO();

@@ -25,6 +25,11 @@ namespace Core::Renderer
 		Framebuffer(int width = 1280, int height = 800, FBOType t = FBOType::CUSTOM) noexcept;
 		~Framebuffer() noexcept;
 
+		/**
+		 * Resize framebuffer
+		 * @param width: New width;
+		 * @param height: New height;
+		 */
 		void	Resize(int width, int height) noexcept;
 	};
 }

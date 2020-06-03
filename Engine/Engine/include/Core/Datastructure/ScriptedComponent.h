@@ -30,6 +30,10 @@ namespace Core::Datastructure
 		 * @param copyTo: Store the copy
 		 */
 		virtual void	StartCopy(IComponent*& copyTo) const override;
+
+		/**
+		 * Reset event
+		 */
 		virtual void	OnReset() override;
 	public:
 		/**

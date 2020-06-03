@@ -16,7 +16,6 @@ namespace Core::Animation
 			aiNodeAnim* nodeAnim = anim->mChannels[i];
 
 			std::shared_ptr<BoneAnimation> bone = std::make_shared<BoneAnimation>();
-			//BoneAnimation bone;
 
 			for (unsigned j{ 0 }; j < nodeAnim->mNumPositionKeys; j++)
 			{

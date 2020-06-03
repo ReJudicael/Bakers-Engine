@@ -37,8 +37,6 @@ namespace Core::Datastructure
 	bool TriggeredEvent::OnStart()
 	{
 		ZoneScoped
-		//m_functionsAssigned = false;
-		//m_autoDestroy = true;
 		return ComponentBase::OnStart() && IUpdatable::OnStart();
 	}
 
@@ -77,8 +75,6 @@ namespace Core::Datastructure
 			{
 				m_triggerEvent.Invoke();
 				m_triggerEvent.RemoveAllListeners();
-				/*if (m_autoDestroy)
-					GetParent()->EraseComponent(this);*/
 			}
 		}
 	}

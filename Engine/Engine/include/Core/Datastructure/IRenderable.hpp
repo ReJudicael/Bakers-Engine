@@ -28,6 +28,7 @@ namespace Core::Datastructure
 		virtual void OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr) = 0;
 		virtual void OnCopy(IComponent* copyTo) const override;
 		virtual void OnReset() override;
+
 	public:
 		/**
 		 * Destructor of the renderable interface
@@ -38,6 +39,12 @@ namespace Core::Datastructure
 		GLuint m_texture = 0;
 		GLuint m_VAO = 0;
 
+		/**
+		 * Draw renderable
+		 * @param view: View matrix
+		 * @param proj: Projection matrix
+		 * @param givenShader: Shader to use instead of material shader if provided
+		 */
 		void Draw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr);
 
 		REGISTER_CLASS(IComponent)

@@ -21,6 +21,5 @@ namespace Resources
 	struct Texture
 	{
 		GLuint texture;
-		//std::string name;
 	};
 }

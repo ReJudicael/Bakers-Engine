@@ -18,7 +18,6 @@ namespace physx
 	class PxScene;
 	class PxShape;
 	class PxErrorCallback;
-	//class PxRigidStatic;
 	struct PxRaycastHit;
 	struct PxOverlapHit;
 	class PxGeometry;

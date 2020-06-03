@@ -14,26 +14,22 @@ namespace Resources
 	using unorderedmapBonesIndex = std::unordered_map<std::string, Animation::BoneData>;
 }
 
-
 namespace Core
 {
 	namespace Animation
 	{
-
 		struct Bone
 		{
 
 		public:
-			Core::Datastructure::Transform			baseTransform;
-			Core::Datastructure::Transform			LocalTRS;
-
-			Core::Maths::Mat4						offsetBone;
-
-			std::string								boneName;
-			unsigned int							boneIndex;
-
 			bool									activeBone{ false };
 
+			unsigned int							boneIndex{ 0 };
+			std::string								boneName;
+
+			Core::Maths::Mat4						offsetBone;
+			Core::Datastructure::Transform			baseTransform;
+			Core::Datastructure::Transform			localTRS;
 			std::vector<std::shared_ptr<Bone>>		child;
 		
 		public:

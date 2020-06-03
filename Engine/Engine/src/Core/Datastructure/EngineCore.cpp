@@ -173,12 +173,20 @@ namespace Core::Datastructure
 		if (m_manager->GetCountScene(fileName))
 		{
 			std::shared_ptr<Resources::Object3DGraph> object3D{ m_manager->GetScene(fileName) };
-			/*m_task->AddTask(std::bind(&Core::Datastructure::EngineCore::SaveObject3DInfo, this, object3D));
-			m_task->AddTask(std::bind(&Core::Datastructure::EngineCore::SaveObject3DInfo, this, object3D));*/
 			SaveObject3DInfo(fileName, info);
 			return object3D;
 		}
 		return nullptr;
+	}
+
+	Resources::Loader::ResourcesManager* EngineCore::GetResourcesManager()
+	{
+		return m_manager;
+	}
+
+	Core::Physics::PhysicsScene* EngineCore::GetPhysicsScene()
+	{
+		return m_physicsScene;
 	}
 
 	int EngineCore::OnInit(int width, int height)

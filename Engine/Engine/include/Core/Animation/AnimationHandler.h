@@ -1,9 +1,10 @@
 #pragma once
-#include "CoreMinimal.h"
 
+#include <atomic>
+
+#include "CoreMinimal.h"
 #include "Bone.h"
 #include "Animation.h"
-#include <atomic>
 
 namespace Core::Animation
 {
@@ -13,13 +14,16 @@ namespace Core::Animation
 	{
 	private:
 		float m_currentTime;
-		std::atomic<bool> isFinish{ false };
 
 	public:
-		AnimationNode*					m_currentAnimationNode{ nullptr };
-		std::function<bool()>			m_conditionTransition;
-		AnimationNode*					m_nextAnimationNode;
 		float speed{ 10.f };
+
+		AnimationNode* m_currentAnimationNode{ nullptr };
+		AnimationNode* m_nextAnimationNode{ nullptr };
+		std::function<bool()> m_conditionTransition;
+
+	private:
+		std::atomic<bool> isFinish{ false };
 
 	public:
 		/**
@@ -33,73 +37,72 @@ namespace Core::Animation
 		TransitionNode(AnimationNode* currentAnimationNode,
 			AnimationNode* nextAnimationNode, float speedTrans,
 			std::function<bool()> conditionTransition = nullptr);
+
 		/**
-		 * init the transition
-		 * @param currentAnimationNode: the AnimationNode who have the transition
-		 * @param nextAnimationNode: the AnimationNode with what the current transition with
+		 * Init the transition
+		 * @param currentAnimationNode: AnimationNode who have the transition
+		 * @param nextAnimationNode: AnimationNode with what the current transition with
 		 * and who replace the current
-		 * @param conditionTransition: the condition for the transition
+		 * @param conditionTransition: Condition for the transition
 		 */
 		void InitTransition(AnimationNode* currentAnimationNode, 
 							AnimationNode* nextAnimationNode, 
 							std::function<bool()> conditionTransition = nullptr);
 
 		/**
-		 * Blend the 2 animation of the transition
-		 * @param bone: the current bone
-		 * @return the blended matrix
+		 * Blend the 2 animations of the transition
+		 * @param bone: Current bone
+		 * @return The blended matrix
 		 */
 		Core::Maths::Mat4 TransitionAnimation(const std::shared_ptr<Bone>& bone);
 		
 		/**
 		 * Check if the bone can be blend
-		 * @param bone: the current bone
-		 * @return the blended matrix
+		 * @param bone: The current bone
+		 * @return The blended matrix
 		 */
 		Core::Maths::Mat4 UpdateBoneTransition(const std::shared_ptr<Bone>& bone);
 
 		/**
-		 * update the transition time
-		 * @param deltaTime: the current deltaTime
+		 * Update the transition time
+		 * @param deltaTime: Current deltaTime
 		 */
 		void UpdateTimer(float deltaTime);
 
 		/**
-		 * @return true if the transition is finish
+		 * @return True if the transition is finish, false otherwise
 		 */
-		inline bool IsTransitionFinish()
-		{
-			return isFinish;
-		}
+		bool IsTransitionFinish();
 
 		/**
-		 * reset the transition
+		 * Reset the transition
 		 */
 		void Reset();
 
+		/**
+		 * Destroy a node
+		 */
 		void Destroy(std::vector<AnimationNode*>& nodeToDestroy);
 	};
 
-
-
 	BAKERS_API_CLASS AnimationNode
 	{
+	public:
+		bool loop{ true };
+		float speed{ 20.f };
 
 	private:
+		unsigned int indexTransition;
 		std::atomic<float> m_currentTime;
 		std::atomic<float> m_lastTime;
 		std::atomic<bool> m_inTransition{ false };
-		unsigned int indexTransition;
 
 	public:
-		bool Loop{ true };
-		std::atomic<bool>				reset{ false };
-		float							speed{ 20.f };
-		std::shared_ptr<Animation>	nodeAnimation{ nullptr };
-		std::vector<TransitionNode*>	transitionsAnimation;
+		std::atomic<bool> reset{ false };
+		std::shared_ptr<Animation> nodeAnimation{ nullptr };
+		std::vector<TransitionNode*> transitionsAnimation;
 
 	public:
-
 		/**
 		 * The default constructor
 		 */
@@ -127,7 +130,6 @@ namespace Core::Animation
 		 * @param finalTransform: the float vector wich is send to the shader
 		 */
 		void UpdateAnimationBone(const std::shared_ptr<Bone>& currentBone, const Core::Maths::Mat4& parent, std::vector<float> & finalTRSfloat);
-		
 
 		/*
 		 * Update the AnimationBone
@@ -143,46 +145,38 @@ namespace Core::Animation
 
 		/*
 		 * The default function use for the conditonFunction in the TransitionNode
-		 * @return true if the Animation is finished
+		 * @return True if the Animation is finished, false otherwise
 		 */
 		bool DefaultConditionAnimationNode();
 
 		/*
 		 * Check if the transition is finished
-		 * @return true if the transition is finished
+		 * @return True if the transition is finished, false otherwise
 		 */
-		bool IsTransitionFinish()
-		{
-			if (m_inTransition && transitionsAnimation.size() > indexTransition)
-				return transitionsAnimation[indexTransition]->IsTransitionFinish();
-			else
-				return false;
-		}
+		bool IsTransitionFinish();
+
 		/**
 		 * check if the current time of the AnimationNode is the max
 		 * of the Animation time
-		 * @return true if the current Time is the same as the last update
+		 * @return True if the current Time is the same as the last update, false otherwise
 		 */
-		inline bool IsTimeIsTheSame()
-		{
-			return { m_currentTime == m_lastTime };
-		}
+		bool IsTimeIsTheSame();
 
 		/**
 		 * Check if the AnimationNode is playing a transition
-		 * @return true if the AnimationNode is playing a transition
+		 * @return True if the AnimationNode is playing a transition, false otherwise
 		 */
-		inline bool IsInTransition()
-		{
-			return m_inTransition;
-		}
+		bool IsInTransition();
 
 		/*
 		 * Set the new currentAnimationNode in the AnimationHandler
-		 * @param currentAnimation: the currentAnimationNode in the AnimationHandler
+		 * @param currentAnimation: The currentAnimationNode in the AnimationHandler
 		 */
 		void SetNextAnimation(AnimationNode*& currentAnimation);
 
+		/**
+		 * Destroy a node
+		 */
 		void Destroy(std::vector<AnimationNode*>& nodeToDestroy);
 	};
 
@@ -191,7 +185,7 @@ namespace Core::Animation
 	BAKERS_API_CLASS AnimationHandler
 	{
 	private:
-		AnimationNode* m_currentAnimationNode{nullptr};
+		AnimationNode* m_currentAnimationNode{ nullptr };
 
 	public:
 		bool animationFinish{ true };
@@ -214,6 +208,7 @@ namespace Core::Animation
 		 */
 		AnimationHandler(AnimationNode* animationNode);
 
+
 		AnimationHandler& operator=(const AnimationHandler& animation);
 
 		/*
@@ -223,8 +218,6 @@ namespace Core::Animation
 		void UpdateSkeletalMeshBones(const std::shared_ptr<Bone>& rootBone, std::vector<float>& finalTRSfloat, float deltaTime);
 
 		void PlayAnimation(AnimationNode* animation);
-
-		void DestroyHandler();
 	};
 }
 

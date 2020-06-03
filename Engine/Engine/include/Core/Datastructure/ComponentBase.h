@@ -20,10 +20,25 @@ namespace Core::Datastructure
 		 */
 		virtual void	StartCopy(IComponent*& copyTo) const;
 
+		/**
+		 * Resets the component to its default parameters
+		 */
 		virtual void	OnReset() override;
+
 	public:
-		ComponentBase(const ComponentBase& c) = default;
+		/**
+		 * Component Base
+		 */
 		ComponentBase() = default;
+
+		/**
+		 * Default copy constructor
+		 */
+		ComponentBase(const ComponentBase& c) = default;
+
+		/**
+		 * Default destructeur
+		 */
 		~ComponentBase() = default;
 
 		/**

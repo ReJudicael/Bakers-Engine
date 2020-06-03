@@ -216,7 +216,7 @@ void Salt::AnimGraph()
 
 	Core::Animation::AnimationNode* animLanding{ new Core::Animation::AnimationNode() };
 	animLanding->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_landingAnimation);
-	animLanding->Loop = false;
+	animLanding->loop = false;
 	animLanding->speed *= 1.5f;
 
 	Core::Animation::AnimationNode* animIdle{ new Core::Animation::AnimationNode() };
@@ -235,7 +235,7 @@ void Salt::AnimGraph()
 
 	Core::Animation::AnimationNode* animDie{ new Core::Animation::AnimationNode() };
 	animDie->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_dieAnimation);
-	animDie->Loop = false;
+	animDie->loop = false;
 
 	Core::Animation::TransitionNode* transFlyIdleLanding{ new Core::Animation::TransitionNode() };
 	transFlyIdleLanding->InitTransition(animFlyIdle, animLanding, [this] { return m_saltAnimation != ESaltAnimation::FLYIDLE; });

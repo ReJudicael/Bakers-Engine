@@ -1,8 +1,8 @@
+#include <fmod.hpp>
 #include "AudioListener.h"
 #include "RootObject.hpp"
 #include "EngineCore.h"
 #include "AudioSystem.h"
-#include <fmod.hpp>
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -60,7 +60,6 @@ namespace Core::Audio
         Core::Maths::Vec3 pos = parent->GetGlobalPos();
         Core::Maths::Quat rot = parent->GetGlobalRot();
 
-        // TODO: (pos-lastpos) / time_taken_since_last_frame_in_seconds.
         Core::Maths::Vec3 vel = { 0.f, 0.f, 0.f };
 
         Core::Maths::Vec3 forward = rot * Maths::Vec3(0.0f, 0.0f, 1.0f);

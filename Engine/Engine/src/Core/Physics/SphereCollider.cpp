@@ -21,8 +21,7 @@ namespace Core::Physics
 		ZoneText("Leak happening in this zone is from RTTR and is actually reflexion data. It is a purposeful leak", 98);
 		registration::class_<Core::Physics::SphereCollider>("Sphere Collider")
 		.constructor()
-		.property("Radius", &Core::Physics::SphereCollider::GetSphereHalfExtent ,&Core::Physics::SphereCollider::SetSphereHalfExtent)
-		;
+		.property("Radius", &Core::Physics::SphereCollider::GetSphereHalfExtent ,&Core::Physics::SphereCollider::SetSphereHalfExtent);
 	}
 
 	void SphereCollider::OnInit()

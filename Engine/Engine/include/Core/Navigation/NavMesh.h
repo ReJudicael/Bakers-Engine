@@ -8,7 +8,6 @@
 #include "DetourNavMesh.h"
 #include "DetourNavMeshQuery.h"
 #include "NavQuery.h"
-//#include "DetourCrowd.h"
 #include <chrono>
 #include <queue>
 
@@ -83,17 +82,12 @@ namespace Core::Navigation
 		dtNavMesh*			m_navMesh;
 		NavQuery			m_navQuery;
 		dtQueryFilter		m_queryFilter;
-		//dtCrowd*			m_crowd;
 
 		std::list<Mesh>	m_mesh;
 
 		unsigned			m_VAO;
 		unsigned			m_VAOSize{ 0 }; 
 		std::shared_ptr<Resources::Shader>	m_shader;
-		/*
-		dtStatus			FindNearestPoly(const Core::Maths::Vec3& targetPos, const dtQueryFilter* filter, dtPolyRef* outRef, Core::Maths::Vec3& outPoint) const noexcept;
-		dtStatus			FindPath(dtPolyRef startRef, dtPolyRef endRef, const Core::Maths::Vec3& startPos, const Core::Maths::Vec3& endPos, const dtQueryFilter* filter, NavPath& path) const noexcept;
-		*/
 
 		void				BuildNavMeshRenderer();
 		void				DrawNavMesh(const Core::Maths::Mat4& cam, const Core::Maths::Mat4& perspective);
@@ -110,8 +104,6 @@ namespace Core::Navigation
 
 		bool			IsNavmeshUpdated() const { return m_isUpdated; }
 
-		//dtCrowd*		GetCrowd() const noexcept { return m_crowd; }
-
 		NavQuery::QueryResult*	FindPath(const Core::Maths::Vec3& start, const Core::Maths::Vec3& end, unsigned short excludedAreaFlags = 0) noexcept;
 		dtStatus				FindClosestPointOnNavMesh(const Core::Maths::Vec3& point, const Core::Maths::Vec3& dist, dtPolyRef* ref, Core::Maths::Vec3& pos);
 		void					RemovePathQuery(NavQuery::QueryResult* toRemove);
@@ -122,9 +114,5 @@ namespace Core::Navigation
 
 		bool					SaveNavMesh(const std::string& path) const;
 		bool					LoadNavMesh(const std::string& path);
-		/**
-		 * Allocates new nav querry
-		 */
-		//NavQuery*	GetNavQuery() const noexcept;
 	};
 }

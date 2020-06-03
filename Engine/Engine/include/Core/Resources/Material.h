@@ -82,6 +82,10 @@ namespace Resources
 		 */
 		void InitVariantUniform();
 
+		/**
+		 * Update material with a new shader
+		 * @param newShader: New shader to use
+		 */
 		void UpdateMaterialShader(std::shared_ptr<Shader> newShader);
 
 		/**

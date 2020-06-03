@@ -251,6 +251,7 @@ namespace Core::Datastructure
 			m_transform.TranslateGlobal(m_parent->GetUpdatedTransform(), v);
 			RequireUpdate();
 		}
+
 		/**
 		 * Rotates the object in global space by given vector
 		 * @param q: Quaternion to rotate by
@@ -261,6 +262,7 @@ namespace Core::Datastructure
 			m_transform.RotateGlobal(m_parent->GetUpdatedTransform(), q);
 			RequireUpdate();
 		}
+
 		/**
 		 * Scales the object in global space by given vector
 		 * @param v: Vector to scale by
@@ -281,6 +283,7 @@ namespace Core::Datastructure
 			m_transform.SetLocalPos(pos);
 			RequireUpdate();
 		}
+
 		/**
 		 * Set local rotation of object to given value
 		 * @param rot: New local rotation
@@ -290,6 +293,7 @@ namespace Core::Datastructure
 			m_transform.SetLocalRot(rot);
 			RequireUpdate();
 		}
+
 		/**
 		 * Set local scale of object to given value
 		 * @param scale: New local scale
@@ -308,6 +312,7 @@ namespace Core::Datastructure
 		{
 			return m_transform.GetLocalPos();
 		}
+
 		/**
 		 * Returns the local rotation of the object
 		 * @return Local rotation of the object
@@ -316,6 +321,7 @@ namespace Core::Datastructure
 		{
 			return m_transform.GetLocalRot();
 		}
+
 		/**
 		 * Returns the local scale of the object
 		 * @return Local scale of the object
@@ -340,6 +346,7 @@ namespace Core::Datastructure
 			}
 			return m_transform.GetGlobalPos();
 		}
+
 		/**
 		 * Returns the global rotation of the object
 		 * @return Local rotation of the object
@@ -355,6 +362,7 @@ namespace Core::Datastructure
 			}
 			return m_transform.GetGlobalRot();
 		}
+
 		/**
 		 * Returns the global scale of the object
 		 * @return Local scale of the object
@@ -380,6 +388,7 @@ namespace Core::Datastructure
 			m_transform.SetGlobalPos(m_parent->GetUpdatedTransform(), pos);
 			RequireUpdate();
 		}
+
 		/**
 		 * Sets the global rotation of the object
 		 * @param rot: Global rotation of the object
@@ -389,6 +398,7 @@ namespace Core::Datastructure
 			m_transform.SetGlobalRot(m_parent->GetUpdatedTransform(), rot);
 			RequireUpdate();
 		}
+
 		/**
 		 * Sets the global scale of the object
 		 * @param scale: Global scale of the object
@@ -429,12 +439,14 @@ namespace Core::Datastructure
 		 * @param c: Component to add
 		 */
 		void	AddComponent(ComponentBase* c) noexcept;
+
 		/**
 		 * Removes given component from the object, if it
 		 * is part of it. It will not do anything if the component
 		 * is not part of it.
 		 */
 		void	RemoveComponent(ComponentBase* c) noexcept;
+
 		/**
 		 * Deletes given component from the object, if it
 		 * is part of it. It will not do anything if the component
@@ -444,11 +456,19 @@ namespace Core::Datastructure
 
 		std::list<ComponentBase*>& GetComponents() noexcept;
 
+		/**
+		 * Name getter
+		 * @return Name
+		 */
 		const std::string& GetName() const noexcept
 		{
 			return m_name;
 		}
 
+		/**
+		 * Name setter
+		 * @param name: New name
+		 */
 		void SetName(const std::string& name) noexcept
 		{
 			m_name = name;

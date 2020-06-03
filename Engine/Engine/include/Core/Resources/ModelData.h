@@ -56,8 +56,6 @@ namespace Resources
 		 */
 		void SetArrays(const aiScene* scene, const unsigned int& index);
 
-		//void SetArray(const aiScene* scene, const bool& isSkeletal);
-
 		/**
 		 * Load all the value of the aiMesh
 		 * @param mesh: The aiMesh who is currently loaded

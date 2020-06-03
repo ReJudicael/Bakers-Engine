@@ -20,7 +20,6 @@ RTTR_PLUGIN_REGISTRATION
 
 	registration::class_<INavAgent>("INavAgent")
 		.constructor();
-		//.property_readonly("agentID", &INavAgent::m_agentID);
 }
 
 namespace Core::Datastructure

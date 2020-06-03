@@ -57,10 +57,12 @@ namespace Core::Datastructure
 		 * Called after updating perspective matrix
 		 */
 		virtual void	PerspectiveMatrixUpdated() {}
+
 		/**
 		 * Called after updating camera matrix
 		 */
 		virtual void	CameraMatrixUpdated() {}
+
 	public:
 		/**
 		 * Destructor of the camera interface
