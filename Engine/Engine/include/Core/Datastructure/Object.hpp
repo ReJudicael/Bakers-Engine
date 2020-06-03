@@ -444,11 +444,19 @@ namespace Core::Datastructure
 
 		std::list<ComponentBase*>& GetComponents() noexcept;
 
+		/**
+		 * Name getter
+		 * @return Name
+		 */
 		const std::string& GetName() const noexcept
 		{
 			return m_name;
 		}
 
+		/**
+		 * Name setter
+		 * @param name: New name
+		 */
 		void SetName(const std::string& name) noexcept
 		{
 			m_name = name;

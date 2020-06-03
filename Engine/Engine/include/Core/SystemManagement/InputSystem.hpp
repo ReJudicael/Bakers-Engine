@@ -87,6 +87,7 @@ namespace Core::SystemManagement
 
 		/**
 		 * Set activity of input manager
+		 * @param activity: New activity for input manager
 		 */
 		void	SetActive(bool activity) noexcept { m_isActive = activity; };
 

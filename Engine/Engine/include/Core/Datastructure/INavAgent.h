@@ -22,19 +22,6 @@ namespace Core::Datastructure
 	class INavAgent : virtual public IComponent
 	{
 	protected:
-		/*int				m_agentID{ -1 };
-
-		float			m_agentHeight{ 2.0f };
-		float			m_agentRadius{ 0.6f };
-		float			m_agentAcceleration{ 8.f };
-		float			m_agentMaxSpeed{ 3.5f };
-		float			m_agentMaxClimb{ 0.9f };
-		float			m_agentMaxSlope{ 45.0f };
-		unsigned char	m_obstacleAvoidanceQuality{ 3 };
-		float			m_separationWeight{ 2.0f };
-		
-		NavAgentFlag	m_flags{ NavAgentFlags::NONE };
-		*/
 
 		Core::Navigation::NavQuery::QueryResult* m_pathQuery{ nullptr };
 

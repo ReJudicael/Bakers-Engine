@@ -30,23 +30,11 @@ struct aiMaterial;
 enum aiTextureType : int;
 class Core::Datastructure::Object;
 
-/*namespace Assimp
-{
-	class Importer;
-}*/
-
 
 namespace Resources
 {
-	/*namespace Animation
-	{
-		struct BoneData;
-	}*/
 
 	struct Model;
-	//struct Texture;
-	//struct TextureData;
-	//struct Material;
 
 	using unorderedmapTexture = std::unordered_map<std::string, std::shared_ptr<Texture>>;
 	using unorderedmapShader = std::unordered_map<std::string, std::shared_ptr<Shader>>;
@@ -288,6 +276,10 @@ namespace Resources
 				return m_shaders.count(keyName);
 			}
 
+			/**
+			 * Shader map getter
+			 * @return Map storing all shaders
+			 */
 			inline const unorderedmapShader& GetShaderMap()
 			{
 				return m_shaders;
@@ -464,11 +456,9 @@ namespace Resources
 			 * @param importer: the importer who load the scene
 			 * @param scene: the aiScene we want to load
 			 * @param keyName: the name of the scene it's the full folder path of the 3D object 
-			 *  @param directory: the folder path of the 3D Object
-			 *  @param indexFirstMesh: 
 			 * @param directory: the folder path of the 3D Object
+			 * @param inMultiThread: whether the resources are loaded in multithread or not
 			 */
-			//void Load3DObjectGraph(const aiScene* scene, const std::string& keyName, const std::string& directory, const unsigned int& indexFirstMesh = 0, const bool& isSkeletal = false);
 			void LoadSceneResources(std::shared_ptr<Loader::ImporterData>& importer, 
 									const aiScene* scene, const std::string& keyName, 
 									const std::string& directory, const bool inMultiThread);
