@@ -13,6 +13,8 @@ public:
 	AEntity();
 	~AEntity();
 
+	virtual void IsHit() {};
+
 	REGISTER_CLASS(Core::Datastructure::IUpdatable)
 };
 

@@ -131,6 +131,11 @@ public:
 	EBriocheBehavior GetBehavior() { return m_behavior; };
 
 	/**
+	 * Set stopAttack to true
+	 */
+	void StopAttack() { m_stopAttack = true; }
+
+	/**
 	 * Function call as an event for the collision OnTriggerEnter
 	 * @param collider: the collider with wich he triggered
 	 */
@@ -141,6 +146,14 @@ public:
 	 * @param node: the AnimationNode Punch
 	 */
 	bool TransitionBiteToIdle(Core::Animation::AnimationNode* node);
+
+
+	bool TransitionGetHitToIdle(Core::Animation::AnimationNode* node);
+
+	/**
+	 * Call when the Entity is consider as hit
+	 */
+	virtual void IsHit() override;
 
 private:
 	void AnimGraph();

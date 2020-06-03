@@ -4,6 +4,9 @@
 #include "EngineCore.h"
 #include "LoadResources.h"
 #include "SkeletalMesh.h"
+#include "Owen.h"
+#include "Brioche.h"
+#include "Collider.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -45,6 +48,7 @@ void Minion::OnCopy(IComponent* copyTo) const
 
 	Minion* copy{ dynamic_cast<Minion*>(copyTo) };
 	copy->m_health = m_health;
+	copy->m_damage = m_damage;
 	copy->m_idleAnimation = m_idleAnimation;
 	copy->m_runAnimation = m_runAnimation;
 	copy->m_biteAnimation = m_biteAnimation;
@@ -62,6 +66,39 @@ void Minion::StartCopy(IComponent*& copyTo) const
 bool Minion::OnStart()
 {
 	AnimGraph();
+
+	std::list<Core::Navigation::PathFollowingComponent*> components;
+	m_parent->GetComponentsOfBaseType<Core::Navigation::PathFollowingComponent>(components);
+	if (components.size() > 0)
+		m_navigator = *components.begin();
+
+	std::list<Owen*> owen;
+	GetRoot()->GetComponentsOfTypeInChilds<Owen>(owen);
+	if (owen.size() > 0)
+		m_Owen = (*owen.begin())->GetParent();
+
+	std::list<Brioche*> brioche;
+	GetRoot()->GetComponentsOfTypeInChilds<Brioche>(brioche);
+	if (owen.size() > 0)
+		m_Brioche = (*brioche.begin())->GetParent();
+
+	std::list<Core::Datastructure::Object*> childs = m_parent->GetChildren();
+
+	for (auto child = childs.begin(); child != childs.end(); ++child)
+	{
+		std::list<Core::Physics::Collider*> collider;
+		if ((*child)->GetName().find("HitBoxPunch") != std::string::npos)
+		{
+			(*child)->GetComponentsOfBaseType(collider);
+			if (collider.size() > 0)
+			{
+				(*collider.begin())->OnTriggerEnterEvent.AddListener(BIND_EVENT(Minion::OnEnterCollider));
+				colliderPunch = (*collider.begin());
+				colliderPunch->SetActivateCollider(false);
+			}
+		}
+	}
+
 	return 	ComponentBase::OnStart() && AEntity::OnStart();
 }
 
@@ -93,6 +130,89 @@ void Minion::OnInit()
 
 void Minion::OnUpdate(float deltaTime)
 {
+	if (m_minionAnimation == EMinionAnimation::DIE)
+		return;
+	if (m_health <= 0)
+	{
+		m_minionAnimation = EMinionAnimation::DIE;
+		return;
+	}
+
+	if (m_minionAnimation == EMinionAnimation::GETHIT)
+	{
+		if (colliderPunch)
+			colliderPunch->SetActivateCollider(false);
+		m_attackTimer = 0.f;
+		return;
+	}
+	if (colliderPunch)
+	{
+		if (m_attackTimer >= m_AttackMaxTime)
+		{
+			m_minionAnimation = EMinionAnimation::IDLE;
+			m_attackTimer = 0.f;
+			if (colliderPunch && colliderPunch->IsActive())
+				colliderPunch->SetActivateCollider(false);
+		}
+
+		if (m_minionAnimation == EMinionAnimation::BITE && m_attackTimer >= m_AttackMaxTime - 4.f && !colliderPunch->IsActive())
+			colliderPunch->SetActivateCollider(true);
+	}
+
+	if (m_minionAnimation != EMinionAnimation::BITE && m_minionAnimation != EMinionAnimation::GETHIT)
+	{
+		if (m_navigator->IsEndOfThePath())
+			m_minionAnimation = EMinionAnimation::RUN;
+		else
+			m_minionAnimation = EMinionAnimation::IDLE;
+	}
+
+
+	if (m_Owen && m_Brioche)
+	{
+		Core::Maths::Vec3 OwenPos = m_Owen->GetGlobalPos();
+		Core::Maths::Vec3 BriochePos = m_Brioche->GetGlobalPos();
+		Core::Maths::Vec3 ParentPos = m_parent->GetGlobalPos();
+		float OPLength = (OwenPos - ParentPos).Length();
+		float BPLength = (BriochePos - ParentPos).Length();
+		if (BPLength < OPLength)
+		{
+			if (m_currTarget != m_Brioche)
+			{
+				if (BPLength < 5.f)
+					m_currTarget = m_Brioche;
+			}
+			distToTarget = BPLength;
+		}
+		else
+		{
+			if (m_currTarget != m_Owen)
+			{
+				if (OPLength < 5.f)
+					m_currTarget = m_Owen;
+			}
+			distToTarget = OPLength;
+		}
+	}
+	if (m_currTarget)
+	{
+		if (m_minionAnimation != EMinionAnimation::BITE && m_navigator)
+			m_navigator->SetTarget(m_currTarget->GetGlobalPos());
+
+		if (distToTarget < 1.5f && m_navigator)
+		{
+			m_minionAnimation = EMinionAnimation::BITE;
+			m_navigator->SetStopMoving(true);
+		}
+		else if (m_navigator)
+		{
+			m_navigator->SetStopMoving(false);
+		}
+	}
+
+	if (m_minionAnimation == EMinionAnimation::BITE)
+		m_attackTimer += m_AttackSpeed * deltaTime;
+
 }
 
 void Minion::AnimGraph()
@@ -106,6 +226,8 @@ void Minion::AnimGraph()
 	Core::Animation::AnimationNode* animBite{ new Core::Animation::AnimationNode() };
 	animBite->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_biteAnimation);
 	animBite->Loop = false;
+	m_AttackSpeed = animBite->speed;
+	m_AttackMaxTime = animBite->nodeAnimation->Time;
 
 	Core::Animation::AnimationNode* animGetHit{ new Core::Animation::AnimationNode() };
 	animGetHit->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_getHitAnimation);
@@ -143,13 +265,7 @@ void Minion::AnimGraph()
 	transBiteDie->InitTransition(animBite, animDie, [this] { return m_minionAnimation == EMinionAnimation::DIE; });
 
 	Core::Animation::TransitionNode* transGetHitIdle{ new Core::Animation::TransitionNode() };
-	transGetHitIdle->InitTransition(animGetHit, animIdle);
-	Core::Animation::TransitionNode* transGetHitRun{ new Core::Animation::TransitionNode() };
-	transGetHitRun->InitTransition(animGetHit, animRun, [this] { return m_minionAnimation == EMinionAnimation::RUN; });
-	Core::Animation::TransitionNode* transGetHitBite{ new Core::Animation::TransitionNode() };
-	transGetHitBite->InitTransition(animGetHit, animBite, [this] { return m_minionAnimation == EMinionAnimation::BITE; });
-	Core::Animation::TransitionNode* transGetHitDie{ new Core::Animation::TransitionNode() };
-	transGetHitDie->InitTransition(animGetHit, animDie, [this] { return m_minionAnimation == EMinionAnimation::DIE; });
+	transGetHitIdle->InitTransition(animGetHit, animIdle, std::bind(&Minion::TransitionGetHitToIdle, this, animGetHit));
 
 	Core::Animation::TransitionNode* transDieIdle{ new Core::Animation::TransitionNode() };
 	transDieIdle->InitTransition(animDie, animIdle, [this] { return m_minionAnimation == EMinionAnimation::IDLE && m_health > 0; });
@@ -170,9 +286,6 @@ void Minion::AnimGraph()
 	animBite->transitionsAnimation.push_back(transBiteDie);
 
 	animGetHit->transitionsAnimation.push_back(transGetHitIdle);
-	animGetHit->transitionsAnimation.push_back(transGetHitRun);
-	animGetHit->transitionsAnimation.push_back(transGetHitBite);
-	animGetHit->transitionsAnimation.push_back(transGetHitDie);
 
 	animDie->transitionsAnimation.push_back(transDieIdle);
 
@@ -183,4 +296,46 @@ void Minion::AnimGraph()
 		Core::Animation::SkeletalMesh* sktmesh = *skeletalMesh.begin();
 		sktmesh->animationHandler = new Core::Animation::AnimationHandler{ animIdle };
 	}
+}
+
+void Minion::OnEnterCollider(Core::Physics::Collider* collider)
+{
+	Core::Datastructure::Object* object = collider->GetParent();
+	if (object == GetParent())
+		return;
+	else
+	{
+		if (object == m_Owen)
+			object = m_Owen;
+		else if (object == m_Brioche)
+			object = m_Brioche;
+		else
+			return;
+
+		std::list<AEntity*> enemy;
+		object->GetComponentsOfBaseType<AEntity>(enemy);
+
+		if (enemy.size() > 0)
+		{
+			(*enemy.begin())->m_health -= m_damage;
+			(*enemy.begin())->IsHit();
+		}
+	}
+}
+
+bool Minion::TransitionGetHitToIdle(Core::Animation::AnimationNode* node)
+{
+	if (node->DefaultConditionAnimationNode())
+	{
+		m_minionAnimation = EMinionAnimation::IDLE;
+		return true;
+	}
+	return false;
+}
+
+void Minion::IsHit()
+{
+	m_minionAnimation = EMinionAnimation::GETHIT;
+	if(m_navigator)
+		m_navigator->SetStopMoving(true);
 }

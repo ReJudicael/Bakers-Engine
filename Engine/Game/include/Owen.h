@@ -115,6 +115,13 @@ public:
 	 */
 	bool TransitionPunch(Core::Animation::AnimationNode* node);
 
+	bool TransitionGetHitToIdle(Core::Animation::AnimationNode* node);
+
+	/**
+	 * Call when the Entity is consider as hit
+	 */
+	virtual void IsHit() override;
+
 private:
 	void AnimGraph();
 

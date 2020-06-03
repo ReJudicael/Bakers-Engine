@@ -42,14 +42,14 @@ namespace Core::Datastructure
 		{
 			if (!IsDestroyed())
 				Destroy();
-			for (auto it : m_components)
+			/*for (auto it : m_components)
 			{
 				if (!it->IsDestroyed())
 				{
 					it->Destroy();
 					delete it;
 				}
-			}
+			}*/
 		}
 		/**
 		 * Calls OnStart on every component that requires to be started.
