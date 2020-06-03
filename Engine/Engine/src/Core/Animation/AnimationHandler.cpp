@@ -16,6 +16,7 @@ namespace Core::Animation
 	{
 		InitTransition(currentAnimationNode, nextAnimationNode, conditionTransition);
 	}
+
 	void TransitionNode::InitTransition(AnimationNode* currentAnimationNode,
 										AnimationNode* nextAnimationNode, std::function<bool()> conditionTransition)
 	{
@@ -71,6 +72,11 @@ namespace Core::Animation
 			m_currentTime = 0.f;
 			isFinish = true;
 		}
+	}
+
+	bool TransitionNode::IsTransitionFinish()
+	{
+		return isFinish;
 	}
 
 	void TransitionNode::Reset()
@@ -203,7 +209,7 @@ namespace Core::Animation
 
 		if (m_currentTime > nodeAnimation->Time)
 		{
-			if (Loop)
+			if (loop)
 			{
 				reset = true;
 			}
@@ -217,6 +223,24 @@ namespace Core::Animation
 			return true;
 		else
 			return false;
+	}
+
+	bool AnimationNode::IsTransitionFinish()
+	{
+		if (m_inTransition && transitionsAnimation.size() > indexTransition)
+			return transitionsAnimation[indexTransition]->IsTransitionFinish();
+		else
+			return false;
+	}
+
+	bool AnimationNode::IsTimeIsTheSame()
+	{
+		return m_currentTime == m_lastTime;
+	}
+
+	bool AnimationNode::IsInTransition()
+	{
+		return m_inTransition;
 	}
 
 	void AnimationNode::SetNextAnimation(AnimationNode*& currentAnimation)

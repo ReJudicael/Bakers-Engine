@@ -179,6 +179,16 @@ namespace Core::Datastructure
 		return nullptr;
 	}
 
+	Resources::Loader::ResourcesManager* EngineCore::GetResourcesManager()
+	{
+		return m_manager;
+	}
+
+	Core::Physics::PhysicsScene* EngineCore::GetPhysicsScene()
+	{
+		return m_physicsScene;
+	}
+
 	int EngineCore::OnInit(int width, int height)
 	{
 		ZoneScoped

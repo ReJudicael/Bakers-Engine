@@ -183,18 +183,18 @@ void Owen::AnimGraph()
 
 	Core::Animation::AnimationNode* animPunch{ new Core::Animation::AnimationNode() };
 	animPunch->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_punchAnimation);
-	animPunch->Loop = false;
+	animPunch->loop = false;
 	m_AttackMaxTime = animPunch->nodeAnimation->Time;
 	m_AttackSpeed = animPunch->speed;
 
 	Core::Animation::AnimationNode* animGetHit{ new Core::Animation::AnimationNode() };
 	animGetHit->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_getHitAnimation);
-	animGetHit->Loop = false;
+	animGetHit->loop = false;
 	animGetHit->speed = 30.f;
 
 	Core::Animation::AnimationNode* animDie{ new Core::Animation::AnimationNode() };
 	animDie->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_dieAnimation);
-	animDie->Loop = false;
+	animDie->loop = false;
 
 	Core::Animation::TransitionNode* transIdleRun{ new Core::Animation::TransitionNode() };
 	transIdleRun->InitTransition(animIdle, animRun, [this] { return m_owenAnimation == EOwenAnimation::RUN; });

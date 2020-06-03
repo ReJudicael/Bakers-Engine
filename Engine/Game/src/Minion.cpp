@@ -225,17 +225,17 @@ void Minion::AnimGraph()
 
 	Core::Animation::AnimationNode* animBite{ new Core::Animation::AnimationNode() };
 	animBite->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_biteAnimation);
-	animBite->Loop = false;
+	animBite->loop = false;
 	m_AttackSpeed = animBite->speed;
 	m_AttackMaxTime = animBite->nodeAnimation->Time;
 
 	Core::Animation::AnimationNode* animGetHit{ new Core::Animation::AnimationNode() };
 	animGetHit->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_getHitAnimation);
-	animGetHit->Loop = false;
+	animGetHit->loop = false;
 
 	Core::Animation::AnimationNode* animDie{ new Core::Animation::AnimationNode() };
 	animDie->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_dieAnimation);
-	animDie->Loop = false;
+	animDie->loop = false;
 
 	Core::Animation::TransitionNode* transIdleRun{ new Core::Animation::TransitionNode() };
 	transIdleRun->InitTransition(animIdle, animRun, [this] { return m_minionAnimation == EMinionAnimation::RUN; });

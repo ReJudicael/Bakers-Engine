@@ -14,6 +14,7 @@ namespace Core::Datastructure
 		bool				m_isUpdating = true; 
 		
 		virtual bool		OnStart() override;
+
 		/**
 		 * Called once per frame before rendering. DeltaTime is
 		 * passed as an argument. Must be overriden if the component
@@ -29,6 +30,7 @@ namespace Core::Datastructure
 		virtual void		OnCopy(IComponent* copyTo) const override;
 		virtual void		OnDestroy() override;
 		virtual void		OnReset() override;
+
 	public:
 		/**
 		 * Destructor of the updatable interface
@@ -39,12 +41,12 @@ namespace Core::Datastructure
 		 * Called by the engine to update the component
 		 * @param deltaTime: Time since previous frame
 		 */
-		void				Update(float deltaTime);
+		void			Update(float deltaTime);
 
 		/**
 		 * Returns if the component is updated.
 		 */
-		inline bool			IsUpdating();
+		inline bool		IsUpdating();
 
 		REGISTER_CLASS(IComponent)
 	};

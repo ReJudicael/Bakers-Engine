@@ -14,13 +14,12 @@ namespace Core::Animation
 	BAKERS_API_CLASS SkeletalMesh : public Core::Renderer::Mesh, public virtual Core::Datastructure::IUpdatable
 	{
 	protected:
-		std::shared_ptr<Bone>			m_rootBone { nullptr };
-		GLuint							m_numberBones{0};
+		std::shared_ptr<Bone>			m_rootBone{ nullptr };
+		GLuint							m_numberBones{ 0 };
 		std::vector<Core::Maths::Mat4>	m_finalTransforms;
 		std::vector<float>				m_finalBonesTRSfloat;
 
 	public:
-
 		AnimationHandler* animationHandler{ nullptr };
 
 	protected:
@@ -29,21 +28,25 @@ namespace Core::Animation
 		 * override for start the Mesh, and the IUpdatable
 		 */
 		virtual bool	OnStart() override;		
+
 		/**
 		 * Function inheritated from Mesh and IUpdatable,
 		 * override for create the copyTo as a SkeletalMesh
 		 */
 		virtual void	StartCopy(IComponent*& copyTo) const override;
+
 		/**
 		 * Function inheritated from Mesh and IUpdatable,
 		 * override for copy the SkeletalMesh
 		 */
 		virtual void	OnCopy(IComponent* copyTo) const override;
+
 		/**
 		 * Function inheritated from Mesh and IUpdatable,
 		 * override for reset the Mesh, and the IUpdatable
 		 */
 		virtual void	OnReset() override;
+
 		/**
 		 * Function inheritated from Mesh,
 		 * override for update the model and the rootbone
@@ -93,5 +96,4 @@ namespace Core::Animation
 
 		REGISTER_CLASS(Core::Renderer::Mesh, Core::Datastructure::IUpdatable)
 	};
-
 }
