@@ -1,6 +1,6 @@
 # Engine_Bakers
 
-#### Version Gold
+#### Version Gold (1.0)
 
 ## How to launch project
 - Enter/Use the commands
