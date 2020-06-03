@@ -87,6 +87,7 @@ bool Owen::OnStart()
 			{
 				(*collider.begin())->OnTriggerEnterEvent.AddListener(BIND_EVENT(Owen::OnEnterCollider));
 				m_colliderPunch = (*collider.begin());
+				m_colliderPunch->SetActivateCollider(false);
 			}
 		}
 	}
@@ -128,6 +129,8 @@ void Owen::OnUpdate(float deltaTime)
 
 	if (m_controller)
 		m_controller->Set<int>("Health", m_health);
+	if (m_owenAnimation == EOwenAnimation::DIE)
+		return;
 
 	if (m_health <= 0)
 	{
@@ -136,6 +139,13 @@ void Owen::OnUpdate(float deltaTime)
 	}
 	if (m_attackTimer >= m_AttackMaxTime)
 		m_attackTimer = 0.f;
+
+	if (m_owenAnimation == EOwenAnimation::GETHIT)
+	{
+		if (m_colliderPunch)
+			m_colliderPunch->SetActivateCollider(false);
+		return;
+	}
 
 	if (m_rigidbody->GetVelocity().SquaredLength() > 0.1f)
 		m_owenAnimation = EOwenAnimation::RUN;
@@ -161,9 +171,6 @@ void Owen::OnUpdate(float deltaTime)
 			m_colliderPunch->SetActivateCollider(false);
 		}
 	}
-
-	if (Input()->IsMouseButtonPressed(EMouseButton::RIGHT))
-		m_health = 0;
 }
 
 void Owen::AnimGraph()
@@ -183,6 +190,7 @@ void Owen::AnimGraph()
 	Core::Animation::AnimationNode* animGetHit{ new Core::Animation::AnimationNode() };
 	animGetHit->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_getHitAnimation);
 	animGetHit->Loop = false;
+	animGetHit->speed = 30.f;
 
 	Core::Animation::AnimationNode* animDie{ new Core::Animation::AnimationNode() };
 	animDie->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_dieAnimation);
@@ -216,13 +224,7 @@ void Owen::AnimGraph()
 	transPunchDie->InitTransition(animPunch, animDie, [this] { return m_owenAnimation == EOwenAnimation::DIE; });
 
 	Core::Animation::TransitionNode* transGetHitIdle{ new Core::Animation::TransitionNode() };
-	transGetHitIdle->InitTransition(animGetHit, animIdle);
-	Core::Animation::TransitionNode* transGetHitRun{ new Core::Animation::TransitionNode() };
-	transGetHitRun->InitTransition(animGetHit, animRun, [this] { return m_owenAnimation == EOwenAnimation::RUN; });
-	Core::Animation::TransitionNode* transGetHitBite{ new Core::Animation::TransitionNode() };
-	transGetHitBite->InitTransition(animGetHit, animPunch, [this] { return m_owenAnimation == EOwenAnimation::PUNCH; });
-	Core::Animation::TransitionNode* transGetHitDie{ new Core::Animation::TransitionNode() };
-	transGetHitDie->InitTransition(animGetHit, animDie, [this] { return m_owenAnimation == EOwenAnimation::DIE; });
+	transGetHitIdle->InitTransition(animGetHit, animIdle, std::bind(&Owen::TransitionGetHitToIdle, this, animGetHit));
 	Core::Animation::TransitionNode* transDieIdle{ new Core::Animation::TransitionNode() };
 	transDieIdle->InitTransition(animDie, animIdle, [this] { return m_owenAnimation == EOwenAnimation::IDLE && m_health > 0; });
 
@@ -242,9 +244,6 @@ void Owen::AnimGraph()
 	animPunch->transitionsAnimation.push_back(transPunchDie);
 
 	animGetHit->transitionsAnimation.push_back(transGetHitIdle);
-	animGetHit->transitionsAnimation.push_back(transGetHitRun);
-	animGetHit->transitionsAnimation.push_back(transGetHitBite);
-	animGetHit->transitionsAnimation.push_back(transGetHitDie);
 
 	animDie->transitionsAnimation.push_back(transDieIdle);
 
@@ -259,6 +258,20 @@ void Owen::AnimGraph()
 
 void Owen::OnEnterCollider(Core::Physics::Collider* collider)
 {
+	Core::Datastructure::Object* object = collider->GetParent();
+	if (object == GetParent() || object->GetName().find("Brioche") != std::string::npos)
+		return;
+	else
+	{
+		std::list<AEntity*> enemy;
+		object->GetComponentsOfBaseType<AEntity>(enemy);
+
+		if (enemy.size() > 0)
+		{
+			(*enemy.begin())->m_health -= m_damage;
+			(*enemy.begin())->IsHit();
+		}
+	}
 }
 
 bool Owen::TransitionPunch(Core::Animation::AnimationNode* node)
@@ -272,4 +285,19 @@ bool Owen::TransitionPunch(Core::Animation::AnimationNode* node)
 		return true;
 	}
 	return false;
+}
+
+bool Owen::TransitionGetHitToIdle(Core::Animation::AnimationNode* node)
+{
+	if (node->DefaultConditionAnimationNode())
+	{
+		m_owenAnimation = EOwenAnimation::IDLE;
+		return true;
+	}
+	return false;
+}
+
+void Owen::IsHit()
+{
+	m_owenAnimation = EOwenAnimation::GETHIT;
 }

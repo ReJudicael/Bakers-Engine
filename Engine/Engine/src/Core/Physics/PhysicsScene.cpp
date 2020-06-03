@@ -69,7 +69,7 @@ namespace Core::Physics
 		ZoneScoped
 		physx::PxSceneDesc sceneDesc(m_pxPhysics->getTolerancesScale());
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
-		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(4);
+		sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
 		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
 		sceneDesc.cudaContextManager = PxCreateCudaContextManager(*m_pxFoundation, cudaContextManagerDesc);
 		m_eventCallBack = new PhysicsSceneSimulationEventCallback();

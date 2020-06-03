@@ -120,7 +120,8 @@ void	Target::SetTargetPosition()
 		Core::Maths::Vec3 dir = m_playerCamera->GetPerspectiveDirection(mouse.x, mouse.y);
 		dir.Normalize();
 
-		physx::PxU32 filter = static_cast<physx::PxU32>(Core::Physics::EFilterRaycast::GROUPE2);
+		physx::PxU32 filter;
+		filter |= static_cast<physx::PxU32>(Core::Physics::EFilterRaycast::GROUPE2);
 		if (m_physicsScenePtr->Raycast(origin, dir, query, filter))
 		{
 			m_globalTarget = query.hitPoint;
@@ -155,6 +156,7 @@ void	Target::WarpBack()
 		m_parent->SetPos({ 0, 0, 0 });
 
 		m_follower->GetParent()->SetGlobalPos(m_parent->GetGlobalPos());
+		m_follower->StopAttack();
 	}
 }
 

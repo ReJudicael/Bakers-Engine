@@ -89,6 +89,7 @@ bool Brioche::OnStart()
 			{
 				(*collider.begin())->OnTriggerEnterEvent.AddListener(BIND_EVENT(Brioche::OnEnterCollider));
 				colliderPunch = (*collider.begin());
+				colliderPunch->SetActivateCollider(false);
 			}
 		}
 	}
@@ -128,9 +129,18 @@ void Brioche::OnInit()
 
 void Brioche::OnUpdate(float deltaTime)
 {
+	if (m_briocheAnimation == EBriocheAnimation::DIE)
+		return;
 	if (m_health <= 0)
 	{
 		m_briocheAnimation = EBriocheAnimation::DIE;
+		return;
+	}
+
+	if (m_briocheAnimation == EBriocheAnimation::GETHIT)
+	{
+		if (colliderPunch)
+			colliderPunch->SetActivateCollider(false);
 		return;
 	}
 
@@ -142,12 +152,9 @@ void Brioche::OnUpdate(float deltaTime)
 			m_briocheAnimation = EBriocheAnimation::IDLE;
 	}
 
-	if (Input()->IsMouseButtonPressed(EMouseButton::RIGHT))
-		m_health = 0;
-
 	if (m_enemyToAttack && m_behavior == EBriocheBehavior::GO)
 	{
-		if ((m_navigator->GetTarget() - m_parent->GetGlobalPos()).Length() <= 2.f)
+		if ((m_enemyToAttack->GetGlobalPos() - m_parent->GetGlobalPos()).Length() <= 1.5f)
 		{
 			m_stopAttack = false;
 			m_briocheAnimation = EBriocheAnimation::BITE;
@@ -246,7 +253,7 @@ void Brioche::AnimGraph()
 	transBiteDie->InitTransition(animBite, animDie, [this] { return m_briocheAnimation == EBriocheAnimation::DIE; });
 
 	Core::Animation::TransitionNode* transGetHitIdle{ new Core::Animation::TransitionNode() };
-	transGetHitIdle->InitTransition(animGetHit, animIdle);
+	transGetHitIdle->InitTransition(animGetHit, animIdle, std::bind(&Brioche::TransitionGetHitToIdle, this, animGetHit));
 	Core::Animation::TransitionNode* transGetHitRun{ new Core::Animation::TransitionNode() };
 	transGetHitRun->InitTransition(animGetHit, animRun, [this] { return m_briocheAnimation == EBriocheAnimation::RUN; });
 	Core::Animation::TransitionNode* transGetHitBite{ new Core::Animation::TransitionNode() };
@@ -290,19 +297,54 @@ void Brioche::AnimGraph()
 
 void Brioche::OnEnterCollider(Core::Physics::Collider* collider)
 {
-	BAKERS_LOG_MESSAGE("coucou");
+	Core::Datastructure::Object* object = collider->GetParent();
+	if (object == GetParent() || object->GetName().find("Owen") != std::string::npos)
+		return;
+	else
+	{
+		std::list<AEntity*> enemy; 
+		object->GetComponentsOfBaseType<AEntity>(enemy);
+
+		if (enemy.size() > 0)
+		{
+			(*enemy.begin())->m_health -= m_damage;
+			(*enemy.begin())->IsHit();
+		}
+	}
 }
 
 bool Brioche::TransitionBiteToIdle(Core::Animation::AnimationNode* node)
 {
-	if (node->DefaultConditionAnimationNode())
+	if (node->DefaultConditionAnimationNode() || m_stopAttack)
 	{
 		m_attackTimer = 0;
 		m_behavior = EBriocheBehavior::GO;
 		m_briocheAnimation = EBriocheAnimation::IDLE;
 		colliderPunch->SetActivateCollider(false);
 		m_navigator->SetStopMoving(false);
+		if (m_stopAttack)
+			m_enemyToAttack = nullptr;
 		return true;
 	}
 	return false;
+}
+
+bool Brioche::TransitionGetHitToIdle(Core::Animation::AnimationNode* node)
+{
+	if (node->DefaultConditionAnimationNode())
+	{
+		m_briocheAnimation = EBriocheAnimation::IDLE;
+		m_behavior = EBriocheBehavior::GO;
+		if (m_navigator)
+			m_navigator->SetStopMoving(false);
+		return true;
+	}
+	return false;
+}
+
+void Brioche::IsHit()
+{
+	m_briocheAnimation = EBriocheAnimation::GETHIT;
+	if (m_navigator)
+		m_navigator->SetStopMoving(true);
 }
