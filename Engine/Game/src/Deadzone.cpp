@@ -44,10 +44,7 @@ bool	Deadzone::OnStart()
 		m_collider = *colliders.begin();
 
 	if (m_collider)
-	{
-		m_collider->OnTriggerEnterEvent += BIND_EVENT(Deadzone::Activate);
-		m_collider->OnTriggerExitEvent += BIND_EVENT(Deadzone::Deactivate);
-	}
+		m_collider->OnTriggerEnterEvent += BIND_EVENT(Deadzone::Kill);
 
 	return ComponentBase::OnStart();
 }
@@ -67,14 +64,10 @@ void	Deadzone::OnInit()
 	ComponentBase::OnInit();
 }
 
-void	Deadzone::Activate(Core::Physics::Collider* collider)
+void	Deadzone::Kill(Core::Physics::Collider* collider)
 {
 	std::list<AEntity*> entities;
 	collider->GetParent()->GetComponentsOfBaseTypeInObject<AEntity>(entities);
 	for (auto& entity : entities)
 		entity->m_health = 0;	
-}
-
-void	Deadzone::Deactivate(Core::Physics::Collider* collider)
-{
 }

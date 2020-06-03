@@ -372,7 +372,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Renderer\TextRenderer.cpp" />
     <ClCompile Include="src\Core\Renderer\Postprocess.cpp" />
     <ClCompile Include="src\Core\Resources\Animation\AnimationVertexData.cpp" />
-    <ClCompile Include="src\Core\Resources\Animation\BoneData.cpp" />
     <ClCompile Include="src\Core\Resources\Character.cpp" />
     <ClCompile Include="src\Core\Resources\Loader\LoadResources.cpp" />
     <ClCompile Include="src\Core\Resources\Material.cpp" />

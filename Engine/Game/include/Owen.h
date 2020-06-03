@@ -116,6 +116,9 @@ public:
 	bool TransitionPunch(Core::Animation::AnimationNode* node);
 
 private:
+	/**
+	 * Set animations and transitions
+	 */
 	void AnimGraph();
 
 	REGISTER_CLASS(ComponentBase, AEntity)

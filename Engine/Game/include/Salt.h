@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "ComponentUpdatable.h"
 #include "AEntity.h"
+#include "Minion.h"
+#include "Vec3.hpp"
 
 /**
  * Salt animation
@@ -33,6 +35,9 @@ private:
 	std::string m_getHitAnimation;
 	std::string m_dieAnimation;
 	ESaltAnimation m_saltAnimation{ ESaltAnimation::FLYIDLE };
+	std::list<Minion*> m_minions;
+	bool m_hasReachedZone{ false };
+	Core::Maths::Vec3 m_bossZone;
 
 protected:
 	/**
@@ -85,6 +90,9 @@ public:
 	~Salt();
 
 private:
+	/**
+	 * Set animations and transitions
+	 */
 	void AnimGraph();
 
 	REGISTER_CLASS(ComponentBase, AEntity)

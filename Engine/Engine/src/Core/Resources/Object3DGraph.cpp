@@ -113,45 +113,13 @@ namespace Resources
 				{
 					Core::Animation::SkeletalMesh* skeletal = new Core::Animation::SkeletalMesh();
 					if (resources.GetCountSkeleton(nameMesh) > 0)
-					{
 						skeletal->InitBones(resources.GetSkeleton(nameMesh));
-
-						//std::shared_ptr<Core::Animation::AnimationNode> anim1 = std::make_shared<Core::Animation::AnimationNode>();
-						//anim1->nodeAnimation = resources.LoadAsAnAnimation("Resources/Models/Combo01_SwordShieldAnim.FBX");
-
-						//std::shared_ptr<Core::Animation::AnimationNode> anim2 = std::make_shared<Core::Animation::AnimationNode>();
-						//anim2->nodeAnimation = resources.LoadAsAnAnimation("Resources/Models/Walk_SwordShieldAnim.FBX");
-
-						//std::shared_ptr<Core::Animation::TransitionNode> transition1 = std::make_shared<Core::Animation::TransitionNode>();
-						//transition1->InitTransition(anim1, anim2);
-						//anim1->transitionsAnimation.push_back(transition1);
-
-						//std::shared_ptr<Core::Animation::TransitionNode> transition2 = std::make_shared<Core::Animation::TransitionNode>();
-						//transition2->InitTransition(anim2, anim1);
-						//anim2->transitionsAnimation.push_back(transition2);
-
-						//Core::Animation::AnimationHandler test(anim1);
-
-						//skeletal->animationHandler = test;
-					}
 					mesh = skeletal;
 				}
 
-				//mesh->AddModel(resources.GetModel(nameMesh));
 				mesh->SetChildModel(nameMesh);
 				mesh->AddMaterials(resources, namesMaterial);
 				Object->AddComponent(mesh);
-
-				/*Core::Datastructure::TriggeredEvent* newEvent{ new Core::Datastructure::TriggeredEvent() };
-
-				nameObject = currNode->mName.data;
-
-				Object->AddComponent(newEvent);*/
-
-				/*For Test*/
-				//Core::Physics::StaticMesh* staticMesh{ new Core::Physics::StaticMesh() };
-				//Object->AddComponent(staticMesh);
-
 			}
 		}
 
@@ -184,7 +152,6 @@ namespace Resources
 			if (!scene->HasMaterials())
 			{
 				namesMaterial.push_back("Default");
-				//materialsNam.push_back("Default");
 			}
 			else
 			{
@@ -231,18 +198,6 @@ namespace Resources
 		std::shared_ptr<Object3DGraph> scene = resources.GetScene(keyName);
 
 		Core::Datastructure::Object* object = rootObject;
-
-		/*if (!scene->singleMesh)
-		{
-			auto index = keyName.find_last_of("/");
-			std::string name;
-			name = keyName.substr(index + 1, keyName.size() - 1);
-
-			index = name.find_last_of(".");
-			name = name.substr(0, index);
-
-			object = rootObject->CreateChild(name, {});
-		}*/
 
 		scene->rootNodeScene.CreateObjectScene(object, resources);
 	}

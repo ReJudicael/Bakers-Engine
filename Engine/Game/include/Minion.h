@@ -80,6 +80,9 @@ public:
 	~Minion();
 
 private:
+	/**
+	 * Set animations and transitions
+	 */
 	void AnimGraph();
 
 	REGISTER_CLASS(ComponentBase, AEntity)

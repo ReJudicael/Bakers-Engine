@@ -29,7 +29,8 @@ RTTR_PLUGIN_REGISTRATION
 		.property("Get Hit Animation", &Salt::m_getHitAnimation)
 		.property("Die Animation", &Salt::m_dieAnimation)
 
-		.property("Salt Animation", &Salt::m_saltAnimation);
+		.property("Salt Animation", &Salt::m_saltAnimation)
+		.property("Boss start", &Salt::m_bossZone);
 }
 
 
@@ -57,6 +58,9 @@ void Salt::StartCopy(IComponent*& copyTo) const
 bool Salt::OnStart()
 {
 	AnimGraph();
+
+	m_minions = GetRoot()->GetComponentsOfType<Minion>();
+
 	return ComponentBase::OnStart() && AEntity::OnStart();
 }
 
@@ -88,6 +92,27 @@ void Salt::OnInit()
 
 void Salt::OnUpdate(float deltaTime)
 {
+	if (!m_hasReachedZone)
+	{
+		bool allDead = true;
+		for (auto it : m_minions)
+		{
+			if (it)
+			{
+				if (it->m_health > 0)
+				{
+					allDead = false;
+					break;
+				}
+			}
+		}
+
+		if (allDead)
+		{
+			m_parent->SetGlobalPos(m_bossZone);
+			m_hasReachedZone = true;
+		}
+	}
 }
 
 void Salt::AnimGraph()
