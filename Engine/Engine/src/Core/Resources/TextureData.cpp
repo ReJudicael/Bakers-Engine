@@ -7,7 +7,7 @@
 #include "Assimp/material.h"
 
 #include "TextureData.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "Texture.h"
 
 namespace Resources

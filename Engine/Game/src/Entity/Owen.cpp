@@ -3,7 +3,7 @@
 #include "RootObject.hpp"
 #include "EngineCore.h"
 #include "PhysicsScene.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "SkeletalMesh.h"
 #include "Collider.h"
 

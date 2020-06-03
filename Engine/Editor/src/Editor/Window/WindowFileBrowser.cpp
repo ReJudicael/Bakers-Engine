@@ -2,7 +2,7 @@
 
 #include "WindowFileBrowser.h"
 #include "EditorEngine.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "ScriptedComponent.h"
 #include "Object3DGraph.h"
 

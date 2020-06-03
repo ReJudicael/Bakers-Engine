@@ -3,7 +3,7 @@
 #include "PxRigidStatic.h"
 
 #include "Object3DGraph.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "RootObject.hpp"
 #include "Object.hpp"
 #include "EngineCore.h"
@@ -88,7 +88,6 @@ namespace Resources
 
 			child.isSkeletal = mesh->HasBones();
 			child.namesMaterial.push_back(nameMaterial);
-			//materialsNam.push_back(nameMaterial);
 			children.push_back(child);
 		}
 	}

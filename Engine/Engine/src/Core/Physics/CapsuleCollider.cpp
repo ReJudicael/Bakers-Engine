@@ -6,7 +6,7 @@
 #include "Shader.h"
 #include "Mat4.hpp"
 #include "Transform.hpp"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "PhysicsScene.h"
 #include "OffsetMesh.h"
 #include "RootObject.hpp"

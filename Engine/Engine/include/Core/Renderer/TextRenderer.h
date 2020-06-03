@@ -8,7 +8,7 @@
 #include <string>
 
 #include "Character.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "IRenderable.hpp"
 #include "ComponentBase.h"
 

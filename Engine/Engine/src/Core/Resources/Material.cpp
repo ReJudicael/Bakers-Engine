@@ -5,7 +5,7 @@
 #include "Assimp/scene.h"
 #include "Assimp/material.h"
 #include "Assimp/texture.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "Texture.h"
 #include "TextureData.h"
 

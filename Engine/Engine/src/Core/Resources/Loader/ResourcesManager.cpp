@@ -15,7 +15,7 @@
 #include "Assimp/RemoveComments.h"
 
 #include "RootObject.hpp"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "Object.hpp"
 #include "ScriptedComponent.h"
 #include "Model.h"

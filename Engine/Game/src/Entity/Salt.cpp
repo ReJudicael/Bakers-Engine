@@ -2,7 +2,7 @@
 #include "AnimationHandler.h"
 #include "RootObject.hpp"
 #include "EngineCore.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "SkeletalMesh.h"
 #include "Collider.h"
 

@@ -20,7 +20,7 @@
 #include "MenuGroup.h"
 
 #include "RootObject.hpp"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "Mesh.h"
 
 namespace Editor

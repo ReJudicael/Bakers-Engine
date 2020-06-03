@@ -372,7 +372,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Renderer\Postprocess.cpp" />
     <ClCompile Include="src\Core\Resources\Animation\AnimationVertexData.cpp" />
     <ClCompile Include="src\Core\Resources\Character.cpp" />
-    <ClCompile Include="src\Core\Resources\Loader\LoadResources.cpp" />
+    <ClCompile Include="src\Core\Resources\Loader\ResourcesManager.cpp" />
     <ClCompile Include="src\Core\Resources\Material.cpp" />
     <ClCompile Include="src\Core\Resources\ModelData.cpp" />
     <ClCompile Include="src\Core\Resources\Object3DGraph.cpp" />
@@ -453,7 +453,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClInclude Include="include\Core\Resources\Animation\AnimationVertexData.h" />
     <ClInclude Include="include\Core\Resources\Animation\BoneData.h" />
     <ClInclude Include="include\Core\Resources\Character.h" />
-    <ClInclude Include="include\Core\Resources\Loader\LoadResources.h" />
+    <ClInclude Include="include\Core\Resources\Loader\ResourcesManager.h" />
     <ClInclude Include="include\Core\Resources\Material.h" />
     <ClInclude Include="include\Core\Resources\Model.h" />
     <ClInclude Include="include\Core\Resources\ModelData.h" />

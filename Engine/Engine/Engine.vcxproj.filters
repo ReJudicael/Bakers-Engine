@@ -150,9 +150,6 @@
     <ClCompile Include="src\Core\Resources\TextureData.cpp">
       <Filter>Source Files\Core\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Resources\Loader\LoadResources.cpp">
-      <Filter>Source Files\Core\Resources\Loader</Filter>
-    </ClCompile>
     <ClCompile Include="..\Dependencies\glad-4.6\src\glad.c">
       <Filter>Internal Dependencies</Filter>
     </ClCompile>
@@ -270,6 +267,9 @@
     <ClCompile Include="src\Core\Debug\Debug.cpp">
       <Filter>Source Files\Core\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Resources\Loader\ResourcesManager.cpp">
+      <Filter>Source Files\Core\Resources\Loader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core\Maths\Mat4.hpp">
@@ -385,9 +385,6 @@
     </ClInclude>
     <ClInclude Include="include\Core\Resources\Vertex.h">
       <Filter>Header Files\Core\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Resources\Loader\LoadResources.h">
-      <Filter>Header Files\Core\Resources\Loader</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\Mesh.h">
       <Filter>Header Files\Core\Renderer</Filter>
@@ -520,6 +517,9 @@
     </ClInclude>
     <ClInclude Include="include\Core\Renderer\CameraWithSecondaryView.h">
       <Filter>Header Files\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Resources\Loader\ResourcesManager.h">
+      <Filter>Header Files\Core\Resources\Loader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

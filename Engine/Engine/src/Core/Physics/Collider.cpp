@@ -4,7 +4,7 @@
 #include "PxPhysicsAPI.h"
 #include "PxRigidDynamic.h"
 #include "PhysicsScene.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "RootObject.hpp"
 #include "EngineCore.h"
 #include "Maths.hpp"

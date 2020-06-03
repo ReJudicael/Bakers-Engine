@@ -9,7 +9,7 @@
 #include "RootObject.hpp"
 #include "OpenGLLinkState.h"
 #include "Texture.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "PhysicsScene.h"
 #include "EngineCore.h"
 #include "PxRigidActor.h"

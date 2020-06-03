@@ -8,7 +8,7 @@
 #include "Transform.hpp"
 #include "PhysicsScene.h"
 #include "OffsetMesh.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "RootObject.hpp"
 #include "EngineCore.h"
 

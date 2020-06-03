@@ -2,9 +2,9 @@
 #include "Assimp/scene.h"
 #include "ModelData.h"
 #include "OffsetMesh.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "Model.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 
 namespace Resources
 {

@@ -5,7 +5,7 @@
 #include <fstream>
 
 #include "RootObject.hpp"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 #include "PlayerCamera.h"
 #include "ScriptedComponent.h"
 #include "Framebuffer.h"

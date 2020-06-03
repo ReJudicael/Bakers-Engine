@@ -1,6 +1,6 @@
 #include "Bone.h"
 #include "Assimp/scene.h"
-#include "LoadResources.h"
+#include "ResourcesManager.h"
 
 
 namespace Core::Animation

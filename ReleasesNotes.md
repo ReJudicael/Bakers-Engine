@@ -25,6 +25,9 @@
 - **Collider (Sphere, Cube, Capsule):** Handle collision and triggers. Have access to 4 groups of filtering used for collision and raycasts.
 - **Rigidbody:** Handle physic movements on the scene with linear and angular velocity. Needs a collider to be usable.
 
+### Resources
+- **ResourcesManager:** Load of resources in multithread.
+
 ### Navigation
 - **Nav mesh:** Navigation zone build based on static meshes in the scene. Can be rebaked with the Compile button.
 - **Path follower:** Component allowing a gameobject to automatically reach a given global position through baked navigation.
