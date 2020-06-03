@@ -213,8 +213,6 @@ namespace Editor::Window
 		 */
 		void ShowNavigationPanel(const Core::SystemManagement::TreeDirectoryPath& tdp);
 
-		void DeleteSpecialFile(const std::string& itemPath);
-
 	private:
 		/**
 		 * Draw elements in window

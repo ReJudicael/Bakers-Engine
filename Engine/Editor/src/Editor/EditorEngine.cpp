@@ -1,10 +1,12 @@
-#include "EditorEngine.h"
-#include "GUIManager.h"
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <fstream>
+
+#include "EditorEngine.h"
+#include "GUIManager.h"
 #include "PxQueryReport.h"
 #include "PxRigidActor.h"
+#include "PhysicsScene.h"
 
 #include "WindowFileBrowser.h"
 #include "WindowConsole.h"
@@ -16,16 +18,28 @@
 #include "WindowHierarchy.h"
 #include "WindowProfiler.h"
 #include "MenuGroup.h"
+
 #include "RootObject.hpp"
 #include "LoadResources.h"
 #include "Mesh.h"
-#include "PhysicsScene.h"
-
-#include <fstream>
-
 
 namespace Editor
 {
+	void GLAPIENTRY
+		MessageCallback(GLenum source,
+			GLenum type,
+			GLuint id,
+			GLenum severity,
+			GLsizei length,
+			const GLchar* message,
+			const void* userParam)
+	{
+		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+			type, severity, message);
+	}
+
+
 	EditorEngine::EditorEngine() : EditorEngine(1280, 800)
 	{
 	}
@@ -50,20 +64,6 @@ namespace Editor
 		std::cerr << message << std::endl;
 	}
 
-	void GLAPIENTRY
-		MessageCallback(GLenum source,
-			GLenum type,
-			GLuint id,
-			GLenum severity,
-			GLsizei length,
-			const GLchar* message,
-			const void* userParam)
-	{
-		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-			type, severity, message);
-	}
-
 	int EditorEngine::OnInit(const int width, const int height)
 	{
 		ZoneScoped
@@ -79,7 +79,6 @@ namespace Editor
 			return 202;
 
 		m_physicsScene->CreateQueryScene(m_editorScene);
-
 		glDebugMessageCallback(MessageCallback, 0);
 
 		glfwMakeContextCurrent(m_window);
@@ -200,7 +199,7 @@ namespace Editor
 		}
 	}
 
-	void	EditorEngine::Render()
+	void EditorEngine::Render()
 	{
 		ZoneScoped
 		EngineCore::Render();
@@ -242,7 +241,6 @@ namespace Editor
 			m_meshesNeedInit.push_back(mesh);
 	}
 
-
 	void EditorEngine::PutBoxCollider(Core::Physics::Collider* coll)
 	{
 		m_boxCollider.push_back(coll);
@@ -278,6 +276,13 @@ namespace Editor
 		m_info3DObject.emplace(fileName, std::make_shared<Resources::Loader::Object3DInfo>(Object3D));
 	}
 
+	std::shared_ptr<Resources::Loader::Object3DInfo> EditorEngine::GetObject3DInfo(const std::string& localPath)
+	{
+		if (m_info3DObject.count(localPath))
+			return m_info3DObject[localPath];
+		return nullptr;
+	}
+
 	Core::Maths::Vec2 EditorEngine::GetMousePos() noexcept
 	{
 		ZoneScoped
@@ -290,6 +295,46 @@ namespace Editor
 	{
 		ZoneScoped
 			return relativeMousePos;
+	}
+
+	void EditorEngine::Play()
+	{
+		m_state = Core::Datastructure::EngineState::STARTING;
+	}
+
+	void EditorEngine::EndPlay()
+	{
+		m_state = Core::Datastructure::EngineState::CLOSING;
+	}
+
+	bool EditorEngine::IsPlaying()
+	{
+		return m_state >= Core::Datastructure::EngineState::STARTING && m_state <= Core::Datastructure::EngineState::CLOSING;
+	}
+
+	void EditorEngine::Pause()
+	{
+		m_paused = true;
+	}
+
+	void EditorEngine::Unpause()
+	{
+		m_paused = false;
+	}
+
+	void EditorEngine::TogglePause()
+	{
+		m_paused = !m_paused;
+	}
+
+	bool EditorEngine::IsPaused()
+	{
+		return m_paused;
+	}
+
+	void EditorEngine::Step()
+	{
+		m_step = true;
 	}
 
 	json	ClassToJson(rttr::type t, rttr::instance i);
@@ -483,6 +528,11 @@ namespace Editor
 			it->AddToNavMesh();
 		}
 		m_navMesh->Build();
+	}
+
+	void EditorEngine::SetGameInputState(bool state)
+	{
+		m_inputSystem->SetActive(state);
 	}
 
 	void EditorEngine::SetCallbackToGLFW()

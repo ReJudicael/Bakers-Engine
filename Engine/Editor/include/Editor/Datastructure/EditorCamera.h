@@ -9,52 +9,80 @@
 
 namespace Editor::Datastructure
 {
+	/**
+	 * Camera perspective properties
+	 */
 	struct CameraPerspective
 	{
-		float width = 1024.0f;
-		float height = 780.0f;
-		float fov = 60.0f;
-		float near = 0.1f;
-		float far = 100.f;
+		float width{ 1024.f };
+		float height{ 780.f };
+		float fov{ 60.f };
+		float near{ 0.1f };
+		float far{ 100.f };
 	};
+
+	/**
+	 * Camera of the Editor (used in the WindowScene)
+	 */
 	class EditorCamera : public virtual Core::Datastructure::ComponentBase, public virtual Core::Datastructure::ICamera
 	{
-		CameraPerspective	m_persp;
-		bool				m_isPerspectiveUpdated = false;
-		bool				m_isCamUpdated = false;
-		Core::Datastructure::Transform		m_transform;
+		bool m_isPerspectiveUpdated{ false };
+		bool m_isCamUpdated{ false };
+		bool m_isRotating{ false };
+		bool m_isMouseSet{ false };
 
-		Core::Maths::Vec3	m_angularMovement;
-		Core::Maths::Vec3	m_movement;
-		Core::Maths::Vec2	m_mousePos;
-		float	m_runSpeed{ 5.f };
-		float	m_yaw{ 0.f };
-		float	m_pitch{ 0.f };
-		bool	m_isRotating{ false };
-		bool	m_isMouseSet{ false };
+		float m_speed{ 5.f };
+		float m_runSpeed{ 5.f };
+		float m_yaw{ 0.f };
+		float m_pitch{ 0.f };
 
-		//Should make speed change with mousewheel
-		float				m_speed{ 5 };
+		Core::Maths::Vec2 m_mousePos;
+		Core::Maths::Vec3 m_angularMovement;
+		Core::Maths::Vec3 m_movement;
+		CameraPerspective m_persp;
 
-		virtual void		OnInit() override;
-		virtual bool		OnStart() override;
+		Core::Datastructure::Transform m_transform;
 
-		Core::Maths::Mat4	OnGenerateCamera() override;
-		Core::Maths::Mat4	OnGeneratePerspective() override;
-		virtual bool		IsCameraMatrixUpdated() override { return m_transform.IsTrsUpdated(); }
-		virtual bool		IsPerspectiveMatrixUpdated() override { return m_isPerspectiveUpdated; }
-		virtual void		PerspectiveMatrixUpdated() override { m_isPerspectiveUpdated = true; }
+	public:
+		/**
+		 * Default constructor
+		 */
+		EditorCamera();
 
+	private:
+		virtual void OnInit() override;
+		virtual bool OnStart() override;
 
 		virtual void StartCopy(IComponent*& copyTo) const override;
 		virtual void OnCopy(IComponent* copyTo) const override;
 
 		virtual void OnDestroy() override;
 		virtual void OnReset() override;
+
+		virtual bool IsCameraMatrixUpdated() override;
+		virtual bool IsPerspectiveMatrixUpdated() override;
+		virtual void PerspectiveMatrixUpdated() override;
+
+		Core::Maths::Mat4 OnGenerateCamera() override;
+		Core::Maths::Mat4 OnGeneratePerspective() override;
+
 	public:
-		EditorCamera();
+		/**
+		 * Update translation and rotation
+		 * @param deltaTime: Time elapsed between two frames
+		 */
+		virtual void Update(float deltaTime, Core::SystemManagement::InputSystem* inupt);
+
+		/**
+		 * Set ratio with width and height
+		 * @param width: Width of ratio
+		 * @param height: Height of ratio
+		 */
 		void SetRatio(const float width, const float height) override;
 
+		/**
+		 * Get FrameBuffer
+		 */
 		Core::Renderer::Framebuffer* GetFBO();
 
 		/**
@@ -83,61 +111,56 @@ namespace Editor::Datastructure
 		 */
 		const Core::Maths::Vec3& GetPos();
 
-		/**
-		 * Update translation and rotation
-		 * @param deltaTime: Time elapsed between two frames
-		 */
-		virtual void Update(float deltaTime, Core::SystemManagement::InputSystem* inupt);
 	private:
 		/**
 		 * Compute keyboard and mouse interactions when right mouse button is pressed
 		 */
-		void	MoveWithInput(Core::SystemManagement::InputSystem* input);
+		void MoveWithInput(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Check the editor selection mode and the left mouse button
 		 * @ return true if the camera can be moved with current mouse movements
 		 */
-		bool	IsUsingMouseTranslation(Core::SystemManagement::InputSystem* input);
+		bool IsUsingMouseTranslation(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Compute translation with WASDQE keys
 		 */
-		void	ComputeInputTranslation(Core::SystemManagement::InputSystem* input);
+		void ComputeInputTranslation(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Compute translation with mouse movements
 		 */
-		void	ComputeMouseTranslation(Core::SystemManagement::InputSystem* input);
+		void ComputeMouseTranslation(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Compute rotation with mouse movements
 		 */
-		void	ComputeRotation(Core::SystemManagement::InputSystem* input);
+		void ComputeRotation(Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Update translation with stored movement vector
 		 * @param deltaTime: Time elapsed between two frames
 		 */
-		void	UpdatePosition(float deltaTime);
+		void UpdatePosition(float deltaTime);
 
 		/**
 		 * Update rotation with stored rotation vector
 		 * @param deltaTime: Time elapsed between two frames
 		 */
-		void	UpdateRotation(float deltaTime);
+		void UpdateRotation(float deltaTime);
 
 		/**
 		 * Update movement vector (change applied by OnUpdate)
 		 * @param move: New value for stored movement vector
 		 */
-		void	Move(Core::Maths::Vec3 move, Core::SystemManagement::InputSystem* input);
+		void Move(Core::Maths::Vec3 move, Core::SystemManagement::InputSystem* input);
 
 		/**
 		 * Update rotation vector (change applied by OnUpdate)
 		 * @param move: New value for stored angular movement vector
 		 */
-		void	Rotate(Core::Maths::Vec3 move);
+		void Rotate(Core::Maths::Vec3 move);
 
 		REGISTER_CLASS(Core::Datastructure::ICamera)
 	};

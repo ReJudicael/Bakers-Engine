@@ -193,7 +193,7 @@ namespace Editor::Window
 				if (ImGui::MenuItem("Delete"))
 				{
 					m_fs->DeleteContent(itemPath);
-					DeleteSpecialFile(itemPath);
+					GetEngine()->GetResourcesManager()->DeleteSpecialMaterialShader(itemPath);
 				}
 			}
 			ImGui::Separator();
@@ -482,11 +482,6 @@ namespace Editor::Window
 			ShowAllFoldersRecursive(tdp);
 		}
 		ImGui::EndChild();
-	}
-
-	void WindowFileBrowser::DeleteSpecialFile(const std::string& itemPath)
-	{
-		GetEngine()->GetResourcesManager()->DeleteSpecialMaterialShader(itemPath);
 	}
 
 	void WindowFileBrowser::Tick()

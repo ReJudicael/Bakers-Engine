@@ -19,6 +19,90 @@ namespace Editor::Datastructure
 		ZoneScoped
 	}
 
+	void EditorCamera::OnInit()
+	{
+		ZoneScoped
+		ComponentBase::OnInit();
+		ICamera::OnInit();
+		m_fbo->type = Core::Renderer::FBOType::CUSTOM;
+	}
+
+	bool EditorCamera::OnStart()
+	{
+		ZoneScoped
+		return ComponentBase::OnStart();
+	}
+
+	void EditorCamera::StartCopy(IComponent*& copyTo) const
+	{
+		ZoneScoped
+		copyTo = new EditorCamera();
+		OnCopy(copyTo);
+	}
+	
+	void EditorCamera::OnCopy(IComponent* copyTo) const
+	{
+		ZoneScoped
+		ComponentBase::OnCopy(copyTo);
+		ICamera::OnCopy(copyTo);
+	}
+	
+	void EditorCamera::OnDestroy()
+	{
+		ZoneScoped
+		ComponentBase::OnDestroy();
+		ICamera::OnDestroy();
+
+		GetRoot()->GetEngine()->DeleteFBO(m_fbo);
+	}
+	
+	void EditorCamera::OnReset()
+	{
+		ZoneScoped
+		ComponentBase::OnReset();
+		ICamera::OnReset();
+
+		m_persp = CameraPerspective();
+		m_isPerspectiveUpdated = false;
+		m_transform = Core::Datastructure::Transform({0, 1, 0});
+	}
+
+	bool EditorCamera::IsCameraMatrixUpdated()
+	{
+		return m_transform.IsTrsUpdated();
+	}
+
+	bool EditorCamera::IsPerspectiveMatrixUpdated()
+	{
+		return m_isPerspectiveUpdated;
+	}
+
+	void EditorCamera::PerspectiveMatrixUpdated()
+	{
+		m_isPerspectiveUpdated = true;
+	}
+
+	Core::Maths::Mat4 EditorCamera::OnGenerateCamera()
+	{
+		ZoneScoped
+		return m_transform.GetLocalTrs().Inversed();
+	}
+	
+	Core::Maths::Mat4 EditorCamera::OnGeneratePerspective()
+	{
+		ZoneScoped
+		return Core::Renderer::Camera::CreatePerspectiveMatrix(m_persp.width, m_persp.height, m_persp.fov, m_persp.near, m_persp.far);
+	}
+
+	void EditorCamera::Update(float deltaTime, Core::SystemManagement::InputSystem* input)
+	{
+		ZoneScoped
+		MoveWithInput(input);
+
+		UpdatePosition(deltaTime);
+		UpdateRotation(deltaTime);
+	}
+
 	void EditorCamera::SetRatio(const float width, const float height)
 	{
 		ZoneScoped
@@ -67,66 +151,6 @@ namespace Editor::Datastructure
 	{
 		ZoneScoped
 		return m_transform.GetLocalPos();
-	}
-
-	void EditorCamera::OnInit()
-	{
-		ZoneScoped
-		ComponentBase::OnInit();
-		ICamera::OnInit();
-		m_fbo->type = Core::Renderer::FBOType::CUSTOM;
-	}
-
-	bool EditorCamera::OnStart()
-	{
-		ZoneScoped
-		return ComponentBase::OnStart();
-	}
-	
-	Core::Maths::Mat4 EditorCamera::OnGenerateCamera()
-	{
-		ZoneScoped
-		return m_transform.GetLocalTrs().Inversed();
-	}
-	
-	Core::Maths::Mat4 EditorCamera::OnGeneratePerspective()
-	{
-		ZoneScoped
-		return Core::Renderer::Camera::CreatePerspectiveMatrix(m_persp.width, m_persp.height, m_persp.fov, m_persp.near, m_persp.far);
-	}
-	
-	void EditorCamera::StartCopy(IComponent*& copyTo) const
-	{
-		ZoneScoped
-		copyTo = new EditorCamera();
-		OnCopy(copyTo);
-	}
-	
-	void EditorCamera::OnCopy(IComponent* copyTo) const
-	{
-		ZoneScoped
-		ComponentBase::OnCopy(copyTo);
-		ICamera::OnCopy(copyTo);
-	}
-	
-	void EditorCamera::OnDestroy()
-	{
-		ZoneScoped
-		ComponentBase::OnDestroy();
-		ICamera::OnDestroy();
-
-		GetRoot()->GetEngine()->DeleteFBO(m_fbo);
-	}
-	
-	void EditorCamera::OnReset()
-	{
-		ZoneScoped
-		ComponentBase::OnReset();
-		ICamera::OnReset();
-
-		m_persp = CameraPerspective();
-		m_isPerspectiveUpdated = false;
-		m_transform = Core::Datastructure::Transform({0, 1, 0});
 	}
 
 	void EditorCamera::MoveWithInput(Core::SystemManagement::InputSystem* input)
@@ -228,15 +252,6 @@ namespace Editor::Datastructure
 
 		input->SetMousePos(m_mousePos);
 		m_isMouseSet = true;
-	}
-
-	void EditorCamera::Update(float deltaTime, Core::SystemManagement::InputSystem* input)
-	{
-		ZoneScoped
-		MoveWithInput(input);
-
-		UpdatePosition(deltaTime);
-		UpdateRotation(deltaTime);
 	}
 
 	void EditorCamera::UpdatePosition(float deltaTime)

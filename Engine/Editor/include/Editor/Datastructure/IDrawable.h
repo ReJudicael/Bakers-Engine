@@ -15,6 +15,9 @@ namespace Editor::Datastructure
 		 */
 		virtual void Draw() = 0;
 
+		/**
+		 * Default destructor
+		 */
 		virtual ~IDrawable() = default;
 	};
 }

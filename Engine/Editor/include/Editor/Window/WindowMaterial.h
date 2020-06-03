@@ -14,7 +14,7 @@ namespace Editor::Window
 	/**
 	 * Window Material
 	 */
-	class WindowMaterial : public AWindow
+	class WindowMaterial final : public AWindow
 	{
 	private:
 		/**

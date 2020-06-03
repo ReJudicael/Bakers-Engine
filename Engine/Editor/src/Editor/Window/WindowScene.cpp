@@ -4,7 +4,6 @@
 #include "EditorEngine.h"
 #include "RootObject.hpp"
 #include "Object.hpp"
-#include "ImGuizmo.h"
 #include "Maths.hpp"
 
 #include "IconsFontAwesome5.h"
@@ -220,10 +219,10 @@ namespace Editor::Window
 		ImVec2 windowSize{ ImGui::GetContentRegionMax() };
 		Core::Maths::Vec2 mouse = ImGui::GetMousePos();
 		mouse -= ImGui::GetWindowPos();
-		mouse.x -= windowSize.x / 2;
-		mouse.x /= (windowSize.x / 2);
-		mouse.y -= windowSize.y / 2;
-		mouse.y /= (windowSize.y / 2);
+		mouse.x -= windowSize.x * 0.5f;
+		mouse.x /= (windowSize.x * 0.5f);
+		mouse.y -= windowSize.y * 0.5f;
+		mouse.y /= (windowSize.y * 0.5f);
 
 		// If Mouse outside of window, return default vector
 		if (mouse.x < -1 || mouse.x > 1 || mouse.y < -1 || mouse.y > 1)

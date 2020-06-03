@@ -7,7 +7,7 @@ namespace Editor::Window
 	/**
 	 * Window Profiler
 	 */
-	class WindowProfiler : public AWindow
+	class WindowProfiler final : public AWindow
 	{
 	public:
 		/**

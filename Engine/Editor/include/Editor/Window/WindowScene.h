@@ -17,16 +17,15 @@ namespace Editor::Window
 	 */
 	class WindowScene final : public AWindow
 	{
-		Datastructure::EditorCamera* m_cam;
+		bool m_showNavMesh{ true };
+		bool m_showColliders{ true };
 
-		std::vector<std::shared_ptr<Resources::Model>>		m_model;
-		std::shared_ptr<Resources::Shader>					m_shader;
+		Datastructure::EditorCamera* m_cam{ nullptr };
+		std::shared_ptr<Resources::Shader> m_shader{ nullptr };
 
 		Core::Maths::Mat<4, 4> m_cube{ m_cube.Identity() };
+		std::vector<std::shared_ptr<Resources::Model>> m_model;
 
-		bool												m_showNavMesh{ true };
-
-		bool m_showColliders{ true };
 	public:
 		/**
 		 * Constructor which set title of window ("Scene")
@@ -49,6 +48,7 @@ namespace Editor::Window
 		 */
 		void PopWindowStyle() override;
 
+	private:
 		/**
 		 * Draw physX collider
 		 */

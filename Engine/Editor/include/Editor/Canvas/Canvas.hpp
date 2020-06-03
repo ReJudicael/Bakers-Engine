@@ -141,7 +141,6 @@ namespace Editor
 		EditorEngine* GetEngine() noexcept;
 
 #pragma region ToolbarRegion
-
 	private:
 		/**
 		 * Draw toolbar
@@ -155,7 +154,6 @@ namespace Editor
 		 * @param helpMarker: Text written when the mouse is over the button
 		 */
 		bool ToolbarButton(const char* label, bool state, const char* helpMarker = (const char*)0);
-
 #pragma endregion
 	};
 

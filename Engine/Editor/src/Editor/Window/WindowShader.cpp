@@ -1,4 +1,5 @@
 #include <glad\glad.h>
+#include <filesystem>
 
 #include "WindowShader.h"
 #include "EditorEngine.h"
@@ -11,7 +12,6 @@ namespace Editor::Window
 		AWindow{ canvas, ICON_FA_ADJUST "  Shader", visible }
 	{
 		m_treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
-
 		GetEngine()->GetResourcesManager()->LoadTexture("Resources\\Images\\InspectorIcons\\Material.png", m_propertyIcon);
 	}
 

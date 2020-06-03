@@ -281,7 +281,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Dependencies\imgui-1.76\include\imgui\imgui_user.inl">
-      <Filter>Header Files</Filter>
+      <Filter>Internal Dependencies\imgui\include</Filter>
     </None>
   </ItemGroup>
 </Project>

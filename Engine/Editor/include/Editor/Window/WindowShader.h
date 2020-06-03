@@ -9,7 +9,7 @@ namespace Resources
 
 namespace Editor::Window
 {
-	class WindowShader : public AWindow
+	class WindowShader final : public AWindow
 	{
 	private:
 		/**
@@ -60,7 +60,6 @@ namespace Editor::Window
 		void PopWindowStyle() override;
 
 	private:
-
 		/**
 		 * Drop an item
 		 * @param itemPath: Path of the dragged file / folder
@@ -99,6 +98,4 @@ namespace Editor::Window
 		 */
 		void Tick() override;
 	};
-	
 }
-
