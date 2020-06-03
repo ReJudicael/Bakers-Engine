@@ -1,4 +1,3 @@
-//#include <GLFW/glfw3.h>
 #include "BoxCollider.h"
 #include "Collider.h"
 #include "Vec3.hpp"

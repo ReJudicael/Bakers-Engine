@@ -246,9 +246,6 @@
     <ClCompile Include="src\Core\Physics\SphereCollider.cpp">
       <Filter>Source Files\Core\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Datastructure\ICollidable.cpp">
-      <Filter>Source Files\Core\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Resources\Animation\AnimationVertexData.cpp">
       <Filter>Source Files\Core\Resources\Animation</Filter>
     </ClCompile>

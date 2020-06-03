@@ -108,20 +108,40 @@ namespace Resources
 		 */
 		bool LoadShader(const std::string& path);
 
+		/**
+		 * Get name of fragment shader
+		 * @return stored path to fragment shader file
+		 */
 		inline std::string GetFragName()
 		{
 			return m_fragmentFile;
 		}
 
+		/**
+		 * Set name of fragment shader
+		 * @param name: Path to fragment shader file
+		 */
 		void SetFragName(std::string name);
 
+		/**
+		 * Get name of vertex shader
+		 * @return stored path to fragment vertex file
+		 */
 		inline std::string GetVertName()
 		{
 			return m_vertexFile;
 		}
 
+		/**
+		 * Set name of vertex shader
+		 * @param name: Path to vertex shader file
+		 */
 		void SetVertName(std::string name);
 
+		/**
+		 * Program getter
+		 * @return current GL Program
+		 */
 		inline GLuint	GetProgram()
 		{
 			return m_programID;

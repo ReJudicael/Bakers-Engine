@@ -9,6 +9,9 @@
 
 namespace Core::Navigation
 {
+	/**
+	 * Handle movement on nav mesh
+	 */
 	BAKERS_API_CLASS PathFollowingComponent : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::INavAgent, public virtual Core::Datastructure::IUpdatable
 	{
 	protected:
@@ -30,11 +33,24 @@ namespace Core::Navigation
 		virtual void	OnCopy(IComponent* copyTo) const override;
 		virtual void	OnReset() override;
 
+		/**
+		 * Navigation handling
+		 * @param deltaTime: Time between frames
+		 */
 		void				UpdatePos(float deltaTime);
 	public:
 		PathFollowingComponent();
 
+		/**
+		 * Target getter
+		 * @return Current position the component is trying to reach
+		 */
 		Core::Maths::Vec3	GetTarget() { return m_target; };
+
+		/**
+		 * Target setter
+		 * @param target: New target for the component
+		 */
 		void				SetTarget(Core::Maths::Vec3 target);
 
 		/**

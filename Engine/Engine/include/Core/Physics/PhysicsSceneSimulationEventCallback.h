@@ -71,9 +71,7 @@ namespace Core::Physics
 		{
 		}
 
-		/**
-		 * 
-		 */
+
 		static physx::PxFilterFlags filterShader(
 			physx::PxFilterObjectAttributes attributes0,
 			physx::PxFilterData filterData0,

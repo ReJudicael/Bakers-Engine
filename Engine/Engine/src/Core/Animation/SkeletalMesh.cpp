@@ -70,8 +70,6 @@ namespace Core::Animation
 			if (manager->GetCountSkeleton(m_modelName) <= 0)
 				return;
 			InitBones(manager->GetSkeleton(m_modelName));
-
-			//animationHandler = AnimationHandler(nullptr);
 		}
 		Mesh::UpdateModel();
 	}

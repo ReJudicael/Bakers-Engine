@@ -4,6 +4,9 @@
 #include <GLFW/glfw3.h>
 #include <string>
 
+/**
+ * State of a key, whether it is pressed or not
+ */
 enum class EStateKey : int
 {
 	UNUSED = -1,
@@ -12,6 +15,9 @@ enum class EStateKey : int
 	DOWN,
 };
 
+/**
+ * State of a mouse button, whether it is pressed or not
+ */
 enum class EStateMouseButton : int
 {
 	UNUSED = -1,
@@ -21,6 +27,9 @@ enum class EStateMouseButton : int
 	DOUBLECLICK
 };
 
+/**
+ * State of mouse scroll
+ */
 enum class EStateScroll : int
 {
 	UNUSED = -1,
@@ -28,6 +37,9 @@ enum class EStateScroll : int
 	DOWN,
 };
 
+/**
+ * Store all types of buttons usable on mouse
+ */
 enum class EMouseButton : int
 {
 	B1 = GLFW_MOUSE_BUTTON_1,                //
@@ -44,6 +56,9 @@ enum class EMouseButton : int
 	LAST = GLFW_MOUSE_BUTTON_8,              //
 };
 
+/**
+ * Store all types of buttons usable on keyboard
+ */
 enum class EKey : int
 {
 	UNKNOWN = GLFW_KEY_UNKNOWN,              //
@@ -169,6 +184,11 @@ enum class EKey : int
 	MENU = GLFW_KEY_MENU                     //
 };
 
+/**
+ * Get name of enum variable based on value
+ * @param s: Enum value 
+ * @return Enum value as a string
+ */
 inline std::string ToString(const EStateKey s) noexcept
 {
 	switch (s)
@@ -190,6 +210,11 @@ inline std::string ToString(const EStateKey s) noexcept
 	}
 }
 
+/**
+ * Get name of enum variable based on value
+ * @param s: Enum value
+ * @return Enum value as a string
+ */
 inline std::string ToString(const EStateMouseButton s) noexcept
 {
 	switch (s)
@@ -214,6 +239,11 @@ inline std::string ToString(const EStateMouseButton s) noexcept
 	}
 }
 
+/**
+ * Get name of enum variable based on value
+ * @param s: Enum value
+ * @return Enum value as a string
+ */
 inline std::string ToString(const EStateScroll s) noexcept
 {
 	switch (s)
@@ -232,6 +262,11 @@ inline std::string ToString(const EStateScroll s) noexcept
 	}
 }
 
+/**
+ * Get name of enum variable based on value
+ * @param s: Enum value
+ * @return Enum value as a string
+ */
 inline std::string ToString(const EMouseButton b) noexcept
 {
 	switch (b)
@@ -265,6 +300,11 @@ inline std::string ToString(const EMouseButton b) noexcept
 	}
 }
 
+/**
+ * Get name of enum variable based on value
+ * @param s: Enum value
+ * @return Enum value as a string
+ */
 inline std::string ToString(const EKey key) noexcept
 {
 	switch (key)

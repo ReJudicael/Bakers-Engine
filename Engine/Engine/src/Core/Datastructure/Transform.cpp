@@ -23,10 +23,11 @@ RTTR_PLUGIN_REGISTRATION
 		.property_readonly("IsGTrsUpdated", &Transform::m_isGTrsUpdated)
 		.property_readonly("IsLTrsUpdated", &Transform::m_isTrsUpdated);
 
+	// Register lua separately for specific script behavior unrelated to rttr editor display
 	lua.new_usertype<Transform>("Transform",
 		sol::constructors<Transform()>(),
 		"Position", &Transform::m_pos,
-		"Rotation", & Transform::m_rot,
+		"Rotation", &Transform::m_rot,
 		"Scale", &Transform::m_scale,
 		"GlobalPos", &Transform::m_gpos,
 		"GlobalRot", &Transform::m_grot,

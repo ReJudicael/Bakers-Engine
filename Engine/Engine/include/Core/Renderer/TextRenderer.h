@@ -14,6 +14,9 @@
 
 namespace Core::Renderer
 {
+	/**
+	 * Handle text displaying in scene
+	 */
 	class TextRenderer : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
 	{
 	protected:
@@ -24,7 +27,13 @@ namespace Core::Renderer
 		std::shared_ptr<Resources::Shader>	m_shader;
 		std::shared_ptr<Resources::Model>	m_quad;
 	public:
+		/**
+		 * Default constructor
+		 */
 		TextRenderer();
+		/**
+		 * Destructor
+		 */
 		~TextRenderer() = default;
 
 		virtual void	OnInit() override;
@@ -32,10 +41,18 @@ namespace Core::Renderer
 		virtual void OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader = nullptr) override;
 		virtual void OnReset() override;
 
+		/**
+		 * Text setter
+		 * @return Text
+		 */
 		const std::string&	GetText() const
 		{
 			return m_text;
 		}
+		/**
+		 * Text getter
+		 * @param text: New text
+		 */
 		void				SetText(const std::string& text)
 		{
 			m_text = text;
