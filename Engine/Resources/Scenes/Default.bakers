@@ -1772,40 +1772,6 @@
                                     "Type": "float",
                                     "Value": -3.0
                                 },
-                                "Perspective": {
-                                    "Name": "Perspective",
-                                    "Type": "Perspective",
-                                    "Value": {
-                                        "Type": "Perspective",
-                                        "Values": {
-                                            "FOV": {
-                                                "Name": "FOV",
-                                                "Type": "float",
-                                                "Value": 60.0
-                                            },
-                                            "Far": {
-                                                "Name": "Far",
-                                                "Type": "float",
-                                                "Value": 100.0
-                                            },
-                                            "Height": {
-                                                "Name": "Height",
-                                                "Type": "float",
-                                                "Value": 589.0
-                                            },
-                                            "Near": {
-                                                "Name": "Near",
-                                                "Type": "float",
-                                                "Value": 0.10000000149011612
-                                            },
-                                            "Width": {
-                                                "Name": "Width",
-                                                "Type": "float",
-                                                "Value": 640.0
-                                            }
-                                        }
-                                    }
-                                },
                                 "Scroll speed": {
                                     "Name": "Scroll speed",
                                     "Type": "float",
@@ -1983,9 +1949,9 @@
                     "Flags": 0,
                     "Name": "TargetAnchor",
                     "Pos": {
-                        "x": 1.5417476892471313,
-                        "y": 0.30000001192092896,
-                        "z": 1.3828277587890625e-05
+                        "x": 2.4374611377716064,
+                        "y": 0.2999997138977051,
+                        "z": -0.42234039306640625
                     },
                     "Rot": {
                         "w": 1.0,
@@ -2312,9 +2278,9 @@
             "Flags": 0,
             "Name": "Owen",
             "Pos": {
-                "x": 2.6708688735961914,
-                "y": -3.2672691345214844,
-                "z": 26.738792419433594
+                "x": -33.06452560424805,
+                "y": 7.04202127456665,
+                "z": -4.954372882843018
             },
             "Rot": {
                 "w": 0.7335718870162964,
@@ -3795,40 +3761,6 @@
                                     "Name": "IsUpdating",
                                     "Type": "bool",
                                     "Value": true
-                                },
-                                "Perspective": {
-                                    "Name": "Perspective",
-                                    "Type": "Perspective",
-                                    "Value": {
-                                        "Type": "Perspective",
-                                        "Values": {
-                                            "FOV": {
-                                                "Name": "FOV",
-                                                "Type": "float",
-                                                "Value": 60.0
-                                            },
-                                            "Far": {
-                                                "Name": "Far",
-                                                "Type": "float",
-                                                "Value": 100.0
-                                            },
-                                            "Height": {
-                                                "Name": "Height",
-                                                "Type": "float",
-                                                "Value": 176.0
-                                            },
-                                            "Near": {
-                                                "Name": "Near",
-                                                "Type": "float",
-                                                "Value": 0.10000000149011612
-                                            },
-                                            "Width": {
-                                                "Name": "Width",
-                                                "Type": "float",
-                                                "Value": 192.0
-                                            }
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -4263,9 +4195,9 @@
             "Flags": 0,
             "Name": "Brioche",
             "Pos": {
-                "x": 2.9315342903137207,
-                "y": -2.652291774749756,
-                "z": 23.538738250732422
+                "x": -33.84218215942383,
+                "y": 7.026337146759033,
+                "z": -7.5792622566223145
             },
             "Rot": {
                 "w": 0.773434042930603,
@@ -6393,7 +6325,7 @@
                             "Value": [
                                 60.0,
                                 0.0,
-                                3.0
+                                8.0
                             ]
                         },
                         "Damage": {
@@ -6519,7 +6451,7 @@
                             "Type": "Vec3",
                             "Value": [
                                 0.0,
-                                2.0,
+                                2.0199999809265137,
                                 -0.7200000286102295
                             ]
                         },
@@ -6619,425 +6551,6 @@
         },
         {
             "Childs": [
-                {
-                    "Childs": [
-                        {
-                            "Childs": [],
-                            "Components": [
-                                {
-                                    "Type": "Mesh",
-                                    "Values": {
-                                        "Cast Shadows": {
-                                            "Name": "Cast Shadows",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "IsActive": {
-                                            "Name": "IsActive",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "IsChild": {
-                                            "Name": "IsChild",
-                                            "Type": "bool",
-                                            "Value": false
-                                        },
-                                        "IsRoot": {
-                                            "Name": "IsRoot",
-                                            "Type": "bool",
-                                            "Value": false
-                                        },
-                                        "Material": {
-                                            "Name": "Material",
-                                            "Type": "ArraySequential",
-                                            "Value": [
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                }
-                                            ],
-                                            "Wrapped type": "std::string"
-                                        },
-                                        "MaterialsNames": {
-                                            "Name": "MaterialsNames",
-                                            "Type": "ArraySequential",
-                                            "Value": [
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                },
-                                                {
-                                                    "Type": "std::string",
-                                                    "Value": ".\\Resources\\Models\\IronGolem\\0"
-                                                }
-                                            ],
-                                            "Wrapped type": "std::string"
-                                        },
-                                        "Model": {
-                                            "Name": "Model",
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Models\\IronGolem\\iron_golem.obj"
-                                        }
-                                    }
-                                },
-                                {
-                                    "Type": "Box Collider",
-                                    "Values": {
-                                        "Activate": {
-                                            "Name": "Activate",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "Box Half Extent": {
-                                            "Name": "Box Half Extent",
-                                            "Type": "Vec3",
-                                            "Value": [
-                                                1.5,
-                                                1.6799999475479126,
-                                                0.5
-                                            ]
-                                        },
-                                        "Filter": {
-                                            "Name": "Filter",
-                                            "Type": "FilterRaycast",
-                                            "Value": 1
-                                        },
-                                        "IsActive": {
-                                            "Name": "IsActive",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "Local positon": {
-                                            "Name": "Local positon",
-                                            "Type": "Vec3",
-                                            "Value": [
-                                                -0.8399999737739563,
-                                                0.8899999856948853,
-                                                -1.0399999618530273
-                                            ]
-                                        },
-                                        "Local rotation": {
-                                            "Name": "Local rotation",
-                                            "Type": "Vec3",
-                                            "Value": [
-                                                0.0,
-                                                0.0,
-                                                0.0
-                                            ]
-                                        },
-                                        "S/D Frict - Restitut": {
-                                            "Name": "S/D Frict - Restitut",
-                                            "Type": "Vec3",
-                                            "Value": [
-                                                1.5,
-                                                1.5,
-                                                0.0
-                                            ]
-                                        },
-                                        "Trigger": {
-                                            "Name": "Trigger",
-                                            "Type": "bool",
-                                            "Value": false
-                                        }
-                                    }
-                                }
-                            ],
-                            "Flags": 1,
-                            "Name": "Golem",
-                            "Pos": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0
-                            },
-                            "Rot": {
-                                "w": 0.7071067690849304,
-                                "x": 0.0,
-                                "y": 0.7071067690849304,
-                                "z": 0.0
-                            },
-                            "Scale": {
-                                "x": 0.10000000149011612,
-                                "y": 0.10000000149011612,
-                                "z": 0.10000000149011612
-                            }
-                        },
-                        {
-                            "Childs": [],
-                            "Components": [
-                                {
-                                    "Type": "Particle System",
-                                    "Values": {
-                                        "Active": {
-                                            "Name": "Active",
-                                            "Type": "bool",
-                                            "Value": false
-                                        },
-                                        "Birth Color": {
-                                            "Name": "Birth Color",
-                                            "Type": "Color",
-                                            "Value": [
-                                                1.0,
-                                                0.0,
-                                                0.0,
-                                                1.0
-                                            ]
-                                        },
-                                        "Death Color": {
-                                            "Name": "Death Color",
-                                            "Type": "Color",
-                                            "Value": [
-                                                0.0,
-                                                0.9882352948188782,
-                                                1.0,
-                                                1.0
-                                            ]
-                                        },
-                                        "Dispersion": {
-                                            "Name": "Dispersion",
-                                            "Type": "Vec2",
-                                            "Value": [
-                                                1.0,
-                                                1.0
-                                            ]
-                                        },
-                                        "Gravity": {
-                                            "Name": "Gravity",
-                                            "Type": "float",
-                                            "Value": 0.0
-                                        },
-                                        "IsActive": {
-                                            "Name": "IsActive",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "IsUpdating": {
-                                            "Name": "IsUpdating",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "Life time": {
-                                            "Name": "Life time",
-                                            "Type": "float",
-                                            "Value": 1.0
-                                        },
-                                        "Loop": {
-                                            "Name": "Loop",
-                                            "Type": "bool",
-                                            "Value": true
-                                        },
-                                        "Particle texture": {
-                                            "Name": "Particle texture",
-                                            "Type": "std::string",
-                                            "Value": ".\\Resources\\Textures\\Particle2.png"
-                                        },
-                                        "Particles number": {
-                                            "Name": "Particles number",
-                                            "Type": "int",
-                                            "Value": 30
-                                        },
-                                        "Spawn zone": {
-                                            "Name": "Spawn zone",
-                                            "Type": "Vec3",
-                                            "Value": [
-                                                0.0,
-                                                0.0,
-                                                0.0
-                                            ]
-                                        },
-                                        "Speed": {
-                                            "Name": "Speed",
-                                            "Type": "float",
-                                            "Value": 0.5
-                                        },
-                                        "Time Before Spawn": {
-                                            "Name": "Time Before Spawn",
-                                            "Type": "float",
-                                            "Value": 0.20000000298023224
-                                        }
-                                    }
-                                }
-                            ],
-                            "Flags": 1,
-                            "Name": "Particle",
-                            "Pos": {
-                                "x": -1.0,
-                                "y": 0.5,
-                                "z": 0.75
-                            },
-                            "Rot": {
-                                "w": 1.0,
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0
-                            },
-                            "Scale": {
-                                "x": 5.0,
-                                "y": 5.0,
-                                "z": 5.0
-                            }
-                        }
-                    ],
-                    "Components": [
-                        {
-                            "Type": "Door",
-                            "Values": {
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsUpdating": {
-                                    "Name": "IsUpdating",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "Movement": {
-                                    "Name": "Movement",
-                                    "Type": "Vec3",
-                                    "Value": [
-                                        0.0,
-                                        0.0,
-                                        1.0
-                                    ]
-                                },
-                                "Speed": {
-                                    "Name": "Speed",
-                                    "Type": "float",
-                                    "Value": 1.0
-                                },
-                                "Time moving": {
-                                    "Name": "Time moving",
-                                    "Type": "float",
-                                    "Value": 3.0
-                                }
-                            }
-                        },
-                        {
-                            "Type": "Audio Source",
-                            "Values": {
-                                "Audio Clip": {
-                                    "Name": "Audio Clip",
-                                    "Type": "std::string",
-                                    "Value": ".\\Resources\\Sounds\\the-legend-of-zelda-ocarina-of-time-secret-sound.mp3"
-                                },
-                                "Audio Mode": {
-                                    "Name": "Audio Mode",
-                                    "Type": "Audio Mode",
-                                    "Value": 8
-                                },
-                                "IsActive": {
-                                    "Name": "IsActive",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "IsUpdating": {
-                                    "Name": "IsUpdating",
-                                    "Type": "bool",
-                                    "Value": true
-                                },
-                                "Loop": {
-                                    "Name": "Loop",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Max Distance": {
-                                    "Name": "Max Distance",
-                                    "Type": "float",
-                                    "Value": 10000.0
-                                },
-                                "Min Distance": {
-                                    "Name": "Min Distance",
-                                    "Type": "float",
-                                    "Value": 1.0
-                                },
-                                "Mute": {
-                                    "Name": "Mute",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Pan": {
-                                    "Name": "Pan",
-                                    "Type": "float",
-                                    "Value": 0.0
-                                },
-                                "Pitch": {
-                                    "Name": "Pitch",
-                                    "Type": "float",
-                                    "Value": 1.0
-                                },
-                                "Play On Awake": {
-                                    "Name": "Play On Awake",
-                                    "Type": "bool",
-                                    "Value": false
-                                },
-                                "Priority": {
-                                    "Name": "Priority",
-                                    "Type": "int",
-                                    "Value": 128
-                                },
-                                "Volume": {
-                                    "Name": "Volume",
-                                    "Type": "float",
-                                    "Value": 0.5
-                                }
-                            }
-                        }
-                    ],
-                    "Flags": 1,
-                    "Name": "Door",
-                    "Pos": {
-                        "x": -11.676182746887207,
-                        "y": 5.800000190734863,
-                        "z": -4.870729923248291
-                    },
-                    "Rot": {
-                        "w": 1.0,
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "Scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    }
-                },
                 {
                     "Childs": [
                         {
@@ -12367,7 +11880,7 @@
                                             "Value": [
                                                 0.5,
                                                 2.0,
-                                                2.299999952316284
+                                                3.200000047683716
                                             ]
                                         },
                                         "Filter": {
@@ -12418,9 +11931,9 @@
                             "Flags": 1,
                             "Name": "58",
                             "Pos": {
-                                "x": 51.209930419921875,
+                                "x": 51.15605163574219,
                                 "y": -2.111578941345215,
-                                "z": 14.544994354248047
+                                "z": 13.547445297241211
                             },
                             "Rot": {
                                 "w": 1.0,
@@ -12837,7 +12350,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        -47.690895080566406
+                                                        -2.6571896076202393
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {
@@ -19530,6 +19043,425 @@
                 "x": -4.8053419021698573e-08,
                 "y": -0.949687123298645,
                 "z": 4.8053419021698573e-08
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Mesh",
+                            "Values": {
+                                "Cast Shadows": {
+                                    "Name": "Cast Shadows",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsChild": {
+                                    "Name": "IsChild",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "IsRoot": {
+                                    "Name": "IsRoot",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Material": {
+                                    "Name": "Material",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "MaterialsNames": {
+                                    "Name": "MaterialsNames",
+                                    "Type": "ArraySequential",
+                                    "Value": [
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        },
+                                        {
+                                            "Type": "std::string",
+                                            "Value": ".\\Resources\\Models\\IronGolem\\0"
+                                        }
+                                    ],
+                                    "Wrapped type": "std::string"
+                                },
+                                "Model": {
+                                    "Name": "Model",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\IronGolem\\iron_golem.obj"
+                                }
+                            }
+                        },
+                        {
+                            "Type": "Box Collider",
+                            "Values": {
+                                "Activate": {
+                                    "Name": "Activate",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Box Half Extent": {
+                                    "Name": "Box Half Extent",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.6799999475479126,
+                                        0.5
+                                    ]
+                                },
+                                "Filter": {
+                                    "Name": "Filter",
+                                    "Type": "FilterRaycast",
+                                    "Value": 1
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Local positon": {
+                                    "Name": "Local positon",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        -0.8399999737739563,
+                                        0.8899999856948853,
+                                        -1.0399999618530273
+                                    ]
+                                },
+                                "Local rotation": {
+                                    "Name": "Local rotation",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "S/D Frict - Restitut": {
+                                    "Name": "S/D Frict - Restitut",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        1.5,
+                                        1.5,
+                                        0.0
+                                    ]
+                                },
+                                "Trigger": {
+                                    "Name": "Trigger",
+                                    "Type": "bool",
+                                    "Value": false
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Golem",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 0.7071067690849304,
+                        "x": 0.0,
+                        "y": 0.7071067690849304,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 0.10000000149011612,
+                        "y": 0.10000000149011612,
+                        "z": 0.10000000149011612
+                    }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Particle System",
+                            "Values": {
+                                "Active": {
+                                    "Name": "Active",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Birth Color": {
+                                    "Name": "Birth Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        1.0,
+                                        0.0,
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                "Death Color": {
+                                    "Name": "Death Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.0,
+                                        0.9882352948188782,
+                                        1.0,
+                                        1.0
+                                    ]
+                                },
+                                "Dispersion": {
+                                    "Name": "Dispersion",
+                                    "Type": "Vec2",
+                                    "Value": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                },
+                                "Gravity": {
+                                    "Name": "Gravity",
+                                    "Type": "float",
+                                    "Value": 0.0
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Life time": {
+                                    "Name": "Life time",
+                                    "Type": "float",
+                                    "Value": 1.0
+                                },
+                                "Loop": {
+                                    "Name": "Loop",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Particle texture": {
+                                    "Name": "Particle texture",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Textures\\Particle2.png"
+                                },
+                                "Particles number": {
+                                    "Name": "Particles number",
+                                    "Type": "int",
+                                    "Value": 30
+                                },
+                                "Spawn zone": {
+                                    "Name": "Spawn zone",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Speed": {
+                                    "Name": "Speed",
+                                    "Type": "float",
+                                    "Value": 0.5
+                                },
+                                "Time Before Spawn": {
+                                    "Name": "Time Before Spawn",
+                                    "Type": "float",
+                                    "Value": 0.20000000298023224
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "Particle",
+                    "Pos": {
+                        "x": -1.0,
+                        "y": 0.5,
+                        "z": 0.75
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 5.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    }
+                }
+            ],
+            "Components": [
+                {
+                    "Type": "Door",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Movement": {
+                            "Name": "Movement",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                1.0
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Time moving": {
+                            "Name": "Time moving",
+                            "Type": "float",
+                            "Value": 3.0
+                        }
+                    }
+                },
+                {
+                    "Type": "Audio Source",
+                    "Values": {
+                        "Audio Clip": {
+                            "Name": "Audio Clip",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Sounds\\the-legend-of-zelda-ocarina-of-time-secret-sound.mp3"
+                        },
+                        "Audio Mode": {
+                            "Name": "Audio Mode",
+                            "Type": "Audio Mode",
+                            "Value": 8
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Max Distance": {
+                            "Name": "Max Distance",
+                            "Type": "float",
+                            "Value": 10000.0
+                        },
+                        "Min Distance": {
+                            "Name": "Min Distance",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Mute": {
+                            "Name": "Mute",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Pan": {
+                            "Name": "Pan",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Pitch": {
+                            "Name": "Pitch",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Play On Awake": {
+                            "Name": "Play On Awake",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Priority": {
+                            "Name": "Priority",
+                            "Type": "int",
+                            "Value": 128
+                        },
+                        "Volume": {
+                            "Name": "Volume",
+                            "Type": "float",
+                            "Value": 0.5
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Door",
+            "Pos": {
+                "x": -11.676182746887207,
+                "y": 5.800000190734863,
+                "z": -4.870729923248291
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "Scale": {
                 "x": 1.0,
