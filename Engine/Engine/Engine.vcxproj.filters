@@ -252,9 +252,6 @@
     <ClCompile Include="src\Core\Resources\Animation\AnimationVertexData.cpp">
       <Filter>Source Files\Core\Resources\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Resources\Animation\BoneData.cpp">
-      <Filter>Source Files\Core\Resources\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\Audio\AudioClip.cpp">
       <Filter>Source Files\Core\Audio</Filter>
     </ClCompile>

@@ -17,7 +17,6 @@ namespace Resources
 		.constructor()
 		.property("Vertex", &Resources::Shader::GetVertName, &Resources::Shader::SetVertName)
 		.property("Fragment", &Resources::Shader::GetFragName, &Resources::Shader::SetFragName)
-		//.property("Header", &Resources::Material::variants)
 		;
 	}
 

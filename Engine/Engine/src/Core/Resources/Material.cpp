@@ -32,7 +32,7 @@ namespace Resources
 		Loader::ResourcesManager* resources, std::shared_ptr<Resources::Loader::ImporterData>& importer)
 	{
 		ZoneScoped
-		// the importer is used in this function
+		// The importer is used in this function
 		importer->maxUseOfImporter++;
 		textures.resize(2);
 
@@ -61,7 +61,7 @@ namespace Resources
 		materialColor = { 1.0f, 1.0f, 1.0f };
 		shaderChoose = true;
 
-		// the importer is know not used in this function
+		// The importer is no longer used in this function
 		importer->maxUseOfImporter--;
 	}
 
@@ -187,19 +187,19 @@ namespace Resources
 
 		int numberOfBasicTexture{ 0 };
 		bool skeletalShader{ false };
-		// get all the uniform used of the shader
+		// Get all the uniform used of the shader
 		glGetProgramiv(shader->GetProgram(), GL_ACTIVE_UNIFORMS, &count);
 		for (auto i{ 0 }; i < count; i++)
 		{
 			glGetActiveUniform(shader->GetProgram(), (GLuint)i, 50, &length, &size, &type, name);
 
-			// check if it's a personal uniform
+			// Check if it's a personal uniform
 			if (name[0] != 'u')
 			{
 				VariantUniform uni;
 				uni.name = name;
 
-				// try to find the type among the managed types 
+				// Try to find the type among the managed types 
 				switch (type)
 				{
 				case GL_BOOL:

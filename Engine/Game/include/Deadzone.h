@@ -55,9 +55,11 @@ public:
 	~Deadzone();
 
 private:
-	void Activate(Core::Physics::Collider* collider);
-
-	void Deactivate(Core::Physics::Collider* collider);
+	/**
+	 * Destroy given collider. Used as Trigger Enter event
+	 * @param collider: Collider for trigger enter
+	 */
+	void Kill(Core::Physics::Collider* collider);
 
 	REGISTER_CLASS(ComponentBase)
 };

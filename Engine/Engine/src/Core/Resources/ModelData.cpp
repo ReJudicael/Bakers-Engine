@@ -8,22 +8,6 @@
 
 namespace Resources
 {
-
-	/*void ModelData::SetArray(const aiScene* scene, const bool& isSkeletal)
-	{
-		if (isSkeletal)
-		{
-			unsigned int numVertices{ 0 };
-			for (unsigned int i = 0; i < scene->mNumMeshes; i++)
-			{
-				if(scene->mMeshes[i]->HasBones())
-					numVertices += scene->mMeshes[i]->mNumVertices;
-			}
-			haveBones = true;
-			modelAnimationData.resize(numVertices);
-		}
-	}*/
-
 	void ModelData::SetArrays(const aiScene* scene, const unsigned int& index)
 	{
 		aiMesh* mesh = scene->mMeshes[index];
@@ -44,7 +28,6 @@ namespace Resources
 		{
 			haveBones = true;
 			modelAnimationData.resize(vertices.size());
-			//offsetMeshState.resize(offsetMeshState.size() + mesh->mNumBones);
 		}
 	}
 
@@ -91,8 +74,7 @@ namespace Resources
 			aiFace& face = mesh->mFaces[fid];
 			for (int iid = 0; iid < 3; iid++)
 			{
-				// get the indices of the face who is cut in triangle
-				//indices.push_back(face.mIndices[iid] + increaseIndices);
+				// Get the indices of the face which is cut in triangles
 				indices[index] = face.mIndices[iid] + increaseIndices;
 				index++;
 			}
@@ -186,8 +168,6 @@ namespace Resources
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 
-		//indices.clear();
-		//vertices.clear();
 		VAOModel = VAO;
 
 		glBindVertexArray(0);

@@ -73,11 +73,13 @@ public:
 private:
 	/**
 	 * The parent can use the warp
+	 * @param collider: Collider for trigger enter
 	 */
 	void Activate(Core::Physics::Collider* collider);
 
 	/**
 	 * The parent can't use the warp
+	 * @param collider: Collider for trigger exit
 	 */
 	void Deactivate(Core::Physics::Collider* collider);
 

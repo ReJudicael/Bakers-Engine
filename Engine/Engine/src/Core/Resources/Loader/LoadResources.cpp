@@ -808,7 +808,7 @@ namespace Resources::Loader
 	{
 		std::pair<std::map<GLchar, Character*>, FT_Face>* font = GetFont(fontPath);
 
-		/* search for character and use it if already exist */
+		// Search for character and use it if already exist 
 		std::map<GLchar, Character*>::iterator  it = font->first.find(c);
 		if (it != font->first.end())
 		{

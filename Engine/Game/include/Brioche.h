@@ -116,6 +116,10 @@ public:
 	 */
 	void	SetTarget(Core::Maths::Vec3 target);
 
+	/**
+	 * Set enemy to reach and attack
+	 * @param object: Object used as new enemy
+	 */
 	void	SetEnemy(Core::Datastructure::Object* object);
 
 	/**
@@ -143,6 +147,9 @@ public:
 	bool TransitionBiteToIdle(Core::Animation::AnimationNode* node);
 
 private:
+	/**
+	 * Set animations and transitions
+	 */
 	void AnimGraph();
 
 	REGISTER_CLASS(ComponentBase, AEntity)

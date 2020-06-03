@@ -10,7 +10,14 @@ public:
 	int m_damage{ 0 };
 
 public:
+	/**
+	 * Default constructor
+	 */
 	AEntity();
+
+	/**
+	 * Destructor
+	 */
 	~AEntity();
 
 	REGISTER_CLASS(Core::Datastructure::IUpdatable)

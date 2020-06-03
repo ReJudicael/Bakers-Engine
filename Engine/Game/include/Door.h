@@ -70,7 +70,3 @@ public:
 
 	 REGISTER_CLASS(ComponentUpdatable)
 };
-
-
-
-
