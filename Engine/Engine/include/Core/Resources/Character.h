@@ -8,6 +8,9 @@
 
 namespace Resources
 {
+	/**
+	 * Represents a single glyph from a font
+	 */
 	struct Character
 	{
 		unsigned int	textureID;
