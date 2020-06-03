@@ -82,15 +82,29 @@ namespace Resources
 		/**
 		 * Load all the indices of one aiMesh
 		 * @param mesh: The aiMesh who is currently loaded
-		 * @param increaseIndices: The number of with wich we want increase the value of the indices of the mesh
+		 * @param increaseIndices: The number with wich we want increase the value of the indices of the mesh
 		 * use when multiple mesh are load for one Model
 		 */
 		void LoadIndices(aiMesh* mesh, const int increaseIndices, const unsigned int indexMesh);
 		
+		/**
+		 * Load for this mesh all the VertexData needed
+		 * @param mesh: The aiMesh who is currently loaded
+		 * @param increaseIndices: The number with wich we want increase the value of the indices in the VertexData
+		 * use when multiple mesh are load for one Model 
+		 */
 		void LoadAnimationVertexDatas(aiMesh* mesh, const unsigned int increaseIndices);
 
+		/**
+		 * Load all the VertexData realted to this aiBone 
+		 * @param mesh: The aiMesh who is currently loaded
+		 * @param boneIndex: The index of the bone
+		 * @param currBone: The current bone
+		 * @param increaseIndices: The number with wich we want increase the value of the indices in the VertexData
+		 * use when multiple mesh are load for one Model 
+		 */
 		void LoadAnimationVertexData(aiMesh* mesh, const unsigned int boneIndex, 
-										aiBone* currBone, const unsigned int numVertices);
+										aiBone* currBone, const unsigned int increaseIndices);
 
 
 		/**

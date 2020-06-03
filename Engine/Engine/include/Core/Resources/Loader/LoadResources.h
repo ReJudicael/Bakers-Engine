@@ -48,6 +48,10 @@ namespace Resources
 
 	namespace Loader
 	{
+		/**
+		 * Contains the path of the models and the materials
+		 * in a 3D Object
+		 */
 		BAKERS_API_STRUCT Object3DInfo
 		{
 			std::vector<std::string> modelsName;
@@ -86,10 +90,17 @@ namespace Resources
 		private:
 			/**
 			 * Load the 3D object in a single mesh for the obj and multiple mesh for the FBX, with the API assimp
-			 * @param fileName: the name of the 3D object we want to load
+			 * @param fileName: the full path of the 3D object
+			 * @param info: the Object3DInfo to init
+			 * @param graphInMulti: true for load the Object3DGraph in multithread
 			 */
 			bool LoadAssimpScene(const char* fileName, Object3DInfo& info, const bool graphInMulti);
-
+			
+			/**
+			 * init the assimp importer and create the aiScene
+			 * @param importer: the importer to init
+			 * @param fileName: the full path of the 3D object
+			 */
 			const aiScene* LoadSceneFromImporter(Assimp::Importer& importer, const char* fileName);
 
 			/**
@@ -98,6 +109,7 @@ namespace Resources
 			 * @param importer: the importer who load the scene
 			 * @param scene: The scene of the 3D object load by assimp
 			 * @param directory: the folder path of the 3D Object
+			 * @param info: the Object3DInfo to init
 			 */
 			void LoadMeshsScene(std::shared_ptr<Loader::ImporterData>& importer, const aiScene* scene, const std::string& directory, Object3DInfo& info);
 			
@@ -120,6 +132,7 @@ namespace Resources
 			 * @param importer: the importer who load the scene
 			 * @param scene: The scene of the 3D object load by assimp
 			 * @param directory: the folder path of the 3D Object
+			 * @param info: the Object3DInfo to init
 			 */
 			void LoadMeshsSceneInSingleMesh(std::shared_ptr<Loader::ImporterData>& importer, 
 											const aiScene* scene, const std::string& directory, Object3DInfo& info);
@@ -128,7 +141,7 @@ namespace Resources
 			 * Load the first Mesh of an obj, 
 			 * and put the materials, the model and the textures in the ResourcesManager
 			 * @param name: the name for find the object
-			 * @param fileName: the name of the 3D object we want to load
+			 * @param fileName: the full path of the 3D object
 			 */
 			void LoadObjInModel(const std::string& name, const char* fileName);
 
@@ -139,6 +152,7 @@ namespace Resources
 			 * @param scene: the aiScene of the mesh
 			 * @param mesh: the mesh of the material that we want load
 			 * @param directory: the folder path of the 3D Object
+			 * @param info: the Object3DInfo to init
 			 * @param numberOfSameKey: an int default 0, 
 			 * (just use in the function LoadMeshsScene) the number of time that the name of the mesh is used
 			 */
@@ -156,6 +170,9 @@ namespace Resources
 			 */
 			ResourcesManager(Core::SystemManagement::TaskSystem* task);
 
+			/**
+			 * call in the constructors for set default shaders, material and models  
+			 */
 			void DefaultConstruct();
 
 			/**
@@ -378,7 +395,8 @@ namespace Resources
 			void ReplaceShader(const std::string& path, const std::string& newPath);
 
 			/**
-			 *
+			 * Update the save of the material who have this shader 
+			 * @param shader: the shader which is updated
 			 */
 			void UpdateShaderPathInMaterials(std::shared_ptr<Resources::Shader> shader);
 

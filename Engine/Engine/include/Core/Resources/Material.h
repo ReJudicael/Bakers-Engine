@@ -26,6 +26,9 @@ namespace Resources
 	}
 	struct Texture;
 
+	/**
+	 * Contains the value as a rttr variant and the name for send to OpenGl
+	 */
 	struct VariantUniform
 	{
 		std::string name;

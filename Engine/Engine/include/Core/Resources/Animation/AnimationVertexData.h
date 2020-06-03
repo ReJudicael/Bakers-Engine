@@ -8,6 +8,10 @@
 
 namespace Resources::Animation
 {
+	/**
+	 * Contains the boneIDs and the weights of one vertex, 
+	 * for get the right matrix in a skeletal shader 
+	 */
 	struct AnimationVertexData
 	{
 		float boneIDs[NB_BONES_PER_VERTEX];

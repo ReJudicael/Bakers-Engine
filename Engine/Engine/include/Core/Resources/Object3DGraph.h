@@ -22,6 +22,10 @@ namespace Resources
 
 	struct Object3DGraph;
 
+	/**
+	 * extract value of a aiNode, like position, rotation, name,
+	 * model etc..
+	 */
 	struct Node
 	{
 		Core::Maths::Vec3	position;
@@ -39,25 +43,35 @@ namespace Resources
 		 * Load a aiNode inside a Node
 		 * @param scene: The scene of the 3D object load by assimp
 		 * @param node: The current node of the 
-		 * @param directory: the full path oe first mesh find with bone
+		 * @param directory: the path of the 3D Object
 		 */
 		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, 
-								const std::string& directory, std::vector<std::string>& materialsName);
+								const std::string& directory);
 
-
+		/**
+		 * Load all the aiMesh of the aiNode as one Node
+		 * @param scene: The scene of the 3D object load by assimp
+		 * @param node: The current node of the 
+		 * @param mat: a aiMaterial pointeur
+		 * @param directory: the path of the 3D Object
+		 */
 		void LoadMeshsAsChild(	const aiScene* scene, const aiNode* node, aiMaterial* mat, 
-								const std::string& directory, std::vector<std::string>& materialsNam);
+								const std::string& directory);
 
+		/**
+		 * Find the frist Node with a Meshes
+		 * @param scene: The scene of the 3D object load by assimp
+		 * @param node: The node with wich we try to find the first mesh
+		 */
 		const aiNode* FindNodeWithMeshes(const aiScene* scene, const aiNode* node);
 
 		/**
 		 * Load a assimp scene as one node
 		 * @param scene: The scene of the 3D object load by assimp
 		 * @param node: The current node of the scene
-		 * @param directory: the full path of the first mesh find with bone
+		 * @param directory: the path of the 3D Object
 		 */
-		void SingleMeshSceneLoad(	const aiScene* scene, const aiNode* node, const std::string& directory, 
-									std::vector<std::string>& materialsNam);
+		void SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory);
 
 		/**
 		 * create an object with a mesh from
@@ -67,19 +81,23 @@ namespace Resources
 		void CreateObjectScene(Core::Datastructure::Object* rootObject, Loader::ResourcesManager& resources);
 	};
 
+	/**
+	 * Constains the node hierarchy
+	 */
 	struct Object3DGraph
 	{
 		Node rootNodeScene;
 		bool singleMesh;
-		std::vector<std::string> materialsName;
+
 		/**
 		 * Find in the scene a node with a mesh
 		 * @param scene: The scene of the 3D object load by assimp
 		 * @param node: The rootNode of the assimp scene
-		 * @param directory: the full path of the first mesh find with bone
+		 * @param directory: the path of the 3D Object
 		 * @param singleMesh: true if the 3D Object is consider as a single Mesh
 		 */
-		void	SceneLoad(std::shared_ptr<Resources::Loader::ImporterData>& importer, const aiScene* scene, const aiNode* node, const std::string& directory, const bool singleMesh);
+		void	SceneLoad(std::shared_ptr<Resources::Loader::ImporterData>& importer, const aiScene* scene, const aiNode* node, 
+							const std::string& directory, const bool singleMesh);
 
 		/**
 		 * Find in the scene a node with a mesh
