@@ -7,6 +7,7 @@
 #include "Brioche.h"
 #include "Owen.h"
 #include "Vec3.hpp"
+#include "AudioSource.h"
 
 /**
  * Salt animation
@@ -37,6 +38,9 @@ private:
 	std::string m_getHitAnimation;
 	std::string m_dieAnimation;
 	ESaltAnimation m_saltAnimation{ ESaltAnimation::FLYIDLE };
+
+	bool m_soundPlayed{ false };
+	Core::Audio::AudioSource* m_audioSource;
 	std::list<Minion*> m_minions;
 	bool m_hasReachedZone{ false };
 	Core::Maths::Vec3 m_bossZone;
@@ -44,7 +48,6 @@ private:
 	float			m_attackTimer;
 	float			m_AttackMaxTime;
 	float			m_AttackSpeed;
-
 
 	Brioche* m_Brioche;
 	Core::Datastructure::Object* m_Owen;

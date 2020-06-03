@@ -6331,7 +6331,7 @@
                         "Damage": {
                             "Name": "Damage",
                             "Type": "int",
-                            "Value": 20
+                            "Value": 10
                         },
                         "Die Animation": {
                             "Name": "Die Animation",
@@ -6526,6 +6526,76 @@
                                 0.0,
                                 0.0
                             ]
+                        }
+                    }
+                },
+                {
+                    "Type": "Audio Source",
+                    "Values": {
+                        "Audio Clip": {
+                            "Name": "Audio Clip",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Sounds\\chest-opening-sound-legend-of-zelda-ocarina-of-time.mp3"
+                        },
+                        "Audio Mode": {
+                            "Name": "Audio Mode",
+                            "Type": "Audio Mode",
+                            "Value": 8
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Max Distance": {
+                            "Name": "Max Distance",
+                            "Type": "float",
+                            "Value": 10000.0
+                        },
+                        "Min Distance": {
+                            "Name": "Min Distance",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Mute": {
+                            "Name": "Mute",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Pan": {
+                            "Name": "Pan",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Pitch": {
+                            "Name": "Pitch",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Play On Awake": {
+                            "Name": "Play On Awake",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Priority": {
+                            "Name": "Priority",
+                            "Type": "int",
+                            "Value": 128
+                        },
+                        "Volume": {
+                            "Name": "Volume",
+                            "Type": "float",
+                            "Value": 3.0
                         }
                     }
                 }
@@ -12350,7 +12420,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        -2.6571896076202393
+                                                        -44.50649642944336
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {

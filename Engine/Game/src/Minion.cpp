@@ -99,7 +99,7 @@ bool Minion::OnStart()
 		}
 	}
 	if (m_navigator)
-		m_navigator->SetStopMoving(false);
+		m_navigator->SetStopMoving(true);
 
 	return 	ComponentBase::OnStart() && AEntity::OnStart();
 }

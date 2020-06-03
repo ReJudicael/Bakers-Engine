@@ -62,6 +62,11 @@ bool Salt::OnStart()
 
 	m_minions = GetRoot()->GetComponentsOfType<Minion>();
 
+	std::list<Core::Audio::AudioSource*> audioSources;
+	m_parent->GetComponentsOfTypeInObject<Core::Audio::AudioSource>(audioSources);
+	if (audioSources.size() > 0)
+		m_audioSource = *audioSources.begin();
+
 	std::list<Owen*> owen;
 	GetRoot()->GetComponentsOfTypeInChilds<Owen>(owen);
 	if (owen.size() > 0)
@@ -156,6 +161,12 @@ void Salt::OnUpdate(float deltaTime)
 	{
 		if (m_health <= 0)
 		{
+			if (!m_soundPlayed)
+			{
+				m_soundPlayed = true;
+				if (m_audioSource)
+					m_audioSource->Play();
+			}
 			m_saltAnimation = ESaltAnimation::DIE;
 			return;
 		}
