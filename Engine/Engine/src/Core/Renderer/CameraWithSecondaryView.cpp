@@ -73,10 +73,7 @@ namespace Core::Renderer
 		glDepthFunc(GL_LESS);
 
 		if (fbo->Size[2] != static_cast<int>(m_viewSize.x * m_cameraWidth) || fbo->Size[3] != static_cast<int>(m_viewSize.y * m_cameraHeight))
-		{
-			//fbo->Resize(static_cast<float>(m_viewSize.x * m_cameraWidth), static_cast<float>(m_viewSize.y * m_cameraHeight));
 			static_cast<ICamera*>(fbo->userPtr)->Resize(static_cast<unsigned>(m_viewSize.x * m_cameraWidth), static_cast<unsigned>(m_viewSize.y * m_cameraHeight));
-		}
 	}
 
 	void CameraWithSecondaryView::ResizeView()

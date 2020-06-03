@@ -84,8 +84,6 @@ namespace Core::Renderer
 			c = GetRoot()->GetEngine()->GetResourcesManager()->GetCharacter(m_font, m_text[i]);
 			glBindTexture(GL_TEXTURE_2D, c->textureID);
 
-			//material.SendMaterial();
-
 			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * static_cast<float>(m_size)) / 9000.f);
 			pos.Translate((GetParent()->Up() * (float)(c->sizeY - c->bearingY) * static_cast<float>(m_size)) / 9000.f);
 			pos.SetLocalScale(scale);

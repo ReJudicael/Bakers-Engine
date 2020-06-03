@@ -127,9 +127,6 @@ void Core::Renderer::Mesh::UpdateModel()
 		AddModel(manager->GetModel(m_modelName));
 
 		AddMaterials(*manager, m_materialsNames);
-
-		//std::shared_ptr<Resources::Object3DGraph> scene{ manager->GetScene(m_modelName) };
-		//AddMaterials(*manager, scene->rootNodeScene.namesMaterial);
 	}
 	else
 	{
@@ -174,9 +171,7 @@ Core::Renderer::Mesh::Mesh() : ComponentBase(), m_projection{ nullptr }
 Core::Renderer::Mesh::~Mesh()
 {
 	glDeleteTextures(1, &m_texture);
-	//glDeleteBuffers(1, &m_vertexBuffer);
 	glDeleteVertexArrays(1, &m_VAO);
-	//glDeleteProgram(m_program);
 }
 
 void Core::Renderer::Mesh::OnInit()

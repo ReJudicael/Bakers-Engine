@@ -30,8 +30,7 @@ namespace Core::Physics
 		.property("Local positon", &Core::Physics::Collider::GetLocalPosition, &Core::Physics::Collider::SetLocalPosition)
 		.property("Local rotation", &Core::Physics::Collider::GetLocalRotationEuler, &Core::Physics::Collider::SetLocalRotationEuler)
 		.property("S/D Frict - Restitut", &Core::Physics::Collider::GetMaterial, &Core::Physics::Collider::SetMaterial)
-		.property("Trigger", &Core::Physics::Collider::IsTrigger, &Core::Physics::Collider::Trigger)
-		;
+		.property("Trigger", &Core::Physics::Collider::IsTrigger, &Core::Physics::Collider::Trigger);
 	}
 
 	void Collider::OnInit()

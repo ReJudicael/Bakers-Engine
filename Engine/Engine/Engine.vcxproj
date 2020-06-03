@@ -343,7 +343,6 @@ xcopy /y /d "$(SolutionDir)Dependencies\fmod-2.01.00\lib\*.dll" "$(TargetDir)"</
     <ClCompile Include="src\Core\Audio\AudioSource.cpp" />
     <ClCompile Include="src\Core\Audio\AudioSystem.cpp" />
     <ClCompile Include="src\Core\Datastructure\EngineCore.cpp" />
-    <ClCompile Include="src\Core\Datastructure\ICollidable.cpp" />
     <ClCompile Include="src\Core\Datastructure\INavAgent.cpp" />
     <ClCompile Include="src\Core\Datastructure\Reflection.cpp" />
     <ClCompile Include="src\Core\Datastructure\ScriptedComponent.cpp" />

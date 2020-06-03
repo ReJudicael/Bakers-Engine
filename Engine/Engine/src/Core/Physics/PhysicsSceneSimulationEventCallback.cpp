@@ -15,7 +15,6 @@ namespace Core::Physics
 														const physx::PxContactPair* pairs, physx::PxU32 nbPairs)
 	{	
 		physx::PxContactPairPoint contacts[1];
-		//int indexPairs{ 0 };
 		for (physx::PxU32 i{ 0 }; i < nbPairs; i++)
 		{
 			const physx::PxContactPair& cp = pairs[i];
