@@ -38,13 +38,13 @@ namespace Resources
 		/**
 		 * Load a aiNode inside a Node
 		 * @param scene: The scene of the 3D object load by assimp
-		 * @param node: The current node of the scene
-		 * @param directory: the full path of the first mesh find with bone
+		 * @param node: The current node of the 
+		 * @param directory: the full path oe first mesh find with bone
 		 */
 		void RecursiveSceneLoad(const aiScene* scene, const aiNode* node, 
 								const std::string& directory, std::vector<std::string>& materialsName);
 
-		
+
 		void LoadMeshsAsChild(	const aiScene* scene, const aiNode* node, aiMaterial* mat, 
 								const std::string& directory, std::vector<std::string>& materialsNam);
 

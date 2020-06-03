@@ -4,6 +4,7 @@
 #include "EngineCore.h"
 #include "LoadResources.h"
 #include "SkeletalMesh.h"
+#include "Collider.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -61,6 +62,39 @@ bool Salt::OnStart()
 
 	m_minions = GetRoot()->GetComponentsOfType<Minion>();
 
+	std::list<Owen*> owen;
+	GetRoot()->GetComponentsOfTypeInChilds<Owen>(owen);
+	if (owen.size() > 0)
+		m_Owen = (*owen.begin())->GetParent();
+
+	std::list<Brioche*> brioche;
+	GetRoot()->GetComponentsOfTypeInChilds<Brioche>(brioche);
+	if (brioche.size() > 0)
+		m_Brioche = (*brioche.begin());
+
+	std::list<Core::Navigation::PathFollowingComponent*> components;
+	m_parent->GetComponentsOfBaseType<Core::Navigation::PathFollowingComponent>(components);
+	if (components.size() > 0)
+		m_navigator = *components.begin();
+
+	std::list<Core::Datastructure::Object*> childs = m_parent->GetChildren();
+
+	for (auto child = childs.begin(); child != childs.end(); ++child)
+	{
+		std::list<Core::Physics::Collider*> collider;
+		if ((*child)->GetName().find("HitBoxPunch") != std::string::npos)
+		{
+			(*child)->GetComponentsOfBaseType(collider);
+			if (collider.size() > 0)
+			{
+				(*collider.begin())->OnTriggerEnterEvent.AddListener(BIND_EVENT(Salt::OnEnterCollider));
+				colliderPunch = (*collider.begin());
+				colliderPunch->SetActivateCollider(false);
+			}
+		}
+	}
+	if (m_navigator)
+		m_navigator->SetStopMoving(false);
 	return ComponentBase::OnStart() && AEntity::OnStart();
 }
 
@@ -94,6 +128,8 @@ void Salt::OnUpdate(float deltaTime)
 {
 	if (!m_hasReachedZone)
 	{
+		if (m_navigator)
+			m_navigator->SetStopMoving(true);
 		bool allDead = true;
 		for (auto it : m_minions)
 		{
@@ -109,8 +145,66 @@ void Salt::OnUpdate(float deltaTime)
 
 		if (allDead)
 		{
+			if (m_Brioche)
+				m_Brioche->m_dist = 3.f;
 			m_parent->SetGlobalPos(m_bossZone);
 			m_hasReachedZone = true;
+			m_saltAnimation = ESaltAnimation::IDLE;
+		}
+	}
+	else
+	{
+		if (m_health <= 0)
+		{
+			m_saltAnimation = ESaltAnimation::DIE;
+			return;
+		}
+		if (m_Owen)
+		{
+			Core::Maths::Vec3 OwenPos = m_Owen->GetGlobalPos();
+			Core::Maths::Vec3 ParentPos = m_parent->GetGlobalPos();
+			float OPLength = (OwenPos - ParentPos).Length();
+			if (!combatBegin && OPLength < 10.f)
+			{
+				combatBegin = true;
+			}
+			if (combatBegin)
+			{
+				if (m_saltAnimation != ESaltAnimation::BITE && m_saltAnimation != ESaltAnimation::GETHIT)
+				{
+					if (m_navigator->IsEndOfThePath())
+						m_saltAnimation = ESaltAnimation::RUN;
+					else
+						m_saltAnimation = ESaltAnimation::IDLE;
+				}
+
+				if (m_attackTimer >= m_AttackMaxTime)
+				{
+					m_saltAnimation = ESaltAnimation::IDLE;
+					m_attackTimer = 0.f;
+					if (colliderPunch && colliderPunch->IsActive())
+						colliderPunch->SetActivateCollider(false);
+				}
+
+				if (m_saltAnimation == ESaltAnimation::BITE && m_attackTimer >= m_AttackMaxTime - 4.f && !colliderPunch->IsActive())
+					colliderPunch->SetActivateCollider(true);
+
+				if (m_saltAnimation != ESaltAnimation::BITE && m_navigator)
+					m_navigator->SetTarget(m_Owen->GetGlobalPos());
+
+				if (OPLength < 3.f && m_navigator)
+				{
+					m_saltAnimation = ESaltAnimation::BITE;
+					m_navigator->SetStopMoving(true);
+				}
+				else if (m_navigator)
+				{
+					m_navigator->SetStopMoving(false);
+				}
+
+				if (m_saltAnimation == ESaltAnimation::BITE)
+					m_attackTimer += m_AttackSpeed * deltaTime;
+			}
 		}
 	}
 }
@@ -133,6 +227,8 @@ void Salt::AnimGraph()
 
 	Core::Animation::AnimationNode* animBite{ new Core::Animation::AnimationNode() };
 	animBite->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_biteAnimation);
+	m_AttackSpeed = animBite->speed;
+	m_AttackMaxTime = animBite->nodeAnimation->Time;
 
 	Core::Animation::AnimationNode* animGetHit{ new Core::Animation::AnimationNode() };
 	animGetHit->nodeAnimation = GetRoot()->GetEngine()->GetResourcesManager()->LoadAsAnAnimation(m_getHitAnimation);
@@ -217,5 +313,21 @@ void Salt::AnimGraph()
 	{
 		Core::Animation::SkeletalMesh* sktmesh = *skeletalMesh.begin();
 		sktmesh->animationHandler = new Core::Animation::AnimationHandler{ animFlyIdle };
+	}
+}
+
+void Salt::OnEnterCollider(Core::Physics::Collider* collider)
+{
+	Core::Datastructure::Object* object = collider->GetParent();
+	if (object == m_Owen)
+	{
+		std::list<AEntity*> enemy;
+		object->GetComponentsOfBaseType<AEntity>(enemy);
+
+		if (enemy.size() > 0)
+		{
+			(*enemy.begin())->m_health -= m_damage;
+			(*enemy.begin())->IsHit();
+		}
 	}
 }

@@ -51,7 +51,6 @@ private:
 	Core::Datastructure::Object* m_Brioche;
 	Core::Datastructure::Object* m_currTarget;
 	Core::Navigation::PathFollowingComponent* m_navigator;
-	bool m_IsAttack{false};
 	float distToTarget;
 
 	Core::Physics::Collider* colliderPunch;

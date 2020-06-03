@@ -17,6 +17,9 @@ namespace Core
 		class AnimationNode;
 	}
 }
+
+class Salt;
+
 /**
  * Brioche animation
  */
@@ -59,7 +62,8 @@ private:
 	Core::Physics::Collider* colliderPunch;
 	Core::Datastructure::Object* m_enemyToAttack{nullptr};
 	Core::Navigation::PathFollowingComponent* m_navigator;
-
+public:
+	float m_dist{ 1.5 };
 protected:
 	/**
 	 * Init event

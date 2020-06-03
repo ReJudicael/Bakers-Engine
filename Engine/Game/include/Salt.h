@@ -4,6 +4,8 @@
 #include "ComponentUpdatable.h"
 #include "AEntity.h"
 #include "Minion.h"
+#include "Brioche.h"
+#include "Owen.h"
 #include "Vec3.hpp"
 
 /**
@@ -38,6 +40,19 @@ private:
 	std::list<Minion*> m_minions;
 	bool m_hasReachedZone{ false };
 	Core::Maths::Vec3 m_bossZone;
+
+	float			m_attackTimer;
+	float			m_AttackMaxTime;
+	float			m_AttackSpeed;
+
+
+	Brioche* m_Brioche;
+	Core::Datastructure::Object* m_Owen;
+	Core::Navigation::PathFollowingComponent* m_navigator;
+	float distToTarget;
+
+	bool combatBegin{ false };
+	Core::Physics::Collider* colliderPunch;
 
 protected:
 	/**
@@ -88,6 +103,19 @@ public:
 	 * Destructor
 	 */
 	~Salt();
+
+	/**
+	 * Function call as an event for the collision OnTriggerEnter
+	 * @param collider: the collider with wich he triggered
+	 */
+	void OnEnterCollider(Core::Physics::Collider* collider);
+
+	/**
+	 * Function call as an event it's the transition between
+	 * the Punch animation and Idle
+	 * @param node: the AnimationNode Punch
+	 */
+	bool TransitionBiteToIdle(Core::Animation::AnimationNode* node);
 
 private:
 	/**

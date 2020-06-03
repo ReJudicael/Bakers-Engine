@@ -6,6 +6,7 @@
 #include "SkeletalMesh.h"
 #include "Collider.h"
 #include "Minion.h"
+#include "Salt.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -154,7 +155,7 @@ void Brioche::OnUpdate(float deltaTime)
 
 	if (m_enemyToAttack && m_behavior == EBriocheBehavior::GO)
 	{
-		if ((m_enemyToAttack->GetGlobalPos() - m_parent->GetGlobalPos()).Length() <= 1.5f)
+		if ((m_enemyToAttack->GetGlobalPos() - m_parent->GetGlobalPos()).Length() <= m_dist)
 		{
 			m_stopAttack = false;
 			m_briocheAnimation = EBriocheAnimation::BITE;
@@ -194,7 +195,13 @@ void Brioche::SetEnemy(Core::Datastructure::Object* object)
 	{
 		std::list<Minion*> components;
 		object->GetComponentsOfType<Minion>(components);
+
+		std::list<Salt*> salt;
+		object->GetComponentsOfType<Salt>(salt);
+
 		if (components.size() >= 1)
+			m_enemyToAttack = object;
+		else if(salt.size() >= 1)
 			m_enemyToAttack = object;
 		else
 			m_enemyToAttack = nullptr;
