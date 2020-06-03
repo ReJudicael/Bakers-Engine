@@ -31,6 +31,9 @@ namespace Resources
 }
 namespace Core::Renderer
 {
+	/**
+	 * Mesh Component
+	 */
 	BAKERS_API_CLASS Mesh : public Core::Datastructure::ComponentBase, public virtual Core::Datastructure::IRenderable
 	{
 	protected:
@@ -49,30 +52,81 @@ namespace Core::Renderer
 		Core::SystemManagement::EventSystem<>				m_destroyActorEvent;
 		std::vector<std::function<void()>>					m_destroyMaterialEvent;
 
-		virtual void	OnReset() override;
-		virtual void	OnCopy(IComponent* copyTo) const override;
-		virtual void	StartCopy(IComponent*& copyTo) const override;
-		virtual bool	OnStart() override;
-
-		virtual void	UpdateModel();
 	public:
 
 		int		m_vertexCount = 0;
 
 	protected:
+		/**
+		 * Reset Event
+		 */
+		virtual void	OnReset() override;
+		/**
+		 * StartCopy event,
+		 * override for create the copy as a Mesh
+		 */
+		virtual void	StartCopy(IComponent*& copyTo) const override;
+		/**
+		 * Copy event,
+		 * override for copy all the value of the mesh
+		 */
+		virtual void	OnCopy(IComponent* copyTo) const override;
+		/**
+		 * Start event,
+		 * override for init the navMesh
+		 */
+		virtual bool	OnStart() override;
+		/**
+		 * Update the model and load a 3DObject if it's a Root
+		 */
+		virtual void	UpdateModel();
+
+		/**
+		 * Change one material in the vector of materials
+		 * @param newMaterial: the new material
+		 * @param iD: the index in the vector
+		 */
 		bool ChangeOneMaterial(std::string newMaterial, int iD);
 
+		/**
+		 * Send a material in OpenGl
+		 * @param view: the view matrix
+		 * @param proj: the projection matrix
+		 * @param trs: the transform of the parent
+		 * @param mat: the material send to OpenGL
+		 * @param shader: the shader used
+		 */
 		void MaterialSendToOpengGL(	const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, float* trs,
 									std::shared_ptr<Resources::Material> mat, std::shared_ptr<Resources::Shader> shader);
 
 	public:
 
+		/**
+		 * Get the path of the model
+		 * @return the path of the model
+		*/
 		std::string					GetModel() { return m_modelName; };
+		/**
+		 * Set the path of the model
+		 * @param newModel: the new path of the model
+		*/
 		void						SetModel(std::string newModel);
 
+		/**
+		 * Get all materials
+		 * @return the vector of materials
+		*/
 		std::vector<std::string>	GetMaterials() { return m_materialsNames; }
+		/**
+		 * Set all materials
+		 * @param newMaterials: the new vector of materials
+		*/
 		void						SetMaterials(std::vector<std::string> newMaterials);
 
+		/**
+		 * Set mesh as a child in the hierarchy
+		 * @param newModel: the path of the model
+		*/
 		void						SetChildModel(std::string newModel);
 
 		float* m_projection;

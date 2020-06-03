@@ -120,11 +120,11 @@ namespace Resources
 	}
 
 	void ModelData::LoadAnimationVertexData(aiMesh* mesh, const unsigned int boneIndex, 
-											aiBone* currBone, const unsigned int numVertices)
+											aiBone* currBone, const unsigned int increaseIndices)
 	{
 		for (unsigned int j{ 0 }; j < currBone->mNumWeights; j++)
 		{
-			unsigned int VertexID = numVertices + currBone->mWeights[j].mVertexId;
+			unsigned int VertexID = increaseIndices + currBone->mWeights[j].mVertexId;
 			modelAnimationData[VertexID].AddBoneData(boneIndex, currBone->mWeights[j].mWeight);
 		}
 	}

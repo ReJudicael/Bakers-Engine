@@ -71,7 +71,16 @@ namespace Core::Physics
 		{
 		}
 
-
+		/**
+		 * function call in PhysX for the filtering of the shapes and Actors
+		 * @param attributes0: the attribute of the first shape
+		 * @param filterData0: the filterData of the first shape
+		 * @param attributes1: the filterData of the second shape
+		 * @param filterData1: the filterData of the second shape
+		 * @param pairFlags: the pair flag between the first shape and the second shape
+		 * @param constantBlock: the result constant block
+		 * @param constantBlockSize: the size of the constant block
+		 */
 		static physx::PxFilterFlags filterShader(
 			physx::PxFilterObjectAttributes attributes0,
 			physx::PxFilterData filterData0,

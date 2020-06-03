@@ -18,7 +18,7 @@
 
 namespace Resources
 {
-	void Node::RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsNam)
+	void Node::RecursiveSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory)
 	{
 		aiVector3D pos;
 		aiVector3D rot;
@@ -35,9 +35,9 @@ namespace Resources
 			nameMesh = directory + mesh->mName.data;
 			mat = scene->mMaterials[scene->mMeshes[node->mMeshes[0]]->mMaterialIndex];
 			namesMaterial.push_back(directory + mat->GetName().data);
-			materialsNam.push_back(mat->GetName().data);
+			
 
-			LoadMeshsAsChild(scene, node, mat, directory, materialsNam);
+			LoadMeshsAsChild(scene, node, mat, directory);
 		}
 		else
 		{
@@ -58,11 +58,11 @@ namespace Resources
 		for (int i{ numCurrentChildren }; i < numChildren; i++)
 		{
 			if(node->mChildren[i - numCurrentChildren]->mName != aiString("Armature"))
-				children[i].RecursiveSceneLoad(scene, node->mChildren[i - numCurrentChildren], directory, materialsNam);
+				children[i].RecursiveSceneLoad(scene, node->mChildren[i - numCurrentChildren], directory);
 		}
 	}
 
-	void Node::LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory, std::vector<std::string>& materialsNam)
+	void Node::LoadMeshsAsChild(const aiScene* scene, const aiNode* node, aiMaterial* mat, const std::string& directory)
 	{
 		int sameKey{ 0 };
 		aiMesh* mesh;
@@ -88,7 +88,7 @@ namespace Resources
 
 			child.isSkeletal = mesh->HasBones();
 			child.namesMaterial.push_back(nameMaterial);
-			materialsNam.push_back(nameMaterial);
+			//materialsNam.push_back(nameMaterial);
 			children.push_back(child);
 		}
 	}
@@ -130,7 +130,7 @@ namespace Resources
 		}
 	}
 
-	void Resources::Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory, std::vector<std::string>& materialsNam)
+	void Resources::Node::SingleMeshSceneLoad(const aiScene* scene, const aiNode* node, const std::string& directory)
 	{
 		aiVector3D pos;
 		aiVector3D rot;
@@ -157,7 +157,6 @@ namespace Resources
 			{
 				mat = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
 				namesMaterial.push_back(directory + mat->GetName().data);
-				materialsNam.push_back(mat->GetName().data);
 			}
 		}
 	}
@@ -182,9 +181,9 @@ namespace Resources
 		singleMesh = isSingleMesh;
 
 		if (singleMesh)
-			rootNodeScene.SingleMeshSceneLoad(scene, node, directory, materialsName);
+			rootNodeScene.SingleMeshSceneLoad(scene, node, directory/*, materialsName*/);
 		else
-			rootNodeScene.RecursiveSceneLoad(scene, node, directory, materialsName);
+			rootNodeScene.RecursiveSceneLoad(scene, node, directory/*, materialsName*/);
 		importer->maxUseOfImporter--;
 	}
 
