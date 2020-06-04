@@ -105,7 +105,7 @@ void	Target::SetTargetPosition()
 	if (Input()->IsKeyDown(EKey::Z))
 		m_isLeading = false;
 
-	if (Input()->IsKeyDown(EKey::LEFT_SHIFT) && Input()->IsMouseButtonDown(EMouseButton::LEFT))
+	if (Input()->IsKeyDown(EKey::LEFT_CONTROL) && Input()->IsMouseButtonDown(EMouseButton::LEFT))
 	{
 		m_isLeading = true;
 
@@ -125,7 +125,18 @@ void	Target::SetTargetPosition()
 		if (m_physicsScenePtr->Raycast(origin, dir, query, filter))
 		{
 			m_globalTarget = query.hitPoint;
-			m_follower->SetEnemy(query.objectHit);
+			if (m_follower->SetEnemy(query.objectHit))
+			{
+				m_signal->SetAmbient({ 1, 0, 0, 1 });
+				m_signal->SetDiffuse({ 1, 0, 0, 1 });
+				m_signal->SetSpecular({ 1, 0, 0, 1 });
+			}
+			else
+			{
+				m_signal->SetAmbient({ 1, 1, 1, 1 });
+				m_signal->SetDiffuse({ 1, 1, 1, 1 });
+				m_signal->SetSpecular({ 1, 1, 1, 1 });
+			}
 			m_newTargetFind = true;
 		}
 		else

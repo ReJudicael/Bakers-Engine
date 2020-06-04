@@ -68,6 +68,11 @@ bool Owen::OnStart()
 	if (rigidBodies.size() > 0)
 		m_rigidbody = *rigidBodies.begin();
 
+	std::list<Core::Renderer::ParticleSystem*> particles;
+	m_parent->GetComponentsOfType<Core::Renderer::ParticleSystem>(particles);
+	if (particles.size() > 0)
+		m_hitParticles = *particles.begin();
+
 	std::list<Core::Datastructure::ScriptedComponent*> scripts;
 	m_parent->GetComponentsOfTypeInObject<Core::Datastructure::ScriptedComponent>(scripts);
 	if (scripts.size() > 0)
@@ -267,10 +272,7 @@ void Owen::OnEnterCollider(Core::Physics::Collider* collider)
 		object->GetComponentsOfBaseType<AEntity>(enemy);
 
 		if (enemy.size() > 0)
-		{
-			(*enemy.begin())->m_health -= m_damage;
-			(*enemy.begin())->IsHit();
-		}
+			(*enemy.begin())->TakeDamage(m_damage);
 	}
 }
 
@@ -300,4 +302,6 @@ bool Owen::TransitionGetHitToIdle(Core::Animation::AnimationNode* node)
 void Owen::IsHit()
 {
 	m_owenAnimation = EOwenAnimation::GETHIT;
+	if (m_hitParticles)
+		m_hitParticles->Restart();
 }

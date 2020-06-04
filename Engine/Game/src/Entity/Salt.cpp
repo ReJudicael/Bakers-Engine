@@ -336,9 +336,6 @@ void Salt::OnEnterCollider(Core::Physics::Collider* collider)
 		object->GetComponentsOfBaseType<AEntity>(enemy);
 
 		if (enemy.size() > 0)
-		{
-			(*enemy.begin())->m_health -= m_damage;
-			(*enemy.begin())->IsHit();
-		}
+			(*enemy.begin())->TakeDamage(m_damage);
 	}
 }

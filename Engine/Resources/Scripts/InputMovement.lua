@@ -28,6 +28,11 @@ end
 
 function HandleMovement(deltaTime)
 	move = Vec3.new();
+	inputSpeed = 1;
+	
+	if (Input:IsKeyDown(Key.Shift)) then
+		inputSpeed = 2;
+	end
 	
 	if (Input:IsKeyDown(Key.W)) then
 		move = move + object.Transform:Forward();
@@ -39,7 +44,7 @@ function HandleMovement(deltaTime)
 	
 	if (move:SquaredLength() > 0.0) then
 		move:Normalize();
-		move = move * speed * deltaTime;
+		move = move * speed * inputSpeed * deltaTime;
 	end
 	
 	velocity = Body:getVelocity();
@@ -50,6 +55,8 @@ end
 
 function Update(deltaTime)
 	if (Health <= 0) then 
+		noMove = Vec3.new();
+		Body:setVelocity(noMove);
 		do return end
 	end
 	

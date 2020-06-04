@@ -123,8 +123,9 @@ public:
 	/**
 	 * Set enemy to reach and attack
 	 * @param object: Object used as new enemy
+	 * @return True if the given object was an enemy, false otherwise
 	 */
-	void	SetEnemy(Core::Datastructure::Object* object);
+	bool	SetEnemy(Core::Datastructure::Object* object);
 
 	/**
 	 * Behavior setter
