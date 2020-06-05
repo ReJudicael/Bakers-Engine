@@ -14,3 +14,9 @@ AEntity::AEntity() : IUpdatable()
 AEntity::~AEntity()
 {
 }
+
+void AEntity::TakeDamage(const int damage)
+{
+	m_health -= damage;
+	IsHit();
+}

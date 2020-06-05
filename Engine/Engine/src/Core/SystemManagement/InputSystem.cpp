@@ -98,7 +98,9 @@ namespace Core::SystemManagement
 			"W", EKey::W,
 			"X", EKey::X,
 			"Y", EKey::Y,
-			"Z", EKey::Z
+			"Z", EKey::Z,
+			"Shift", EKey::LEFT_SHIFT,
+			"Control", EKey::LEFT_CONTROL
 		);
 	}
 }

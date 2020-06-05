@@ -131,12 +131,9 @@ namespace Core::Renderer
 
 	void ParticleSystem::OnUpdate(float deltaTime)
 	{
-		if (!m_active)
-			return;
-
 		if (m_currentTime > 0)
 			m_currentTime -= deltaTime;
-		else
+		else if (m_active)
 		{
 			if (m_particles.size() < m_maxParticlesNb)
 				CreateParticle();
@@ -162,7 +159,7 @@ namespace Core::Renderer
 
 	void	ParticleSystem::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
-		if (!m_active || givenShader)
+		if (givenShader)
 			return;
 
 		Core::Maths::Mat4 transform = m_parent->GetGlobalTRS();

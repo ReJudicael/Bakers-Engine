@@ -2048,6 +2048,121 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Particle System",
+                            "Values": {
+                                "Active": {
+                                    "Name": "Active",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Birth Color": {
+                                    "Name": "Birth Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.8146718144416809,
+                                        0.0031454560812562704,
+                                        0.0031454560812562704,
+                                        1.0
+                                    ]
+                                },
+                                "Death Color": {
+                                    "Name": "Death Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.5568627715110779,
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Dispersion": {
+                                    "Name": "Dispersion",
+                                    "Type": "Vec2",
+                                    "Value": [
+                                        3.140000104904175,
+                                        3.140000104904175
+                                    ]
+                                },
+                                "Gravity": {
+                                    "Name": "Gravity",
+                                    "Type": "float",
+                                    "Value": 0.5
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Life time": {
+                                    "Name": "Life time",
+                                    "Type": "float",
+                                    "Value": 1.0
+                                },
+                                "Loop": {
+                                    "Name": "Loop",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Particle texture": {
+                                    "Name": "Particle texture",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Textures\\Particle.png"
+                                },
+                                "Particles number": {
+                                    "Name": "Particles number",
+                                    "Type": "int",
+                                    "Value": 10
+                                },
+                                "Spawn zone": {
+                                    "Name": "Spawn zone",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Speed": {
+                                    "Name": "Speed",
+                                    "Type": "float",
+                                    "Value": 2.0
+                                },
+                                "Time Before Spawn": {
+                                    "Name": "Time Before Spawn",
+                                    "Type": "float",
+                                    "Value": 0.20000000298023224
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "ParticleCenter",
+                    "Pos": {
+                        "x": 0.0,
+                        "y": 1.0,
+                        "z": 0.0
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ],
             "Components": [
@@ -2169,63 +2284,6 @@
                     }
                 },
                 {
-                    "Type": "Sphere Collider",
-                    "Values": {
-                        "Activate": {
-                            "Name": "Activate",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Filter": {
-                            "Name": "Filter",
-                            "Type": "FilterRaycast",
-                            "Value": 2
-                        },
-                        "IsActive": {
-                            "Name": "IsActive",
-                            "Type": "bool",
-                            "Value": true
-                        },
-                        "Local positon": {
-                            "Name": "Local positon",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                1.0,
-                                0.0
-                            ]
-                        },
-                        "Local rotation": {
-                            "Name": "Local rotation",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
-                        },
-                        "Radius": {
-                            "Name": "Radius",
-                            "Type": "float",
-                            "Value": 1.0
-                        },
-                        "S/D Frict - Restitut": {
-                            "Name": "S/D Frict - Restitut",
-                            "Type": "Vec3",
-                            "Value": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ]
-                        },
-                        "Trigger": {
-                            "Name": "Trigger",
-                            "Type": "bool",
-                            "Value": false
-                        }
-                    }
-                },
-                {
                     "Type": "Rigidbody",
                     "Values": {
                         "IsActive": {
@@ -2251,7 +2309,7 @@
                         "Rotation YLock": {
                             "Name": "Rotation YLock",
                             "Type": "bool",
-                            "Value": false
+                            "Value": true
                         },
                         "Rotation ZLock": {
                             "Name": "Rotation ZLock",
@@ -2271,6 +2329,66 @@
                                 0.0,
                                 0.0
                             ]
+                        }
+                    }
+                },
+                {
+                    "Type": "Capsule Collider",
+                    "Values": {
+                        "Activate": {
+                            "Name": "Activate",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Capsule Half Extent": {
+                            "Name": "Capsule Half Extent",
+                            "Type": "Vec2",
+                            "Value": [
+                                0.6399999856948853,
+                                0.5
+                            ]
+                        },
+                        "Filter": {
+                            "Name": "Filter",
+                            "Type": "FilterRaycast",
+                            "Value": 2
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Local positon": {
+                            "Name": "Local positon",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.8799999952316284,
+                                0.0
+                            ]
+                        },
+                        "Local rotation": {
+                            "Name": "Local rotation",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                90.00000762939453
+                            ]
+                        },
+                        "S/D Frict - Restitut": {
+                            "Name": "S/D Frict - Restitut",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.5,
+                                1.5,
+                                0.0
+                            ]
+                        },
+                        "Trigger": {
+                            "Name": "Trigger",
+                            "Type": "bool",
+                            "Value": false
                         }
                     }
                 }
@@ -6439,7 +6557,7 @@
                         "Filter": {
                             "Name": "Filter",
                             "Type": "FilterRaycast",
-                            "Value": 0
+                            "Value": 1
                         },
                         "IsActive": {
                             "Name": "IsActive",
@@ -12420,7 +12538,7 @@
                                                     "Value": [
                                                         0.0,
                                                         0.0,
-                                                        -44.50649642944336
+                                                        -101.67523193359375
                                                     ]
                                                 },
                                                 "S/D Frict - Restitut": {
@@ -19313,9 +19431,9 @@
                                     "Name": "Birth Color",
                                     "Type": "Color",
                                     "Value": [
-                                        1.0,
-                                        0.0,
-                                        0.0,
+                                        0.5173745155334473,
+                                        0.5173693299293518,
+                                        0.5173693299293518,
                                         1.0
                                     ]
                                 },
@@ -19323,24 +19441,24 @@
                                     "Name": "Death Color",
                                     "Type": "Color",
                                     "Value": [
-                                        0.0,
-                                        0.9882352948188782,
                                         1.0,
-                                        1.0
+                                        1.0,
+                                        1.0,
+                                        0.0
                                     ]
                                 },
                                 "Dispersion": {
                                     "Name": "Dispersion",
                                     "Type": "Vec2",
                                     "Value": [
-                                        1.0,
-                                        1.0
+                                        0.5,
+                                        0.5
                                     ]
                                 },
                                 "Gravity": {
                                     "Name": "Gravity",
                                     "Type": "float",
-                                    "Value": 0.0
+                                    "Value": 0.0010000000474974513
                                 },
                                 "IsActive": {
                                     "Name": "IsActive",
@@ -19355,7 +19473,7 @@
                                 "Life time": {
                                     "Name": "Life time",
                                     "Type": "float",
-                                    "Value": 1.0
+                                    "Value": 0.5
                                 },
                                 "Loop": {
                                     "Name": "Loop",
@@ -19365,18 +19483,18 @@
                                 "Particle texture": {
                                     "Name": "Particle texture",
                                     "Type": "std::string",
-                                    "Value": ".\\Resources\\Textures\\Particle2.png"
+                                    "Value": ".\\Resources\\Textures\\SmokeParticle.png"
                                 },
                                 "Particles number": {
                                     "Name": "Particles number",
                                     "Type": "int",
-                                    "Value": 30
+                                    "Value": 50
                                 },
                                 "Spawn zone": {
                                     "Name": "Spawn zone",
                                     "Type": "Vec3",
                                     "Value": [
-                                        0.0,
+                                        0.009999999776482582,
                                         0.0,
                                         0.0
                                     ]
@@ -19384,7 +19502,7 @@
                                 "Speed": {
                                     "Name": "Speed",
                                     "Type": "float",
-                                    "Value": 0.5
+                                    "Value": 0.009999999776482582
                                 },
                                 "Time Before Spawn": {
                                     "Name": "Time Before Spawn",
@@ -19397,9 +19515,9 @@
                     "Flags": 0,
                     "Name": "Particle",
                     "Pos": {
-                        "x": -1.0,
-                        "y": 0.5,
-                        "z": 0.75
+                        "x": -1.4264116287231445,
+                        "y": -0.9157905578613281,
+                        "z": 0.7554750442504883
                     },
                     "Rot": {
                         "w": 1.0,
@@ -19408,9 +19526,9 @@
                         "z": 0.0
                     },
                     "Scale": {
-                        "x": 5.0,
-                        "y": 5.0,
-                        "z": 5.0
+                        "x": 35.0,
+                        "y": 35.0,
+                        "z": 35.0
                     }
                 }
             ],
@@ -19536,6 +19654,121 @@
             "Scale": {
                 "x": 1.0,
                 "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Particle System",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Birth Color": {
+                            "Name": "Birth Color",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                0.5098039507865906,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Death Color": {
+                            "Name": "Death Color",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ]
+                        },
+                        "Dispersion": {
+                            "Name": "Dispersion",
+                            "Type": "Vec2",
+                            "Value": [
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Gravity": {
+                            "Name": "Gravity",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Life time": {
+                            "Name": "Life time",
+                            "Type": "float",
+                            "Value": 1.0
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Particle texture": {
+                            "Name": "Particle texture",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Arrow.png"
+                        },
+                        "Particles number": {
+                            "Name": "Particles number",
+                            "Type": "int",
+                            "Value": 1
+                        },
+                        "Spawn zone": {
+                            "Name": "Spawn zone",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 0.5
+                        },
+                        "Time Before Spawn": {
+                            "Name": "Time Before Spawn",
+                            "Type": "float",
+                            "Value": 1.100000023841858
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Arrow",
+            "Pos": {
+                "x": 1.9656744003295898,
+                "y": 6.8784403800964355,
+                "z": 6.906711578369141
+            },
+            "Rot": {
+                "w": -4.371138828673793e-08,
+                "x": 1.0,
+                "y": 0.0,
+                "z": -0.0
+            },
+            "Scale": {
+                "x": 10.0,
+                "y": 10.0,
                 "z": 1.0
             }
         }

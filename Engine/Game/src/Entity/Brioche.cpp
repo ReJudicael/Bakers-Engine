@@ -189,25 +189,33 @@ void Brioche::SetTarget(Core::Maths::Vec3 target)
 	}
 }
 
-void Brioche::SetEnemy(Core::Datastructure::Object* object)
+bool Brioche::SetEnemy(Core::Datastructure::Object* object)
 {
 	if (object)
 	{
+		// Check if the given object is an enemy
 		std::list<Minion*> components;
 		object->GetComponentsOfType<Minion>(components);
 
+		if (components.size() >= 1)
+		{
+			m_enemyToAttack = object;
+			return true;
+		}
+
+		// Check if the given object is a boss enemy
 		std::list<Salt*> salt;
 		object->GetComponentsOfType<Salt>(salt);
 
-		if (components.size() >= 1)
+		if (salt.size() >= 1)
+		{
 			m_enemyToAttack = object;
-		else if(salt.size() >= 1)
-			m_enemyToAttack = object;
-		else
-			m_enemyToAttack = nullptr;
+			return true;
+		}
 	}
-	else
-		m_enemyToAttack = nullptr;
+
+	m_enemyToAttack = nullptr;
+	return false;
 }
 
 void Brioche::AnimGraph()
@@ -313,10 +321,7 @@ void Brioche::OnEnterCollider(Core::Physics::Collider* collider)
 		object->GetComponentsOfBaseType<AEntity>(enemy);
 
 		if (enemy.size() > 0)
-		{
-			(*enemy.begin())->m_health -= m_damage;
-			(*enemy.begin())->IsHit();
-		}
+			(*enemy.begin())->TakeDamage(m_damage);
 	}
 }
 
