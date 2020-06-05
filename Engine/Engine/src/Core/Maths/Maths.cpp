@@ -31,8 +31,8 @@ RTTR_PLUGIN_REGISTRATION
 		.property("a", &Core::Maths::Color::a);
 }
 
+#include "Reflection.h"
 #include "PxVec3.h"
-#include <sol.hpp>
 
 namespace Core::Maths
 {

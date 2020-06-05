@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sol.hpp>
+#include <sol/sol.hpp>
 #include <rttr/registration.h>
 #include <rttr/registration_friend.h>
 using namespace rttr;
