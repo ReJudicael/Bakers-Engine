@@ -285,6 +285,7 @@ namespace Editor::Window
 			}
 			if (inputText)
 			{
+				ImGui::PushItemToRight(prop.get_name().to_string().c_str());
 				if (ImGui::InputText("", const_cast<char*>(str.c_str()), str.capacity() + 1, ImGuiInputTextFlags_CallbackResize, InputTextCallback, &str))
 					prop.set_value(component, str);
 			}
