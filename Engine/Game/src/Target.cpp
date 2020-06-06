@@ -105,6 +105,9 @@ void	Target::SetTargetPosition()
 	if (Input()->IsKeyDown(EKey::Z))
 		m_isLeading = false;
 
+	if (Input()->IsKeyDown(EKey::LEFT_CONTROL) && Input()->IsKeyDown(EKey::SPACE))
+		m_follower->SpecialAttack();
+
 	if (Input()->IsKeyDown(EKey::LEFT_CONTROL) && Input()->IsMouseButtonDown(EMouseButton::LEFT))
 	{
 		m_isLeading = true;

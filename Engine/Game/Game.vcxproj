@@ -144,6 +144,7 @@
     <ClCompile Include="src\Entity\Minion.cpp" />
     <ClCompile Include="src\Entity\Owen.cpp" />
     <ClCompile Include="src\Entity\Salt.cpp" />
+    <ClCompile Include="src\Projectile.cpp" />
     <ClCompile Include="src\Switch.cpp" />
     <ClCompile Include="src\Target.cpp" />
     <ClCompile Include="src\Warp.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="include\Entity\Owen.h" />
     <ClInclude Include="include\Entity\Salt.h" />
     <ClInclude Include="include\framework.h" />
+    <ClInclude Include="include\Projectile.h" />
     <ClInclude Include="include\Switch.h" />
     <ClInclude Include="include\Target.h" />
     <ClInclude Include="include\Warp.h" />

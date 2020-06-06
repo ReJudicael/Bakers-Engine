@@ -3,7 +3,7 @@
 #include "AEntity.h"
 #include "PathFollowingComponent.h"
 #include "RigidBody.h"
-
+#include "ParticleSystem.h"
 
 namespace Core
 {
@@ -55,13 +55,21 @@ private:
 	std::string m_dieAnimation;
 	EBriocheAnimation m_briocheAnimation{ EBriocheAnimation::IDLE };
 	EBriocheBehavior m_behavior{ EBriocheBehavior::FOLLOW };
+	int				m_specialDamage{ 10 };
 	float			m_attackTimer;
 	float			m_AttackMaxTime;
 	float			m_AttackSpeed;
+	float			m_specialAttackTimer{ 0 };
+	float			m_specialAttackStartTimer{ 0 };
+	float			m_specialAttackCoolDown{ 10.f };
+	float			m_specialAttackCountDown{ 0.5f };
+	float			m_projectileSpeed{ 2.f };
+	float			m_projectileDurability{ 10.f };
 	bool			m_stopAttack{ false };
 	Core::Physics::Collider* colliderPunch;
 	Core::Datastructure::Object* m_enemyToAttack{nullptr};
 	Core::Navigation::PathFollowingComponent* m_navigator;
+	Core::Renderer::ParticleSystem* m_fireParticles;
 public:
 	float m_dist{ 1.5 };
 protected:
@@ -163,6 +171,16 @@ public:
 	 * Call when the Entity is consider as hit
 	 */
 	virtual void IsHit() override;
+
+	/**
+	 * Test if fireball attack can be use and start it
+	 */
+	void SpecialAttack();
+
+	/**
+	 * Instantiate a projectile
+	 */
+	void CastProjectile();
 
 private:
 	/**

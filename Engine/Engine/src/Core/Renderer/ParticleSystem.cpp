@@ -27,6 +27,27 @@ namespace Core::Renderer
 	ParticleSystem::ParticleSystem() : ComponentUpdatable()
 	{}
 
+	ParticleSystem::ParticleSystem(const ParticleSystem& other) : ComponentUpdatable()
+	{
+		m_active = other.m_active;
+		m_loop = other.m_loop;
+
+		m_maxParticlesNb = other.m_maxParticlesNb;
+		m_spawnZone = other.m_spawnZone;
+
+		m_particlesLifeTime = other.m_particlesLifeTime;
+		m_timeBeforeSpawn = other.m_timeBeforeSpawn;
+		m_gravity = other.m_gravity;
+		m_particleSpeed = other.m_particleSpeed;
+
+		m_dispersion = other.m_dispersion;
+
+		m_birthColor = other.m_birthColor;
+		m_deathColor = other.m_deathColor;
+
+		m_particleTexture = other.m_particleTexture;
+	}
+
 	ParticleSystem::~ParticleSystem()
 	{
 		for (size_t i{ 0 }; i < m_particles.size(); ++i)
@@ -290,5 +311,16 @@ namespace Core::Renderer
 		}
 
 		m_particles.clear();
+	}
+
+	bool ParticleSystem::IsOver()
+	{
+		for (size_t i{ 0 }; i < m_particles.size(); ++i)
+		{
+			if (m_particles[i].lifeTime > 0)
+				return false;
+		}
+
+		return true;
 	}
 }

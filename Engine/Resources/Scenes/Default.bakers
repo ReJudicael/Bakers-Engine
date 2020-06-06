@@ -4065,6 +4065,121 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "Childs": [],
+                    "Components": [
+                        {
+                            "Type": "Particle System",
+                            "Values": {
+                                "Active": {
+                                    "Name": "Active",
+                                    "Type": "bool",
+                                    "Value": false
+                                },
+                                "Birth Color": {
+                                    "Name": "Birth Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        1.0,
+                                        0.0,
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                "Death Color": {
+                                    "Name": "Death Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.7686274647712708,
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Dispersion": {
+                                    "Name": "Dispersion",
+                                    "Type": "Vec2",
+                                    "Value": [
+                                        3.140000104904175,
+                                        6.28000020980835
+                                    ]
+                                },
+                                "Gravity": {
+                                    "Name": "Gravity",
+                                    "Type": "float",
+                                    "Value": 0.0
+                                },
+                                "IsActive": {
+                                    "Name": "IsActive",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "IsUpdating": {
+                                    "Name": "IsUpdating",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Life time": {
+                                    "Name": "Life time",
+                                    "Type": "float",
+                                    "Value": 2.0
+                                },
+                                "Loop": {
+                                    "Name": "Loop",
+                                    "Type": "bool",
+                                    "Value": true
+                                },
+                                "Particle texture": {
+                                    "Name": "Particle texture",
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Textures\\Particle2.png"
+                                },
+                                "Particles number": {
+                                    "Name": "Particles number",
+                                    "Type": "int",
+                                    "Value": 50
+                                },
+                                "Spawn zone": {
+                                    "Name": "Spawn zone",
+                                    "Type": "Vec3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                "Speed": {
+                                    "Name": "Speed",
+                                    "Type": "float",
+                                    "Value": 0.10000000149011612
+                                },
+                                "Time Before Spawn": {
+                                    "Name": "Time Before Spawn",
+                                    "Type": "float",
+                                    "Value": 0.20000000298023224
+                                }
+                            }
+                        }
+                    ],
+                    "Flags": 0,
+                    "Name": "FireBallInstance",
+                    "Pos": {
+                        "x": -28.54674530029297,
+                        "y": 8.254961013793945,
+                        "z": -4.486651420593262
+                    },
+                    "Rot": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    }
                 }
             ],
             "Components": [
@@ -4132,6 +4247,16 @@
                             "Name": "Die Animation",
                             "Type": "std::string",
                             "Value": ".\\Resources\\Models\\DragonTheSoulEater\\DieAnim.FBX"
+                        },
+                        "Fire cooldown": {
+                            "Name": "Fire cooldown",
+                            "Type": "float",
+                            "Value": 10.0
+                        },
+                        "Fire countdown": {
+                            "Name": "Fire countdown",
+                            "Type": "float",
+                            "Value": 1.0
                         },
                         "Get Hit Animation": {
                             "Name": "Get Hit Animation",

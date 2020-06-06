@@ -14,7 +14,7 @@ namespace Resources
 
 namespace Core::Physics
 {
-	class SphereCollider : public Core::Datastructure::ComponentBase, public virtual Collider
+	BAKERS_API_CLASS SphereCollider : public Core::Datastructure::ComponentBase, public virtual Collider
 	{
 	protected:
 

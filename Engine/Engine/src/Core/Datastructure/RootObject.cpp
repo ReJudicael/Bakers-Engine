@@ -113,6 +113,8 @@ namespace Core::Datastructure
 	{
 		for (auto it : m_removedUpdatables)
 			m_updatables.remove(it);
+
+		m_removedUpdatables.clear();
 	}
 
 	void RootObject::RemoveRenderable(IRenderable* i, size_t priority) noexcept

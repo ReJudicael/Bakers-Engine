@@ -175,13 +175,13 @@ void Minion::OnUpdate(float deltaTime)
 		Core::Maths::Vec3 OwenPos = m_Owen->GetGlobalPos();
 		Core::Maths::Vec3 BriochePos = m_Brioche->GetGlobalPos();
 		Core::Maths::Vec3 ParentPos = m_parent->GetGlobalPos();
-		float OPLength = (OwenPos - ParentPos).Length();
-		float BPLength = (BriochePos - ParentPos).Length();
+		float OPLength = (OwenPos - ParentPos).SquaredLength();
+		float BPLength = (BriochePos - ParentPos).SquaredLength();
 		if (BPLength < OPLength)
 		{
 			if (m_currTarget != m_Brioche)
 			{
-				if (BPLength < 5.f)
+				if (BPLength < 25.f)
 					m_currTarget = m_Brioche;
 			}
 			distToTarget = BPLength;
@@ -190,7 +190,7 @@ void Minion::OnUpdate(float deltaTime)
 		{
 			if (m_currTarget != m_Owen)
 			{
-				if (OPLength < 5.f)
+				if (OPLength < 25.f)
 					m_currTarget = m_Owen;
 			}
 			distToTarget = OPLength;
