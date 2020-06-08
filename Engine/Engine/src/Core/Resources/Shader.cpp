@@ -133,15 +133,15 @@ namespace Resources
 		json jload;
 
 		load >> jload;
-
+		
 		m_vertexFile = jload["Vertex File"];
 		m_fragmentFile = jload["Fragment File"];
 		m_shaderHeader = static_cast<Shader::EShaderHeaderType>(static_cast<int>(jload["Shader Header"]));
 
 		Load();
 
+		load.close();
 		return true;
-
 	}
 
 	void Shader::Compile()

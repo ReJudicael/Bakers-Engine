@@ -184,7 +184,7 @@ namespace Resources
 		GLchar name[50];
 		GLint size;
 		GLenum type;
-
+		variants.clear();
 		int numberOfBasicTexture{ 0 };
 		bool skeletalShader{ false };
 		// Get all the uniform used of the shader
@@ -343,8 +343,7 @@ namespace Resources
 		load >> data;
 
 		{
-			if (resources->GetCountShader(data["Shader"]) > 0)
-				shader = resources->GetShader(data["Shader"]);
+			shader = resources->GetShader(data["Shader"]);
 
 			diffuseColor.r = data["Diffuse"]["r"];
 			diffuseColor.g = data["Diffuse"]["g"];
@@ -389,6 +388,7 @@ namespace Resources
 		for (auto i = 0; i < variants.size(); i++)
 			LoadVariants(i, data["Variant"][i], resources);
 
+		load.close();
 		return true;
 	}
 
@@ -458,6 +458,8 @@ namespace Resources
 
 	void Material::LoadVariants(const int& index, json j, Resources::Loader::ResourcesManager* resources)
 	{
+		if (j.is_null())
+			return;
 		if (variants[index].var.get_type() == rttr::type::get<bool>())
 		{
 			variants[index].var = static_cast<bool>(j["Value"]);
