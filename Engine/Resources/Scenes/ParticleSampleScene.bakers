@@ -1,0 +1,97 @@
+{
+    "Childs": [
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Camera",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                },
+                {
+                    "Type": "Environment",
+                    "Values": {
+                        "Back Quad Tex": {
+                            "Name": "Back Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Box Tex": {
+                            "Name": "Box Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Down Quad Tex": {
+                            "Name": "Down Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Front Quad Tex": {
+                            "Name": "Front Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Left Quad Tex": {
+                            "Name": "Left Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Right Quad Tex": {
+                            "Name": "Right Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Sphere Tex": {
+                            "Name": "Sphere Tex",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Skysphere.png"
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "Skybox type",
+                            "Value": 1
+                        },
+                        "Up Quad Tex": {
+                            "Name": "Up Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Camera",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        }
+    ]
+}

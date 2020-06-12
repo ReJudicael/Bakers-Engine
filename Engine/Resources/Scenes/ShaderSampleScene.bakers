@@ -1,0 +1,563 @@
+{
+    "Childs": [
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Camera",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                },
+                {
+                    "Type": "Environment",
+                    "Values": {
+                        "Back Quad Tex": {
+                            "Name": "Back Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Box Tex": {
+                            "Name": "Box Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Down Quad Tex": {
+                            "Name": "Down Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Front Quad Tex": {
+                            "Name": "Front Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Left Quad Tex": {
+                            "Name": "Left Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Right Quad Tex": {
+                            "Name": "Right Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Sphere Tex": {
+                            "Name": "Sphere Tex",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Skysphere.png"
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "Skybox type",
+                            "Value": 1
+                        },
+                        "Up Quad Tex": {
+                            "Name": "Up Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Camera",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 5.279006004333496
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\sphere.obj"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Sphere",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere2.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere2.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere2.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere2.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere2.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere2.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\sphere.obj"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Sphere2",
+            "Pos": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere3.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere3.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere3.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere3.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere3.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere3.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\sphere.obj"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Sphere3",
+            "Pos": {
+                "x": 6.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere4.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere4.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere4.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere4.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere4.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\ShaderSample\\Sphere4.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\sphere.obj"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Sphere4",
+            "Pos": {
+                "x": 9.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Light",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Ambient": {
+                            "Name": "Ambient",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Angle": {
+                            "Name": "Angle",
+                            "Type": "float",
+                            "Value": 0.7850000262260437
+                        },
+                        "AngleSmoothness": {
+                            "Name": "AngleSmoothness",
+                            "Type": "float",
+                            "Value": 0.0010000000474974513
+                        },
+                        "Attenuation": {
+                            "Name": "Attenuation",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CastShadows": {
+                            "Name": "CastShadows",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Diffuse": {
+                            "Name": "Diffuse",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Range": {
+                            "Name": "Range",
+                            "Type": "float",
+                            "Value": 100.0
+                        },
+                        "Specular": {
+                            "Name": "Specular",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "LightType",
+                            "Value": 0
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Sun",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 0.028345122933387756,
+                "x": -3.116503535238735e-07,
+                "y": 0.9995982050895691,
+                "z": -6.656956941242242e-08
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        }
+    ]
+}
