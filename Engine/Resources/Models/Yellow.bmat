@@ -11,14 +11,23 @@
         "g": 0.6399999856948853,
         "r": 0.6399999856948853
     },
-    "Shader": ".\\Resources\\Shaders\\ShaderTest\\FourthSphere.bshader",
+    "Shader": ".\\Resources\\Shaders\\ShaderTest\\Color.bshader",
     "Specular": {
         "a": 0.0,
         "b": 0.0,
         "g": 0.0,
         "r": 0.0
     },
-    "Variant": [],
+    "Variant": [
+        {
+            "Value": {
+                "a": 1.0,
+                "b": 0.0,
+                "g": 1.0,
+                "r": 1.0
+            }
+        }
+    ],
     "shininess": 1.0,
     "shininessS": 0.5
 }
