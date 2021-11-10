@@ -87,7 +87,7 @@ namespace Core::Physics
 
 		colliderSave->isTrigger = IsTrigger();
 		colliderSave->localPosition = GetLocalPosition();
-		colliderSave->localRotation = GetLocalRotationEuler();
+		colliderSave->localRotation = GetLocalRotationQuat();
 		colliderSave->physicsMaterial = GetMaterial();
 		colliderSave->raycastFilter = GetRaycastFilter();
 		colliderSave->isActive = IsActive();
@@ -272,7 +272,9 @@ namespace Core::Physics
 		{
 			if (!m_tmpColliderSave)
 				m_tmpColliderSave = new ColliderSave();
-			m_tmpColliderSave->localRotation = {euler};
+			m_tmpColliderSave->localRotation = {	Core::Maths::ToRadiansf(euler.x),
+													Core::Maths::ToRadiansf(euler.y),
+													Core::Maths::ToRadiansf(euler.z) };
 		}
 	}
 

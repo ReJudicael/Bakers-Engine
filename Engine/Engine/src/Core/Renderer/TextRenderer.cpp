@@ -12,6 +12,9 @@ RTTR_PLUGIN_REGISTRATION
 	rttr::registration::class_<TextRenderer>("Text Renderer")
 		.constructor()
 		.property("Text", &TextRenderer::m_text)
+		(
+			metadata(MetaData_Type::STRING_EDITABLE, true)
+		)
 		.property("Font", &TextRenderer::m_font)
 		.property("Size", &TextRenderer::m_size);
 }
@@ -74,7 +77,9 @@ namespace Core::Renderer
 		glUniformMatrix4fv(m_shader->GetLocation("uProj"), 1, GL_FALSE, proj.array);
 
 		Core::Datastructure::Transform pos;
-		pos.Translate(GetParent()->Forward() * len);
+		//pos.UpdatePos(GetParent()->GetUpdatedTransform());
+		pos.Translate(GetParent()->Right() * len);
+		pos.SetLocalRot(GetParent()->GetGlobalRot());
 		Vec3 scale{ pos.GetLocalScale() * Core::Maths::Vec3(m_size / 100.f) };
 
 		for (unsigned i{ 0 }; i < m_text.size(); ++i)
@@ -84,7 +89,7 @@ namespace Core::Renderer
 			c = GetRoot()->GetEngine()->GetResourcesManager()->GetCharacter(m_font, m_text[i]);
 			glBindTexture(GL_TEXTURE_2D, c->textureID);
 
-			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * static_cast<float>(m_size)) / 9000.f);
+			pos.Translate((GetParent()->Right() * -(float)(c->advance >> 6) * static_cast<float>(m_size)) / 9000.f);
 			pos.Translate((GetParent()->Up() * (float)(c->sizeY - c->bearingY) * static_cast<float>(m_size)) / 9000.f);
 			pos.SetLocalScale(scale);
 			pos.Scale({ c->sizeX / 48.f, c->sizeY / 48.f, 1 });
@@ -92,7 +97,7 @@ namespace Core::Renderer
 			pos.UpdatePos(GetParent()->GetUpdatedTransform());
 
 			glUniformMatrix4fv(m_shader->GetLocation("uModel"), 1, GL_TRUE, pos.GetGlobalTrs().array);
-			pos.Translate((GetParent()->Forward() * -(float)(c->advance >> 6) * static_cast<float>(m_size)) / 9000.f);
+			pos.Translate((GetParent()->Right() * -(float)(c->advance >> 6) * static_cast<float>(m_size)) / 9000.f);
 			pos.Translate((GetParent()->Up() * -(float)(c->sizeY - c->bearingY) * static_cast<float>(m_size)) / 9000.f);
 
 			glDrawElements(GL_TRIANGLES, m_quad->offsetsMesh[0].count, GL_UNSIGNED_INT,

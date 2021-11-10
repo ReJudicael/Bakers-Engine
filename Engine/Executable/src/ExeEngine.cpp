@@ -164,6 +164,21 @@ namespace Executable
 		return Core::Maths::Vec2(static_cast<float>(pos[0]), static_cast<float>(pos[1]));
 	}
 
+	Core::Maths::Vec2	ExeEngine::GetMousePosInWindow() noexcept
+	{
+		double pos[2];
+		glfwGetCursorPos(GetWindow(), &pos[0], &pos[1]);
+		int windowSize[2];
+		glfwGetWindowSize(GetWindow(), &windowSize[0], &windowSize[1]);
+
+		Core::Maths::Vec2 mouse;
+		mouse.x = pos[0] - (float)windowSize[0] * 0.5f;
+		mouse.x /= (float)windowSize[0] * 0.5f;
+		mouse.y = pos[1] - (float)windowSize[1] * 0.5f;
+		mouse.y /= (float)windowSize[1] * 0.5f;
+
+		return mouse;
+	}
 
 	void ExeEngine::SetCallbackToGLFW()
 	{

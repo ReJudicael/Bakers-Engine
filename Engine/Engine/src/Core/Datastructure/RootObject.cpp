@@ -49,12 +49,14 @@ namespace Core::Datastructure
 		}
 	}
 
-	void RootObject::Update(float deltaTime) const noexcept
+	void RootObject::Update(float deltaTime) noexcept
 	{
 		ZoneScoped
 			ZoneText("Updating of components done here", 33)
+		RemoveUpdatables();
 		for (auto it{ m_updatables.begin() }; it != m_updatables.end(); ++it)
 			(*it)->Update(deltaTime);
+		RemoveUpdatables();
 	}
 
 	void RootObject::Render(std::list<Core::Renderer::Framebuffer*>& fboList) const noexcept
@@ -104,7 +106,15 @@ namespace Core::Datastructure
 
 	void RootObject::RemoveUpdatable(IUpdatable* i) noexcept
 	{
-		m_updatables.remove(i);
+		m_removedUpdatables.push_back(i);
+	}
+
+	void RootObject::RemoveUpdatables() noexcept
+	{
+		for (auto it : m_removedUpdatables)
+			m_updatables.remove(it);
+
+		m_removedUpdatables.clear();
 	}
 
 	void RootObject::RemoveRenderable(IRenderable* i, size_t priority) noexcept

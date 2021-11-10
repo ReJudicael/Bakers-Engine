@@ -20,6 +20,8 @@ public:
 	 */
 	~AEntity();
 
+	virtual void TakeDamage(const int damage);
+
 	virtual void IsHit() {};
 
 	REGISTER_CLASS(Core::Datastructure::IUpdatable)

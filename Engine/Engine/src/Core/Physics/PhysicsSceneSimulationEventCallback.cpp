@@ -51,6 +51,9 @@ namespace Core::Physics
 	}
 	void PhysicsSceneSimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
 	{
+		if (!pairs->triggerActor->userData || !pairs->otherActor->userData)
+			return;
+
 		Core::Physics::Collider* triggered = dynamic_cast<Core::Physics::Collider*>(static_cast<Core::Datastructure::IComponent*>(pairs->triggerActor->userData));
 		Core::Physics::Collider* triggerWith = dynamic_cast<Core::Physics::Collider*>(static_cast<Core::Datastructure::IComponent*>(pairs->otherActor->userData));
 		if (triggered)

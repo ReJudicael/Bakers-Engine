@@ -1,0 +1,1015 @@
+{
+    "Childs": [
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Camera",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                },
+                {
+                    "Type": "Environment",
+                    "Values": {
+                        "Back Quad Tex": {
+                            "Name": "Back Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Box Tex": {
+                            "Name": "Box Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Down Quad Tex": {
+                            "Name": "Down Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Front Quad Tex": {
+                            "Name": "Front Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Left Quad Tex": {
+                            "Name": "Left Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Right Quad Tex": {
+                            "Name": "Right Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Sphere Tex": {
+                            "Name": "Sphere Tex",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Skysphere.png"
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "Skybox type",
+                            "Value": 1
+                        },
+                        "Up Quad Tex": {
+                            "Name": "Up Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Camera",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Dark.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Dark.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\cube.obj"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Ground",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 50.0,
+                "y": 1.0,
+                "z": 10.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Light",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Ambient": {
+                            "Name": "Ambient",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Angle": {
+                            "Name": "Angle",
+                            "Type": "float",
+                            "Value": 0.7850000262260437
+                        },
+                        "AngleSmoothness": {
+                            "Name": "AngleSmoothness",
+                            "Type": "float",
+                            "Value": 0.0010000000474974513
+                        },
+                        "Attenuation": {
+                            "Name": "Attenuation",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CastShadows": {
+                            "Name": "CastShadows",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Diffuse": {
+                            "Name": "Diffuse",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Range": {
+                            "Name": "Range",
+                            "Type": "float",
+                            "Value": 100.0
+                        },
+                        "Specular": {
+                            "Name": "Specular",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "LightType",
+                            "Value": 0
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Sun",
+            "Pos": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 0.9207799434661865,
+                "x": 0.3900824785232544,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\cube.obj"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Wall",
+            "Pos": {
+                "x": 0.0,
+                "y": 5.0,
+                "z": -5.0
+            },
+            "Rot": {
+                "w": 0.7071068286895752,
+                "x": 0.7071067690849304,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 50.0,
+                "y": 1.0,
+                "z": 10.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Particle System",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Birth Color": {
+                            "Name": "Birth Color",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ]
+                        },
+                        "Death Color": {
+                            "Name": "Death Color",
+                            "Type": "Color",
+                            "Value": [
+                                0.23938226699829102,
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Dispersion": {
+                            "Name": "Dispersion",
+                            "Type": "Vec2",
+                            "Value": [
+                                0.25,
+                                0.25
+                            ]
+                        },
+                        "Gravity": {
+                            "Name": "Gravity",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Life time": {
+                            "Name": "Life time",
+                            "Type": "float",
+                            "Value": 0.5
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Particle texture": {
+                            "Name": "Particle texture",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Particle2.png"
+                        },
+                        "Particles number": {
+                            "Name": "Particles number",
+                            "Type": "int",
+                            "Value": 500
+                        },
+                        "Spawn zone": {
+                            "Name": "Spawn zone",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.05000000074505806,
+                                0.0,
+                                0.05000000074505806
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 0.5
+                        },
+                        "Time Before Spawn": {
+                            "Name": "Time Before Spawn",
+                            "Type": "float",
+                            "Value": 0.0
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Fire",
+            "Pos": {
+                "x": -20.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 10.0,
+                "y": 10.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Particle System",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Birth Color": {
+                            "Name": "Birth Color",
+                            "Type": "Color",
+                            "Value": [
+                                0.0,
+                                0.3397681713104248,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Death Color": {
+                            "Name": "Death Color",
+                            "Type": "Color",
+                            "Value": [
+                                0.0,
+                                0.05952954292297363,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Dispersion": {
+                            "Name": "Dispersion",
+                            "Type": "Vec2",
+                            "Value": [
+                                0.009999999776482582,
+                                0.009999999776482582
+                            ]
+                        },
+                        "Gravity": {
+                            "Name": "Gravity",
+                            "Type": "float",
+                            "Value": 0.25
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Life time": {
+                            "Name": "Life time",
+                            "Type": "float",
+                            "Value": 2.0
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Particle texture": {
+                            "Name": "Particle texture",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Particle2.png"
+                        },
+                        "Particles number": {
+                            "Name": "Particles number",
+                            "Type": "int",
+                            "Value": 100
+                        },
+                        "Spawn zone": {
+                            "Name": "Spawn zone",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 4.0
+                        },
+                        "Time Before Spawn": {
+                            "Name": "Time Before Spawn",
+                            "Type": "float",
+                            "Value": 0.0
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Water",
+            "Pos": {
+                "x": -10.0,
+                "y": 3.4000000953674316,
+                "z": -3.700000047683716
+            },
+            "Rot": {
+                "w": 0.7933533191680908,
+                "x": 0.6087614297866821,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 5.0,
+                "y": 5.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Particle System",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Birth Color": {
+                            "Name": "Birth Color",
+                            "Type": "Color",
+                            "Value": [
+                                0.0,
+                                0.9642908573150635,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Death Color": {
+                            "Name": "Death Color",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                0.0
+                            ]
+                        },
+                        "Dispersion": {
+                            "Name": "Dispersion",
+                            "Type": "Vec2",
+                            "Value": [
+                                3.140000104904175,
+                                3.140000104904175
+                            ]
+                        },
+                        "Gravity": {
+                            "Name": "Gravity",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Life time": {
+                            "Name": "Life time",
+                            "Type": "float",
+                            "Value": 3.0
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Particle texture": {
+                            "Name": "Particle texture",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Snow.png"
+                        },
+                        "Particles number": {
+                            "Name": "Particles number",
+                            "Type": "int",
+                            "Value": 50
+                        },
+                        "Spawn zone": {
+                            "Name": "Spawn zone",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.25,
+                                0.25,
+                                0.25
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 0.10000000149011612
+                        },
+                        "Time Before Spawn": {
+                            "Name": "Time Before Spawn",
+                            "Type": "float",
+                            "Value": 0.009999999776482582
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Snow",
+            "Pos": {
+                "x": 0.0,
+                "y": 4.5,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 5.0,
+                "y": 5.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Particle System",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Birth Color": {
+                            "Name": "Birth Color",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                1.0
+                            ]
+                        },
+                        "Death Color": {
+                            "Name": "Death Color",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Dispersion": {
+                            "Name": "Dispersion",
+                            "Type": "Vec2",
+                            "Value": [
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Gravity": {
+                            "Name": "Gravity",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Life time": {
+                            "Name": "Life time",
+                            "Type": "float",
+                            "Value": 0.20000000298023224
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Particle texture": {
+                            "Name": "Particle texture",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Choc.png"
+                        },
+                        "Particles number": {
+                            "Name": "Particles number",
+                            "Type": "int",
+                            "Value": 15
+                        },
+                        "Spawn zone": {
+                            "Name": "Spawn zone",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.20000000298023224,
+                                0.20000000298023224,
+                                0.20000000298023224
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 0.0
+                        },
+                        "Time Before Spawn": {
+                            "Name": "Time Before Spawn",
+                            "Type": "float",
+                            "Value": 0.009999999776482582
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Thunder",
+            "Pos": {
+                "x": 10.0,
+                "y": 3.5,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 5.0,
+                "y": 5.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Yellow.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Yellow.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Yellow.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Yellow.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Yellow.bmat"
+                                },
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\Yellow.bmat"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\sphere.obj"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "ThunderSphere",
+            "Pos": {
+                "x": 10.0,
+                "y": 3.527523994445801,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 0.5,
+                "y": 0.5,
+                "z": 0.5
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Particle System",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Birth Color": {
+                            "Name": "Birth Color",
+                            "Type": "Color",
+                            "Value": [
+                                0.9891752600669861,
+                                0.44015443325042725,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Death Color": {
+                            "Name": "Death Color",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                0.615686297416687,
+                                0.9882352948188782,
+                                0.0
+                            ]
+                        },
+                        "Dispersion": {
+                            "Name": "Dispersion",
+                            "Type": "Vec2",
+                            "Value": [
+                                1.0700000524520874,
+                                1.0700000524520874
+                            ]
+                        },
+                        "Gravity": {
+                            "Name": "Gravity",
+                            "Type": "float",
+                            "Value": 0.5
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Life time": {
+                            "Name": "Life time",
+                            "Type": "float",
+                            "Value": 3.0
+                        },
+                        "Loop": {
+                            "Name": "Loop",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Particle texture": {
+                            "Name": "Particle texture",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Flower.png"
+                        },
+                        "Particles number": {
+                            "Name": "Particles number",
+                            "Type": "int",
+                            "Value": 5
+                        },
+                        "Spawn zone": {
+                            "Name": "Spawn zone",
+                            "Type": "Vec3",
+                            "Value": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "Speed": {
+                            "Name": "Speed",
+                            "Type": "float",
+                            "Value": 0.25
+                        },
+                        "Time Before Spawn": {
+                            "Name": "Time Before Spawn",
+                            "Type": "float",
+                            "Value": 0.0
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Petals",
+            "Pos": {
+                "x": 20.0,
+                "y": 4.0,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 10.0,
+                "y": 10.0,
+                "z": 10.0
+            }
+        }
+    ]
+}

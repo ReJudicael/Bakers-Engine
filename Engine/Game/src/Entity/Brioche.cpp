@@ -7,6 +7,8 @@
 #include "Collider.h"
 #include "Minion.h"
 #include "Salt.h"
+#include "Projectile.h"
+#include "SphereCollider.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -29,7 +31,13 @@ RTTR_PLUGIN_REGISTRATION
 		.property("Get Hit Animation", &Brioche::m_getHitAnimation)
 		.property("Die Animation", &Brioche::m_dieAnimation)
 	
-		.property("Brioche Animation", &Brioche::m_briocheAnimation);
+		.property("Brioche Animation", &Brioche::m_briocheAnimation)
+
+		.property("Fire countdown", &Brioche::m_specialAttackCountDown)
+		.property("Fire cooldown", &Brioche::m_specialAttackCoolDown)
+		.property("Fire damage", &Brioche::m_specialDamage)
+		.property("Fire speed", &Brioche::m_projectileSpeed)
+		.property("Fire durability", &Brioche::m_projectileDurability);
 }
 
 
@@ -56,6 +64,11 @@ void Brioche::OnCopy(IComponent* copyTo) const
 	copy->m_rigidbody = m_rigidbody;
 	copy->m_behavior = m_behavior;
 	copy->m_navigator = m_navigator;
+	copy->m_specialDamage = m_specialDamage;
+	copy->m_specialAttackCoolDown = m_specialAttackCoolDown;
+	copy->m_specialAttackCountDown = m_specialAttackCountDown;
+	copy->m_projectileSpeed = m_projectileSpeed;
+	copy->m_projectileDurability = m_projectileDurability;
 }
 
 void Brioche::StartCopy(IComponent*& copyTo) const
@@ -77,6 +90,11 @@ bool Brioche::OnStart()
 	m_parent->GetComponentsOfTypeInObject<Core::Physics::RigidBody>(rigidBodies);
 	if (rigidBodies.size() > 0)
 		m_rigidbody = *rigidBodies.begin();
+
+	std::list<Core::Renderer::ParticleSystem*> particles;
+	m_parent->GetComponentsOfType<Core::Renderer::ParticleSystem>(particles);
+	if (particles.size() > 0)
+		m_fireParticles = *particles.begin();
 
 	std::list<Core::Datastructure::Object*> childs = m_parent->GetChildren();
 
@@ -120,6 +138,14 @@ void Brioche::OnReset()
 	m_rigidbody = nullptr;
 	m_behavior = EBriocheBehavior::FOLLOW;
 	m_navigator = nullptr;
+
+	m_specialDamage = 10;
+	m_specialAttackTimer = 0;
+	m_specialAttackStartTimer = 0;
+	m_specialAttackCoolDown = 10.f;
+	m_specialAttackCountDown = 0.5f;
+	m_projectileSpeed = 2.f;
+	m_projectileDurability = 10.f;
 }
 
 void Brioche::OnInit()
@@ -174,6 +200,15 @@ void Brioche::OnUpdate(float deltaTime)
 			m_attackTimer += m_AttackSpeed * deltaTime;
 	}
 
+	if (m_specialAttackTimer > 0.f)
+		m_specialAttackTimer -= deltaTime;
+
+	if (m_specialAttackStartTimer > 0.f)
+	{
+		m_specialAttackStartTimer -= deltaTime;
+		if (m_specialAttackStartTimer <= 0.f)
+			CastProjectile();
+	}
 }
 
 void Brioche::SetTarget(Core::Maths::Vec3 target)
@@ -189,25 +224,33 @@ void Brioche::SetTarget(Core::Maths::Vec3 target)
 	}
 }
 
-void Brioche::SetEnemy(Core::Datastructure::Object* object)
+bool Brioche::SetEnemy(Core::Datastructure::Object* object)
 {
 	if (object)
 	{
+		// Check if the given object is an enemy
 		std::list<Minion*> components;
 		object->GetComponentsOfType<Minion>(components);
 
+		if (components.size() >= 1)
+		{
+			m_enemyToAttack = object;
+			return true;
+		}
+
+		// Check if the given object is a boss enemy
 		std::list<Salt*> salt;
 		object->GetComponentsOfType<Salt>(salt);
 
-		if (components.size() >= 1)
+		if (salt.size() >= 1)
+		{
 			m_enemyToAttack = object;
-		else if(salt.size() >= 1)
-			m_enemyToAttack = object;
-		else
-			m_enemyToAttack = nullptr;
+			return true;
+		}
 	}
-	else
-		m_enemyToAttack = nullptr;
+
+	m_enemyToAttack = nullptr;
+	return false;
 }
 
 void Brioche::AnimGraph()
@@ -313,10 +356,7 @@ void Brioche::OnEnterCollider(Core::Physics::Collider* collider)
 		object->GetComponentsOfBaseType<AEntity>(enemy);
 
 		if (enemy.size() > 0)
-		{
-			(*enemy.begin())->m_health -= m_damage;
-			(*enemy.begin())->IsHit();
-		}
+			(*enemy.begin())->TakeDamage(m_damage);
 	}
 }
 
@@ -354,4 +394,47 @@ void Brioche::IsHit()
 	m_briocheAnimation = EBriocheAnimation::GETHIT;
 	if (m_navigator)
 		m_navigator->SetStopMoving(true);
+}
+
+void Brioche::SpecialAttack()
+{
+	if (m_specialAttackTimer > 0.f || m_health <= 0)
+		return;
+
+	m_stopAttack = false;
+	m_briocheAnimation = EBriocheAnimation::BITE;
+	m_behavior = EBriocheBehavior::ATTACK;
+	m_rigidbody->SetLinearVelocity({ 0.f, m_rigidbody->GetVelocity().y, 0.f });
+	m_navigator->SetStopMoving(true);
+
+	m_specialAttackTimer = m_specialAttackCoolDown;
+	m_specialAttackStartTimer = m_specialAttackCountDown;
+}
+
+void Brioche::CastProjectile()
+{
+	Core::Datastructure::Object* fire = GetRoot()->CreateChild("Fireball", colliderPunch->GetParent()->GetGlobalPos());
+	
+	Core::Physics::SphereCollider* s = new Core::Physics::SphereCollider();
+	fire->AddComponent(s);
+	s->Start();
+	s->Trigger(true);
+
+	if (m_fireParticles)
+	{
+		Core::Renderer::ParticleSystem* p = new Core::Renderer::ParticleSystem(*m_fireParticles);
+		fire->AddComponent(p);
+		p->Start(); // Component start
+		p->Restart(); // Specific particle system activation
+	}
+
+	Projectile* proj = new Projectile();
+	fire->AddComponent(proj);
+	proj->Start();
+	proj->SetMovement(m_parent->Forward());
+	proj->SetSpeed(m_projectileSpeed);
+	proj->SetTime(m_projectileDurability);
+	proj->SetDamage(m_specialDamage);
+
+	fire->SetGlobalScale({ 5, 5, 5 });
 }

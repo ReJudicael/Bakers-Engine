@@ -22,6 +22,7 @@ namespace Core::Datastructure
 	{
 	protected:
 		std::list<IUpdatable*>	m_updatables;
+		std::list<IUpdatable*>	m_removedUpdatables;
 		std::list<IRenderable*>	m_renderables;
 		size_t					m_renderPriorityBegin{ 0 };
 		std::list<IComponent*>	m_componentsToStart;
@@ -53,7 +54,7 @@ namespace Core::Datastructure
 		 * Calls OnStart on every compatible components that are initialized.
 		 * If a component is not initialized, it will not be updated
 		 */
-		void		Update(float deltaTime) const noexcept;
+		void		Update(float deltaTime) noexcept;
 		/**
 		 * Calls OnDraw on every compatible components that are initialized.
 		 * If a component is not initialized, it will not be updated
@@ -105,6 +106,9 @@ namespace Core::Datastructure
 		 * @param i: Component to be removed
 		 */
 		void		RemoveUpdatable(IUpdatable* i) noexcept;
+
+		void		RemoveUpdatables() noexcept;
+
 		/**
 		 * removes a component from the rendered ones
 		 * @param i: Component to be removed

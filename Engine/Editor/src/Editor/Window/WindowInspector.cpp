@@ -149,6 +149,21 @@ namespace Editor::Window
 		}
 	}
 
+	// Function to resize strings
+	static int InputTextCallback(ImGuiInputTextCallbackData* data)
+	{
+		if (data->EventFlag == ImGuiInputTextFlags_CallbackResize)
+		{
+			// Resize string callback
+			// If for some reason we refuse the new length (BufTextLen) and/or capacity (BufSize) we need to set them back to what we want.
+			std::string* str = static_cast<std::string*>(data->UserData);
+			IM_ASSERT(data->Buf == str->c_str());
+			str->resize(data->BufTextLen);
+			data->Buf = (char*)str->c_str();
+		}
+		return 0;
+	}
+
 	void WindowInspector::DrawProperty(rttr::property prop, rttr::instance component)
 	{
 		const rttr::type propType{ prop.get_type() };
@@ -243,7 +258,38 @@ namespace Editor::Window
 		else if (propType == rttr::type::get<std::string>())
 		{
 			std::string str{ prop.get_value(component).get_value<std::string>() };
-			if (DisplayStringDD(prop, str))
+			
+			rttr::variant needDisplay{ prop.get_metadata(MetaData_Type::STRING_EDITABLE) };
+			bool	inputText = false;
+			if (needDisplay.is_valid())
+			{
+				if (needDisplay.get_type() == rttr::type::get<bool>())
+				{
+					if (needDisplay.get_value<bool>())
+						inputText = true;
+				}
+				else if (needDisplay.get_type() == rttr::type::get<std::string>())
+				{
+					rttr::method m{ component.get_derived_type().get_method(needDisplay.get_value<std::string>()) };
+					if (m.is_valid())
+					{
+						rttr::variant v{ m.invoke(component) };
+						if (v.is_valid() && v.is_type<bool>() && v.get_value<bool>())
+							inputText = true;
+					}
+					else
+						BAKERS_LOG_WARNING("Could not find method of name " + needDisplay.get_value<std::string>() + " in component " + component.get_derived_type().get_name());
+				}
+				else
+					BAKERS_LOG_WARNING("Property " + prop.get_name().to_string() + "'s metadata SHOW_IN_EDITOR does not have authorized type");
+			}
+			if (inputText)
+			{
+				ImGui::PushItemToRight(prop.get_name().to_string().c_str());
+				if (ImGui::InputText("", const_cast<char*>(str.c_str()), str.capacity() + 1, ImGuiInputTextFlags_CallbackResize, InputTextCallback, &str))
+					prop.set_value(component, str);
+			}
+			else if (DisplayStringDD(prop, str))
 				prop.set_value(component, str);
 		}
 		else if (propType.is_class())

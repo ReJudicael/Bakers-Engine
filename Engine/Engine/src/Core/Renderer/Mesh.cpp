@@ -257,8 +257,11 @@ void  Core::Renderer::Mesh::Display(const Core::Maths::Mat4& view, const Core::M
 		std::shared_ptr<Resources::Material> material = m_materialsModel[currOffsetMesh.materialIndices];
 		std::shared_ptr<Resources::Shader> usedShader = (givenShader ? givenShader : material->shader);
 
-		usedShader->UseProgram();
-		MaterialSendToOpengGL(view, proj, trs, material, usedShader);
+		if (usedShader)
+		{
+			usedShader->UseProgram();
+			MaterialSendToOpengGL(view, proj, trs, material, usedShader);
+		}
 
 		glDrawElements(GL_TRIANGLES, currOffsetMesh.count, GL_UNSIGNED_INT,
 			(GLvoid*)(currOffsetMesh.beginIndices * sizeof(GLuint)));

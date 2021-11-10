@@ -1,0 +1,349 @@
+{
+    "Childs": [
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Camera",
+                    "Values": {
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsUpdating": {
+                            "Name": "IsUpdating",
+                            "Type": "bool",
+                            "Value": true
+                        }
+                    }
+                },
+                {
+                    "Type": "Environment",
+                    "Values": {
+                        "Back Quad Tex": {
+                            "Name": "Back Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Box Tex": {
+                            "Name": "Box Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Down Quad Tex": {
+                            "Name": "Down Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Front Quad Tex": {
+                            "Name": "Front Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Left Quad Tex": {
+                            "Name": "Left Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Right Quad Tex": {
+                            "Name": "Right Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        },
+                        "Sphere Tex": {
+                            "Name": "Sphere Tex",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Textures\\Skysphere.png"
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "Skybox type",
+                            "Value": 1
+                        },
+                        "Up Quad Tex": {
+                            "Name": "Up Quad Tex",
+                            "Type": "std::string",
+                            "Value": ""
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Camera",
+            "Pos": {
+                "x": -30.14882469177246,
+                "y": 14.870312690734863,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\cube.obj"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Ground",
+            "Pos": {
+                "x": 0.0,
+                "y": 2.7017712593078613,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 25.0,
+                "y": 1.0,
+                "z": 50.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Light",
+                    "Values": {
+                        "Active": {
+                            "Name": "Active",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Ambient": {
+                            "Name": "Ambient",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Angle": {
+                            "Name": "Angle",
+                            "Type": "float",
+                            "Value": 1.0850000381469727
+                        },
+                        "AngleSmoothness": {
+                            "Name": "AngleSmoothness",
+                            "Type": "float",
+                            "Value": 0.07100000232458115
+                        },
+                        "Attenuation": {
+                            "Name": "Attenuation",
+                            "Type": "Vec3",
+                            "Value": [
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CastShadows": {
+                            "Name": "CastShadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Diffuse": {
+                            "Name": "Diffuse",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "Range": {
+                            "Name": "Range",
+                            "Type": "float",
+                            "Value": 99.95999908447266
+                        },
+                        "Specular": {
+                            "Name": "Specular",
+                            "Type": "Color",
+                            "Value": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "Type": {
+                            "Name": "Type",
+                            "Type": "LightType",
+                            "Value": 2
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Light",
+            "Pos": {
+                "x": -0.3014557361602783,
+                "y": 10.603915214538574,
+                "z": -0.07845145463943481
+            },
+            "Rot": {
+                "w": 0.7071067690849304,
+                "x": -0.7071067690849304,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "Childs": [],
+            "Components": [
+                {
+                    "Type": "Mesh",
+                    "Values": {
+                        "Cast Shadows": {
+                            "Name": "Cast Shadows",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsActive": {
+                            "Name": "IsActive",
+                            "Type": "bool",
+                            "Value": true
+                        },
+                        "IsChild": {
+                            "Name": "IsChild",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "IsRoot": {
+                            "Name": "IsRoot",
+                            "Type": "bool",
+                            "Value": false
+                        },
+                        "Material": {
+                            "Name": "Material",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "MaterialsNames": {
+                            "Name": "MaterialsNames",
+                            "Type": "ArraySequential",
+                            "Value": [
+                                {
+                                    "Type": "std::string",
+                                    "Value": ".\\Resources\\Models\\cube"
+                                }
+                            ],
+                            "Wrapped type": "std::string"
+                        },
+                        "Model": {
+                            "Name": "Model",
+                            "Type": "std::string",
+                            "Value": ".\\Resources\\Models\\cube.obj"
+                        }
+                    }
+                }
+            ],
+            "Flags": 0,
+            "Name": "Cube",
+            "Pos": {
+                "x": 0.0,
+                "y": 6.666255474090576,
+                "z": 0.0
+            },
+            "Rot": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        }
+    ]
+}

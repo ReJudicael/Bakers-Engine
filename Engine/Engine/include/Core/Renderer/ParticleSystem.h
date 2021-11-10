@@ -125,6 +125,11 @@ namespace Core::Renderer
 		ParticleSystem();
 
 		/**
+		 * Copy Constructor
+		 */
+		ParticleSystem(const ParticleSystem& other);
+
+		/**
 		 * Destructor
 		 */
 		~ParticleSystem();
@@ -155,6 +160,12 @@ namespace Core::Renderer
 		 * Clear all particles generated
 		 */
 		void Clear();
+
+		/**
+		 * Check if no more particle are displayed
+		 * @return True if all particle has a lifeTime at 0 or less
+		 */
+		bool IsOver();
 
 		REGISTER_CLASS(ComponentUpdatable, IRenderable)
 	};

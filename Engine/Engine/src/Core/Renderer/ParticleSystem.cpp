@@ -27,6 +27,27 @@ namespace Core::Renderer
 	ParticleSystem::ParticleSystem() : ComponentUpdatable()
 	{}
 
+	ParticleSystem::ParticleSystem(const ParticleSystem& other) : ComponentUpdatable()
+	{
+		m_active = other.m_active;
+		m_loop = other.m_loop;
+
+		m_maxParticlesNb = other.m_maxParticlesNb;
+		m_spawnZone = other.m_spawnZone;
+
+		m_particlesLifeTime = other.m_particlesLifeTime;
+		m_timeBeforeSpawn = other.m_timeBeforeSpawn;
+		m_gravity = other.m_gravity;
+		m_particleSpeed = other.m_particleSpeed;
+
+		m_dispersion = other.m_dispersion;
+
+		m_birthColor = other.m_birthColor;
+		m_deathColor = other.m_deathColor;
+
+		m_particleTexture = other.m_particleTexture;
+	}
+
 	ParticleSystem::~ParticleSystem()
 	{
 		for (size_t i{ 0 }; i < m_particles.size(); ++i)
@@ -131,12 +152,9 @@ namespace Core::Renderer
 
 	void ParticleSystem::OnUpdate(float deltaTime)
 	{
-		if (!m_active)
-			return;
-
 		if (m_currentTime > 0)
 			m_currentTime -= deltaTime;
-		else
+		else if (m_active)
 		{
 			if (m_particles.size() < m_maxParticlesNb)
 				CreateParticle();
@@ -162,7 +180,7 @@ namespace Core::Renderer
 
 	void	ParticleSystem::OnDraw(const Core::Maths::Mat4& view, const Core::Maths::Mat4& proj, std::shared_ptr<Resources::Shader> givenShader)
 	{
-		if (!m_active || givenShader)
+		if (givenShader)
 			return;
 
 		Core::Maths::Mat4 transform = m_parent->GetGlobalTRS();
@@ -293,5 +311,16 @@ namespace Core::Renderer
 		}
 
 		m_particles.clear();
+	}
+
+	bool ParticleSystem::IsOver()
+	{
+		for (size_t i{ 0 }; i < m_particles.size(); ++i)
+		{
+			if (m_particles[i].lifeTime > 0)
+				return false;
+		}
+
+		return true;
 	}
 }

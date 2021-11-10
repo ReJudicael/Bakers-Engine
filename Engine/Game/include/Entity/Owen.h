@@ -5,6 +5,7 @@
 #include "RigidBody.h"
 #include "ScriptedComponent.h"
 #include "AEntity.h"
+#include "ParticleSystem.h"
 
 namespace Core
 {
@@ -49,6 +50,7 @@ private:
 	float			m_AttackMaxTime;
 	float			m_AttackSpeed;
 	Core::Physics::Collider* m_colliderPunch;
+	Core::Renderer::ParticleSystem* m_hitParticles;
 
 	Core::Datastructure::ScriptedComponent* m_controller;
 
