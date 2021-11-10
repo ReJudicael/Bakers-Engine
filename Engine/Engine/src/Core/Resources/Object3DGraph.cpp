@@ -104,7 +104,7 @@ namespace Resources
 		{
 			if (resources.GetCountModel(nameMesh) > 0)
 			{
-				Core::Renderer::Mesh* mesh = new Core::Renderer::Mesh();
+				Core::Renderer::Mesh* mesh;
 
 				if (!isSkeletal)
 					mesh = new Core::Renderer::Mesh();
@@ -122,7 +122,7 @@ namespace Resources
 			}
 		}
 
-		for (auto i{ 0 }; i < children.size(); i++)
+		for (size_t i{ 0 }; i < children.size(); ++i)
 		{
 			Core::Datastructure::Object* childObject{ Object->CreateChild("", {}) };
 			children[i].CreateObjectScene(childObject, resources);
