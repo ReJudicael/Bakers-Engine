@@ -30,11 +30,11 @@
 - Close editor or exe and press "enter" to properly finish the session
 - Engine leak can be found in the memory tab in the up-left corner
 
-![Alt text](Showcase\Tracy\MenuBar.png "Memory")
+![Alt text](Showcase\Tracy\MenuBar.png)
 
 RTTR create lots of “fake” leak, which is needed for it to work and must not be cleaned. Those useful leaks are marked down by comments when the mouse cursor is hovering the leak text.
 
-![Alt text](Showcase\Tracy\RTTRLeak.png "Memory")
+![Alt text](Showcase\Tracy\RTTRLeak.png)
 
 ## Documentation wih Doxygen
 - Doxygen: Create documentation
@@ -65,11 +65,11 @@ RTTR create lots of “fake” leak, which is needed for it to work and must not
 This engine comes with a main scene featuring a RPG game demo. In this game, the player controls both a human character, directly through WASD inputs, and a dragon ally, through holding shift and clicking on the screen. The dragon will move to the asked direction, or follow the player when Z is pressed. If the dragon gets lost, pressing the P key will warp it back next to the player. 
 These features allow puzzle-type mechanics and a more action-based battle system in which the player and their ally can both attack enemies.
 
-![Alt text](Showcase\Game\Golem.gif "Golem")
+![Alt text](Showcase\Game\Golem.gif)
 
-![Alt text](Showcase\Game\Fight.gif "Fight")
+![Alt text](Showcase\Game\Fight.gif)
 
-![Alt text](Showcase\Game\Boss.gif "Boss")
+![Alt text](Showcase\Game\Boss.gif)
 
 #### See also
 The ReleaseNotes giving more informations about most features available in the Bakers Engine.
